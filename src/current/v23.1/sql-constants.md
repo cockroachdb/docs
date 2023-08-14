@@ -1,5 +1,5 @@
 ---
-title: Constant Values
+title: Constants
 summary: SQL Constants represent a simple value that doesn't change.
 toc: true
 docs_area: reference.sql
@@ -198,7 +198,7 @@ binary digits (bits) enclosed in single quotes.
 For example: `B'1001010101'`
 
 Bit array literals are acceptable both when values of types
-[`BIT`](bit.html) or [`VARBIT`](bit.html) (`BIT VARYING`) are
+[`BIT`]({% link {{ page.version.version }}/bit.md %}) or [`VARBIT`]({% link {{ page.version.version }}/bit.md %}) (`BIT VARYING`) are
 expected.
 
 The number of bits is arbitrary. An empty bit array is denoted `B''`;
@@ -264,12 +264,12 @@ BOOL 'FALSE'
 Additionally, for compatibility with PostgreSQL, the notation
 `'string'::type` and `CAST('string' AS type)` is also recognized as an
 interpreted literal. These are special cases of
-[cast expressions](scalar-expressions.html).
+[cast expressions]({% link {{ page.version.version }}/scalar-expressions.md %}).
 
 For more information about the allowable format of interpreted
 literals, refer to the "Syntax" section of the respective data types:
-[`DATE`](date.html#syntax), [`INET`](inet.html#syntax), [`INTERVAL`](interval.html#syntax), [`TIME`](time.html#syntax),
-[`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html#syntax).
+[`DATE`]({% link {{ page.version.version }}/date.md %}#syntax), [`INET`]({% link {{ page.version.version }}/inet.md %}#syntax), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}#syntax), [`TIME`]({% link {{ page.version.version }}/time.md %}#syntax),
+[`TIMESTAMP`/`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}#syntax).
 
 ## Named constants
 
@@ -283,5 +283,5 @@ type during expression evaluation is determined based on context.
 
 ## See also
 
-- [Scalar Expressions](scalar-expressions.html)
-- [Data Types](data-types.html)
+- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})

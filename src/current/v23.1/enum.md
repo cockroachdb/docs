@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-A [user-defined `ENUM` data type](create-type.html#create-an-enumerated-data-type) consists of a set of enumerated, static values.
+A [user-defined `ENUM` data type]({% link {{ page.version.version }}/create-type.md %}#create-an-enumerated-data-type) consists of a set of enumerated, static values.
 
 ## Syntax
 
-To declare a new enumerated data type, use [`CREATE TYPE`](create-type.html#create-an-enumerated-data-type):
+To declare a new enumerated data type, use [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %}#create-an-enumerated-data-type):
 
 ~~~ sql
 > CREATE TYPE <name> AS ENUM ('<value1>', '<value2>', ...);
@@ -18,26 +18,26 @@ To declare a new enumerated data type, use [`CREATE TYPE`](create-type.html#crea
 where `<name>` is the name of the new type, and `<value1>, <value2>, ...` are string literals that make up the type's set of static values.
 
 {{site.data.alerts.callout_info}}
-You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
+You can qualify the `<name>` of an enumerated type with a [database and schema name]({% link {{ page.version.version }}/sql-name-resolution.md %}) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
 {{site.data.alerts.end}}
 
-To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases](multiregion-overview.html), use [`SHOW ENUMS`](show-enums.html):
+To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases]({% link {{ page.version.version }}/multiregion-overview.md %}), use [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
 
-To modify an `ENUM` type, use [`ALTER TYPE`](alter-type.html):
+To modify an `ENUM` type, use [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE <name> ADD VALUE '<value>';
 ~~~
 
-where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification](grant.html).
+where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification]({% link {{ page.version.version }}/grant.md %}).
 
-To drop the type, use [`DROP TYPE`](drop-type.html):
+To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -46,10 +46,10 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 ## Required privileges
 
-- To [create a type](create-type.html) in a database, a user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database.
-- To [drop a type](drop-type.html), a user must be the owner of the type.
-- To [alter a type](alter-type.html), a user must be the owner of the type.
-- To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
+- To [create a type]({% link {{ page.version.version }}/create-type.md %}) in a database, a user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database.
+- To [drop a type]({% link {{ page.version.version }}/drop-type.md %}), a user must be the owner of the type.
+- To [alter a type]({% link {{ page.version.version }}/alter-type.md %}), a user must be the owner of the type.
+- To [grant privileges]({% link {{ page.version.version }}/grant.md %}) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
 - To create an object that depends on a type, a user must have the `USAGE` privilege on the type.
 
 ## Example
@@ -119,9 +119,9 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 ## Supported casting and conversion
 
-`ENUM` data type values can be [cast](data-types.html#data-type-conversions-and-casts) to [`STRING`s](string.html).
+`ENUM` data type values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to [`STRING`s]({% link {{ page.version.version }}/string.md %}).
 
-Values can be cast explicitly or implicitly. For example, the following [`SELECT`](select-clause.html) statements are equivalent:
+Values can be cast explicitly or implicitly. For example, the following [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statements are equivalent:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -211,8 +211,8 @@ SQLSTATE: 22023
 
 ## See also
 
-- [Data Types](data-types.html)
-- [`CREATE TYPE`](create-type.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`SHOW ENUMS`](show-enums.html)
-- [`DROP TYPE`](drop-type.html)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})

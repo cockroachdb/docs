@@ -11,9 +11,9 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Before you start
 
-- [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
-- [Create a new SQL user](managing-access.html#create-a-sql-user).
-- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
+- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+- [Create a new SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters]({% link cockroachcloud/network-authorization.md %})
 
 ## Authorize your network
 
@@ -28,14 +28,14 @@ Removing or adding an authorized network on your {{ site.data.products.serverles
 ### Establish AWS PrivateLink
 
 {{site.data.alerts.callout_info}}
-AWS PrivateLink for {{ site.data.products.serverless }} is in **[limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+AWS PrivateLink for {{ site.data.products.serverless }} is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
 Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
 AWS PrivateLink is available only for multiregion {{ site.data.products.serverless }} clusters deployed on AWS.
 
-To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink](network-authorization.html#aws-privatelink).
+To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
 AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
 
@@ -45,7 +45,7 @@ Private connectivity is not available for {{ site.data.products.serverless }} cl
 
 ## Select a connection method
 
-1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
+1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
 
 1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 
@@ -68,34 +68,36 @@ Private connectivity is not available for {{ site.data.products.serverless }} cl
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}.
-1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](../stable/third-party-database-tools.html), see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html).
+1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
 
 {% include cockroachcloud/postgresql-special-characters.md %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 For connection examples and code snippets in your language, see the following:
 
-- [Build a Python App with CockroachDB](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html)
-- [Build a Go App with CockroachDB](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html)
-- [Build a Java App with CockroachDB](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html)
-- [Build a Ruby App with CockroachDB](../{{site.current_cloud_version}}/build-a-ruby-app-with-cockroachdb.html)
-- [Build a Javascript App with CockroachDB](../{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.html)
+- [Build a Python App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb)
+- [Build a Ruby App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-ruby-app-with-cockroachdb)
+- [Build a Javascript App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb)
 
   </section>
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Select the **Parameters only** option of the **Select option** dropdown.
 
-1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html).
+1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
 
     Parameter | Description
     ----------|------------
-    `{username}`  | The [SQL user](managing-access.html#create-a-sql-user) connecting to the cluster.
+    `{username}`  | The [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) connecting to the cluster.
     `{password}`  | The password for the SQL user connecting to the cluster.
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.
@@ -106,8 +108,9 @@ For connection examples and code snippets in your language, see the following:
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
-1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
+1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
 
@@ -123,11 +126,11 @@ For connection examples and code snippets in your language, see the following:
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 
   </section>
 
 ## What's next
 
-- [Build a "Hello, World" app](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Build a "Hello, World" app](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})

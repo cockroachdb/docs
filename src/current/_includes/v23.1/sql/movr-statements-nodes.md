@@ -1,8 +1,8 @@
 ### Setup
 
-The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({% link {{ page.version.version }}/movr.md %}).
 
-To follow along, run [`cockroach demo`](cockroach-demo.html) with the [`--nodes`](cockroach-demo.html#flags) and [`--demo-locality`](cockroach-demo.html#flags) flags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+To follow along, run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) with the [`--nodes`]({% link {{ page.version.version }}/cockroach-demo.md %}#flags) and [`--demo-locality`]({% link {{ page.version.version }}/cockroach-demo.md %}#flags) flags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

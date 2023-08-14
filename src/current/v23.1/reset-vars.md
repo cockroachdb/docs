@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `RESET` [statement](sql-statements.html) resets a [session variable](set-vars.html) to its default value for the client session.
+The `RESET` [statement]({% link {{ page.version.version }}/sql-statements.md %}) resets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) to its default value for the client session.
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to reset a session setting.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to reset a session setting.
 
 ## Synopsis
 
@@ -19,11 +19,11 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
  Parameter | Description
 -----------|-------------
- `session_var` | The name of the [session variable](set-vars.html#supported-variables).
+ `session_var` | The name of the [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables).
 
 ## Example
 
-{{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}You can use <a href="{% link {{ page.version.version }}/set-vars.md %}#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -85,5 +85,5 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 ## See also
 
-- [`SET {session variable}`](set-vars.html)
-- [`SHOW {session variable}`](show-vars.html)
+- [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
+- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})

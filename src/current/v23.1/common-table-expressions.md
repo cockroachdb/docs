@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-A _common table expression_ (CTE), also called a `WITH` query, provides a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
+A _common table expression_ (CTE), also called a `WITH` query, provides a shorthand name to a possibly complex [subquery]({% link {{ page.version.version }}/subqueries.md %}) before it is used in a larger query context. This improves the readability of SQL code.
 
-You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html), and [`UPSERT`](upsert.html) data-modifying statements.
+You can use CTEs in combination with [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}) and [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), and [`UPSERT`](upsert.html) data-modifying statements.
 
 ## Synopsis
 
@@ -22,14 +22,14 @@ Parameter | Description
 `table_alias_name` | The name to use to refer to the common table expression from the accompanying query or statement.
 `name` | A name for one of the columns in the newly defined common table expression.
 `preparable_stmt` | The statement or subquery to use as common table expression.
-`MATERIALIZED`/`NOT MATERIALIZED` |  Override the [optimizer](cost-based-optimizer.html)'s decision to materialize (i.e., store the results) of the common table expression. By default, the optimizer materializes the common table expression if it affects other objects in the database, or if it is used in the query multiple times.
+`MATERIALIZED`/`NOT MATERIALIZED` |  Override the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %})'s decision to materialize (i.e., store the results) of the common table expression. By default, the optimizer materializes the common table expression if it affects other objects in the database, or if it is used in the query multiple times.
 
 ## Overview
 
 {{site.data.alerts.callout_info}}
-The examples on this page use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. To follow along, run [`cockroach demo`](cockroach-demo.html) from the command line to start a temporary, in-memory cluster with the `movr` dataset preloaded.
+The examples on this page use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. To follow along, run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) from the command line to start a temporary, in-memory cluster with the `movr` dataset preloaded.
 
-For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({% link {{ page.version.version }}/movr.md %}).
 {{site.data.alerts.end}}
 
 A query or statement of the form `WITH x AS (y) z` creates the
@@ -57,7 +57,7 @@ For example:
 
 In this example, the `WITH` clause defines the temporary name `r` for
 the subquery over `rides`, and that name becomes a table name
-for use in any [table expression](table-expressions.html) of the
+for use in any [table expression]({% link {{ page.version.version }}/table-expressions.md %}) of the
 subsequent `SELECT` clause.
 
 This query is equivalent to, but simpler to read than:
@@ -95,7 +95,7 @@ You can use a `WITH` clause in a subquery and a `WITH` clause within another `WI
   SELECT * FROM u;
 ~~~
 
-When analyzing [table expressions](table-expressions.html) that
+When analyzing [table expressions]({% link {{ page.version.version }}/table-expressions.md %}) that
 mention a CTE name, CockroachDB will choose the CTE definition that is
 closest to the table expression. For example:
 
@@ -116,7 +116,7 @@ table `vehicles` (closest `WITH` clause), not from table `users`.
 
 ## Data-modifying statements
 
-You can use a [data-modifying statement](sql-statements.html#data-manipulation-statements) (`INSERT`, `DELETE`,
+You can use a [data-modifying statement]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) (`INSERT`, `DELETE`,
 etc.) as a common table expression, as long as the `WITH` clause containing the data-modifying statement is at the top level of the query.
 
 For example:
@@ -158,8 +158,8 @@ SQLSTATE: 0A000
 If a common table expression contains
 a data-modifying statement (<code>INSERT</code>, <code>DELETE</code>,
 etc.), the modifications are performed fully even if only part
-of the results are used, e.g., with <a href="limit-offset.html"><code>LIMIT</code></a>.
-See <a href="subqueries.html#data-writes-in-subqueries">Data writes in subqueries</a> for details.
+of the results are used, e.g., with <a href="{% link {{ page.version.version }}/limit-offset.md %}"><code>LIMIT</code></a>.
+See <a href="{% link {{ page.version.version }}/subqueries.md %}#data-writes-in-subqueries">Data writes in subqueries</a> for details.
 {{site.data.alerts.end}}
 
 ## Reference multiple common table expressions
@@ -248,7 +248,7 @@ SELECT * FROM cte;
 (10 rows)
 ~~~
 
-The initial subquery (`VALUES (0, 1)`) initializes the working table with the values `0` for the `n` column and `1` for the `factorial` column. The recursive subquery (`SELECT n+1, (n+1)*factorial FROM cte WHERE n < 9`) evaluates over the initial values of the working table and replaces its contents with the results. It then iterates over the contents of the working table, replacing its contents at each iteration, until `n` reaches `9`, when the [`WHERE` clause](select-clause.html#filter-rows) evaluates as false.
+The initial subquery (`VALUES (0, 1)`) initializes the working table with the values `0` for the `n` column and `1` for the `factorial` column. The recursive subquery (`SELECT n+1, (n+1)*factorial FROM cte WHERE n < 9`) evaluates over the initial values of the working table and replaces its contents with the results. It then iterates over the contents of the working table, replacing its contents at each iteration, until `n` reaches `9`, when the [`WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows) evaluates as false.
 
 If no `WHERE` clause were defined in the example, the recursive subquery would always return results and loop indefinitely, resulting in an error:
 
@@ -267,7 +267,7 @@ ERROR: integer out of range
 SQLSTATE: 22003
 ~~~
 
-If you are unsure if your recursive subquery will loop indefinitely, you can limit the results of the CTE with the [`LIMIT`](limit-offset.html) keyword. For example, if you remove the `WHERE` clause from the factorial example, you can use `LIMIT` to limit the results and avoid the `integer out of range` error:
+If you are unsure if your recursive subquery will loop indefinitely, you can limit the results of the CTE with the [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) keyword. For example, if you remove the `WHERE` clause from the factorial example, you can use `LIMIT` to limit the results and avoid the `integer out of range` error:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -343,7 +343,7 @@ SELECT COUNT(DISTINCT n) FROM test;
 Time: 273ms total (execution 273ms / network 0ms)
 ~~~
 
-This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`](explain.html):
+This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -382,7 +382,7 @@ WITH RECURSIVE temp (i) AS (
 SELECT COUNT(*) FROM temp;
 ~~~
 
-The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](order-by.html) clauses to select the lowest value in the table. The recursive subquery uses an [inner join](joins.html#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
+The initial subquery uses the [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) and [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clauses to select the lowest value in the table. The recursive subquery uses an [inner join]({% link {{ page.version.version }}/joins.md %}#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
 
 ~~~
   count
@@ -394,7 +394,7 @@ The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](orde
 Time: 13ms total (execution 13ms / network 0ms)
 ~~~
 
-The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`](explain.html):
+The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -470,7 +470,7 @@ CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify 
 
 ## See also
 
-- [Subqueries](subqueries.html)
-- [Selection Queries](selection-queries.html)
-- [Table Expressions](table-expressions.html)
-- [`EXPLAIN`](explain.html)
+- [Subqueries]({% link {{ page.version.version }}/subqueries.md %})
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
+- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})

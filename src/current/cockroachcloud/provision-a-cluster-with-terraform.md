@@ -20,7 +20,7 @@ Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 - Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
-- Create a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts](authorization.html#service-accounts)
+- Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
 
 ## Create the Terraform configuration files
 
@@ -60,7 +60,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
     sql_user_password = "NotAGoodPassword"
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -103,12 +103,12 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{cluster name}` is the name of the cluster you want to create.
        - `{SQL user name}` is the name of the SQL user you want to create.
        - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
        - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
-       - `{allow list name}` is the name for the [IP allow list](network-authorization.html#ip-allowlisting). Use a descriptive name to identify the IP allow list.
+       - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
 
@@ -129,7 +129,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

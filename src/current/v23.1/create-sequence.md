@@ -5,20 +5,20 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
+The `CREATE SEQUENCE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Considerations
 
-- Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required.
+- Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 - {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
--  By default, you cannot create sequences that are [owned by](security-reference/authorization.html#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting](cluster-settings.html) to `true`.
+-  By default, you cannot create sequences that are [owned by]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
 
 ## Synopsis
 
@@ -30,7 +30,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
  Parameter | Description
 -----------|------------
-`seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.seq_name`.
+`seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.seq_name`.
 `INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
@@ -41,12 +41,12 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 `OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `opt_temp` | Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).
 
-<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
--->
+{% comment %} CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
+{% endcomment %}
 
 ## Sequence functions
 
-CockroachDB supports the following [SQL sequence functions](functions-and-operators.html):
+CockroachDB supports the following [SQL sequence functions]({% link {{ page.version.version }}/functions-and-operators.md %}):
 
 - `nextval('seq_name')`
 - `currval('seq_name')`
@@ -55,14 +55,14 @@ CockroachDB supports the following [SQL sequence functions](functions-and-operat
 
 ## Temporary sequences
 
-CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables](temporary-tables.html).
+CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Temporary tables must be enabled in order to use temporary sequences. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable](set-vars.html) to `on`.
+Temporary tables must be enabled in order to use temporary sequences. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`.
 {{site.data.alerts.end}}
 
 ### Details
@@ -73,12 +73,12 @@ Temporary tables must be enabled in order to use temporary sequences. By default
 - Temporary sequences cannot be converted to persistent sequences.
 
 {{site.data.alerts.callout_info}}
-Like [temporary tables](temporary-tables.html), temporary sequences are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
+Like [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), temporary sequences are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
 {{site.data.alerts.end}}
 
 ### Usage
 
-To create a temporary sequence, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) to a `CREATE SEQUENCE` statement.
+To create a temporary sequence, add [`TEMP`/`TEMPORARY`]({% link {{ page.version.version }}/sql-grammar.md %}#opt_temp) to a `CREATE SEQUENCE` statement.
 
 For example:
 
@@ -129,7 +129,7 @@ In this example, we create a sequence with default settings.
 
 ### Use a sequence when creating a table
 
-In this example, we [create a table](create-table.html), using the [`nextval()` function](functions-and-operators.html#sequence-functions) for a [default value](default-value.html), with the `customer_seq` sequence as its input:
+In this example, we [create a table]({% link {{ page.version.version }}/create-table.md %}), using the [`nextval()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions) for a [default value]({% link {{ page.version.version }}/default-value.md %}), with the `customer_seq` sequence as its input:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -193,7 +193,7 @@ If a value has been obtained from the sequence in the current session, you can a
 
 ### Set the next value of a sequence
 
-In this example, we're going to change the next value of `customer_seq` using the [`setval()` function](functions-and-operators.html#sequence-functions). Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
+In this example, we're going to change the next value of `customer_seq` using the [`setval()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions). Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
 
 {{site.data.alerts.callout_info}}
 You cannot set a value outside the <code>MAXVALUE</code> or <code>MINVALUE</code> of the sequence.
@@ -298,10 +298,10 @@ For example, to cache 10 sequence values in memory:
 
 ## See also
 
-- [`ALTER SEQUENCE`](alter-sequence.html)
-- [`DROP SEQUENCE`](drop-sequence.html)
-- [`SHOW CREATE`](show-create.html)
-- [`SHOW SEQUENCES`](show-sequences.html)
-- [Functions and Operators](functions-and-operators.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})
+- [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

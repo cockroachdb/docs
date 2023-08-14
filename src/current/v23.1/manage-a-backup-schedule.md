@@ -13,13 +13,13 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
-For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
+For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups).
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Create a new backup schedule
 
-To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
+To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) statement. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -30,17 +30,17 @@ To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-s
     WITH SCHEDULE OPTIONS first_run = 'now';
 ~~~
 
-In this example, a schedule labeled `schedule_label` is created to take daily (incremental) backups with revision history in AWS S3, with the first backup being taken now. A second [schedule for weekly full backups](create-schedule-for-backup.html#full-backup-clause) is also created by default. Both schedules have the same `label` (i.e., `schedule_label`).
+In this example, a schedule labeled `schedule_label` is created to take daily (incremental) backups with revision history in AWS S3, with the first backup being taken now. A second [schedule for weekly full backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#full-backup-clause) is also created by default. Both schedules have the same `label` (i.e., `schedule_label`).
 
-For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
+For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
 
 {{site.data.alerts.callout_info}}
-Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage](use-cloud-storage.html).
+Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 {{site.data.alerts.end}}
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
+We recommend that you [monitor your backup schedule with Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 Metrics for scheduled backups fall into two categories:
 
@@ -50,21 +50,21 @@ Metrics for scheduled backups fall into two categories:
     - `schedules.BACKUP.succeeded`: The number of backups started by a schedule that succeeded.
     - `schedules.BACKUP.failed`: The number of backups started by a schedule that failed.
 
-        When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column. {% include {{ page.version.version }}/backups/retry-failure.md %}
-    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by backup schedules.
-    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by backup schedules.
+        When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) to check which schedule is affected and to inspect the error in the `status` column. {% include {{ page.version.version }}/backups/retry-failure.md %}
+    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protected by backup schedules.
+    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by backup schedules.
 
 - Scheduler-specific metrics:
 
-    - `schedules.round.reschedule-wait`: The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+    - `schedules.round.reschedule-wait`: The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#on-previous-running-option) schedule option.
 
-    - `schedules.round.reschedule-skip`: The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+    - `schedules.round.reschedule-skip`: The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#on-previous-running-option) schedule option.
 
 {{site.data.alerts.callout_info}}
 `schedules.round.reschedule-wait` and `schedules.round.reschedule-skip` are gauge metrics and can be graphed. A continual positive value for either of these metrics may indicate a misconfigured backup cadence, and you should consider adjusting the cadence to avoid waiting for or skipping the next backup.
 {{site.data.alerts.end}}
 
-For a tutorial on how to use Prometheus to set up monitoring and alerting, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
+For a tutorial on how to use Prometheus to set up monitoring and alerting, see [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
 
 ## View scheduled backup details
 
@@ -81,7 +81,7 @@ Once a backup schedule is successfully created, you can [view the schedule](#vie
 > SHOW SCHEDULES;
 ~~~~
 
-For more information, see [`SHOW SCHEDULES`](show-schedules.html).
+For more information, see [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 ### Pause the schedule
 
@@ -92,14 +92,14 @@ To pause a schedule, you can either specify the schedule's `id`:
 > PAUSE SCHEDULE 589963390487363585;
 ~~~~
 
-Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
+Or nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~~ sql
 > PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
-For more information, see [`PAUSE SCHEDULES`](pause-schedules.html).
+For more information, see [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %}).
 
 ### Resume the schedule
 
@@ -110,14 +110,14 @@ To resume a paused schedule, you can either specify the schedule's `id`:
 > RESUME SCHEDULE 589963390487363585;
 ~~~~
 
-Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
+Or nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~~ sql
 > RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
-For more information, see [`RESUME SCHEDULES`](resume-schedules.html).
+For more information, see [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %}).
 
 ### Drop the schedule
 
@@ -128,17 +128,17 @@ To drop a schedule, you can either specify the schedule's `id`:
 > DROP SCHEDULE 589963390487363585;
 ~~~~
 
-Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
+Or nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~~ sql
 > DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
-For more information, see [`DROP SCHEDULES`](drop-schedules.html).
+For more information, see [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %}).
 
 {{site.data.alerts.callout_danger}}
-`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
+`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs]({% link {{ page.version.version }}/cancel-job.md %}) first, as you will not be able to look up the job ID once the schedule is dropped.
 {{site.data.alerts.end}}
 
 ## View and control a backup initiated by a schedule
@@ -147,7 +147,7 @@ After CockroachDB successfully initiates a scheduled backup, it registers the ba
 
 ### View the backup job
 
-To view jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To view jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -160,7 +160,7 @@ To view jobs for a specific [backup schedule](create-schedule-for-backup.html), 
 (1 row)
 ~~~
 
-You can also view multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `SHOW JOBS` statement:
+You can also view multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `SHOW JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -175,11 +175,11 @@ You can also view multiple schedules by nesting a [`SELECT` clause](select-claus
 (2 rows)
 ~~~
 
-For more information, see [`SHOW JOBS`](show-jobs.html).
+For more information, see [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
 
 ### Pause the backup job
 
-To pause jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To pause jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -189,7 +189,7 @@ To pause jobs for a specific [backup schedule](create-schedule-for-backup.html),
 PAUSE JOBS FOR SCHEDULES 1
 ~~~
 
-You can also pause multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+You can also pause multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -200,11 +200,11 @@ You can also pause multiple schedules by nesting a [`SELECT` clause](select-clau
 PAUSE JOBS FOR SCHEDULES 2
 ~~~
 
-For more information, see [`PAUSE JOB`](pause-job.html).
+For more information, see [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}).
 
 ### Resume the backup job
 
-To resume jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To resume jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -214,7 +214,7 @@ To resume jobs for a specific [backup schedule](create-schedule-for-backup.html)
 RESUME JOBS FOR SCHEDULES 1
 ~~~
 
-You can also resume multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+You can also resume multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -225,11 +225,11 @@ You can also resume multiple schedules by nesting a [`SELECT` clause](select-cla
 RESUME JOBS FOR SCHEDULES 2
 ~~~
 
-For more information, see [`RESUME JOB`](resume-job.html).
+For more information, see [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}).
 
 ### Cancel the backup job
 
-To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+To cancel jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -239,7 +239,7 @@ To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html)
 CANCEL JOBS FOR SCHEDULES 1
 ~~~
 
-You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
+You can also CANCEL multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -250,11 +250,11 @@ You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-cla
 CANCEL JOBS FOR SCHEDULES 2
 ~~~
 
-For more information, see [`CANCEL JOB`](cancel-job.html).
+For more information, see [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}).
 
 ## Restore from a scheduled backup
 
-To restore from a scheduled backup, use the [`RESTORE`](restore.html) statement:
+To restore from a scheduled backup, use the [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -267,17 +267,17 @@ To view the backups stored within a collection, use the [`SHOW BACKUP`](#view-sc
 
 ## See also
 
-- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`SHOW BACKUP`](show-backup.html)
-- [`SHOW SCHEDULES`](show-schedules.html)
-- [`PAUSE SCHEDULES`](pause-schedules.html)
-- [`RESUME SCHEDULES`](resume-schedules.html)
-- [`DROP SCHEDULES`](drop-schedules.html)
-- [`PAUSE JOB`](pause-job.html)
-- [`RESUME JOB`](pause-job.html)
-- [`CANCEL JOB`](cancel-job.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %})
+- [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %})
+- [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %})
+- [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %})
+- [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %})
+- [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`RESUME JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

@@ -5,14 +5,14 @@ toc: true
 docs_area: deploy
 ---
 
-In a multi-region deployment, [follower reads](follower-reads.html) are a good choice for tables with the following requirements:
+In a multi-region deployment, [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) are a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
 - Reads can be historical.
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies (e.g., a reference table).
 - Table data must remain available during a region failure.
 
-If reads can use stale data, use [stale follower reads](follower-reads.html#stale-follower-reads). If reads must be exactly up-to-date, use [global tables](global-tables.html) to achieve [strong follower reads](follower-reads.html#follower-read-types). Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
+If reads can use stale data, use [stale follower reads]({% link {{ page.version.version }}/follower-reads.md %}#stale-follower-reads). If reads must be exactly up-to-date, use [global tables]({% link {{ page.version.version }}/global-tables.md %}) to achieve [strong follower reads]({% link {{ page.version.version }}/follower-reads.md %}#follower-read-types). Up-to-date reads are required by tables referenced by [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}), for example.
 
 ## Before you begin
 
@@ -28,13 +28,13 @@ If reads can use stale data, use [stale follower reads](follower-reads.html#stal
 
 ## Configuration
 
-With each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and zone combination, CockroachDB will balance the replicas for a table across the three regions:
+With each node started with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag specifying its region and zone combination, CockroachDB will balance the replicas for a table across the three regions:
 
 <img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follower reads table replication" style="max-width:100%" />
 
 ### Summary
 
-You configure your application to use [follower reads](follower-reads.html) by adding an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause when reading from the table. With this clause CockroachDB reads slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.
+You configure your application to use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) by adding an [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause when reading from the table. With this clause CockroachDB reads slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.
 
 ### Steps
 
@@ -55,8 +55,8 @@ You configure your application to use [follower reads](follower-reads.html) by a
     > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
     ~~~
 
-1. Decide which type of follower read to perform: exact staleness or  bounded staleness. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
-    - To use [exact staleness follower reads](follower-reads.html#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`follower_read_timestamp()` function](functions-and-operators.html) whenever reading from the table:
+1. Decide which type of follower read to perform: exact staleness or  bounded staleness. For more information about when to use each type of read, see [when to use exact staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#when-to-use-bounded-staleness-reads).
+    - To use [exact staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) with the [`follower_read_timestamp()` function]({% link {{ page.version.version }}/functions-and-operators.md %}) whenever reading from the table:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
@@ -83,9 +83,9 @@ You configure your application to use [follower reads](follower-reads.html) by a
         ~~~
 
         {{site.data.alerts.callout_success}}
-        Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the preceding example will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
+        Using the [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}#use-the-as-of-system-time-option) statement as shown in the preceding example will make it easier to use exact staleness follower reads from [drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}).
         {{site.data.alerts.end}}
-    - To use [bounded staleness follower reads](follower-reads.html#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`with_min_timestamp()` or `with_max_staleness()` function](functions-and-operators.html#date-and-time-functions) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
+    - To use [bounded staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) with the [`with_min_timestamp()` or `with_max_staleness()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql

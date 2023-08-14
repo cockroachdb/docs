@@ -6,13 +6,13 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `DROP FUNCTION` [statement](sql-statements.html) removes one or more [user-defined functions](user-defined-functions.html) from a database.
+The `DROP FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes one or more [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) from a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-To drop a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the function.
+To drop a function, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the function.
 
 ## Synopsis
 
@@ -29,8 +29,8 @@ Parameter | Description
 
 ## See also
 
-- [User-Defined Functions](user-defined-functions.html)
-- [`CREATE FUNCTION`](create-function.html)
-- [`ALTER FUNCTION`](alter-function.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %})
+- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
+- [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Architecture
+title: CockroachDB Cloud Infrastructure
 summary: Learn more about CockroachDB Cloud architecture
 toc: true
 docs_area: reference.architecture
@@ -9,7 +9,7 @@ cloud: true
 {{ site.data.products.db }} is a fully-managed deployment of CockroachDB. This page describes {{ site.data.products.db }}'s architecture and how it relates to CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](../stable/architecture/overview.html) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
+For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/architecture/overview) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 {% include common/basic-terms.md %}
@@ -29,29 +29,29 @@ We use the Kubernetes offerings in AWS, GCP, and Azure (limited access) (EKS, GK
 Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}). Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ### Security and Connection
 
-{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering](network-authorization.html#vpc-peering) and [AWS PrivateLink](network-authorization.html#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
+{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
-{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates](client-certs-dedicated.html) can be used for client identity verification. Refer to [Authentication](authentication.html) for more details.
+{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes]({% link cockroachcloud/authentication.md %}#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates]({% link cockroachcloud/client-certs-dedicated.md %}) can be used for client identity verification. Refer to [Authentication]({% link cockroachcloud/authentication.md %}) for more details.
 
-[Backups](use-managed-service-backups.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
+[Backups]({% link cockroachcloud/use-managed-service-backups.md %}) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed-service backups are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), managed-service backups are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}). Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2). Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ### Multi-region architecture
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
@@ -86,7 +86,7 @@ Your cluster's [resource limits](#resource-limits) are the maximum amount of sto
 
 #### Free
 
-All {{ site.data.products.db }} organizations are given 50 million [Request Units](plan-your-cluster-serverless.html#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+All {{ site.data.products.db }} organizations are given 50 million [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 #### Paid
 
@@ -94,7 +94,7 @@ You must enter billing information and set [resource limits](#resource-limits) i
 
 ### Autoscaling
 
-Serverless clusters also have the ability to scale to zero and consume no compute resources when there are no active queries. When there are no active queries, you will pay for the storage your app is using, but not for Request Units. To avoid wasted resources, {{ site.data.products.db }} automatically pauses Serverless clusters that are inactive, which is defined by having no connection to the cluster for five consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist](production-checklist.html).
+Serverless clusters also have the ability to scale to zero and consume no compute resources when there are no active queries. When there are no active queries, you will pay for the storage your app is using, but not for Request Units. To avoid wasted resources, {{ site.data.products.db }} automatically pauses Serverless clusters that are inactive, which is defined by having no connection to the cluster for five consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist]({% link cockroachcloud/production-checklist.md %}).
 
 The diagrams below shows how {{ site.data.products.serverless }} autoscales with your application's traffic:
 
@@ -104,4 +104,4 @@ The diagrams below shows how {{ site.data.products.serverless }} autoscales with
 
 ## Learn more
 
-See the [CockroachDB architecture](../{{site.current_cloud_version}}/architecture/overview.html) documentation for more information.
+See the [CockroachDB architecture](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/overview) documentation for more information.

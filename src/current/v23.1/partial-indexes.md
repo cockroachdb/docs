@@ -1,18 +1,18 @@
 ---
-title: Partial Indexes
+title: Index a Subset of Rows with Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 docs_area: develop
 ---
 
-Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
+Partial indexes allow you to specify a subset of rows and columns to add to an [index]({% link {{ page.version.version }}/indexes.md %}). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
 
 ## How do partial indexes work?
 
 When you create a partial index, CockroachDB "indexes" the columns and rows that evaluate to true on the index's boolean predicate expression, creating a sorted copy of the subset of row values, without modifying the values in the table itself.
 
-CockroachDB can use a partial index to efficiently execute queries on any subset of rows implied by the partial index. When possible, the [cost-based optimizer](cost-based-optimizer.html) creates a plan that limits table scans on rows implied by the partial index to just the rows in the index. It also limits index rewrites to fewer rows.
+CockroachDB can use a partial index to efficiently execute queries on any subset of rows implied by the partial index. When possible, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) creates a plan that limits table scans on rows implied by the partial index to just the rows in the index. It also limits index rewrites to fewer rows.
 
 Partial indexes can improve cluster performance in a number of ways:
 
@@ -21,12 +21,12 @@ Partial indexes can improve cluster performance in a number of ways:
 - Write queries on tables with a partial index only perform an index write when the rows inserted satisfy the partial index predicate. This contrasts with write queries on tables with full indexes, which incur the overhead of a full index write when the rows inserted modify an indexed column.
 
 {{site.data.alerts.callout_info}}
-When a query on a table with a partial index has a filter expression, the [cost-based optimizer](cost-based-optimizer.html) attempts to prove that the filter implies the partial index predicate. It is not guaranteed that the optimizer can prove the implication of arbitrarily complex expressions. Although unlikely, it is possible that a filter implies a predicate, but the optimizer cannot prove the implication.
+When a query on a table with a partial index has a filter expression, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) attempts to prove that the filter implies the partial index predicate. It is not guaranteed that the optimizer can prove the implication of arbitrarily complex expressions. Although unlikely, it is possible that a filter implies a predicate, but the optimizer cannot prove the implication.
 {{site.data.alerts.end}}
 
 ## Creation
 
-To create a partial index, use a [`CREATE INDEX`](create-index.html) statement, with a standard `WHERE` clause defining a predicate expression.
+To create a partial index, use a [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) statement, with a standard `WHERE` clause defining a predicate expression.
 
 For example, to define a partial index on columns `a` and `b` of table `t`, filtering on rows in column `c` greater than 5:
 
@@ -56,13 +56,13 @@ The following queries do *not* use the partial index:
 
 When defining the predicate expression, note that:
 
-- The predicate expression must result in a [boolean](bool.html).
+- The predicate expression must result in a [boolean]({% link {{ page.version.version }}/bool.md %}).
 - The predicate expression can only refer to columns in the table being indexed.
-- [Functions](functions-and-operators.html) used in predicates must be immutable. For example, the `now()` function is not allowed in predicates because its value depends on more than its arguments.
+- [Functions]({% link {{ page.version.version }}/functions-and-operators.md %}) used in predicates must be immutable. For example, the `now()` function is not allowed in predicates because its value depends on more than its arguments.
 
 ## Unique partial indexes
 
-You can enforce [uniqueness](unique.html) on a subset of rows with `CREATE UNIQUE INDEX ... WHERE ...`.
+You can enforce [uniqueness]({% link {{ page.version.version }}/unique.md %}) on a subset of rows with `CREATE UNIQUE INDEX ... WHERE ...`.
 
 For example, to define a unique partial index on columns `a` and `b` for table `t`, filtering on rows in column `d` equal to `'x'`:
 
@@ -75,28 +75,28 @@ This creates a partial index and a `UNIQUE` constraint on the subset of rows whe
 For another example, see [Create a partial index that enforces uniqueness on a subset of rows](#create-a-partial-index-that-enforces-uniqueness-on-a-subset-of-rows).
 
 {{site.data.alerts.callout_success}}
-When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
+When [inserted values]({% link {{ page.version.version }}/insert.md %}) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
 ## Partial GIN indexes
 
- You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+ You can create partial [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
-You can force queries [to use a specific partial index](table-expressions.html#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
+You can force queries [to use a specific partial index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
 ## Known limitations
 
-- CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
+- CockroachDB does not currently support [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
 - CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
-- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`](alter-table.html#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
+- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 ## Examples
 
 ### Setup
 
-The following examples use the [`movr` example dataset](cockroach-demo.html#datasets).
+The following examples use the [`movr` example dataset]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
@@ -118,7 +118,7 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 Time: 21ms total (execution 21ms / network 0ms)
 ~~~
 
-Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement](explain.html):
+Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement]({% link {{ page.version.version }}/explain.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -144,7 +144,7 @@ Without a partial index, querying the `rides` table with a `WHERE revenue > 90` 
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The `estimated row count` in the scan node lists the number of rows that the query plan will scan (in this case, the entire table row count of 125,000). The `table` property lists the index used in the scan (in this case, the [primary key index](primary-key.html)).
+The `estimated row count` in the scan node lists the number of rows that the query plan will scan (in this case, the entire table row count of 125,000). The `table` property lists the index used in the scan (in this case, the [primary key index]({% link {{ page.version.version }}/primary-key.md %})).
 
 To limit the number of rows scanned to just the rows that you are querying, you can create a partial index:
 
@@ -317,7 +317,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Suppose that you have a number of rows in a table with values that you regularly filter out of selection queries (e.g., `NULL` values).
 
-A selection query on these values will require a full table scan, using the primary index, as shown by the [`EXPLAIN` statement](explain.html) below:
+A selection query on these values will require a full table scan, using the primary index, as shown by the [`EXPLAIN` statement]({% link {{ page.version.version }}/explain.md %}) below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -422,7 +422,7 @@ You can do this efficiently with a [unique partial index](#unique-partial-indexe
 > CREATE UNIQUE INDEX ON users (name) WHERE city='new york';
 ~~~
 
-This creates a partial index and a [`UNIQUE` constraint](unique.html) on just the subset of rows where `city='new york'`.
+This creates a partial index and a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) on just the subset of rows where `city='new york'`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -461,9 +461,9 @@ INSERT 1
 
 ## See also
 
-- [Indexes](indexes.html)
-- [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html)
-- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
-- [`SHOW INDEX`](show-index.html)
-- [SQL Statements](sql-statements.html)
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
+- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
+- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

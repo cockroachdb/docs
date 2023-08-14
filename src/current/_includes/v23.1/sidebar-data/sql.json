@@ -974,43 +974,43 @@
                 ]
               },
               {
-                "title": "POINT",
+                "title": "<code>POINT</code>",
                 "urls": [
                   "/${VERSION}/point.html"
                 ]
               },
               {
-                "title": "LINESTRING",
+                "title": "<code>LINESTRING</code>",
                 "urls": [
                   "/${VERSION}/linestring.html"
                 ]
               },
               {
-                "title": "POLYGON",
+                "title": "<code>POLYGON</code>",
                 "urls": [
                   "/${VERSION}/polygon.html"
                 ]
               },
               {
-                "title": "MULTIPOINT",
+                "title": "<code>MULTIPOINT</code>",
                 "urls": [
                   "/${VERSION}/multipoint.html"
                 ]
               },
               {
-                "title": "MULTILINESTRING",
+                "title": "<code>MULTILINESTRING</code>",
                 "urls": [
                   "/${VERSION}/multilinestring.html"
                 ]
               },
               {
-                "title": "MULTIPOLYGON",
+                "title": "<code>MULTIPOLYGON</code>",
                 "urls": [
                   "/${VERSION}/multipolygon.html"
                 ]
               },
               {
-                "title": "GEOMETRYCOLLECTION",
+                "title": "<code>GEOMETRYCOLLECTION</code>",
                 "urls": [
                   "/${VERSION}/geometrycollection.html"
                 ]
@@ -1040,67 +1040,67 @@
                 ]
               },
               {
-                "title": "ST_Contains",
+                "title": "<code>ST_Contains</code>",
                 "urls": [
                   "/${VERSION}/st_contains.html"
                 ]
               },
               {
-                "title": "ST_Within",
+                "title": "<code>ST_Within</code>",
                 "urls": [
                   "/${VERSION}/st_within.html"
                 ]
               },
               {
-                "title": "ST_Intersects",
+                "title": "<code>ST_Intersects</code>",
                 "urls": [
                   "/${VERSION}/st_intersects.html"
                 ]
               },
               {
-                "title": "ST_CoveredBy",
+                "title": "<code>ST_CoveredBy</code>",
                 "urls": [
                   "/${VERSION}/st_coveredby.html"
                 ]
               },
               {
-                "title": "ST_Covers",
+                "title": "<code>ST_Covers</code>",
                 "urls": [
                   "/${VERSION}/st_covers.html"
                 ]
               },
               {
-                "title": "ST_Disjoint",
+                "title": "<code>ST_Disjoint</code>",
                 "urls": [
                   "/${VERSION}/st_disjoint.html"
                 ]
               },
               {
-                "title": "ST_Equals",
+                "title": "<code>ST_Equals</code>",
                 "urls": [
                   "/${VERSION}/st_equals.html"
                 ]
               },
               {
-                "title": "ST_Overlaps",
+                "title": "<code>ST_Overlaps</code>",
                 "urls": [
                   "/${VERSION}/st_overlaps.html"
                 ]
               },
               {
-                "title": "ST_Touches",
+                "title": "<code>ST_Touches</code>",
                 "urls": [
                   "/${VERSION}/st_touches.html"
                 ]
               },
               {
-                "title": "ST_ConvexHull",
+                "title": "<code>ST_ConvexHull</code>",
                 "urls": [
                   "/${VERSION}/st_convexhull.html"
                 ]
               },
               {
-                "title": "ST_Union",
+                "title": "<code>ST_Union</code>",
                 "urls": [
                   "/${VERSION}/st_union.html"
                 ]
@@ -1155,7 +1155,7 @@
             ]
           },
           {
-            "title": "Functions and Operators",
+            "title": "Functions & Operators",
             "urls": [
               "/${VERSION}/functions-and-operators.html"
             ]

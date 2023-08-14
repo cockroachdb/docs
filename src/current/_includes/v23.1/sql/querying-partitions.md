@@ -1,12 +1,12 @@
 ## Query partitions
 
-Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](regional-tables.html), partitioning can limit a query scan to data in a specific region.
+Similar to [indexes]({% link {{ page.version.version }}/indexes.md %}), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data]({% link {{ page.version.version }}/regional-tables.md %}), partitioning can limit a query scan to data in a specific region.
 
 ### Filter on an indexed column
 
-If you filter the query of a partitioned table on a [column in the index directly following the partition prefix](indexes.html), the [cost-based optimizer](cost-based-optimizer.html) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
+If you filter the query of a partitioned table on a [column in the index directly following the partition prefix]({% link {{ page.version.version }}/indexes.md %}), the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
 
-For example, suppose that the tables in the [`movr`](movr.html) database are geo-partitioned by region, and you want to query the `users` table for information about a specific user.
+For example, suppose that the tables in the [`movr`]({% link {{ page.version.version }}/movr.md %}) database are geo-partitioned by region, and you want to query the `users` table for information about a specific user.
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
@@ -54,7 +54,7 @@ If you know the user's id, you can filter on the `id` column:
 (1 row)
 ~~~
 
-An [`EXPLAIN`](explain.html) statement shows more detail about the cost-based optimizer's plan:
+An [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement shows more detail about the cost-based optimizer's plan:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,7 +139,7 @@ The query returns the same result, but because `name` is not an indexed column, 
 
 ### Filter on a partitioned column
 
-If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
+If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
 
 Now suppose that you know the user's name and location. You can query the table with a filter on the user's name and city:
 

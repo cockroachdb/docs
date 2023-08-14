@@ -7,11 +7,11 @@ docs_area: reference.db_console
 
 The **Schedules** page of the DB Console provides details about the scheduled tasks performed by your cluster. These can include:
 
-- [Scheduled backups](manage-a-backup-schedule.html)
-- [Scheduled auto statistics compaction](cost-based-optimizer.html#table-statistics)
-- [Row-level TTL](row-level-ttl.html)
+- [Scheduled backups]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})
+- [Scheduled auto statistics compaction]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics)
+- [Row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})
 
-To view these details, [access the DB console](ui-overview.html#db-console-access) and click **Schedules** in the left-hand navigation.
+To view these details, [access the DB console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Schedules** in the left-hand navigation.
 
 ## Filter schedules
 
@@ -31,7 +31,7 @@ The following screenshot shows a list of backups and automated statistics compac
 
 Column               | Description
 ---------------------+--------------
-Schedule ID          | The unique ID for the schedule. This is used to [pause](pause-schedules.html), [resume](resume-schedules.html), and [drop](drop-schedules.html) schedules.
+Schedule ID          | The unique ID for the schedule. This is used to [pause]({% link {{ page.version.version }}/pause-schedules.md %}), [resume]({% link {{ page.version.version }}/resume-schedules.md %}), and [drop]({% link {{ page.version.version }}/drop-schedules.md %}) schedules.
 Label                | The label given to the schedule on creation.
 Status               | The current status of the schedule, **Active** or **Paused**.
 Next Execution Time (UTC)  | The next time at which the scheduled task will run.
@@ -42,13 +42,13 @@ Creation Time (UTC)       | The time at which the user originally created the sc
 
 ## Schedule details
 
-Click on a schedule ID to view the full SQL statement that the schedule runs. For example, the following screenshot shows the resulting [`BACKUP`](backup.html) statement for a full cluster backup recurring every day:
+Click on a schedule ID to view the full SQL statement that the schedule runs. For example, the following screenshot shows the resulting [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement for a full cluster backup recurring every day:
 
 <img src="{{ 'images/v23.1/schedule-id-screen.png' | relative_url }}" alt="UI for each individual schedule ID displaying the CREATE SCHEDULE SQL statement" style="border:1px solid #eee;max-width:100%" />
 
-You may also view a `protected_timestamp_record` on this page. This indicates that the schedule is actively managing its own [protected timestamp](architecture/storage-layer.html#protected-timestamps) records independently of [GC TTL](configure-replication-zones.html#gc-ttlseconds). See [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) for more detail.
+You may also view a `protected_timestamp_record` on this page. This indicates that the schedule is actively managing its own [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records independently of [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). See [Protected timestamps and scheduled backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups) for more detail.
 
 ## See also
 
-- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
+- [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})

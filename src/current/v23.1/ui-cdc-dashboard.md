@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](change-data-capture-overview.html) created across your cluster.
+The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) created across your cluster.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -20,7 +20,7 @@ This graph shows the maximum latency for resolved timestamps of any running chan
 <img src="{{ 'images/v23.1/ui_max_changefeed.png' | relative_url }}" alt="DB Console Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](changefeed-messages.html#ordering-guarantees).
+The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
 {{site.data.alerts.end}}
 
 ## Sink Byte Traffic
@@ -71,7 +71,7 @@ This graph displays the number of times changefeeds restarted due to retryable e
 
 ## See also
 
-- [Change Data Capture Overview](change-data-capture-overview.html)
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

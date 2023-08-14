@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER TABLE` [statement](sql-statements.html) changes the definition of a table. For information on using `ALTER TABLE`, see the pages for its [subcommands](#subcommands).
+The `ALTER TABLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) changes the definition of a table. For information on using `ALTER TABLE`, see the pages for its [subcommands](#subcommands).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
@@ -48,23 +48,23 @@ Subcommand | Description | Can combine with other subcommands?
 [`ADD COLUMN`](#add-column) | Add columns to tables. | Yes
 [`ADD CONSTRAINT`](#add-constraint) | Add constraints to columns. | Yes
 [`ALTER COLUMN`](#alter-column) | Change an existing column. | Yes
-[`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key](primary-key.html) of a table. | Yes
-[`CONFIGURE ZONE`](#configure-zone) | [Configure replication zones](configure-replication-zones.html) for a table. | No
+[`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table. | Yes
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a table. | No
 [`DROP COLUMN`](#drop-column) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. ([Enterprise-only](enterprise-licensing.html).) | Yes
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | Yes
 [`RENAME COLUMN`](#rename-column) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
 [`RESET {storage parameter}`](#reset-storage-parameter) | Reset a storage parameter on a table to its default value. | Yes
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
-[`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database](multiregion-overview.html). | No
-[`SET SCHEMA`](#set-schema) |  Change the [schema](sql-name-resolution.html) of a table. | No
-[`SPLIT AT`](#split-at) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the table. | No
+[`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
+[`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
+[`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the table. | No
-[`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes
+[`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column. | Yes
 
 ### `ADD COLUMN`
 
@@ -74,44 +74,44 @@ For examples, see [Add columns](#add-columns).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
 `IF NOT EXISTS` | Add a column only if a column of the same name does not already exist; if one does exist, do not return an error.
-`column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.
-`typename` | The [data type](data-types.html) of the new column.
-`col_qualification` | An optional list of [column qualifications](create-table.html#column-qualifications).
+`column_name` | The name of the column you want to add. The column name must follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers) and must be unique within the table but can have the same name as indexes or constraints.
+`typename` | The [data type]({% link {{ page.version.version }}/data-types.md %}) of the new column.
+`col_qualification` | An optional list of [column qualifications]({% link {{ page.version.version }}/create-table.md %}#column-qualifications).
 
 For usage, see [Synopsis](#synopsis).
 
 ### `ADD CONSTRAINT`
 
-Use `ALTER TABLE ... ADD CONSTRAINT` to add the following [constraints](constraints.html) to columns:
+Use `ALTER TABLE ... ADD CONSTRAINT` to add the following [constraints]({% link {{ page.version.version }}/constraints.md %}) to columns:
 
 - [`UNIQUE`](#add-the-unique-constraint)
 - [`CHECK`](#add-the-check-constraint)
 - [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)
 
-To add a primary key constraint to a table, you should explicitly define the primary key at [table creation](create-table.html). To replace an existing primary key, you can use `ADD CONSTRAINT ... PRIMARY KEY`. For details, see [Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`](#changing-primary-keys-with-add-constraint-primary-key).
+To add a primary key constraint to a table, you should explicitly define the primary key at [table creation]({% link {{ page.version.version }}/create-table.md %}). To replace an existing primary key, you can use `ADD CONSTRAINT ... PRIMARY KEY`. For details, see [Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`](#changing-primary-keys-with-add-constraint-primary-key).
 
-The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints are managed through [`ALTER COLUMN`](alter-table.html#alter-column).
+The [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) and [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraints are managed through [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column).
 
 For examples, see [Add constraints](#add-constraints).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
 `IF NOT EXISTS` | Add a constraint only if a constraint of the same name does not already exist; if one does exist, do not return an error.
-`constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), or [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](#alter-column). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
+`constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
+`constraint_elem` | The [`CHECK`]({% link {{ page.version.version }}/check.md %}), [foreign key]({% link {{ page.version.version }}/foreign-key.md %}), or [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](#alter-column). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation]({% link {{ page.version.version }}/create-table.md %}).
 `NOT VALID` | Create unvalidated constraints. When creating an unvalidated constraint, the system does not check that existing table data satisfies the constraint. The constraint is still enforced when table data is modified. An unvalidated constraint can later be validated using [`VALIDATE CONSTRAINT`](#validate-constraint).
 
 For usage, see [Synopsis](#synopsis).
@@ -122,8 +122,8 @@ When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](#alter-
 
 You can use `ADD CONSTRAINT ... PRIMARY KEY` to add a primary key to an existing table if one of the following is true:
 
-- No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
-- A [`DROP CONSTRAINT`](alter-table.html#drop-constraint) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint).
+- No primary key was explicitly defined at [table creation]({% link {{ page.version.version }}/create-table.md %}). In this case, the table is created with a default [primary key on `rowid`]({% link {{ page.version.version }}/indexes.md %}#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
+- A [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint).
 
 #### Aliases
 
@@ -135,38 +135,38 @@ In CockroachDB, the following are aliases for `ALTER TABLE ... ADD CONSTRAINT ..
 
 Use `ALTER TABLE ... ALTER COLUMN` to do the following:
 
-- Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
-- Set or drop a column's [`NOT NULL` constraint](not-null.html).
-- Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
-- Change a column's [data type](data-types.html).
+- Set, change, or drop a column's [`DEFAULT` constraint]({% link {{ page.version.version }}/default-value.md %}).
+- Set or drop a column's [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}).
+- Set, change, or drop an [`ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions).
+- Change a column's [data type]({% link {{ page.version.version }}/data-types.md %}).
 - Set the [visibility](#set-the-visibility-of-a-column) of a column.
 
 {{site.data.alerts.callout_info}}
-Support for altering column data types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
+Support for altering column data types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
 {{site.data.alerts.end}}
 
 For examples, see [Alter columns](#alter-columns).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
 `column_name` | The name of the column to modify. |
-`a_expr` | The new [default value](default-value.html) to set. |
-`b_expr` | The [`ON UPDATE` expression](create-table.html#on-update-expressions) to set.
-`[NOT] VISIBLE` | The visibility of a column when using `*` in a [`SELECT` clause](select-clause.html).
-`typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
+`a_expr` | The new [default value]({% link {{ page.version.version }}/default-value.md %}) to set. |
+`b_expr` | The [`ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to set.
+`[NOT] VISIBLE` | The visibility of a column when using `*` in a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}).
+`typename` | The new [data type]({% link {{ page.version.version }}/data-types.md %}) you want to use.<br> Support for altering column types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
 `USING a_expr` |  How to compute a new column value from the old column value. |
 
 For usage, see [Synopsis](#synopsis).
 
 #### Alter column data types
 
-Support for altering column data types is [in preview](cockroachdb-feature-availability.html), with certain limitations. To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
+Support for altering column data types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`.
 
 The following are equivalent in CockroachDB:
 
@@ -178,11 +178,11 @@ The following are equivalent in CockroachDB:
 
 You cannot alter the data type of a column if:
 
-- The column is part of an [index](indexes.html).
-- The column has [`CHECK` constraints](check.html).
-- The column owns a [sequence](create-sequence.html).
+- The column is part of an [index]({% link {{ page.version.version }}/indexes.md %}).
+- The column has [`CHECK` constraints]({% link {{ page.version.version }}/check.md %}).
+- The column owns a [sequence]({% link {{ page.version.version }}/create-sequence.md %}).
 - The `ALTER COLUMN TYPE` statement is part of a combined `ALTER TABLE` statement.
-- The `ALTER COLUMN TYPE` statement is inside an [explicit transaction](begin-transaction.html).
+- The `ALTER COLUMN TYPE` statement is inside an [explicit transaction]({% link {{ page.version.version }}/begin-transaction.md %}).
 
 {{site.data.alerts.callout_info}}
 Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on the table with the altered column may be restricted, and writes to the altered column may be rejected until the schema change is finalized.
@@ -190,21 +190,21 @@ Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on
 
 ### `ALTER PRIMARY KEY`
 
-Use `ALTER TABLE ... ALTER PRIMARY KEY` to change the [primary key](primary-key.html) of a table.
+Use `ALTER TABLE ... ALTER PRIMARY KEY` to change the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table.
 
 Note the following:
 
-- You cannot change the primary key of a table that is currently undergoing a primary key change, or any other [schema change](online-schema-changes.html).
+- You cannot change the primary key of a table that is currently undergoing a primary key change, or any other [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 - `ALTER PRIMARY KEY` might need to rewrite multiple indexes, which can make it an expensive operation.
 
--  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a [`UNIQUE`](unique.html) secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+-  When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
 
-- `ALTER PRIMARY KEY` does not alter the [partitions](partitioning.html) on a table or its indexes, even if a partition is defined on [a column in the original primary key](partitioning.html#partition-using-primary-key). If you alter the primary key of a partitioned table, you must update the table partition accordingly.
+- `ALTER PRIMARY KEY` does not alter the [partitions]({% link {{ page.version.version }}/partitioning.md %}) on a table or its indexes, even if a partition is defined on [a column in the original primary key]({% link {{ page.version.version }}/partitioning.md %}#partition-using-primary-key). If you alter the primary key of a partitioned table, you must update the table partition accordingly.
 
-- The secondary index created by `ALTER PRIMARY KEY` will not be partitioned, even if a partition is defined on [a column in the original primary key](partitioning.html#partition-using-primary-key). To ensure that the table is partitioned correctly, you must create a partition on the secondary index, or drop the secondary index.
+- The secondary index created by `ALTER PRIMARY KEY` will not be partitioned, even if a partition is defined on [a column in the original primary key]({% link {{ page.version.version }}/partitioning.md %}#partition-using-primary-key). To ensure that the table is partitioned correctly, you must create a partition on the secondary index, or drop the secondary index.
 
-- Any new primary key column set by `ALTER PRIMARY KEY` must have an existing [`NOT NULL` constraint](not-null.html). To add a `NOT NULL` constraint to an existing column, use [`ALTER TABLE ... ALTER COLUMN ... SET NOT NULL`](#set-not-null-constraint).
+- Any new primary key column set by `ALTER PRIMARY KEY` must have an existing [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}). To add a `NOT NULL` constraint to an existing column, use [`ALTER TABLE ... ALTER COLUMN ... SET NOT NULL`](#set-not-null-constraint).
 
 {{site.data.alerts.callout_success}}
 To change an existing primary key without creating a secondary index from that primary key, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](#changing-primary-keys-with-add-constraint-primary-key). For examples, see [Add constraints](#add-constraints) and [Drop constraints](#drop-constraints).
@@ -214,35 +214,35 @@ For examples, see [Alter a primary key](#alter-a-primary-key).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on a table to alter its primary key.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on a table to alter its primary key.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
 `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s).
-`USING HASH` | Creates a [hash-sharded index](hash-sharded-indexes.html).
+`USING HASH` | Creates a [hash-sharded index]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
 
 For usage, see [Synopsis](#synopsis).
 
 ### `CONFIGURE ZONE`
 
-`ALTER TABLE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a table. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+`ALTER TABLE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a table. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
-For examples, see [Configure replication zones](#configure-replication-zones).
+For examples, see [Replication Controls](#configure-replication-zones).
 
 #### Required privileges
 
-The user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](configure-replication-zones.html#for-system-data), the user must be a member of the `admin` role.
+The user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects]({% link {{ page.version.version }}/configure-replication-zones.md %}#for-system-data), the user must be a member of the `admin` role.
 
 #### Parameters
 
  Parameter | Description
 -----------+-------------
-`variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
-`value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
+`variable` | The name of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
+`value` | The value of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
 
 For usage, see [Synopsis](#synopsis).
@@ -255,47 +255,47 @@ Use `ALTER TABLE ... DROP COLUMN` to remove columns from a table.
 When used in an explicit transaction combined with other schema changes to the same table, `DROP COLUMN` can result in data loss if one of the other schema changes fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
 {{site.data.alerts.end}}
 
-By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+By default, `DROP COLUMN` drops any [indexes]({% link {{ page.version.version }}/indexes.md %}) on the column being dropped, and any indexes that reference the column, including indexes with [`STORING` clauses]({% link {{ page.version.version }}/create-index.md %}#store-columns) that reference the column.
 
 For examples, see [Drop columns](#drop-columns).
 
 #### Known limitations
 
-- CockroachDB prevents a column from being dropped if it is referenced by a [partial index](partial-indexes.html) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`column_name` | The name of the column you want to drop.<br><br>When a column with a [`CHECK`](check.html) constraint is dropped, the `CHECK` constraint is also dropped.
-`CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well. `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.<br><br>`CASCADE` does not list the objects it drops, so should be used cautiously.<br><br> `CASCADE` is not required to drop an indexed column, or a column that is referenced by an index. By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
-`RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it.
+`column_name` | The name of the column you want to drop.<br><br>When a column with a [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraint is dropped, the `CHECK` constraint is also dropped.
+`CASCADE` | Drop the column even if objects (such as [views]({% link {{ page.version.version }}/views.md %})) depend on it; drop the dependent objects, as well. `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.<br><br>`CASCADE` does not list the objects it drops, so should be used cautiously.<br><br> `CASCADE` is not required to drop an indexed column, or a column that is referenced by an index. By default, `DROP COLUMN` drops any [indexes]({% link {{ page.version.version }}/indexes.md %}) on the column being dropped, and any indexes that reference the column, including [partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}) with predicates that reference the column and indexes with [`STORING` clauses]({% link {{ page.version.version }}/create-index.md %}#store-columns) that reference the column.
+`RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views]({% link {{ page.version.version }}/views.md %})) depend on it.
 
 For usage, see [Synopsis](#synopsis).
 
 ### `DROP CONSTRAINT`
 
-Use `ALTER TABLE ... DROP CONSTRAINT` to remove [`CHECK`](check.html) and [`FOREIGN KEY`](foreign-key.html) constraints from columns.
+Use `ALTER TABLE ... DROP CONSTRAINT` to remove [`CHECK`]({% link {{ page.version.version }}/check.md %}) and [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) constraints from columns.
 
-[`PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](alter-table.html#add-constraint) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+[`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) statement follows the `DROP CONSTRAINT` statement in the same transaction.
 
 {{site.data.alerts.callout_success}}
-When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use `DROP CONSTRAINT`/[`ADD CONSTRAINT`](alter-table.html#add-constraint) to change the primary key.
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use `DROP CONSTRAINT`/[`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) to change the primary key.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-For information about removing other constraints, see [Constraints: Remove Constraints](constraints.html#remove-constraints).
+For information about removing other constraints, see [Constraints: Remove Constraints]({% link {{ page.version.version }}/constraints.md %}#remove-constraints).
 {{site.data.alerts.end}}
 
 For examples, see [Drop constraints](#drop-constraints).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
@@ -309,7 +309,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `EXPERIMENTAL_AUDIT`
 
-`ALTER TABLE ... EXPERIMENTAL_AUDIT` enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for a table. The `SENSITIVE_ACCESS` log output is also called the *SQL audit log*. For details on using SQL audit logs, see [SQL Audit Logging](sql-audit-logging.html).
+`ALTER TABLE ... EXPERIMENTAL_AUDIT` enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) logging channel for a table. The `SENSITIVE_ACCESS` log output is also called the *SQL audit log*. For details on using SQL audit logs, see [SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}).
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
@@ -322,7 +322,7 @@ SQL audit logs contain detailed information about queries being executed against
 - Client address
 - Application name
 
-CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations](sql-audit-logging.html#performance-considerations).
+CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations]({% link {{ page.version.version }}/sql-audit-logging.md %}#performance-considerations).
 
 For examples, see [Configure audit logging](#configure-audit-logging).
 
@@ -352,7 +352,7 @@ For examples, see [Change table owner](#change-table-owner).
 
 #### Required privileges
 
-To change the owner of a table, the user must be an `admin` user, or the current owner of the table and a member of the new owner [role](security-reference/authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the schema to which the table belongs.
+To change the owner of a table, the user must be an `admin` user, or the current owner of the table and a member of the new owner [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles). The new owner role must also have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema to which the table belongs.
 
 #### Parameters
 
@@ -387,14 +387,14 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... RENAME COLUMN` changes the name of a column in a table.
 
 {{site.data.alerts.callout_info}}
-It is not possible to rename a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+It is not possible to rename a column referenced by a view. For more details, see [View Dependencies]({% link {{ page.version.version }}/views.md %}#view-dependencies).
 {{site.data.alerts.end}}
 
 For examples, see [Rename columns](#rename-columns).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
@@ -402,7 +402,7 @@ Parameter | Description |
 ----------|-------------|
 `IF EXISTS` | Rename the column only if a table of `table_name` exists; if one does not exist, do not return an error.
 `column_name` | The current name of the column.
-`column_new_name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`column_new_name` | The [`name`]({% link {{ page.version.version }}/sql-grammar.md %}#name) you want to use for the column, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 
 For usage, see [Synopsis](#synopsis).
 
@@ -411,14 +411,14 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... RENAME CONSTRAINT` changes the name of a constraint on a column.
 
 {{site.data.alerts.callout_info}}
-It is not possible to rename a constraint for a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+It is not possible to rename a constraint for a column referenced by a view. For more details, see [View Dependencies]({% link {{ page.version.version }}/views.md %}#view-dependencies).
 {{site.data.alerts.end}}
 
 For examples, see [Rename constraints](#rename-constraints).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
@@ -426,7 +426,7 @@ Parameter | Description |
 ----------|-------------|
 `IF EXISTS` | Rename the constraint only if a constraint of `current_name` exists; if one does not exist, do not return an error.
 `constraint_name` | The current name of the constraint.
-`constraint_new_name` | The new [`name`](sql-grammar.html#name) you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`constraint_new_name` | The new [`name`]({% link {{ page.version.version }}/sql-grammar.md %}#name) you want to use for the constraint, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 
 For usage, see [Synopsis](#synopsis).
 
@@ -437,24 +437,24 @@ For usage, see [Synopsis](#synopsis).
 {{site.data.alerts.callout_info}}
 `ALTER TABLE ... RENAME TO` cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](#set-schema).
 
-`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#back-up-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
+`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`]({% link {{ page.version.version }}/backup.md %}#back-up-a-table-or-view) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}#restore-a-table).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.
+It is not possible to rename a table referenced by a view. For more details, see <a href="{% link {{ page.version.version }}/views.md %}#view-dependencies">View Dependencies</a>.
 {{site.data.alerts.end}}
 
 For examples, see [Rename tables](#rename-tables).
 
 #### Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`table_new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+`table_new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) and [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -463,14 +463,14 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... RESET {storage parameter}` reverts the value of a storage parameter on a table to its default value.
 
 {{site.data.alerts.callout_info}}
-To reset a storage parameter on an existing index, you must drop and [recreate the index without the storage parameter](with-storage-parameter.html).
+To reset a storage parameter on an existing index, you must drop and [recreate the index without the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).
 
 #### Required privileges
 
-The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
 
 #### Parameters
 
@@ -485,14 +485,14 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... SET {storage parameter}` sets a storage parameter on an existing table.
 
 {{site.data.alerts.callout_info}}
-To set a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter](with-storage-parameter.html).
+To set a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).
 
 #### Required privileges
 
-The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
 
 #### Parameters
 
@@ -509,39 +509,39 @@ For usage, see [Synopsis](#synopsis).
 
 ### `SET LOCALITY`
 
-`ALTER TABLE .. SET LOCALITY` changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
+`ALTER TABLE .. SET LOCALITY` changes the [table locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) of a [table]({% link {{ page.version.version }}/create-table.md %}) in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
-While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that enables or disables `REGIONAL BY ROW` on a table within a database, any [`ADD REGION`](alter-database.html#add-region) and [`DROP REGION`](alter-database.html#drop-region) statements on that database will fail.
+While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that enables or disables `REGIONAL BY ROW` on a table within a database, any [`ADD REGION`]({% link {{ page.version.version }}/alter-database.md %}#add-region) and [`DROP REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-region) statements on that database will fail.
 
 For examples, see [Set localities](#set-localities).
 
 #### Required privileges
 
-The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`locality`   | The `LOCALITY` clause, followed by the [locality](multiregion-overview.html#table-locality) to apply to this table. Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
+`locality`   | The `LOCALITY` clause, followed by the [locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) to apply to this table. Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 
 For usage, see [Synopsis](#synopsis).
 
-For more information about which table locality is right for your use case, see [Table localities](multiregion-overview.html#table-locality).
+For more information about which table locality is right for your use case, see [Table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality).
 
 ### `SET SCHEMA`
 
-`ALTER TABLE ... SET SCHEMA` changes the [schema](sql-name-resolution.html) of a table.
+`ALTER TABLE ... SET SCHEMA` changes the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table.
 
 {{site.data.alerts.callout_info}}
-CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](set-vars.html#supported-variables).
+CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables).
 {{site.data.alerts.end}}
 
 For examples, see [Set table schema](#set-table-schema).
 
 #### Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table, and the `CREATE` privilege on the schema.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table, and the `CREATE` privilege on the schema.
 
 #### Parameters
 
@@ -553,7 +553,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `SPLIT AT`
 
-`ALTER TABLE ... SPLIT AT` forces a [range split](architecture/distribution-layer.html#range-splits) at a specified row in the table.
+`ALTER TABLE ... SPLIT AT` forces a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at a specified row in the table.
 
 {% include {{ page.version.version }}/sql/range-splits.md %}
 
@@ -561,41 +561,41 @@ For examples, see [Split and unsplit tables](#split-and-unsplit-tables).
 
 #### Required privileges
 
-The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table.
-`a_expr` | The expiration of the split enforcement on the table. This can be a [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), or [`TIMESTAMPZ`](timestamp.html).
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that produces one or more rows at which to split the table.
+`a_expr` | The expiration of the split enforcement on the table. This can be a [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`TIMESTAMPZ`]({% link {{ page.version.version }}/timestamp.md %}).
 
 For usage, see [Synopsis](#synopsis).
 
 ### `UNSPLIT AT`
 
-`ALTER TABLE ... UNSPLIT AT` removes a [split enforcement](#split-at) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in the table.
+`ALTER TABLE ... UNSPLIT AT` removes a [split enforcement](#split-at) on a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), at a specified row in the table.
 
-Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges](architecture/distribution-layer.html#range-merges).
+Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges).
 
 For examples, see [Split and unsplit tables](#split-and-unsplit-tables).
 
 #### Required privileges
 
-The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
  Parameter | Description
 -----------|-------------
-`select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to unsplit a table.
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that produces one or more rows at which to unsplit a table.
 `ALL` | Remove all split enforcements for a table.
 
 For usage, see [Synopsis](#synopsis).
 
 ### `VALIDATE CONSTRAINT`
 
-`ALTER TABLE ... VALIDATE CONSTRAINT` checks whether values in a column match a [constraint](constraints.html) on the column.
+`ALTER TABLE ... VALIDATE CONSTRAINT` checks whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column.
 
 This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](#add-constraint). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
 
@@ -603,7 +603,7 @@ For examples, see [Validate constraints](#validate-constraints).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
@@ -621,9 +621,9 @@ For usage, see [Synopsis](#synopsis).
 
 ### Add columns
 
-The following examples use the [`bank` demo database schema](cockroach-demo.html#datasets).
+The following examples use the [`bank` demo database schema]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
 
-To follow along, run [`cockroach demo bank`](cockroach-demo.html) to start a temporary, in-memory cluster with the `bank` schema and dataset preloaded:
+To follow along, run [`cockroach demo bank`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the `bank` schema and dataset preloaded:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -913,9 +913,9 @@ $ cockroach demo bank
 
 ##### Move a column from one column family to another
 
-Moving frequently updated columns to their own [column family can increase performance](column-families.html#default-behavior).
+Moving frequently updated columns to their own [column family can increase performance]({% link {{ page.version.version }}/column-families.md %}#default-behavior).
 
-To move a column from one column family to another column family, create a temporary, [non-visible](create-table.html#not-visible-property) [stored computed column](computed-columns.html) in the target column family, then rename the columns. Once this succeeds, you can drop the original, now renamed column.
+To move a column from one column family to another column family, create a temporary, [non-visible]({% link {{ page.version.version }}/create-table.md %}#not-visible-property) [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}) in the target column family, then rename the columns. Once this succeeds, you can drop the original, now renamed column.
 
 For example, to move the `new_name` column from `f2` to `f1`:
 
@@ -952,10 +952,10 @@ For example, to move the `new_name` column from `f2` to `f1`:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You must set the [`sql_safe_updates` session variable](set-vars.html#sql-safe-updates) to `false` to drop a column in a table that has data.
+    You must set the [`sql_safe_updates` session variable]({% link {{ page.version.version }}/set-vars.md %}#sql-safe-updates) to `false` to drop a column in a table that has data.
     {{site.data.alerts.end}}
 
-Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the [storage layer](architecture/storage-layer.html): 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
+Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}): 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
 
 #### Add a column with an `ON UPDATE` expression
 
@@ -1013,7 +1013,7 @@ When any value in any row of the `bank` table is updated, CockroachDB re-evaluat
 
 #### Add the `UNIQUE` constraint
 
-Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for `NULL` values).
+Adding the [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1022,7 +1022,7 @@ Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's va
 
 #### Add the `CHECK` constraint
 
-Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
+Adding the [`CHECK` constraint]({% link {{ page.version.version }}/check.md %}) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1054,7 +1054,7 @@ COMMIT
 The entire transaction will be rolled back, including any new columns that were added, in the following cases:
 
 - If an existing column is found containing values that violate the new constraint.
-- If a new column has a default value or is a [computed column](computed-columns.html) that would have contained values that violate the new constraint.
+- If a new column has a default value or is a [computed column]({% link {{ page.version.version }}/computed-columns.md %}) that would have contained values that violate the new constraint.
 {{site.data.alerts.end}}
 
 #### Add the foreign key constraint with `CASCADE`
@@ -1104,7 +1104,7 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
 (1 row)
 ~~~
 
-You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
+You can include a [foreign key action]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions) to specify what happens when a foreign key is updated or deleted.
 
 Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, all dependent objects are also deleted.
 
@@ -1120,7 +1120,7 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 For an example of validating this constraint, see [Validate a constraint](#validate-a-constraint).
 
 {{site.data.alerts.callout_info}}
-By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
+By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 {{site.data.alerts.end}}
 
 #### Drop and add a primary key constraint
@@ -1146,7 +1146,7 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 (1 row)
 ~~~
 
-1. Add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
+1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1189,19 +1189,19 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
     (1 row)
     ~~~
 
-Using [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
+Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
 #### Add a unique index to a `REGIONAL BY ROW` table
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html). It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
+This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}). It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
 
 To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables works, we will:
 
-1. [Add a column](alter-table.html#add-column) to the `users` table in the [MovR dataset](movr.html).
-1. Add a [`UNIQUE` constraint](unique.html) to that column.
-1. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`](show-index.html) and [`SHOW PARTITIONS`](show-partitions.html).
+1. [Add a column]({% link {{ page.version.version }}/alter-table.md %}#add-column) to the `users` table in the [MovR dataset]({% link {{ page.version.version }}/movr.md %}).
+1. Add a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) to that column.
+1. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) and [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}).
 
 First, add a column and its unique constraint. We'll use `email` since that is something that should be unique per user.
 
@@ -1215,7 +1215,7 @@ ALTER TABLE users ADD COLUMN email STRING;
 ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
 ~~~
 
-Next, issue the [`SHOW INDEXES`](show-index.html) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
+Next, issue the [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#configure-regional-by-row-tables) is now indexed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1241,7 +1241,7 @@ SHOW INDEXES FROM users;
 (13 rows)
 ~~~
 
-Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The following output (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
+Next, issue the [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) statement. The following output (which is edited for length) will verify that the unique index was automatically [partitioned]({% link {{ page.version.version }}/partitioning.md %}) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1259,13 +1259,13 @@ SHOW PARTITIONS FROM TABLE users;
 To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned:
 
 1. Run a one-time-only validation query to ensure that the existing data in the table satisfies the unique constraint.
-1. Thereafter, the [optimizer](cost-based-optimizer.html) will automatically add a "uniqueness check" when necessary to any [`INSERT`](insert.html), [`UPDATE`](update.html), or [`UPSERT`](upsert.html) statement affecting the columns in the unique constraint.
+1. Thereafter, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will automatically add a "uniqueness check" when necessary to any [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement affecting the columns in the unique constraint.
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
 #### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
 
-To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) column with the `gen_random_uuid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the [default value]({% link {{ page.version.version }}/default-value.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1299,31 +1299,31 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`]({% link {{ page.version.version }}/uuid.md %}#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
 {{site.data.alerts.end}}
 
 #### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
 
-In `REGIONAL BY ROW` tables, all indexes are partitioned on the region column (usually called [`crdb_region`](alter-table.html#crdb_region)).
+In `REGIONAL BY ROW` tables, all indexes are partitioned on the region column (usually called [`crdb_region`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region)).
 
 These indexes can either include or exclude the partitioning key (`crdb_region`) as the first column in the index definition:
 
-- If `crdb_region` is included in the index definition, a [`UNIQUE` index](unique.html) will enforce uniqueness on the set of columns, just like it would in a non-partitioned table.
+- If `crdb_region` is included in the index definition, a [`UNIQUE` index]({% link {{ page.version.version }}/unique.md %}) will enforce uniqueness on the set of columns, just like it would in a non-partitioned table.
 - If `crdb_region` is excluded from the index definition, that serves as a signal that CockroachDB should enforce uniqueness on only the columns in the index definition.
 
-In the latter case, the index alone cannot enforce uniqueness on columns that are not a prefix of the index columns, so any time rows are [inserted](insert.html) or [updated](update.html) in a `REGIONAL BY ROW` table that has an implicitly partitioned `UNIQUE` index, the [optimizer](cost-based-optimizer.html) must add uniqueness checks.
+In the latter case, the index alone cannot enforce uniqueness on columns that are not a prefix of the index columns, so any time rows are [inserted]({% link {{ page.version.version }}/insert.md %}) or [updated]({% link {{ page.version.version }}/update.md %}) in a `REGIONAL BY ROW` table that has an implicitly partitioned `UNIQUE` index, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) must add uniqueness checks.
 
 Whether or not to explicitly include `crdb_region` in the index definition depends on the context:
 
-- If you only need to enforce uniqueness at the region level, then including `crdb_region` in the `UNIQUE` index definition will enforce these semantics and allow you to get better performance on [`INSERT`](insert.html)s, [`UPDATE`](update.html)s, and [`UPSERT`](upsert.html)s, since there will not be any added latency from uniqueness checks.
-- If you need to enforce global uniqueness, you should not include `crdb_region` in the `UNIQUE` (or [`PRIMARY KEY`](primary-key.html)) index definition, and the database will automatically ensure that the constraint is enforced.
+- If you only need to enforce uniqueness at the region level, then including `crdb_region` in the `UNIQUE` index definition will enforce these semantics and allow you to get better performance on [`INSERT`]({% link {{ page.version.version }}/insert.md %})s, [`UPDATE`]({% link {{ page.version.version }}/update.md %})s, and [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})s, since there will not be any added latency from uniqueness checks.
+- If you need to enforce global uniqueness, you should not include `crdb_region` in the `UNIQUE` (or [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %})) index definition, and the database will automatically ensure that the constraint is enforced.
 
 To illustrate the different behavior of explicitly vs. implicitly partitioned indexes, we will perform the following tasks:
 
 - Create a schema that includes an explicitly partitioned index, and an implicitly partitioned index.
 - Check the output of several queries using `EXPLAIN` to show the differences in behavior between the two.
 
-1. Start [`cockroach demo`](cockroach-demo.html) as follows:
+1. Start [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) as follows:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -1359,7 +1359,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
     EXPLAIN INSERT INTO employee VALUES (1, 'joe@example.com', 1);
     ~~~
 
-    The following `EXPLAIN` output shows that the optimizer has added two `constraint-check` post queries to check the uniqueness of the implicitly partitioned indexes `id` and `email`. There is no check needed for `desk_id` (really `(crdb_region, desk_id)`), since that constraint is automatically enforced by the explicitly partitioned index we added in the preceding [`CREATE TABLE`](create-table.html) statement.
+    The following `EXPLAIN` output shows that the optimizer has added two `constraint-check` post queries to check the uniqueness of the implicitly partitioned indexes `id` and `email`. There is no check needed for `desk_id` (really `(crdb_region, desk_id)`), since that constraint is automatically enforced by the explicitly partitioned index we added in the preceding [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement.
 
     ~~~
                                              info
@@ -1520,7 +1520,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 #### Set or change a `DEFAULT` value
 
-Setting the [`DEFAULT` value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a `DEFAULT` value set, you can use this statement to change it.
+Setting the [`DEFAULT` value constraint]({% link {{ page.version.version }}/default-value.md %}) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a `DEFAULT` value set, you can use this statement to change it.
 
 The following example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
@@ -1531,7 +1531,7 @@ The following example inserts the Boolean value `true` whenever you inserted dat
 
 #### Remove `DEFAULT` constraint
 
-If the column has a defined [`DEFAULT` value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
+If the column has a defined [`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1540,7 +1540,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 #### Set `NOT NULL` constraint
 
-To specify that the column cannot contain `NULL` values, set the [`NOT NULL` constraint](not-null.html).
+To specify that the column cannot contain `NULL` values, set the [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1549,7 +1549,7 @@ To specify that the column cannot contain `NULL` values, set the [`NOT NULL` con
 
 #### Remove `NOT NULL` constraint
 
-If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have `NULL` values written into it.
+If the column has the [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}) applied to it, you can remove the constraint, which means the column becomes optional and can have `NULL` values written into it.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1566,7 +1566,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 #### Convert to a different data type
 
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
+The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1582,7 +1582,7 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `custo
 
 To change the data type from `DECIMAL` to `STRING`:
 
-1. Set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`:
+1. Set the `enable_experimental_alter_column_type_general` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1617,7 +1617,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 #### Change a column type's precision
 
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
+The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1731,9 +1731,9 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 
 #### Set the visibility of a column
 
-To specify that a column won't be returned when using `*` in a [`SELECT` clause](select-clause.html), set the `NOT VISIBLE` property. You can set the `NOT VISIBLE` property only on individual columns.
+To specify that a column won't be returned when using `*` in a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}), set the `NOT VISIBLE` property. You can set the `NOT VISIBLE` property only on individual columns.
 
-For example, the `users` table of the [`movr` database](movr.html) contains the `credit_card` column. If you don't want users to see that column when running `SELECT * FROM users;`, you can hide it as follows:
+For example, the `users` table of the [`movr` database]({% link {{ page.version.version }}/movr.md %}) contains the `credit_card` column. If you don't want users to see that column when running `SELECT * FROM users;`, you can hide it as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1816,7 +1816,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices](performance-best-practices-overview.html#use-uuid-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
+The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
@@ -1852,7 +1852,7 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
 
 {% include {{page.version.version}}/performance/alter-primary-key-hash-sharded.md %}
 
-Note that the old primary key index becomes a secondary index, in this case, `users_name_key`. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`](alter-table.html#drop-constraint)/[`ADD CONSTRAINT`](alter-table.html#add-constraint) instead.
+Note that the old primary key index becomes a secondary index, in this case, `users_name_key`. If you do not want the old primary key to become a secondary index when changing a primary key, you can use [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)/[`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) instead.
 
 ### Configure replication zones
 
@@ -1905,7 +1905,7 @@ If you no longer want a column in a table, you can drop it.
 (5 rows)
 ~~~
 
-If there is data in the table, the `sql_safe_updates` [session variable](set-vars.html) must be set to `false`.
+If there is data in the table, the `sql_safe_updates` [session variable]({% link {{ page.version.version }}/set-vars.md %}) must be set to `false`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1944,7 +1944,7 @@ SQLSTATE: 01000
 
 #### Prevent dropping columns with dependent objects (`RESTRICT`)
 
-If the column has dependent objects, such as [views](views.html), CockroachDB will not drop the column by default. However, if you want to be sure of the behavior you can include the `RESTRICT` clause.
+If the column has dependent objects, such as [views]({% link {{ page.version.version }}/views.md %}), CockroachDB will not drop the column by default. However, if you want to be sure of the behavior you can include the `RESTRICT` clause.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2090,24 +2090,24 @@ Let's say you have a  `customers` table that contains personally identifiable in
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
 
-Now, every access of customer data is logged to the `SENSITIVE_ACCESS` channel in a [`sensitive_table_access`](eventlog.html#sensitive_table_access) event that looks like the following:
+Now, every access of customer data is logged to the `SENSITIVE_ACCESS` channel in a [`sensitive_table_access`]({% link {{ page.version.version }}/eventlog.md %}#sensitive_table_access) event that looks like the following:
 
 ~~~
 I210323 18:50:10.951550 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:49851›,hostnossl,user=root] 4 ={"Timestamp":1616525410949087000,"EventType":"sensitive_table_access","Statement":"‹SELECT * FROM \"\".\"\".customers›","User":"‹root›","DescriptorID":52,"ApplicationName":"‹$ cockroach sql›","ExecMode":"exec","NumRows":2,"Age":2.514,"FullTableScan":true,"TxnCounter":38,"TableName":"‹defaultdb.public.customers›","AccessMode":"r"}
 ~~~
 
 {{site.data.alerts.callout_info}}
-The preceding example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2) log format. This can be changed to a different format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
+The preceding example shows the default [`crdb-v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) log format. This can be changed to a different format (e.g., JSON). For details, see [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}#file-logging-format).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-For descriptions of all SQL audit event types and their fields, see [Notable Event Types](eventlog.html#sql-access-audit-events).
+For descriptions of all SQL audit event types and their fields, see [Notable Event Types]({% link {{ page.version.version }}/eventlog.md %}#sql-access-audit-events).
 {{site.data.alerts.end}}
 
 To turn on auditing for more than one table, issue a separate `ALTER` statement for each table.
 
 {{site.data.alerts.callout_success}}
-For a more detailed example, see [SQL Audit Logging](sql-audit-logging.html).
+For a more detailed example, see [SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}).
 {{site.data.alerts.end}}
 
 #### Turn off audit logging
@@ -2145,7 +2145,7 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the user running the command is not an admin user, they must own the table and be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the schema to which the table belongs.
+If the user running the command is not an admin user, they must own the table and be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema to which the table belongs.
 {{site.data.alerts.end}}
 
 ### Define partitions
@@ -2243,7 +2243,7 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
 
 #### Add and rename columns atomically
 
-Some subcommands can be used in combination in a single [`ALTER TABLE`](alter-table.html) statement. For example, let's say you create a `users` table with 2 columns, an `id` column for the primary key and a `name` column for each user's last name:
+Some subcommands can be used in combination in a single [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement. For example, let's say you create a `users` table with 2 columns, an `id` column for the primary key and a `name` column for each user's last name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2253,7 +2253,7 @@ Some subcommands can be used in combination in a single [`ALTER TABLE`](alter-ta
   );
 ~~~
 
-Then you decide you want distinct columns for each user's first name, last name, and full name, so you execute a single `ALTER TABLE` statement renaming `name` to `last_name`, adding `first_name`, and adding a [computed column](computed-columns.html) called `name` that concatenates `first_name` and `last_name`:
+Then you decide you want distinct columns for each user's first name, last name, and full name, so you execute a single `ALTER TABLE` statement renaming `name` to `last_name`, adding `first_name`, and adding a [computed column]({% link {{ page.version.version }}/computed-columns.md %}) called `name` that concatenates `first_name` and `last_name`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2384,9 +2384,9 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 #### Exclude a table's data from backups
 
-In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, you have a table that contains high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster holding the table. You can use the `exclude_data_from_backup = true` parameter with a [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or `ALTER TABLE` statement to mark a table's row data for exclusion from a backup.
+In some situations, you may want to exclude a table's row data from a [backup]({% link {{ page.version.version }}/backup.md %}). For example, you have a table that contains high-churn data that you would like to [garbage collect]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) more quickly than the [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) schedule for the database or cluster holding the table. You can use the `exclude_data_from_backup = true` parameter with a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or `ALTER TABLE` statement to mark a table's row data for exclusion from a backup.
 
-For more detail and an example through the backup and [restore](restore.html) process using this parameter, see [Take Full and Incremental Backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups).
+For more detail and an example through the backup and [restore]({% link {{ page.version.version }}/restore.md %}) process using this parameter, see [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups).
 
 To set the `exclude_data_from_backup` parameter for a table, run the following:
 
@@ -2477,7 +2477,7 @@ SHOW CREATE TABLE ttl_test;
 ### Set localities
 
 {{site.data.alerts.callout_info}}
-[`RESTORE`](restore.html) on [`REGIONAL BY TABLE`](#regional-by-table), [`REGIONAL BY ROW`](#regional-by-row), and [`GLOBAL`](#global) tables is supported with some limitations — see [Restoring to multi-region databases](restore.html#restoring-to-multi-region-databases) for more detail.
+[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) on [`REGIONAL BY TABLE`](#regional-by-table), [`REGIONAL BY ROW`](#regional-by-row), and [`GLOBAL`](#global) tables is supported with some limitations — see [Restoring to multi-region databases]({% link {{ page.version.version }}/restore.md %}#restoring-to-multi-region-databases) for more detail.
 {{site.data.alerts.end}}
 
 <a name="regional-by-table"></a>
@@ -2502,14 +2502,14 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 If no region is supplied, `REGIONAL BY TABLE` defaults the table's home region to the primary region.
 {{site.data.alerts.end}}
 
-For more information about how this table locality works, see [Regional tables](table-localities.html#regional-tables).
+For more information about how this table locality works, see [Regional tables]({% link {{ page.version.version }}/table-localities.md %}#regional-tables).
 
 <a name="regional-by-row"></a>
 
 #### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](changefeeds-in-multi-region-deployments.html).
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables]({% link {{ page.version.version }}/changefeeds-in-multi-region-deployments.md %}).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
@@ -2521,14 +2521,14 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 
 <a name="crdb_region"></a>
 
-Every row in a regional by row table has a column of type `crdb_internal_region` that represents the row's [home region](multiregion-overview.html#table-localities). By default, this column is called `crdb_region` and is hidden. To see a row's home region, issue a statement like the following:
+Every row in a regional by row table has a column of type `crdb_internal_region` that represents the row's [home region]({% link {{ page.version.version }}/multiregion-overview.md %}#table-localities). By default, this column is called `crdb_region` and is hidden. To see a row's home region, issue a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_region, id FROM {table};
 ~~~
 
-<a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
+<a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2537,9 +2537,9 @@ UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 
 To add a new row to a regional by row table, you must choose one of the following options.
 
-- Let CockroachDB set the row's home region automatically. It will use the region of the [gateway node](architecture/life-of-a-distributed-transaction.html#gateway) from which the row is inserted.
+- Let CockroachDB set the row's home region automatically. It will use the region of the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) from which the row is inserted.
 
-- Set the home region explicitly using an [`INSERT`](insert.html) statement like the following:
+- Set the home region explicitly using an [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement like the following:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -2550,7 +2550,7 @@ This is necessary because every row in a regional by row table must have a home 
 
 If you do not set a home region for a row in a regional by row table, it defaults to the value returned by the built-in function `gateway_region()`. If the value returned by `gateway_region()` does not belong to the multi-region database the table is a part of, the home region defaults to the database's primary region.
 
-For more information about how this table locality works, see [Regional by row tables](table-localities.html#regional-by-row-tables).
+For more information about how this table locality works, see [Regional by row tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
 
 <a name="rename-crdb_region"></a>
 
@@ -2563,7 +2563,7 @@ SELECT bar, id FROM foo;
 INSERT INTO foo (bar, ...) VALUES ('us-east-1', ...);
 ~~~
 
-In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region` and is not nullable. For example, you could modify the [movr schema](movr.html#the-movr-database) to have a region column generated as:
+In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region` and is not nullable. For example, you could modify the [movr schema]({% link {{ page.version.version }}/movr.md %}#the-movr-database) to have a region column generated as:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2586,14 +2586,14 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 This feature is disabled by default.
 
-When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](create-table.html#on-update-expressions) to the [home region column](#crdb_region).
+When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node]({% link {{ page.version.version }}/ui-sessions-page.md %}#session-details-gateway-node) from which any [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to the [home region column](#crdb_region).
 
 Once enabled, the auto-rehoming behavior described here has the following limitations:
 
 - It **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
-- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key](foreign-key.html) from another table.
+- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table.
 
-To enable it using the [session setting](set-vars.html), issue the following statement:
+To enable it using the [session setting]({% link {{ page.version.version }}/set-vars.md %}), issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2606,16 +2606,16 @@ SET
 
 ##### Example
 
-1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html) tutorial. This will involve starting a [`cockroach demo`](cockroach-demo.html) cluster in a terminal window (call it _terminal 1_).
+1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}) tutorial. This will involve starting a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster in a terminal window (call it _terminal 1_).
 
-1. From the [SQL client](cockroach-sql.html) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
+1. From the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET enable_auto_rehoming = on;
     ~~~
 
-1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3](demo-low-latency-multi-region-deployment.html#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.
+1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.
 
 1. Switch back to terminal 1, and check the gateway region of the node you are currently connected to:
 
@@ -2631,7 +2631,7 @@ SET
     (1 row)
     ~~~
 
-1. Open another terminal (call it _terminal 3_), and use [`cockroach sql`](cockroach-sql.html) to connect to a node in a different region in the demo cluster:
+1. Open another terminal (call it _terminal 3_), and use [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) to connect to a node in a different region in the demo cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -2728,7 +2728,7 @@ ALTER TABLE {table} SET LOCALITY GLOBAL;
 ALTER TABLE SET LOCALITY
 ~~~
 
-For more information about how this table locality works, see [Global tables](table-localities.html#global-tables).
+For more information about how this table locality works, see [Global tables]({% link {{ page.version.version }}/table-localities.md %}#global-tables).
 
 ### Set table schema
 
@@ -2738,7 +2738,7 @@ For more information about how this table locality works, see [Global tables](ta
 
 Suppose you want to add the `promo_codes` table to a new schema called `cockroach_labs`.
 
-By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
+By default, [unqualified tables]({% link {{ page.version.version }}/sql-name-resolution.md %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2757,7 +2757,7 @@ By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualifie
 (6 rows)
 ~~~
 
-If the new schema does not already exist, [create it](create-schema.html):
+If the new schema does not already exist, [create it]({% link {{ page.version.version }}/create-schema.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2884,7 +2884,7 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` value [using supported SQL functions](functions-and-operators.html) if they are not provided.
+The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` value [using supported SQL functions]({% link {{ page.version.version }}/functions-and-operators.md %}) if they are not provided.
 
 Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
@@ -2945,7 +2945,7 @@ Now you can split the table based on the compound primary key. Note that you do 
 
 #### Set the expiration on a split enforcement
 
-You can specify the time at which a split enforcement expires by adding a `WITH EXPIRATION` clause to your `SPLIT` statement. Supported expiration values include [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), and [`TIMESTAMPZ`](timestamp.html).
+You can specify the time at which a split enforcement expires by adding a `WITH EXPIRATION` clause to your `SPLIT` statement. Supported expiration values include [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), and [`TIMESTAMPZ`]({% link {{ page.version.version }}/timestamp.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2960,7 +2960,7 @@ You can specify the time at which a split enforcement expires by adding a `WITH 
 (3 rows)
 ~~~
 
-You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
+You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link {{ page.version.version }}/crdb-internal.md %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -3009,7 +3009,7 @@ To remove the split enforcements, run the following:
 (6 rows)
 ~~~
 
-You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
+You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link {{ page.version.version }}/crdb-internal.md %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -3030,7 +3030,7 @@ You can see the split's expiration date in the `split_enforced_until` column. Th
 
 ~~~
 
-The `drivers` table is still split into ranges at specific primary key column values, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
+The `drivers` table is still split into ranges at specific primary key column values, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) in the table as needed.
 
 ### Validate constraints
 
@@ -3053,27 +3053,27 @@ To ensure that the data added to the `vehicles` table prior to the creation of t
 ~~~
 
 {{site.data.alerts.callout_info}}
-If present in a [`CREATE TABLE`](create-table.html) statement, the table is considered validated because an empty table trivially meets its constraints.
+If present in a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement, the table is considered validated because an empty table trivially meets its constraints.
 {{site.data.alerts.end}}
 
 ## See also
 
-- [Multi-Region Capabilities Overview](multiregion-overview.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [Constraints](constraints.html)
-- [Foreign Key Constraint](foreign-key.html)
-- [Configure Replication Zones](configure-replication-zones.html)
-- [SQL Audit Logging](sql-audit-logging.html)
-- [`CREATE TABLE`](create-table.html)
-- [`CREATE INDEX`](create-index.html)
-- [`ALTER INDEX`](alter-index.html)
-- [`ALTER PARTITION`](alter-partition.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`WITH` (storage parameter)](with-storage-parameter.html)
-- [Selection Queries](selection-queries.html)
-- [Distribution Layer](architecture/distribution-layer.html)
-- [Replication Layer](architecture/replication-layer.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [SQL Statements](sql-statements.html)
+- [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})
+- [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %})
+- [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`WITH` (storage parameter)]({% link {{ page.version.version }}/with-storage-parameter.md %})
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Distribution Layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %})
+- [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

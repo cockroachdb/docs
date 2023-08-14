@@ -36,6 +36,6 @@ Then, insert a few rows of data:
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The virtual column `full_name` is computed as a field from the `profile` column's data. The first name and last name are concatenated and separated by a single whitespace character using the [`concat_ws` string function](functions-and-operators.html#string-and-byte-functions).
+The virtual column `full_name` is computed as a field from the `profile` column's data. The first name and last name are concatenated and separated by a single whitespace character using the [`concat_ws` string function]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions).
 
-The virtual column `birthday` is parsed as a `TIMESTAMP` value from the `profile` column's `birthdate` string value. The [`parse_timestamp` function](functions-and-operators.html) is used to parse strings in `TIMESTAMP` format.
+The virtual column `birthday` is parsed as a `TIMESTAMP` value from the `profile` column's `birthdate` string value. The [`parse_timestamp` function]({% link {{ page.version.version }}/functions-and-operators.md %}) is used to parse strings in `TIMESTAMP` format.

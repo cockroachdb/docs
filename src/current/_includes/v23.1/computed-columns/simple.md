@@ -37,4 +37,4 @@ Then, insert a few rows of data:
 (3 rows)
 ~~~
 
-The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view](views.html).
+The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view]({% link {{ page.version.version }}/views.md %}).
