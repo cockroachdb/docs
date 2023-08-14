@@ -1387,7 +1387,7 @@ Final page HTML:
 <p>This setence is also visible.</p>
 ```
 
-Do not use HTML comments (`<!-- -->`), as the content will still be made available in the page source in production. Additionally, any HTML comment content is subject to the Liquid parser, so any Liquid inside of an HTML comment is still processed and can produce errors (e.g., an include or a link is broken).
+Do not use HTML comments (`<!-- -->`), because HTML comments are visible in the page's HTML source code in production. Additionally, any HTML comment content must be processed by the Liquid parser, so any Liquid within an HTML comment is still processed and can produce errors, such as a broken include or broken link.
 
 #### TODOS
 
