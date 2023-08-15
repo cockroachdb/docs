@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page guides you through the process of creating a {{ site.data.products.dedicated }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud).
+This page guides you through the process of creating a {{ site.data.products.dedicated }} cluster using the [Cloud Console](https://cockroachlabs.cloud).
 
 To use the Cloud API instead, refer to [Use the Cloud API: Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
@@ -16,10 +16,10 @@ It is also possible to use the [Terraform provider for CockroachDB Cloud
 ](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach. Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
 
 {{site.data.alerts.callout_info}}
-Certain cluster creation options are only available using the API or Terraform, including the option to deny all egress traffic. Refer to [Use the Cloud API: Create a new cluster](cloud-api.html#create-a-new-cluster)
+Certain cluster creation options are only available using the API or Terraform, including the option to deny all egress traffic.
 {{site.data.alerts.end}}
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+{% include cockroachcloud/cluster-create-console-required-role.md %}
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).

@@ -8,7 +8,22 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Note that only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+
+This page guides you through the process of creating a {{ site.data.products.serverless }} cluster using the [Cloud Console](https://cockroachlabs.cloud).
+
+**Required Permissions**
+
+Only users with Cluster Creator or Cluster Admin assigned at organization scope can create clusters. Refer to [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
+
+If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+
+To use the Cloud API instead, refer to [Use the Cloud API: Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+
+It is also possible to use the [Terraform provider for CockroachDB Cloud
+](https://github.com/cockroachdb/terraform-provider-cockroach) to manage your cluster configuration with an [Infrastructure as code
+](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach. Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
+
+{% include cockroachcloud/cluster-create-console-required-role.md %}
 
 ## Before you begin
 
