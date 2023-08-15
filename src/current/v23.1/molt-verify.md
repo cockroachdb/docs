@@ -41,7 +41,7 @@ The following databases are currently supported:
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
 1. Run MOLT Verify: 
 
-    The `molt verify` command takes two SQL connection strings as arguments.
+    The `molt verify` command takes two SQL connection strings as `--source` and `--target` arguments.
     
     Examples:
 
