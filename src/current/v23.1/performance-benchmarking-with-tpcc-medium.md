@@ -7,7 +7,7 @@ key: performance-benchmarking-with-tpc-c-10k-warehouses.html
 docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({% link {{ page.version.version }}/performance.md %}#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
@@ -26,11 +26,11 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 ### Review TPC-C concepts
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](performance.html#tpc-c).
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({% link {{ page.version.version }}/performance.md %}#tpc-c).
 
 ### Request a trial license
 
-Reproducing these TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
+Reproducing these TPC-C results involves using CockroachDB's [partitioning]({% link {{ page.version.version }}/partitioning.md %}) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
 The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
 
@@ -51,7 +51,7 @@ You should receive your trial license via email within a few minutes. You'll ena
 1. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
 
 {{site.data.alerts.callout_danger}}
-This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist](recommended-production-settings.html).
+This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 {{site.data.alerts.end}}
 
 ### Configure your network
@@ -102,7 +102,7 @@ CockroachDB requires TCP communication on two ports:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -115,13 +115,13 @@ CockroachDB requires TCP communication on two ports:
     --background
     ~~~
 
-    Each node will start with a [locality](cockroach-start.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 5 racks for 15 nodes so that 3 nodes will be assigned to each rack.
+    Each node will start with a [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 5 racks for 15 nodes so that 3 nodes will be assigned to each rack.
 
 1. Repeat steps 1 - 3 for the other 14 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
-    - Set the [`--locality`](cockroach-start.html#locality) flag to the appropriate "rack number".
+    - Set the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the appropriate "rack number".
 
-1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
+1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -134,14 +134,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 1. SSH to any VM with the `cockroach` binary.
 
-1. Launch the [built-in SQL shell](cockroach-sql.html):
+1. Launch the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
-1. Adjust some [cluster settings](cluster-settings.html):
+1. Adjust some [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -174,7 +174,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 ## Step 4. Import the TPC-C dataset
 
-CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 1. SSH to the VM where you want to run TPC-C.
 
@@ -205,11 +205,11 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
     This will load 1.04 TB of data for 13,000 "warehouses". This can take around 1 hour to complete.
 
-    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 5. Allow the cluster to rebalance
 
-Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 5 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
+Next, [partition your database]({% link {{ page.version.version }}/partitioning.md %}) to divide all of the TPC-C tables and indexes into 5 partitions, one per rack, and then use [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) to pin those partitions to a particular rack.
 
 1. Still on the same VM, briefly run TPC-C to let the cluster balance and the leases settle. Bump the file descriptor limits with `ulimit` to the high value shown in the following snippet, since the workload generators create a lot of database connections.
 
@@ -258,14 +258,14 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
 ## See also
 
-- [Performance Overview](performance.html)
+- [Performance Overview]({% link {{ page.version.version }}/performance.md %})
 
 - Hardware
 
-    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 
     {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](multiregion-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).

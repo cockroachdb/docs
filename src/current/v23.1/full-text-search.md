@@ -7,7 +7,7 @@ docs_area: develop
 
 {% include_cached new-in.html version="v23.1" %} A full-text search is used to perform natural-language searches on documents such as articles, websites, or other written formats.
 
-This page describes how to perform full-text searches using the provided [built-in functions](functions-and-operators.html#full-text-search-functions).
+This page describes how to perform full-text searches using the provided [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions).
 
 {{site.data.alerts.callout_info}}
 Some PostgreSQL syntax and features are unsupported. For details, see [Unsupported features](#unsupported-features).
@@ -22,7 +22,7 @@ A full-text search has the following advantages over pattern matching with `LIKE
 - A full-text search can specify a [text search configuration](#text-search-configuration) that enables language-specific searches.
 - The results of a full-text search can be [ranked](#rank-search-results).
 - A full-text search can be accelerated using a [full-text index](#full-text-indexes).
-- `LIKE` and `ILIKE` are only fast for prefix searches or when indexed with a [trigram index](trigram-indexes.html).
+- `LIKE` and `ILIKE` are only fast for prefix searches or when indexed with a [trigram index]({% link {{ page.version.version }}/trigram-indexes.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/sql/use-case-trigram-indexes.md %}
@@ -30,9 +30,9 @@ A full-text search has the following advantages over pattern matching with `LIKE
 
 ### Process a document
 
-To make a document searchable, convert it to the [`TSVECTOR`](tsvector.html) data type. A `TSVECTOR` value consists of individual *lexemes*, which are normalized strings used for text matching. Each lexeme also includes a list of integer positions that indicate where the lexeme existed in the original document.
+To make a document searchable, convert it to the [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) data type. A `TSVECTOR` value consists of individual *lexemes*, which are normalized strings used for text matching. Each lexeme also includes a list of integer positions that indicate where the lexeme existed in the original document.
 
-The `to_tsvector()` [built-in function](functions-and-operators.html#full-text-search-functions) converts a string input into a `TSVECTOR` value:
+The `to_tsvector()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) converts a string input into a `TSVECTOR` value:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -55,9 +55,9 @@ In the preceding output, the integers indicate that `get` is in the fourth posit
 
 ### Form a query
 
-A full-text search attempts to match a *query* to a document. A full-text search query has the [`TSQUERY`](tsquery.html) data type. Like `TSVECTOR`, a `TSQUERY` value consists of individual *lexemes*, which are normalized strings used for text matching. Lexemes in a `TSQUERY`  are separated with any combination of `&` (AND), `|` (OR), `<->` (FOLLOWED BY), or `!` (NOT) operators.
+A full-text search attempts to match a *query* to a document. A full-text search query has the [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}) data type. Like `TSVECTOR`, a `TSQUERY` value consists of individual *lexemes*, which are normalized strings used for text matching. Lexemes in a `TSQUERY`  are separated with any combination of `&` (AND), `|` (OR), `<->` (FOLLOWED BY), or `!` (NOT) operators.
 
-- The `to_tsquery()` [built-in function](functions-and-operators.html#full-text-search-functions) normalizes a `TSQUERY` input. The input must also be formatted as a `TSQUERY`, or the statement will error.
+- The `to_tsquery()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) normalizes a `TSQUERY` input. The input must also be formatted as a `TSQUERY`, or the statement will error.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -70,7 +70,7 @@ A full-text search attempts to match a *query* to a document. A full-text search
       'tree' & 'get' & 'internet'
     ~~~
 
-- The `plainto_tsquery()` [built-in function](functions-and-operators.html#full-text-search-functions) converts a string input into a `TSQUERY` value, and separates the lexemes with `&` (AND):
+- The `plainto_tsquery()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) converts a string input into a `TSQUERY` value, and separates the lexemes with `&` (AND):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -83,7 +83,7 @@ A full-text search attempts to match a *query* to a document. A full-text search
       'tree' & 'get' & 'internet'
     ~~~
 
-- The `phraseto_tsquery()` [built-in function](functions-and-operators.html#full-text-search-functions) converts a string input into a `TSQUERY` value, and separates the lexemes with `<->` (FOLLOWED BY):
+- The `phraseto_tsquery()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) converts a string input into a `TSQUERY` value, and separates the lexemes with `<->` (FOLLOWED BY):
 
     ~~~ sql
     SELECT phraseto_tsquery('How do trees get on the internet?');
@@ -105,7 +105,7 @@ Queries and documents are matched using the [`@@` comparison operator](#comparis
 
 You can rank the results of a full-text search.
 
-The `ts_rank()` [built-in function](functions-and-operators.html#full-text-search-functions) outputs a search rank based on the frequency of matching lexemes. In the following example, two lexemes match:
+The `ts_rank()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) outputs a search rank based on the frequency of matching lexemes. In the following example, two lexemes match:
 
 ~~~ sql
 SELECT ts_rank(to_tsvector('How do trees get on the internet?'), plainto_tsquery('how to get internet'));
@@ -141,7 +141,7 @@ For more information about using `ts_rank()`, see the [PostgreSQL documentation]
 
 Full-text searches support the following comparison operator:
 
-- **matching**: [`@@`](functions-and-operators.html#operators). This operator is set between a `TSQUERY` and `TSVECTOR`, and returns `true` if the lexemes match. The `TSQUERY` and `TSVECTOR` can be specified in any order.
+- **matching**: [`@@`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators). This operator is set between a `TSQUERY` and `TSVECTOR`, and returns `true` if the lexemes match. The `TSQUERY` and `TSVECTOR` can be specified in any order.
 
 For usage examples, see [Match queries to documents](#match-queries-to-documents).
 
@@ -151,7 +151,7 @@ For usage examples, see [Match queries to documents](#match-queries-to-documents
 You can perform full-text searches without a full-text index. However, an index will drastically improve search performance when searching a large number of documents.
 {{site.data.alerts.end}}
 
-To create a full-text index, use the [`CREATE INDEX`](create-index.html) syntax that defines an [inverted index](inverted-indexes.html), specifying a `TSVECTOR` column.
+To create a full-text index, use the [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) syntax that defines an [inverted index]({% link {{ page.version.version }}/inverted-indexes.md %}), specifying a `TSVECTOR` column.
 
 - Using the PostgreSQL-compatible syntax:
 
@@ -177,7 +177,7 @@ A *text search configuration* determines how inputs are parsed into `TSVECTOR` a
 
 The supported dictionaries are English, Danish, Dutch, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, Swedish, and Turkish. An additional `simple` dictionary does not perform stemming or stopwording when normalizing [documents](#process-a-document) or [queries](#form-a-query).
 
-You can specify a text search configuration as the first parameter when calling any of the [built-in functions](functions-and-operators.html#full-text-search-functions) to [process a document](#process-a-document) or [form a query](#form-a-query). For example:
+You can specify a text search configuration as the first parameter when calling any of the [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to [process a document](#process-a-document) or [form a query](#form-a-query). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -190,7 +190,7 @@ SELECT to_tsvector('swedish', 'Hur får träd tillgång till internet?');
   'får':2 'internet':6 'tillgång':4 'träd':3
 ~~~
 
-If you do not specify a configuration when calling the function, the value of the [`default_text_search_config`](set-vars.html#default-text-search-config)  session variable is used. This defaults to `english` and can be changed as follows:
+If you do not specify a configuration when calling the function, the value of the [`default_text_search_config`]({% link {{ page.version.version }}/set-vars.md %}#default-text-search-config)  session variable is used. This defaults to `english` and can be changed as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -220,7 +220,7 @@ SELECT to_tsvector('How do trees get on the internet?') @@ to_tsquery('How & to 
      t
 ~~~
 
-Use the `plainto_tsquery()` [built-in function](functions-and-operators.html#full-text-search-functions) to match text to a searchable document. This search is equivalent to the preceding example:
+Use the `plainto_tsquery()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to match text to a searchable document. This search is equivalent to the preceding example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -233,7 +233,7 @@ SELECT to_tsvector('How do trees get on the internet?') @@ plainto_tsquery('How 
      t
 ~~~
 
-Use the `phraseto_tsquery()` [built-in function](functions-and-operators.html#full-text-search-functions) to match text phrases to a searchable document. Because `phraseto_tsquery()` separates the lexemes `get` and `internet` with the `<->` (FOLLOWED BY) operator, and the document does not contain a phrase like "get internet", the output will be `false`:
+Use the `phraseto_tsquery()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to match text phrases to a searchable document. Because `phraseto_tsquery()` separates the lexemes `get` and `internet` with the `<->` (FOLLOWED BY) operator, and the document does not contain a phrase like "get internet", the output will be `false`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -250,7 +250,7 @@ For an example of how text matching is used on a table, see [Perform a full-text
 
 ### Create a full-text index with an expression
 
-You can create an [expression index](expression-indexes.html) on a `STRING` column, using [`to_tsvector()`](#process-a-document) to convert the value to `TSVECTOR`.
+You can create an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}) on a `STRING` column, using [`to_tsvector()`](#process-a-document) to convert the value to `TSVECTOR`.
 
 Given the table:
 
@@ -267,12 +267,12 @@ CREATE INDEX ON t USING GIN (to_tsvector('english', a));
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using a [full-text search function](functions-and-operators.html#full-text-search-functions) in an expression index, you **must** specify a [text search configuration](#text-search-configuration). In the preceding example, the `english` configuration is specified.
+When using a [full-text search function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) in an expression index, you **must** specify a [text search configuration](#text-search-configuration). In the preceding example, the `english` configuration is specified.
 {{site.data.alerts.end}}
 
 ### Create a full-text index with a stored computed column
 
-You can create a full-text index on a [stored computed column](computed-columns.html) that has a `TSVECTOR` data type.
+You can create a full-text index on a [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}) that has a `TSVECTOR` data type.
 
 Given the table:
 
@@ -290,7 +290,7 @@ ALTER TABLE t ADD COLUMN b TSVECTOR
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using a [full-text search function](functions-and-operators.html#full-text-search-functions) in a stored generated column, you **must** specify a [text search configuration](#text-search-configuration). In the preceding example, the `english` configuration is specified.
+When using a [full-text search function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) in a stored generated column, you **must** specify a [text search configuration](#text-search-configuration). In the preceding example, the `english` configuration is specified.
 {{site.data.alerts.end}}
 
 View the columns on the table:
@@ -465,8 +465,8 @@ For full details, see the [tracking issue](https://github.com/cockroachdb/cockro
 ## See also
 
 - PostgreSQL documentation on [Full Text Search](https://www.postgresql.org/docs/current/textsearch.html)
-- [`TSVECTOR`](tsvector.html)
-- [`TSQUERY`](tsquery.html)
-- [Inverted indexes](inverted-indexes.html)
-- [Indexes](indexes.html)
-- [SQL Statements](sql-statements.html)
+- [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %})
+- [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %})
+- [Inverted indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

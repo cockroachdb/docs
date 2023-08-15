@@ -20,7 +20,7 @@
       movr          | public             | user_promo_codes           | table       | full        | NULL       | 2022-09-19 13:41:23.645189 |       9320 |   111 |        f        |       4832
     ~~~
 
-    The output will return `file_bytes` along with the columns you receive from `SHOW BACKUP` without `check_files`. The `file_bytes` column indicates the estimated bytes in external storage for a particular table object. For more detail on the output columns, see the `SHOW BACKUP` [Response](show-backup.html#response) table.
+    The output will return `file_bytes` along with the columns you receive from `SHOW BACKUP` without `check_files`. The `file_bytes` column indicates the estimated bytes in external storage for a particular table object. For more detail on the output columns, see the `SHOW BACKUP` [Response]({% link {{ page.version.version }}/show-backup.md %}#response) table.
 
 1. If `SHOW BACKUP ... check_files` cannot read from a file, it will return an error message similar to the following: 
 

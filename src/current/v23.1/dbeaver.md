@@ -25,7 +25,7 @@ For information on using DBeaver with {{ site.data.products.db }}, see [this blo
 
 To work through this tutorial, take the following steps:
 
-- [Install CockroachDB](install-cockroachdb.html) and [start a secure cluster](secure-a-cluster.html).
+- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [start a secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 - Download a copy of [DBeaver](https://dbeaver.io/download/) version 5.2.3 or greater.
 
 ## Step 1. Start DBeaver and connect to CockroachDB
@@ -83,20 +83,20 @@ For more information about using DBeaver, see the [DBeaver documentation](https:
 
 If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`](cockroach-version.html))
+- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
 - DBeaver version
 - Operating system
 - Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](logging-use-cases.html#sql_exec).
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_exec).
 
 ## See Also
 
 + [DBeaver documentation](https://dbeaver.io/docs/)
 + [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues)
-+ [Client connection parameters](connection-parameters.html)
-+ [Third-Party Database Tools](third-party-database-tools.html)
-+ [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
++ [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
++ [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
++ [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [dbeaver]: https://dbeaver.io

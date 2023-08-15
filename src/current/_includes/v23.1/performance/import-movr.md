@@ -1,6 +1,6 @@
 Now you'll import Movr data representing users, vehicles, and rides in 3 eastern US cities (New York, Boston, and Washington DC) and 3 western US cities (Los Angeles, San Francisco, and Seattle).
 
-1. Still on the fourth instance, start the [built-in SQL shell](cockroach-sql.html), pointing it at one of the CockroachDB nodes:
+1. Still on the fourth instance, start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), pointing it at one of the CockroachDB nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -19,7 +19,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     > SET DATABASE = movr;
     ~~~
 
-1. Use the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables:
+1. Use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement to create and populate the `users`, `vehicles,` and `rides` tables:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -115,10 +115,10 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     {{site.data.alerts.callout_success}}
-    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page](ui-jobs-page.html) of the DB Console.
+    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console.
     {{site.data.alerts.end}}
 
-1. Logically, there should be a number of [foreign key](foreign-key.html) relationships between the tables:
+1. Logically, there should be a number of [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) relationships between the tables:
 
     Referencing columns | Referenced columns
     --------------------|-------------------

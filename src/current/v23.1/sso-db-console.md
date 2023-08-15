@@ -6,14 +6,14 @@ docs_area: manage
 key: sso.html
 ---
 
-Single sign-on (SSO) allows a CockroachDB user to access the [DB Console](ui-overview.html) in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.
+Single sign-on (SSO) allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
 
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
 {{site.data.alerts.callout_info}}
 SSO for DB Console is available to {{ site.data.products.db }} customers.
 
-On {{ site.data.products.core }} clusters, SSO for DB Console requires an [Enterprise license](enterprise-licensing.html).
+On {{ site.data.products.core }} clusters, SSO for DB Console requires an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 {{site.data.alerts.end}}
 
 ## Requirements
@@ -31,11 +31,11 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 1. The authorization code in the callback query is exchanged for an [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 1. CockroachDB matches the ID Token to a registered SQL user.
 1. CockroachDB creates a web session for the SQL user.
-1. The user is redirected to the [DB Console Cluster Overview](ui-cluster-overview-page.html).
+1. The user is redirected to the [DB Console Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
 
 ## Cluster settings
 
-The following OIDC [cluster settings](cluster-settings.html) are used to configure and enable SSO.
+The following OIDC [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) are used to configure and enable SSO.
 
 | Cluster Setting | Example Value
 |-----------------|------
@@ -62,7 +62,7 @@ The following OIDC [cluster settings](cluster-settings.html) are used to configu
 
 ## Example (Google OAuth 2.0)
 
-These steps demonstrate how to enable SSO authentication for the DB Console on a [local secure cluster](secure-a-cluster.html) using [Google's OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) implementation.
+These steps demonstrate how to enable SSO authentication for the DB Console on a [local secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}) using [Google's OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) implementation.
 
 1. Open the [Credentials page](https://console.developers.google.com/apis/credentials) for your account at Google APIs.
 
@@ -130,7 +130,7 @@ These steps demonstrate how to enable SSO authentication for the DB Console on a
 	SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
 	~~~
 
-1. [Create a SQL user](create-user.html#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
+1. [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -144,7 +144,7 @@ These steps demonstrate how to enable SSO authentication for the DB Console on a
 	SET CLUSTER SETTING server.oidc_authentication.enabled = true;
 	~~~
 
-	When the user [accesses the DB Console](ui-overview.html#db-console-access), they will be able to log in with their Google account.
+	When the user [accesses the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), they will be able to log in with their Google account.
 
 	<img src="{{ 'images/v23.1/ui_login_sso.png' | relative_url }}" alt="DB Console Single Sign-on" style="border:1px solid #eee;max-width:50%" />
 

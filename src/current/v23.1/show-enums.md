@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the current database.
+The `SHOW ENUMS` statement lists the [enumerated data types]({% link {{ page.version.version }}/enum.md %}) in the current database.
 
 ## Syntax
 
@@ -17,11 +17,11 @@ The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the c
 
 Parameter | Description
 ----------|------------
-`name`<br>`name.name` | The name of the [schema](create-schema.html) from which to show enumerated data types, or the name of the [database](create-database.html) and the [schema](create-schema.html), separated by a "`.`".
+`name`<br>`name.name` | The name of the [schema]({% link {{ page.version.version }}/create-schema.md %}) from which to show enumerated data types, or the name of the [database]({% link {{ page.version.version }}/create-database.md %}) and the [schema]({% link {{ page.version.version }}/create-schema.md %}), separated by a "`.`".
 
 ## Examples
 
-The following example creates a [user-defined type](create-type.html).
+The following example creates a [user-defined type]({% link {{ page.version.version }}/create-type.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -62,8 +62,8 @@ The following example creates a [user-defined type](create-type.html).
 
 ## See also
 
-- [`ENUM`](enum.html)
-- [Data types](data-types.html)
-- [`CREATE TYPE`](create-type.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`DROP TYPE`](drop-type.html)
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [Data types]({% link {{ page.version.version }}/data-types.md %})
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})

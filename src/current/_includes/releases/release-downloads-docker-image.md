@@ -8,7 +8,7 @@
 {% if release.withdrawn == true %}{% comment %} if the release is withdrawn, automatically disable the download links and Docker image {% endcomment %}
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
 {{site.data.alerts.callout_danger}}
-This patch release has been withdrawn{% if include.advisory_key %} due to [this technical advisory](../advisories/{{ include.advisory_key }}.html){% endif %}. All the changes listed as part of this release will be in the next release. Do not upgrade to this release.
+This patch release has been withdrawn{% if include.advisory_key %} due to [this technical advisory](https://www.cockroachlabs.com/docs/advisories/{{ include.advisory_key }}){% endif %}. All the changes listed as part of this release will be in the next release. Do not upgrade to this release.
 {{site.data.alerts.end}}
 
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>{% comment %} we use a manual <h3> tag here to account for the duplicated headers {% endcomment %}

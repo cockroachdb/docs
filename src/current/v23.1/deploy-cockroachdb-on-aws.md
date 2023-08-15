@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-If you need a license to use [{{ site.data.products.enterprise }} features](enterprise-licensing.html), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
+If you need a license to use [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -76,7 +76,7 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 - When creating the instance, you will be prompted to specify an EC2 key pair. For more information on key pairs, see the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). These are used to securely connect to your instances and should be encrypted (e.g., `ssh-keygen -p -f $keypairfile` in Linux).
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 ## Step 2. Configure your network
 
@@ -115,7 +115,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
 	- Set the load balancer port to **26257**.
     - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
-    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
     - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
 1. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
 

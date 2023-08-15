@@ -6,11 +6,11 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type](data-types.html).
+The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type]({% link {{ page.version.version }}/data-types.md %}).
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 
- CockroachDB supports indexing array columns with [GIN indexes](inverted-indexes.html). This permits accelerating containment queries ([`@>`](functions-and-operators.html#supported-operations) and [`<@`](functions-and-operators.html#supported-operations)) and overlap queries ([`&&`](functions-and-operators.html#supported-operations)) on array columns by adding an index to them.
+ CockroachDB supports indexing array columns with [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}). This permits accelerating containment queries ([`@>`]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations) and [`<@`]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations)) and overlap queries ([`&&`]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations)) on array columns by adding an index to them.
 
 {{site.data.alerts.callout_info}}
 CockroachDB does not support nested arrays.
@@ -20,16 +20,16 @@ CockroachDB does not support nested arrays.
 
 A value of data type `ARRAY` can be expressed in the following ways:
 
-- Appending square brackets (`[]`) to any non-array [data type](data-types.html).
-- Adding the term `ARRAY` to any non-array [data type](data-types.html).
+- Appending square brackets (`[]`) to any non-array [data type]({% link {{ page.version.version }}/data-types.md %}).
+- Adding the term `ARRAY` to any non-array [data type]({% link {{ page.version.version }}/data-types.md %}).
 
 ## Size
 
-The size of an `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.  
+The size of an `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.  
 
 ## Functions
 
-For the list of supported `ARRAY` functions, see [Functions and Operators](functions-and-operators.html#array-functions).
+For the list of supported `ARRAY` functions, see [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#array-functions).
 
 ## Examples
 
@@ -113,7 +113,7 @@ Arrays in CockroachDB are 1-indexed.
 
 ### Accessing an array column using containment queries
 
-You can use the [operators](functions-and-operators.html#supported-operations) `<@` ("is contained by") and `@>` ("contains") to run containment queries on `ARRAY` columns.
+You can use the [operators]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations) `<@` ("is contained by") and `@>` ("contains") to run containment queries on `ARRAY` columns.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -141,7 +141,7 @@ You can use the [operators](functions-and-operators.html#supported-operations) `
 
 ### Using the overlaps operator
 
-You can use the `&&` (overlaps) [operator](functions-and-operators.html#supported-operations) to select array columns by checking if another array overlaps the column array. Arrays overlap if they have any elements in common.
+You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations) to select array columns by checking if another array overlaps the column array. Arrays overlap if they have any elements in common.
 
 1. Create the table:
 
@@ -281,7 +281,7 @@ You can use the `&&` (overlaps) [operator](functions-and-operators.html#supporte
 
 ## Supported casting and conversion
 
-[Casting](data-types.html#data-type-conversions-and-casts) between `ARRAY` values is supported when the data types of the arrays support casting. For example, it is possible to cast from a `BOOL` array to an `INT` array but not from a `BOOL` array to a `TIMESTAMP` array:
+[Casting]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) between `ARRAY` values is supported when the data types of the arrays support casting. For example, it is possible to cast from a `BOOL` array to an `INT` array but not from a `BOOL` array to a `TIMESTAMP` array:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -334,13 +334,13 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 
 CockroachDB supports implicit casting from string literals to arrays of all data types except the following:
 
-- [`BYTES`](bytes.html)
-- [`ENUM`](enum.html)
-- [`JSONB`](jsonb.html)
-- [`SERIAL`](serial.html)
-- `Box2D` [(spatial type)](architecture/glossary.html#data-types)
-- `GEOGRAPHY` [(spatial type)](architecture/glossary.html#data-types)
-- `GEOMETRY` [(spatial type)](architecture/glossary.html#data-types)
+- [`BYTES`]({% link {{ page.version.version }}/bytes.md %})
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})
+- [`SERIAL`]({% link {{ page.version.version }}/serial.md %})
+- `Box2D` [(spatial type)]({% link {{ page.version.version }}/architecture/glossary.md %}#data-types)
+- `GEOGRAPHY` [(spatial type)]({% link {{ page.version.version }}/architecture/glossary.md %}#data-types)
+- `GEOMETRY` [(spatial type)]({% link {{ page.version.version }}/architecture/glossary.md %}#data-types)
 
 For example, if you create a table with a column of type `INT[]`:
 
@@ -373,5 +373,5 @@ CockroachDB implicitly casts the string literal as an `INT[]`:
 
 ## See also
 
-- [Data Types](data-types.html)
-- [GIN Indexes](inverted-indexes.html)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})

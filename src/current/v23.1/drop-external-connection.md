@@ -13,12 +13,12 @@ You can use external connections to specify and interact with resources that are
 
 You can also use the following SQL statements to work with external connections:
 
-- [`CREATE EXTERNAL CONNECTION`](create-external-connection.html)
-- [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html)
+- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
+- [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
 
 ## Required privileges
 
-Users must have the [`DROP` privilege](security-reference/authorization.html#supported-privileges) or be a member of the [`admin` role](security-reference/authorization.html#admin-role) to drop an external connection.
+Users must have the [`DROP` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) to drop an external connection.
 
 For example:
 
@@ -52,6 +52,6 @@ DROP EXTERNAL CONNECTION backup_storage;
 
 ## See also
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Changefeed Sinks](changefeed-sinks.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP), using [Vault PKI Secrets Engine](hashicorp-integration.html) .
+This tutorial guides the user through implementing [public key infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP), using [Vault PKI Secrets Engine]({% link {{ page.version.version }}/hashicorp-integration.md %}) .
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 
@@ -20,7 +20,7 @@ PKI involves careful management of the certificates used for authentication and 
 
 **Prerequisites**:
 
-- Review [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
+- Review [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}).
 - Vault:
   - You must have access to a Vault cluster. This can be a, a) cluster provisioned online through [HashiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault), b) a Vault cluster deployed by your organization, or even c) a quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
   - Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
@@ -37,7 +37,7 @@ PKI can be implemented in many ways; key pairs can be generated and certificates
 The key elements of the strategy here are:
 
 - To leverage the strength of Vault's secrets engines to manage the certificates.
-- To enforce *short validity durations for all issued certificates*, rather than employing the more heavy-weight option of [Online Certificate Status Protocol (OCSP)](manage-certs-revoke-ocsp.html)).
+- To enforce *short validity durations for all issued certificates*, rather than employing the more heavy-weight option of [Online Certificate Status Protocol (OCSP)]({% link {{ page.version.version }}/manage-certs-revoke-ocsp.md %})).
 
 ### Vault secrets
 
@@ -50,7 +50,7 @@ If credentials are obtained by malicious actors, they can be used to impersonate
 - By using a revocation mechanism, so that existing certificates can be invalidated. Two standard solutions are Certificate Revocation Lists (CRLS) and the Online Certificate Status Protocol (OCSP).
 - By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
 
-CockroachDB does support OCSP, but not CRLs. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB](manage-certs-revoke-ocsp.html).
+CockroachDB does support OCSP, but not CRLs. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB]({% link {{ page.version.version }}/manage-certs-revoke-ocsp.md %}).
 
 Without OCSP, there is a premium on enforcing short validity durations for certificates; otherwise, stolen credentials may be used to work persistent mischief over a long window.
 
@@ -120,7 +120,7 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 1. Create node instances
 
-    Create three compute instances to use as CockroachDB nodes. Follow the guidelines described in [Deploy CockroachDB on Google Cloud Platform](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
+    Create three compute instances to use as CockroachDB nodes. Follow the guidelines described in [Deploy CockroachDB on Google Cloud Platform]({% link {{ page.version.version }}/deploy-cockroachdb-on-google-cloud-platform.md %}#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
 
     {{site.data.alerts.callout_info}}
     Here we add the network tag 'roach-node', which will allow our firewall rule to apply to the nodes instances.
@@ -469,7 +469,7 @@ chmod 0600  ${secrets_dir}/*/node.key
 chown $USER ${secrets_dir}/*/node.key
 ~~~
 
-### Provision each node's credentials and [trust store](security-reference/transport-layer-security.html#trust-store)
+### Provision each node's credentials and [trust store]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#trust-store)
 
 1. Clear any existing certs from each node:
     {% include_cached copy-clipboard.html %}

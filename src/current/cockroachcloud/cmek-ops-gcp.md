@@ -1,13 +1,13 @@
 ---
-title: Provision GCP KMS Keys and Service Accounts for CMEK
+title: Provision GCP for CMEK
 summary: Tutorial for provisioning CMEK in GCP, covering initial set-up, revocation, and recovery scenarios.
 toc: true
 docs_area: manage.security
 ---
 
-This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)](cmek.html) for your {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
+This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for your {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
 
-This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
+This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#enable-cmek).
 
 ## Overview
 
@@ -17,7 +17,7 @@ This is part of the larger process of [Enabling CMEK for a {{ site.data.products
 	- [Directly in the GCP key management service (KMS) console](#option-a-use-the-gcp-console)
 	- By [setting up a Vault GCP-KMS secrets engine](#option-b-use-the-vault-gcp-kms-secrets-engine-to-create-the-cmek-key) with access to GCP KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 		{{site.data.alerts.callout_info}}
-		[Learn more about the integrations between CockroachDB and HashiCorp Vault.](../{{site.current_cloud_version}}/hashicorp-integration.html)
+		[Learn more about the integrations between CockroachDB and HashiCorp Vault.](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration)
 		{{site.data.alerts.end}}
 - In [Step 4. Authorize the service account to use the CMEK key](#step-4-authorize-the-service-account-to-use-the-cmek-key), we will authorize the cross-tenant service account created in Step 1 to use the key created in Step 2.
 
@@ -286,4 +286,4 @@ Compile the information about the service account and key we've just created int
 	cat cmek_config.json | jq
 	~~~
 
-After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek).
+After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).

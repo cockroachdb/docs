@@ -11,14 +11,14 @@ The **Insights** page exposes problems that CockroachDB has detected in your wor
 
 The **Insights** page helps you:
 
-- Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
-- Identify [indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
+- Identify SQL statements with [high retry counts]({% link {{ page.version.version }}/transactions.md %}#automatic-retries), [slow execution]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries), or [suboptimal plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
+- Identify [indexes]({% link {{ page.version.version }}/indexes.md %}) that should be created, altered, replaced, or dropped to improve performance.
 
 {% include {{ page.version.version }}/ui/insights.md %}
 
 ## See also
 
-- [Statements page](ui-statements-page.html)
-- [Transactions page](ui-transactions-page.html)
-- [Databases page](ui-databases-page.html)
-- [Assign privileges](security-reference/authorization.html#managing-privileges)
+- [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %})
+- [Transactions page]({% link {{ page.version.version }}/ui-transactions-page.md %})
+- [Databases page]({% link {{ page.version.version }}/ui-databases-page.md %})
+- [Assign privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges)

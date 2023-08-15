@@ -7,7 +7,7 @@ docs_area: stream_data
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page walks you through a demonstration of how to use an [{{ site.data.products.enterprise }} changefeed](../{{site.current_cloud_version}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page walks you through a demonstration of how to use an [{{ site.data.products.enterprise }} changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
@@ -28,11 +28,11 @@ Before you begin, make sure you have:
 
 ## Step 1. Create a cluster
 
-If you have not done so already, [create a cluster](create-your-cluster.html).
+If you have not done so already, [create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Step 2. Configure your cluster
 
-1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](connect-to-your-cluster.html#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
+1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -41,10 +41,10 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    If you haven't connected to your cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) or [Connect to your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) for information on how to initially connect.
+    If you haven't connected to your cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds):
+1. Enable [rangefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#enable-rangefeeds):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +105,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 ## Step 6. Create an enterprise changefeed
 
-Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.current_cloud_version}}/create-changefeed.html):
+Back in the built-in SQL shell, [create an enterprise changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -121,10 +121,10 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.curr
 (1 row)
 ~~~
 
-Be sure to replace the placeholders with your AWS access key ID and AWS secret access key. See [Cloud Storage Authentication](../{{site.versions["stable"]}}/cloud-storage-authentication.html) for more detail on authenticating to Amazon S3.
+Be sure to replace the placeholders with your AWS access key ID and AWS secret access key. See [Cloud Storage Authentication](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cloud-storage-authentication) for more detail on authenticating to Amazon S3.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.current_cloud_version}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-and-debug-changefeeds#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -145,7 +145,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 1. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.current_cloud_version}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-and-debug-changefeeds#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
@@ -230,7 +230,7 @@ Your changefeed is now streaming to Snowflake.
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps](../{{site.current_cloud_version}}/create-changefeed.html#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-See the [Change Data Capture Overview](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#known-limitations) for more general changefeed known limitations.
+See the [Change Data Capture Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#known-limitations) for more general changefeed known limitations.

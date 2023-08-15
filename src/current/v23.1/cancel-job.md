@@ -5,26 +5,26 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include:
+The `CANCEL JOB` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lets you stop long-running jobs, which include:
 
-- [`IMPORT`](import.html) jobs
-- [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
-- [User-created table statistics](create-statistics.html) jobs
-- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
-- [Changefeeds](create-changefeed.html)
-- [Scheduled backup](manage-a-backup-schedule.html) jobs
-- [Schema change](online-schema-changes.html) jobs (see [Limitations](#limitations) for exceptions)
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) jobs
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) jobs
+- [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) jobs
+- [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) jobs
+- [Changefeeds]({% link {{ page.version.version }}/create-changefeed.md %})
+- [Scheduled backup]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) jobs
+- [Schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs (see [Limitations](#limitations) for exceptions)
 
 ## Limitations
 
-- When an Enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
--  To avoid transaction states that cannot properly [roll back](rollback-transaction.html), `DROP` statements (e.g., [`DROP TABLE`](drop-table.html)), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`](alter-table.html#rename-to)), and [`CREATE TABLE ... AS`](create-table-as.html) statements are no longer cancellable.
+- When an Enterprise [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+-  To avoid transaction states that cannot properly [roll back]({% link {{ page.version.version }}/rollback-transaction.md %}), `DROP` statements (e.g., [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`]({% link {{ page.version.version }}/alter-table.md %}#rename-to)), and [`CREATE TABLE ... AS`]({% link {{ page.version.version }}/create-table-as.md %}) statements are no longer cancellable.
 
 ## Required privileges
 
-To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](security-reference/authorization.html#role-options) set. Non-admin users cannot cancel admin users' jobs.
+To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) set. Non-admin users cannot cancel admin users' jobs.
 
-For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can cancel changefeed jobs running on those tables.
+For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#required-privileges) privilege on a set of tables can cancel changefeed jobs running on those tables.
 
 ## Synopsis
 
@@ -36,9 +36,9 @@ For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-p
 
 Parameter | Description
 ----------|------------
-`job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`](show-jobs.html).
-`select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to cancel.
-`for_schedules_clause` |  The schedule you want to cancel jobs for. You can cancel jobs for a specific schedule (`FOR SCHEDULE id`) or cancel jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#cancel-jobs-for-a-schedule) below.
+`job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to cancel.
+`for_schedules_clause` |  The schedule you want to cancel jobs for. You can cancel jobs for a specific schedule (`FOR SCHEDULE id`) or cancel jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#cancel-jobs-for-a-schedule) below.
 
 ## Examples
 
@@ -60,7 +60,7 @@ Parameter | Description
 
 ### Cancel multiple jobs
 
-To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
+To cancel multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -72,7 +72,7 @@ All jobs created by `maxroach` will be cancelled.
 
 ### Cancel automatic table statistics jobs
 
-Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
+Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -81,7 +81,7 @@ Canceling an automatic table statistics job is not useful since the system will 
 
 ### Cancel jobs for a schedule
 
- To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+ To cancel jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -91,7 +91,7 @@ Canceling an automatic table statistics job is not useful since the system will 
 CANCEL JOBS FOR SCHEDULES 1
 ~~~
 
-You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
+You can also CANCEL multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -104,8 +104,8 @@ CANCEL JOBS FOR SCHEDULES 2
 
 ## See also
 
-- [`SHOW JOBS`](show-jobs.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`IMPORT`](import.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})

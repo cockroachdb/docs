@@ -4,9 +4,9 @@ summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
 ---
 
-The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
+The `SHOW STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists [table statistics]({% link {{ page.version.version }}/create-statistics.md %}) used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 
-By default, CockroachDB [automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on the columns that prefix each index.
+By default, CockroachDB [automatically generates statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-on-multiple-columns) on the columns that prefix each index.
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ By default, CockroachDB [automatically generates statistics](cost-based-optimize
 
 ## Required Privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to list table statistics.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list table statistics.
 
 ## Parameters
 
@@ -42,7 +42,7 @@ Parameter      | Description
 | `distinct_count` |  The number of distinct values for which the statistics were computed. |
 | `null_count` |  The number of null values for which the statistics were computed.  |
 | `avg_size` |  The average size in bytes of the values of the columns for which the statistics were computed. |
-| `histogram_id` |  The ID of the [histogram](cost-based-optimizer.html#control-histogram-collection) used to compute statistics. |
+| `histogram_id` |  The ID of the [histogram]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-histogram-collection) used to compute statistics. |
 
 ## Examples
 
@@ -76,7 +76,7 @@ Parameter      | Description
 
 ### Display forecasted statistics
 
-The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer](cost-based-optimizer.html).
+The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 
 CockroachDB generates forecasted statistics when the following conditions are met:
 
@@ -154,9 +154,9 @@ The following example shows 3 historical statistics collections and the subseque
 
 ## See also
 
-- [Cost-Based Optimizer](cost-based-optimizer.html)
-- [`CREATE STATISTICS`](create-statistics.html)
-- [`CREATE TABLE`](create-table.html)
-- [`INSERT`](insert.html)
-- [`IMPORT`](import.html)
-- [SQL Statements](sql-statements.html)
+- [Cost-Based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %})
+- [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

@@ -8,7 +8,7 @@ docs_area: reference.architecture
 This page explains how reads and writes are affected by the replicated and distributed nature of data in CockroachDB. It starts by summarizing how CockroachDB executes queries and then guides you through a few simple read and write scenarios.
 
 {{site.data.alerts.callout_info}}
-For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer](transaction-layer.html) documentation.
+For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}) documentation.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/misc/basic-terms.md %}

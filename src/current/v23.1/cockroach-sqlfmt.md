@@ -7,7 +7,7 @@ docs_area: reference.cli
 ---
 
 The `cockroach sqlfmt`
-[command](cockroach-commands.html) changes the textual formatting of
+[command]({% link {{ page.version.version }}/cockroach-commands.md %}) changes the textual formatting of
 one or more SQL queries. It recognizes all SQL extensions supported by
 CockroachDB.
 
@@ -156,6 +156,6 @@ SELECT (1 * 2) + 3, (1 + 2) * 3
 ## See also
 
 - [Sequel Fumpt](https://sqlfum.pt/)
-- [`cockroach demo`](cockroach-demo.html)
-- [`cockroach sql`](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
+- [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

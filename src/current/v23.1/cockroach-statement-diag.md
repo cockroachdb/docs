@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-Use the `cockroach statement-diag` [command](cockroach-commands.html) to manage and download statement diagnostics bundles generated from the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
+Use the `cockroach statement-diag` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) to manage and download statement diagnostics bundles generated from the [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug).
 
 ## Required privileges
 
@@ -73,7 +73,7 @@ Flag | Description
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
 
-See [Client Connection Parameters](connection-parameters.html) for more details.
+See [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}) for more details.
 
 ### Logging
 
@@ -83,7 +83,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Setup
 
-These examples assume you are running [an insecure cluster](start-a-local-cluster.html) and have requested and/or generated statement diagnostics bundles using the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
+These examples assume you are running [an insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and have requested and/or generated statement diagnostics bundles using the [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug).
 
 ### Download a statement diagnostics bundle
 
@@ -141,6 +141,6 @@ $ cockroach statement-diag cancel 603811900498804737 --insecure
 
 ## See also
 
-- [DB Console statement diagnostics](ui-statements-page.html#diagnostics)
-- [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [DB Console statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics)
+- [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

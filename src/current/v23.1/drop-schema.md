@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+The `DROP SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a user-defined [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -13,7 +13,7 @@ The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schem
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
 
 ## Syntax
 
@@ -27,8 +27,8 @@ Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the schema if it exists. If it does not exist, do not return an error.
 `schema_name_list`  | The schema, or a list of schemas, that you want to drop.<br>To drop a schema in a database other than the current database, specify the name of the database and the name of the schema, separated by a "`.`" (e.g., `DROP SCHEMA IF EXISTS database.schema;`).
-`CASCADE` | Drop all tables and views in the schema as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
-`RESTRICT` | _(Default)_ Do not drop the schema if it contains any [tables](create-table.html) or [views](create-view.html).
+`CASCADE` | Drop all tables and views in the schema as well as all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and [views]({% link {{ page.version.version }}/views.md %})) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT` | _(Default)_ Do not drop the schema if it contains any [tables]({% link {{ page.version.version }}/create-table.md %}) or [views]({% link {{ page.version.version }}/create-view.md %}).
 
 ## Examples
 
@@ -160,8 +160,8 @@ SQLSTATE: 2BP01
 
 ## See also
 
-- [`CREATE SCHEMA`](create-schema.html)
-- [`SHOW SCHEMAS`](show-schemas.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %})
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

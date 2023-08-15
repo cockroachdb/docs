@@ -9,7 +9,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 ## Before you begin
 
-- Make sure you have already started a CockroachDB cluster, either [locally](start-a-local-cluster.html) or in a [production environment](manual-deployment.html).
+- Make sure you have already started a CockroachDB cluster, either [locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or in a [production environment]({% link {{ page.version.version }}/manual-deployment.md %}).
 
 - Note that all files used in this tutorial can be found in the [`monitoring`](https://github.com/cockroachdb/cockroach/tree/master/monitoring) directory of the CockroachDB repository.
 
@@ -150,7 +150,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
 
-1. Now that Alertmanager is configured and running, you can optionally [import pre-existing rules or create your own](monitoring-and-alerting.html#alertmanager) if you prefer.
+1. Now that Alertmanager is configured and running, you can optionally [import pre-existing rules or create your own]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#alertmanager) if you prefer.
 
 ## Step 5. Visualize metrics in Grafana
 
@@ -200,11 +200,11 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 ## Step 6. Disable DB Console's local storage of metrics (optional)
 
-+If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
++If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 +
-+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
++When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 
-- [Monitoring and Alerting](monitoring-and-alerting.html)
-- [Metrics](metrics.html)
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [Metrics]({% link {{ page.version.version }}/metrics.md %})

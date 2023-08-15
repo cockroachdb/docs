@@ -5,22 +5,22 @@ toc: true
 docs_area: reference.transaction_retry_error_reference
 ---
 
-When a [transaction](transactions.html) is unable to complete due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a _transaction retry error_ is emitted to the client.
+When a [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a _transaction retry error_ is emitted to the client.
 
 Transaction retry errors fall into two categories:
 
-- **Serialization Errors** indicate that a transaction failed because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions. These errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
-- **Internal State Errors** indicate that the cluster itself is experiencing an issue, such as being [overloaded](ui-overload-dashboard.html), which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
+- **Serialization Errors** indicate that a transaction failed because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. These errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
+- **Internal State Errors** indicate that the cluster itself is experiencing an issue, such as being [overloaded]({% link {{ page.version.version }}/ui-overload-dashboard.md %}), which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
 
-All transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string [`restart transaction`](common-errors.html#restart-transaction). Further, each error includes a [specific error code](#transaction-retry-error-reference) to assist with targeted troubleshooting.
+All transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string [`restart transaction`]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction). Further, each error includes a [specific error code](#transaction-retry-error-reference) to assist with targeted troubleshooting.
 
 When experiencing transaction retry errors, you should follow the guidance under [Actions to take](#actions-to-take), and then consult the reference for your [specific transaction retry error](#transaction-retry-error-reference) for guidance specific to the error message encountered.
 
 ## Overview
 
-CockroachDB always attempts to find a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
+CockroachDB always attempts to find a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions.
 
-Whenever possible, CockroachDB will [auto-retry a transaction internally](transactions.html#automatic-retries) without notifying the client. CockroachDB will only send a serialization error to the client when it cannot resolve the error automatically without client-side intervention.
+Whenever possible, CockroachDB will [auto-retry a transaction internally]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without notifying the client. CockroachDB will only send a serialization error to the client when it cannot resolve the error automatically without client-side intervention.
 
 The main reason why CockroachDB cannot auto-retry every serialization error without sending an error to the client is that the SQL language is "conversational" by design. The client can send arbitrary statements to the server during a transaction, receive some results, and then decide to issue other arbitrary statements inside the same transaction based on the server's response.
 
@@ -48,32 +48,32 @@ To handle these types of errors, you have the following options:
 
 - If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it.
 - If you're building an application in the following languages, Cockroach Labs has created adapters that include automatic retry handling:
-   - **Go** developers using [GORM](https://github.com/jinzhu/gorm) or [pgx](https://github.com/jackc/pgx) can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package. For an example, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
-   - **Python** developers using [SQLAlchemy](https://www.sqlalchemy.org) can use the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
-   - **Ruby (Active Record)** developers can use the [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter). For an example, see [Build a Ruby App with CockroachDB and Active Record](build-a-ruby-app-with-cockroachdb-activerecord.html).
-- If you're building an application with another driver or data access framework that is [supported by CockroachDB](third-party-database-tools.html), we recommend reusing the retry logic in our ["Simple CRUD" Example Apps](example-apps.html). For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
-- If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side retry handling example](transaction-retry-error-example.html).
-- **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
+   - **Go** developers using [GORM](https://github.com/jinzhu/gorm) or [pgx](https://github.com/jackc/pgx) can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package. For an example, see [Build a Go App with CockroachDB]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}).
+   - **Python** developers using [SQLAlchemy](https://www.sqlalchemy.org) can use the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB and SQLAlchemy]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-sqlalchemy.md %}).
+   - **Ruby (Active Record)** developers can use the [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter). For an example, see [Build a Ruby App with CockroachDB and Active Record]({% link {{ page.version.version }}/build-a-ruby-app-with-cockroachdb-activerecord.md %}).
+- If you're building an application with another driver or data access framework that is [supported by CockroachDB]({% link {{ page.version.version }}/third-party-database-tools.md %}), we recommend reusing the retry logic in our ["Simple CRUD" Example Apps]({% link {{ page.version.version }}/example-apps.md %}). For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}).
+- If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side retry handling example]({% link {{ page.version.version }}/transaction-retry-error-example.md %}).
+- **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).
 
 #### Client-side retry handling example
 
-For a conceptual example of application-defined retry logic, and testing that logic against your application's needs, see the [client-side retry handling example](transaction-retry-error-example.html).
+For a conceptual example of application-defined retry logic, and testing that logic against your application's needs, see the [client-side retry handling example]({% link {{ page.version.version }}/transaction-retry-error-example.md %}).
 
 ### Minimize transaction retry errors
 
 In addition to the steps described in [Client-side retry handling](#client-side-retry-handling), which detail how to configure your application to restart a failed transaction, there are also a number of changes you can make to your application logic to reduce the number of transaction retry errors that reach the client application in the first place.
 
-Reduce failed transactions caused by [timestamp pushes](architecture/transaction-layer.html#timestamp-cache) or [read invalidation](architecture/transaction-layer.html#read-refreshing):
+Reduce failed transactions caused by [timestamp pushes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) or [read invalidation]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing):
 
 {% include {{ page.version.version }}/performance/reduce-contention.md %}
 
-Increase the chance that CockroachDB can [automatically retry](transactions.html#automatic-retries) a failed transaction:
+Increase the chance that CockroachDB can [automatically retry]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) a failed transaction:
 
 {% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
 
 ## Transaction retry error reference
 
-Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during [advanced troubleshooting](performance-recipes.html#transaction-contention).
+Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during [advanced troubleshooting]({% link {{ page.version.version }}/performance-recipes.md %}#transaction-contention).
 
 - [RETRY_WRITE_TOO_OLD](#retry_write_too_old)
 - [RETRY_SERIALIZABLE](#retry_serializable)
@@ -107,8 +107,8 @@ The `RETRY_WRITE_TOO_OLD` error occurs when a transaction _A_ tries to write to 
 1. Retry transaction _A_ as described in [client-side retry handling](#client-side-retry-handling).
 1. Adjust your application logic as described in [minimize transaction retry errors](#minimize-transaction-retry-errors). In particular, try to:
 
-   1. Send all of the statements in your transaction in a [single batch](transactions.html#batched-statements).
-   1. Use [`SELECT FOR UPDATE`](select-for-update.html) to aggressively lock rows that will later be updated in the transaction.
+   1. Send all of the statements in your transaction in a [single batch]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+   1. Use [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) to aggressively lock rows that will later be updated in the transaction.
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
 
@@ -124,29 +124,29 @@ TransactionRetryWithProtoRefreshError: ... RETRY_SERIALIZABLE ...
 
 The `RETRY_SERIALIZABLE` error occurs in the following cases:
 
-1. When a transaction _A_ has its timestamp moved forward (also known as _A_ being "pushed") as CockroachDB attempts to find a serializable transaction ordering. Specifically, transaction _A_ tried to write a key that transaction _B_ had already read, and _B_ was supposed to be serialized after _A_ (i.e., _B_ had a higher timestamp than _A_). CockroachDB will try to serialize _A_ after _B_ by changing _A_'s timestamp, but it cannot do that when another transaction has subsequently written to some of the keys that _A_ has read and returned to the client. When that happens, the `RETRY_SERIALIZATION` error is signalled. For more information about how timestamp pushes work in our transaction model, see the [architecture docs on the transaction layer's timestamp cache](architecture/transaction-layer.html).
+1. When a transaction _A_ has its timestamp moved forward (also known as _A_ being "pushed") as CockroachDB attempts to find a serializable transaction ordering. Specifically, transaction _A_ tried to write a key that transaction _B_ had already read, and _B_ was supposed to be serialized after _A_ (i.e., _B_ had a higher timestamp than _A_). CockroachDB will try to serialize _A_ after _B_ by changing _A_'s timestamp, but it cannot do that when another transaction has subsequently written to some of the keys that _A_ has read and returned to the client. When that happens, the `RETRY_SERIALIZATION` error is signalled. For more information about how timestamp pushes work in our transaction model, see the [architecture docs on the transaction layer's timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
 
-1. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
+1. When a [high-priority transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
 
-1. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-stale-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
+1. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) interval (closed timestamps enable [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}#how-stale-follower-reads-work) and [Change Data Capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %})). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 **Action:**
 
 1. If you encounter case 1 or 2 above, the solution is to:
    1. Retry transaction _A_ as described in [client-side retry handling](#client-side-retry-handling).
    1. Adjust your application logic as described in [minimize transaction retry errors](#minimize-transaction-retry-errors). In particular, try to:
-      1. Send all of the statements in your transaction in a [single batch](transactions.html#batched-statements).
-      1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
+      1. Send all of the statements in your transaction in a [single batch]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+      1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
 1. If you encounter case 3 above, the solution is to:
-   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html).
+   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}) and [CDC changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
    1. Retry transaction _A_ as described in [client-side retry handling](#client-side-retry-handling).
    1. Adjust your application logic as described in [minimize transaction retry errors](#minimize-transaction-retry-errors). In particular, try to:
-      1. Send all of the statements in your transaction in a [single batch](transactions.html#batched-statements).
-      1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
+      1. Send all of the statements in your transaction in a [single batch]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+      1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}) and [CDC changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
@@ -166,7 +166,7 @@ The `RETRY_ASYNC_WRITE_FAILURE` error occurs when some kind of problem with your
 **Action:**
 
 1. Retry the transaction as described in [client-side retry handling](#client-side-retry-handling). This is worth doing because the problem with the cluster is likely to be transient.
-1. Investigate the problems with your cluster.  For cluster troubleshooting information, see [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html).
+1. Investigate the problems with your cluster.  For cluster troubleshooting information, see [Troubleshoot Cluster Setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}).
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
 
@@ -187,7 +187,7 @@ The `ReadWithinUncertaintyIntervalError` can occur when two transactions which s
 For example, if the clock on node _A_ is ahead of the clock on node _B_, a transaction started on node _A_ may be able to commit a write with a timestamp that is still in the "future" from the perspective of node _B_. A later transaction that starts on node _B_ should be able to see the earlier write from node _A_, even if _B_'s clock has not caught up to _A_. The "read within uncertainty interval" occurs if we discover this situation in the middle of a transaction, when it is too late for the database to handle it automatically. When node _B_'s transaction retries, it will unambiguously occur after the transaction from node _A_.
 
 {{site.data.alerts.callout_info}}
-This behavior is non-deterministic: it depends on which node is the [leaseholder](architecture/life-of-a-distributed-transaction.html#leaseholder-node) of the underlying data range. It’s generally a sign of contention. Uncertainty errors are always possible with near-realtime reads under contention.
+This behavior is non-deterministic: it depends on which node is the [leaseholder]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#leaseholder-node) of the underlying data range. It’s generally a sign of contention. Uncertainty errors are always possible with near-realtime reads under contention.
 {{site.data.alerts.end}}
 
 **Action:**
@@ -196,12 +196,12 @@ The solution is to do one of the following:
 
 1. Be prepared to retry on uncertainty (and other) errors, as described in [client-side retry handling](#client-side-retry-handling).
 1. Adjust your application logic as described in [minimize transaction retry errors](#minimize-transaction-retry-errors). In particular, try to:
-   1. Send all of the statements in your transaction in a [single batch](transactions.html#batched-statements).
-   1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
-1. If you [trust your clocks](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized), you can try lowering the [`--max-offset` option to `cockroach start`](cockroach-start.html#flags), which provides an upper limit on how long a transaction can continue to restart due to uncertainty.
+   1. Send all of the statements in your transaction in a [single batch]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+   1. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+1. If you [trust your clocks]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-node-clocks-are-not-properly-synchronized), you can try lowering the [`--max-offset` option to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#flags), which provides an upper limit on how long a transaction can continue to restart due to uncertainty.
 
 {{site.data.alerts.callout_info}}
-Uncertainty errors are a sign of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
+Uncertainty errors are a sign of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-conflicts).
 {{site.data.alerts.end}}
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
@@ -226,9 +226,9 @@ This error occurs in the cases described below.
 
 1. When a transaction _A_ has its timestamp moved forward (also known as _A_ being "pushed") as CockroachDB attempts to find a serializable transaction ordering. Specifically, transaction _A_ tried to write a key that transaction _B_ had already read. _B_ was supposed to be serialized after _A_ (i.e., _B_ had a higher timestamp than _A_). CockroachDB will try to serialize _A_ after _B_ by changing _A_'s timestamp.
 
-1. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_. Transaction _B_ may get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client.
+1. When a [high-priority transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_. Transaction _B_ may get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client.
 
-1. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-stale-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
+1. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) interval (closed timestamps enable [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}#how-stale-follower-reads-work) and [Change Data Capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %})). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
 
 **Action:**
 
@@ -236,7 +236,7 @@ This error occurs in the cases described below.
 1. If you encounter case 3 above, you can increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}) and [CDC changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
@@ -253,7 +253,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_ABORT
 
 The `ABORT_REASON_ABORTED_RECORD_FOUND` error means that the client application is trying to use a transaction that has been aborted. This happens in one of the following cases:
 
-- Write-write conflict: Another [high-priority transaction](transactions.html#transaction-priorities) _B_ encountered a write intent by our transaction _A_, and tried to push _A_'s timestamp.
+- Write-write conflict: Another [high-priority transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) _B_ encountered a write intent by our transaction _A_, and tried to push _A_'s timestamp.
 - Cluster overload: _B_ thinks that _A_'s transaction coordinator node is dead, because the coordinator node hasn't heartbeated the transaction record for a few seconds.
 - Deadlock: Some transaction _B_ is trying to acquire conflicting locks in reverse order from transaction _A_.
 
@@ -263,11 +263,11 @@ If you are encountering deadlocks:
 
 - Avoid producing deadlocks in your application by making sure that transactions acquire locks in the same order.
 
-If you are using only default [transaction priorities](transactions.html#transaction-priorities):
+If you are using only default [transaction priorities]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities):
 
-- This error means your cluster has problems. You are likely overloading it. Investigate the source of the overload, and do something about it. For more information, see [Node liveness issues](cluster-setup-troubleshooting.html#node-liveness-issues).
+- This error means your cluster has problems. You are likely overloading it. Investigate the source of the overload, and do something about it. For more information, see [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 
-If you are using [high- or low-priority transactions](transactions.html#transaction-priorities):
+If you are using [high- or low-priority transactions]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities):
 
 1. Retry the transaction as described in [client-side retry handling](#client-side-retry-handling)
 1. Adjust your application logic as described in [minimize transaction retry errors](#minimize-transaction-retry-errors).
@@ -326,7 +326,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_NEW_L
 
 **Description:**
 
-The `ABORT_REASON_NEW_LEASE_PREVENTS_TXN` error occurs because the timestamp cache will not allow transaction _A_ to create a transaction record. A new lease wipes the timestamp cache, so this could mean the [leaseholder](architecture/life-of-a-distributed-transaction.html#leaseholder-node) was moved and the duration of transaction _A_ was unlucky enough to happen across a lease acquisition. In other words, leaseholders got shuffled out from underneath transaction _A_ (due to no fault of the client application or schema design), and now it has to be retried.
+The `ABORT_REASON_NEW_LEASE_PREVENTS_TXN` error occurs because the timestamp cache will not allow transaction _A_ to create a transaction record. A new lease wipes the timestamp cache, so this could mean the [leaseholder]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#leaseholder-node) was moved and the duration of transaction _A_ was unlucky enough to happen across a lease acquisition. In other words, leaseholders got shuffled out from underneath transaction _A_ (due to no fault of the client application or schema design), and now it has to be retried.
 
 **Action:**
 
@@ -342,7 +342,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_TIMES
 
 **Description:**
 
-The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge](architecture/distribution-layer.html#range-merges) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
+The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
 
 **Action:**
 
@@ -358,9 +358,9 @@ Retry transaction _A_ as described in [client-side retry handling](#client-side-
 
 **Description:**
 
-When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
+When the `inject_retry_errors_enabled` [session variable]({% link {{ page.version.version }}/set-vars.md %}) is set to `true`, any statement (with the exception of [`SET` statements]({% link {{ page.version.version }}/set-vars.md %})) executed in the session inside of an explicit transaction will return this error.
 
-For more details, see [Test transaction retry logic](transaction-retry-error-example.html#test-transaction-retry-logic).
+For more details, see [Test transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-example.md %}#test-transaction-retry-logic).
 
 **Action:**
 
@@ -368,9 +368,9 @@ To turn off error injection, set the `inject_retry_errors_enabled` session varia
 
 ## See also
 
-- [Common Errors and Solutions](common-errors.html)
-- [Transactions](transactions.html)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
-- [Transaction Retry Error Example](transaction-retry-error-example.html)
-- [DB Console Transactions Page](ui-transactions-page.html)
-- [Architecture - Transaction Layer](architecture/transaction-layer.html)
+- [Common Errors and Solutions]({% link {{ page.version.version }}/common-errors.md %})
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})
+- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Transaction Retry Error Example]({% link {{ page.version.version }}/transaction-retry-error-example.md %})
+- [DB Console Transactions Page]({% link {{ page.version.version }}/ui-transactions-page.md %})
+- [Architecture - Transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %})

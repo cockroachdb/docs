@@ -5,15 +5,15 @@ toc: true
 docs_area: reference.sql
 ---
 
-Stored query results in [materialized view](views.html#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement](sql-statements.html) updates the stored query results of a materialized view.
+Stored query results in [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement]({% link {{ page.version.version }}/sql-statements.md %}) updates the stored query results of a materialized view.
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support materialized views that are refreshed on [transaction commit](commit-transaction.html).
+CockroachDB does not support materialized views that are refreshed on [transaction commit]({% link {{ page.version.version }}/commit-transaction.md %}).
 {{site.data.alerts.end}}
 
 ## Required privileges
 
-The user must be the [owner](alter-view.html) of the materialized view or have [admin](security-reference/authorization.html#admin-role) privileges.
+The user must be the [owner]({% link {{ page.version.version }}/alter-view.md %}) of the materialized view or have [admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) privileges.
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ The user must be the [owner](alter-view.html) of the materialized view or have [
 
 ## Example
 
-The following example uses the [sample `bank` database](cockroach-workload.html#bank-workload), populated with some workload values.
+The following example uses the [sample `bank` database]({% link {{ page.version.version }}/cockroach-workload.md %}#bank-workload), populated with some workload values.
 
 Suppose that you create a materialized view on the `bank` table:
 
@@ -102,7 +102,7 @@ Recall that materialized views do not automatically update their stored results.
 (402 rows)
 ~~~
 
-To update the materialized view's results, use a [`REFRESH`](refresh.html) statement:
+To update the materialized view's results, use a [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -122,8 +122,8 @@ To update the materialized view's results, use a [`REFRESH`](refresh.html) state
 
 ## See also
 
-- [Materialized views](views.html#materialized-views)
-- [`CREATE VIEW`](create-view.html)
-- [`SHOW TABLES`](show-tables.html)
-- [`ALTER VIEW`](alter-view.html)
-- [`DROP VIEW`](drop-view.html)
+- [Materialized views]({% link {{ page.version.version }}/views.md %}#materialized-views)
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
+- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})

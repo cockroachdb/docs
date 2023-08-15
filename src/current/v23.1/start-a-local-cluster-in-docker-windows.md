@@ -11,7 +11,7 @@ docs_area: deploy
   <button id="windows" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button>
 </div>
 
-Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
+Once you've [installed the official CockroachDB Docker image]({% link {{ page.version.version }}/install-cockroachdb.md %}), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -19,9 +19,9 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 ## Before you begin
 
-- Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
-- For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes. See [Orchestration](kubernetes-overview.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
+- Make sure you have already [installed the official CockroachDB Docker image]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- For quick SQL testing or app development, consider [running a single-node cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead.
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes. See [Orchestration]({% link {{ page.version.version }}/kubernetes-overview.md %}) for more details, and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 
 ## Step 1. Create a bridge network
 
@@ -112,7 +112,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
     - `--net`: The bridge network for the container to join. See step 1 for more details.
     - `-p 26257:26257 -p 8080:8080`: These flags map the default port for inter-node and client-node communication (`26257`) and the default port for HTTP requests to the DB Console (`8080`) from the container to the host. This enables inter-container communication and makes it possible to call up the DB Console from a browser.
     - `-v "roach1:/cockroach/cockroach-data"`: This flag mounts the `roach1` Docker volume into the container's filesystem at `/cockroach/cockroach-data/`. This volume will contain data and logs for the container, and the volume will persist after the container is stopped or deleted. For more details, see Docker's [volumes](https://docs.docker.com/storage/volumes/) documentation.
-    - `{{page.release_info.docker_image}}:{{page.release_info.version}} start (...) --join`: The CockroachDB command to [start a node](cockroach-start.html) in the container. The `--advertise-addr`, `--http-addr`, `--listen-addr`, and `--sql-addr` flags cause CockroachDB to listen on separate ports for inter-node traffic, DB Console traffic, and SQL traffic. The `--join` flag contains each node's hostname or IP address and the port where it listens for inter-node traffic from other nodes.
+    - `{{page.release_info.docker_image}}:{{page.release_info.version}} start (...) --join`: The CockroachDB command to [start a node]({% link {{ page.version.version }}/cockroach-start.md %}) in the container. The `--advertise-addr`, `--http-addr`, `--listen-addr`, and `--sql-addr` flags cause CockroachDB to listen on separate ports for inter-node traffic, DB Console traffic, and SQL traffic. The `--join` flag contains each node's hostname or IP address and the port where it listens for inter-node traffic from other nodes.
 
 1. Start the second node and configure it to listen on `roach2:26258` for SQL clients and `roach2:8081` for the DB Console and to publish these ports, and to use `roach2:26357`for inter-node traffic. The offsets for the published ports avoid conflicts with `roach1`'s published ports. The named volume `roach2` is mounted in the container at `/cockroach/cockroach-data`.
 
@@ -171,7 +171,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
     Cluster successfully initialized
     ~~~
 
-    Each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command runs the `grep` command from within the `roach1` container to display lines in its `/cockroach-data/logs/cockroach.log` log file that contain the string `node starting` and the next 11 lines.
+    Each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command runs the `grep` command from within the `roach1` container to display lines in its `/cockroach-data/logs/cockroach.log` log file that contain the string `node starting` and the next 11 lines.
 
     {% include_cached copy-clipboard.html %}
     ~~~ powershell
@@ -197,7 +197,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
 ## Step 4. Use the built-in SQL client
 
-Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell](cockroach-sql.html) in the `roach1` container.
+Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) in the `roach1` container.
 
 1. Start the SQL shell in a container or from an external system that can reach the Docker host. Set `--host` to the Docker host's IP address and use any of the ports where nodes are listening for SQL connections, `26257`, `26258`, or `26259`. This example connects the SQL shell within the `roach1` container to `roach2:26258`. You could also connect to `roach3:26259`.
 
@@ -206,7 +206,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     docker exec -it roach1 ./cockroach sql --host=roach2:26258 --insecure
     ~~~
 
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -272,10 +272,10 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 ## Step 5. Run a sample workload
 
-CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
+CockroachDB also comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR]({% link {{ page.version.version }}/movr.md %}).
 
 {{site.data.alerts.callout_info}}
-The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
+The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}). Instead, you must use a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) at the end of the command.
 {{site.data.alerts.end}}
 
 1. Load the initial dataset on `roach1:26257`
@@ -294,50 +294,50 @@ The `cockroach workload` command does not support connection or security flags l
 
 ## Step 6. Access the DB Console
 
-The [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
 1. When you started the first node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, so go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
 
-1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v23.1/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.
+    This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
-    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation]({% link {{ page.version.version }}/known-limitations.md %}#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v23.1/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 1. Optionally verify that DB Console instances for `roach2` and `roach3` are reachable on ports 8081 and 8082 and show the same information as port 8080.
 
-The CockroachDB [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
 1. When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host, so go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v23.1/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.
+    This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
-    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation]({% link {{ page.version.version }}/known-limitations.md %}#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v23.1/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6.  Stop the cluster
 
-1. Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes](node-shutdown.html#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
+1. Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/node-shutdown.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ powershell
@@ -363,7 +363,7 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 ## What's next?
 
-- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
-- [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build an app with CockroachDB](example-apps.html)
-- Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [multi-region performance](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)
+- Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
+- [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
+- Further explore CockroachDB capabilities like [fault tolerance and automated repair]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}), [multi-region performance]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}), and [JSON support]({% link {{ page.version.version }}/demo-json-support.md %})

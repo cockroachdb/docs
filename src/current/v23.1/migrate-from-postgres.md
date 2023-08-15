@@ -7,7 +7,7 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
+The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data]({% link {{ page.version.version }}/aws-dms.md %}) from PostgreSQL to CockroachDB. You can also [migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
@@ -20,11 +20,11 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 
 ### Primary keys
 
-PostgreSQL and CockroachDB have different best practices surrounding [primary keys](primary-key.html) on tables. While it's common to see sequences and auto-incrementing primary keys in PostgreSQL, these features can cause hotspots within your cluster when reading or writing large amounts of data. Cockroach Labs recommends that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns.
+PostgreSQL and CockroachDB have different best practices surrounding [primary keys]({% link {{ page.version.version }}/primary-key.md %}) on tables. While it's common to see sequences and auto-incrementing primary keys in PostgreSQL, these features can cause hotspots within your cluster when reading or writing large amounts of data. Cockroach Labs recommends that you use [multi-column primary keys]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) or the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) datatype for primary key columns.
 
-If you are working with a table that must be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). We recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
+If you are working with a table that must be indexed on sequential keys, consider using [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}). We recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
 
-For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/).
+For further information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/).
 
 ## Step 1. Dump the PostgreSQL database
 
@@ -50,7 +50,7 @@ $ pg_dump employees > /tmp/employees-full.sql
 
 For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below:
 
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
+- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`]({% link {{ page.version.version }}/string.md %}) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
 
 - A `CREATE TYPE employee ...` statement needed to be removed.
 
@@ -67,14 +67,14 @@ $ pg_dump -t employees  employees > /tmp/employees.sql
 
 For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below.
 
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
+- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`]({% link {{ page.version.version }}/string.md %}) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`](import.html) can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`]({% link {{ page.version.version }}/import.md %}) can pull from, see the following:
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -88,7 +88,7 @@ You can choose from several variants of the [`IMPORT`][import] statement, depend
 - [Import a table from a full database dump](#import-a-table-from-a-full-database-dump)
 - [Import a table from a table dump](#import-a-table-from-a-table-dump)
 
-Note that all of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
+Note that all of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
 
 ### Import a full database dump
 
@@ -180,7 +180,7 @@ Example usage:
 
 ### Ignore unsupported statements
 
- The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default:** `false`.
+ The [`ignore_unsupported_statements` option]({% link {{ page.version.version }}/import.md %}#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default:** `false`.
 
 If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
 
@@ -207,7 +207,7 @@ Example usage:
 By default, [`IMPORT PGDUMP`][import] supports foreign keys. **Default: false**. Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL. It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
 
 {{site.data.alerts.callout_info}}
-The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](import.html#import-options).
+The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options]({% link {{ page.version.version }}/import.md %}#import-options).
 
 For example, if you get the error message `pq: there is no unique constraint matching given keys for referenced table tablename`, use `IMPORT ... WITH skip_foreign_keys`.
 {{site.data.alerts.end}}
@@ -219,31 +219,31 @@ Example usage:
 > IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
 ~~~
 
-[Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) commands after importing the data.
+[Foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) commands after importing the data.
 
 ## See also
 
 - [`IMPORT`][import]
-- [Import Performance Best Practices](import-performance-best-practices.html)
+- [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
-- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [Back up Data](take-full-and-incremental-backups.html)
-- [Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?]({% link {{ page.version.version }}/frequently-asked-questions.md %}#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [Back up Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [csv]: migrate-from-csv.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html
+[import]: {% link {{ page.version.version }}/import.md %}
 [pgdump]: https://www.postgresql.org/docs/current/static/app-pgdump.html
 [postgres]: migrate-from-postgres.html
 [pgschema]: https://www.postgresql.org/docs/current/static/ddl-schemas.html
 [pgloader]: https://pgloader.io/
 
-<!-- Notes
+{% comment %} Notes
 
 These instructions were prepared with the following versions:
 
@@ -256,4 +256,4 @@ These instructions were prepared with the following versions:
 - /usr/local/bin/mysql Ver 14.14 Distrib 5.7.22, for osx10.12 (x86_64)
   using EditLine wrapper
 
--->
+{% endcomment %}

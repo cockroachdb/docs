@@ -8,7 +8,7 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html).
+This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
 {{site.data.alerts.end}}
 
 This page explains how to add and remove CockroachDB nodes on Kubernetes.
@@ -23,19 +23,19 @@ This page explains how to add and remove CockroachDB nodes on Kubernetes.
 {% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
 
 {{site.data.alerts.callout_success}}
-If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
+If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}), substitute `kubectl` with `oc` in the following commands.
 {{site.data.alerts.end}}
 </section>
 
 ## Add nodes
 
 <section class="filter-content" markdown="1" data-scope="operator">
-Before scaling up CockroachDB, note the following [topology recommendations](recommended-production-settings.html#topology):
+Before scaling up CockroachDB, note the following [topology recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology):
 
 - Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
 - Each availability zone should have the same number of CockroachDB nodes.
 
-If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example](deploy-cockroachdb-with-kubernetes.html)), we recommend scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
+If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})), we recommend scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
 
 1. Run `kubectl get nodes` to list the worker nodes in your Kubernetes cluster. There should be at least as many worker nodes as pods you plan to add. This ensures that no more than one pod will be placed on each worker node.
 
@@ -103,7 +103,7 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
         persistentvolumeclaim "datadir-cockroachdb-5" deleted
         ~~~
 
-1. Update `nodes` in the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster), with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one pod:
+1. Update `nodes` in the Operator's custom resource, which you downloaded when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one pod:
 
     ~~~
     nodes: 6
@@ -166,13 +166,13 @@ If you plan to eventually [scale up](#add-nodes) the cluster after scaling down,
 If you want to enable the Operator to automatically prune PVCs when scaling down, see [Automatic PVC pruning](#automatic-pvc-pruning). However, note that this workflow is currently unsupported.
 {{site.data.alerts.end}}
 
-Before scaling down CockroachDB, note the following [topology recommendation](recommended-production-settings.html#topology):
+Before scaling down CockroachDB, note the following [topology recommendation]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology):
 
 - Each availability zone should have the same number of CockroachDB nodes.
 
-If your nodes are distributed across 3 availability zones (as in our [deployment example](deploy-cockroachdb-with-kubernetes.html)), we recommend scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
+If your nodes are distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})), we recommend scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
 
-1. Update `nodes` in the custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale down to 3 nodes:
+1. Update `nodes` in the custom resource, which you downloaded when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale down to 3 nodes:
 
     ~~~
     nodes: 3

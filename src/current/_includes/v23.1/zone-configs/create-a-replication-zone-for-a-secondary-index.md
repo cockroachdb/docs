@@ -1,15 +1,15 @@
 {{site.data.alerts.callout_success}}
-The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries.
+The [Cost-based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) can take advantage of replication zones for secondary indexes when optimizing queries.
 {{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
 
-The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
+The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
 
 To control replication for a specific secondary index, use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone).
 
 {{site.data.alerts.callout_success}}
-To get the name of a secondary index, which you need for the `CONFIGURE ZONE` statement, use the [`SHOW INDEX`](show-index.html) or [`SHOW CREATE TABLE`](show-create.html) statements.
+To get the name of a secondary index, which you need for the `CONFIGURE ZONE` statement, use the [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}) or [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) statements.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

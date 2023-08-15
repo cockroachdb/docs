@@ -11,7 +11,7 @@ docs_area: manage
 
 [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644) helps centralize and automate provisioning, deprovisioning, and identity management for {{ site.data.products.db }} organization users and groups from your identity provider (IdP).
 
-Rather than using [invitations](managing-access.html#invite-team-members-to-an-organization) or self-service [autoprovisioning](cloud-org-sso.html#autoprovisioning), SCIM autoprovisioning tasks are performed centrally by a team of IAM admins in your IdP, who manage the assignment of your organization's users to your organization's app integrations. This page describes SCIM provisioning and shows how to configure and use it to provision {{ site.data.products.db }} users.
+Rather than using [invitations]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) or self-service [autoprovisioning]({% link cockroachcloud/cloud-org-sso.md %}#autoprovisioning), SCIM autoprovisioning tasks are performed centrally by a team of IAM admins in your IdP, who manage the assignment of your organization's users to your organization's app integrations. This page describes SCIM provisioning and shows how to configure and use it to provision {{ site.data.products.db }} users.
 
 ## Overview of SCIM provisioning
 
@@ -20,7 +20,7 @@ This section describes how SCIM provisioning works if you use Okta. Depending on
 If your IdP is Okta, then it may be helpful to read Okta's [article about SCIM(https://developer.okta.com/docs/concepts/scim/), as well as [Configure provisioning for an app integration
 ](https://help.okta.com/en-us/Content/Topics/Provisioning/lcm/lcm-provision-application.htm) in the Okta documentation. Otherwise, refer to your IdP's documentation about configuring SCIM.
 
-To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to {{ site.data.products.db }} using a {{ site.data.products.db }} service account with the [**Org Administrator**](authorization.html#org-administrator) or [**Org Administrator (legacy)** role](authorization.html#org-administrator-legacy).
+To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to {{ site.data.products.db }} using a {{ site.data.products.db }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) or [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
 
 From then on, the app integration works as follows.
 
@@ -29,7 +29,7 @@ From then on, the app integration works as follows.
 1. When an IAM admin assigns a user or group to the app integration, the app integration uses the {{ site.data.products.db }} API to provision an account for the user, or for each of the group's members.
 1. When an IAM admin unassigns a user or group from the app integration, or when the user or group is removed from the IdP, the app integration removes or deactivates users in {{ site.data.products.db }} based on the app integration's assignments.
 
-When a user is directly or indirectly unassigned, their {{ site.data.products.db }} account is disabled or removed, depending on the capabilities of your IdP. To remove a disabled user from {{ site.data.products.db }}, refer to [Manage an Organization's Members](managing-access.html#manage-an-organizations-users).
+When a user is directly or indirectly unassigned, their {{ site.data.products.db }} account is disabled or removed, depending on the capabilities of your IdP. To remove a disabled user from {{ site.data.products.db }}, refer to [Manage an Organization's Members]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users).
 
 {{site.data.alerts.callout_info}}
 Okta disables deprovisioned users and does not support deleting them.
@@ -58,13 +58,13 @@ To learn more about Group Push, refer to [Automate Group Management](#automate-g
 
 ## Requirements
 
-1. As a user with either the [**Org Administrator**](authorization.html#org-administrator) or [**Org Administrator (legacy)** role](authorization.html#org-administrator-legacy) role:
+1. As a user with either the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) or [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role:
 
-   1. [Enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-cloud-organization-sso).
-   1. [Create a service account](managing-access.html#create-a-service-account) with the [**Org Administrator (legacy)**](authorization.html#org-administrator-legacy) or [**Org Administrator** role](authorization.html#org-administrator) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the {{ site.data.products.db }} API.
+   1. [Enable Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-cloud-organization-sso).
+   1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) with the [**Org Administrator (legacy)**]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the {{ site.data.products.db }} API.
    1. Contact your account team to enable your {{ site.data.products.db }} organization in SCIM limited access.
 
-1. If your IdP is Okta, SCIM provisioning can be enabled only on a [custom SAML authentication method](configure-cloud-org-sso.html#saml). This requirement is imposed by Okta, and is not part of the SCIM or SAML protocols.
+1. If your IdP is Okta, SCIM provisioning can be enabled only on a [custom SAML authentication method]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml). This requirement is imposed by Okta, and is not part of the SCIM or SAML protocols.
 
 Individual IdPs may impose different requirements, and the exact steps and requirements for enabling SCIM autoprovisioning depend upon your IdP. Refer to your IdP's documentation about configuring SCIM provisioning.
 
@@ -73,12 +73,12 @@ Individual IdPs may impose different requirements, and the exact steps and requi
 The exact steps and requirements for enabling SCIM provisioning depend upon your IdP. At a minimum, you must provide your IdP two pieces of information:
 
 - The endpoint to the {{ site.data.products.db }} SCIM API, `https://cockroachlabs.cloud/api/scim/v2`.
-- The API token of a {{ site.data.products.db }} service account with the [**Org Administrator (legacy)**](authorization.html#org-administrator-legacy) or [**Org Administrator**](authorization.html#org-administrator) role.
+- The API token of a {{ site.data.products.db }} service account with the [**Org Administrator (legacy)**]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 
 To add SCIM provisioning to a SAML app integration in Okta:
 
 1. Log in to Okta Admin Dashboard as an admin user.
-1. Click **Applications** and edit the [SAML](configure-cloud-org-sso.html#saml) app integration for your {{ site.data.products.db }} organization.
+1. Click **Applications** and edit the [SAML]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml) app integration for your {{ site.data.products.db }} organization.
 1. Click **Edit**.
 1. Click **Provisioning**.
 1. Select **SCIM** and click **Save**.
@@ -109,7 +109,7 @@ When you assign a group to the app integration, accounts are provisioned for eac
 After you assign a user to the app integration, changes that you make to the user's record in Okta, such as renaming the user or changing their email address, are automatically applied to the user's {{ site.data.products.db }} account.
 
 1. Log in to Okta Admin Dashboard as an IAM admin.
-1. Click **Applications** and click the [SAML](configure-cloud-org-sso.html#saml) application for your {{ site.data.products.db }} organization.
+1. Click **Applications** and click the [SAML]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml) application for your {{ site.data.products.db }} organization.
 1. Click **Assignments**. When a user or group is assigned to an application, Okta allows them to sign in to the application.
 1. Click **Assign**, then select **Assign to People** or **Assign to Groups**.
 
@@ -130,7 +130,7 @@ If you assign a group to the app integration, its members are provisioned and ap
 To remove a user's access to {{ site.data.products.db }}, unassign the user from the app integration.
 
 1. Log in to Okta Admin Dashboard as an admin user.
-1. Click **Applications** and click the [SAML](configure-cloud-org-sso.html#saml) application for your {{ site.data.products.db }} organization.
+1. Click **Applications** and click the [SAML]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml) application for your {{ site.data.products.db }} organization.
 1. Click **Assignments**.
 1. Next to a user or group, click **More Actions** > **Deactivate**.
 
@@ -156,7 +156,7 @@ The following sections show how to enable and manage Okta's Group Push feature. 
 To enable Group Push and begin synchronizing a group with {{ site.data.products.db }}:
 
 1. Log in to Okta Admin Dashboard as an admin user.
-1. Click **Applications** and click the [SAML](configure-cloud-org-sso.html#saml) app integration for your {{ site.data.products.db }} organization.
+1. Click **Applications** and click the [SAML]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml) app integration for your {{ site.data.products.db }} organization.
 1. Click the **Push Groups** tab. Unless you disable **Push group memberships immediately**, changes you make in this tab will be applied immediately.
 
    1. To link a group:
@@ -181,12 +181,12 @@ To view details about a group:
 
 ### Manage a group's roles
 
-Within {{ site.data.products.db }}, you can grant [roles](authorization.html#organization-user-roles) to a pushed group, and those roles are automatically granted to the group's members who have accounts in {{ site.data.products.db }}.
+Within {{ site.data.products.db }}, you can grant [roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) to a pushed group, and those roles are automatically granted to the group's members who have accounts in {{ site.data.products.db }}.
 
 - When you push a group whose members already exist in {{ site.data.products.db }} and assign roles to the group, those members are granted the group's roles, in addition to roles explicitly granted to them.
 - When the group's membership changes in your IdP, those changes are synchronized with the group in {{ site.data.products.db }}. If a {{ site.data.products.db }} account is added to or removed from the group in your IdP, they gain or lose roles granted to the group in {{ site.data.products.db }}.
 
-This section shows how to view and manage a group's roles in the {{ site.data.products.db }} Console or using the [Cloud API](cloud-api.html).
+This section shows how to view and manage a group's roles in the {{ site.data.products.db }} Console or using the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="console">Cloud Console</button>
@@ -229,9 +229,9 @@ When using Okta, if a configured group fails to be provisioned in {{ site.data.p
 
 ## What next?
 
-- Learn more about [Cloud Organization SSO](cloud-org-sso.html)
-- [Configure Cloud Organization SSO](configure-cloud-org-sso.html)
-- Learn more about [authenticating to {{ site.data.products.db }}](authentication.html).
+- Learn more about [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
+- [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
+- Learn more about [authenticating to {{ site.data.products.db }}]({% link cockroachcloud/authentication.md %}).
 - Refer to the following topics in the Okta documentation:
 
       - [Manage Users](https://help.okta.com/en-us/Content/Topics/users-groups-profiles/usgp-people.htm)

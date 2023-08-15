@@ -177,7 +177,7 @@ Final balances:
 	account 2: 350
 ~~~
 
-However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
+However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

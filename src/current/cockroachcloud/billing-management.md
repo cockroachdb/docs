@@ -7,7 +7,7 @@ docs_area:
 
 The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
-Users with the [Billing Coordinator](authorization.html#billing-coordinator) or [Org Administrator (Legacy)](authorization.html#org-administrator-legacy) role can manage billing for the organization.
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) or [Org Administrator (Legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role can manage billing for the organization.
 
 ## Set up billing for an organization
 
@@ -45,7 +45,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 ## Check trial code details
 
-If you used a {{ site.data.products.dedicated }} trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
+If you used a {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
