@@ -26,7 +26,7 @@ For a demo of MOLT Verify, watch the following video:
 The following databases are currently supported:
 
 - PostgreSQL
-- [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.html)
+- [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
 - CockroachDB
 
 ## Install and run MOLT Verify
@@ -79,8 +79,7 @@ Flag | Description
 ----------|------------
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
-`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for [`INT`](int.html), [`UUID`](uuid.html), and [`FLOAT`](float.html) data types.
-{% comment %}`--table_splits` | Number of shards to split the table into. <br>**Default:** 16{% endcomment %}
+`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for [`INT`]({% link {{ page.version.version }}/int.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [`FLOAT`]({% link {{ page.version.version }}/float.md %}) data types.
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
@@ -89,16 +88,16 @@ Flag | Description
 
 ## Limitations
 
-- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size int` [flag](#supported-flags).
+- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size` [flag](#supported-flags).
 - MySQL enums and set types are not supported.
-- When a [`STRING`]({% link {{ page.version.version }}/string.html) is used as a [primary key]({% link {{ page.version.version }}/primary-key.html), validation may fail to differences in how CockroachDB and other databases handle case sensitivity in strings.
+- When a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a [primary key]({% link {{ page.version.version }}/primary-key.md %}), validation may fail to differences in how CockroachDB and other databases handle case sensitivity in strings.
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - Geospatial types cannot yet be compared.
 
 ## See also
 
-- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}/migration-overview.html)
-{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.html){% endcomment %}
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.html)
-- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.html)
+- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %})
+{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}{% endcomment %}
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
