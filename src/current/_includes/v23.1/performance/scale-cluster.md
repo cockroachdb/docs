@@ -13,7 +13,7 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -44,7 +44,7 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

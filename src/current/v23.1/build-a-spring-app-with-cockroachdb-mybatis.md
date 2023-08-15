@@ -53,7 +53,7 @@ To get the application code, download or clone the [`mybatis-cockroach-demo` rep
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-Start the [built-in SQL shell](cockroach-sql.html):
+Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -95,13 +95,13 @@ Create a certificate and key for the `maxroach` user by running the following co
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
 
-The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 ## Step 6. Run the application
 
 To run the application:
 
-1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and user certificates in the connection parameters. For example:
+1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and user certificates in the connection parameters. For example:
 
       {% include_cached copy-clipboard.html %}
       ~~~ yml
@@ -128,7 +128,7 @@ To run the application:
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-Start the [built-in SQL shell](cockroach-sql.html):
+Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -165,7 +165,7 @@ Exit the SQL shell:
 
 To run the application:
 
-1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). For example:
+1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). For example:
 
       ~~~ yaml
       ...
@@ -270,7 +270,7 @@ All [MyBatis-Spring](https://mybatis.org/spring/) applications need a [`DataSour
 
 Applications that use MyBatis-Spring-Boot-Starter typically need just an annotated mapper interface and an existing `DataSource` in the Spring environment. The module detects the `DataSource`, creates a `SqlSessionFactory` from the `DataSource`, creates a thread-safe [`SqlSessionTemplate`](https://mybatis.org/spring/sqlsession.html#SqlSessionTemplate) with the `SqlSessionFactory`, and then auto-scans the mappers and links them to the `SqlSessionTemplate` for injection. The `SqlSessionTemplate` automatically commits, rolls back, and closes sessions, based on the application's [Spring-based transaction configuration](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction).
 
-This sample application implements [batch write operations](insert.html#performance-best-practices), a CockroachDB best practice for executing multiple `INSERT` and `UPSERT` statements. MyBatis applications that support batch operations require some additional configuration work, even if the application uses MyBatis-Spring-Boot-Starter:
+This sample application implements [batch write operations]({% link {{ page.version.version }}/insert.md %}#performance-best-practices), a CockroachDB best practice for executing multiple `INSERT` and `UPSERT` statements. MyBatis applications that support batch operations require some additional configuration work, even if the application uses MyBatis-Spring-Boot-Starter:
 
 - The application must define a specific mapper interface for batch query methods.
 - The application must define a `SqlSessionTemplate` constructor, specifically for batch operations, that uses the [`BATCH` executor type](https://mybatis.org/mybatis-3/apidocs/reference/org/apache/ibatis/executor/BatchExecutor.html).
@@ -317,7 +317,7 @@ The `@Mapper` annotation declares the interface a mapper for MyBatis to scan. Th
 
 #### Batch account mapper
 
-`src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java` defines a mapper interface for [batch writes](insert.html#performance-best-practices):
+`src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java` defines a mapper interface for [batch writes]({% link {{ page.version.version }}/insert.md %}#performance-best-practices):
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
@@ -342,9 +342,9 @@ This interface has a single `INSERT` statement query method, along with a method
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/service/MyBatisAccountService.java %}
 ~~~
 
-Note that the public methods (i.e., the methods to be called by other classes in the project) are annotated as [`@Transactional`](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations) methods. This ensures that all of the SQL statements executed in the data access layer are run within the context of a [database transaction](transactions.html)
+Note that the public methods (i.e., the methods to be called by other classes in the project) are annotated as [`@Transactional`](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations) methods. This ensures that all of the SQL statements executed in the data access layer are run within the context of a [database transaction]({% link {{ page.version.version }}/transactions.md %})
 
-`@Transactional` takes a number of parameters, including a `propagation` parameter that determines the transaction propagation behavior around an object (i.e., at what point in the stack a transaction starts and ends). `propagation=REQUIRES_NEW` for the methods in the service layer, meaning that a new transaction must be created each time a request is made to the service layer. With this propagation behavior, the application follows the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary), as the service boundaries determine where a [transaction](transactions.html) starts and ends rather than the lower-level query methods of the [mapper interfaces](#mappers).
+`@Transactional` takes a number of parameters, including a `propagation` parameter that determines the transaction propagation behavior around an object (i.e., at what point in the stack a transaction starts and ends). `propagation=REQUIRES_NEW` for the methods in the service layer, meaning that a new transaction must be created each time a request is made to the service layer. With this propagation behavior, the application follows the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary), as the service boundaries determine where a [transaction]({% link {{ page.version.version }}/transactions.md %}) starts and ends rather than the lower-level query methods of the [mapper interfaces](#mappers).
 
 For more details on aspect-oriented transaction management in this application, [see below](#transaction-management).
 
@@ -368,7 +368,7 @@ Instances of the `BatchResults` class, defined in `src/main/java/com/example/coc
 
 MyBatis-Spring supports Spring's [declarative, aspect-oriented transaction management syntax](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative), including the [`@Transactional`](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations) annotation and [AspectJ's AOP annotations](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-aspectj).
 
-Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) into applications written on CockroachDB. In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, defined in `src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java`:
+Transactions may require retries if they experience deadlock or [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that cannot be resolved without allowing [serialization]({% link {{ page.version.version }}/demo-serializable.md %}) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) into applications written on CockroachDB. In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, defined in `src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
@@ -407,8 +407,8 @@ Spring documentation:
 
 CockroachDB documentation:
 
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Client Connection Parameters](connection-parameters.html)
-- [CockroachDB Developer Guide](developer-guide-overview.html)
-- [Example Apps](example-apps.html)
-- [Transactions](transactions.html)
+- [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [CockroachDB Developer Guide]({% link {{ page.version.version }}/developer-guide-overview.md %})
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})

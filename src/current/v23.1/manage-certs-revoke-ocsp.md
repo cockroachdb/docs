@@ -7,12 +7,12 @@ docs_area: manage.security
 
 {{ site.data.products.core }} supports [Online Certificate Status Protocol (OCSP)](https://wikipedia.org/wiki/Online_Certificate_Status_Protocol) for certificate revocation.
 
-Read more about [Public Key Infrastructure (PKI) and Transport Layer Security (TLS) in CockroachDB](security-reference/transport-layer-security.html).
+Read more about [Public Key Infrastructure (PKI) and Transport Layer Security (TLS) in CockroachDB]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}).
 
 To enable certificate revocation using your OCSP service:
 
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
-1. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+1. [Set the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
       {% include copy-clipboard.html %}
       ~~~ sql

@@ -5,16 +5,16 @@ toc: true
 docs_area: 
 ---
 
-This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 See also:
 
-- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
-- [Use the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
+- [Use the CockroachDB CLI to provision a development cluster]({% link {{ page.version.version }}/manage-certs-cli.md %}).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
 
 
-To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
+To create these certificates and keys, use the `cockroach cert` [commands]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) (for example, a public CA or your organizational CA).
 
 ## Subcommands
 
@@ -62,7 +62,7 @@ Note the following:
 
 - The CA key should not be uploaded to the nodes and clients, so it should be created in a separate directory.
 
-- Keys (files ending in `.key`) must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
+- Keys (files ending in `.key`) must meet the [permission requirements check]({% link {{ page.version.version }}/cockroach-cert.md %}#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
 
 ## Examples
 
@@ -439,6 +439,6 @@ After you have uploaded all the keys and certificates to the corresponding nodes
 
 ## See also
 
-- [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
-- [Client Connection Parameters](connection-parameters.html)
+- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}): Learn about starting a multi-node secure cluster and accessing it from a client.
+- [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}): Learn more about the flags you pass when adding a node to a secure cluster
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})

@@ -1,1 +1,1 @@
-Use a [third-party data migration tool](third-party-database-tools.html#data-migration-tools) (e.g., [AWS DMS](aws-dms.html), [Qlik](qlik.html), [Striim](striim.html)) to load the data. 
+Use a [third-party data migration tool]({% link {{ page.version.version }}/third-party-database-tools.md %}#data-migration-tools) (e.g., [AWS DMS]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik]({% link {{ page.version.version }}/qlik.md %}), [Striim](striim.html)) to load the data. 

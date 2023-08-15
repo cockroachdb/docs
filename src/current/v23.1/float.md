@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-CockroachDB supports various inexact, floating-point number [data types](data-types.html) with up to 17 digits of decimal precision.
+CockroachDB supports various inexact, floating-point number [data types]({% link {{ page.version.version }}/data-types.md %}) with up to 17 digits of decimal precision.
 
 They are handled internally using the [standard double-precision (64-bit binary-encoded) IEEE754 format](https://wikipedia.org/wiki/IEEE_floating_point).
 
@@ -20,14 +20,14 @@ Name | Aliases
 
 ## Syntax
 
-A constant value of type `FLOAT` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
+A constant value of type `FLOAT` can be entered as a [numeric literal]({% link {{ page.version.version }}/sql-constants.md %}#numeric-literals).
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
 and [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN) cannot be
 entered using numeric literals directly and must be converted using an
-[interpreted literal](sql-constants.html#interpreted-literals) or an
-[explicit conversion](scalar-expressions.html#explicit-type-coercions)
+[interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals) or an
+[explicit conversion]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions)
 from a string literal instead.
 
 The following values are recognized:
@@ -91,7 +91,7 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Supported casting and conversion
 
-`FLOAT` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+`FLOAT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -102,4 +102,4 @@ Type | Details
 
 ## See also
 
-[Data Types](data-types.html)
+[Data Types]({% link {{ page.version.version }}/data-types.md %})

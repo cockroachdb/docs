@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-A _table expression_ defines a data source in the `FROM` sub-clause of a [`SELECT` clause](select-clause.html) or as parameter to a [`TABLE` clause](selection-queries.html#table-clause).
+A _table expression_ defines a data source in the `FROM` sub-clause of a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) or as parameter to a [`TABLE` clause]({% link {{ page.version.version }}/selection-queries.md %}#table-clause).
 
-A [join](joins.html) is a particular kind of table expression.
+A [join]({% link {{ page.version.version }}/joins.md %}) is a particular kind of table expression.
 
 ## Synopsis
 
@@ -24,9 +24,9 @@ Parameter | Description
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `index_name` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Result from a function](#result-from-a-function).
-`row_source_extension_stmt` | [Result rows](#use-the-output-of-another-statement) from a [supported statement](sql-grammar.html#row_source_extension_stmt).
-`select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#use-a-subquery).
-`joined_table` | A [join expression](joins.html).
+`row_source_extension_stmt` | [Result rows](#use-the-output-of-another-statement) from a [supported statement]({% link {{ page.version.version }}/sql-grammar.md %}#row_source_extension_stmt).
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to use as [subquery](#use-a-subquery).
+`joined_table` | A [join expression]({% link {{ page.version.version }}/joins.md %}).
 
 ## Table expressions language
 
@@ -38,9 +38,9 @@ Construct | Description | Examples
 `function_name ( exprs ... )` | Generate tabular data using a [scalar function](#scalar-function-as-data-source) or [table generator function](#table-generator-functions). | `sin(1.2)`, `generate_series(1,10)`
 `<table expr> [AS] name [( name [, ...] )]` | [Rename a table and optionally columns](#aliased-table-expressions). | `accounts a`, `accounts AS a`, `accounts AS a(id, b)`
 `<table expr> WITH ORDINALITY` | [Enumerate the result rows](#ordinality-annotation). | `accounts WITH ORDINALITY`
-`<table expr> JOIN <table expr> ON ...` | [Join expression](joins.html). | `orders o JOIN customers c ON o.customer_id = c.id`
-`(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#use-a-subquery). | `(SELECT * FROM customers c)`
-`[... statement ...]` | Use the result rows of an [explainable statement](sql-grammar.html#preparable_stmt).<br><br>This is a CockroachDB extension. However, Cockroach Labs recommends that you use the standard SQL [CTE syntax](common-table-expressions.html) instead. See [Use the output of another statement](#use-the-output-of-another-statement) for an example. | `[SHOW COLUMNS FROM accounts]`
+`<table expr> JOIN <table expr> ON ...` | [Join expression]({% link {{ page.version.version }}/joins.md %}). | `orders o JOIN customers c ON o.customer_id = c.id`
+`(... subquery ...)` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) used as [subquery](#use-a-subquery). | `(SELECT * FROM customers c)`
+`[... statement ...]` | Use the result rows of an [explainable statement]({% link {{ page.version.version }}/sql-grammar.md %}#preparable_stmt).<br><br>This is a CockroachDB extension. However, Cockroach Labs recommends that you use the standard SQL [CTE syntax]({% link {{ page.version.version }}/common-table-expressions.md %}) instead. See [Use the output of another statement](#use-the-output-of-another-statement) for an example. | `[SHOW COLUMNS FROM accounts]`
 
 The following sections provide details on each of these options.
 
@@ -60,10 +60,10 @@ identifier.identifier.identifier
 ~~~
 
 A single SQL identifier in a table expression designates
-the contents of the table, [view](views.html), or sequence with that name
-in the current database, as configured by [`SET DATABASE`](set-vars.html).
+the contents of the table, [view]({% link {{ page.version.version }}/views.md %}), or sequence with that name
+in the current database, as configured by [`SET DATABASE`]({% link {{ page.version.version }}/set-vars.md %}).
 
-If the name is composed of two or more identifiers, [name resolution](sql-name-resolution.html) rules apply.
+If the name is composed of two or more identifiers, [name resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}) rules apply.
 
 For example:
 
@@ -82,13 +82,13 @@ For example:
 {% include {{page.version.version}}/misc/force-index-selection.md %}
 
 {{site.data.alerts.callout_info}}
-You can also force index selection for [`DELETE`](delete.html#force-index-selection-for-deletes) and [`UPDATE`](update.html#force-index-selection-for-updates) statements.
+You can also force index selection for [`DELETE`]({% link {{ page.version.version }}/delete.md %}#force-index-selection-for-deletes) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}#force-index-selection-for-updates) statements.
 {{site.data.alerts.end}}
 
 ### Access a common table expression
 
 A single identifier in a table expression can refer to a
-[common table expression](common-table-expressions.html) defined
+[common table expression]({% link {{ page.version.version }}/common-table-expressions.md %}) defined
 earlier.
 
 For example:
@@ -110,15 +110,15 @@ name ( arguments... )
 ~~~
 
 The name of a function, followed by an opening parenthesis, followed
-by zero or more [scalar expressions](scalar-expressions.html), followed by
+by zero or more [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}), followed by
 a closing parenthesis.
 
 The resolution of the function name follows the same rules as the
-resolution of table names. See [Name Resolution](sql-name-resolution.html) for more details.
+resolution of table names. See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}) for more details.
 
 #### Scalar function as data source
 
-When a [function returning a single value](scalar-expressions.html#function-calls-and-sql-special-forms) is
+When a [function returning a single value]({% link {{ page.version.version }}/scalar-expressions.md %}#function-calls-and-sql-special-forms) is
 used as a table expression, it is interpreted as tabular data with a
 single column and single row containing the function result.
 
@@ -164,7 +164,7 @@ You access SRFs using `(SRF).x` where `x` is one of the following:
 - The name of a column returned from the function.
 - `*`, to denote all columns.
 
-For example (the output of queries against [`information_schema`](information-schema.html) will vary per database):
+For example (the output of queries against [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) will vary per database):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -261,7 +261,7 @@ For example:
 ~~~
 
 {{site.data.alerts.callout_info}}
-`WITH ORDINALITY` necessarily prevents some optimizations of the surrounding query. Use it sparingly if performance is a concern, and always check the output of [`EXPLAIN`](explain.html) in case of doubt.
+`WITH ORDINALITY` necessarily prevents some optimizations of the surrounding query. Use it sparingly if performance is a concern, and always check the output of [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) in case of doubt.
 {{site.data.alerts.end}}
 
 ## `JOIN` expressions
@@ -269,7 +269,7 @@ For example:
 `JOIN` expressions combine the results of two or more table expressions
 based on conditions on the values of particular columns.
 
-See [`JOIN` expressions](joins.html) for more details.
+See [`JOIN` expressions]({% link {{ page.version.version }}/joins.md %}) for more details.
 
 ## Use another query as a table expression
 
@@ -278,8 +278,8 @@ another SQL query or statement as a table expression.
 
 ### Use a subquery
 
-You can use a [selection query](selection-queries.html) enclosed between parentheses `()`
-as a table expression. This is called a _[subquery](subqueries.html)_.
+You can use a [selection query]({% link {{ page.version.version }}/selection-queries.md %}) enclosed between parentheses `()`
+as a table expression. This is called a _[subquery]({% link {{ page.version.version }}/subqueries.md %})_.
 
 #### Syntax
 
@@ -305,7 +305,7 @@ For example:
 ~~~
 
 {{site.data.alerts.callout_info}}
-- See [Subqueries](subqueries.html) for more details and performance best practices.
+- See [Subqueries]({% link {{ page.version.version }}/subqueries.md %}) for more details and performance best practices.
 - To use other statements that produce data in a table expression, for example `SHOW`, see [Use the output of another statement](#use-the-output-of-another-statement).
 {{site.data.alerts.end}}
 
@@ -317,15 +317,15 @@ For example:
 WITH table_expr AS ( <stmt> ) SELECT .. FROM table_expr
 ~~~
 
-A [`WITH` query](common-table-expressions.html) designates the output of executing a statement as a row source. The following statements are supported as row sources for table expressions:
+A [`WITH` query]({% link {{ page.version.version }}/common-table-expressions.md %}) designates the output of executing a statement as a row source. The following statements are supported as row sources for table expressions:
 
-- [`DELETE`](delete.html)
-- [`EXPLAIN`](explain.html)
-- [`INSERT`](insert.html)
-- [`SELECT`](select-clause.html)
-- [`SHOW`](sql-statements.html#data-definition-statements)
-- [`UPDATE`](update.html)
-- [`UPSERT`](upsert.html)
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
+- [`SHOW`]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements)
+- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
 
 For example:
 
@@ -359,8 +359,8 @@ client:
 
 ## Composability
 
-You can use table expressions in the [`SELECT` clause](select-clause.html) and
-[`TABLE` clause](selection-queries.html#table-clause) variants of [selection clauses](selection-queries.html#selection-clauses).
+You can use table expressions in the [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) and
+[`TABLE` clause]({% link {{ page.version.version }}/selection-queries.md %}#table-clause) variants of [selection clauses]({% link {{ page.version.version }}/selection-queries.md %}#selection-clauses).
 Thus they can appear everywhere where a selection clause is possible. For example:
 
 {% include_cached copy-clipboard.html %}
@@ -373,12 +373,12 @@ Thus they can appear everywhere where a selection clause is possible. For exampl
 > UPSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
 ~~~
 
-For more options to compose query results, see [Selection Queries](selection-queries.html).
+For more options to compose query results, see [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %}).
 
 ## See also
 
-- [Constants](sql-constants.html)
-- [Explainable statements](sql-grammar.html#preparable_stmt)
-- [Scalar Expressions](scalar-expressions.html)
-- [Data Types](data-types.html)
-- [Subqueries](subqueries.html)
+- [Constants]({% link {{ page.version.version }}/sql-constants.md %})
+- [Explainable statements]({% link {{ page.version.version }}/sql-grammar.md %}#preparable_stmt)
+- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Subqueries]({% link {{ page.version.version }}/subqueries.md %})

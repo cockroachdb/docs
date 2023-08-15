@@ -1,4 +1,4 @@
-Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance](recommended-production-settings.html#topology).
+Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`.
 
@@ -115,4 +115,4 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
     ...
     ~~~
 
-1. You can also open the [**Node List**](ui-cluster-overview-page.html#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
+1. You can also open the [**Node List**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.

@@ -7,11 +7,11 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) and [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
-After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
+After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), and [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
-CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
 
 ## Synopsis
 
@@ -28,26 +28,26 @@ Parameter         | Description
 `collectionURI`   | The URI that holds the backup collection.
 `ADD NEW_KMS`     | Apply the new KMS encryption key to the target backup.
 `WITH OLD_KMS`    | Reference one of the existing KMS URI(s) originally used to encrypt the backup.
-`kmsURI`          | The [URI](take-and-restore-encrypted-backups.html#uri-formats) for the KMS key.
+`kmsURI`          | The [URI]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats) for the KMS key.
 
 ## Required privileges
 
-- `ALTER BACKUP` can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- `ALTER BACKUP` can only be run by members of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). By default, the `root` user belongs to the `admin` role.
 - `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
 
-The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3`, `azure`, or `gs` with [`specified`](cloud-storage-authentication.html) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3`, `azure`, or `gs` with [`implicit`](cloud-storage-authentication.html) credentials.
+The backup collection's URI does **not** require the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) when using `s3`, `azure`, or `gs` with [`specified`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) credentials. The backup collection's URI **does** require the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) when using `s3`, `azure`, or `gs` with [`implicit`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) credentials.
 
-We recommend using [cloud storage](use-cloud-storage.html).
+We recommend using [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
 ## Examples
 
-`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)).
+`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) and [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)).
 
 {{site.data.alerts.callout_info}}
-When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
+When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) in the backup collection.
 {{site.data.alerts.end}}
 
-See [Cloud Storage Authentication](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
+See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
 
@@ -69,7 +69,7 @@ ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KE
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
 ~~~  
 
-To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
+To list backup directories at a collection's URI, see [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}).
 
 ### Add an Azure KMS key to an encrypted backup
 
@@ -93,7 +93,7 @@ ALTER BACKUP '2023/03/14-203808.29' IN 'azure://{container name}?AUTH=specified&
     WITH OLD_KMS = 'azure-kms:///{old key}/{old key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~  
 
-To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
+To list backup directories at a collection's URI, see [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}).
 
 ### Add a Google Cloud KMS key to an encrypted backup
 
@@ -115,11 +115,11 @@ ALTER BACKUP '2022/03/23-213101.37' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDEN
     WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~  
 
-To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
+To list backup directories at a collection's URI, see [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}).
 
 ## See also
 
-- [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [Use Cloud Storage](use-cloud-storage.html)
+- [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})

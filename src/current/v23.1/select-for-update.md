@@ -16,7 +16,7 @@ The following diagram shows the supported syntax for the optional `FOR` locking 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/for_locking.html %}
 </div>
 
-For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).
+For the full `SELECT` statement syntax documentation, see [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %}).
 
 ## Parameters
 
@@ -26,8 +26,8 @@ Locking strength dictates the row-level locking behavior on rows retrieved by a 
 
 Parameter | Description
 ----------|------------
-`FOR SHARE`/`FOR KEY SHARE` | This syntax is a no-op, allowed for PostgreSQL compatibility. Specifying `FOR SHARE`/`FOR KEY SHARE` does not cause CockroachDB to use shared locks over the rows retrieved by a statement.<br><br>Note that CockroachDB always [ensures serializability](demo-serializable.html), regardless of the specified locking strength.
-`FOR UPDATE`/`FOR NO KEY UPDATE` | Lock the rows returned by the [`SELECT`](selection-queries.html) statement, such that other transactions trying to access the rows must wait for the transaction to finish.<br><br>Note that in CockroachDB, the `FOR NO KEY UPDATE` locking strength is identical to the `FOR UPDATE` locking strength.
+`FOR SHARE`/`FOR KEY SHARE` | This syntax is a no-op, allowed for PostgreSQL compatibility. Specifying `FOR SHARE`/`FOR KEY SHARE` does not cause CockroachDB to use shared locks over the rows retrieved by a statement.<br><br>Note that CockroachDB always [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}), regardless of the specified locking strength.
+`FOR UPDATE`/`FOR NO KEY UPDATE` | Lock the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement, such that other transactions trying to access the rows must wait for the transaction to finish.<br><br>Note that in CockroachDB, the `FOR NO KEY UPDATE` locking strength is identical to the `FOR UPDATE` locking strength.
 
 ### Wait policies
 
@@ -38,11 +38,11 @@ Parameter | Description
 `SKIP LOCKED` | Skip rows that cannot be immediately locked.
 `NOWAIT` | Return an error if a row cannot be locked immediately.
 
-For documentation on all other parameters of a `SELECT` statement, see [Selection Queries](selection-queries.html).
+For documentation on all other parameters of a `SELECT` statement, see [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %}).
 
 ## Required privileges
 
-The user must have the `SELECT` and `UPDATE` [privileges](security-reference/authorization.html#managing-privileges) on the tables used as operands.
+The user must have the `SELECT` and `UPDATE` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the tables used as operands.
 
 ## Known limitations
 
@@ -109,12 +109,12 @@ COMMIT
 
 ## See also
 
-- [`SELECT`](select-clause.html)
-- [Selection Queries](selection-queries.html)
+- [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
 - [Transaction Contention][transaction_contention]
 
-<!-- Reference links -->
+{% comment %} Reference links {% endcomment %}
 
 [transaction_contention]: performance-best-practices-overview.html#transaction-contention
 [retries]: transaction-retry-error-reference.html#client-side-retry-handling
-[select]: select-clause.html
+[select]: {% link {{ page.version.version }}/select-clause.md %}

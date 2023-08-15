@@ -5,24 +5,24 @@ toc: true
 docs_area: manage.security
 ---
 
-[Customer-Managed Encryption Keys (CMEK)](cmek.html) for {{ site.data.products.dedicated }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to {{ site.data.products.db }}, while maintaining the ability to completely revoke {{ site.data.products.db }}'s access.
+[Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for {{ site.data.products.dedicated }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to {{ site.data.products.db }}, while maintaining the ability to completely revoke {{ site.data.products.db }}'s access.
 
-This page shows how to enable [Customer-Managed Encryption Keys (CMEK)](cmek.html) for a {{ site.data.products.dedicated }} advanced cluster.
+This page shows how to enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for a {{ site.data.products.dedicated }} advanced cluster.
 
 **Prerequisites**:
 
 - {% include cockroachcloud/cluster-operator-prereq.md %}
 - Permission to create and manage identity and access management (IAM) and key management (KMS) resources in your organization's Google Cloud Platform (GCP) project or Amazon Web Services (AWS) account.
-- CMEK can be enabled only on a {{ site.data.products.dedicated }} advanced [private cluster](private-clusters.html). CMEK is not supported on {{ site.data.products.serverless }}.
+- CMEK can be enabled only on a {{ site.data.products.dedicated }} advanced [private cluster]({% link cockroachcloud/private-clusters.md %}). CMEK is not supported on {{ site.data.products.serverless }}.
 
 {{site.data.alerts.callout_info}}
-During [{{ site.data.products.dedicated }} on Azure limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [{{ site.data.products.dedicated }} on Azure limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), CMEK is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 See also:
 
-- [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek.html#faqs)
-- [Encryption at Rest (Enterprise)](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest)
+- [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)]({% link cockroachcloud/cmek.md %}#faqs)
+- [Encryption at Rest (Enterprise)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest)
 
 
 ## Overview of CMEK management procedures
@@ -49,12 +49,12 @@ The following sections show how to enable CMEK on a cluster.
 
 ### Step 1. Prepare your {{ site.data.products.db }} organization
 
-1. [Create a {{ site.data.products.db }} service account](managing-access.html#manage-service-accounts).
-1. [Create an API key](managing-access.html#create-api-keys) for the service account to use.
+1. [Create a {{ site.data.products.db }} service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+1. [Create an API key]({% link cockroachcloud/managing-access.md %}#create-api-keys) for the service account to use.
 
 ### Step 2. Provision your cluster
 
-[Create a new private cluster](private-clusters.html) on {{ site.data.products.dedicated }} advanced.
+[Create a new private cluster]({% link cockroachcloud/private-clusters.md %}) on {{ site.data.products.dedicated }} advanced.
 
 ### Step 3. Provision IAM and KMS resources in your cloud tenant
 
@@ -65,14 +65,14 @@ Next, you must provision the required IAM and KMS resources in your organization
 
 Follow the instructions that correspond to your cluster's deployment environment:
 
-- [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
-- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html)
+- [Provisioning Amazon Web Services (AWS) for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
+- [Provisioning Google Cloud Platform (GCP) for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
 
 ### Step 4. Activate CMEK
 
 Follow the steps in this section to activate CMEK with a call to the cluster's `/cmek` endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-resources-in-your-cloud-tenant).
 
-Refer to the [API specification](../api/cloud/v1.html).
+Refer to the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
@@ -149,7 +149,7 @@ Refer to the [API specification](../api/cloud/v1.html).
 
 An API call displays information about your cluster's use of CMEK:
 
-See the [API specification](../api/cloud/v1.html).
+See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -164,7 +164,7 @@ curl --request GET \
 
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
-See the [API specification](../api/cloud/v1.html).
+See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 {{site.data.alerts.callout_danger}}
 Within your KMS, **do not** revoke access to, disable, schedule for destruction, or destroy a CMEK that is in use by one or more clusters. The CMEK is an external resource and is never stored in {{ site.data.products.db }}. If the CMEK for a cluster or region is not available in your KMS, nodes that are configured to use it cannot rejoin the cluster if they are restarted, and the cluster's managed {{ site.data.products.db }} backups will fail. Even if access to the CMEK is restored, affected nodes cannot automatically recover. For assistance in that situation, contact your Cockroach Labs account team.
@@ -360,7 +360,7 @@ Your cluster will continue to operate with the encryption keys it has provisione
 
 1. Update your cluster with the the Cloud API as follows:
 
-    See the [API specification](../api/cloud/v1.html).
+    See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
     {% include_cached copy-clipboard.html %}
     ```shell

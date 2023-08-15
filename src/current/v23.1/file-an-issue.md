@@ -5,7 +5,7 @@ toc: false
 docs_area: manage
 ---
 
-If you've tried to [troubleshoot](troubleshooting-overview.html) an issue yourself, have [reached out for help](support-resources.html), and are still stumped, you can file an issue in GitHub.
+If you've tried to [troubleshoot]({% link {{ page.version.version }}/troubleshooting-overview.md %}) an issue yourself, have [reached out for help]({% link {{ page.version.version }}/support-resources.md %}), and are still stumped, you can file an issue in GitHub.
 
 To file an issue in GitHub, we need the following information:
 

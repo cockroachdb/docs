@@ -9,7 +9,7 @@ The **Custom Chart** debug page in the DB Console lets you create one or multipl
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
-To view the Custom Chart page, [access the DB Console](ui-overview.html), click **Advanced Debug** In the left-hand navigation bar, and in the **Reports** section select **Custom Time Series Chart**.
+To view the Custom Chart page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}), click **Advanced Debug** In the left-hand navigation bar, and in the **Reports** section select **Custom Time Series Chart**.
 
 ## Use the Custom Chart page
 
@@ -42,13 +42,13 @@ Checking **Per Node** displays statistics for each node, which could show whethe
 ## Available metrics
 
 {{site.data.alerts.callout_info}}
-Some of the metrics listed below are already visible in other areas of the [DB Console](ui-overview.html).
+Some of the metrics listed below are already visible in other areas of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/metric-names.md %}
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

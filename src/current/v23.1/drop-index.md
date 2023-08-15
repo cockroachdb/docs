@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
+The `DROP INDEX` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes indexes from tables.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -15,17 +15,17 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on each specified table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on each specified table.
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
  `IF EXISTS`	| Drop the named indexes if they exist; if they do not exist, do not return an error.
- `table_name`	| The name of the table with the index you want to drop. Find table names with [`SHOW TABLES`](show-tables.html).
- `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's primary index.
- `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. `CASCADE` does not list objects it drops, so should be used cautiously.<br><br> To drop an index created with [`CREATE UNIQUE INDEX`](create-index.html#unique-indexes), you do not need to use `CASCADE`.
- `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
+ `table_name`	| The name of the table with the index you want to drop. Find table names with [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}).
+ `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}).<br/><br/>You cannot drop a table's primary index.
+ `CASCADE`	| Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %})) that depend on the indexes. `CASCADE` does not list objects it drops, so should be used cautiously.<br><br> To drop an index created with [`CREATE UNIQUE INDEX`]({% link {{ page.version.version }}/create-index.md %}#unique-indexes), you do not need to use `CASCADE`.
+ `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %})) depend on them.
  `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are dropped concurrently in CockroachDB.
 
 ## Viewing schema changes
@@ -97,7 +97,7 @@ You can drop this index with the `DROP INDEX` statement:
 <code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.
 {{site.data.alerts.end}}
 
-Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` columns of the `users` table:
+Suppose you create a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint on the `id` and `name` columns of the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -188,6 +188,6 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 
 ## See also
 
-- [Indexes](indexes.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [`SHOW JOBS`](show-jobs.html)
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})

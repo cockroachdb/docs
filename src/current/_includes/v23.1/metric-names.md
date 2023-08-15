@@ -8,7 +8,7 @@ Name | Description
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
-`changefeed.failures` | Total number of [changefeed jobs](show-jobs.html#show-changefeed-jobs) which have failed.
+`changefeed.failures` | Total number of [changefeed jobs]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) which have failed.
 `changefeed.running` | Number of currently running changefeeds, including sinkless.
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
@@ -39,10 +39,10 @@ Name | Description
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
-`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp](architecture/storage-layer.html#protected-timestamps) records owned by [changefeed jobs](show-jobs.html#show-changefeed-jobs).
-`jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs](show-jobs.html) currently considered paused. See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
-`jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protecting `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
-`jobs.{job_type}.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
+`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records owned by [changefeed jobs]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
+`jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}) currently considered paused. See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protecting `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}). See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_record_count` | Number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}). See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
 `jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
 `jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
@@ -226,8 +226,8 @@ Name | Description
 `round-trip-latency` | Distribution of round-trip latencies with other nodes in nanoseconds
 `security.certificate.expiration.ca` | Expiration timestamp in seconds since Unix epoch for the CA certificate. 0 means no certificate or error.
 `security.certificate.expiration.node` | Expiration timestamp in seconds since Unix epoch for the node certificate. 0 means no certificate or error.
-`schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by `BACKUP` schedules.
-`schedules.BACKUP.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `BACKUP` schedules.
+`schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protected by `BACKUP` schedules.
+`schedules.BACKUP.protected_record_count` | Number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by `BACKUP` schedules.
 `sql.bytesin` | Number of SQL bytes received
 `sql.bytesout` | Number of SQL bytes sent
 `sql.conns` | Number of active SQL connections. For new recent connections, refer to `sql.new_conns`.

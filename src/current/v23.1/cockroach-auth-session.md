@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-To create and manage web sessions and authentication tokens to the HTTP interface from the command line, use the `cockroach auth-session` [command](cockroach-commands.html) with the appropriate subcommands and flags.
+To create and manage web sessions and authentication tokens to the HTTP interface from the command line, use the `cockroach auth-session` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags.
 
 ## Subcommands
 
@@ -47,7 +47,7 @@ $ cockroach auth-session {subcommand} --help
 
 ## Flags
 
-All three `auth-session` subcommands accept the standard [SQL command-line flags](cockroach-start.html#flags).
+All three `auth-session` subcommands accept the standard [SQL command-line flags]({% link {{ page.version.version }}/cockroach-start.md %}#flags).
 
 In addition, the `auth-session login` subcommand supports the following flags.
 
@@ -89,14 +89,14 @@ Field | Description
 
 ## Required roles
 
-To run any of the `auth-session` subcommands, you must be a member of the [`admin` role](security-reference/authorization.html#admin-role). The user being authenticated via `login` or `logout` does not require any special roles.
+To run any of the `auth-session` subcommands, you must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). The user being authenticated via `login` or `logout` does not require any special roles.
 
 ## Considerations
 
-- The `login` subcommand allows users with the [`admin` role](security-reference/authorization.html#admin-role) to create HTTP authentication tokens with an arbitrary duration. If operational policy requires stricter control of authentication sessions, you can:
+- The `login` subcommand allows users with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) to create HTTP authentication tokens with an arbitrary duration. If operational policy requires stricter control of authentication sessions, you can:
 
   - Monitor the `system.web_sessions` table for all current and recent HTTP sessions. If you monitor this table regularly, consider adjusting the `server.log_gc.period` and
-`server.log_gc.max_deletions_per_cycle` [cluster settings](cluster-settings.html) to fine tune garbage collection for this table.
+`server.log_gc.max_deletions_per_cycle` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to fine tune garbage collection for this table.
   - Revoke HTTP authentication tokens as needed with the `logout` subcommand. See the [example](#terminate-all-active-sessions-for-a-user).
   - Set the `--expire-after` flag with a shorter duration. See the [example](#log-in-to-the-http-interface-with-a-custom-expiry).
 
@@ -207,5 +207,5 @@ A value of `NULL` in the `revoked` column indicates that the session is still ac
 
 ## See also
 
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [DB Console Overview](ui-overview.html)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})

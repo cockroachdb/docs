@@ -5,15 +5,15 @@ toc: true
 docs_area:
 ---
 
-This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application) tutorial.
+This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
 
-<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
+{% comment %} {% include {{ page.version.version }}/misc/movr-live-demo.md %} {% endcomment %}
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the tutorial, [Develop a Multi-Region Web Application](movr-flask-application.html). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
+Before you begin this section, complete the previous section of the tutorial, [Develop a Multi-Region Web Application]({% link {{ page.version.version }}/movr-flask-application.md %}). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
 
-In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications](movr-flask-setup.html), make sure that you have the following:
+In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}), make sure that you have the following:
 
 - [A Google Cloud account](https://cloud.google.com/)
 - [The Google Cloud SDK installed on your local machine](https://cloud.google.com/sdk/install)
@@ -21,10 +21,10 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [{{ site.data.products.dedicated }}](../cockroachcloud/quickstart.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [{{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
 
 {{site.data.alerts.callout_info}}
-You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
+You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
 ### Create a multi-region {{ site.data.products.dedicated }} cluster
@@ -226,16 +226,16 @@ We do not recommend deploying insecure web applications on public networks.
 
 ### Develop your own application
 
-This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform (GCP). CockroachDB supports [many more drivers and ORMs for development](example-apps.html), and you can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
+This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform (GCP). CockroachDB supports [many more drivers and ORMs for development]({% link {{ page.version.version }}/example-apps.md %}), and you can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
 
 ### Upgrade your deployment
 
-Some time after you have deployed your application, you will likely need to push changes that you've made locally. When pushing changes, be aware that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, see [Online Schema Changes](online-schema-changes.html).
+Some time after you have deployed your application, you will likely need to push changes that you've made locally. When pushing changes, be aware that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, see [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 ## See also
 
-<!-- [MovR (live demo)](https://movr.cloud)-->
-- [{{ site.data.products.db }} documentation](../cockroachcloud/quickstart.html)
+{% comment %} [MovR (live demo)](https://movr.cloud){% endcomment %}
+- [{{ site.data.products.db }} documentation](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)
