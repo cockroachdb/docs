@@ -1,6 +1,6 @@
 ---
 title: Use the MOLT Verify tool
-summary: Learn how to use the MOLT Verify tool to check for data discrepancies during a migration.
+summary: Learn how to use the MOLT Verify tool to check for data discrepancies during and after a migration.
 toc: true
 docs_area: migrate
 ---
@@ -26,7 +26,7 @@ For a demo of MOLT Verify, watch the following video:
 The following databases are currently supported:
 
 - PostgreSQL
-- [MySQL](migrate-from-mysql.html)
+- [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.html)
 - CockroachDB
 
 ## Install and run MOLT Verify
@@ -41,7 +41,7 @@ The following databases are currently supported:
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
 1. Run MOLT Verify: 
 
-    The `molt verify` command takes two or more SQL connection strings as arguments.
+    The `molt verify` command takes two SQL connection strings as arguments.
     
     Examples:
 
@@ -80,8 +80,8 @@ Flag | Description
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
 `--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for [`INT`](int.html), [`UUID`](uuid.html), and [`FLOAT`](float.html) data types.
-`--table_splits` | Number of shards to split the table into. <br>**Default:** 16
-`--row_batch_size` | Number of rows to get from a table at a time. <br>**Default:** 20000
+{% comment %}`--table_splits` | Number of shards to split the table into. <br>**Default:** 16{% endcomment %}
+`--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
@@ -98,7 +98,7 @@ Flag | Description
 
 ## See also
 
-- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}migration-overview.html)
-{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}migrate-from-postgres.html){% endcomment %}
-- [Migrate from MySQL]({% link {{ page.version.version }}migrate-from-mysql.html)
-- [Migrate from CSV]({% link {{ page.version.version }}migrate-from-csv.html)
+- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}/migration-overview.html)
+{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.html){% endcomment %}
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.html)
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.html)

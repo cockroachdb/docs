@@ -159,13 +159,8 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        Click **Save**.
 
-       This is an optional workaround to prevent
-       [data validation](#step-3-validate-the-migrated-data) from failing due
-       to a difference in how MySQL and CockroachDB handle case sensitivity
-       in strings. For more details, see the [MOLT Verify]
-       ({% link {
-       { page.version.version }}/molt-verify.md %}#limitations) documentation.
-
+       This is an optional workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to a difference in how MySQL and CockroachDB handle case sensitivity in strings. For more details, see the [MOLT Verify] ({% link {{ page.version.version }}/molt-verify.md %}#limitations) documentation.
+       
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
 
        You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.db }} Console.
