@@ -242,9 +242,9 @@ When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the fol
 - The [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option) option will create a topic using the fully qualified table name for each table the changefeed is watching.
 - The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) to which the changefeed will emit.
 
-You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
 
-For a list of compatible parameters and options, refer to [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
+For a list of compatible parameters and options, refer to [Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) on the `CREATE CHANGEFEED` page.
 
 ### Pub/Sub sink messages
 
