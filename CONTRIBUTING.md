@@ -4,9 +4,9 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 ## Setup
 
-This section helps you set up the tools you'll need to write the docs and use CockroachDB.
+This section helps you set up the tools you'll need to write the docs and build parts of the CockroachDB documentation locally.
 
-These instructions assume that you use macOS. If you use Linux, use your default package manager to install the packages mentioned in these steps, rather than Homebrew.
+These instructions assume that you use macOS. If you use Linux, use your default package manager to install the packages mentioned in these steps, rather than Homebrew. If you use Windows, use [Chocolatey](https://chocolatey.org) or a similar command-line package manager.
 
 1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations.
 
@@ -73,9 +73,13 @@ Once you're ready to contribute:
     $ git checkout -b "<your branch name>"
     ```
 
-2. Make your changes in the text editor of your choice (e.g., [Atom](https://atom.io/), [Sublime Text](https://www.sublimetext.com/)).
+2. Make your changes in the text editor of your choice (e.g., [Visual Studio Code](https://code.visualstudio.com/), [Sublime Text](https://www.sublimetext.com/)).
 
-    Each documented version of CockroachDB has a docs subdirectory. For example, docs for CockroachDB v19.1 are in the `v19.1` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
+    Each documented version/area of CockroachDB has a docs subdirectory within the `src` directory or the `src/current` directory. For example, docs for CockroachDB v23.1 are in the `src/current/v23.1` directory, whereas docs for our interactive tutorials are in the `src/interactive-tutorials` directory.
+    
+    If a version/area of the docs exists in `src/current`, its included content (`_includes`) and images (`images`) will also be found within `src/current`. Otherwise, it will be in the same subfolder as the content in `src`.
+
+    Archived docs content lives in `src/archived`.
 
 3. Check the files you've changed:
 
@@ -95,17 +99,20 @@ Once you're ready to contribute:
     git commit -m "<concise message describing changes>"
     ```
 
-6. Use Jekyll to [build a version of the site locally](#build-and-test-the-docs-locally) so you can view your changes in a browser:
+6. Use Jekyll to [build a specific part of the site locally](#build-and-test-the-docs-locally) so you can view your changes in a browser:
 
     ```
+    cd src/<docs area to build>
     make cockroachdb
     ```
 
+    **Note:** The `archived` folder is not configured to use Jekyll or any `make` commands.
+
 7. [Push your local branch to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
 
-8. Back in your fork of the CockroachDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `jseldess`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
+8. Back in your fork of the CockroachDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `cockroachdb/docs-prs`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
-We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; do not worry about the Teamcity fail status.
+We'll review your changes, providing feedback and guidance as necessary. Also, Netlify, the system we use to automate tests, will run the markdown files through Jekyll and then run a series of automated tests, including [htmltest](https://github.com/cockroachdb/htmltest), against the resulting HTML output to check for errors. If all automated tests pass, Netlify will attempt to provide a deploy preview link in a comment in the pull request.
 
 ## Keep contributing
 
@@ -130,15 +137,15 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 
 Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
 
-1. From the root directory of your clone, :
+1. From one of the subdirectories of the `src` directory of your clone (except for `src/archived`):
 
     - To build the CockroachDB docs, run `make cockroachdb`.
 
-2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
+2.  Point your browser to the server address provided in the command line and manually check your changes.
 
-    - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
+    - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/dev/new-page.html`.
 
-    - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser.
+    - When you make additional changes, Jekyll automatically regenerates the HTML content. No need to stop and re-start Jekyll; just refresh your browser after the file says it's been successfully updated.
 
     Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
 
@@ -149,15 +156,15 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
 ### Pages
 
-We provide documentation for each major version of CockroachDB. The pages for each version are found in a directory named for the version. For example, docs for CockroachDB v19.1 are in the `v19.1` directory, whereas docs for CockroachDB v19.2 are in the `v19.2` directory.
+We provide documentation for each major version of CockroachDB, as well as documentation for CockroachCloud, the CockroachDB API, releases, advisories, and interactive toturials. The pages for each docs area are found in a directory named for the docs area. For example, docs for CockroachDB v23.1 are in the `src/current/v23.1` directory, whereas docs for the CockroachDB API are in the `src/api` directory.
 
-Within each version directory, each page must be an `.md` file written in the redcarpet dialect of Markdown. File names should be lowercase with a dash between words, and should be brief but descriptive.
+Within each version directory and docs area directory, each page must be an `.md` file written in the [Redcarpet](https://github.com/vmg/redcarpet) dialect of Markdown. File names should be lowercase with a dash (`-`) between words and should be brief but descriptive.
 
 Example:
 
 - `name-of-your-file.md`
 
-Markdown pages must start with the following front-matter:
+Markdown pages must start with the following YAML front matter:
 
 ```
 ---
@@ -171,7 +178,7 @@ Field | Description | Default
 `title`| Used as the h1 header and written in title-case. | Nothing
 `summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. The summary must be between 50-160 characters. | Nothing
 
-Optionally, you can specify other fields in the front-matter:
+Optionally, you can specify other fields in the front matter:
 
 Field | Description | Default
 ------|-------------|--------
@@ -191,26 +198,26 @@ Field | Description | Default
 
 The CockroachDB Jekyll theme can auto-generate a page-level table of contents listing all h2 and h3 headers or just all h2 headers on the page. Related files: `js/toc.js` and `_includes/toc.html`.
 
-- To add a page TOC, set `toc: true` in the page's front-matter.
+- To add a page TOC, set `toc: true` in the page's front matter.
 
-- To omit a page TOC from the page, set `toc: false` in the page's front-matter.
+- To omit a page TOC from the page, set `toc: false` in the page's front matter.
 
-- By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
+- By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front matter.
 
 #### Auto-included content
 
-Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page includes a syntax diagram from `_includes/<version>/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/<version>/app`.
+Some pages auto-include content from the [`_includes`](src/current/_includes) directory. For example, the [build-a-python-app-with-cockroachdb-sqlalchemy.md](src/current/v23.1/build-a-python-app-with-cockroachdb-sqlalchemy.md) tutorial includes code samples from `_includes/<version>/setup/sample-setup-certs.md`.
 
-The syntax for including content is `{% include {{ page.version.version }}/<filepath> %}`, for example, `{% include {{ page.version.version }}/app/basic-sample.rb %}`.
+The syntax for including content is `{% include {{ page.version.version }}/<filepath> %}` (e.g., `{% include {{ page.version.version }}/app/retry-errors.md %}`).
 
 #### Version tags
 
 New and changed features should be called out in the documentation using version tags.
 
-- To add a version tag to a paragraph, place `<span class="version-tag">New in vX.X:</span>` at the start of the paragraph, e.g:
+- To add a version tag to a paragraph, place `{% include_cached new-in.html version="<version>" %}` at the start of the paragraph, e.g:
 
     ```
-    <span class="version-tag">New in v1.1:</span> The `user_privileges` view identifies global privileges.
+    {% include_cached new-in.html version="v22.2" %} The [**Databases**](#databases), [table details](#table-details), and [index details](#index-details) pages show recommendations to drop indexes based on index usage. You can traverse the **Databases** page and **Tables** view to determine which indexes have recommendations.
     ```
 
 - To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, for example:
@@ -219,19 +226,11 @@ New and changed features should be called out in the documentation using version
     ## SQL Shell Welcome <div class="version-tag">New in v2.1</div>
     ```
 
-When calling out a change, rather than something new, change `New in vX.X` to `Changed in vX.X`.
+When calling out a change, rather than something new, use `<span class="version-tag">Changed in vXY.Z</span>`
 
 #### Allowed hashes
 
-In a page's front-matter, you can specify a list of allowed hashes
-that do not correspond to a section heading on the page. This is
-currently used for pages with JavaScript toggle buttons, where the
-toggle to activate by default can be specified in the URL hash. If you
-attempt to link to, for example, `page-with-toggles.html#toggle-id` without
-listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
-that `toggle-id` does not exist on the page. Listing a hash in
-`allowed_hashes` will generate a placeholder element with that ID at the top
-of the page, which satisfies our HTML tester.
+In a page's front matter, you can specify a list of allowed hashes that do not correspond to a section heading on the page. This is currently used for pages with JavaScript toggle buttons, where the toggle to activate by default can be specified in the URL hash. If you attempt to link to, for example, `page-with-toggles.html#toggle-id` without listing `toggle-id` in `allowed_hashes`, our HTML tester will complain that `toggle-id` does not exist on the page. Listing a hash in `allowed_hashes` will generate a placeholder element with that ID at the top of the page, which satisfies our HTML tester.
 
 Here's an example from a page with OS toggles:
 
@@ -245,15 +244,15 @@ For information about how we use images in our docs, see [Images](https://github
 
 #### Feedback widget
 
-We show "Yes/No" feedback buttons at the bottom of every page by default. To remove these buttons from a page, set `feedback: false` in the page's front-matter.
+We show thumbs-up and thumbs-down feedback buttons after a page's TOC on the bottom-right portion of the docs window for every page by default. To remove these buttons from a page, set `feedback: false` in the page's front matter.
 
 #### Contributing options
 
-We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
+We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front matter.
 
 ### Sidebar
 
-For each documented version of CockroachDB, a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/sidebar-data-v1.0.json).
+For each documented version of CockroachDB (`vXY.Z`), a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v23.1 is defined by [`_includes/sidebar-data-v23.1.json`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/sidebar-data-v23.1.json).
 
 If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.
 
@@ -272,6 +271,7 @@ This example shows some of the first section of the sidenav, `Get Started`:
 - The first `items` field contains multiple objects, each defining pages in the section:
     - The first object defines the title and URL for the first page in the section, `Install CockroachDB`.
     - The second object is more complex. It defines a subsection titled `Start a Local Cluster`. This object contains its own `items` field, which in turn contains multiple objects, each defining the title and URL for a page.
+- Instead of using `v23.1` as the named version, we use the `${VERSION}` string interpolation.
 
 ``` json
 [
