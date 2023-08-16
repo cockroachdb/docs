@@ -518,7 +518,7 @@
       "title": "SQL Playground",
       "is_top_level": true,
       "urls": [
-        "/tutorials/sql-playground.html"
+        "https://www.cockroachlabs.com/docs/tutorials/sql-playground"
       ]
     }
   ]
