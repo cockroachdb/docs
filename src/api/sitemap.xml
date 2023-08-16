@@ -1,0 +1,15 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- for page in site.pages -%}
+    {%- unless page.url contains '404' or page.sitemap == false %}
+  <url>
+    <loc>{{ site.main_url | append: site.baseurl | append: page.url }}</loc>
+    <lastmod>{{ page.last_modified_at | date: "%Y-%m-%dT%H:%M:%S%:z" }}</lastmod>
+  </url>
+    {%- endunless -%}
+  {%- endfor %}
+</urlset>
