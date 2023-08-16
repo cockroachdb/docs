@@ -110,9 +110,9 @@ Once you're ready to contribute:
 
 7. [Push your local branch to your remote fork](https://help.github.com/articles/pushing-to-a-remote/).
 
-8. Back in your fork of the CockroachDB docs repo in the GitHub UI, [open a pull request](https://github.com/cockroachdb/docs/pulls) and assign it to `cockroachdb/docs-prs`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
+8. Back in your fork of the CockroachDB docs repo in the GitHub UI, [open a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) and assign it to `cockroachdb/docs-prs`. If you check the `Allow edits from maintainers` option when creating your pull request, we'll be able to make minor edits or fixes directly, if it seems easier than commenting and asking you to make those revisions, which can streamline the review process.
 
-We'll review your changes, providing feedback and guidance as necessary. Also, Netlify, the system we use to automate tests, will run the markdown files through Jekyll and then run a series of automated tests, including [htmltest](https://github.com/cockroachdb/htmltest), against the resulting HTML output to check for errors. If all automated tests pass, Netlify will attempt to provide a deploy preview link in a comment in the pull request.
+Someone in the group will review your changes, providing feedback and guidance as necessary. Also, Netlify, the system we use to automate tests, will run the markdown files through Jekyll and then run a series of automated tests, including [htmltest](https://github.com/cockroachdb/htmltest), against the resulting HTML output to check for errors. If all automated tests pass, Netlify will attempt to provide a deploy preview link in a comment in the pull request.
 
 ## Keep contributing
 
@@ -244,7 +244,7 @@ For information about how we use images in our docs, see [Images](https://github
 
 #### Feedback widget
 
-We show thumbs-up and thumbs-down feedback buttons after a page's TOC on the bottom-right portion of the docs window for every page by default. To remove these buttons from a page, set `feedback: false` in the page's front matter.
+We show thumbs-up and thumbs-down feedback buttons after a page's TOC on the bottom-right portion every page by default. To remove these buttons from a page, set `feedback: false` in the page's front matter.
 
 #### Contributing options
 
