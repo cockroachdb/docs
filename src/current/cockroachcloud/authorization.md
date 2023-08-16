@@ -7,7 +7,7 @@ docs_area: manage
 
 This page covers the essential concepts related to access management (authorization) in {{ site.data.products.db }}. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}). For Frequently Asked Questions, refer to [CockroachDB Cloud FAQ]({% link cockroachcloud/ccloud-faq.md %}).
 
-## Overview of the {{ site.data.products.db }} two-level authorization model
+## Overview of the {{ site.data.products.db }} authorization model
 
 **The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a {{ site.data.products.db }} **organization** (or create a new one).
 
@@ -19,17 +19,22 @@ You can also execute many administrative commands using the `ccloud` command-lin
 
 In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each {{ site.data.products.db }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belongs to an organization.
 
-{{ site.data.products.db }} has a two-level authorization model:
+{{ site.data.products.db }} has a hierarchical authorization model, where roles can be assigned at different scopes:
 
-1. SQL level within a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
-1. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
+1. Organization: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
+1. Folder: If an organization is enrolled in [{{ site.data.products.db }} Folders (Limited Access)]({% link cockroachcloud/folders.md %}), roles can be assigned on folders. Role inheritance is transitive; a role granted on the organization or a folder is inherited by descendent resources.
+1. Cluster: Each CockroachDB cluster defines its own set of SQL users and roles which grant them permission to execute SQL statements on the cluster.
 
-This page primarily covers the latter, organization level. However, the two levels intersect because administrating SQL-level users on specific clusters within an organization is an organization-level function.
+The levels within the hierarchy intersect, because administrating SQL-level users on specific clusters within an organization is an organization-level function.
 
-For the main pages covering users and roles at the SQL level within a specific database cluster, see:
+{{site.data.alerts.callout_success}}
+Organizing clusters using folders is available in [Limited Access]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
+{{site.data.alerts.end}}
 
-- [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/authorization)
-- [Managing Cluster User Authorization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/authorization)
+For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
+
+- [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
+- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/authorization.md %})
 
 ## Organization user roles
 
@@ -39,19 +44,21 @@ When a user is first added to an organization, they are granted the default role
 
 To learn more, refer to [Manage organization users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users).
 
-The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
+The following {{ site.data.products.db }} organization roles can be granted:
 
 ### Organization Member
 
-This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
+This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or organization actions.
 
 ### Org Administrator
 
-Users with this role on an organization can:
+Org Administrators can:
 
 - [Invite users to join that organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization).
 - [Create service accounts]({% link cockroachcloud/managing-access.md %}#create-a-service-account).
 - Grant and revoke roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+
+This role can be granted only at the scope of the organization.
 
 This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which is considered deprecated.
 
@@ -61,7 +68,7 @@ Users with this role in an organization can [manage billing for that organizatio
 
 ### Cluster Operator
 
-This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
+Cluster Operators can perform a variety of cluster functions:
 
 - *Users* with this role can perform the following *console operations*:
 
@@ -95,9 +102,9 @@ This role can be considered a more restricted alternative to [Cluster Administra
 - Manage SQL users from the cloud console.
 - Create or delete a cluster.
 
-### Cluster Administrator
+This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
-This role can be granted for one or more specific clusters, or for all clusters in the organization.
+### Cluster Administrator
 
 Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
 
@@ -108,15 +115,49 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 - Cluster Administrators for the whole organization (rather than scoped to a single cluster) can [create new clusters]({% link cockroachcloud/create-your-cluster.md %}).
 - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
 
+This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
 ### Cluster Creator
 
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
+
+This role can be granted at the scope of the organization or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Cluster Developer
 
 Users with this role can view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
 
-This role can be granted for specific clusters or for all clusters in the organization.
+This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Folder Admin
+
+{{site.data.alerts.callout_success}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
+This role is available only when your organization is enrolled in the [Folders]({% link cockroachcloud/folders.md %}) Limited Access.
+
+Folder Admins can create, rename, and move, or delete folders where they are granted the role, and they can also manage access to these folders. This role can be granted at the level of the organization or on a specific folder. If granted on a specific folder, the role is inherited by descendent folders.
+
+An [Org Administrator](#org-administrator) role can grant any user or service account the Folder Admin role.
+
+To create a cluster in a folder, the user must also have the Cluster Administrator or [Cluster Creator](#cluster-creator) role on that folder. To delete a cluster, the user must have the Cluster Administrator role, either on the cluster directly or by inheritance.
+
+This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Folder Mover
+
+{{site.data.alerts.callout_success}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
+This role is available only when your organization is enrolled in the [Folders]({% link cockroachcloud/folders.md %}) Limited Access.
+
+Folder Movers can rename folders and move resources within them, but cannot create or delete folders, and cannot manage access to folders or clusters. To move a folder, you must have permission on both the current location and the target location. Folder Movers and Folder Admins have this permission.
+
+A user with the [Org Administrator](#org-administrator) or the [Folder Admin](#folder-admin) role can grant themselves, another user, or a service account the Folder Mover role.
+
+This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ## Legacy Roles (deprecated)
 
@@ -139,7 +180,7 @@ This role is deprecated in favor of the following more fine-grained roles, which
 - [Cluster Administrator](#cluster-administrator)
 - [Billing Coordinator](#billing-coordinator)
 {{site.data.alerts.end}}
-  
+
 ### Org Developer (legacy)
 
 Org Developer (legacy) can read information for all clusters, and monitor all clusters using DB Console.
