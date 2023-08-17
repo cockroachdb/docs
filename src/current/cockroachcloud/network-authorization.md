@@ -55,7 +55,7 @@ Serverless and Dedicated clusters support different maximum numbers of IP allowl
 Cluster Type                | IP allowlist rule max
 ----------------------------|------------
 Dedicated (AWS)             | 7
-Dedicated (GCP and Azure)   | 20
+Dedicated (GCP and Azure)   | 200
 Serverless                  | 50
 
 If you need to add more than the maximum number of allowlist rules, [contact Support](https://support.cockroachlabs.com).
