@@ -190,7 +190,7 @@ spec:
 
 ## Step 5. Use the CockroachDB SQL client
 
-1. Start the CockroachDB [built-in SQL client](cockroach-sql.html) from the client pod:
+1. Start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) from the client pod:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -255,11 +255,11 @@ spec:
 
 ## Step 6. Access the DB Console
 
-To access the CockroachDB cluster's [DB Console](ui-overview.html):
+To access the CockroachDB cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) can only be accessed by `admin` users.
 
-	Start the CockroachDB [built-in SQL client](cockroach-sql.html) from the client pod:
+	Start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) from the client pod:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -297,7 +297,7 @@ To access the CockroachDB cluster's [DB Console](ui-overview.html):
 
 ## Step 7. Run a sample workload
 
-To run a sample [CockroachDB workload](cockroach-workload.html):
+To run a sample [CockroachDB workload]({% link {{ page.version.version }}/cockroach-workload.md %}):
 
 1. Use the secure client pod to load the `movr` schema on one of the CockroachDB pods:
 
@@ -320,7 +320,7 @@ To run a sample [CockroachDB workload](cockroach-workload.html):
 ## Step 8. Delete the cluster
 
 {{site.data.alerts.callout_info}}
-If you want to continue using this cluster, see the documentation on [configuring](configure-cockroachdb-kubernetes.html), [scaling](scale-cockroachdb-kubernetes.html), [monitoring](monitor-cockroachdb-kubernetes.html), and [upgrading](upgrade-cockroachdb-kubernetes.html) the cluster.
+If you want to continue using this cluster, see the documentation on [configuring]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}), [scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes.md %}), [monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %}), and [upgrading]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) the cluster.
 {{site.data.alerts.end}}
 
 1. Go to the **Installed Operators** page and find the cluster name of the CockroachDB cluster. Select **Delete CrdbCluster** from the menu.

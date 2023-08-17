@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and then select **Dashboard** > **SQL**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and then select **Dashboard** > **SQL**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -37,7 +37,7 @@ The **SQL Connection Rate** is an average of the number of connection attempts p
 
 - In the cluster view, the graph shows the total number of open SQL transactions across all nodes in the cluster.
 
-See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
+See the [Transactions page]({% link {{ page.version.version }}/ui-transactions-page.md %}) for more details on the transactions.
 
 ## Active SQL Statements
 
@@ -45,7 +45,7 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 - In the cluster view, the graph shows the total number of SQL statements running across all nodes in the cluster.
 
-See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
 ## SQL Byte Traffic
 
@@ -63,21 +63,21 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 ## SQL Statement Errors
 
-- In the node view, the graph shows the 10-second average of the number of SQL statements issued to the node that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling).
+- In the node view, the graph shows the 10-second average of the number of SQL statements issued to the node that returned a [planning]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor),  [runtime]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor), or [retry error]({% link {{ page.version.version }}/transactions.md %}#error-handling).
 
-- In the cluster view, the graph shows the 10-second average of the number of SQL statements that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling) across all nodes.
+- In the cluster view, the graph shows the 10-second average of the number of SQL statements that returned a [planning]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor),  [runtime]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor), or [retry error]({% link {{ page.version.version }}/transactions.md %}#error-handling) across all nodes.
 
-See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
 ## SQL Statement Contention
 
-The statement contention metric is a counter that represents the number of statements that have experienced [contention](performance-best-practices-overview.html#transaction-contention). If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+The statement contention metric is a counter that represents the number of statements that have experienced [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
 
-- In the node view, the graph shows the total number of SQL statements that experienced [contention](performance-best-practices-overview.html#transaction-contention) on that node.
+- In the node view, the graph shows the total number of SQL statements that experienced [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) on that node.
 
-- In the cluster view, the graph shows the total number of SQL statements that experienced [contention](performance-best-practices-overview.html#transaction-contention) across all nodes in the cluster.
+- In the cluster view, the graph shows the total number of SQL statements that experienced [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) across all nodes in the cluster.
 
-    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+    See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
 ## Full Table/Index Scans
 
@@ -85,13 +85,13 @@ The statement contention metric is a counter that represents the number of state
 
 - In the cluster view, the graph shows the total number of full table and index scans across all nodes in the cluster.
 
-[Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
+[Examine the statements]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) that result in full table scans and consider adding [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#create-a-secondary-index).
 
 ## Active Flows for Distributed SQL Statements
 
-- In the node view, the graph shows the number of flows on that node contributing to the running [distributed SQL](architecture/sql-layer.html#distsql) statements.
+- In the node view, the graph shows the number of flows on that node contributing to the running [distributed SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) statements.
 
-- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the running [distributed SQL](architecture/sql-layer.html#distsql) statements.
+- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the running [distributed SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) statements.
 
 ## Connection Latency: 99th Percentile
 
@@ -107,7 +107,7 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 
 ## Service Latency: SQL, 99.99th percentile
 
-Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
+Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query]({% link {{ page.version.version }}/architecture/sql-layer.md %}). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
 - In the node view, the graph shows the 99.99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.99% of queries within this time, not including network latency between the node and the client.
 
@@ -115,7 +115,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 ## Service Latency: SQL, 99.9th percentile
 
-Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
+Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query]({% link {{ page.version.version }}/architecture/sql-layer.md %}). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
 - In the node view, the graph shows the 99.9th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.9% of queries within this time, not including network latency between the node and the client.
 
@@ -127,7 +127,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 ## Service Latency: SQL, 90th percentile
 
-Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
+Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query]({% link {{ page.version.version }}/architecture/sql-layer.md %}). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
 - In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 90% of queries within this time, not including network latency between the node and the client.
 
@@ -135,7 +135,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 ## KV Execution Latency: 99th percentile
 
-KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
+KV execution latency is calculated as the time in milliseconds between when the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}) receives the request and delivers a response.
 
 - In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 99% of requests within this time.
 
@@ -143,7 +143,7 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## KV Execution Latency: 90th percentile
 
-KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
+KV execution latency is calculated as the time in milliseconds between when the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}) receives the request and delivers a response.
 
 - In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
 
@@ -151,13 +151,13 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## Transactions
 
-- In the node view, the graph shows the 10-second average of the number of opened (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) [transactions](transactions.html) per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second average of the number of opened (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) [transactions]({% link {{ page.version.version }}/transactions.md %}) per second issued by SQL clients on the node.
 
-- In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions](transactions.html) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
+- In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions]({% link {{ page.version.version }}/transactions.md %}) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
-If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL statements. In that case, re-examine [statements](ui-statements-page.html) to lower contention.
+If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL statements. In that case, re-examine [statements]({% link {{ page.version.version }}/ui-statements-page.md %}) to lower contention.
 
-See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
+See the [Transactions page]({% link {{ page.version.version }}/ui-transactions-page.md %}) for more details on the transactions.
 
 ## Transaction Restarts
 
@@ -165,33 +165,33 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 - In the cluster view, the graph shows the number of transactions restarted across the cluster broken down by the errors that caused the restart.
 
-See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
+See the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) for details on the errors that caused the transaction to restart.
 
 ## Transaction Latency: 99th percentile
 
-Transaction latency is calculated as the total time in nanoseconds a [transaction](transactions.html) took to complete.
+Transaction latency is calculated as the total time in nanoseconds a [transaction]({% link {{ page.version.version }}/transactions.md %}) took to complete.
 
 - In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 99% of transactions within this time.
 
 - In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 99% of transactions within this time.
 
-See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
+See the [Transactions page]({% link {{ page.version.version }}/ui-transactions-page.md %}) for more details on the transactions.
 
 ## Transaction Latency: 90th percentile
 
-Transaction latency is calculated as the total time in nanoseconds a [transaction](transactions.html) took to complete.
+Transaction latency is calculated as the total time in nanoseconds a [transaction]({% link {{ page.version.version }}/transactions.md %}) took to complete.
 
 - In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 90% of transactions within this time.
 
 - In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 90% of transactions within this time.
 
-See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
+See the [Transactions page]({% link {{ page.version.version }}/ui-transactions-page.md %}) for more details on the transactions.
 
 ## SQL Memory
 
-- In the node view, the graph shows the current amount of memory in KiB allocated to the SQL layer on this node. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
+- In the node view, the graph shows the current amount of memory in KiB allocated to the SQL layer on this node. This amount is what is compared against the node's [`--max-sql-memory` flag]({% link {{ page.version.version }}/cockroach-start.md %}#general).
 
-- In the cluster view, the graph shows the current amount of memory in KiB allocated to the SQL layer on all nodes in the cluster. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
+- In the cluster view, the graph shows the current amount of memory in KiB allocated to the SQL layer on all nodes in the cluster. This amount is what is compared against the node's [`--max-sql-memory` flag]({% link {{ page.version.version }}/cockroach-start.md %}#general).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/prod-deployment/healthy-sql-memory.md %}
@@ -199,13 +199,13 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 ## Schema Changes
 
-- In the node view, the graph shows the total number of [DDL statements](online-schema-changes.html) per second on the node.
+- In the node view, the graph shows the total number of [DDL statements]({% link {{ page.version.version }}/online-schema-changes.md %}) per second on the node.
 
-- In the cluster view, the graph shows the total number of [DDL statements](online-schema-changes.html) per second across all nodes in the cluster.
+- In the cluster view, the graph shows the total number of [DDL statements]({% link {{ page.version.version }}/online-schema-changes.md %}) per second across all nodes in the cluster.
 
 ## Statement Denials: Cluster Settings
 
-Statement denials are statements that were denied due to a [cluster setting](cluster-settings.html) with the following format:
+Statement denials are statements that were denied due to a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) with the following format:
 
 ```
 {feature}.{statement_type}.enabled = FALSE
@@ -219,6 +219,6 @@ Statement denials are statements that were denied due to a [cluster setting](clu
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

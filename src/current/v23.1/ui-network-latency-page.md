@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern](topology-patterns.html), or to identify nodes with unexpected latencies.
+The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern]({% link {{ page.version.version }}/topology-patterns.md %}), or to identify nodes with unexpected latencies.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Network Latency** in the left-hand navigation.
+To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Network Latency** in the left-hand navigation.
 
 ## Sort and filter network latency
 
-Use the **Sort By** menu to arrange the latency matrix by [locality](cockroach-start.html#locality) (e.g., cloud, region, availability zone, datacenter).
+Use the **Sort By** menu to arrange the latency matrix by [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (e.g., cloud, region, availability zone, datacenter).
 
 Use the **Filter** menu to select specific nodes or localities to view.
 
@@ -25,7 +25,7 @@ Each cell in the matrix displays the round-trip latency in milliseconds between 
 
 Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
 
-On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
+On a [typical multi-region cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 
@@ -38,22 +38,22 @@ Nodes that have lost a connection are displayed in a separate color. This can he
 {{site.data.alerts.callout_info}}
 A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
-The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities](cockroach-start.html#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 {{site.data.alerts.end}}
 
-Click the **NO CONNECTIONS** link to see lost connections between nodes or [localities](cockroach-start.html#locality), if any are defined.
+Click the **NO CONNECTIONS** link to see lost connections between nodes or [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality), if any are defined.
 
 ## Topology fundamentals
 
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
 {{site.data.alerts.callout_info}}
-Network latency limits the performance of individual operations. You can use the [Statements](ui-statements-page.html) page to see the latencies of SQL statements on gateway nodes.
+Network latency limits the performance of individual operations. You can use the [Statements]({% link {{ page.version.version }}/ui-statements-page.md %}) page to see the latencies of SQL statements on gateway nodes.
 {{site.data.alerts.end}}
 
 ## See also
 
-- [Topology Patterns](topology-patterns.html)
-- [CockroachDB Performance](performance.html#latency)
-- [Performance Tuning](performance-best-practices-overview.html)
-- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
+- [CockroachDB Performance]({% link {{ page.version.version }}/performance.md %}#latency)
+- [Performance Tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})

@@ -5,7 +5,7 @@
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
 {%- assign stable_path = "/" | append: site.versions["stable"] | append: "/" %}
-{% assign asst_supp_exp_date = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | first | map: "asst_supp_exp_date" | date: "%s" -%}{%- comment -%} This line queries the information in versions.csv and returns the current page's version. {%- endcomment -%}
+{% assign asst_supp_exp_date = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | map: "asst_supp_exp_date" | first | date: "%s" -%}{%- comment -%} This line queries the information in versions.csv and returns the current page's version. {%- endcomment -%}
 {%- assign page_url = page.url | replace: ".html", "" | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" -%}
 {%- assign expired = false -%}
 {%- assign today = "today" | date: "%s" -%}
@@ -104,10 +104,6 @@ var pageConfig = {
   analytics.page();
   }}();
 </script>
-
-{% if page.layout == "api" %}
-  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
-{% endif %}
 
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>

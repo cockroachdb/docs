@@ -12,7 +12,7 @@ of this file, block-level HTML is indented in relation to the other HTML, and bl
 indented in relation to the other Liquid. Please try to keep the indentation consistent. Thank you!
 {% endcomment %}
 
-After downloading your desired release, learn how to [install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
+After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
 
 The following binaries are not suitable for production environments:
 
@@ -101,7 +101,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{{ v.major_version }}.html#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -151,7 +151,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{{ v.major_version }}.html#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -200,7 +200,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{{ v.major_version }}.html#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -243,7 +243,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{{ v.major_version }}.html#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -280,7 +280,7 @@ The following binaries are not suitable for production environments:
     {% for r in releases %}
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{{ v.major_version }}.html#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
         {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
         {% endif %}

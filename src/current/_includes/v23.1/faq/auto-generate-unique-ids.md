@@ -1,6 +1,6 @@
-To auto-generate unique row identifiers, you can use the `gen_random_uuid()`, `uuid_v4()`, or `unique_rowid()` [functions](functions-and-operators.html#id-generation-functions).
+To auto-generate unique row identifiers, you can use the `gen_random_uuid()`, `uuid_v4()`, or `unique_rowid()` [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions).
 
-To use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To use the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) column with the `gen_random_uuid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the [default value]({% link {{ page.version.version }}/default-value.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -34,7 +34,7 @@ SELECT * FROM users;
 (3 rows)
 ~~~
 
-Alternatively, you can use the [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value:
+Alternatively, you can use the [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) column with the `uuid_v4()` function as the default value:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -68,11 +68,11 @@ SELECT * FROM users;
 (3 rows)
 ~~~
 
-In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size](configure-replication-zones.html#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
+In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
 
 This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
 
-If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type](int.html) with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type](serial.html):
+If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type]({% link {{ page.version.version }}/int.md %}) with the `unique_rowid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type]({% link {{ page.version.version }}/serial.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -108,4 +108,4 @@ SELECT * FROM users3;
 
 Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.
 
-To understand the differences between the `UUID` and `unique_rowid()` options, see the [SQL FAQs](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid/).
+To understand the differences between the `UUID` and `unique_rowid()` options, see the [SQL FAQs]({% link {{ page.version.version }}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid/).

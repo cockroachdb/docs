@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `NOT NULL` [constraint](constraints.html) specifies a column may not contain [`NULL`](null-handling.html) values.
+The `NOT NULL` [constraint]({% link {{ page.version.version }}/constraints.md %}) specifies a column may not contain [`NULL`]({% link {{ page.version.version }}/null-handling.md %}) values.
 
 ## Details
 
-- `INSERT` or `UPDATE` statements containing `NULL` values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [`DEFAULT` value constraint](default-value.html).
+- `INSERT` or `UPDATE` statements containing `NULL` values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [`DEFAULT` value constraint]({% link {{ page.version.version }}/default-value.md %}).
 
   For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a `DEFAULT VALUE`), when you run the following command:
 
@@ -19,9 +19,9 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 
   CockroachDB tries to write a `NULL` value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
 
-- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](alter-table.html#set-not-null-constraint) statement.
+- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#set-not-null-constraint) statement.
 
-- For more information about `NULL`, see [NULL handling](null-handling.html).
+- For more information about `NULL`, see [NULL handling]({% link {{ page.version.version }}/null-handling.md %}).
 
 ## Syntax
 
@@ -35,10 +35,10 @@ You can only apply the `NOT NULL` constraint to individual columns.
 -----------|-------------
  `table_name` | The name of the table you're creating.
  `column_name` | The name of the constrained column.
- `column_type` | The constrained column's [data type](data-types.html).
- `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+ `column_type` | The constrained column's [data type]({% link {{ page.version.version }}/data-types.md %}).
+ `column_constraints` | Any other column-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply to this column.
  `column_def` | Definitions for any other columns in the table.
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
+ `table_constraints` | Any table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply.
 
 ## Usage example
 
@@ -71,12 +71,12 @@ pq: null value in column "cust_email" violates not-null constraint
 
 ## See also
 
-- [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
-- [`CHECK` constraint](check.html)
-- [`DEFAULT` constraint](default-value.html)
-- [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
-- [`PRIMARY KEY` constraint](primary-key.html)
-- [`UNIQUE` constraint](unique.html)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`NULL HANDLING`](null-handling.html)
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- [`CHECK` constraint]({% link {{ page.version.version }}/check.md %})
+- [`DEFAULT` constraint]({% link {{ page.version.version }}/default-value.md %})
+- [`REFERENCES` constraint (Foreign Key)]({% link {{ page.version.version }}/foreign-key.md %})
+- [`PRIMARY KEY` constraint]({% link {{ page.version.version }}/primary-key.md %})
+- [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %})
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
+- [`NULL HANDLING`]({% link {{ page.version.version }}/null-handling.md %})

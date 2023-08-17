@@ -27,7 +27,7 @@ For more information on accessing the DB Console, see [Access DB Console](ui-ove
 
 The [Cluster API](cluster-api.html) is a REST API that provides much of the same information about your cluster and nodes as is available from the DB Console and is accessible from each node at the same address and port as the DB Console.
 
-For more information, see the Cluster API [overview](cluster-api.html) and [reference](../api/cluster/v2.html).
+For more information, see the Cluster API [overview](cluster-api.html) and [reference](https://www.cockroachlabs.com/docs/api/cluster/v2).
 
 ### `crdb_internal` system catalog
 

@@ -81,6 +81,6 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 ## See also
 
-- [Build an App with CockroachDB](example-apps.html)
-- [Install a Driver or ORM Framework](install-client-drivers.html)
-- [Third-Party Tools Supported by Cockroach Labs](third-party-database-tools.html)
+- [Build an App with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %})
+- [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})

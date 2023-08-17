@@ -5,15 +5,15 @@ toc: true
 docs_area: deploy
 ---
 
-Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
+Before you [create a {{ site.data.products.db }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
 
 {{site.data.alerts.callout_info}}
-If your organization uses [Cloud Organization SSO](cloud-org-sso.html#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator](authorization.html#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
+If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
 {{site.data.alerts.end}}
 
 ## Choose an authentication method
 
-You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-org-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
+You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)]({% link cockroachcloud/cloud-org-sso.md %}). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
 
 SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all {{ site.data.products.db }} users authenticate with SSO, with MFA enabled.
 
@@ -73,7 +73,7 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 1. Enter your **Email** and **Password**.
 1. Click **Continue**.
 
-    The [**Clusters** page](cluster-management.html) displays.
+    The [**Clusters** page]({% link cockroachcloud/cluster-management.md %}) displays.
 </section>
 
 ## Change your account details
@@ -117,12 +117,12 @@ If you registered with an email address, you can change your account password in
 1. Click **Save**.
 
 {{site.data.alerts.callout_info}}
-Changing your account password will _not_ change your [SQL user](managing-access.html#create-a-sql-user) password.
+Changing your account password will _not_ change your [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) password.
 {{site.data.alerts.end}}
 
 ### Change your organization name
 
-If you are an [Org Administrator](authorization.html#org-administrator-legacy), you can change your organization name:
+If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can change your organization name:
 
 1. Navigate to the **Settings** page.
 

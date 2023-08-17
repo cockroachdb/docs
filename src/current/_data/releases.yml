@@ -4630,3 +4630,23 @@
     docker_arm: true
   source: true
   previous_release: v22.2.12
+- release_name: v22.1.22
+  major_version: v22.1
+  release_date: '2023-08-14'
+  release_type: Production
+  go_version: go1.19
+  sha: 78554d13424c610d781b47dcbc906977984b8b29
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: false
+  windows: true
+  linux:
+    linux_arm: false
+    linux_intel_fips: false
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: false
+  source: true
+  previous_release: v22.1.21

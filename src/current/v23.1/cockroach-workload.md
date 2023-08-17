@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-CockroachDB comes with built-in load generators for simulating different types of client workloads, printing per-operation statistics and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command](cockroach-commands.html) as described below.
+CockroachDB comes with built-in load generators for simulating different types of client workloads, printing per-operation statistics and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) as described below.
 
 {{site.data.alerts.callout_danger}}
 The `cockroach workload` command is experimental. The interface and output are subject to change.
@@ -64,19 +64,19 @@ Workload | Description
 [`bank`](#bank-workload) | Models a set of accounts with currency balances.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 [`intro`](#intro-and-startrek-workloads) | Loads an `intro` database, with one table, `mytable`, with a hidden message.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 [`kv`](#kv-workload) | Reads and writes to keys spread (by default, uniformly at random) across the cluster.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
-[`movr`](#movr-workload) |   Simulates a workload for the [MovR example application](movr.html).<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
+[`movr`](#movr-workload) |   Simulates a workload for the [MovR example application]({% link {{ page.version.version }}/movr.md %}).<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 [`startrek`](#intro-and-startrek-workloads) | Loads a `startrek` database, with two tables, `episodes` and `quotes`.<br><br>For this workload, you run only `workload init` to load the data. The `workload run` subcommand is not applicable.
 [`tpcc`](#tpcc-workload) | Simulates a transaction processing workload using a rich schema of multiple tables.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 [`ycsb`](#ycsb-workload) | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 {{site.data.alerts.callout_info}}
- `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the DB Console](ui-statements-page.html#search-and-filter), or in a [`SHOW STATEMENTS`](show-statements.html#filter-for-specific-queries) statement.
+ `cockroach workload` sets the [`application_name`]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#search-and-filter), or in a [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}#filter-for-specific-queries) statement.
 {{site.data.alerts.end}}
 
 ## Flags
 
 {{site.data.alerts.callout_info}}
-The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
+The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}). Instead, you must use a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) at the end of the command.
 {{site.data.alerts.end}}
 
 ### `bank` workload
@@ -134,7 +134,7 @@ Flag | Description
 `--sequential` | Pick keys sequentially instead of randomly.<br><br>**Applicable commands:** `init` or `run`
 `--splits` | The number of splits to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
-`--use-opt` | Use [cost-based optimizer](cost-based-optimizer.html).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
+`--use-opt` | Use [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--write-seq` | Initial write sequence value.<br><br>**Applicable commands:** `init` or `run`
 
 ### `movr` workload
@@ -186,12 +186,12 @@ Flag | Description
 `--scatter` | Scatter ranges.<br><br>**Applicable commands:** `init` or `run`
 `--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--serializable` | Force serializable mode. CockroachDB only supports `SERIALIZABLE` isolation, so this flag is not necessary.<br><br>**Applicable command:** `init`
-`--split` | [Split tables](alter-table.html#split-at).<br><br>**Applicable commands:** `init` or `run`
+`--split` | [Split tables]({% link {{ page.version.version }}/alter-table.md %}#split-at).<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--wait` | Run in wait mode, i.e., include think/keying sleeps.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--warehouses` | The number of warehouses for loading initial data, at approximately 200 MB per warehouse.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--workers` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `--warehouses` * 10
-`--zones` | The number of [replication zones](configure-replication-zones.html) for partitioning. This number should match the number of `--partitions` and the zones used to start the cluster.<br><br>**Applicable command:** `init`
+`--zones` | The number of [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) for partitioning. This number should match the number of `--partitions` and the zones used to start the cluster.<br><br>**Applicable command:** `init`
 
 ### `ycsb` workload
 
@@ -204,7 +204,7 @@ Flag | Description
 `--display-format` | The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
 `--drop` | Drop the existing database, if it exists.<br><br>**Applicable commands:** `init` or `run`. For the `run` command, this flag must be used in conjunction with `--init`.
 `--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
-`--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
+`--families` | Place each column in its own [column family]({% link {{ page.version.version }}/column-families.md %}).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--insert-count` | Number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
@@ -215,19 +215,19 @@ Flag | Description
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--request-distribution` | Distribution for the random number generator (`zipfian`, `uniform`).<br><br>**Applicable commands:** `init` or `run`.<br>**Default:** `zipfian`
 `--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
-`--splits` | Number of [splits](alter-table.html#split-at) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
+`--splits` | Number of [splits]({% link {{ page.version.version }}/alter-table.md %}#split-at) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--workload` | The type of workload to run (`A`, `B`, `C`, `D`, or `F`). For details about these workloads, see [YCSB Workloads](https://github.com/brianfrankcooper/YCSB/wiki/Core-Workloads).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `B`
 
 ### Logging
 
-By default, the `cockroach workload` command logs messages to `stderr`. This includes events with `INFO` [severity](logging.html#logging-levels-severities) and higher.
+By default, the `cockroach workload` command logs messages to `stderr`. This includes events with `INFO` [severity]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) and higher.
 
-If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior]({% link {{ page.version.version }}/configure-logs.md %}).
 
 ## Examples
 
-These examples assume that you have already [started an insecure cluster locally](start-a-local-cluster.html):
+These examples assume that you have already [started an insecure cluster locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -660,6 +660,6 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 ## See also
 
-- [`cockroach demo`](cockroach-demo.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-small.html)
+- [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %})

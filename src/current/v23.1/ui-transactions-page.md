@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Transactions** page provides information about the execution of SQL transactions in your cluster, using data in the cluster's [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Transactions**.
+The **Transactions** page provides information about the execution of SQL transactions in your cluster, using data in the cluster's [`crdb_internal` system catalog]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Transactions**.
 
 It offers two views:
 
@@ -17,15 +17,15 @@ It offers two views:
 Choose a view by selecting the **Transaction Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 
 {{site.data.alerts.callout_success}}
-In contrast to the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays _transaction fingerprints_, which are SQL statement fingerprints grouped by [transaction](transactions.html).
+In contrast to the [**Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %}), which displays [SQL statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints), the **Transactions** page displays _transaction fingerprints_, which are SQL statement fingerprints grouped by [transaction]({% link {{ page.version.version }}/transactions.md %}).
 {{site.data.alerts.end}}
 
 ## Transaction Fingerprints view
 
 The **Transaction Fingerprints** view helps you:
 
-- Identify frequently [retried]({{ link_prefix }}transactions.html#transaction-retries) transactions.
-- [Troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html) high-latency transactions or execution failures.
+- Identify frequently [retried]({% link {{ page.version.version }}/{{ link_prefix }}transactions.md %}#transaction-retries) transactions.
+- [Troubleshoot]({% link {{ page.version.version }}/{{ link_prefix }}query-behavior-troubleshooting.md %}) high-latency transactions or execution failures.
 - View transaction [details](#transaction-details-page).
 
 {% if page.cloud != true %}
@@ -36,7 +36,7 @@ To view this page, click **SQL Activity** in the left-hand navigation of the {{ 
 
 Click the **Transactions** tab. The **Transaction Fingerprints** radio button is selected and the [Transactions table](#transactions-table) displays.
 
-The following screenshot shows the transaction fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the transaction fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
 
 <img src="{{ 'images/v23.1/transaction-fingerprint.png' | relative_url }}" alt="Transaction fingerprint" style="border:1px solid #eee;max-width:100%" />
 
@@ -62,7 +62,7 @@ The **Statements** tab is selected. Click the **Transactions** tab and the **Act
 Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'los angeles'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'los angeles'` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
 
 <img src="{{ 'images/v23.1/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 

@@ -32,10 +32,10 @@ $ git clone https://github.com/cockroachdb/example-app-python-asyncpg
 The sample code in `example.py` does the following:
 
 - Creates an `accounts` table and inserts some rows
-- Transfers funds between two accounts inside a [transaction](transactions.html)
+- Transfers funds between two accounts inside a [transaction]({% link {{ page.version.version }}/transactions.md %})
 - Deletes the accounts from the table before exiting so you can re-run the example code
 
-To [handle transaction retry errors](query-behavior-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff).
+To [handle transaction retry errors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff).
 
 ## Step 3. Install the asyncpg driver
 
@@ -100,7 +100,7 @@ For other ways to install Psycopg, see the [official documentation](https://www.
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The example code sets the [`multiple_active_portals_enabled` session variable](postgresql-compatibility.html#multiple-active-portals) to `true`, a requirement for using `asyncpg` with CockroachDB.
+    The example code sets the [`multiple_active_portals_enabled` session variable]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals) to `true`, a requirement for using `asyncpg` with CockroachDB.
     {{site.data.alerts.end}}
 
 ## What's next?

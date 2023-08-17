@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles. You can use the keywords `ROLE` and `USER` interchangeably. [`DROP USER`](drop-user.html) is an alias for `DROP ROLE`.
+The `DROP ROLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes one or more SQL roles. You can use the keywords `ROLE` and `USER` interchangeably. [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) is an alias for `DROP ROLE`.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Considerations
 
 - The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
-- A role cannot be dropped if it has privileges. Use [`REVOKE`](revoke.html) to remove privileges.
-- Roles that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](alter-database.html#change-a-databases-owner).
+- A role cannot be dropped if it has privileges. Use [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) to remove privileges.
+- Roles that [own objects]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role]({% link {{ page.version.version }}/alter-database.md %}#change-a-databases-owner).
 
 ## Required privileges
 
-Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 
 ## Synopsis
 
@@ -27,7 +27,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
  Parameter | Description
 ------------|--------------
-`name` | The name of the role to remove. To remove multiple roles, use a comma-separate list of roles.<br><br>You can use [`SHOW ROLES`](show-roles.html) to find the names of roles.
+`name` | The name of the role to remove. To remove multiple roles, use a comma-separate list of roles.<br><br>You can use [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}) to find the names of roles.
 
 ## Example
 
@@ -59,11 +59,11 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 
 ## See also
 
-- [Authorization](authorization.html)
-- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
-- [`CREATE ROLE`](create-role.html)
-- [`SHOW ROLES`](show-roles.html)
-- [`GRANT`](grant.html)
-- [`SHOW GRANTS`](show-grants.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Authorization]({% link {{ page.version.version }}/authorization.md %})
+- [Authorization Best Practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices)
+- [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %})
+- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
+- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
+- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW TRACE FOR SESSION` [statement](sql-statements.html) returns details about how CockroachDB executed a statement or series of statements recorded during a session. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
+The `SHOW TRACE FOR SESSION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) returns details about how CockroachDB executed a statement or series of statements recorded during a session. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-A [statement diagnostics bundle](ui-statements-page.html#diagnostics) contains statement traces in plaintext, JSON, and [Jaeger-compatible](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) format.
+A [statement diagnostics bundle]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) contains statement traces in plaintext, JSON, and [Jaeger-compatible]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger) format.
 
 ## Usage overview
 
 `SHOW TRACE FOR SESSION` returns [statement traces](#trace-description) for the most recently executed statements.
 
-To start recording statement traces during a session, enable the `tracing` session variable via [`SET tracing = on;`](set-vars.html#set-tracing). To stop recording statement traces during a session, disable the `tracing` session variable via [`SET tracing = off;`](set-vars.html#set-tracing).
+To start recording statement traces during a session, enable the `tracing` session variable via [`SET tracing = on;`]({% link {{ page.version.version }}/set-vars.md %}#set-tracing). To stop recording statement traces during a session, disable the `tracing` session variable via [`SET tracing = off;`]({% link {{ page.version.version }}/set-vars.md %}#set-tracing).
 
-Recording statement traces during a session does not effect the logical execution of the statements. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors](transactions.html#error-handling) are encountered due to [contention](performance-best-practices-overview.html#transaction-contention). Also, clients will receive retry errors required to handle [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling). As a result, traces of all transaction retries will be captured during a recording.
+Recording statement traces during a session does not effect the logical execution of the statements. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors]({% link {{ page.version.version }}/transactions.md %}#error-handling) are encountered due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). Also, clients will receive retry errors required to handle [client-side transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). As a result, traces of all transaction retries will be captured during a recording.
 
 ## Required privileges
 
@@ -34,19 +34,19 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 Parameter | Description
 ----------|------------
 `COMPACT` | If specified, fewer columns are returned in each trace. See [Response](#response) for more details.
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer](architecture/storage-layer.html), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 
 ## Trace description
 
-CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors](query-behavior-troubleshooting.html#configure-cockroachdb-to-send-traces-to-a-third-party-trace-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
+CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#configure-cockroachdb-to-send-traces-to-a-third-party-trace-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
 
 Concept         | Description
 ----------------|------------
 **trace**       | Information about the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
 **span**        | A named, timed operation that describes a contiguous segment of work in a trace. Each span links to "child spans", representing sub-operations; their children would be sub-sub-operations of the grandparent span, etc.<br><br>Different spans can represent (sub-)operations that executed either sequentially or in parallel with respect to each other. (This possibly-parallel nature of execution is one of the important things that a trace is supposed to describe.) \The operations described by a trace may be _distributed_, that is, different spans may describe operations executed by different nodes.
-**message**     | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files](logging-overview.html) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
+**message**     | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files]({% link {{ page.version.version }}/logging-overview.md %}) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
 
-Consider a visualization of a trace for one statement as [visualized by Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
+Consider a visualization of a trace for one statement as [visualized by Jaeger]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
 <img src="{{ 'images/v23.1/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
@@ -204,5 +204,5 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 ## See also
 
-- [`EXPLAIN`](explain.html)
-- [`SET (session settings)`](set-vars.html)
+- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
+- [`SET (session settings)`]({% link {{ page.version.version }}/set-vars.md %})

@@ -4,7 +4,7 @@ Before removing a node from your cluster, you must first decommission the node. 
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](node-shutdown.html?filters=decommission#prepare-for-graceful-shutdown).
 {{site.data.alerts.end}}
 
-1. Use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+1. Use the [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.md %}) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -26,7 +26,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
-1. Use the [`cockroach node decommission`](cockroach-node.html) command to decommission the node with the highest number in its address, specifying its ID (in this example, node ID `4` because its address is `my-release-cockroachdb-3`):
+1. Use the [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) command to decommission the node with the highest number in its address, specifying its ID (in this example, node ID `4` because its address is `my-release-cockroachdb-3`):
 
     {{site.data.alerts.callout_info}}
     You must decommission the node with the highest number in its address. Kubernetes will remove the pod for the node with the highest number in its address when you reduce the replica count.

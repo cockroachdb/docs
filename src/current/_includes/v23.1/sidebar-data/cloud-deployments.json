@@ -112,7 +112,7 @@
                 "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
             ]
             }
-        ]  
+        ]
     },
     {
         "title": "Security",
@@ -231,6 +231,12 @@
                         "urls": [
                             "/cockroachcloud/managing-access.html"
                         ]
+                    },
+                    {
+                    "title": "Organize CockroachDB Cloud Clusters Using Folders",
+                    "urls": [
+                        "/cockroachcloud/folders.html"
+                    ]
                     }
                 ]
             },

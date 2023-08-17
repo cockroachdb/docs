@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
+The `SHOW SESSIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists details about currently active sessions, including:
 
 - The address of the client that opened the session
 - The node connected to
@@ -18,7 +18,7 @@ These details let you monitor the overall state of client connections and identi
 
 ## Required privileges
 
-All users can see their own currently active sessions. All users belonging to the `admin` role can view see all users' currently active sessions. To view other non-admin users' sessions, the non-admin user must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined.
+All users can see their own currently active sessions. All users belonging to the `admin` role can view see all users' currently active sessions. To view other non-admin users' sessions, the non-admin user must have the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy [`VIEWACTIVITY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
 
 ## Synopsis
 
@@ -39,7 +39,7 @@ Field | Description
 `session_id` | The ID of the connected session.
 `user_name` | The username of the connected user.
 `client_address` | The address and port of the connected client.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client](cockroach-sql.html), this will be `cockroach`.
+`application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
 `session_start` | The timestamp at which the session started.
@@ -95,7 +95,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### Filter for specific sessions
 
-You can use a [`SELECT`](select-clause.html) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
+You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
 
 #### Show sessions associated with a specific user
 
@@ -117,7 +117,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 #### Exclude sessions from the built-in SQL client
 
-To exclude sessions from the [built-in SQL client](cockroach-sql.html), filter for sessions that do not show `cockroach` as the `application_name`:
+To exclude sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for sessions that do not show `cockroach` as the `application_name`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -143,7 +143,7 @@ To exclude sessions from the [built-in SQL client](cockroach-sql.html), filter f
 
 ### Identify and cancel a problematic query
 
-If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW STATEMENTS`](show-statements.html) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`](cancel-query.html) statement to cancel it.
+If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement to cancel it.
 
 For example, let's say you run `SHOW SESSIONS` and notice that the following session has been open for more than 2 hours:
 
@@ -155,7 +155,7 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 +---------+-----------+--------------------+------------------+------------------------------------+--------------------|----------------------------------+----------------------------------+--------+
 ~~~
 
-Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`](show-statements.html) statement to get more information about the query, filtering based on details you already have:
+Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to get more information about the query, filtering based on details you already have:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -173,14 +173,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 +----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
 ~~~
 
-Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
+Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`](cancel-query.html) statement with a nested `SELECT` statement that returns the `query_id`:
+Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement with a nested `SELECT` statement that returns the `query_id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -192,6 +192,6 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 ## See also
 
-- [`SHOW STATEMENTS`](show-statements.html)
-- [`CANCEL QUERY`](cancel-query.html)
-- [SQL Statements](sql-statements.html)
+- [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %})
+- [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
