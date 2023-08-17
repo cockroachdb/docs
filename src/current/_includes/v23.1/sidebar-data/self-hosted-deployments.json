@@ -12,7 +12,7 @@
             "title": "Deploy Locally",
             "items": [
               {
-                "title": "Deploy From Binary",
+                "title": "Deploy from Binary",
                 "urls": [
                   "/${VERSION}/secure-a-cluster.html",
                   "/${VERSION}/start-a-local-cluster.html"
@@ -186,6 +186,18 @@
                     ]
                 },
                 {
+                  "title": "Follower Reads Topology",
+                  "urls": [
+                  "/${VERSION}/topology-follower-reads.html"
+                  ]
+              },
+              {
+                  "title": "Follow-the-Workload Topology",
+                  "urls": [
+                  "/${VERSION}/topology-follow-the-workload.html"
+                  ]
+              },
+                {
                     "title": "Regional Tables",
                     "urls": [
                     "/${VERSION}/regional-tables.html"
@@ -195,18 +207,6 @@
                     "title": "Global Tables",
                     "urls": [
                     "/${VERSION}/global-tables.html"
-                    ]
-                },
-                {
-                    "title": "Follower Reads",
-                    "urls": [
-                    "/${VERSION}/topology-follower-reads.html"
-                    ]
-                },
-                {
-                    "title": "Follow-the-Workload",
-                    "urls": [
-                    "/${VERSION}/topology-follow-the-workload.html"
                     ]
                 }
             ] 
@@ -274,13 +274,13 @@
                     ]
                   },
                   {
-                    "title": "Cluster Single Sign-on (SSO) using JSON web tokens (JWT)",
+                    "title": "Cluster SSO using JWT",
                     "urls": [
                       "/${VERSION}/sso-sql.html"
                     ]
                   },
                   {
-                    "title": "Single Sign-on (SSO) for DB Console",
+                    "title": "SSO for DB Console",
                     "urls": [
                       "/${VERSION}/sso-db-console.html"
                     ]
@@ -308,7 +308,7 @@
             "title": "Monitoring and Alerting",
             "items": [
                 {
-                    "title": "Monitoring Clusters Overview",
+                    "title": "Overview",
                     "urls": [
                       "/${VERSION}/monitoring-and-alerting.html"
                     ]
@@ -332,19 +332,19 @@
                     ]
                   },
                   {
-                    "title": "Monitor {{ site.data.products.core }} with Datadog",
+                    "title": "Monitor with Datadog",
                     "urls": [
                       "/${VERSION}/datadog.html"
                     ]
                   },
                   {
-                    "title": "Monitor {{ site.data.products.core }} with DBmarlin",
+                    "title": "Monitor with DBmarlin",
                     "urls": [
                       "/${VERSION}/dbmarlin.html"
                     ]
                   },
                   {
-                    "title": "Monitor {{ site.data.products.core }} with Kibana",
+                    "title": "Monitor with Kibana",
                     "urls": [
                       "/${VERSION}/kibana.html"
                     ]
@@ -518,66 +518,66 @@
                ]
           },
           {
-            "title": "Backups",
+            "title": "Backups and Restores",
             "items": [
               {
-                "title": "Backup and Restore Overview",
+                "title": "Overview",
                 "urls": [
                       "/${VERSION}/backup-and-restore-overview.html"
                     ]
               },
               {
-                "title": "Customer-Owned Backups",
-                "items": [
-                  
-                  {
-                    "title": "Full and Incremental Backups",
-                    "urls": [
-                      "/${VERSION}/take-full-and-incremental-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Backups with Revision History and Point-in-time Restore",
-                    "urls": [
-                      "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
-                    ]
-                  },
-                  {
-                    "title": "Encrypted Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-encrypted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-restricted Backup Execution",
-                    "urls": [
-                      "/${VERSION}/take-locality-restricted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-aware Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-locality-aware-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Scheduled Backups",
-                    "urls": [
-                      "/${VERSION}/manage-a-backup-schedule.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup Validation",
-                    "urls": [
-                      "/${VERSION}/backup-validation.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup and Restore Monitoring",
-                    "urls": [
-                      "/${VERSION}/backup-and-restore-monitoring.html"
-                    ]
-                  }
+                "title": "Full and Incremental Backups",
+                "urls": [
+                  "/${VERSION}/take-full-and-incremental-backups.html"
+                ]
+              },
+              {
+                "title": "Backups with Revision History and Point-in-time Restore",
+                "urls": [
+                  "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+                ]
+              },
+              {
+                "title": "Encrypted Backup and Restore",
+                "urls": [
+                  "/${VERSION}/take-and-restore-encrypted-backups.html"
+                ]
+              },
+              {
+                "title": "Locality-restricted Backup Execution",
+                "urls": [
+                  "/${VERSION}/take-locality-restricted-backups.html"
+                ]
+              },
+              {
+                "title": "Locality-aware Backup and Restore",
+                "urls": [
+                  "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                ]
+              },
+              {
+                "title": "Scheduled Backups",
+                "urls": [
+                  "/${VERSION}/manage-a-backup-schedule.html"
+                ]
+              },
+              {
+                "title": "Backup Validation",
+                "urls": [
+                  "/${VERSION}/backup-validation.html"
+                ]
+              },
+              {
+                "title": "Expire Past Backups",
+                "urls": [
+                  "/${VERSION}/expire-past-backups.html"
+                ]
+              },
+              {
+                "title": "Backup and Restore Monitoring",
+                "urls": [
+                  "/${VERSION}/backup-and-restore-monitoring.html"
                 ]
               }
             ]

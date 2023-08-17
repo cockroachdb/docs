@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER INDEX` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to an index.
+The `ALTER INDEX` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) to an index.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
@@ -35,56 +35,56 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 Subcommand | Description |
 -----------|-------------|
-[`CONFIGURE ZONE`](#configure-zone) | [Configure replication zones](configure-replication-zones.html) for an index. ([Enterprise-only](enterprise-licensing.html).) | 
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index. ([Enterprise-only](enterprise-licensing.html).)
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | 
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).)
 [`RENAME TO`](#rename-to) | Change the name of an index.
-[`SPLIT AT`](#split-at) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
+[`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
-[`[NOT] VISIBLE`](#not-visible) | Make an index visible or not visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index).
+[`[NOT] VISIBLE`](#not-visible) | Make an index visible or not visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index).
 
 ### `CONFIGURE ZONE`
 
-`ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+`ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 {% include enterprise-feature.md %}
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
-For examples, see [Configure replication zones](#configure-replication-zones).
+For examples, see [Replication Controls](#configure-replication-zones).
 
 #### Required privileges
 
-The user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](configure-replication-zones.html#for-system-data), the user must be a member of the `admin` role.
+The user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects]({% link {{ page.version.version }}/configure-replication-zones.md %}#for-system-data), the user must be a member of the `admin` role.
 
 #### Parameters
 
  Parameter | Description
 -----------+-------------
-`variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
-`value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
+`variable` | The name of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
+`value` | The value of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
 
 For usage, see [Synopsis](#synopsis).
 
 ### `PARTITION BY`
 
-`ALTER INDEX ... PARTITION BY` is used to partition, re-partition, or un-partition a secondary index. After defining partitions, [`CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition) is used to control the replication and placement of partitions.
+`ALTER INDEX ... PARTITION BY` is used to partition, re-partition, or un-partition a secondary index. After defining partitions, [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition) is used to control the replication and placement of partitions.
 
 {% include enterprise-feature.md %}
 
-Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](regional-tables.html), partitioning can limit a query scan to data in a specific region. For examples, see [Query partitions](partitioning.html#query-partitions).
+Similar to [indexes]({% link {{ page.version.version }}/indexes.md %}), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data]({% link {{ page.version.version }}/regional-tables.md %}), partitioning can limit a query scan to data in a specific region. For examples, see [Query partitions]({% link {{ page.version.version }}/partitioning.md %}#query-partitions).
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
-The [primary key required for partitioning](partitioning.html#partition-using-primary-key) is different from the conventional primary key: The unique identifier in the primary key must be prefixed with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
+The [primary key required for partitioning]({% link {{ page.version.version }}/partitioning.md %}#partition-using-primary-key) is different from the conventional primary key: The unique identifier in the primary key must be prefixed with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
 
-If the primary key in your existing table does not meet the requirements, you can change the primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key).
+If the primary key in your existing table does not meet the requirements, you can change the primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key).
 
 For examples, see [Define partitions](#define-partitions).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
@@ -101,26 +101,26 @@ For usage, see [Synopsis](#synopsis).
 `ALTER INDEX ... RENAME TO` changes the name of an index.
 
 {{site.data.alerts.callout_info}}
-It is not possible to rename an index referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+It is not possible to rename an index referenced by a view. For more details, see [View Dependencies]({% link {{ page.version.version }}/views.md %}#view-dependencies).
 {{site.data.alerts.end}}
 
 For examples, see [Rename indexes](#rename-indexes).
 
 #### Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 #### Parameters
 
  Parameter | Description
 -----------|-------------
-`index_new_name` | The [`name`](sql-grammar.html#name) you want to use for the index, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`index_new_name` | The [`name`]({% link {{ page.version.version }}/sql-grammar.md %}#name) you want to use for the index, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 
 For usage, see [Synopsis](#synopsis).
 
 ### `SPLIT AT`
 
-`ALTER INDEX ... SPLIT AT` forces a [range split](architecture/distribution-layer.html#range-splits) at a specified row in the index.
+`ALTER INDEX ... SPLIT AT` forces a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at a specified row in the index.
 
 {% include {{ page.version.version }}/sql/range-splits.md %}
 
@@ -128,52 +128,52 @@ For examples, see [Split and unsplit indexes](#split-and-unsplit-indexes).
 
 #### Required privileges
 
-The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table or index.
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
 
 #### Parameters
 
  Parameter | Description
 -----------|-------------
-`select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the index.
-`a_expr` | The expiration of the split enforcement on the index. This can be a [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), or [`TIMESTAMPZ`](timestamp.html).
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that produces one or more rows at which to split the index.
+`a_expr` | The expiration of the split enforcement on the index. This can be a [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`TIMESTAMPZ`]({% link {{ page.version.version }}/timestamp.md %}).
 
 For usage, see [Synopsis](#synopsis).
 
 ### `UNSPLIT AT`
 
-`ALTER INDEX ... UNSPLIT AT` removes a [split enforcement](#split-at) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in the index.
+`ALTER INDEX ... UNSPLIT AT` removes a [split enforcement](#split-at) on a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), at a specified row in the index.
 
-Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges](architecture/distribution-layer.html#range-merges).
+Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges).
 
 For examples, see [Split and unsplit indexes](#split-and-unsplit-indexes).
 
 #### Required privileges
 
-The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table or index.
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
 
 #### Parameters
 
  Parameter | Description
 -----------|-------------
-`select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to unsplit an index.
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that produces one or more rows at which to unsplit an index.
 `ALL` | Remove all split enforcements for an index.
 
 For usage, see [Synopsis](#synopsis).
 
 ### `[NOT] VISIBLE`
 
-`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` sets the visibility of an index. This determines whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). 
+`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` sets the visibility of an index. This determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
-By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes).
+By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
 
 This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 Note the following considerations:
 
 - Primary indexes must be visible.
-- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html).
+- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
 - Indexes that are not visible are still used for foreign key cascades.
-- When defining a [unique constraint](unique.html), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX` after creating the unique constraint.
+- When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX` after creating the unique constraint.
 
 For examples, see [Set index visibility](#set-index-visibility).
 
@@ -205,7 +205,7 @@ ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING 
 {{site.data.alerts.callout_info}}
 When you discard a zone configuration, the objects it was applied to will then inherit a configuration from an object "the next level up"; e.g., if the object whose configuration is being discarded is a table, it will use its parent database's configuration.
 
-You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions](migrate-to-multiregion-sql.html#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
+You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -333,7 +333,7 @@ SHOW INDEXES FROM users;
 
 #### Split an index
 
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column:
+Add a new secondary [index]({% link {{ page.version.version }}/indexes.md %}) to the `rides` table, on the `revenue` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -371,11 +371,11 @@ SHOW RANGES FROM INDEX rides@revenue_idx;
 
 #### Set the expiration on a split enforcement
 
-For an example, see [`ALTER TABLE`](alter-table.html#set-the-expiration-on-a-split-enforcement).
+For an example, see [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-expiration-on-a-split-enforcement).
 
 #### Unsplit an index
 
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then split the table ranges by secondary index values as described in [Split an index](#split-an-index).
+Add a new secondary [index]({% link {{ page.version.version }}/indexes.md %}) to the `rides` table, on the `revenue` column, and then split the table ranges by secondary index values as described in [Split an index](#split-an-index).
 
 To remove the split enforcements, run the following:
 
@@ -392,7 +392,7 @@ ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
 (3 rows)
 ~~~
 
-You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
+You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link {{ page.version.version }}/crdb-internal.md %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -417,7 +417,7 @@ SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_intern
 (13 rows)
 ~~~
 
-The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
+The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) in the table as needed.
 
 ### Set index visibility
 
@@ -597,10 +597,10 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 ## See also
 
-- [`CREATE INDEX`](create-index.html)
-- [`CREATE TABLE`](create-table.html)
-- [`ALTER TABLE`](alter-table.html)
-- [`ALTER PARTITION`](alter-partition.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [SQL Statements](sql-statements.html)
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

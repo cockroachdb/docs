@@ -26,7 +26,7 @@ The [Cluster API](cluster-api.html) is a REST API that provides much of the same
 
 The API is accessible from each node at the same address and port as the DB Console.
 
-For more information, see the Cluster API [overview](cluster-api.html) and [reference](../api/cluster/v2.html).
+For more information, see the Cluster API [overview](cluster-api.html) and [reference](https://www.cockroachlabs.com/docs/api/cluster/v2).
 
 ### Prometheus endpoint
 

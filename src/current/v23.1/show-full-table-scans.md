@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.
+The `SHOW FULL TABLE SCANS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists recent queries for which CockroachDB performed a full table scan during query execution.
 
-Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance](make-queries-fast.html) and [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html).
+Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %}) and [SQL Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}).
 
 ## Syntax
 
@@ -17,11 +17,11 @@ Limiting the number of queries that require full table scans can help you optimi
 
 ## Required privileges
 
-The [`admin` role](security-reference/authorization.html#admin-role) is required to run `SHOW FULL TABLE SCANS`.
+The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) is required to run `SHOW FULL TABLE SCANS`.
 
 ## Examples
 
-To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the sample [`movr` dataset](movr.html) preloaded:
+To follow along, run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the sample [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) preloaded:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -97,6 +97,6 @@ Now, if you execute a similar query, the query will not perform a full table sca
 
 ## See also
 
-- [`EXPLAIN`](explain.html)
-- [Statement Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
-- [Selection queries](selection-queries.html)
+- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
+- [Statement Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %})
+- [Selection queries]({% link {{ page.version.version }}/selection-queries.md %})

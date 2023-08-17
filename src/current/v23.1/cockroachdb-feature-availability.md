@@ -9,7 +9,7 @@ key: experimental-features.html
 Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
 {{site.data.alerts.callout_info}}
-This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](../releases/release-support-policy.html) or [API Support Policy](api-support-policy.html).
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy) or [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Feature availability phases
@@ -29,28 +29,28 @@ General availability (GA)                     | Feature is production-ready and 
 
 ### `cockroach` commands
 
-The table below lists the [`cockroach` commands](cockroach-commands.html) available in preview in CockroachDB.
+The table below lists the [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) available in preview in CockroachDB.
 
 Command                                     | Description
 --------------------------------------------+-------------
-[`cockroach demo`](cockroach-demo.html)     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
-[`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
+[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
+[`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
 ### Super regions
 
-[Super regions](multiregion-overview.html#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
+[Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
 
 ### Export logs from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
+{{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [log export](https://www.cockroachlabs.com/docs/cockroachcloud/export-logs) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Keep SQL audit logs
 
-Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -77,7 +77,7 @@ Example:
 
 ### Turn on KV event tracing
 
-Use session tracing (via [`SHOW TRACE FOR SESSION`](show-trace.html)) to report the replicas of all KV events that occur during its execution.
+Use session tracing (via [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})) to report the replicas of all KV events that occur during its execution.
 
 Example:
 
@@ -98,10 +98,10 @@ Example:
 
 ### Check for constraint violations with `SCRUB`
 
-Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more. Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
+Checks the consistency of [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) indexes, [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints, and more. Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
 
 {{site.data.alerts.callout_info}}
-This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
+This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR]({% link {{ page.version.version }}/movr.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -125,21 +125,21 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 ### Show range information for a specific row
 
-The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) statement shows information about a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 ### Alter column types
 
-CockroachDB supports [altering the column types](alter-table.html#alter-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable](show-vars.html) to `true`.
+CockroachDB supports [altering the column types]({% link {{ page.version.version }}/alter-table.md %}#alter-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable]({% link {{ page.version.version }}/show-vars.md %}) to `true`.
 
 ### Temporary objects
 
-[Temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+[Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
-To enable temporary objects, set the `experimental_enable_temp_tables` [session variable](show-vars.html) to `on`.
+To enable temporary objects, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/show-vars.md %}) to `on`.
 
 ### Password authentication without TLS
 
-For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#security).
 
 With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
@@ -160,26 +160,26 @@ $ cockroach sql --user=jpointsman --insecure
 
 ### Core implementation of changefeeds
 
-The [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
 
 ### Changefeed metrics labels
 
 {% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
-For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page.
+For usage details, see the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) page.
 
 ### Google Pub/Sub sink for changefeeds
 
-Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sinks.html#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
+Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
 
 ### Multiple active portals
 
-The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals](postgresql-compatibility.html#multiple-active-portals).
+The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
 
 ## See Also
 
-- [`SHOW {session variable}`](show-vars.html)
-- [Functions and Operators](functions-and-operators.html)
-- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit)
-- [`SHOW TRACE FOR SESSION`](show-trace.html)
-- [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
+- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit)
+- [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})
+- [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %})

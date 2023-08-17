@@ -7,9 +7,9 @@ docs_area: reference.sql
 
 The `ORDER BY` clause controls the order in which rows are returned or
 processed. It can be used in any [selection
-query](selection-queries.html), including
-as operand of [`INSERT`](insert.html) or [`UPSERT`](upsert.html), as
-well as with [`DELETE`](delete.html) and [`UPDATE`](update.html)
+query]({% link {{ page.version.version }}/selection-queries.md %}), including
+as operand of [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), as
+well as with [`DELETE`]({% link {{ page.version.version }}/delete.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %})
 statements.
 
 
@@ -28,9 +28,9 @@ by the keyword `ASC` or `DESC`.
 Each **column selection** can take one of the following forms:
 
 - A simple column selection, determined as follows:
-  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause](select-clause.html). This uses the value computed by the `SELECT` clause as the sorting key.
+  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}). This uses the value computed by the `SELECT` clause as the sorting key.
   1. A positive integer number, designating one of the columns in the data source, either the `FROM` clause of the `SELECT` clause where it happens or the table being written to by `DELETE` or `UPDATE`. This uses the corresponding input value from the data source to use as the sorting key.
-  1. An arbitrary [scalar expression](scalar-expressions.html). This uses the result of evaluating that expression as the sorting key.
+  1. An arbitrary [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}). This uses the result of evaluating that expression as the sorting key.
 - The notation `PRIMARY KEY <table_name>`. This uses the primary key column(s) of the given table as sorting key. This table must be part of the data source.
 - The notation `INDEX <table_name>@<index_name>`. This uses the columns indexed by the given index as sorting key. This table must be part of the data source.
 
@@ -41,7 +41,7 @@ The optional keyword `DESC` inverts the direction of the column(s)
 selected by the selection that immediately precedes.
 
 CockroachDB supports `NULLS FIRST` and `NULLS LAST` in `ORDER BY` clauses for compatibility with [PostgreSQL row-sorting syntax](https://www.postgresql.org/docs/current/queries-order.html).
-The default CockroachDB ordering is `NULL`s first for ascending order and `NULL`s last for descending order, which is the opposite of the PostgreSQL default. To change the default CockroachDB ordering, set the `null_ordered_last` [session variable](set-vars.html) to `true`.
+The default CockroachDB ordering is `NULL`s first for ascending order and `NULL`s last for descending order, which is the opposite of the PostgreSQL default. To change the default CockroachDB ordering, set the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`.
 
 ## Order preservation
 
@@ -57,7 +57,7 @@ planner when present in a sub-query in a `FROM` clause as follows:
 ~~~
 
 However, when combining queries together with
-[sub-queries](table-expressions.html#use-a-subquery),
+[sub-queries]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery),
 some combinations will make the `ORDER BY` clause in a sub-query
 significant:
 
@@ -67,10 +67,10 @@ significant:
 1. The ordering of the operand of a stand-alone `LIMIT` or `OFFSET` clause (within
    a `FROM` operand of a `SELECT` clause) is preserved, to determine
    which rows are kept in the result.
-1. The ordering of the data source for an [`INSERT`](insert.html)
-   statement or an [`UPSERT`](upsert.html) statement that also uses
+1. The ordering of the data source for an [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+   statement or an [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement that also uses
    `LIMIT` is preserved, to determine [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
-1. The ordering indicated for an [`UPDATE`](update.html) or [`DELETE`](delete.html)
+1. The ordering indicated for an [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %})
    statement that also uses `LIMIT` is used to determine
    [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
    (This is a CockroachDB extension.)
@@ -244,9 +244,9 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
 
 ## Ordering rows in DML statements
 
-When using `ORDER BY` with an [`INSERT`](insert.html),
-[`UPSERT`](upsert.html), [`UPDATE`](update.html) or
-[`DELETE`](delete.html) (i.e., a DML statement), the `ORDER BY` clause is
+When using `ORDER BY` with an [`INSERT`]({% link {{ page.version.version }}/insert.md %}),
+[`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or
+[`DELETE`]({% link {{ page.version.version }}/delete.md %}) (i.e., a DML statement), the `ORDER BY` clause is
 ignored if it is not used in combination with [`LIMIT` and/or
 `OFFSET`](limit-offset.html).
 
@@ -266,7 +266,7 @@ For example, using `LIMIT` in `INSERT`:
 
 The reason why `ORDER BY` does not control the final order of the rows
 in the table is that the ordering of rows in the target table is
-determined by its [primary and secondary indexes](indexes.html).
+determined by its [primary and secondary indexes]({% link {{ page.version.version }}/indexes.md %}).
 
 To order the result of the `RETURNING` clause, see [Sorting the output
 of deletes](#sorting-the-output-of-deletes).
@@ -277,9 +277,9 @@ of deletes](#sorting-the-output-of-deletes).
 
 ## See also
 
-- [Selection Queries](selection-queries.html)
-- [Scalar Expressions](scalar-expressions.html)
-- [`INSERT`](insert.html)
-- [`UPSERT`](upsert.html)
-- [`DELETE`](delete.html)
-- [`UPDATE`](delete.html)
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [`UPDATE`]({% link {{ page.version.version }}/delete.md %})

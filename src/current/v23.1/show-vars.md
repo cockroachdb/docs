@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).
+Use the `SHOW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to display the value of one or all of the session variables. You configure session variables using [`SET`]({% link {{ page.version.version }}/set-vars.md %}).
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to display the session variables.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to display the session variables.
 
 ## Synopsis
 
@@ -18,7 +18,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 </div>
 
 {{site.data.alerts.callout_info}}
-The `SHOW` statement for session variables is unrelated to the other `SHOW` statements like [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW CREATE`](show-create.html), and [`SHOW DATABASES`](show-databases.html).
+The `SHOW` statement for session variables is unrelated to the other `SHOW` statements like [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}), [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}), and [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}).
 {{site.data.alerts.end}}
 
 ## Parameters
@@ -31,7 +31,7 @@ The `SHOW` statement for session variables is unrelated to the other `SHOW` stat
 
 {% include {{ page.version.version }}/misc/session-vars.md %}
 
-For session variables on features in preview, see [Features in Preview](cockroachdb-feature-availability.html).
+For session variables on features in preview, see [Features in Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 
 Special syntax cases supported for compatibility:
 
@@ -77,13 +77,13 @@ Special syntax cases supported for compatibility:
 
 ## See also
 
-- [`SET {session variable}`](set-vars.html)
-- [Transactions](transactions.html), including [Priority levels](transactions.html#transaction-priorities)
-- [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
-- [`SHOW COLUMNS`](show-columns.html)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE`](show-create.html)
-- [`SHOW DATABASES`](show-databases.html)
-- [`SHOW GRANTS`](show-grants.html)
-- [`SHOW INDEX`](show-index.html)
-- [`SHOW USERS`](show-users.html)
+- [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
+- [Transactions]({% link {{ page.version.version }}/transactions.md %}), including [Priority levels]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities)
+- [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
+- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
+- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
+- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
+- [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %})

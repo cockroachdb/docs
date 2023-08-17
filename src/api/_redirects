@@ -1,0 +1,9 @@
+---
+layout: null
+---
+
+/ /docs/api/ 301!
+/docs/api/cloud /docs/api/cloud/v1 301!
+/docs/api/cloud/ /docs/api/cloud/v1 301!
+/docs/api/cluster /docs/api/cluster/v2 301!
+/docs/api/cluster/ /docs/api/cluster/v2 301!

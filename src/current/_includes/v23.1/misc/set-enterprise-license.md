@@ -1,4 +1,4 @@
-As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the [`SET CLUSTER SETTING`](set-cluster-setting.html) command to set the name of your organization and the license key:
+As the CockroachDB `root` user, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) command to set the name of your organization and the license key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

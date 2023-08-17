@@ -12,7 +12,7 @@
       "title": "Read Data",
       "items": [
         {
-          "title": "Select Rows of Data",
+          "title": "Query Data",
           "urls": [
             "/${VERSION}/query-data.html"
           ]
@@ -112,7 +112,7 @@
       "title": "Transactions",
       "items": [
         {
-          "title": "Transactions Overview",
+          "title": "Overview",
           "urls": [
             "/${VERSION}/transactions.html"
           ]
@@ -159,7 +159,7 @@
       "title": "SQL Playground",
       "is_top_level": true,
       "urls": [
-        "/tutorials/sql-playground.html"
+        "https://www.cockroachlabs.com/docs/tutorials/sql-playground"
       ]
     },
     {

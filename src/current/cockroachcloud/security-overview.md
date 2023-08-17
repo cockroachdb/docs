@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Security
+title: CockroachDB Cloud Security Overview
 summary: Learn about the authentication, encryption, authorization, and audit log features for CockroachDB Cloud clusters.
 toc: false
 docs_area: manage
@@ -9,9 +9,9 @@ This page summarizes the security features available in the two database cluster
 
 A {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
 
-A {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance](pci-dss.html).
+A {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance]({% link cockroachcloud/pci-dss.md %}).
 
-Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated](pci-dss.html)
+Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated]({% link cockroachcloud/pci-dss.md %})
 
 The following table summarizes the {{ site.data.products.db }} security features and provides links to detailed documentation for each feature where applicable.
 
@@ -23,7 +23,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <th>Feature</th>
   </tr>
   <tr>
-    <td rowspan="8"><a href="authentication.html">Authentication</a></td>
+    <td rowspan="8"><a href="{% link cockroachcloud/authentication.md %}">Authentication</a></td>
     <td>✓</td>
     <td>✓</td>
     <td>Inter-node and node identity authentication using TLS 1.3</td>
@@ -36,32 +36,32 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="../{{site.versions['stable']}}/security-reference/scram-authentication.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/security-reference/scram-authentication">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Cluster DB console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
+    <td>Cluster DB console authentication with third-party <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-db-console">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
   </tr>
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td>SQL Client authentication with <a href="cloud-sso-sql.html">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
+    <td>SQL Client authentication with <a href="{% link cockroachcloud/cloud-sso-sql.md %}">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
   </tr>
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td>SQL Client authentication with <a href="../{{site.versions['stable']}}/sso-sql.html">Cluster SSO</a> using customer-managed identity providers</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>✓</td>
-    <td>Client identity authentication using <a href="client-certs-dedicated.html">PKI certificates</a></td>
+    <td>SQL Client authentication with <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-sql">Cluster SSO</a> using customer-managed identity providers</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="../{{site.versions['stable']}}/manage-certs-revoke-ocsp.html">OCSP</a> certificate revocation protocol</td>
+    <td>Client identity authentication using <a href="{% link cockroachcloud/client-certs-dedicated.md %}">PKI certificates</a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>✓</td>
+    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/manage-certs-revoke-ocsp">OCSP</a> certificate revocation protocol</td>
   </tr>
   <tr>
   <td rowspan="5" >Data Protection</a></td>
@@ -87,10 +87,10 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="cmek.html">Customer Managed Encryption Keys (CMEK)</a>.
+    <td><a href="{% link cockroachcloud/cmek.md %}">Customer Managed Encryption Keys (CMEK)</a>.
   </tr>
   <tr>
-  <td rowspan="3" ><a href="authorization.html">Access Control (Authorization)</a></td>
+  <td rowspan="3" ><a href="{% link cockroachcloud/authorization.md %}">Access Control (Authorization)</a></td>
     <td>✓</td>
     <td>✓</td>
     <td>SQL users with direct privilege management</td>
@@ -109,7 +109,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <td rowspan="6">Network Security</td>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="authentication.html">SQL-level configuration of allowed authentication attempts by IP address</a></td>
+    <td><a href="{% link cockroachcloud/authentication.md %}">SQL-level configuration of allowed authentication attempts by IP address</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -129,28 +129,28 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="network-authorization.html#vpc-peering">VPC Peering</a> for GCP clusters</td>
+    <td><a href="{% link cockroachcloud/network-authorization.md %}#vpc-peering">VPC Peering</a> for GCP clusters</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="network-authorization.html#aws-privatelink"></a>PrivateLink for AWS clusters </td>
+    <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters </td>
   </tr>
   <tr>
     <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="../{{site.versions['stable']}}/sql-audit-logging.html">SQL Audit Logging</a></td>
+    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sql-audit-logging">SQL Audit Logging</a></td>
   </tr>
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="cloud-org-audit-logs.html">Cloud Organization Audit Logging</a></td>
+    <td><a href="{% link cockroachcloud/cloud-org-audit-logs.md %}">Cloud Organization Audit Logging</a></td>
   </tr>
   <tr>
-    <td><a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Availability/Resilience</a></td>
+    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery">Availability/Resilience</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
+    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery">Disaster Recovery.</a></td>
   </tr>
 </table>

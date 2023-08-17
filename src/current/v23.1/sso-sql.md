@@ -9,7 +9,7 @@ Cluster Single Sign-On (SSO) allows users to access the SQL interface of a Cockr
 
 This page describes the procedure for accessing a {{ site.data.products.db }} cluster using the JWT access tokens provided by a customer-managed IdP. This document applies for both {{ site.data.products.core }} and {{ site.data.products.dedicated }} customers.
 
-You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](../cockroachcloud/cloud-sso-sql.html). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
+You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
 
 {{site.data.alerts.callout_info}}
 Note for {{ site.data.products.dedicated }} customers:
@@ -26,28 +26,28 @@ For more details and examples, refer to [SSO to CockroachDB clusters using JWT](
 
 - **CockroachDB:**
 
-	- **Self-Hosted**: You must have access to a cluster enabled with a valid [CockroachDB Enterprise license](enterprise-licensing.html).
+	- **Self-Hosted**: You must have access to a cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-		See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
+		See [Enterprise Trial –– Get Started]({% link {{ page.version.version }}/get-started-with-enterprise-trial.md %}) for help enabling your cluster with you enterprise license.
 
-	- **{{ site.data.products.db }}**: You must have access to a [{{ site.data.products.dedicated }}cluster](../cockroachcloud/create-your-cluster.html).
+	- **{{ site.data.products.db }}**: You must have access to a [{{ site.data.products.dedicated }}cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
 
 	- SQL users/credentials:
 
-		- Your SQL user must have the ability to update cluster settings. This permission is provided by either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges). This is required to designate an IdP as an external token issuer.
+		- Your SQL user must have the ability to update cluster settings. This permission is provided by either the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the [`MODIFYCLUSTERSETTING` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). This is required to designate an IdP as an external token issuer.
 
-		- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role](security-reference/authorization.html#admin-role).
+		- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 ## Learn more
 
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 ## Provision a service account
 
 For access to a CockroachDB cluster, an identity in an external IdP must correspond to a SQL user on the target cluster, so creating a service for your cluster entails two steps:
 
 - Create a service account/IAM username with your external IdP (for example, GCP).
-- [Create a SQL user](create-user.html) in your cluster.
+- [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}) in your cluster.
 
 The **correspondence** between IdP identity and SQL username is crucial. This determined by [your cluster's identity mapping](#configure-your-clusters-identity-mapping).
 
@@ -101,7 +101,7 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 	{{site.data.alerts.callout_danger}}
 	Any IdP that is configured on your cluster can grant SQL access to your cluster, and therefore any data that is stored within. This configuration is therefore critical for security.
 
-	Changes to this configuration should be made with utmost care, and access to updating this configuration (granted by the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges)) should be carefully restricted.
+	Changes to this configuration should be made with utmost care, and access to updating this configuration (granted by the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the [`MODIFYCLUSTERSETTING` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges)) should be carefully restricted.
 	{{site.data.alerts.end}}
 
 	{{site.data.alerts.callout_success}}
@@ -140,7 +140,7 @@ For example, your Google Cloud Platform organization can serve as token issuer, 
 Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider)) from your IdP, you may use it to connect to your cluster's SQL interface.
 
 {{site.data.alerts.callout_success}}
-This example uses [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html), but you can use any SQL client that supports sufficiently long passwords.
+This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -155,4 +155,4 @@ Welcome to the cockroach SQL interface...
 ## What's Next?
 
 - Read about [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
-- Learn more about [Authentication](authentication.html) in CockroachDB.
+- Learn more about [Authentication]({% link {{ page.version.version }}/authentication.md %}) in CockroachDB.

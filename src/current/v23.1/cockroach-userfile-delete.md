@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-storage.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
+ The `cockroach userfile delete` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) deletes the files stored in the [user-scoped file storage]({% link {{ page.version.version }}/use-userfile-storage.md %}) which match the [provided pattern]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
-A user can only delete files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role. Users in the `admin` role can delete from any user's storage.
+A user can only delete files from their own user-scoped storage, which is accessed through the [userfile URI]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role. Users in the `admin` role can delete from any user's storage.
 
 ## Synopsis
 
@@ -32,10 +32,10 @@ $ cockroach userfile delete --help
  Flag            | Description
 -----------------+-----------------------------------------------------
 `--cert-principal-map` | A comma-separated list of `<cert-principal>:<db-principal>` mappings. This allows mapping the principal in a cert to a DB principal such as `node` or `root` or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the `Subject.CommonName` or `SubjectAlternateName` fields in the certificate (e.g., disallowing a `CommonName` like `node` or `root`). If multiple mappings are provided for the same `<cert-principal>`, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped `CommonName` or DNS-type `SubjectAlternateName` fields.
-`--certs-dir`    | The path to the [certificate directory](cockroach-cert.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir`    | The path to the [certificate directory]({% link {{ page.version.version }}/cockroach-cert.md %}) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--echo-sql`     | Reveal the SQL statements sent implicitly by the command-line utility.
-`--url`          | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
-`--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--url`          | A [connection URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
+`--user`<br>`-u` | The [SQL user]({% link {{ page.version.version }}/create-user.md %}) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 
 ## Examples
 
@@ -85,7 +85,7 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 ### Delete files from a non-default userfile URI
 
-If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
+If you [uploaded a file to a non-default userfile URI]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -101,10 +101,10 @@ cockroach userfile delete userfile://testdb.public.uploads
 
 ## See also
 
-- [`cockroach userfile upload`](cockroach-userfile-upload.html)
-- [`cockroach userfile list`](cockroach-userfile-list.html)
-- [`cockroach userfile get`](cockroach-userfile-get.html)
-- [Use `userfile` storage](use-userfile-storage.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [`IMPORT`](import.html)
-- [`IMPORT INTO`](import-into.html)
+- [`cockroach userfile upload`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %})
+- [`cockroach userfile list`]({% link {{ page.version.version }}/cockroach-userfile-list.md %})
+- [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %})
+- [Use `userfile` storage]({% link {{ page.version.version }}/use-userfile-storage.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})

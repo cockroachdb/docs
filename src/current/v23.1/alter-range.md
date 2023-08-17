@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER RANGE` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a range.
+The `ALTER RANGE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) to a range.
 
 ## Required privileges
 
@@ -29,53 +29,53 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 | Subcommand                                                                             | Description                                                                     |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------|
-| [`CONFIGURE ZONE`](#configure-zone)                                                | [Configure replication zones](configure-replication-zones.html) for a database. |
+| [`CONFIGURE ZONE`](#configure-zone)                                                | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a database. |
 | [`RELOCATE`](#relocate) | Move a lease or replica between stores in an emergency situation.               |
 
 ### `CONFIGURE ZONE`
 
-`ALTER RANGE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a range. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+`ALTER RANGE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a range. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 #### Required privileges
 
-The user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](configure-replication-zones.html#for-system-data), the user must be a member of the `admin` role.
+The user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects]({% link {{ page.version.version }}/configure-replication-zones.md %}#for-system-data), the user must be a member of the `admin` role.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
-`value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
+`variable` | The name of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
+`value` | The value of the [replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
 
 For usage, see [Synopsis](#synopsis).
 
 ### `RELOCATE`
 
-`ALTER RANGE ... RELOCATE` is used to move a lease or [replica](architecture/overview.html#architecture-replica) between [stores](cockroach-start.html#store). This is helpful in an emergency situation to relocate data in the cluster.
+`ALTER RANGE ... RELOCATE` is used to move a lease or [replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) between [stores]({% link {{ page.version.version }}/cockroach-start.md %}#store). This is helpful in an emergency situation to relocate data in the cluster.
 
 {{site.data.alerts.callout_danger}}
-Most users should not need to use this statement; it is for use in emergency situations. If you are in an emergency situation where you think using this statement may help, Cockroach Labs recommends contacting [support](support-resources.html).
+Most users should not need to use this statement; it is for use in emergency situations. If you are in an emergency situation where you think using this statement may help, Cockroach Labs recommends contacting [support]({% link {{ page.version.version }}/support-resources.md %}).
 {{site.data.alerts.end}}
 
 #### Required privileges
 
 To alter a range and move a lease or replica between stores, the user must have one of the following:
 
-- Membership to the [`admin`](security-reference/authorization.html#admin-role) role for the cluster.
+- Membership to the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role for the cluster.
 
 #### Parameters
 
 Parameter | Description |
 ----------|-------------|
-`LEASE` | Move [leases](architecture/replication-layer.html#leases).
-`VOTERS` | Move [voting replicas](architecture/overview.html#architecture-replica) only.
-`NONVOTERS` | Move [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) only.
+`LEASE` | Move [leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
+`VOTERS` | Move [voting replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) only.
+`NONVOTERS` | Move [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) only.
 `FROM a_expr` | Move a replica from a store ID.
 `TO a_expr` | Move a lease or replica to a new store ID.
-`select_stmt` | A [selection query](selection-queries.html) that produces one or more rows.
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that produces one or more rows.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -115,9 +115,9 @@ SELECT store_id FROM crdb_internal.kv_store_status;
 
 #### Find range ID and leaseholder information
 
-To use `ALTER RANGE ... RELOCATE`, you need to know how to find the range ID, leaseholder, and other information for a [table](show-ranges.html#show-ranges-for-a-table), [index](show-ranges.html#show-ranges-for-an-index), or [database](show-ranges.html#show-ranges-for-a-database). You can find this information using the [`SHOW RANGES`](show-ranges.html) statement.
+To use `ALTER RANGE ... RELOCATE`, you need to know how to find the range ID, leaseholder, and other information for a [table]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-table), [index]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-an-index), or [database]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-database). You can find this information using the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement.
 
-For example, to get all range IDs, leaseholder store IDs, and leaseholder localities for the [`movr.users`](movr.html) table, use the following query:
+For example, to get all range IDs, leaseholder store IDs, and leaseholder localities for the [`movr.users`]({% link {{ page.version.version }}/movr.md %}) table, use the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,7 +139,7 @@ WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, 
 (9 rows)
 ~~~
 
-<!-- WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info WHERE lease_holder_locality::STRING ~ "region=us-.+"; -->
+{% comment %} WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info WHERE lease_holder_locality::STRING ~ "region=us-.+"; {% endcomment %}
 
 #### Move the lease for a range to a specified store
 
@@ -159,7 +159,7 @@ ALTER RANGE 70 RELOCATE LEASE TO 4;
 
 #### Move the lease for all of a table's ranges to a store
 
-To move the leases for all data in the [`movr.users`](movr.html) table to a specific store:
+To move the leases for all data in the [`movr.users`]({% link {{ page.version.version }}/movr.md %}) table to a specific store:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -201,7 +201,7 @@ ALTER RANGE 45 RELOCATE FROM 2 to 4;
 
 #### Move all of a table's replicas on one store to another store
 
-To move the replicas for all data in the [`movr.users`](movr.html) table on one store to another store:
+To move the replicas for all data in the [`movr.users`]({% link {{ page.version.version }}/movr.md %}) table on one store to another store:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -253,10 +253,10 @@ See the `result` column in the output for the status of the operation. If it's `
 
 #### Move all of a range's non-voting replicas from one store to another store
 
-To move a range's [non-voting replicas](architecture/replication-layer.html#non-voting-replicas), use the statement below.
+To move a range's [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas), use the statement below.
 
 {{site.data.alerts.callout_info}}
-This statement will only have an effect on clusters that have non-voting replicas configured, such as [multiregion clusters](multiregion-overview.html). If your cluster is not a multiregion cluster, it doesn't do anything, and will display errors in the `result` field as shown below.
+This statement will only have an effect on clusters that have non-voting replicas configured, such as [multiregion clusters]({% link {{ page.version.version }}/multiregion-overview.md %}). If your cluster is not a multiregion cluster, it doesn't do anything, and will display errors in the `result` field as shown below.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -281,8 +281,8 @@ ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_interna
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
-- [Multiregion Capabilities Overview](multiregion-overview.html)
-- [Troubleshoot cluster setup](cluster-setup-troubleshooting.html)
-- [Replication Layer](architecture/replication-layer.html)
-- [SQL Statements](sql-statements.html)
+- [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [Multiregion Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
+- [Troubleshoot cluster setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %})
+- [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

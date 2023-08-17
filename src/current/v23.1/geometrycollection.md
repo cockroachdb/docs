@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatial-data-overview.html#spatial-objects), such as [Points](point.html), [LineStrings](linestring.html), [Polygons](polygon.html), or other `GEOMETRYCOLLECTION`s.  It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.
+A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects), such as [Points]({% link {{ page.version.version }}/point.md %}), [LineStrings]({% link {{ page.version.version }}/linestring.md %}), [Polygons]({% link {{ page.version.version }}/polygon.md %}), or other `GEOMETRYCOLLECTION`s.  It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
 ## Examples
 
-A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format as shown below.
+A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format as shown below.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -27,12 +27,12 @@ SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900)
 
 ## See also
 
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-data-overview.html#spatial-objects)
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTIPOINT](multipoint.html)
-- [MULTILINESTRING](multilinestring.html)
-- [MULTIPOLYGON](multipolygon.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
+- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
+- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

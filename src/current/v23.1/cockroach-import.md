@@ -5,15 +5,15 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
-
-{{site.data.alerts.callout_info}}
-We recommend using `cockroach import` for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
+{{site.data.alerts.callout_danger}}
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
 {{site.data.alerts.end}}
+
+The `cockroach import` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}), imports its data, then [deletes the userfile]({% link {{ page.version.version }}/cockroach-userfile-delete.md %}). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 ## Required privileges
 
-The user must have `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on `defaultdb`.
+The user must have `CREATE` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on `defaultdb`.
 
 ## Synopsis
 
@@ -37,18 +37,18 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgresql-database)
-- [`mysqldump`](migrate-from-mysql.html#step-1-dump-the-mysql-database)
+- [`pgdump`]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [`mysqldump`]({% link {{ page.version.version }}/migrate-from-mysql.md %})
 
 ## Flags
 
  Flag            | Description
 -----------------+-----------------------------------------------------
-`--certs-dir`    | The path to the [certificate directory](cockroach-cert.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir`    | The path to the [certificate directory]({% link {{ page.version.version }}/cockroach-cert.md %}) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure`     | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--user`<br>`-u` | The [SQL user]({% link {{ page.version.version }}/create-user.md %}) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 `--ignore-unsupported-statements` |  Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
-`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile-storage.html).
+`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) or [userfile storage]({% link {{ page.version.version }}/use-userfile-storage.md %}).
 `--row-limit=` |  The number of rows to import for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running the entire import. <br/>**Default:** `0`
 
 ## Examples
@@ -81,7 +81,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ### Import a database with unsupported SQL syntax and log all unsupported statements
 
- To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-storage.html):
+ To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -107,8 +107,8 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ## See also
 
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [`IMPORT`](import.html)
-- [`IMPORT INTO`](import-into.html)
-- [Migrate from PostgreSQL](migrate-from-postgres.html)
-- [Migrate from MySQL](migrate-from-mysql.html)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})

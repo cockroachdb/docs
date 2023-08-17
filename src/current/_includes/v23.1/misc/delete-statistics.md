@@ -12,4 +12,4 @@ To delete a named set of statistics (e.g, one named "users_stats"), run a query 
 DELETE FROM system.table_statistics WHERE name = 'users_stats';
 ~~~
 
-For more information about the `DELETE` statement, see [`DELETE`](delete.html).
+For more information about the `DELETE` statement, see [`DELETE`]({% link {{ page.version.version }}/delete.md %}).

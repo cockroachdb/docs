@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view details about existing [replication zones](configure-replication-zones.html).
+Use the `SHOW ZONE CONFIGURATIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to view details about existing [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 ## Synopsis
 
@@ -15,17 +15,17 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to list replication zones.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list replication zones.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`zone_name` | The name of the system [range](architecture/overview.html#architecture-range) for which to show [replication zone configurations](configure-replication-zones.html).
-`database_name` | The name of the [database](create-database.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`table_name` | The name of the [table](create-table.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`partition_name` | The name of the [partition](partitioning.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`index_name` | The name of the [index](indexes.html) for which to show [replication zone configurations](configure-replication-zones.html).
+`zone_name` | The name of the system [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for which to show [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+`database_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) for which to show [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) for which to show [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+`partition_name` | The name of the [partition]({% link {{ page.version.version }}/partitioning.md %}) for which to show [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+`index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) for which to show [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 ## Examples
 
@@ -47,7 +47,7 @@ Parameter | Description
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
-You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
+You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 
 ### View the replication zone for an index
 
@@ -88,9 +88,9 @@ CONFIGURE ZONE 1
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
-- [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone)
-- [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone)
-- [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone)
-- [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone)
-- [SQL Statements](sql-statements.html)
+- [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [`ALTER DATABASE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone)
+- [`ALTER INDEX ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone)
+- [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone)
+- [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone)
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

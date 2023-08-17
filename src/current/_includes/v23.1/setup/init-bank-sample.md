@@ -21,7 +21,7 @@
     </section>
 
 
-1. To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
+1. To initialize the example database, use the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) command to execute the SQL statements in the `dbinit.sql` file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

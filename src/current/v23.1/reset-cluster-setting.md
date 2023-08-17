@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-cluster-setting.html) to its default value for the client session.
+The `RESET` [statement]({% link {{ page.version.version }}/sql-statements.md %}) resets a [cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}) to its default value for the client session.
 
 ## Required privileges
 
@@ -21,11 +21,11 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 
  Parameter | Description
 -----------|-------------
- `var_name` | The name of the [cluster setting](cluster-settings.html) (case-insensitive).
+ `var_name` | The name of the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (case-insensitive).
 
 ## Example
 
-{{site.data.alerts.callout_success}}You can use <a href="set-cluster-setting.html"><code>SET CLUSTER SETTING .. TO DEFAULT</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}You can use <a href="{% link {{ page.version.version }}/set-cluster-setting.md %}"><code>SET CLUSTER SETTING .. TO DEFAULT</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -63,6 +63,6 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 
 ## See also
 
-- [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
-- [Cluster settings](cluster-settings.html)
+- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
+- [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
+- [Cluster settings]({% link {{ page.version.version }}/cluster-settings.md %})

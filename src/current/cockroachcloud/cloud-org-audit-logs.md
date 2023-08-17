@@ -1,16 +1,16 @@
 ---
-title: Export CockroachDB Cloud organization audit logs
+title: Export CockroachDB Cloud Organization Audit Logs
 summary: Learn about exporting CockroachDB Cloud organization audit logs.
 toc: true
 docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
+{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs) of the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
 After your organization is enrolled in the preview, you can begin exporting audit logs for {{ site.data.products.db }} organization.
 
-This page provides some examples of exporting {{ site.data.products.db }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs).
+This page provides some examples of exporting {{ site.data.products.db }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs).
 
 ## Export audit logs in ascending order
 
@@ -124,4 +124,4 @@ All entries for the timestamp itself are included in both sets of results. Dupli
 
 ## What's next?
 
-- Learn more about the [Cloud API](cloud-api.html)
+- Learn more about the [Cloud API]({% link cockroachcloud/cloud-api.md %})

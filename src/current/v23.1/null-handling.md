@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 `NULL` is the term used to represent a missing value. A `NULL` value in a table is a value in a field that appears to be blank. A field with a `NULL` value is a field with no value.
 
-This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](cockroach-sql.html).
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
 When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string (`""`).
 
@@ -271,7 +271,7 @@ Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
 ## NULLs and aggregate functions
 
-Aggregate [functions](functions-and-operators.html) are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
+Aggregate [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -369,7 +369,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 ## NULLs and set operations
 
-`NULL` values are considered as part of a `UNION` [set operation](selection-queries.html#set-operations).
+`NULL` values are considered as part of a `UNION` [set operation]({% link {{ page.version.version }}/selection-queries.md %}#set-operations).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -389,9 +389,9 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 ## NULLs and sorting
 
-When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
+When [sorting a column]({% link {{ page.version.version }}/order-by.md %}) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
-Use the `NULLS FIRST` and `NULLS LAST` options of the [`ORDER BY`](order-by.html#parameters) to change where `NULL` values appear in the sort order.
+Use the `NULLS FIRST` and `NULLS LAST` options of the [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}#parameters) to change where `NULL` values appear in the sort order.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -472,7 +472,7 @@ Use the `NULLS FIRST` and `NULLS LAST` options of the [`ORDER BY`](order-by.html
 
 ## NULLs and CHECK Constraints
 
-A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used alongside a `CHECK` constraint.
+A [`CHECK` constraint]({% link {{ page.version.version }}/check.md %}) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used alongside a `CHECK` constraint.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -526,7 +526,7 @@ failed to satisfy CHECK constraint (discount <= price)
  Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
 
 {{site.data.alerts.callout_info}}
-In CockroachDB v20.2 and earlier, for all values other than [`STRING`](string.html), concatenation between a non-`NULL` value and a `NULL` value results in an [`ARRAY`](array.html) of the non-`NULL` value's type. To return an `ARRAY` of a specific type from a `NULL` concatenation in CockroachDB v21.1 and later, [cast](data-types.html#data-type-conversions-and-casts) the `NULL` value to an `ARRAY`.
+In CockroachDB v20.2 and earlier, for all values other than [`STRING`]({% link {{ page.version.version }}/string.md %}), concatenation between a non-`NULL` value and a `NULL` value results in an [`ARRAY`]({% link {{ page.version.version }}/array.md %}) of the non-`NULL` value's type. To return an `ARRAY` of a specific type from a `NULL` concatenation in CockroachDB v21.1 and later, [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) the `NULL` value to an `ARRAY`.
 {{site.data.alerts.end}}
 
 For example:

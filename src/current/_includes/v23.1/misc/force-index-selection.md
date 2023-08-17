@@ -1,7 +1,7 @@
-By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) when reading from a named table.
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({% link {{ page.version.version }}/indexes.md %}) when reading from a named table.
 
 {{site.data.alerts.callout_info}}
-Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
+Index selection can impact [performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), but does not change the result of a query.
 {{site.data.alerts.end}}
 
 ##### Force index scan
@@ -29,7 +29,7 @@ The syntax to force a reverse scan of a specific index is:
 > SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
-Forcing a reverse scan is sometimes useful during [performance tuning](performance-best-practices-overview.html). For reference, the full syntax for choosing an index and its scan direction is
+Forcing a reverse scan is sometimes useful during [performance tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %}). For reference, the full syntax for choosing an index and its scan direction is
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -38,9 +38,9 @@ SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]}
 
 where the optional `DIRECTION` is either `ASC` (ascending) or `DESC` (descending).
 
-When a direction is specified, that scan direction is forced; otherwise the [cost-based optimizer](cost-based-optimizer.html) is free to choose the direction it calculates will result in the best performance.
+When a direction is specified, that scan direction is forced; otherwise the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) is free to choose the direction it calculates will result in the best performance.
 
-You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`](explain.html#opt-option). For example, given the table
+You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}#opt-option). For example, given the table
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -64,7 +64,7 @@ you can check the scan direction with:
 
 ##### Force partial index scan
 
-To force a [partial index scan](partial-indexes.html), your statement must have a `WHERE` clause that implies the partial index filter.
+To force a [partial index scan]({% link {{ page.version.version }}/partial-indexes.md %}), your statement must have a `WHERE` clause that implies the partial index filter.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -94,7 +94,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 ##### Force partial GIN index scan
 
-To force a [partial GIN index](inverted-indexes.html#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
+To force a [partial GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
 
 - Implies the partial index.
 - Constrains the GIN index scan.

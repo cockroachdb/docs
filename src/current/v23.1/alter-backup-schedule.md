@@ -6,12 +6,12 @@ docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](create-schedule-for-backup.html#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
+Core users can only use backup scheduling for [full backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
 
-To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
+To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 {{site.data.alerts.end}}
 
-The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule](manage-a-backup-schedule.html). You can use `ALTER BACKUP SCHEDULE` to do the following:
+The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}). You can use `ALTER BACKUP SCHEDULE` to do the following:
 
 - Set a different name for a backup schedule.
 - Change a scheduled backup's storage location.
@@ -20,7 +20,7 @@ The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule](man
 
 ## Required privileges
 
-To alter a backup schedule, you must be the owner of the backup schedule, i.e., the user that [created the backup schedule](create-schedule-for-backup.html).
+To alter a backup schedule, you must be the owner of the backup schedule, i.e., the user that [created the backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
 
 ## Synopsis
 
@@ -32,9 +32,9 @@ To alter a backup schedule, you must be the owner of the backup schedule, i.e., 
 
 Parameter | Description
 ----------+-------------
-`schedule_id` | The schedule's ID that [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) and [`SHOW SCHEDULES`](show-schedules.html) display.
+`schedule_id` | The schedule's ID that [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) and [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) display.
 `schedule_label` | The name or label given to the backup schedule.
-`collectionURI` | The URI where you want to store the backup. See [Backup file URLs](backup.html#backup-file-urls) for detail on forming the URI.
+`collectionURI` | The URI where you want to store the backup. See [Backup file URLs]({% link {{ page.version.version }}/backup.md %}#backup-file-urls) for detail on forming the URI.
 `option` | Control the backup behavior with a comma-separated list of these [options](#backup-options).
 `RECURRING crontab` | Specify when the backup should be taken. By default, these are incremental backups. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with `ALTER BACKUP SCHEDULE`. Define the schedule as a `STRING` in [crontab format](https://wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 `FULL BACKUP crontab / ALWAYS` | Specify when to take a new full backup. Define the schedule as a `STRING` in [crontab format](https://wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>`FULL BACKUP ALWAYS` will trigger `RECURRING` to always take full backups. <br>**Note:** If you do not have an Enterprise license then you can only take full backups. `ALWAYS` is the only accepted value of `FULL BACKUP`. <br><br>If you omit the `FULL BACKUP` clause, the default backup schedule will be as follows: <ul><li>If `RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>If `RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
@@ -69,7 +69,7 @@ CREATE SCHEDULE aws_backups
 
 This statement specifies:
 
-- `'external://s3_storage'`: Use the storage location represented by this [external connection](create-external-connection.html) URI.
+- `'external://s3_storage'`: Use the storage location represented by this [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) URI.
 - `first_run = 'now'`: Take the first full backup immediately rather than wait for its next `RECURRING` time.
 - `ignore_existing_backups`: Ignore any existing backups already present in the storage location.
 
@@ -98,7 +98,7 @@ ALTER BACKUP SCHEDULE 814155335856521217 SET INTO 'external://gcs_storage', SET 
 ~~~
 
 {{site.data.alerts.callout_info}}
-[Incremental backups](take-full-and-incremental-backups.html#incremental-backups) require a full backup in the storage location. Therefore, when you change the storage location for a backup schedule, CockroachDB will pause any scheduled incremental backups until the next full backup runs on its regular schedule cadence. Consider that if you change the storage location and then adjust the frequency of your scheduled backups before the next full backup, any newly added incremental backups will not be part of the pause after a storage location change. This could result in a reported error state for the incremental backups, which will not resolve until the next scheduled full backup.
+[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) require a full backup in the storage location. Therefore, when you change the storage location for a backup schedule, CockroachDB will pause any scheduled incremental backups until the next full backup runs on its regular schedule cadence. Consider that if you change the storage location and then adjust the frequency of your scheduled backups before the next full backup, any newly added incremental backups will not be part of the pause after a storage location change. This could result in a reported error state for the incremental backups, which will not resolve until the next scheduled full backup.
 {{site.data.alerts.end}}
 
 ### Adjust frequency of scheduled backups
@@ -158,7 +158,7 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options. 
 
-This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
+This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
 
 ~~~sql
 ALTER BACKUP SCHEDULE 814168045421199361 SET SCHEDULE OPTION on_previous_running = 'start', SET WITH incremental_location = 'external://gcs_incremental_storage';
@@ -176,9 +176,9 @@ The incremental backup schedule's `BACKUP` statement shows that it will read fil
 
 ## See also
 
-- [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Manage a Backup Schedule](manage-a-backup-schedule.html)
-- [`BACKUP`](backup.html)
-- [Use Cloud Storage](use-cloud-storage.html)
-- [`CREATE EXTERNAL CONNECTION`](create-external-connection.html)
+- [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})

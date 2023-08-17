@@ -13,11 +13,11 @@ For information about specific migration tasks, see Alembic's [Cookbook](https:/
 
 ## Before you begin
 
-Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
+Before you begin the tutorial, [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ## Step 1. Start a cluster and create a database
 
-1. Start a [demo cluster](cockroach-demo.html):
+1. Start a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -248,7 +248,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
 
 ## Step 6. Add additional migrations
 
-Suppose you want to add a new [computed column](computed-columns.html) to the `accounts` table that tracks which accounts are overdrawn.
+Suppose you want to add a new [computed column]({% link {{ page.version.version }}/computed-columns.md %}) to the `accounts` table that tracks which accounts are overdrawn.
 
 1. Create a new migration with the `alembic` tool:
 
@@ -343,7 +343,7 @@ Suppose you want to add a new [computed column](computed-columns.html) to the `a
 While [Alembic supports most SQL operations](https://alembic.sqlalchemy.org/en/latest/ops.html), you can always execute raw SQL using the `execute()` operation.
 
 {{site.data.alerts.callout_success}}
-Executing DDL statements as raw SQL can be particularly helpful when using SQL syntax for DDL statements specific to CockroachDB, like [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) or [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality) statements.
+Executing DDL statements as raw SQL can be particularly helpful when using SQL syntax for DDL statements specific to CockroachDB, like [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) or [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-locality) statements.
 {{site.data.alerts.end}}
 
 For example, the raw SQL for the second migration would look something like this:
@@ -565,16 +565,16 @@ Let's use the same example `overdrawn` computed column from above.
 
 If you run into problems, please file an issue in the [`alembic` repository](https://github.com/sqlalchemy/alembic/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`](cockroach-version.html))
+- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
 - Alembic version
 - Operating system
 - Steps to reproduce the behavior
 
 ## See Also
 
-- [`cockroach demo`](cockroach-demo.html)
+- [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
 - [Alembic documentation](https://alembic.sqlalchemy.org/en/latest/)
 - [`alembic` GitHub repository](https://github.com/sqlalchemy/alembic)
-- [Client connection parameters](connection-parameters.html)
-- [Third-Party Database Tools](third-party-database-tools.html)
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
+- [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
+- [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})

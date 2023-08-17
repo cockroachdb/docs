@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `STRING` [data type](data-types.html) stores a string of Unicode characters.
+The `STRING` [data type]({% link {{ page.version.version }}/data-types.md %}) stores a string of Unicode characters.
 
 {{site.data.alerts.callout_info}}
 `STRING` is not a data type supported by PostgreSQL. For PostgreSQL compatibility, CockroachDB supports additional [aliases](#aliases) and [`STRING`-related types](#related-types).
@@ -26,7 +26,7 @@ For PostgreSQL compatibility, CockroachDB supports the following `STRING`-relate
 
 These types are functionality identical to `STRING`.
 
-CockroachDB also supports the single-byte `"char"` special character type. As in PostgreSQL, this special type is intended for internal use in [system catalogs](system-catalogs.html), and has a storage size of 1 byte. CockroachDB truncates all values of type `"char"` to a single character.
+CockroachDB also supports the single-byte `"char"` special character type. As in PostgreSQL, this special type is intended for internal use in [system catalogs]({% link {{ page.version.version }}/system-catalogs.md %}), and has a storage size of 1 byte. CockroachDB truncates all values of type `"char"` to a single character.
 
 ## Length
 
@@ -53,19 +53,19 @@ When inserting a `STRING` value or a `STRING`-related-type value:
 ## Syntax
 
 A value of type `STRING` can be expressed using a variety of formats.
-See [string literals](sql-constants.html#string-literals) for more details.
+See [string literals]({% link {{ page.version.version }}/sql-constants.md %}#string-literals) for more details.
 
-When printing out a `STRING` value in the [SQL shell](cockroach-sql.html), the shell uses the simple
+When printing out a `STRING` value in the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), the shell uses the simple
 SQL string literal format if the value doesn't contain special character,
 or the escaped format otherwise.
 
 ### Collations
 
-`STRING` values accept [collations](collate.html), which lets you sort strings according to language- and country-specific rules.
+`STRING` values accept [collations]({% link {{ page.version.version }}/collate.md %}), which lets you sort strings according to language- and country-specific rules.
 
 ## Size
 
-The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
@@ -126,25 +126,25 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Supported casting and conversion
 
-`STRING` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+`STRING` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
-`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Note that string literals can be implicitly cast to any supported `ARRAY` data type except [`BYTES`](bytes.html), [`ENUM`](enum.html), [`JSONB`](jsonb.html), [`SERIAL`](serial.html), and the [spatial data types](architecture/glossary.html#data-types) `Box2D`, `GEOGRAPHY`, and `GEOMETRY`.
-`BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'` or `'xAB'`.
-`BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
-`BYTES` | For more details, [see here](bytes.html#supported-conversions).
-`DATE` | Requires supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
-`DECIMAL` | Requires supported [`DECIMAL`](decimal.html) string format, e.g., `'1.1'`.
-`FLOAT` | Requires supported [`FLOAT`](float.html) string format, e.g., `'1.1'`.
-`INET` | Requires supported [`INET`](inet.html) string format, e.g, `'192.168.0.1'`.
-`INT` | Requires supported [`INT`](int.html) string format, e.g., `'10'`.
-`INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
-`TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
-`TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
-`TSQUERY` | Requires supported [`TSQUERY`](tsquery.html) string format, e.g., `'Requires & supported & TSQUERY & string & format'`.<br>Note that casting a string to a `TSQUERY` will not normalize the tokens into lexemes. To do so, [use `to_tsquery()`, `plainto_tsquery()`, or `phraseto_tsquery()`](#convert-string-to-tsquery).
-`TSVECTOR` | Requires supported [`TSVECTOR`](tsvector.html) string format, e.g., `'Requires supported TSVECTOR string format.'`.<br>Note that casting a string to a `TSVECTOR` will not normalize the tokens into lexemes. To do so, [use `to_tsvector()`](#convert-string-to-tsvector).
-`UUID` | Requires supported [`UUID`](uuid.html) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
+`ARRAY` | Requires supported [`ARRAY`]({% link {{ page.version.version }}/array.md %}) string format, e.g., `'{1,2,3}'`.<br>Note that string literals can be implicitly cast to any supported `ARRAY` data type except [`BYTES`]({% link {{ page.version.version }}/bytes.md %}), [`ENUM`]({% link {{ page.version.version }}/enum.md %}), [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}), [`SERIAL`](serial.html), and the [spatial data types](architecture/glossary.html#data-types) `Box2D`, `GEOGRAPHY`, and `GEOMETRY`.
+`BIT` | Requires supported [`BIT`]({% link {{ page.version.version }}/bit.md %}) string format, e.g., `'101001'` or `'xAB'`.
+`BOOL` | Requires supported [`BOOL`]({% link {{ page.version.version }}/bool.md %}) string format, e.g., `'true'`.
+`BYTES` | For more details, [see here]({% link {{ page.version.version }}/bytes.md %}#supported-conversions).
+`DATE` | Requires supported [`DATE`]({% link {{ page.version.version }}/date.md %}) string format, e.g., `'2016-01-25'`.
+`DECIMAL` | Requires supported [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) string format, e.g., `'1.1'`.
+`FLOAT` | Requires supported [`FLOAT`]({% link {{ page.version.version }}/float.md %}) string format, e.g., `'1.1'`.
+`INET` | Requires supported [`INET`]({% link {{ page.version.version }}/inet.md %}) string format, e.g, `'192.168.0.1'`.
+`INT` | Requires supported [`INT`]({% link {{ page.version.version }}/int.md %}) string format, e.g., `'10'`.
+`INTERVAL` | Requires supported [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) string format, e.g., `'1h2m3s4ms5us6ns'`.
+`TIME` | Requires supported [`TIME`]({% link {{ page.version.version }}/time.md %}) string format, e.g., `'01:22:12'` (microsecond precision).
+`TIMESTAMP` | Requires supported [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+`TSQUERY` | Requires supported [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}) string format, e.g., `'Requires & supported & TSQUERY & string & format'`.<br>Note that casting a string to a `TSQUERY` will not normalize the tokens into lexemes. To do so, [use `to_tsquery()`, `plainto_tsquery()`, or `phraseto_tsquery()`](#convert-string-to-tsquery).
+`TSVECTOR` | Requires supported [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) string format, e.g., `'Requires supported TSVECTOR string format.'`.<br>Note that casting a string to a `TSVECTOR` will not normalize the tokens into lexemes. To do so, [use `to_tsvector()`](#convert-string-to-tsvector).
+`UUID` | Requires supported [`UUID`]({% link {{ page.version.version }}/uuid.md %}) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
 
 ### `STRING` vs. `BYTES`
 
@@ -172,13 +172,13 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
        3
 ~~~
 
-In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+In this case, [`LENGTH(string)`]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
 #### Translate literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
-+ `BYTES` gives a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
++ `BYTES` gives a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes]({% link {{ page.version.version }}/sql-constants.md %}#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
 ### Cast hexadecimal digits to `BIT`
@@ -229,7 +229,7 @@ For example:
 (1 row)
 ~~~
 
-Concatenating a `STRING` value with a [`NULL` value](null-handling.html) results in a `NULL` value.
+Concatenating a `STRING` value with a [`NULL` value]({% link {{ page.version.version }}/null-handling.md %}) results in a `NULL` value.
 
 For example:
 
@@ -247,7 +247,7 @@ For example:
 
 ### Convert `STRING` to `TIMESTAMP`
 
-You can use the [`parse_timestamp()` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
+You can use the [`parse_timestamp()` function]({% link {{ page.version.version }}/functions-and-operators.md %}) to parse strings in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -263,7 +263,7 @@ SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 
 ### Convert `STRING` to `TSVECTOR`
 
-You can use the [`to_tsvector()` function](functions-and-operators.html#full-text-search-functions) to parse strings in [`TSVECTOR`](tsvector.html) format. This will normalize the tokens into lexemes, and will add an integer position to each lexeme.
+You can use the [`to_tsvector()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to parse strings in [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) format. This will normalize the tokens into lexemes, and will add an integer position to each lexeme.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -276,13 +276,13 @@ SELECT to_tsvector('How do trees get on the internet?');
   'get':4 'internet':7 'tree':3
 ~~~
 
-For more information on usage, see [Full-Text Search](full-text-search.html).
+For more information on usage, see [Full-Text Search]({% link {{ page.version.version }}/full-text-search.md %}).
 
 ### Convert `STRING` to `TSQUERY`
 
-You can use the [`to_tsquery()`, `plainto_tsquery()`, and `phraseto_tsquery()` functions](functions-and-operators.html#full-text-search-functions) to parse strings in [`TSQUERY`](tsquery.html) format. This will normalize the tokens into lexemes.
+You can use the [`to_tsquery()`, `plainto_tsquery()`, and `phraseto_tsquery()` functions]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to parse strings in [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}) format. This will normalize the tokens into lexemes.
 
-When using `to_tsquery()`, the string input must be formatted as a [`TSQUERY`](tsquery.html#syntax), with operators separating tokens.
+When using `to_tsquery()`, the string input must be formatted as a [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}#syntax), with operators separating tokens.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -295,9 +295,9 @@ SELECT to_tsquery('How & do & trees & get & on & the & internet?');
   'tree' & 'get' & 'internet'
 ~~~
 
-For more information on usage, see [Full-Text Search](full-text-search.html).
+For more information on usage, see [Full-Text Search]({% link {{ page.version.version }}/full-text-search.md %}).
 
 ## See also
 
-- [Data Types](data-types.html)
-- [String literal syntax](sql-constants.html#string-literals)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [String literal syntax]({% link {{ page.version.version }}/sql-constants.md %}#string-literals)

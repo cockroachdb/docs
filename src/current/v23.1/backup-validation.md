@@ -7,7 +7,7 @@ docs_area: manage
 
 CockroachDB provides backup validation tools to check that backups you have in storage are restorable. Although a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid.
 
-You can validate a backup of a [cluster](backup.html#back-up-a-cluster), [database](backup.html#back-up-a-database), or [table](backup.html#back-up-a-table-or-view) backup with one of the following [`SHOW BACKUP`](show-backup.html) or [`RESTORE`](restore.html) statements. The three options result in increasing levels of backup validation:
+You can validate a backup of a [cluster]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster), [database]({% link {{ page.version.version }}/backup.md %}#back-up-a-database), or [table]({% link {{ page.version.version }}/backup.md %}#back-up-a-table-or-view) backup with one of the following [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statements. The three options result in increasing levels of backup validation:
 
 1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. Refer to [Validate backup files](#validate-backup-files) for an example.
 1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any rows. Refer to [Validate a backup is restorable](#validate-a-backup-is-restorable) for an example.
@@ -27,7 +27,7 @@ Cockroach Labs recommends implementing the following validation plan to test you
 
 ## Validate backup files
 
-Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST and metadata files](backup-architecture.html) that belong to a backup are present in the storage location.
+Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST and metadata files]({% link {{ page.version.version }}/backup-architecture.md %}) that belong to a backup are present in the storage location.
 
 1. Take a backup that we'll use for each of the examples on this page:
 
@@ -55,7 +55,7 @@ Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST a
 
 ## Validate a backup is restorable
 
-To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any rows. This process is significantly faster than running a [regular restore](restore.html#examples) for the purposes of validation.
+To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any rows. This process is significantly faster than running a [regular restore]({% link {{ page.version.version }}/restore.md %}#examples) for the purposes of validation.
 
 A `schema_only` restore produces close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up rows. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these SST files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable).
 
@@ -72,7 +72,7 @@ RESTORE DATABASE movr FROM "2022/09/19-134123.64" IN "s3://bucket?AWS_ACCESS_KEY
 (1 row)
 ~~~
 
-You can also use the [`new_db_name` option](restore.html#rename-a-database-on-restore) to restore a database to a different name. For example, `new_db_name = test_movr`.
+You can also use the [`new_db_name` option]({% link {{ page.version.version }}/restore.md %}#rename-a-database-on-restore) to restore a database to a different name. For example, `new_db_name = test_movr`.
 
 Verify that the table schemas have been restored, but that the tables contain no rows:
 
@@ -113,7 +113,7 @@ DROP DATABASE movr CASCADE;
 
 ### Cluster-level backup validation
 
-It is important to note that [full cluster restores](restore.html#full-cluster) with `schema_only` will write the system tables to disk. This provides important coverage for validation at the cluster level. Writing the system tables should not have a notable impact on the runtime of this process.
+It is important to note that [full cluster restores]({% link {{ page.version.version }}/restore.md %}#full-cluster) with `schema_only` will write the system tables to disk. This provides important coverage for validation at the cluster level. Writing the system tables should not have a notable impact on the runtime of this process.
 
 Once you have successfully validated a cluster-level restore, the restored system tables cannot be reverted. However, you can drop the databases and tables, as shown in the previous command.
 
@@ -138,7 +138,7 @@ RESTORE DATABASE movr FROM LATEST IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key 
 
 ## See also
 
-- [`RESTORE`](restore.html)
-- [`BACKUP`](backup.html)
-- [`SHOW BACKUP`](show-backup.html)
-- [Use Cloud Storage](use-cloud-storage.html)
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %})
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})

@@ -26,16 +26,16 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 
 **Foreign Key Columns**
 
-- Foreign key columns must use their referenced column's [type](data-types.html).
-- A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
+- Foreign key columns must use their referenced column's [type]({% link {{ page.version.version }}/data-types.md %}).
+- A foreign key column cannot be a virtual [computed column]({% link {{ page.version.version }}/computed-columns.md %}), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
-- A foreign key column can reference the [`crdb_region` column](alter-table.html#crdb_region) in [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
+- A foreign key column can reference the [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) in [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
 **Referenced Columns**
 
-- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) or [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
--  By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
+-  By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 
 ### Null values
 
@@ -48,7 +48,7 @@ Multiple-column (composite) foreign keys only accept null values in the followin
 
 For more information about composite foreign keys, see the [composite foreign key matching](#composite-foreign-key-matching) section.
 
-Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint](not-null.html) on foreign keys when [creating your tables](create-table.html).
+Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}) on foreign keys when [creating your tables]({% link {{ page.version.version }}/create-table.md %}).
 
 {{site.data.alerts.callout_info}}
 A `NOT NULL` constraint cannot be added to existing tables.
@@ -103,7 +103,7 @@ Parameter | Description
 `ON DELETE RESTRICT` / `ON UPDATE RESTRICT` | `RESTRICT` and `NO ACTION` are currently equivalent until options for deferring constraint checking are added. To set an existing foreign key action to `RESTRICT`, the foreign key constraint must be dropped and recreated.
 `ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated, respectively. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete will take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
 `ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
-`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`](not-null.html) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
+`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
 
 {{site.data.alerts.callout_info}}
  If a foreign key column has multiple constraints that reference the same column, the foreign key action that is specified by the first foreign key takes precedence. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
@@ -117,10 +117,10 @@ To improve query performance, we recommend doing the following:
 
 - Create a secondary index on all referencing foreign key columns that are not already indexed.
 
-- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead of [`INSERT`]({% link {{ page.version.version }}/insert.md %}).
 
     {{site.data.alerts.callout_danger}}
-    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement.
+    Using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint) statement.
     {{site.data.alerts.end}}
 
 ## Syntax
@@ -128,7 +128,7 @@ To improve query performance, we recommend doing the following:
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`](alter-table.html#add-the-foreign-key-constraint-with-cascade).
+You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-the-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level
@@ -139,12 +139,12 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 |-----------|-------------|
 | `table_name` | The name of the table you're creating. |
 | `column_name` | The name of the foreign key column. |
-| `column_type` | The foreign key column's [data type](data-types.html). |
+| `column_type` | The foreign key column's [data type]({% link {{ page.version.version }}/data-types.md %}). |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `ref_column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column. |
+| `column_constraints` | Any other column-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply to this column. |
 | `column_def` | Definitions for any other columns in the table. |
-| `table_constraints` | Any table-level [constraints](constraints.html) you want to apply. |
+| `table_constraints` | Any table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply. |
 
 **Example**
 
@@ -173,7 +173,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 | `fk_column_name` | The name of the foreign key column. |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply. |
+| `table_constraints` | Any other table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply. |
 
 **Example**
 
@@ -666,7 +666,7 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
     (4 rows)
     ~~~
 
-    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`](not-null.html) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
+    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
 
 1. Create a new `customers_5` table:
 
@@ -931,13 +931,13 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 
 ## See also
 
-- [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
-- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
-- [`CHECK` constraint](check.html)
-- [`DEFAULT` constraint](default-value.html)
-- [`NOT NULL` constraint](not-null.html)
-- [`PRIMARY KEY` constraint](primary-key.html)
-- [`UNIQUE` constraint](unique.html)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- [`CHECK` constraint]({% link {{ page.version.version }}/check.md %})
+- [`DEFAULT` constraint]({% link {{ page.version.version }}/default-value.md %})
+- [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %})
+- [`PRIMARY KEY` constraint]({% link {{ page.version.version }}/primary-key.md %})
+- [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %})
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
 - [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/)

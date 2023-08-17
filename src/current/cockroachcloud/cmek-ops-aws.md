@@ -1,13 +1,13 @@
 ---
-title: Provision AWS KMS Keys and IAM Roles for CMEK
+title: Provision AWS for CMEK
 summary: Tutorial for provisioning CMEK in AWS, covering initial set-up, revocation, and recovery scenarios.
 toc: true
 docs_area: manage.security
 ---
 
-This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)](cmek.html) for your {{ site.data.products.dedicated }} cluster with Amazon Web Services (AWS).
+This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for your {{ site.data.products.dedicated }} cluster with Amazon Web Services (AWS).
 
-This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
+This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#enable-cmek).
 
 ## Overview
 
@@ -64,7 +64,7 @@ You can create the CMEK key two ways:
 - [Directly in the AWS console](#option-a-use-the-aws-console-to-create-the-cmek-key)
 - By setting up a [Vault AWS-KMS secrets engine](#option-b-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key) with access to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 		{{site.data.alerts.callout_info}}
-		Learn more about [CockroachDB - HashiCorp Vault integrations](../{{site.current_cloud_version}}/hashicorp-integration.html).
+		Learn more about [CockroachDB - HashiCorp Vault integrations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration).
 		{{site.data.alerts.end}}
 
 ### Option A: Use the AWS Console to create the CMEK key
@@ -78,7 +78,7 @@ You can create the CMEK key two ways:
 1. Set the permissions for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Finish creating the key.
 
-After you have provisioned the cross-account IAM role and CMEK key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek).
+After you have provisioned the cross-account IAM role and CMEK key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
 
 ### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
 
@@ -148,7 +148,7 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 1. Set the permissions policy for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Save.
 
-After you have provisioned the IAM role and KMS key in AWS, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek).
+After you have provisioned the IAM role and KMS key in AWS, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
 
 ## Appendix: IAM policy for the CMEK key
 

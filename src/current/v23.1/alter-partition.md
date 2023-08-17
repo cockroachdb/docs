@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-`ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning](partitioning.html). It is combined with the `CONFIGURE ZONE` subcommand.
+`ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning]({% link {{ page.version.version }}/partitioning.md %}). It is combined with the `CONFIGURE ZONE` subcommand.
 
-To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
@@ -21,15 +21,15 @@ You can use *replication zones* to control the number and location of replicas f
 
 ## Required privileges
 
-The user must have the [`CREATE`](grant.html#supported-privileges) privilege on the table.
+The user must have the [`CREATE`]({% link {{ page.version.version }}/grant.md %}#supported-privileges) privilege on the table.
 
 ## Parameters
 
  Parameter | Description
 -----------+-------------
-`table_name` | The name of the [table](create-table.html) with the [replication zone configurations](configure-replication-zones.html) to modify.
-`partition_name` | The name of the [partition](partitioning.html) with the [replication zone configurations](configure-replication-zones.html) to modify.
-`index_name` | The name of the [index](indexes.html) with the [replication zone configurations](configure-replication-zones.html) to modify.
+`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) with the [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) to modify.
+`partition_name` | The name of the [partition]({% link {{ page.version.version }}/partitioning.md %}) with the [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) to modify.
+`index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) with the [replication zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) to modify.
 `variable` | The name of the [variable](#variables) to change.
 `value` | The value of the [variable](#variables) to change.
 
