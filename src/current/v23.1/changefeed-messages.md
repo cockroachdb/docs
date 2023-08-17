@@ -30,10 +30,11 @@ By default, changefeed messages emitted to a [sink]({% link {{ page.version.vers
 
 - **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
 - **Value**:
-    - One of three possible top-level fields:
+    - One of four possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
         - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated-option) timestamp.
         - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
+        - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
     - For [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}), the current state of the row inserted or updated.
     - For [`DELETE`]({% link {{ page.version.version }}/delete.md %}), `null`.
 
@@ -78,6 +79,9 @@ The message envelope contains a primary key array when your changefeed is emitti
 
 - Cloud storage sink:
 
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud';
+    ~~~
     ~~~
     {"after": {"city": "seattle", "creation_time": "2019-01-02T03:04:05", "current_location": "86359 Jeffrey Ranch", "ext": {"color": "yellow"}, "id": "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8", "owner_id": "570a3d70-a3d7-4c00-8000-000000000011", "status": "in_use", "type": "scooter"}, "key": ["seattle", "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8"]}
     ~~~
@@ -86,27 +90,46 @@ The message envelope contains a primary key array when your changefeed is emitti
 
     - Default when `envelope=wrapped` or `envelope` is not specified:
 
+        ~~~sql
+        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka';
+        ~~~
         ~~~
         {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
         ~~~
 
     - Kafka sink message with `key_in_value` provided:
 
+        ~~~sql
+        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, envelope=wrapped;
+        ~~~
         ~~~
         {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "46227 Jeremy Haven Suite 92", "ext": {"brand": "Schwinn", "color": "red"}, "id": "298cc7a0-de6b-4659-ae57-eaa2de9d99c3", "owner_id": "beda1202-63f7-41d2-aa35-ee3a835679d1", "status": "in_use", "type": "bike"}, "key": ["washington dc", "298cc7a0-de6b-4659-ae57-eaa2de9d99c3"]}
         ~~~
+
+To include a `before` field in the changefeed message that contains the state of a row before an update in the changefeed message, use the `diff` option with `wrapped`:
+
+~~~sql
+CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wrapped;
+~~~
+
+~~~
+{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "2 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "before": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "5 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "key": ["seattle", "f6c02fe0-a4e0-476d-a3b7-91934d15dce2"]}
+~~~
 
 ### `bare`
 
 `bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
 
-{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
-
 - Cloud storage sink:
 
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud' WITH envelope=bare;
+    ~~~
     ~~~
     {"__crdb__": {"key": ["washington dc", "cd48e501-e86d-4019-9923-2fc9a964b264"]}, "city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "87247 Diane Park", "ext": {"brand": "Fuji", "color": "yellow"}, "id": "cd48e501-e86d-4019-9923-2fc9a964b264", "owner_id": "a616ce61-ade4-43d2-9aab-0e3b24a9aa9a", "status": "available", "type": "bike"}
     ~~~
+
+{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
 
 - In CDC queries:
 
@@ -134,6 +157,9 @@ The message envelope contains a primary key array when your changefeed is emitti
 
 - Kafka sink:
 
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users INTO 'external://kafka' WITH envelope=key_only;
+    ~~~
     ~~~
     ["boston", "22222222-2222-4200-8000-000000000002"]
     ~~~
@@ -144,6 +170,9 @@ The message envelope contains a primary key array when your changefeed is emitti
 
 - Sinkless changefeeds:
 
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users WITH envelope=key_only;
+    ~~~
     ~~~
     {"key":"[\"seattle\", \"fff726cc-13b3-475f-ad92-a21cafee5d3f\"]","table":"users","value":""}
     ~~~
@@ -154,6 +183,9 @@ The message envelope contains a primary key array when your changefeed is emitti
 
 - Kafka sink:
 
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH envelope=row;
+    ~~~
     ~~~
     {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "85551 Moore Mountains Apt. 47", "ext": {"color": "red"}, "id": "d3b37607-1e9f-4e25-b772-efb9374b08e3", "owner_id": "4f26b516-f13f-4136-83e1-2ea1ae151c20", "status": "available", "type": "skateboard"}
     ~~~
