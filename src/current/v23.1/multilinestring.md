@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `MULTILINESTRING` is a collection of [LineStrings](linestring.html).  MultiLineStrings are useful for gathering a group of LineStrings into one geometry. For example, you may want to gather the LineStrings denoting all of the roads in a particular municipality.
+A `MULTILINESTRING` is a collection of [LineStrings]({% link {{ page.version.version }}/linestring.md %}).  MultiLineStrings are useful for gathering a group of LineStrings into one geometry. For example, you may want to gather the LineStrings denoting all of the roads in a particular municipality.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
@@ -13,7 +13,7 @@ A `MULTILINESTRING` is a collection of [LineStrings](linestring.html).  MultiLin
 
 ### Well known text
 
-A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format.
+A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -29,7 +29,7 @@ SELECT ST_GeomFromText('MULTILINESTRING((0 0, 1440 900), (800 600, 200 400))');
 
 ### SQL
 
-A MultiLineString can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`](st_union.html) on a column that contains [LineString](linestring.html) geometries.  In the example below, we will build a MultiLineString from several LineStrings.
+A MultiLineString can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}) on a column that contains [LineString]({% link {{ page.version.version }}/linestring.md %}) geometries.  In the example below, we will build a MultiLineString from several LineStrings.
 
 1. Insert the LineStrings:
 
@@ -44,7 +44,7 @@ A MultiLineString can be created from SQL by calling an aggregate function such 
     (st_geomfromtext('SRID=4326;LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'));
     ~~~
 
-1. Build a MultiLineString from the individual [LineStrings](linestring.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
+1. Build a MultiLineString from the individual [LineStrings]({% link {{ page.version.version }}/linestring.md %}) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -67,12 +67,12 @@ A MultiLineString can be created from SQL by calling an aggregate function such 
 
 ## See also
 
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-data-overview.html#spatial-objects)
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTIPOINT](multipoint.html)
-- [MULTIPOLYGON](multipolygon.html)
-- [GEOMETRYCOLLECTION](geometrycollection.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
+- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
+- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

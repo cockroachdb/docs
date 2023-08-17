@@ -6,10 +6,10 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: deploy
 ---
 
-This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how a [GIN index](inverted-indexes.html) can optimize your queries.
+This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data from a third-party API, as well as how a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) can optimize your queries.
 
 <div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/demo-json-support-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
+  <a class="btn btn-outline-primary" href="https://www.cockroachlabs.com/docs/tutorials/demo-json-support-interactive" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
 </div>
 
 ## Step 1. Install prerequisites
@@ -20,20 +20,20 @@ This page guides you through a simple demonstration of how CockroachDB can store
 </div>
 
 <div class="filter-content" markdown="1" data-scope="go">
-- Install the latest version of [CockroachDB](install-cockroachdb.html).
+- Install the latest version of [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 - Install the latest version of [Go](https://golang.org/dl/): `brew install go`
 - Install the [PostgreSQL driver](https://github.com/lib/pq): `go get github.com/lib/pq`
 </div>
 
 <div class="filter-content" markdown="1" data-scope="python">
-- Install the latest version of [CockroachDB](install-cockroachdb.html).
+- Install the latest version of [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 - Install the [Python psycopg2 driver](http://initd.org/psycopg/docs/install.html): `pip install psycopg2`
 - Install the [Python Requests library](https://requests.readthedocs.io/): `pip install requests`
 </div>
 
 ## Step 2. Start a single-node cluster
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`](cockroach-start-single-node.html) command:
+For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -47,7 +47,7 @@ $ cockroach start-single-node \
 
 ## Step 3. Create a user
 
-Open the [built-in SQL shell](cockroach-sql.html) as the `root` user and create a new user, `maxroach`:
+Open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) as the `root` user and create a new user, `maxroach`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -75,7 +75,7 @@ Set the database as the default:
 > SET DATABASE = jsonb_test;
 ~~~
 
-Then [grant privileges](grant.html) to the `maxroach` user:
+Then [grant privileges]({% link {{ page.version.version }}/grant.md %}) to the `maxroach` user:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -230,7 +230,7 @@ Since you are querying live data, your results for this and the following steps 
 
 ## Step 8. Create a GIN index to optimize performance
 
-The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create a [GIN index](inverted-indexes.html) on the column:
+The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on the column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -289,4 +289,4 @@ Explore other core CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
-You may also want to learn more about the [`JSONB`](jsonb.html) data type and [GIN indexes](inverted-indexes.html).
+You may also want to learn more about the [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data type and [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}).

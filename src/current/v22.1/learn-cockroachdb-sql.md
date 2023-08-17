@@ -14,7 +14,7 @@ This tutorial is for {{site.data.products.core}} users. If you are working with 
 {{site.data.alerts.end}}
 
 <div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
+  <a class="btn btn-outline-primary" href="https://www.cockroachlabs.com/docs/tutorials/learn-cockroachdb-sql-interactive" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
 </div>
 
 ## Start CockroachDB

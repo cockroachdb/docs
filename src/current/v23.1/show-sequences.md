@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW SEQUENCES` [statement](sql-statements.html) lists all sequences in a database.
+The `SHOW SEQUENCES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists all sequences in a database.
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to list the sequences in a database.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list the sequences in a database.
 
 ## Synopsis
 
@@ -21,7 +21,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 Parameter | Description
 ----------|------------
-`name` | The name of the database for which to list sequences. When omitted, the sequences in the [current database](sql-name-resolution.html#current-database) are listed.
+`name` | The name of the database for which to list sequences. When omitted, the sequences in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
 ## Example
 
@@ -44,6 +44,6 @@ Parameter | Description
 
 ## See also
 
-- [`CREATE SEQUENCE`](create-sequence.html)
-- [`DROP SEQUENCE`](drop-sequence.html)
-- [`ALTER SEQUENCE`](alter-sequence.html)
+- [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})
+- [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %})
+- [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})

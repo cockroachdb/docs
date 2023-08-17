@@ -10,18 +10,18 @@ docs_area: manage
 
 The **Transactions** page helps you:
 
-- Identify frequently [retried](../{{ version_prefix }}transactions.html#transaction-retries) transactions.
-- [Troubleshoot](../{{ version_prefix }}query-behavior-troubleshooting.html) high latency transactions or execution failures.
+- Identify frequently [retried]({% link {{ version_prefix }}transactions.md %}#transaction-retries) transactions.
+- [Troubleshoot]({% link {{ version_prefix }}query-behavior-troubleshooting.md %}) high latency transactions or execution failures.
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
-In contrast to the [**Statements** page]({{ link_prefix }}statements-page.html), which displays [SQL statement fingerprints]({{ link_prefix }}statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](../{{ version_prefix }}transactions.html).
+In contrast to the [**Statements** page]({% link cockroachcloud/statements-page.md %}), which displays [SQL statement fingerprints]({% link cockroachcloud/statements-page.md %}#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](https://www.cockroachlabs.com/docs/{{ version_prefix }}transactions).
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Transactions** tab.
 {% else %}
-To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
+To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
 {% endif %}
 
 {% include {{version_prefix}}ui/transactions-filter.md %}

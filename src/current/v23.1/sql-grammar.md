@@ -20,7 +20,7 @@ a[name]:focus {
 </style>
 
 {{site.data.alerts.callout_success}}
-This page describes the full CockroachDB SQL grammar. However, as a starting point, it's best to reference our [SQL statements pages](sql-statements.html) first, which provide detailed explanations and examples.
+This page describes the full CockroachDB SQL grammar. However, as a starting point, it's best to reference our [SQL statements pages]({% link {{ page.version.version }}/sql-statements.md %}) first, which provide detailed explanations and examples.
 {{site.data.alerts.end}}
 
 {% comment %}

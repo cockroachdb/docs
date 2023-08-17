@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.
+The `COLLATE` feature lets you sort [`STRING`]({% link {{ page.version.version }}/string.md %}) values according to language- and country-specific rules, known as collations.
 
 Collated strings are important because different languages have [different rules for alphabetic order](https://wikipedia.org/wiki/Alphabetical_order#Language-specific_conventions), especially with respect to accented letters. For example, in German accented letters are sorted with their unaccented counterparts, while in Swedish they are placed at the end of the alphabet. A collation is a set of rules used for ordering and usually corresponds to a language, though some languages have multiple collations with different rules for sorting; for example Portuguese has separate collations for Brazilian and European dialects (`pt-BR` and `pt-PT` respectively).
 
@@ -67,7 +67,7 @@ For more details on locale extensions, see the [Unicode Collation Algorithm](htt
 
 ## Collation versioning
 
-While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplified and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column](computed-columns.html) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
+While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplified and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column]({% link {{ page.version.version }}/computed-columns.md %}) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
 
 ## SQL syntax
 
@@ -80,7 +80,7 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
     > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
     ~~~
 
-    {{site.data.alerts.callout_info}}You can also use any of the <a href="string.html#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}You can also use any of the <a href="{% link {{ page.version.version }}/string.md %}#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
 
 - **Value syntax**: `<STRING value> COLLATE <collation>`. For example:
 
@@ -209,7 +209,7 @@ You can also use casting to remove collations from values.
 
 ### Show collation for strings
 
-You can use the `pg_collation_for` [built-in function](functions-and-operators.html#string-and-byte-functions), or its alternative [syntax form](functions-and-operators.html#special-syntax-forms) `COLLATION FOR`, to return the locale name of a collated string.
+You can use the `pg_collation_for` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions), or its alternative [syntax form]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms) `COLLATION FOR`, to return the locale name of a collated string.
 
 For example:
 
@@ -241,4 +241,4 @@ This is equivalent to:
 
 ## See also
 
-[Data Types](data-types.html)
+[Data Types]({% link {{ page.version.version }}/data-types.md %})

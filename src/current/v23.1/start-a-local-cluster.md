@@ -8,19 +8,19 @@ docs_area: deploy
 
 {% include {{ page.version.version }}/filter-tabs/start-a-cluster.md %}
 
-Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
+Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}), it's simple to run an insecure multi-node cluster locally.
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
-- Make sure you have already [installed CockroachDB](install-cockroachdb.html).
-- For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html), and review the [Production Checklist](recommended-production-settings.html).
+- Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- For quick SQL testing or app development, consider [running a single-node cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead.
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 
 ## Step 1. Start the cluster
 
-1. Use the [`cockroach start`](cockroach-start.html) command to start the first node:
+1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the first node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -54,7 +54,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
     *
     ~~~
 
-1. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
+1. Take a moment to understand the [flags]({% link {{ page.version.version }}/cockroach-start.md %}#flags) you used:
     - The `--insecure` flag makes communication unencrypted.
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the DB Console.
     - The `--store` flag indicates the location where the node's data and logs are stored.
@@ -89,7 +89,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -102,7 +102,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
+    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command retrieves node 1's startup details:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -130,14 +130,14 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use CockroachDB's built-in SQL client.
 
-1. Run the [cockroach sql](cockroach-sql.html) command against node 1:
+1. Run the [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}) command against node 1:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -207,7 +207,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 ## Step 3. Run a sample workload
 
-CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
+CockroachDB also comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR]({% link {{ page.version.version }}/movr.md %}).
 
 1. Load the initial dataset:
 
@@ -236,25 +236,25 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 ## Step 4. Access the DB Console
 
-The CockroachDB [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
 1. Go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v23.1/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.
+    This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
-    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation]({% link {{ page.version.version }}/known-limitations.md %}#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v23.1/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 5. Simulate node maintenance
 
@@ -331,7 +331,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     <img src="{{ 'images/v23.1/ui_cluster_overview_5_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-replication-and-rebalancing.html) to utilize the additional capacity of the new nodes.
+    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) to utilize the additional capacity of the new nodes.
 
 ## Step 7. Stop the cluster
 
@@ -394,7 +394,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## What's next?
 
-- [Install the client driver](install-client-drivers.html) for your preferred language
-- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
-- [Build an app with CockroachDB](example-apps.html)
-- Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [multi-region performance](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)
+- [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
+- Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
+- Further explore CockroachDB capabilities like [fault tolerance and automated repair]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}), [multi-region performance]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}), and [JSON support]({% link {{ page.version.version }}/demo-json-support.md %})

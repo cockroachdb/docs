@@ -6,15 +6,15 @@ docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_info}}
-**Cockroach Labs recommends using [changefeeds to export data](export-data-with-changefeeds.html)** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability](monitor-and-debug-changefeeds.html), [scheduling](export-data-with-changefeeds.html#create-a-scheduled-changefeed-to-export-filtered-data), and [job management](create-and-configure-changefeeds.html).
+**Cockroach Labs recommends using [changefeeds to export data]({% link {{ page.version.version }}/export-data-with-changefeeds.md %})** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}), [scheduling]({% link {{ page.version.version }}/export-data-with-changefeeds.md %}#create-a-scheduled-changefeed-to-export-filtered-data), and [job management]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 {{site.data.alerts.end}}
 
-The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
+The `EXPORT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
 - Parquet files
 
-Using the [CockroachDB distributed execution engine](architecture/sql-layer.html#distsql), `EXPORT` parallelizes file creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems.
+Using the [CockroachDB distributed execution engine]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql), `EXPORT` parallelizes file creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems.
 
 If you do not need distributed exports, you can [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
 
@@ -24,35 +24,35 @@ If you do not need distributed exports, you can [export tabular data in CSV form
 
 ## Cancelling export
 
-After the export has been initiated, you can cancel it with [`CANCEL QUERY`](cancel-query.html).
+After the export has been initiated, you can cancel it with [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}).
 
 ## Synopsis
 
 <div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}
-The `EXPORT` statement cannot be used within a [transaction](transactions.html).
+The `EXPORT` statement cannot be used within a [transaction]({% link {{ page.version.version }}/transactions.md %}).
 {{site.data.alerts.end}}
 
 ## Required privileges
 
- The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
+ The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges]({% link {{ page.version.version }}/import.md %}#source-privileges).
 
 ### Destination privileges
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role is required for the following scenarios:
 
-- Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
-- Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
-- Using [HTTP](use-a-local-file-server.html) or HTTPS.
+- Using the [`cockroach nodelocal upload`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) command.
+- Using [HTTP]({% link {{ page.version.version }}/use-a-local-file-server.md %}) or HTTPS.
 
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-storage.html) storage.
+- Using [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -79,14 +79,14 @@ A hexadecimal hash code (`abc123...` in the file names) uniquely identifies each
 
 For more information, see the following:
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 ### Export options
 
-You can control the [`EXPORT`](export.html) process's behavior using any of the following key-value pairs as a `kv_option`.
+You can control the [`EXPORT`]({% link {{ page.version.version }}/export.md %}) process's behavior using any of the following key-value pairs as a `kv_option`.
 
 Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             |
 --------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -112,34 +112,34 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 
 | CockroachDB Type    | Parquet Type | Parquet Logical Type |
 --------------------|--------------|----------------------
-| [`BOOL`](bool.html) | `BOOLEAN` | `nil` |
-| [`STRING`](string.html) | byte array | `STRING` |
-| [`COLLATE`](collate.html) | byte array | `STRING` |
-| [`INET`](inet.html) | byte array | `STRING` |
-| [`JSONB`](jsonb.html) | byte array | `JSON` |
-| [`INT`](int.html) [`INT8`](int.html) | `INT64` | `nil` |
-| [`INT2`](int.html) [`INT4`](int.html) | `INT32` | `nil` |
-| [`FLOAT`](float.html) [`FLOAT8`](float.html) | `FLOAT64` | `nil` |
-| [`FLOAT4`](float.html) | `FLOAT32` | `nil` |
-| [`DECIMAL`](decimal.html) | byte array | `DECIMAL` <br>Note: scale and precision data are preserved in the Parquet file. |
-| [`UUID`](uuid.html) | `fixed_len_byte_array` | `nil` |
-| [`BYTES`](bytes.html) | byte array | `nil` |
-| [`BIT`](bit.html) | byte array | `nil` |
-| [`ENUM`](enum.html) | byte array | `ENUM` |
-| [`Box2D`](data-types.html#data-type-conversions-and-casts) | byte array | `STRING` |
-| [`GEOGRAPHY`](data-types.html#data-type-conversions-and-casts) | byte array | `nil` |
-| [`GEOMETRY`](data-types.html#data-type-conversions-and-casts) | byte array | `nil` |
-| [`DATE`](date.html) | byte array | `STRING` |
-| [`TIME`](time.html) | `INT64` | `TIME` <br>Note: microseconds after midnight; <br>exporting to microsecond precision. |
-| [`TIMETZ`](time.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
-| [`INTERVAL`](interval.html) | byte array | `STRING` <br>Note: specifically represented as ISO8601. |
-| [`TIMESTAMP`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
-| [`TIMESTAMPTZ`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
-| [`ARRAY`](array.html) | Encoded as a repeated field; <br>each array value is encoded as per the preceding types. | `nil` |
+| [`BOOL`]({% link {{ page.version.version }}/bool.md %}) | `BOOLEAN` | `nil` |
+| [`STRING`]({% link {{ page.version.version }}/string.md %}) | byte array | `STRING` |
+| [`COLLATE`]({% link {{ page.version.version }}/collate.md %}) | byte array | `STRING` |
+| [`INET`]({% link {{ page.version.version }}/inet.md %}) | byte array | `STRING` |
+| [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) | byte array | `JSON` |
+| [`INT`]({% link {{ page.version.version }}/int.md %}) [`INT8`]({% link {{ page.version.version }}/int.md %}) | `INT64` | `nil` |
+| [`INT2`]({% link {{ page.version.version }}/int.md %}) [`INT4`]({% link {{ page.version.version }}/int.md %}) | `INT32` | `nil` |
+| [`FLOAT`]({% link {{ page.version.version }}/float.md %}) [`FLOAT8`]({% link {{ page.version.version }}/float.md %}) | `FLOAT64` | `nil` |
+| [`FLOAT4`]({% link {{ page.version.version }}/float.md %}) | `FLOAT32` | `nil` |
+| [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) | byte array | `DECIMAL` <br>Note: scale and precision data are preserved in the Parquet file. |
+| [`UUID`]({% link {{ page.version.version }}/uuid.md %}) | `fixed_len_byte_array` | `nil` |
+| [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) | byte array | `nil` |
+| [`BIT`]({% link {{ page.version.version }}/bit.md %}) | byte array | `nil` |
+| [`ENUM`]({% link {{ page.version.version }}/enum.md %}) | byte array | `ENUM` |
+| [`Box2D`]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) | byte array | `STRING` |
+| [`GEOGRAPHY`]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) | byte array | `nil` |
+| [`GEOMETRY`]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) | byte array | `nil` |
+| [`DATE`]({% link {{ page.version.version }}/date.md %}) | byte array | `STRING` |
+| [`TIME`]({% link {{ page.version.version }}/time.md %}) | `INT64` | `TIME` <br>Note: microseconds after midnight; <br>exporting to microsecond precision. |
+| [`TIMETZ`]({% link {{ page.version.version }}/time.md %}) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
+| [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | byte array | `STRING` <br>Note: specifically represented as ISO8601. |
+| [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
+| [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
+| [`ARRAY`]({% link {{ page.version.version }}/array.md %}) | Encoded as a repeated field; <br>each array value is encoded as per the preceding types. | `nil` |
 
 ## Exports and `AS OF SYSTEM TIME`
 
-The [`AS OF SYSTEM TIME`](as-of-system-time.html) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention](performance-best-practices-overview.html#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
+The [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
 
 ## Examples
 
@@ -184,7 +184,7 @@ This examples uses the `nullas` option to define the string that represents `NUL
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-For more information, see [selection queries](selection-queries.html).
+For more information, see [selection queries]({% link {{ page.version.version }}/selection-queries.md %}).
 
 ### Non-distributed export using the SQL client
 
@@ -193,7 +193,7 @@ For more information, see [selection queries](selection-queries.html).
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
-For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+For more information about the SQL client, see [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
 ### Export compressed files
 
@@ -231,7 +231,7 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 
 ### Export tabular data with an S3 storage class
 
-To associate your export objects with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To associate your export objects with a [specific storage class]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -245,7 +245,7 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with [`userfile`](use-userfile-storage.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
+Using `EXPORT` with [`userfile`]({% link {{ page.version.version }}/use-userfile-storage.md %}) is not recommended. You can either export data to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) or to a local CSV file by using [`cockroach sql --execute`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql#general):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="local">local CSV</button>
@@ -279,7 +279,7 @@ EXPORT INTO CSV
 
 ### View a running export
 
-View running exports by using [`SHOW STATEMENTS`](show-statements.html):
+View running exports by using [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -288,7 +288,7 @@ View running exports by using [`SHOW STATEMENTS`](show-statements.html):
 
 ### Cancel a running export
 
-Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+Use [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) to get a running export's `query_id`, which can be used to [cancel the export]({% link {{ page.version.version }}/cancel-query.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -301,7 +301,7 @@ Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_i
 
 ## See also
 
-- [`IMPORT`](import.html)
-- [`IMPORT INTO`](import-into.html)
-- [Use a Local File Server](use-a-local-file-server.html)
-- [Use Cloud Storage](use-cloud-storage.html)
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})

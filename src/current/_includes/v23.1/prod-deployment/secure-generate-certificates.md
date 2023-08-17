@@ -1,6 +1,6 @@
-You can use `cockroach cert` commands, [`openssl` commands](create-security-certificates-openssl.html), or [Auto TLS cert generation](auto-tls.html) (alpha) to generate security certificates. This section features the `cockroach cert` commands.
+You can use `cockroach cert` commands, [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or [Auto TLS cert generation]({% link {{ page.version.version }}/auto-tls.md %}) (alpha) to generate security certificates. This section features the `cockroach cert` commands.
 
-Locally, you'll need to [create the following certificates and keys](cockroach-cert.html):
+Locally, you'll need to [create the following certificates and keys]({% link {{ page.version.version }}/cockroach-cert.md %}):
 
 - A certificate authority (CA) key pair (`ca.crt` and `ca.key`).
 - A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP addresses and common names for machines running load balancers.
@@ -8,7 +8,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 {{site.data.alerts.callout_success}}Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.{{site.data.alerts.end}}
 
-1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
+1. [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) on your local machine, if you haven't already.
 
 1. Create two directories:
 
@@ -194,8 +194,8 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     <username>@<workload address>:~/certs
     ~~~
 
-    In later steps, you'll also use the `root` user's certificate to run [`cockroach`](cockroach-commands.html) client commands from your local machine. If you might also want to run `cockroach` client commands directly on a node (e.g., for local debugging), you'll need to copy the `root` user's certificate and key to that node as well.
+    In later steps, you'll also use the `root` user's certificate to run [`cockroach`]({% link {{ page.version.version }}/cockroach-commands.md %}) client commands from your local machine. If you might also want to run `cockroach` client commands directly on a node (e.g., for local debugging), you'll need to copy the `root` user's certificate and key to that node as well.
 
 {{site.data.alerts.callout_info}}
-On accessing the DB Console in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
+On accessing the DB Console in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}#accessing-the-db-console-for-a-secure-cluster).
 {{site.data.alerts.end}}

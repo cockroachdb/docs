@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE TABLE ... AS` [statement](sql-statements.html) creates a new table from a [selection query](selection-queries.html).
+The `CREATE TABLE ... AS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new table from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -14,7 +14,7 @@ The `CREATE TABLE ... AS` [statement](sql-statements.html) creates a new table f
 Tables created with `CREATE TABLE ... AS` are intended to persist the
 result of a query for later reuse.
 
-This can be more efficient than a [view](create-view.html) when the
+This can be more efficient than a [view]({% link {{ page.version.version }}/create-view.md %}) when the
 following two conditions are met:
 
 - The result of the query is used as-is multiple times.
@@ -31,7 +31,7 @@ mentions.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
 
 ## Synopsis
 <div class="filters clearfix">
@@ -74,21 +74,21 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
  Parameter | Description
 -----------|-------------
  `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
- `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+ `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) and [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
  `column_name` | The name of the column you want to use instead of the name of the column from `select_stmt`.
- `create_as_col_qual_list` | An optional column definition, which may include [primary key constraints](primary-key.html) and [column family assignments](column-families.html).
- `family_def` | An optional [column family definition](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.
- `create_as_constraint_def` | An optional [primary key constraint](primary-key.html).
- `select_stmt` | A [selection query](selection-queries.html) to provide the data.
- `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview](cockroachdb-feature-availability.html#temporary-objects)**.
- `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
- `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
+ `create_as_col_qual_list` | An optional column definition, which may include [primary key constraints]({% link {{ page.version.version }}/primary-key.md %}) and [column family assignments]({% link {{ page.version.version }}/column-families.md %}).
+ `family_def` | An optional [column family definition]({% link {{ page.version.version }}/column-families.md %}). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.
+ `create_as_constraint_def` | An optional [primary key constraint]({% link {{ page.version.version }}/primary-key.md %}).
+ `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to provide the data.
+ `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables]({% link {{ page.version.version }}/temporary-tables.md %}).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
+ `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+ `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Limitations
 
-The default rules for [column families](column-families.html) apply.
+The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
 
-The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key).
+The [primary key]({% link {{ page.version.version }}/primary-key.md %}) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key]({% link {{ page.version.version }}/create-table-as.md %}#specify-a-primary-key).
 
 ## Examples
 
@@ -206,7 +206,7 @@ original table.
 
 ### Specify a primary key
 
-You can specify the [primary key](primary-key.html) of a new table created from a selection query:
+You can specify the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a new table created from a selection query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -248,7 +248,7 @@ You can specify the [primary key](primary-key.html) of a new table created from 
 
 ### Define column families
 
-You can define the [column families](column-families.html) of a new table created from a selection query:
+You can define the [column families]({% link {{ page.version.version }}/column-families.md %}) of a new table created from a selection query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -294,13 +294,13 @@ You can define the [column families](column-families.html) of a new table create
 
 ## See also
 
-- [Selection Queries](selection-queries.html)
-- [Simple `SELECT` Clause](select-clause.html)
-- [`CREATE TABLE`](create-table.html)
-- [`CREATE VIEW`](create-view.html)
-- [`INSERT`](insert.html)
-- [`DROP TABLE`](drop-table.html)
-- [SQL Statements](sql-statements.html)
-- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
-- [`ALTER TABLE`](alter-table.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Simple `SELECT` Clause]({% link {{ page.version.version }}/select-clause.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

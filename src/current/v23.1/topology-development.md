@@ -8,7 +8,7 @@ docs_area: deploy
 While developing an application against CockroachDB, it's sufficient to deploy a single-node cluster close to your test application, whether that's on a single VM or on your laptop.
 
 {{site.data.alerts.callout_success}}
-If you haven't already, [review the full range of topology patterns](topology-patterns.html) to ensure you choose the right one for your use case.
+If you haven't already, [review the full range of topology patterns]({% link {{ page.version.version }}/topology-patterns.md %}) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -19,7 +19,7 @@ If you haven't already, [review the full range of topology patterns](topology-pa
 
 <img src="{{ 'images/v23.1/topology-patterns/topology_development1.png' | relative_url }}" alt="Development topology" style="max-width:100%" />
 
-For this pattern, you can either [run CockroachDB locally](start-a-local-cluster.html) or [deploy a single-node cluster on a cloud VM](manual-deployment.html).
+For this pattern, you can either [run CockroachDB locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or [deploy a single-node cluster on a cloud VM]({% link {{ page.version.version }}/manual-deployment.md %}).
 
 ## Characteristics
 

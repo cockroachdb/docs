@@ -6,10 +6,10 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from Oracle to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
+The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data]({% link {{ page.version.version }}/aws-dms.md %}) from Oracle to CockroachDB. You can also [migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
 {{site.data.alerts.end}}
 
-This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
+This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import.md %}) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
 To illustrate this process, we use the following sample data and tools:
 
@@ -75,7 +75,7 @@ SET TERMOUT ON
 ~~~
 
 {{site.data.alerts.callout_info}}
-In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT`](import.html#delimiter).
+In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT`]({% link {{ page.version.version }}/import.md %}#delimiter).
 {{site.data.alerts.end}}
 
 To extract the data, we ran the script for each table in SQL*Plus:
@@ -150,19 +150,19 @@ You will need to export one CSV file per table, with the following requirements:
     - newline (`\n`)
     - carriage return (`\r`)
 - If double quotes are used to enclose fields, then a double quote appearing inside a field must be escaped by preceding it with another double quote.  For example: `"aaa","b""bb","ccc"`
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+- If a column is of type [`BYTES`]({% link {{ page.version.version }}/bytes.md %}), it can either be a valid UTF-8 string or a [hex-encoded byte literal]({% link {{ page.version.version }}/sql-constants.md %}#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
 ### CSV configuration options
 
-The following options are available to [`IMPORT ... CSV`](import.html):
+The following options are available to [`IMPORT ... CSV`]({% link {{ page.version.version }}/import.md %}):
 
-- [Column delimiter](migrate-from-csv.html#column-delimiter)
-- [Comment syntax](migrate-from-csv.html#comment-syntax)
-- [Skip header rows](migrate-from-csv.html#skip-header-rows)
-- [Null strings](migrate-from-csv.html#null-strings)
-- [File compression](migrate-from-csv.html#file-compression)
+- [Column delimiter]({% link {{ page.version.version }}/migrate-from-csv.md %}#column-delimiter)
+- [Comment syntax]({% link {{ page.version.version }}/migrate-from-csv.md %}#comment-syntax)
+- [Skip header rows]({% link {{ page.version.version }}/migrate-from-csv.md %}#skip-header-rows)
+- [Null strings]({% link {{ page.version.version }}/migrate-from-csv.md %}#null-strings)
+- [File compression]({% link {{ page.version.version }}/migrate-from-csv.md %}#file-compression)
 
-For usage examples, see [Migrate from CSV - Configuration Options](migrate-from-csv.html#configuration-options).
+For usage examples, see [Migrate from CSV - Configuration Options]({% link {{ page.version.version }}/migrate-from-csv.md %}#configuration-options).
 
 ## Step 5. Compress the CSV files
 
@@ -177,10 +177,10 @@ These compressed CSV files will be used to import your data into CockroachDB.
 
 ## Step 6. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`](import.html) can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`]({% link {{ page.version.version }}/import.md %}) can pull from, see the following:
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -188,9 +188,9 @@ We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to h
 
 ## Step 7. Map Oracle to CockroachDB data types
 
-Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql), write [`IMPORT TABLE`](import.html) statements that match the schemas of the table data you're importing.
+Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql), write [`IMPORT TABLE`]({% link {{ page.version.version }}/import.md %}) statements that match the schemas of the table data you're importing.
 
-Remove all Oracle-specific attributes, remap all Oracle data types, refactor all [`CREATE TABLE`](create-table.html) statements to include [primary keys](primary-key.html).
+Remove all Oracle-specific attributes, remap all Oracle data types, refactor all [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statements to include [primary keys]({% link {{ page.version.version }}/primary-key.md %}).
 
 ### Data type mapping
 
@@ -198,64 +198,64 @@ Use the table below for data type mappings:
 
  Oracle Data Type | CockroachDB Data Type
 ------------------+-----------------------
-`BLOB` | [`BYTES`](bytes.html) [<sup>1</sup>](#considerations)
-`CHAR(n)`, `CHARACTER(n)`<br>n < 256 | [`CHAR(n)`, `CHARACTER(n)`](string.html)
-`CLOB` | [`STRING`](string.html) [<sup>1</sup>](#considerations)
-`DATE` | [`DATE`](date.html)
-`FLOAT(n)` | [`DECIMAL(n)`](decimal.html)
-`INTERVAL YEAR(p) TO MONTH `| [`VARCHAR`](string.html), [`INTERVAL`](interval.html)
-`INTERVAL DAY(p) TO SECOND(s)` | [`VARCHAR`](string.html), [`INTERVAL`](interval.html)
-`JSON` | [`JSON`](jsonb.html) [<sup>2</sup>](#considerations)
-`LONG` | [`STRING`](string.html)
-`LONG RAW` | [`BYTES`](bytes.html)
-`NCHAR(n)`<br>n < 256 | [`CHAR(n)`](string.html )
-`NCHAR(n)`<br>n > 255 | [`VARCHAR`, `STRING`](string.html)
-`NCLOB` | [`STRING`](string.html)
-`NUMBER(p,0)`, `NUMBER(p)`<br>1 <= p < 5 | [`INT2`](int.html) [<sup>3</sup>](#considerations)
-`NUMBER(p,0)`, `NUMBER(p)`<br>5 <= p < 9 | [`INT4`](int.html) [<sup>3</sup>](#considerations)
-`NUMBER(p,0)`, `NUMBER(p)`<br>9 <= p < 19 | [`INT8`](int.html) [<sup>3</sup>](#considerations)
-`NUMBER(p,0)`, `NUMBER(p)`<br>19 <= p <= 38 | [`DECIMAL(p)`](decimal.html)
-`NUMBER(p,s)`<br>s > 0 | [`DECIMAL(p,s)`](decimal.html)
-`NUMBER`, `NUMBER(\*)` | [`DECIMAL`](decimal.html)
-`NVARCHAR2(n)` | [`VARCHAR(n)`](string.html)
-`RAW(n)` | [`BYTES`](bytes.html)
-`TIMESTAMP(p)` | [`TIMESTAMP`](timestamp.html)
-`TIMESTAMP(p) WITH TIME ZONE` | [`TIMESTAMP WITH TIMEZONE`](timestamp.html)
-`VARCHAR(n)`, `VARCHAR2(n)` | [`VARCHAR(n)`](string.html)
-`XML` | [`JSON`](jsonb.html) [<sup>2</sup>](#considerations)
+`BLOB` | [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) [<sup>1</sup>](#considerations)
+`CHAR(n)`, `CHARACTER(n)`<br>n < 256 | [`CHAR(n)`, `CHARACTER(n)`]({% link {{ page.version.version }}/string.md %})
+`CLOB` | [`STRING`]({% link {{ page.version.version }}/string.md %}) [<sup>1</sup>](#considerations)
+`DATE` | [`DATE`]({% link {{ page.version.version }}/date.md %})
+`FLOAT(n)` | [`DECIMAL(n)`]({% link {{ page.version.version }}/decimal.md %})
+`INTERVAL YEAR(p) TO MONTH `| [`VARCHAR`]({% link {{ page.version.version }}/string.md %}), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %})
+`INTERVAL DAY(p) TO SECOND(s)` | [`VARCHAR`]({% link {{ page.version.version }}/string.md %}), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %})
+`JSON` | [`JSON`]({% link {{ page.version.version }}/jsonb.md %}) [<sup>2</sup>](#considerations)
+`LONG` | [`STRING`]({% link {{ page.version.version }}/string.md %})
+`LONG RAW` | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})
+`NCHAR(n)`<br>n < 256 | [`CHAR(n)`]({% link {{ page.version.version }}/string.md %} )
+`NCHAR(n)`<br>n > 255 | [`VARCHAR`, `STRING`]({% link {{ page.version.version }}/string.md %})
+`NCLOB` | [`STRING`]({% link {{ page.version.version }}/string.md %})
+`NUMBER(p,0)`, `NUMBER(p)`<br>1 <= p < 5 | [`INT2`]({% link {{ page.version.version }}/int.md %}) [<sup>3</sup>](#considerations)
+`NUMBER(p,0)`, `NUMBER(p)`<br>5 <= p < 9 | [`INT4`]({% link {{ page.version.version }}/int.md %}) [<sup>3</sup>](#considerations)
+`NUMBER(p,0)`, `NUMBER(p)`<br>9 <= p < 19 | [`INT8`]({% link {{ page.version.version }}/int.md %}) [<sup>3</sup>](#considerations)
+`NUMBER(p,0)`, `NUMBER(p)`<br>19 <= p <= 38 | [`DECIMAL(p)`]({% link {{ page.version.version }}/decimal.md %})
+`NUMBER(p,s)`<br>s > 0 | [`DECIMAL(p,s)`]({% link {{ page.version.version }}/decimal.md %})
+`NUMBER`, `NUMBER(\*)` | [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %})
+`NVARCHAR2(n)` | [`VARCHAR(n)`]({% link {{ page.version.version }}/string.md %})
+`RAW(n)` | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})
+`TIMESTAMP(p)` | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})
+`TIMESTAMP(p) WITH TIME ZONE` | [`TIMESTAMP WITH TIMEZONE`]({% link {{ page.version.version }}/timestamp.md %})
+`VARCHAR(n)`, `VARCHAR2(n)` | [`VARCHAR(n)`]({% link {{ page.version.version }}/string.md %})
+`XML` | [`JSON`]({% link {{ page.version.version }}/jsonb.md %}) [<sup>2</sup>](#considerations)
 
 <a name="considerations"></a>
 
-- <sup>1</sup> `BLOBS` and `CLOBS` should be converted to [`BYTES`](bytes.html), or [`STRING`](string.html) where the size is variable, but it's recommended to keep values under 1 MB to ensure performance. Anything above 1 MB would require refactoring into an object store with a pointer embedded in the table in place of the object.
-- <sup>2</sup> `JSON` and `XML` types can be converted to [`JSONB`](jsonb.html) using any XML to JSON conversion. `XML` must be converted to `JSONB` before importing into CockroachDB.
-- <sup>3</sup> When converting `NUMBER(p,0)`, consider `NUMBER` types with Base-10 limits map to the Base-10 Limits for CockroachDB [`INT`](int.html) types. Optionally, `NUMBERS` can be converted to [`DECIMAL`](decimal.html).
+- <sup>1</sup> `BLOBS` and `CLOBS` should be converted to [`BYTES`]({% link {{ page.version.version }}/bytes.md %}), or [`STRING`]({% link {{ page.version.version }}/string.md %}) where the size is variable, but it's recommended to keep values under 1 MB to ensure performance. Anything above 1 MB would require refactoring into an object store with a pointer embedded in the table in place of the object.
+- <sup>2</sup> `JSON` and `XML` types can be converted to [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) using any XML to JSON conversion. `XML` must be converted to `JSONB` before importing into CockroachDB.
+- <sup>3</sup> When converting `NUMBER(p,0)`, consider `NUMBER` types with Base-10 limits map to the Base-10 Limits for CockroachDB [`INT`]({% link {{ page.version.version }}/int.md %}) types. Optionally, `NUMBERS` can be converted to [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}).
 
 When moving from Oracle to CockroachDB data types, consider the following:
 
-- [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
-- [Schema changes between executions of prepared statements](online-schema-changes.html#no-online-schema-changes-between-executions-of-prepared-statements)
-- If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).
-- Max size of a single [column family](column-families.html) (by default, the [maximum size of a range](configure-replication-zones.html#range-max-bytes)).
+- [Schema changes within transactions]({% link {{ page.version.version }}/known-limitations.md %}#schema-changes-within-transactions)
+- [Schema changes between executions of prepared statements]({% link {{ page.version.version }}/online-schema-changes.md %}#no-online-schema-changes-between-executions-of-prepared-statements)
+- If [`JSON`]({% link {{ page.version.version }}/jsonb.md %}) columns are used only for payload, consider switching to [`BYTES`]({% link {{ page.version.version }}/bytes.md %}).
+- Max size of a single [column family]({% link {{ page.version.version }}/column-families.md %}) (by default, the [maximum size of a range]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes)).
 
-For more information, see [Known Limitations](known-limitations.html), [Online Schema Changes](online-schema-changes.html), and [Transactions](transactions.html).
+For more information, see [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}), [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}), and [Transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 ### NULLs
 
-For information on how CockroachDB handles `NULL`s, see [NULL Handling](null-handling.html) and [NOT NULL Constraint](not-null.html).
+For information on how CockroachDB handles `NULL`s, see [NULL Handling]({% link {{ page.version.version }}/null-handling.md %}) and [NOT NULL Constraint]({% link {{ page.version.version }}/not-null.md %}).
 
 ### Primary key, constraints, and secondary indexes
 
-Cockroach distributes a table by the [primary key](primary-key.html) or by a default `ROWID` when a primary key is not provided. This also requires the primary key creation to be part of the table creation. Using the above [data type mapping](#data-type-mapping), refactor each table DDL to include the [primary key](primary-key.html), [constraints](constraints.html), and [secondary indexes](indexes.html).
+Cockroach distributes a table by the [primary key]({% link {{ page.version.version }}/primary-key.md %}) or by a default `ROWID` when a primary key is not provided. This also requires the primary key creation to be part of the table creation. Using the above [data type mapping](#data-type-mapping), refactor each table DDL to include the [primary key]({% link {{ page.version.version }}/primary-key.md %}), [constraints]({% link {{ page.version.version }}/constraints.md %}), and [secondary indexes]({% link {{ page.version.version }}/indexes.md %}).
 
 For more information and examples, refer to the following:
 
-- [`CREATE TABLE` - Create a table](create-table.html)
-- [Define Table Partitions](partitioning.html)
-- [Constraints - Supported constraints](constraints.html#supported-constraints)
+- [`CREATE TABLE` - Create a table]({% link {{ page.version.version }}/create-table.md %})
+- [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
+- [Constraints - Supported constraints]({% link {{ page.version.version }}/constraints.md %}#supported-constraints)
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-reference/security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.
+The Oracle privileges for [users]({% link {{ page.version.version }}/create-user.md %}) and [roles]({% link {{ page.version.version }}/create-role.md %}) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured]({% link {{ page.version.version }}/security-reference/security-overview.md %}), CockroachDB follows the same [role-based access control]({% link {{ page.version.version }}/authorization.md %}) methodology as Oracle.
 
 
 ## Step 8. Import the CSV
@@ -306,7 +306,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 
 {% include {{ page.version.version }}/sql/use-import-into.md %}
 
-Then add the [computed columns](computed-columns.html), [constraints](alter-table.html#add-constraint), and [function-based indexes](create-index.html). For example:
+Then add the [computed columns]({% link {{ page.version.version }}/computed-columns.md %}), [constraints]({% link {{ page.version.version }}/alter-table.md %}#add-constraint), and [function-based indexes]({% link {{ page.version.version }}/create-index.md %}). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -325,34 +325,34 @@ The last phase of the migration process is to change the [transactional behavior
 
 ### Transactions, locking, and concurrency control
 
-Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`](select-for-update.html) statement is also supported in CockroachDB.
+Both Oracle and CockroachDB support [multi-statement transactions]({% link {{ page.version.version }}/transactions.md %}), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement is also supported in CockroachDB.
 
-Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).
+Regarding locks, Cockroach utilizes a [lightweight latch]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements]({% link {{ page.version.version }}/transactions.md %}#sql-statements).
 
-As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
+As CockroachDB does not allow serializable anomalies, [transactions]({% link {{ page.version.version }}/begin-transaction.md %}) may experience deadlocks or [read/write contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) or [client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 ### SQL dialect
 
-Cockroach is ANSI SQL compliant with a PostgreSQL dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL layer](architecture/sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
+Cockroach is ANSI SQL compliant with a PostgreSQL dialect, which allows you to use [native drivers]({% link {{ page.version.version }}/install-client-drivers.md %}) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-api) supports full relational schema and SQL (similar to Oracle).
 
-You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](sql-grammar.html) and a [SQL comparison](sql-feature-support.html), see below:
+You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar]({% link {{ page.version.version }}/sql-grammar.md %}) and a [SQL comparison]({% link {{ page.version.version }}/sql-feature-support.md %}), see below:
 
-- [SQL best practices](performance-best-practices-overview.html)
-- [Common table expressions (CTE)](common-table-expressions.html)
+- [SQL best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Common table expressions (CTE)]({% link {{ page.version.version }}/common-table-expressions.md %})
 - `DUAL` table
 
     Oracle requires use of the `DUAL` table, as Oracle requires a `SELECT ... FROM`. In CockroachDB, all reference to the `DUAL` table should be eliminated.
 
-- [Function call syntax](functions-and-operators.html#string-and-byte-functions)
-- [Hints](cost-based-optimizer.html#join-hints)
+- [Function call syntax]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions)
+- [Hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints)
 
-    See also: [Table Expressions - Force index selection](table-expressions.html#force-index-selection)
+    See also: [Table Expressions - Force index selection]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection)
 
-- [Joins](joins.html)
+- [Joins]({% link {{ page.version.version }}/joins.md %})
 
-    CockroachDB supports [`HASH`](joins.html#hash-joins), [`MERGE`](joins.html#merge-joins), and [`LOOKUP`](joins.html#lookup-joins) joins. Oracle uses the `+` operator for `LEFT` and `RIGHT` joins, but CockroachDB uses the ANSI join syntax.
+    CockroachDB supports [`HASH`]({% link {{ page.version.version }}/joins.md %}#hash-joins), [`MERGE`]({% link {{ page.version.version }}/joins.md %}#merge-joins), and [`LOOKUP`]({% link {{ page.version.version }}/joins.md %}#lookup-joins) joins. Oracle uses the `+` operator for `LEFT` and `RIGHT` joins, but CockroachDB uses the ANSI join syntax.
 
-- [Sequences](create-sequence.html)
+- [Sequences]({% link {{ page.version.version }}/create-sequence.md %})
 
     Sequences in CockroachDB do not require a trigger to self-increment; place the sequence in the table DDL:
 
@@ -364,7 +364,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
       );
     ~~~
 
-- [Subqueries](subqueries.html)
+- [Subqueries]({% link {{ page.version.version }}/subqueries.md %})
 - `SYSDATE`
 
     CockroachDB does not support `SYSDATE`; however, it does support date and time with the following:
@@ -381,15 +381,15 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
     > SELECT now();
     ~~~
 
-- [Window functions](window-functions.html)
+- [Window functions]({% link {{ page.version.version }}/window-functions.md %})
 
 ## See also
 
-- [`IMPORT`](import.html)
-- [Import Performance Best Practices](import-performance-best-practices.html)
-- [Migrate from CSV](migrate-from-csv.html)
-- [Migrate from MySQL](migrate-from-mysql.html)
-- [Migrate from PostgreSQL](migrate-from-postgres.html)
-- [Back Up and Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

@@ -5,14 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+The `CREATE SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a user-defined [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
 - Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
-- To [grant privileges](grant.html) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
+- To [grant privileges]({% link {{ page.version.version }}/grant.md %}) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
 - To create or interact with objects that depend on a user-defined schema, a user must have the `USAGE` privilege on the schema.
 
 ## Syntax
@@ -26,7 +26,7 @@ The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [sch
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the database. If one does exist, do not return an error.
-`name`<br>`name.name` | The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "`.`". The schema name must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`name`<br>`name.name` | The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "`.`". The schema name must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 `AUTHORIZATION role_spec` | Optionally identify a user (`role_spec`) to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no schema name is specified, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
@@ -213,16 +213,16 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 (7 rows)
 ~~~
 
-When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
+When you [use a table without specifying a schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `root` role](grant.html) (i.e., the role of the current user `root`) to the `max` user:
+For example, suppose that you [grant the `root` role]({% link {{ page.version.version }}/grant.md %}) (i.e., the role of the current user `root`) to the `max` user:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT root TO max;
 ~~~
 
-Then, `max` [accesses the cluster](cockroach-sql.html) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
+Then, `max` [accesses the cluster]({% link {{ page.version.version }}/cockroach-sql.md %}) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -295,9 +295,9 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 
 ## See also
 
-- [`SHOW SCHEMAS`](show-schemas.html)
-- [`SET SCHEMA`](alter-table.html#set-schema)
-- [`DROP SCHEMA`](drop-schema.html)
-- [`ALTER SCHEMA`](alter-schema.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [`SET SCHEMA`]({% link {{ page.version.version }}/alter-table.md %}#set-schema)
+- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
+- [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

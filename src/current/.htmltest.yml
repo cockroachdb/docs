@@ -22,7 +22,6 @@ IgnoreURLs:
   - "https://docs.github.com/*"
   - "https://movr.cloud"
   - "https://support.cockroachlabs.com/*"
-  - "https://www.cockroachlabs.com/*"
   - "https://www.php.net/*"
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"

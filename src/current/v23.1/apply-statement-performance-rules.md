@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This tutorial shows how to apply [SQL statement performance rules](make-queries-fast.html#sql-statement-performance-rules) to optimize a query against the [`movr` example dataset](cockroach-demo.html#datasets).
+This tutorial shows how to apply [SQL statement performance rules]({% link {{ page.version.version }}/make-queries-fast.md %}#sql-statement-performance-rules) to optimize a query against the [`movr` example dataset]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
 
 ## Before you begin
 
@@ -15,7 +15,7 @@ It's common to offer users promo codes to increase usage and customer loyalty. I
 
 ## Rule 1. Scan as few rows as possible
 
-First, study the schema so you understand the relationships between the tables. Run [`SHOW TABLES`](show-tables.html):
+First, study the schema so you understand the relationships between the tables. Run [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -95,11 +95,11 @@ Time: 9ms total (execution 8ms / network 1ms)
 
 There is a `rider_id` field that you can use to match each ride to a user. There is also a `start_time` field that you can use to filter the rides by date.
 
-This means that to get the information you want, you'll need to do a [join](joins.html) on the `users` and `rides` tables.
+This means that to get the information you want, you'll need to do a [join]({% link {{ page.version.version }}/joins.md %}) on the `users` and `rides` tables.
 
 Next, get the row counts for the tables that you'll be using in this query. You need to understand which tables are large, and which are small by comparison. You will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
 
-As specified by your [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in your query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
+As specified by your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in your query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
 
 ## Rule 2. Use the right index
 
@@ -141,7 +141,7 @@ Time: 111ms total (execution 111ms / network 0ms)
 
 Unfortunately, this query is a bit slow. 111 milliseconds puts you [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and you're still down in the database layer. This data still needs to be sent back to your application and displayed.
 
-You can see why if you look at the output of [`EXPLAIN`](explain.html):
+You can see why if you look at the output of [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -200,13 +200,13 @@ LIMIT
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells you that you do not have indexes on the columns in your `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells you that you do not have indexes on the columns in your `WHERE` clause, which is [an indexing best practice]({% link {{ page.version.version }}/indexes.md %}#best-practices).
 
 Therefore, you need to create an index on the column in your `WHERE` clause, in this case: `rides.start_time`.
 
 It's also possible that there is not an index on the `rider_id` column that you are doing a join against, which will also hurt performance.
 
-Before creating any more indexes, let's see what indexes already exist on the `rides` table by running [`SHOW INDEXES`](show-index.html):
+Before creating any more indexes, let's see what indexes already exist on the `rides` table by running [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -241,7 +241,7 @@ Time: 5ms total (execution 5ms / network 0ms)
 
 As suspected, there are no indexes on `start_time` or `rider_id`, so you'll need to create indexes on those columns.
 
-Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), create an index on `start_time` that stores the join key `rider_id`:
+Because another performance best practice is to [create an index on the `WHERE` condition storing the join key]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), create an index on `start_time` that stores the join key `rider_id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -286,7 +286,7 @@ Time: 20ms total (execution 20ms / network 0ms)
 
 This query is now running much faster than it was before you added the indexes (111ms vs. 20ms). This means you have an extra 91 milliseconds you can budget towards other areas of your application.
 
-To see what changed, look at the [`EXPLAIN`](explain.html) output:
+To see what changed, look at the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -345,11 +345,11 @@ Time: 2ms total (execution 2ms / network 1ms)
 
 ## Rule 3. Use the right join type
 
-Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
+Out of the box, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will select the right join type for your statement in the majority of cases. Therefore, you should only provide [join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type]({% link {{ page.version.version }}/joins.md %}#join-algorithms) than it is selecting.
 
 You can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
-For example, you might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
+For example, you might think that a [lookup join]({% link {{ page.version.version }}/joins.md %}#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
 
 In order to get CockroachDB to plan a lookup join in this case, you will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
 
@@ -438,5 +438,5 @@ The results are consistently about 20-26ms with a merge join versus 16-23ms when
 
 ## See also
 
-- [SQL Best Practices](performance-best-practices-overview.html)
-- [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
+- [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})

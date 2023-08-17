@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE TYPE` [statement](sql-statements.html) creates a new type in a [database](create-database.html). After the type is created, it can only be referenced from the database that contains the type.
+The `CREATE TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new type in a [database]({% link {{ page.version.version }}/create-database.md %}). After the type is created, it can only be referenced from the database that contains the type.
 
 The following user-defined data types can be created with this statement:
 
@@ -24,28 +24,28 @@ The following user-defined data types can be created with this statement:
 
 Parameter | Description
 ----------|------------
-`type_name` | The name of the type. You can qualify the name with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
+`type_name` | The name of the type. You can qualify the name with a [database and schema name]({% link {{ page.version.version }}/sql-name-resolution.md %}) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
 `IF NOT EXISTS` |  Create a new type only if a type of the same name does not already exist in the database; if one does exist, do not return an error.
 `opt_enum_val_list` | A list of values that make up the type's [enumerated set](#create-an-enumerated-data-type).
 `opt_composite_type_list` | A list of values that make up the set of types that make up a [composite type](#create-a-composite-data-type).
 
 ## Required privileges
 
-- To create a type, the user must have [the `CREATE` privilege](security-reference/authorization.html#supported-privileges) on the parent database and the schema in which the type is being created.
-- To use a user-defined type in a table (e.g., when defining a column's type), the user must have [the `USAGE` privilege](security-reference/authorization.html#supported-privileges) on the type.
+- To create a type, the user must have [the `CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the parent database and the schema in which the type is being created.
+- To use a user-defined type in a table (e.g., when defining a column's type), the user must have [the `USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the type.
 
 ## Example
 
 ### Create an enumerated data type
 
-Use the statements below to create an [`ENUM`](enum.html) data type.
+Use the statements below to create an [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-To see all user-defined data types, use [`SHOW TYPES`](show-types.html):
+To see all user-defined data types, use [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -59,7 +59,7 @@ To see all user-defined data types, use [`SHOW TYPES`](show-types.html):
 (1 row)
 ~~~
 
-To see the values accepted by the underlying [`ENUM`](enum.html) data type, use [`SHOW ENUMS`](show-enums.html):
+To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type, use [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -196,10 +196,10 @@ SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
 
 ## See also
 
-- [Data types](data-types.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`DROP TYPE`](drop-type.html)
-- [`SHOW TYPES`](show-types.html)
-- [`ENUM`](enum.html)
-- [`SHOW ENUMS`](show-enums.html)
+- [Data types]({% link {{ page.version.version }}/data-types.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
+- [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %})
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})

@@ -5,23 +5,23 @@ toc: true
 docs_area: develop
 ---
 
-This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](delete.html) [SQL statement](sql-statements.html).
+This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`]({% link {{ page.version.version }}/delete.md %}) [SQL statement]({% link {{ page.version.version }}/sql-statements.md %}).
 
 ## Before you begin
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Install a Driver or ORM Framework](install-client-drivers.html).
-- [Connect to the database](connect-to-the-database.html).
-- [Create a database schema](schema-design-overview.html).
-- [Insert data](insert-data.html) that you now want to delete.
+- [Create a {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
+- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+- [Create a database schema]({% link {{ page.version.version }}/schema-design-overview.md %}).
+- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to delete.
 
-    In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
+    In the examples on this page, we use sample [`movr`]({% link {{ page.version.version }}/movr.md %}) data imported with the [`cockroach workload` command]({% link {{ page.version.version }}/cockroach-workload.md %}).
 
 ## Use `DELETE`
 
-To delete rows in a table, use a [`DELETE` statement](update.html) with a `WHERE` clause that filters on the columns that identify the rows that you want to delete.
+To delete rows in a table, use a [`DELETE` statement]({% link {{ page.version.version }}/update.md %}) with a `WHERE` clause that filters on the columns that identify the rows that you want to delete.
 
 ### SQL syntax
 
@@ -35,11 +35,11 @@ Where:
 
 - `{table}` is a table with rows that you want to delete.
 - `{filter_column}` is the column to filter on.
-- `{comparison_operator}` is a [comparison operator](functions-and-operators.html#operators) that resolves to `TRUE` or `FALSE` (e.g., `=`).
+- `{comparison_operator}` is a [comparison operator]({% link {{ page.version.version }}/functions-and-operators.md %}#operators) that resolves to `TRUE` or `FALSE` (e.g., `=`).
 - `{filter_value}` is the matching value for the filter.
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `DELETE` statement, including additional examples, see the [`DELETE` syntax page](delete.html).
+For detailed reference documentation on the `DELETE` statement, including additional examples, see the [`DELETE` syntax page]({% link {{ page.version.version }}/delete.md %}).
 {{site.data.alerts.end}}
 
 ### Best practices
@@ -48,16 +48,16 @@ Here are some best practices to follow when deleting rows:
 
 - Limit the number of `DELETE` statements that you execute. It's more efficient to delete multiple rows with a single statement than to execute multiple `DELETE` statements that each delete a single row.
 - Always specify a `WHERE` clause in `DELETE` queries. If no `WHERE` clause is specified, CockroachDB will delete all of the rows in the specified table.
-- To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html) instead of a `DELETE` statement.
-- To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column).
-- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](query-behavior-troubleshooting.html#transaction-retry-errors) that can occur under [contention](performance-best-practices-overview.html#transaction-contention).
+- To delete all of the rows in a table, use a [`TRUNCATE` statement]({% link {{ page.version.version }}/truncate.md %}) instead of a `DELETE` statement.
+- To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop]({% link {{ page.version.version }}/bulk-delete-data.md %}#batch-delete-on-an-indexed-column).
+- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#transaction-retry-errors) that can occur under [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 - Review the [performance considerations below](#performance-considerations).
 
 ### Examples
 
 #### Delete rows filtered on a non-unique column
 
-Suppose that you want to delete the vehicle location history data recorded during a specific hour of a specific day. To delete all of the rows in the `vehicle_location_histories` table where the `timestamp` is between two [`TIMESTAMP`](timestamp.html) values:
+Suppose that you want to delete the vehicle location history data recorded during a specific hour of a specific day. To delete all of the rows in the `vehicle_location_histories` table where the `timestamp` is between two [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) values:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
@@ -73,7 +73,7 @@ Suppose that you want to delete the vehicle location history data recorded durin
 DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '2021-03-17 14:00:00' AND '2021-03-17 15:00:00';
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
 
 </section>
 
@@ -134,7 +134,7 @@ with conn.cursor() as cur:
 </section>
 
 {{site.data.alerts.callout_success}}
-If the `WHERE` clause evaluates to `TRUE` for a large number of rows (i.e., tens of thousands of rows), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column) instead of executing a simple `DELETE` query.
+If the `WHERE` clause evaluates to `TRUE` for a large number of rows (i.e., tens of thousands of rows), use a [batch-delete loop]({% link {{ page.version.version }}/bulk-delete-data.md %}#batch-delete-on-an-indexed-column) instead of executing a simple `DELETE` query.
 {{site.data.alerts.end}}
 
 #### Delete rows filtered on a unique column
@@ -155,7 +155,7 @@ Suppose that you want to delete the promo code data for a specific set of codes.
 DELETE from promo_codes WHERE code IN ('0_explain_theory_something', '100_address_garden_certain', '1000_do_write_words');
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
 
 </section>
 
@@ -220,39 +220,39 @@ with conn.cursor() as cur:
 
 ## Performance considerations
 
-Because of the way CockroachDB works under the hood, deleting data from the database does not immediately reduce disk usage.  Instead, records are marked as "deleted" and processed asynchronously by a background garbage collection process. Once the marked records are older than [the specified TTL interval](configure-replication-zones.html#gc-ttlseconds), they are eligible to be removed.  The garbage collection interval is designed to allow sufficient time for running [backups](take-full-and-incremental-backups.html) and [time travel queries using `AS OF SYSTEM TIME`](as-of-system-time.html). The garbage collection interval is controlled by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) setting.
+Because of the way CockroachDB works under the hood, deleting data from the database does not immediately reduce disk usage.  Instead, records are marked as "deleted" and processed asynchronously by a background garbage collection process. Once the marked records are older than [the specified TTL interval]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds), they are eligible to be removed.  The garbage collection interval is designed to allow sufficient time for running [backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) and [time travel queries using `AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The garbage collection interval is controlled by the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting.
 
 The practical implications of the above are:
 
 - Deleting data will not immediately decrease disk usage.
-- If you issue multiple [`DELETE`](delete.html) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly. For details, see [Preserving `DELETE` performance over time](delete.html#preserving-delete-performance-over-time).
+- If you issue multiple [`DELETE`]({% link {{ page.version.version }}/delete.md %}) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly. For details, see [Preserving `DELETE` performance over time]({% link {{ page.version.version }}/delete.md %}#preserving-delete-performance-over-time).
 
-For more information about how the storage layer of CockroachDB works, see the [storage layer reference documentation](architecture/storage-layer.html).
+For more information about how the storage layer of CockroachDB works, see the [storage layer reference documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 
 ## See also
 
 Reference information related to this task:
 
-- [`DELETE`](delete.html)
-- [Bulk-delete data](bulk-delete-data.html)
-- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
-- [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
-- [`TRUNCATE`](truncate.html)
-- [`DROP TABLE`](drop-table.html)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [Bulk-delete data]({% link {{ page.version.version }}/bulk-delete-data.md %})
+- [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})
+- [Disk space usage after deletes]({% link {{ page.version.version }}/delete.md %}#disk-space-usage-after-deletes)
+- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
+- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
+- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
 
 Other common tasks:
 
-- [Connect to the Database](connect-to-the-database.html)
-- [Insert Data](insert-data.html)
-- [Query Data](query-data.html)
-- [Update Data](update-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
+- [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
+- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
+- [Query Data]({% link {{ page.version.version }}/query-data.md %})
+- [Update Data]({% link {{ page.version.version }}/update-data.md %})
+- [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
+- [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Optimize Statement Performance][fast]
-- [Example Apps](example-apps.html)
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [selection]: selection-queries.html
 [manual]: manual-deployment.html

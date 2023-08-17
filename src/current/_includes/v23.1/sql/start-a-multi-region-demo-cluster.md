@@ -1,4 +1,4 @@
-Use the following [`cockroach demo`](cockroach-demo.html) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities](cockroach-start.html#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`](cockroach-demo.html#flags) documentation, especially for [`--global`](cockroach-demo.html#global-flag).
+Use the following [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}#flags) documentation, especially for [`--global`]({% link {{ page.version.version }}/cockroach-demo.md %}#global-flag).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -7,8 +7,8 @@ $ cockroach demo --global --nodes 9 --no-example-database --insecure
 
 When the cluster starts, you'll see a message like the one shown below, followed by a SQL prompt. Note the URLs for:
 
-- Viewing the [DB Console](ui-overview.html): `http://127.0.0.1:8080`.
-- Connecting to the database from a [SQL shell](cockroach-sql.html) or a [programming language](connect-to-the-database.html): `postgres://root@127.0.0.1:26257?sslmode=disable`.
+- Viewing the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}): `http://127.0.0.1:8080`.
+- Connecting to the database from a [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) or a [programming language]({% link {{ page.version.version }}/connect-to-the-database.md %}): `postgres://root@127.0.0.1:26257?sslmode=disable`.
 
 ~~~
 #

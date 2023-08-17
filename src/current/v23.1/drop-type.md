@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the current database.
+The `DROP TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) drops a specified [enumerated data type]({% link {{ page.version.version }}/enum.md %}) from the current database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -139,8 +139,8 @@ SQLSTATE: 2BP01
 
 ## See also
 
-- [`ENUM`](enum.html)
-- [Data types](data-types.html)
-- [`CREATE TYPE`](create-type.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`SHOW ENUMS`](show-enums.html)
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [Data types]({% link {{ page.version.version }}/data-types.md %})
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})

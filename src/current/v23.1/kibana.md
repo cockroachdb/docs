@@ -5,10 +5,10 @@ toc: true
 docs_area: manage
 ---
 
-[Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your {{ site.data.products.core }} cluster's [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
+[Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your {{ site.data.products.core }} cluster's [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a {{ site.data.products.db }} cluster, refer to [Export Metrics From a {{ site.data.products.dedicated }} Cluster](/docs/cockroachcloud/export-metrics.html) instead of this page.
+To export metrics from a {{ site.data.products.db }} cluster, refer to [Export Metrics From a {{ site.data.products.dedicated }} Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) instead of this page.
 {{site.data.alerts.end}}
 
 In this tutorial, you will enable the CockroachDB module for Metricbeat and visualize the data in Kibana.
@@ -27,7 +27,7 @@ Either of the following:
 - Self-managed [Elastic Stack](https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html) with [Metricbeat installed](https://www.elastic.co/guide/en/beats/metricbeat/7.13/metricbeat-installation-configuration.html)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). [{{ site.data.products.db }}](../cockroachcloud/index.html) does not expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [{{ site.data.products.db }}](https://www.cockroachlabs.com/docs/cockroachcloud) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB module
@@ -45,7 +45,7 @@ Open `modules.d/cockroachdb.yml` in your Metricbeat installation directory.
 
 Follow the steps in the [Elastic documentation](https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-ssl.html) to enable SSL on the CockroachDB module.
 
-For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster.html#step-1-generate-certificates), the YAML should look like:
+For example, if you used [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) to [secure your cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}#step-1-generate-certificates), the YAML should look like:
 
 ~~~ yaml
 - module: cockroachdb
@@ -91,7 +91,7 @@ Click the dashboard title to open the dashboard, which presents metrics on repli
 
 ## Step 4. Run a sample workload
 
-To test the dashboard functionality, use [`cockroach workload`](cockroach-workload.html) to run a sample workload on the cluster.
+To test the dashboard functionality, use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to run a sample workload on the cluster.
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
@@ -113,12 +113,12 @@ Click **Refresh**. The query metrics will appear on the dashboard:
 
 ## Step 5. Disable DB Console's local storage of metrics (optional)
 
-If you rely on external tools such as Kibana for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+If you rely on external tools such as Kibana for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Kibana based on the data it is collecting from your cluster's Prometheus endpoint.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Kibana based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 
-- [Monitoring and Alerting](monitoring-and-alerting.html)
-- [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})

@@ -6,7 +6,7 @@ docs_area: deploy
 cloud: true
 ---
 
-{{ site.data.products.db }} clusters can be [created](create-your-cluster.html) in the following cloud regions.
+{{ site.data.products.db }} clusters can be [created]({% link cockroachcloud/create-your-cluster.md %}) in the following cloud regions.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>

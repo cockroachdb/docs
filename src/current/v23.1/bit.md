@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `BIT` and `VARBIT` [data types](data-types.html) stores bit arrays.
+The `BIT` and `VARBIT` [data types]({% link {{ page.version.version }}/data-types.md %}) stores bit arrays.
 With `BIT`, the length is fixed; with `VARBIT`, the length can be variable.
 
 ## Aliases
@@ -16,7 +16,7 @@ The name `BIT VARYING` is an alias for `VARBIT`.
 
 Bit array constants are expressed as literals. For example, `B'100101'` denotes an array of 6 bits.
 
-For more information about bit array constants, see the [constants documentation on bit array literals](sql-constants.html#bit-array-literals).
+For more information about bit array constants, see the [constants documentation on bit array literals]({% link {{ page.version.version }}/sql-constants.md %}#bit-array-literals).
 
 For usage, see the [Example](#example) below.
 
@@ -113,7 +113,7 @@ pq: bit string length 4 too large for type VARBIT(3)
 
 ## Supported casting and conversion
 
-`BIT` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+`BIT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|---------
@@ -122,4 +122,4 @@ Type | Details
 
 ## See also
 
-[Data Types](data-types.html)
+[Data Types]({% link {{ page.version.version }}/data-types.md %})
