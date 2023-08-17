@@ -17,7 +17,7 @@ The options that give the most validation coverage will increase the runtime of 
 
 ## Recommendations
 
-Cockroach Labs recommends implementing the following to test your backups:
+Cockroach Labs recommends implementing the following validation plan to test your backups:
 
 1. Frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatability.  
 1. Regular [`verify_backup_table_data`](#validate-backup-table-data-is-restorable) restores: Tests that all data files are present and uncorrupted. 
