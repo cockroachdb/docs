@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#naming-hierarchy) in a database.
+The `SHOW SCHEMAS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists all [schemas]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy) in a database.
 
 ## Required privileges
 
-The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database is required to list the schemas in a database.
+The `CONNECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database is required to list the schemas in a database.
 
 ## Synopsis
 
@@ -21,7 +21,7 @@ The `CONNECT` [privilege](security-reference/authorization.html#managing-privile
 
 Parameter | Description
 ----------|------------
-`name` | The name of the database for which to show [schemas](sql-name-resolution.html#naming-hierarchy). When omitted, the schemas in the [current database](sql-name-resolution.html#current-database) are listed.
+`name` | The name of the database for which to show [schemas]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy). When omitted, the schemas in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
 ## Example
 
@@ -53,8 +53,8 @@ Parameter | Description
 
 ## See also
 
-- [Logical Schemas and Namespaces](sql-name-resolution.html)
-- [`CREATE SCHEMA`](create-schema.html)
-- [`SHOW DATABASES`](show-databases.html)
-- [Information Schema](information-schema.html)
-- [SQL Statements](sql-statements.html)
+- [Logical Schemas and Namespaces]({% link {{ page.version.version }}/sql-name-resolution.md %})
+- [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %})
+- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
+- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

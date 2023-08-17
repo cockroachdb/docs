@@ -6,10 +6,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
+The `SHOW GRANTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists one of the following:
 
-- The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
-- The [privileges](security-reference/authorization.html#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [user-defined functions](create-function.html), [schemas](create-schema.html), [tables](create-table.html), [user-defined types](enum.html), or [external connections](create-external-connection.html).
+- The [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) granted to [users]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) in a cluster.
+- The [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) [granted]({% link {{ page.version.version }}/grant.md %}) to [users]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) on [databases]({% link {{ page.version.version }}/create-database.md %}), [user-defined functions]({% link {{ page.version.version }}/create-function.md %}), [schemas]({% link {{ page.version.version }}/create-schema.md %}), [tables](create-table.html), [user-defined types](enum.html), or [external connections]({% link {{ page.version.version }}/create-external-connection.md %}).
 
 ## Syntax
 
@@ -21,7 +21,7 @@ Use the following syntax to show the privileges granted to users on database obj
 SHOW GRANTS [ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE | EXTERNAL CONNECTION] <targets...>] [FOR <users...>]
 ~~~
 
-When `DATABASE` is omitted, the schema, tables, and types in the [current database](sql-name-resolution.html#current-database) are listed.
+When `DATABASE` is omitted, the schema, tables, and types in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
 ### Show role grants
 
@@ -36,7 +36,7 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
 `targets`    | A comma-separated list of database, function, schema, table, or user-defined type names.<br><br>If the function name is not unique, you must provide the full function signature.<br><br>To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.
-`users`      | A comma-separated list of the [users](security-reference/authorization.html#sql-users) whose privileges or roles you want to show.
+`users`      | A comma-separated list of the [users]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) whose privileges or roles you want to show.
 `roles`      | A comma-separated list of the roles whose grants you want to show.
 
 ## Response
@@ -53,7 +53,7 @@ Field            | Description
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
 `connection_name`| The name of the external connection.
-`grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
+`grantee`        | The name of the user or role that was granted the [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
 `privilege_type` | The name of the privilege.
 `is_grantable`   | `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 
@@ -65,13 +65,13 @@ Field        |  Description
 -------------|-----------------------------------------------------------------------------------------------------
 `role_name`  | The name of the role.
 `member`     | The users in the role.
-`is_admin`   | If `true`, the role is an [admin](security-reference/authorization.html#role-admin) role.
+`is_admin`   | If `true`, the role is an [admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-admin) role.
 
 ## Required privileges
 
-- No [privileges](security-reference/authorization.html#managing-privileges) are required to view privileges granted to users.
+- No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to view privileges granted to users.
 
-- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the system table.
+- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the system table.
 
 ## Examples
 
@@ -292,7 +292,7 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show grants on user-defined types
 
-To show privileges on [user-defined types](create-type.html), use the following statements.
+To show privileges on [user-defined types]({% link {{ page.version.version }}/create-type.md %}), use the following statements.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -337,7 +337,7 @@ To show privileges on [user-defined types](create-type.html), use the following 
 
 ### Show grants on user-defined functions
 
-To show the grants defined on the `num_users` function created in [Create a function that references a table](create-function.html#create-a-function-that-references-a-table), run:
+To show the grants defined on the `num_users` function created in [Create a function that references a table]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-references-a-table), run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -353,7 +353,7 @@ SHOW GRANTS ON FUNCTION num_users;
 
 ### Show all grants on external connections
 
-To show all grants defined on an [external connection](create-external-connection.html), run:
+To show all grants defined on an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}), run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -373,7 +373,7 @@ SHOW GRANTS ON EXTERNAL CONNECTION my_backup_bucket;
 
 ### Show grants on external connections by user
 
-To show the grants defined on an [external connection](create-external-connection.html) for a specific user, run:
+To show the grants defined on an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for a specific user, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -445,13 +445,13 @@ SHOW GRANTS ON EXTERNAL CONNECTION my_backup_bucket FOR alice;
 
 ## See also
 
-- [Authorization](authorization.html)
-- [`CREATE ROLE`](create-role.html)
-- [`DROP ROLE`](drop-role.html)
-- [`SHOW ROLES`](show-roles.html)
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
-- [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](security-reference/authorization.html#create-and-manage-users)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [Information Schema](information-schema.html)
+- [Authorization]({% link {{ page.version.version }}/authorization.md %})
+- [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %})
+- [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})
+- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
+- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
+- [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})
+- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
+- [Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})

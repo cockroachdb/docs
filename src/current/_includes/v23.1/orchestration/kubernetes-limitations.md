@@ -4,7 +4,7 @@ To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is req
 
 #### Kubernetes Operator
 
-The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html).
+The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}).
 
 #### Helm version
 
@@ -28,7 +28,7 @@ Due to its order of operations, the PostgreSQL wire protocol's implementation of
 
 #### Resources
 
-When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management](configure-cockroachdb-kubernetes.html#memory-and-cpu).
+When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}#memory-and-cpu).
 
 #### Storage
 

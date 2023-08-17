@@ -20,7 +20,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
-1. If you haven't already, [create a {{ site.data.products.dedicated }} cluster](create-your-cluster.html).
+1. If you haven't already, [create a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Prepare your cluster
 
@@ -42,7 +42,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 1. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
 
 1. Click **Apply**.
 
@@ -55,7 +55,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
-    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster).
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster).
 
 ### Step 3. Generate the CockroachDB client connection string
 
@@ -79,7 +79,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 On your local workstation's terminal:
 
-1. If you haven't already, [Download the CockroachDB binary](../{{site.current_cloud_version}}/install-cockroachdb.html) and copy it into the `PATH`:
+1. If you haven't already, [Download the CockroachDB binary](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/install-cockroachdb) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -450,7 +450,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-cluster-overview-page), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-1. On the [**Hardware** dashboard](../{{site.current_cloud_version}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-hardware-dashboard), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-1. The [**Statements** page](../{{site.current_cloud_version}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-statements-page) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

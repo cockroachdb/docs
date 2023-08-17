@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
+The `SHOW ROLES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the roles for all databases.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
+ Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -19,7 +19,7 @@ The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databa
 
 ## Required privileges
 
-The role must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the `system.users` and `system.role_members` tables.
+The role must have the [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 
@@ -40,9 +40,9 @@ The role must have the [`SELECT`](select-clause.html) [privilege](security-refer
 
 ## See also
 
-- [Authorization](authorization.html)
-- [`CREATE ROLE`](create-role.html)
-- [`DROP ROLE`](drop-role.html)
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
-- [Manage Users](security-reference/authorization.html#create-and-manage-users)
+- [Authorization]({% link {{ page.version.version }}/authorization.md %})
+- [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %})
+- [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})
+- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
+- [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})
+- [Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)

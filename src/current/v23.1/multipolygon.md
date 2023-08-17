@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `MULTIPOLYGON` is a collection of [Polygons](polygon.html).  MultiPolygons are useful for gathering a group of Polygons into one geometry. For example, you may want to gather the Polygons denoting a group of properties in a particular municipality.  Another use of MultiPolygons is to represent states or countries that include islands, or that are otherwise made up of non-overlapping shapes.
+A `MULTIPOLYGON` is a collection of [Polygons]({% link {{ page.version.version }}/polygon.md %}).  MultiPolygons are useful for gathering a group of Polygons into one geometry. For example, you may want to gather the Polygons denoting a group of properties in a particular municipality.  Another use of MultiPolygons is to represent states or countries that include islands, or that are otherwise made up of non-overlapping shapes.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
 ## Examples
 
-A MultiPolygon can be created from SQL by calling the `st_geomfromtext` function on a MultiPolygon definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format.
+A MultiPolygon can be created from SQL by calling the `st_geomfromtext` function on a MultiPolygon definition expressed in the [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -27,12 +27,12 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 
 ## See also
 
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-data-overview.html#spatial-objects)
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTIPOINT](multipoint.html)
-- [MULTILINESTRING](multilinestring.html)
-- [GEOMETRYCOLLECTION](geometrycollection.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
+- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
+- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

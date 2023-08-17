@@ -41,7 +41,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
-If you are a member of more than one [CockroachDB Cloud organization](../{{site.versions["stable"]}}/architecture/glossary.html#organization), use the `--org` flag to set the organization name when authenticating.
+If you are a member of more than one [CockroachDB Cloud organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization), use the `--org` flag to set the organization name when authenticating.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -92,7 +92,7 @@ Success! Created cluster
 
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-You can set the cluster name, cloud infrastructure provider, region, and [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -136,14 +136,14 @@ ccloud cluster create dedicated blue-dog us-central1:2 us-west2:1 --cloud GCP --
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) for a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 ## Create and manage IP allowlists using `ccloud cluster networking allowlist`
 
-Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist](network-authorization.html#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
+Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
 
 The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
@@ -328,7 +328,7 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 ### Connect to your cluster using SSO
 
-Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication](cloud-sso-sql.html), which will allow you to start a SQL shell without using a password.
+Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication]({% link cockroachcloud/cloud-sso-sql.md %}), which will allow you to start a SQL shell without using a password.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -399,7 +399,7 @@ If the organization is incorrect:
 
 ### Skip the IP allowlist check when connecting to your cluster
 
-By default, the `ccloud cluster sql` command will allow connections only from IP addresses in your cluster's [allowlist](network-authorization.html#ip-allowlisting). Use the `--skip-ip-check` flag to disable the client-side IP allowlist check:
+By default, the `ccloud cluster sql` command will allow connections only from IP addresses in your cluster's [allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use the `--skip-ip-check` flag to disable the client-side IP allowlist check:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -410,7 +410,7 @@ ccloud cluster sql dim-dog --skip-ip-check
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](../{{site.current_cloud_version}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

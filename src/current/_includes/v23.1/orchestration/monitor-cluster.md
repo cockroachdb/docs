@@ -1,10 +1,10 @@
-To access the cluster's [DB Console](ui-overview.html):
+To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
 
 {% if page.secure == true %}
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) can only be accessed by `admin` users.
 
-    Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+    Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     <section class="filter-content" markdown="1" data-scope="operator">
 
@@ -102,5 +102,5 @@ To access the cluster's [DB Console](ui-overview.html):
 {% endif %}
 
 1. In the UI, verify that the cluster is running as expected:
-    - View the [Node List](ui-cluster-overview-page.html#node-list) to ensure that all nodes successfully joined the cluster.
+    - View the [Node List]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) to ensure that all nodes successfully joined the cluster.
     - Click the **Databases** tab on the left to verify that `bank` is listed.

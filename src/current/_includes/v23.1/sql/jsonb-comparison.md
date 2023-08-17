@@ -1,4 +1,4 @@
-You cannot use comparison operators (such as `<` or `>`) on [`JSONB`](jsonb.html) elements. For example, the following query does not work and returns an error:
+You cannot use comparison operators (such as `<` or `>`) on [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) elements. For example, the following query does not work and returns an error:
 
   {% include_cached copy-clipboard.html %}
   ~~~ sql

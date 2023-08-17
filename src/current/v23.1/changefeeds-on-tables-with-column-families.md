@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
+You can create changefeeds on tables with more than one [column family]({% link {{ page.version.version }}/column-families.md %}). Changefeeds will emit individual messages per column family on a table.
 
 For further detail, see the following sections:
 
@@ -15,7 +15,7 @@ For further detail, see the following sections:
 
 ## Syntax
 
-To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split-column-families) when creating a changefeed:
+To target a table with multiple column families, set the [`split_column_families` option]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families) when creating a changefeed:
 
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE {table} INTO {sink} WITH split_column_families;
@@ -28,7 +28,7 @@ CREATE CHANGEFEED FOR TABLE {table} FAMILY {family} INTO {sink};
 ~~~
 
 {{site.data.alerts.callout_info}}
-You can also use [Core changefeeds](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement with `split_column_families` or the `FAMILY` keyword.
+You can also use [Core changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-core-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement with `split_column_families` or the `FAMILY` keyword.
 {{site.data.alerts.end}}
 
 If a table has multiple column families, the `FAMILY` keyword will ensure the changefeed emits messages for **each** column family you define with `FAMILY` in the `CREATE CHANGEFEED` statement. If you do not specify `FAMILY`, then the changefeed will emit messages for **all** the table's column families.
@@ -41,15 +41,15 @@ CREATE CHANGEFEED FOR TABLE tbl FAMILY f_1, TABLE tbl FAMILY f_2;
 
 ## Message format
 
-The response will follow a typical [changefeed message format](changefeed-messages.html#responses), but with the family name appended to the table name with a `.`, in the format `table.family`:
+The response will follow a typical [changefeed message format]({% link {{ page.version.version }}/changefeed-messages.md %}#responses), but with the family name appended to the table name with a `.`, in the format `table.family`:
 
 ~~~
 {"after":{"column":"value"},"key":[1],"topic":"table.family"}
 ~~~
 
-For [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), the filename will include the family name appended to the table name with a `+`, in the format `table+primary`.
+For [cloud storage sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), the filename will include the family name appended to the table name with a `+`, in the format `table+primary`.
 
-[Avro](changefeed-messages.html#avro) schema names will include the family name concatenated to the table name.
+[Avro]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) schema names will include the family name concatenated to the table name.
 
 The primary key columns will appear in the `key` for **all** column families, and will also appear in the value **only** for the families that they are a member of.
 
@@ -93,28 +93,28 @@ For examples of starting changefeeds on tables with column families, see the fol
 ## Create a changefeed on a table with column families
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-core-changefeed-on-a-table-with-column-families).
 {{site.data.alerts.end}}
 
-In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
+In this example, you'll set up changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) to work with tables that include column families.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure
     ~~~
 
-1. Set your organization and [Enterprise license](enterprise-licensing.html) key that you received via email:
+1. Set your organization and [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) key that you received via email:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -126,7 +126,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -260,7 +260,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     `CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs INTO {sink};`
     {{site.data.alerts.end}}
 
-1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](create-changefeed.html#split-column-families) option:
+1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -281,7 +281,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output.
+    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs). Changefeeds streaming to [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output.
 
     When using the `FAMILY` keyword, the `topics` field will display in the format `topic.family`, e.g., `office_dogs.employee,office_dogs.dogs`. With the `split_column_families` option set, `topics` will show the topic name and a family placeholder `topic.{family}`, e.g., `office_dogs.{family}`.
     {{site.data.alerts.end}}
@@ -305,23 +305,23 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 ## Create a Core changefeed on a table with column families
 
-In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
+In this example, you'll set up Core changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster with the Core changefeed sending changes to the client.
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -433,7 +433,7 @@ In this example, you'll set up Core changefeeds on two tables that have [column 
     `EXPERIMENTAL CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs;`
     {{site.data.alerts.end}}
 
-1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](changefeed-for.html#split-column-families) option:
+1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`]({% link {{ page.version.version }}/changefeed-for.md %}#split-column-families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -484,7 +484,7 @@ In this example, you'll set up Core changefeeds on two tables that have [column 
 
 ## See also
 
-- [`EXPERIMENTAL CHANGEFEED`](changefeed-for.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [Changefeed Sinks](changefeed-sinks.html)
-- [Changefeed Examples](changefeed-examples.html)
+- [`EXPERIMENTAL CHANGEFEED`]({% link {{ page.version.version }}/changefeed-for.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %})

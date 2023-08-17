@@ -22,8 +22,8 @@ Choose whether to run a local cluster or a free {{ site.data.products.db }} clus
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. [Start a local, secure cluster](secure-a-cluster.html).
+1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. [Start a local, secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 </section>
 
@@ -43,7 +43,7 @@ Choose whether to run a local cluster or a free {{ site.data.products.db }} clus
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. Open a SQL shell to your local cluster using the [`cockroach sql`](cockroach-sql.html) command:
+1. Open a SQL shell to your local cluster using the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -82,14 +82,14 @@ Choose whether to run a local cluster or a free {{ site.data.products.db }} clus
 $ cockroach cert create-client {user} --certs-dir=certs --ca-key={certs-dir}/ca.key --also-generate-pkcs8-key
 ~~~
 
-The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
+The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection):
+1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -188,7 +188,7 @@ The [Hibernate CockroachDB dialect](https://in.relation.to/2020/07/27/hibernate-
 
 ## Step 6. Run the application
 
-Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in [atomic database transactions](transactions.html) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
+Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in [atomic database transactions]({% link {{ page.version.version }}/transactions.md %}) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
 
 Open the `roach-data/roach-data-jpa/src/main/resources/application.yml` file and edit the `datasource` settings to connect to your running database cluster:
 
@@ -456,7 +456,7 @@ $ curl -X GET http://localhost:9090/account/2 | json_pp
 }
 ~~~
 
-The `http://localhost:9090/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s](insert.html) and [`UPDATE`s](update.html)) to the database.
+The `http://localhost:9090/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %})) to the database.
 
 #### Writes
 
@@ -554,7 +554,7 @@ The second changeset in the changelog uses the [Liquibase XML syntax](https://do
 
 When the application is started, all of the queries specified by the changesets are executed in the order specified by their `changeset` tag's `id` value. At application startup, Liquibase also creates a table called [`databasechangelog`](https://docs.liquibase.com/concepts/databasechangelog-table.html) in the database where it performs changes. This table's rows log all completed changesets.
 
-To see the completed changesets, open a new terminal, start the [built-in SQL shell](cockroach-sql.html), and query the `databasechangelog` table:
+To see the completed changesets, open a new terminal, start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), and query the `databasechangelog` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -605,7 +605,7 @@ Spring Data JPA supports standard Java Persistence API (JPA) annotations for dom
 - `@Table` associates the entity with the persisted `account` table.
 - `@Column` declare each private attribute a column of the `account` table.
 - `@GeneratedValue` indicates that the value for the column should be automatically generated.
-- `@Id` declares the [primary key column](primary-key.html) of the table.
+- `@Id` declares the [primary key column]({% link {{ page.version.version }}/primary-key.md %}) of the table.
 - `@Enumerated` specifies the type of data that the column holds.
 
 ### Hypermedia representation
@@ -623,7 +623,7 @@ We do not go into much detail about hypermedia representation in this tutorial. 
 
 ### Spring repositories
 
-To abstract the database layer, Spring applications use the [`Repository` interface](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories), or some subinterface of `Repository`. This interface maps to a database object, like a table, and its methods map to queries against that object, like a [`SELECT`](selection-queries.html) or an [`INSERT`](insert.html) statement against a table.
+To abstract the database layer, Spring applications use the [`Repository` interface](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories), or some subinterface of `Repository`. This interface maps to a database object, like a table, and its methods map to queries against that object, like a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) or an [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement against a table.
 
 [`AccountRepository.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/jpa/AccountRepository.java) defines the main repository for the `accounts` table:
 
@@ -636,7 +636,7 @@ To abstract the database layer, Spring applications use the [`Repository` interf
 
 Note that, in addition to having the `@Repository` annotation, the `AccountRepository` interface has a [`@Transactional` annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations). When [transaction management](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative) is enabled in an application (i.e., with [`@EnableTransactionManagement`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html)), Spring automatically wraps all objects with the `@Transactional` annotation in [a proxy](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-understanding-aop-proxies) that handles calls to the object.
 
-`@Transactional` takes a number of parameters, including a `propagation` parameter that determines the transaction propagation behavior around an object (i.e., at what point in the stack a transaction starts and ends). This sample application follows the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary). As such, the [REST service boundaries](#rest-controller) should determine where a [transaction](transactions.html) starts and ends rather than the query methods defined in the data access layer. To follow the ECB design pattern, `propagation=MANDATORY` for `AccountRepository`, which means that a transaction must already exist in order to call the `AccountRepository` query methods. In contrast, the `@Transactional` annotations on the [Rest controller entities](#rest-controller) in the web layer have `propagation=REQUIRES_NEW`, meaning that a new transaction must be created for each REST request.
+`@Transactional` takes a number of parameters, including a `propagation` parameter that determines the transaction propagation behavior around an object (i.e., at what point in the stack a transaction starts and ends). This sample application follows the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary). As such, the [REST service boundaries](#rest-controller) should determine where a [transaction]({% link {{ page.version.version }}/transactions.md %}) starts and ends rather than the query methods defined in the data access layer. To follow the ECB design pattern, `propagation=MANDATORY` for `AccountRepository`, which means that a transaction must already exist in order to call the `AccountRepository` query methods. In contrast, the `@Transactional` annotations on the [Rest controller entities](#rest-controller) in the web layer have `propagation=REQUIRES_NEW`, meaning that a new transaction must be created for each REST request.
 
 For details about control flow and transaction management in this application, see [Transaction management](#transaction-management). For more general information about Spring transaction management, see [Understanding the Spring Framework’s Declarative Transaction Implementation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#tx-decl-explained) on Spring's documentation website.
 
@@ -651,7 +651,7 @@ There are several endpoints exposed by the application's web layer, some of whic
 
  Annotated with [`@RestController`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html), `AccountController` defines the primary [web controller](https://wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) component of the application. The `AccountController` methods define the endpoints, routes, and business logic of REST services for account querying and money transferring. Its attributes include an instantiation of [`AccountRepository`](#spring-repositories), called `accountRepository`, that establishes an interface to the `accounts` table through the data access layer.
 
-As mentioned in the [Spring repositories](#spring-repositories) section, the application's transaction boundaries follow the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary), meaning that the web service boundaries of the application determine where a [transaction](transactions.html) starts and ends. To follow the ECB pattern, the `@Transactional` annotation on each of the HTTP entities (`listAccounts()`, `getAccount()`, and `transfer()`) has `propagation=REQUIRES_NEW`. This ensures that each time a REST request is made to an endpoint, a new transaction context is created.
+As mentioned in the [Spring repositories](#spring-repositories) section, the application's transaction boundaries follow the [entity-control-boundary (ECB) pattern](https://wikipedia.org/wiki/Entity-control-boundary), meaning that the web service boundaries of the application determine where a [transaction]({% link {{ page.version.version }}/transactions.md %}) starts and ends. To follow the ECB pattern, the `@Transactional` annotation on each of the HTTP entities (`listAccounts()`, `getAccount()`, and `transfer()`) has `propagation=REQUIRES_NEW`. This ensures that each time a REST request is made to an endpoint, a new transaction context is created.
 
 For details on how aspects handle control flow and transaction management in the application, see [Transaction management](#transaction-management).
 
@@ -671,7 +671,7 @@ For more details about advice ordering, see [Advice Ordering](https://docs.sprin
 
 #### Transaction retries
 
-Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) into applications written on CockroachDB.
+Transactions may require retries if they experience deadlock or [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that cannot be resolved without allowing [serialization]({% link {{ page.version.version }}/demo-serializable.md %}) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) into applications written on CockroachDB.
 
 In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, declared an aspect with the `@Aspect` annotation. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/jpa/RetryableTransactionAspect.java):
 
@@ -699,8 +699,8 @@ Spring documentation:
 
 CockroachDB documentation:
 
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Client Connection Parameters](connection-parameters.html)
-- [CockroachDB Developer Guide](developer-guide-overview.html)
-- [Example Apps](example-apps.html)
-- [Transactions](transactions.html)
+- [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [CockroachDB Developer Guide]({% link {{ page.version.version }}/developer-guide-overview.md %})
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})

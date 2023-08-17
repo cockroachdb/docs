@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
+The `DROP VIEW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a [view]({% link {{ page.version.version }}/views.md %}) from a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
 
 ## Synopsis
 
@@ -21,7 +21,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
  Parameter | Description
 ----------|-------------
-`MATERIALIZED` |  Drop a [materialized view](views.html#materialized-views).
+`MATERIALIZED` |  Drop a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
  `IF EXISTS`   | Drop the view if it exists; if it does not exist, do not return an error.
  `view_name_list`  | A comma-separated list of view names. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
  `CASCADE` | Drop other views that depend on the view being dropped.<br><br>`CASCADE` does not list views it drops, so should be used cautiously.
@@ -118,8 +118,8 @@ DROP VIEW
 
 ## See also
 
-- [Views](views.html)
-- [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE`](show-create.html)
-- [`ALTER VIEW`](alter-view.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Views]({% link {{ page.version.version }}/views.md %})
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

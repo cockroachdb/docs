@@ -5,11 +5,11 @@ toc: true
 docs_area: develop
 ---
 
-To optimize your cluster's performance, CockroachDB can split frequently accessed keys into smaller ranges. In conjunction with [load-based rebalancing](architecture/replication-layer.html#load-based-replica-rebalancing), load-based splitting distributes load evenly across your cluster.
+To optimize your cluster's performance, CockroachDB can split frequently accessed keys into smaller ranges. In conjunction with [load-based rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing), load-based splitting distributes load evenly across your cluster.
 
 ## Enable and disable load-based splitting
 
-Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting](cluster-settings.html). For example, to disable load-based splitting, execute:
+Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). For example, to disable load-based splitting, execute:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -26,7 +26,7 @@ You might want to disable load-based splitting when troubleshooting range-relate
 
 ## Control load-based splitting threshold
 
-To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting](cluster-settings.html) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
+To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -61,14 +61,14 @@ In both of these examples, the split would only occur if the balance factor and 
 
 ## Why load-based splitting works
 
-CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders](architecture/replication-layer.html#leases) are a single replica of a range that both serve reads and coordinate write operations.)
+CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) are a single replica of a range that both serve reads and coordinate write operations.)
 
 However, without load-based splitting this distribution is created without considering the load present on any set of keys. This means that even with an equitable distribution of leases throughout the cluster, some leases will generate more traffic for the node that houses them than others. Because each node can only provide so much throughput, a single node can become a bottleneck for providing access to a subset of data in your cluster.
 
 However, by leveraging load-based splitting, the cluster can understand load on a per-range basis and split up ranges that generate a significant amount of load into multiple ranges, and therefore multiple leaseholders. This lets the cluster express its load as a function of leases; so the roughly equal distribution of leases also generates a roughly equal distribution of traffic, preventing individual nodes from becoming bottlenecks for your cluster.
 
-This benefit is further amplified by [load-based rebalancing](architecture/replication-layer.html#load-based-replica-rebalancing), which ensures that all nodes contain replicas with a roughly equal load. By evenly distributing load throughout your cluster, it's easier to prevent bottlenecks from arising, as well as simplifying hardware forecasting.
+This benefit is further amplified by [load-based rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing), which ensures that all nodes contain replicas with a roughly equal load. By evenly distributing load throughout your cluster, it's easier to prevent bottlenecks from arising, as well as simplifying hardware forecasting.
 
 ## See also
 
-- [`SET CLUSTER SETTING`](set-cluster-setting.html)
+- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})

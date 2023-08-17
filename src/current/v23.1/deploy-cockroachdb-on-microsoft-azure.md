@@ -70,13 +70,13 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 [Create Linux VMs](https://docs.microsoft.com/azure/virtual-machine-scale-sets/quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
-- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
+- Run at least 3 nodes to [ensure survivability]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 {% include {{ page.version.version }}/prod-deployment/recommended-instances-azure.md %}
 
 - When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 ## Step 3. Synchronize clocks
 
@@ -94,7 +94,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 1.  [Add Azure load balancing](https://docs.microsoft.com/azure/load-balancer/load-balancer-overview). Be sure to:
   - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the nodes.
-  - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+  - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 
 1.  Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 

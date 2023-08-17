@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Queues** dashboard lets you monitor the health and performance of various queueing systems in CockroachDB.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Queues**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Queues**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -184,6 +184,6 @@ Pending Actions | The number of pending replicas in the time series maintenance 
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

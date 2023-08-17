@@ -31,7 +31,7 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
 
     This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--region` flag specifies a [regional three-zone cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster), and `--num-nodes` specifies one Kubernetes worker node in each zone.
 
-    The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
+    The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
 
     The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
@@ -91,7 +91,7 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
     --node-ami auto
     ~~~
 
-    This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
+    This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
 
     Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "cockroachdb" in "us-east-1" region is ready` and details about your cluster.
 

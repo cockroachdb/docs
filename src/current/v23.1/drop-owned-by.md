@@ -5,15 +5,15 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP OWNED BY` [statement](sql-statements.html) drops all objects owned by and any [grants](grant.html) on objects not owned by a [role](security-reference/authorization.html#roles).
+The `DROP OWNED BY` [statement]({% link {{ page.version.version }}/sql-statements.md %}) drops all objects owned by and any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The [role](security-reference/authorization.html#roles) must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified objects.
+The [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified objects.
 
-`DROP OWNED BY` will result in an error if the user was granted a [system-level privilege](security-reference/authorization.html#supported-privileges) (i.e., using the [`GRANT SYSTEM ...`](grant.html#grant-system-level-privileges-on-the-entire-cluster) statement). To work around this, use [`SHOW SYSTEM GRANTS FOR <role>`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-system-level-privileges-on-the-entire-cluster) for each system-level privilege in the result.
+`DROP OWNED BY` will result in an error if the user was granted a [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (i.e., using the [`GRANT SYSTEM ...`]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) statement). To work around this, use [`SHOW SYSTEM GRANTS FOR <role>`]({% link {{ page.version.version }}/show-system-grants.md %}) and then use [`REVOKE SYSTEM ...`]({% link {{ page.version.version }}/revoke.md %}#revoke-system-level-privileges-on-the-entire-cluster) for each system-level privilege in the result.
 
 ## Synopsis
 
@@ -23,18 +23,18 @@ The [role](security-reference/authorization.html#roles) must have the `DROP` [pr
 
  Parameter | Description
 -----------|------------
-`role_spec_list` | The source [role](security-reference/authorization.html#roles), or a comma-separated list of source roles.
-`RESTRICT` | _(Default)_ Do not drop ownership if any objects (such as [constraints](constraints.html) and tables) use it.
+`role_spec_list` | The source [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), or a comma-separated list of source roles.
+`RESTRICT` | _(Default)_ Do not drop ownership if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) use it.
 `CASCADE` | Not implemented.
 
 ## Known limitations
 
-- [Enum](enum.html) types are not dropped.
+- [Enum]({% link {{ page.version.version }}/enum.md %}) types are not dropped.
 {% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
 
 ## Examples
 
-The following examples assume a [local cluster is running](start-a-local-cluster.html). They involve a user we will create called `maxroach` and several tables. The setup is shown below.
+The following examples assume a [local cluster is running]({% link {{ page.version.version }}/start-a-local-cluster.md %}). They involve a user we will create called `maxroach` and several tables. The setup is shown below.
 
 From a Terminal window, open a SQL shell as the `root` user:
 
@@ -66,7 +66,7 @@ From the `maxroach` user's SQL shell, create a table called `max_kv`:
 CREATE TABLE IF NOT EXISTS max_kv (k INT, v INT);
 ~~~
 
-To verify that this table is owned by `maxroach`, use [`SHOW GRANTS`](show-grants.html):
+To verify that this table is owned by `maxroach`, use [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -87,7 +87,7 @@ To drop all of the objects owned by the user `maxroach`, switch to the `root` us
 DROP OWNED BY maxroach;
 ~~~
 
-In this case, `maxroach` only owns the `max_kv` table, so this will drop that table from the database completely. To confirm that the table has been dropped, run [`SHOW TABLES`](show-tables.html):
+In this case, `maxroach` only owns the `max_kv` table, so this will drop that table from the database completely. To confirm that the table has been dropped, run [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -98,7 +98,7 @@ SHOW TABLES;
 SHOW TABLES 0
 ~~~
 
-From the `root` user's SQL shell, use [`SHOW GRANTS`](show-grants.html) to further confirm that the `maxroach` user has no remaining object grants:
+From the `root` user's SQL shell, use [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) to further confirm that the `maxroach` user has no remaining object grants:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -118,14 +118,14 @@ From the `root` user's SQL shell, create a table called `root_kv`:
 CREATE TABLE IF NOT EXISTS root_kv (k INT, v INT);
 ~~~
 
-Next, grant all privileges on that table to user `maxroach` using [`GRANT ALL`](grant.html):
+Next, grant all privileges on that table to user `maxroach` using [`GRANT ALL`]({% link {{ page.version.version }}/grant.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL on root_kv TO maxroach;
 ~~~
 
-Next, confirm that the user `maxroach` has all privileges on the table using [`SHOW GRANTS`](show-grants.html):
+Next, confirm that the user `maxroach` has all privileges on the table using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -157,7 +157,7 @@ Next, switch to the `root` user's SQL shell and use `DROP OWNED BY` to remove al
 DROP OWNED BY maxroach;
 ~~~
 
-Next, confirm that the user `maxroach` has no grants on any objects using [`SHOW GRANTS`](show-grants.html):
+Next, confirm that the user `maxroach` has no grants on any objects using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -182,12 +182,12 @@ SQLSTATE: 42501
 
 ## See also
 
-- [Authorization in CockroachDB](security-reference/authorization.html)
-- [`GRANT`](grant.html)
-- [`SHOW GRANTS`](show-grants.html)
-- [`REVOKE`](revoke.html)
-- [`REASSIGN OWNED`](reassign-owned.html)
-- [`DROP ROLE`](drop-role.html)
-- [`SHOW TABLES`](show-tables.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Authorization in CockroachDB]({% link {{ page.version.version }}/security-reference/authorization.md %})
+- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
+- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
+- [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})
+- [`REASSIGN OWNED`]({% link {{ page.version.version }}/reassign-owned.md %})
+- [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

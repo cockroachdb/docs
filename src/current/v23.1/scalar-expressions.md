@@ -13,7 +13,7 @@ the values from the `price` column.
 
 _Scalar expressions_ produce values suitable to store in a single table
 cell (one column of one row). They can be contrasted with
-[_table expressions_](table-expressions.html) and [_selection queries_](selection-queries.html),
+[_table expressions_]({% link {{ page.version.version }}/table-expressions.md %}) and [_selection queries_]({% link {{ page.version.version }}/selection-queries.md %}),
 which produce results structured as a table.
 
 The following sections describe how to construct scalar expressions.
@@ -21,7 +21,7 @@ The following sections describe how to construct scalar expressions.
 ## Constants
 
 Constant expressions represent a simple value that doesn't change.
-They are described further in section [SQL Constants](sql-constants.html).
+They are described further in section [SQL Constants]({% link {{ page.version.version }}/sql-constants.md %}).
 
 ## Column references
 
@@ -30,7 +30,7 @@ An expression in a query can refer to columns in the current data source in two 
 - The name of the column, e.g., `price` in `SELECT price FROM
   items`.
 
-  - If the name of a column is also a [SQL keyword](keywords-and-identifiers.html#keywords), the name
+  - If the name of a column is also a [SQL keyword]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#keywords), the name
   must be appropriately quoted. For example: `SELECT "Default" FROM configuration`.
 
   - If the name is ambiguous (e.g., when joining across multiple tables), it is possible to disambiguate by prefixing the column
@@ -52,7 +52,7 @@ An expression prefixed by a unary operator, or two expressions
 separated by a binary operator, form a new expression.
 
 For a full list of CockroachDB operators, with details about their order of precedence and which
-data types are valid operands for each operator, see [Functions and Operators](functions-and-operators.html#operators).
+data types are valid operands for each operator, see [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
 
 ### Value comparisons
 
@@ -63,7 +63,7 @@ single data type, as well as some pairs of values from different data
 types.
 
 See also [this section over which data types are valid operands
-for each operator](functions-and-operators.html#operators).
+for each operator]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
 
 The following special rules apply:
 
@@ -72,7 +72,7 @@ The following special rules apply:
   whether a value is `NULL`, use the `IS` operator or the conditional
   expression `IFNULL(...)`.
 
-See also [NULLs and Ternary Logic](null-handling.html#nulls-and-ternary-logic).
+See also [NULLs and Ternary Logic]({% link {{ page.version.version }}/null-handling.md %}#nulls-and-ternary-logic).
 
 #### Typing rule
 
@@ -81,7 +81,7 @@ All comparisons accept any combination of argument types and result in type `BOO
 #### Comparison with `NaN`
 
 CockroachDB recognizes the special value `NaN` ([Not-a-Number](https://wikipedia.org/wiki/NaN)) for scalars of
-type [`FLOAT`](float.html) or [`DECIMAL`](decimal.html).
+type [`FLOAT`]({% link {{ page.version.version }}/float.md %}) or [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}).
 
 As per the [IEEE 754](https://wikipedia.org/wiki/IEEE_754)
 standard, `NaN` is considered to be different from every other numeric
@@ -154,7 +154,7 @@ multiple values on the right.
 
 This is done by combining the operator using the keywords `ANY`/`SOME` or `ALL`.
 
-The right operand can be either an array, a tuple or [subquery](subqueries.html).
+The right operand can be either an array, a tuple or [subquery]({% link {{ page.version.version }}/subqueries.md %}).
 
 The result of the comparison is true if and only if:
 
@@ -221,7 +221,7 @@ Syntax:
 
 Returns `TRUE` if and only if the value of the left operand is part of
 the result of evaluating the right operand. In the subquery form, any
-[selection query](selection-queries.html) can be used.
+[selection query]({% link {{ page.version.version }}/selection-queries.md %}) can be used.
 
 For example:
 
@@ -240,7 +240,7 @@ For example:
 > SELECT ('x', 123) IN (SELECT * FROM rows);
 ~~~
 
-{{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}See <a href="{% link {{ page.version.version }}/subqueries.md %}">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -377,10 +377,10 @@ parenthesis.
 
 This applies the named function to the arguments between
 parentheses. When the function's namespace is not prefixed, the
-[name resolution rules](sql-name-resolution.html) determine which
+[name resolution rules]({% link {{ page.version.version }}/sql-name-resolution.md %}) determine which
 function is called.
 
-See also [supported built-in functions](functions-and-operators.html).
+See also [supported built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}).
 
 In addition, the following SQL special forms are also supported:
 
@@ -397,7 +397,7 @@ SQL supports function overloading. See [Revisiting SQL Typing in CockroachDB](ht
 
 ## Subscripted expressions
 
-It is possible to access one item in an [`ARRAY`](array.html) or [`JSONB`](jsonb.html) value using the `[` ... `]` operator. For example:
+It is possible to access one item in an [`ARRAY`]({% link {{ page.version.version }}/array.md %}) or [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) value using the `[` ... `]` operator. For example:
 
 - If the name `a` refers to an array of 10 values, `a[3]` will retrieve the 3rd value. The first value has index 1.
 - If the name `j` refers to a JSON object `{"a": {"b":1}}`, then `j['a']` will access key `a` and retrieve `{"b":1}`. `j['a']['b']` will access key `b` and retrieve `1`.
@@ -556,7 +556,7 @@ only the other operand.
 
 {{site.data.alerts.callout_info}}This is different from the left-to-right "short-circuit logic" found in other programming languages. When it is essential to force evaluation order, use <a href="#conditional-expressions">a conditional expression</a>.{{site.data.alerts.end}}
 
-See also [NULLs and Ternary Logic](null-handling.html#nulls-and-ternary-logic).
+See also [NULLs and Ternary Logic]({% link {{ page.version.version }}/null-handling.md %}#nulls-and-ternary-logic).
 
 #### Typing rule
 
@@ -573,9 +573,9 @@ COUNT ( * )
 ~~~
 
 The difference between aggregate expressions and function calls is
-that the former use [aggregate functions](functions-and-operators.html#aggregate-functions)
+that the former use [aggregate functions]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions)
 and can only appear in the list of rendered expressions in a
-[`SELECT` clause](select-clause.html).
+[`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}).
 
 An aggregate expression computes a combined value, depending on
 which aggregate function is used, across all the rows currently
@@ -818,9 +818,9 @@ The result has the given type.
 
 ## Subquery expressions
 
-See [Subqueries](subqueries.html) for more details and performance best practices.
+See [Subqueries]({% link {{ page.version.version }}/subqueries.md %}) for more details and performance best practices.
 
-You can use any [selection query](selection-queries.html) as subquery.
+You can use any [selection query]({% link {{ page.version.version }}/selection-queries.md %}) as subquery.
 
 ### Scalar subqueries
 
@@ -877,9 +877,9 @@ To convert a list of scalar expressions to an array, use [`ARRAY[...]`](#array-c
 
 ## See also
 
-- [Constants](sql-constants.html)
-- [Selection Queries](selection-queries.html)
-- [Table Expressions](table-expressions.html)
-- [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
-- [Subqueries](subqueries.html)
+- [Constants]({% link {{ page.version.version }}/sql-constants.md %})
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [Subqueries]({% link {{ page.version.version }}/subqueries.md %})
