@@ -38,7 +38,7 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
     <th>CockroachDB {{ site.data.products.serverless }}</th>
     <th>CockroachDB {{ site.data.products.dedicated }}</th>
     <th>CockroachDB {{ site.data.products.core }}</th>
-    <th>{{ site.data.products.enterprise }}</th>
+    <th>CockroachDB {{ site.data.products.core }} {{ site.data.products.enterprise }}</th>
     <th>Feature</th>
   </tr>
  <tr>
