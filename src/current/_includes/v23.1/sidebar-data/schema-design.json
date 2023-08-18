@@ -32,7 +32,7 @@
         ]
       },
       {
-        "title": "Group Columns into Families",
+        "title": "Column Families",
         "urls": [
           "/${VERSION}/column-families.html"
         ]
@@ -53,43 +53,43 @@
             ]
           },
           {
-            "title": "Index a Subset of Rows",
+            "title": "Partial Indexes",
             "urls": [
               "/${VERSION}/partial-indexes.html"
             ]
           },
           {
-            "title": "Index Sequential Keys",
+            "title": "Hash-sharded Indexes",
             "urls": [
               "/${VERSION}/hash-sharded-indexes.html"
             ]
           },
           {
-            "title": "Index JSON and Array Data",
+            "title": "Generalized Inverted Indexes",
             "urls": [
               "/${VERSION}/inverted-indexes.html"
             ]
           },
           {
-            "title": "Index Full Text",
+            "title": "Full-Text Search",
             "urls": [
               "/${VERSION}/full-text-search.html"
             ]
           },
           {
-            "title": "Index Trigrams",
+            "title": "Trigram Indexes",
             "urls": [
               "/${VERSION}/trigram-indexes.html"
             ]
           },
           {
-            "title": "Index Expressions",
+            "title": "Expression Indexes",
             "urls": [
               "/${VERSION}/expression-indexes.html"
             ]
           },
           {
-            "title": "Index Spatial Data",
+            "title": "Spatial Indexes",
             "urls": [
               "/${VERSION}/spatial-indexes.html"
             ]

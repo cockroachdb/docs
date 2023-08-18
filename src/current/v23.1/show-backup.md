@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backup created with the [`BACKUP`](backup.html) statement.
+The `SHOW BACKUP` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the contents of a backup created with the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement.
 
 {{site.data.alerts.callout_danger}}
 The `SHOW BACKUP` syntax **without** the `IN` keyword is **deprecated** as of v22.1 and will be removed in a future release.
@@ -21,18 +21,18 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role is required for the following scenarios:
 
-- Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
-- Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
+- Using the [`cockroach nodelocal upload`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) command.
 
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-storage.html) storage.
+- Using [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) storage.
 
-We recommend using [cloud storage](use-cloud-storage.html).
+We recommend using [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
 ## Synopsis
 
@@ -44,9 +44,9 @@ We recommend using [cloud storage](use-cloud-storage.html).
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI](backup.html#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
-`SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
+`SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -56,8 +56,9 @@ Option        | Value | Description
 `as_json`   |  N/A  | [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
 `check_files` |  N/A  | Validate that all files belonging to a backup are in the expected location in storage. See [Validate a backup's files](#validate-a-backups-files) for an example.
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
-`incremental_location` | [`STRING`](string.html) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option](backup.html#incr-location).
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The passphrase used to [encrypt the files]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
+`kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats). 
+`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location).
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 
 ## Response
@@ -68,18 +69,18 @@ Field | Description
 ------|------------
 `database_name` | The database name.
 `parent_schema_name` | The name of the parent schema.
-`object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`backup_type` | The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
+`object_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), [type]({% link {{ page.version.version }}/create-type.md %}), or schema.
+`object_type` | The type of object: [database]({% link {{ page.version.version }}/create-database.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), [type]({% link {{ page.version.version }}/create-type.md %}), or schema.
+`backup_type` | The type of backup: [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
-`end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
+`end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) of the backup. If the backup was _not_ taken with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup objects, in bytes. Note that `size_bytes` indicates the logical size of the table objects, which is computed as the sum of the size of each key value pair. See `file_bytes` in this table for more detail.
 `rows` | Number of rows in tables that are part of the backup.
-`create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
+`create_statement` | The `CREATE` statement used to create [table(s)]({% link {{ page.version.version }}/create-table.md %}), [view(s)]({% link {{ page.version.version }}/create-view.md %}), or [sequence(s)]({% link {{ page.version.version }}/create-sequence.md %}) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
-`regions` | The [`ALTER DATABASE`](alter-database.html) statement(s) used to configure the database with [multi-region zone configurations](multiregion-overview.html#database-regions), if they exist. If the database is a part of a single region cluster configuration, `NULL` will show.
+`regions` | The [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %}) statement(s) used to configure the database with [multi-region zone configurations]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions), if they exist. If the database is a part of a single region cluster configuration, `NULL` will show.
 `file_bytes` | (With the `check_files` option only) The estimated bytes in external storage for a particular table object. This is the physical bytes that a given table object is taking up. For example, when the files are written to disk in storage they could be compressed. If you total all file bytes, the result is the physical bytes in your storage location. Note that for smaller tables the byte size in `file_bytes` may be larger than `size_bytes` because of the overhead required to create an SST file.
-`path` | The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
+`path` | The list of the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 
@@ -89,7 +90,7 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ### View a list of the available full backup subdirectories
 
-<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command: 
+<a name="show-backups-in"></a>To view a list of the available [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) subdirectories, use the following command: 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -133,7 +134,7 @@ movr          | public             | _crdb_internal_region      | type        | 
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 
-To view a list of the [full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups) backups in a specific subdirectory, use the following command:
+To view a list of the [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) and [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups in a specific subdirectory, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -251,14 +252,14 @@ You will receive an error if there is a collection of backups in the storage loc
 
 ### Show details for scheduled backups
 
- When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given collection URI. To view details for a backup created by a schedule, you can use the following:
+ When a [backup is created by a schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), it is stored within a collection of backups in the given collection URI. To view details for a backup created by a schedule, you can use the following:
 
 - `SHOW BACKUPS IN collectionURI` statement to [view a list of the available full backup subdirectories](#view-a-list-of-the-available-full-backup-subdirectories).
 - `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 ### Show an encrypted backup
 
-Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) and the same passphrase that was used to create the backup:
+Depending on how the backup was [encrypted]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}), use the [`encryption_passphrase` option]({% link {{ page.version.version }}/backup.md %}#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -332,7 +333,7 @@ movr          |          52 | public             |               29 | user_promo
 
 {% include {{ page.version.version }}/backups/check-files-validate.md %}
 
-For more information on validating a backup, see the [Backup Validation](backup-validation.html) page.
+For more information on validating a backup, see the [Backup Validation]({% link {{ page.version.version }}/backup-validation.md %}) page.
 
 ### Show a backup's internal metadata
 
@@ -343,13 +344,13 @@ Use the `WITH as_json` option to output a backup's internal metadata, contained 
 SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH as_json;
 ~~~
 
-The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions](functions-and-operators.html#jsonb-functions) to query particular data or edit the format of the response.
+The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions) to query particular data or edit the format of the response.
 
 {{site.data.alerts.callout_info}}
 The response returned from `SHOW BACKUP FROM ... WITH as_json` is a backup's internal metadata. This content is subject to change from version to version of CockroachDB and does not offer the same stability guarantees as the other `SHOW BACKUP` [options](#options) and their [responses](#response). As a result, `as_json` should **only** be used for debugging or general inspection purposes.
 {{site.data.alerts.end}}
 
-For example, to return a specific entry from the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
+For example, to return a specific entry from the JSON response as a [`string`]({% link {{ page.version.version }}/string.md %}) indented and with newlines use the [`jsonb_pretty()`]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions) function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -364,7 +365,7 @@ WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' wi
   }
 ~~~
 
-To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
+To query for particular data, use the [`jsonb_array_elements()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -387,5 +388,5 @@ WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WI
 
 ## See also
 
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})

@@ -186,6 +186,6 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 - [Vercel's official How to Build a Fullstack App with Next.js, Prisma, and PostgreSQL guide](https://vercel.com/guides/nextjs-prisma-postgres)
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
-- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client](build-a-nodejs-app-with-cockroachdb-prisma.html)
+- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
 
 {% include {{page.version.version}}/app/see-also-links.md %}

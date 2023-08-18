@@ -13,11 +13,11 @@ This page has instructions for exporting spatial data from CockroachDB and conve
 
 ## Step 1. Export data to CSV
 
-First, use the [`EXPORT`](export.html) statement to export your data to a CSV file.
+First, use the [`EXPORT`]({% link {{ page.version.version }}/export.md %}) statement to export your data to a CSV file.
 
-In the example statement below, we export the tornadoes database used in [Query Spatial Data](query-spatial-data.html#use-a-sample-shapefile-dataset).
+In the example statement below, we export the tornadoes database used in [Query Spatial Data]({% link {{ page.version.version }}/query-spatial-data.md %}#use-a-sample-shapefile-dataset).
 
-The statement will place the CSV file in the node's [store directory](cockroach-start.html#store), in a subdirectory named `extern/tornadoes`. The file's name is automatically generated, and will be displayed as output in the [SQL shell](cockroach-sql.html).
+The statement will place the CSV file in the node's [store directory]({% link {{ page.version.version }}/cockroach-start.md %}#store), in a subdirectory named `extern/tornadoes`. The file's name is automatically generated, and will be displayed as output in the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -32,12 +32,12 @@ EXPORT INTO CSV 'nodelocal://self/tornadoes' WITH nullas = '' FROM SELECT * from
 ~~~
 
 {{site.data.alerts.callout_info}}
-This example uses local file storage.  For more information about other locations where you can export your data (such as cloud storage), see [`EXPORT`](export.html).
+This example uses local file storage.  For more information about other locations where you can export your data (such as cloud storage), see [`EXPORT`]({% link {{ page.version.version }}/export.md %}).
 {{site.data.alerts.end}}
 
 ## Step 2. Combine multiple CSV files into one, as needed
 
-You should now have one or more CSV files in the `extern/tornadoes` subdirectory of your node's [store directory](cockroach-start.html#store).  Depending on the size of the data set, there may be more than one CSV file.
+You should now have one or more CSV files in the `extern/tornadoes` subdirectory of your node's [store directory]({% link {{ page.version.version }}/cockroach-start.md %}#store).  Depending on the size of the data set, there may be more than one CSV file.
 
 To combine multiple CSVs into one file:
 
@@ -84,45 +84,45 @@ For more information about the formats supported by `ogr2ogr`, see the [`ogr2ogr
 
 {% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
-Finally, note that SQL type information is lost in the conversion to CSV, such that the `tornadoes.sql` file output by the `ogr2ogr` command above lists every non-geometry field as a [`VARCHAR`](string.html).
+Finally, note that SQL type information is lost in the conversion to CSV, such that the `tornadoes.sql` file output by the `ogr2ogr` command above lists every non-geometry field as a [`VARCHAR`]({% link {{ page.version.version }}/string.md %}).
 
 This can be addressed in one of the following ways:
 
 - Modify the data definitions in the SQL output file to use the correct types.
 
-- Run [`ALTER TYPE`](alter-type.html) statements to restore the data's SQL types after loading this data into another database (including another CockroachDB instance).
+- Run [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) statements to restore the data's SQL types after loading this data into another database (including another CockroachDB instance).
 
 ## See also
 
-- [`EXPORT`](export.html)
-- [Migrate from Shapefiles](migrate-from-shapefiles.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Spatial Data Overview](spatial-data-overview.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
-- [Known Limitations](known-limitations.html#spatial-support-limitations)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTIPOINT](multipoint.html)
-- [MULTILINESTRING](multilinestring.html)
-- [MULTIPOLYGON](multipolygon.html)
-- [GEOMETRYCOLLECTION](geometrycollection.html)
-- [Well known text](well-known-text.html)
-- [Well known binary](well-known-binary.html)
-- [GeoJSON](geojson.html)
-- [SRID 4326 - longitude and latitude](srid-4326.html)
-- [`ST_Contains`](st_contains.html)
-- [`ST_ConvexHull`](st_convexhull.html)
-- [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Covers`](st_covers.html)
-- [`ST_Disjoint`](st_disjoint.html)
-- [`ST_Equals`](st_equals.html)
-- [`ST_Intersects`](st_intersects.html)
-- [`ST_Overlaps`](st_overlaps.html)
-- [`ST_Touches`](st_touches.html)
-- [`ST_Union`](st_union.html)
-- [`ST_Within`](st_within.html)
+- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
+- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
+- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations)
+- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
+- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
+- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
+- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
+- [Well known text]({% link {{ page.version.version }}/well-known-text.md %})
+- [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
+- [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
+- [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
+- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
+- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
+- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
+- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
+- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
+- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
+- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
+- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
+- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
+- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})

@@ -153,7 +153,7 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 
     For a preview of the site, visit [http://localhost:8888](http://localhost:8888).
 
-    Interacting with the site triggers the Netlify functions defined in the `netlify/functions` directory. These functions use Prisma Client to run [`SELECT`](selection-queries.html) and [`INSERT`](insert.html) queries against the database:
+    Interacting with the site triggers the Netlify functions defined in the `netlify/functions` directory. These functions use Prisma Client to run [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) and [`INSERT`]({% link {{ page.version.version }}/insert.md %}) queries against the database:
     - [`getScores.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getScores.ts) reads all rows from the `player_scores` table and returns values in the `id`, `name`, and `score` columns.
     - [`getPlayers.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getPlayers.ts) reads and returns all rows from the `players` table.
     - [`addScore.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/addScore.ts) writes new scores to the `player_scores` table.
@@ -185,6 +185,6 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 ## See also
 
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
-- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client](build-a-nodejs-app-with-cockroachdb-prisma.html)
+- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
 
 {% include {{page.version.version}}/app/see-also-links.md %}

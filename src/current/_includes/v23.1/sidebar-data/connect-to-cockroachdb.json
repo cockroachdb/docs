@@ -21,7 +21,7 @@
             ]
           },
           {
-            "title": "Use Connection Pools",
+            "title": "Connection Pooling",
             "urls": [
               "/${VERSION}/connection-pooling.html"
             ]

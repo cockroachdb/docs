@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-CockroachDB supports various signed integer [data types](data-types.html).
+CockroachDB supports various signed integer [data types]({% link {{ page.version.version }}/data-types.md %}).
 
 {{site.data.alerts.callout_info}}
-For instructions showing how to auto-generate integer values (e.g., to auto-number rows in a table), see [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb).
+For instructions showing how to auto-generate integer values (e.g., to auto-number rows in a table), see [this FAQ entry]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb).
 {{site.data.alerts.end}}
 
 ## Names and Aliases
@@ -22,7 +22,7 @@ For instructions showing how to auto-generate integer values (e.g., to auto-numb
 
 ## Syntax
 
-A constant value of type `INT` can be entered as a [numeric literal](sql-constants.html#numeric-literals).
+A constant value of type `INT` can be entered as a [numeric literal]({% link {{ page.version.version }}/sql-constants.md %}#numeric-literals).
 For example: `42`, `-1234`, or `0xCAFE`.
 
 ## Size
@@ -44,11 +44,11 @@ Given the above, if a table contains a column with a default-sized `INT` value, 
 
 If your application needs to use an integer size that is different than the CockroachDB default (for these or other reasons), you can change one or both of the settings below. For example, you can set either of the below to `4` to cause `INT` and `SERIAL` to become aliases for `INT4` and `SERIAL4`, which use 32-bit integers.
 
-1. The `default_int_size` [session variable](set-vars.html).
-1. The `sql.defaults.default_int_size` [cluster setting](cluster-settings.html).
+1. The `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
+1. The `sql.defaults.default_int_size` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 {{site.data.alerts.callout_success}}
-If your application requires arbitrary precision numbers, use the [`DECIMAL`](decimal.html) data type.
+If your application requires arbitrary precision numbers, use the [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) data type.
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
@@ -92,7 +92,7 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`](de
 
 ## Supported casting and conversion
 
-`INT` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+`INT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -107,6 +107,6 @@ Type | Details
 
 ## See also
 
-- [Data Types](data-types.html)
-- [`FLOAT`](float.html)
-- [`DECIMAL`](decimal.html)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [`FLOAT`]({% link {{ page.version.version }}/float.md %})
+- [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %})

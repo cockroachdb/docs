@@ -1,5 +1,5 @@
 ---
-title: Managing Encryption for CockroachDB Self-Hosted
+title: Manage Encryption for CockroachDB Self-Hosted
 summary: Learn about the encryption features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
@@ -61,7 +61,7 @@ Once specified for a given store, the `--enterprise-encryption` flag must always
 
 ## Checking encryption status
 
-Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
+Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
 
 The report shows encryption status for all stores on the selected node, including:
 
@@ -70,14 +70,14 @@ The report shows encryption status for all stores on the selected node, includin
 - Active data key information.
 - The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on [storage layer](architecture/storage-layer.html) compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped](node-shutdown.html#perform-node-shutdown)).
+CockroachDB relies on [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown)).
 
-Information about keys is written to [the logs](logging-overview.html), including:
+Information about keys is written to [the logs]({% link {{ page.version.version }}/logging-overview.md %}), including:
 
 - Active/old key information at startup.
 - New key information after data key rotation.
 
-Alternatively, you can use the [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) command to view information about a store's encryption algorithm and store key.
+Alternatively, you can use the [`cockroach debug encryption-active-key`]({% link {{ page.version.version }}/cockroach-debug-encryption-active-key.md %}) command to view information about a store's encryption algorithm and store key.
 
 ## Changing encryption algorithm or keys
 

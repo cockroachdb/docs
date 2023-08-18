@@ -7,12 +7,12 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 - **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool. 
 
 {{site.data.alerts.callout_info}}
-Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps](example-apps.html).
+Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps]({% link {{ page.version.version }}/example-apps.md %}).
 {{site.data.alerts.end}}
 
 If you encounter problems using CockroachDB with any of the tools listed on this page, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 
-For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community](community-tooling.html).
+For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community]({% link {{ page.version.version }}/community-tooling.md %}).
 
 ## Drivers
 
@@ -25,14 +25,14 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | JavaScript | [pg](https://www.npmjs.com/package/pg) | 8.2.1 | Full | N/A | [Build a Node.js App with CockroachDB (pg)](build-a-nodejs-app-with-cockroachdb.html) |
 | Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/)<br><br><hr>[psycopg2](https://www.psycopg.org/docs/install.html)<br><br><hr>[asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | 3.0.16<br><br><hr>2.8.6<br><br><hr> | Full<br><br><hr>Full<br><br><hr>Beta | N/A<br><br><hr>N/A<br><br><hr>N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html)<br><br><hr>[Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html)<br><br><hr>[Build a Python App with CockroachDB (asyncpg)](build-a-python-app-with-cockroachdb-asyncpg.html) |
 | Ruby | [pg](https://rubygems.org/gems/pg) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/ruby_pg.go ||var rubyPGVersion = "||"\n\n %} | Full | N/A | [Build a Ruby App with CockroachDB (pg)](build-a-ruby-app-with-cockroachdb.html) |
-| Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Beta | N/A | [Build a Rust App with CockroachDB](build-a-rust-app-with-cockroachdb.html) |
+| Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Beta | N/A | [Build a Rust App with CockroachDB]({% link {{ page.version.version }}/build-a-rust-app-with-cockroachdb.md %}) |
 
 ## Data access frameworks (e.g., ORMs)
 
 | Language | Framework | Latest tested version | Support level | CockroachDB adapter | Tutorial |
 |----------+-----------+-----------------------+---------------+---------------------+----------|
 | Go | [GORM](https://github.com/jinzhu/gorm/releases)<br><br><hr>[go-pg](https://github.com/go-pg/pg)<hr>[upper/db](https://github.com/upper/db) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/gorm.go ||var gormSupportedTag = "||"\n\n %} <br><br><hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/gopg.go ||var gopgSupportedTag = "||"\n\n %}<hr>v4 | Full<br><br><hr>Full<hr>Full | [`crdbgorm`](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb/crdbgorm)<br>(includes client-side transaction retry handling)<hr>N/A<hr>N/A | [Build a Go App with CockroachDB (GORM)](build-a-go-app-with-cockroachdb-gorm.html)<br><br><hr>N/A<hr>[Build a Go App with CockroachDB (upper/db)](build-a-go-app-with-cockroachdb-upperdb.html) |
-| Java | [Hibernate](https://hibernate.org/orm/)<br>(including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial))<hr>[jOOQ](https://www.jooq.org/)<hr>[MyBatis](https://mybatis.org/mybatis-3/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/hibernate.go ||var supportedHibernateTag = "||"\n\n %} (must be at least 5.4.19)<br><br><hr>3.13.2 (must be at least 3.13.0)<hr>3.5.5| Full<br><br><hr>Full<hr>Full | N/A<br><br><hr>N/A<hr>N/A | [Build a Java App with CockroachDB (Hibernate)](build-a-java-app-with-cockroachdb-hibernate.html)<br><br><hr>[Build a Java App with CockroachDB (jOOQ)](build-a-java-app-with-cockroachdb-jooq.html)<hr>[Build a Spring App with CockroachDB (MyBatis)](build-a-spring-app-with-cockroachdb-mybatis.html) |
+| Java | [Hibernate](https://hibernate.org/orm/)<br>(including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial))<hr>[jOOQ](https://www.jooq.org/)<hr>[MyBatis](https://mybatis.org/mybatis-3/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/hibernate.go ||var supportedHibernateTag = "||"\n\n %} (must be at least 5.4.19)<br><br><hr>3.13.2 (must be at least 3.13.0)<hr>3.5.5| Full<br><br><hr>Full<hr>Full | N/A<br><br><hr>N/A<hr>N/A | [Build a Java App with CockroachDB (Hibernate)](build-a-java-app-with-cockroachdb-hibernate.html)<br><br><hr>[Build a Java App with CockroachDB (jOOQ)](build-a-java-app-with-cockroachdb-jooq.html)<hr>[Build a Spring App with CockroachDB (MyBatis)]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-mybatis.md %}) |
 | JavaScript/TypeScript | [Sequelize](https://www.npmjs.com/package/sequelize)<br><br><hr>[Knex.js](https://knexjs.org/)<hr>[Prisma](https://prisma.io)<hr>[TypeORM](https://www.npmjs.com/package/typeorm) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/sequelize.go ||var supportedSequelizeCockroachDBRelease = "||"\n\n %}<br>(use latest version of CockroachDB adapter)<hr> {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/knex.go ||const supportedKnexTag = "||"\n\n %} <hr> 3.14.0 <hr> {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/typeorm.go ||var supportedTypeORMRelease = "||"\n\n %}  | Full<br><br><hr>Full<hr>Full<hr>Full | [`sequelize-cockroachdb`](https://www.npmjs.com/package/sequelize-cockroachdb)<br><br><hr>N/A<hr>N/A<hr>N/A | [Build a Node.js App with CockroachDB (Sequelize)](build-a-nodejs-app-with-cockroachdb-sequelize.html)<br><br><hr>[Build a Node.js App with CockroachDB (Knex.js)](build-a-nodejs-app-with-cockroachdb-knexjs.html)<hr>[Build a Node.js App with CockroachDB (Prisma)](build-a-nodejs-app-with-cockroachdb-prisma.html)<hr>[Build a TypeScript App with CockroachDB (TypeORM)](build-a-typescript-app-with-cockroachdb.html) |
 | Ruby | [ActiveRecord](https://rubygems.org/gems/activerecord)<br>[RGeo/RGeo-ActiveRecord](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/activerecord.go ||var supportedRailsVersion = "||"\nvar %}<br>(use latest version of CockroachDB adapter) | Full | [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter)<br>(includes client-side transaction retry handling) | [Build a Ruby App with CockroachDB (ActiveRecord)](build-a-ruby-app-with-cockroachdb-activerecord.html) |
 | Python | [Django](https://pypi.org/project/Django/)<br>(including [GeoDjango](https://docs.djangoproject.com/en/3.1/ref/contrib/gis/))<hr>[peewee](https://github.com/coleifer/peewee/)<hr>[SQLAlchemy](https://www.sqlalchemy.org/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/django.go ||var djangoSupportedTag = "cockroach-||"\nvar %}<br>(use latest version of CockroachDB adapter)<br><hr>3.13.3<hr>0.7.13<hr>1.4.17<br>(use latest version of CockroachDB adapter) | Full<br><br><hr>Full<hr>Full<hr>Full | [`django-cockroachdb`](https://pypi.org/project/django-cockroachdb/)<br><br><hr>N/A<hr>N/A<hr>[`sqlalchemy-cockroachdb`](https://pypi.org/project/sqlalchemy-cockroachdb)<br>(includes client-side transaction retry handling) | [Build a Python App with CockroachDB (Django)](build-a-python-app-with-cockroachdb-django.html)<br><br><hr>N/A (See [peewee docs](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database).)<hr>[Build a Python App with CockroachDB (SQLAlchemy)](build-a-python-app-with-cockroachdb-sqlalchemy.html) |
@@ -41,35 +41,35 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | Framework | Data access | Latest tested version | Support level | Tutorial |
 |-----------+-------------+-----------------------+---------------+----------|
-| Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | See individual Java ORM or [driver](#drivers) for data access version support. | See individual Java ORM or [driver](#drivers) for data access support level. | [Build a Spring App with CockroachDB (JDBC)](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[Build a Spring App with CockroachDB (JPA)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[Build a Spring App with CockroachDB (MyBatis)](build-a-spring-app-with-cockroachdb-mybatis.html)
+| Spring | [JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %})<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[MyBatis]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-mybatis.md %}) | See individual Java ORM or [driver](#drivers) for data access version support. | See individual Java ORM or [driver](#drivers) for data access support level. | [Build a Spring App with CockroachDB (JDBC)]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %})<hr>[Build a Spring App with CockroachDB (JPA)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[Build a Spring App with CockroachDB (MyBatis)]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-mybatis.md %})
 
 ## Graphical user interfaces (GUIs)
 
 | GUI | Latest tested version | Support level | Tutorial |
 |-----+-----------------------+---------------+----------|
-| [DBeaver](https://dbeaver.com/) | 5.2.3 | Full | [Visualize CockroachDB Schemas with DBeaver](dbeaver.html)
+| [DBeaver](https://dbeaver.com/) | 5.2.3 | Full | [Visualize CockroachDB Schemas with DBeaver]({% link {{ page.version.version }}/dbeaver.md %})
 
 ## Integrated development environments (IDEs)
 
 | IDE | Latest tested version | Support level | Tutorial |
 |-----+-----------------------+---------------+----------|
 | [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 | Full | N/A
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB](intellij-idea.html)
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB]({% link {{ page.version.version }}/intellij-idea.md %})
 
 ## Enhanced data security tools
 
 | Tool | Support level | Integration |
 |-----+---------------+----------|
-| [Satori](https://satoricyber.com/) | Partner supported | [Satori Integration](satori-integration.html) |
-| [HashiCorp Vault](https://www.vaultproject.io/) | Partner supported | [HashiCorp Vault Integration](hashicorp-integration.html) |
+| [Satori](https://satoricyber.com/) | Partner supported | [Satori Integration]({% link {{ page.version.version }}/satori-integration.md %}) |
+| [HashiCorp Vault](https://www.vaultproject.io/) | Partner supported | [HashiCorp Vault Integration]({% link {{ page.version.version }}/hashicorp-integration.md %}) |
 
 ## Schema migration tools
 
 | Tool | Latest tested version | Support level | Tutorial |
 |-----+------------------------+----------------+----------|
-| [Alembic](https://alembic.sqlalchemy.org/en/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic](alembic.html)
-| [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
-| [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
+| [Alembic](https://alembic.sqlalchemy.org/en/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic]({% link {{ page.version.version }}/alembic.md %})
+| [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway]({% link {{ page.version.version }}/flyway.md %})
+| [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase]({% link {{ page.version.version }}/liquibase.md %})
 | [Prisma](https://prisma.io) | 3.14.0 | Full | [Build a Node.js App with CockroachDB (Prisma)](build-a-nodejs-app-with-cockroachdb-prisma.html)
 
 ## Data migration tools
@@ -77,8 +77,8 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Tool | Latest tested version | Support level | Documentation |
 |-----+------------------------+----------------+----------|
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Full | [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
-| [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate](qlik.html)
-| [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim](striim.html)
+| [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
+| [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim]({% link {{ page.version.version }}/striim.md %})
 
 ## Provisioning tools
 | Tool | Latest tested version | Support level | Documentation |

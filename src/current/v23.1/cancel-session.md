@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.
+The `CANCEL SESSION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.
 
 ## Required privileges
 
-To view and cancel a session, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) and the `CANCELQUERY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined. Non-admin users cannot cancel admin users' sessions.
+To view and cancel a session, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy [`VIEWACTIVITY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) and the `CANCELQUERY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy [`CANCELQUERY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined. Non-admin users cannot cancel admin users' sessions.
 
 ## Synopsis
 
@@ -21,14 +21,14 @@ To view and cancel a session, the user must be a member of the `admin` role or m
 
 Parameter | Description
 ----------|------------
-`session_id` | The ID of the session you want to cancel, which can be found with [`SHOW SESSIONS`](show-sessions.html).<br><br>`CANCEL SESSION` accepts a single session ID. If a subquery is used and returns multiple IDs, the `CANCEL SESSION` statement will fail. To cancel multiple sessions, use `CANCEL SESSIONS`.
-`select_stmt` | A [selection query](selection-queries.html) that returns `session_id`(s) to cancel.
+`session_id` | The ID of the session you want to cancel, which can be found with [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %}).<br><br>`CANCEL SESSION` accepts a single session ID. If a subquery is used and returns multiple IDs, the `CANCEL SESSION` statement will fail. To cancel multiple sessions, use `CANCEL SESSIONS`.
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `session_id`(s) to cancel.
 
 ## Example
 
 ### Cancel a single session
 
-In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
+In this example, we use the [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %}) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -59,7 +59,7 @@ You can also cancel a session using a subquery that returns a single session ID:
 
 ### Cancel multiple sessions
 
-Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessions:
+Use the [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %}) statement to view all active sessions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -77,7 +77,7 @@ Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessi
 +---------+----------------------------------+-----------+...
 ~~~
 
-To cancel multiple sessions, nest a [`SELECT` clause](select-clause.html) that retrieves `session_id`(s) inside the `CANCEL SESSIONS` statement:
+To cancel multiple sessions, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `session_id`(s) inside the `CANCEL SESSIONS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -89,7 +89,7 @@ All sessions created by `maxroach` will be cancelled.
 
 ## See also
 
-- [`SHOW SESSIONS`](show-sessions.html)
-- [`SET {session variable}`](set-vars.html)
-- [`SHOW {session variable}`](show-vars.html)
-- [SQL Statements](sql-statements.html)
+- [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %})
+- [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
+- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

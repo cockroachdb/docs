@@ -1,5 +1,5 @@
 ---
-title: Authenticating to CockroachDB Self-Hosted Clusters
+title: Authenticate to CockroachDB Self-Hosted Clusters
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
@@ -9,15 +9,15 @@ Authentication refers to the act of verifying the identity of the other party in
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
-- If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](cockroach-cert.html).
+- If you want to know how to create CockroachDB security certificates, see [Create Security Certificates]({% link {{ page.version.version }}/cockroach-cert.md %}).
 
 ## Connecting to a CockroachDB cluster
 
 Users may connect with {{ site.data.products.core }} clusters in 2 main ways:
 
-- SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs](install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](sql-feature-support.html).
+- SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}), connect directly to CockroachDB clusters using the [CockroachDB SQL interface]({% link {{ page.version.version }}/sql-feature-support.md %}).
 
-- A read-only monitoring service, which provides cluster and database details, and information useful for troubleshooting and performance tuning. Each CockroachDB node also acts as an HTTP server, providing both a [browser UI DB console](ui-overview.html) and the [cluster API](cluster-api.html), which provides much of the same information as the DB console, but as a rest API suitable for programmatic access.
+- A read-only monitoring service, which provides cluster and database details, and information useful for troubleshooting and performance tuning. Each CockroachDB node also acts as an HTTP server, providing both a [browser UI DB console]({% link {{ page.version.version }}/ui-overview.md %}) and the [cluster API]({% link {{ page.version.version }}/cluster-api.md %}), which provides much of the same information as the DB console, but as a rest API suitable for programmatic access.
 
 ## Using digital certificates with CockroachDB
 
@@ -25,19 +25,19 @@ Each CockroachDB node in a secure cluster must have a **node certificate**, whic
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
-  - The values specified in [`--listen-addr`](cockroach-start.html#networking) and [`--advertise-addr`](cockroach-start.html#networking) flags, or the node hostname and fully qualified hostname if not specified
+  - The values specified in [`--listen-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#networking) and [`--advertise-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#networking) flags, or the node hostname and fully qualified hostname if not specified
   - Any host addresses/names used to reach a specific node
   - Any load balancer addresses/names or DNS aliases through which the node could be reached
   - `localhost` and local address if connections are made through the loopback device on the same host
 
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands](cockroach-cert.html), [Auto TLS](auto-tls.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}), [Auto TLS]({% link {{ page.version.version }}/auto-tls.md %}), [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
 - Node authentication using [TLS 1.3](https://wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
-- Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
+- Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}) (for Enterprise users).
 
 ### Node authentication
 
@@ -78,12 +78,12 @@ CockroachDB offers the following methods for client authentication:
     The client still needs the CA certificate to validate the certificate of the node.
 
     {{site.data.alerts.callout_success}}
-    For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+    For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
     {{site.data.alerts.end}}
 
 - **Password authentication without TLS**
 
-    For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security). The `--accept-sql-without-tls` flag is in [preview](cockroachdb-feature-availability.html).
+    For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#security). The `--accept-sql-without-tls` flag is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 
     With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
@@ -101,13 +101,13 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-- [**Single sign-on authentication to DB Console**](sso-db-console.html), which is available to [Enterprise users](enterprise-licensing.html).
+- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-- [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
+- [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
 ### Using `cockroach cert` or `openssl` commands
 
-You can use the [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to create the CA certificate and key, and node and client certificates and keys.
+You can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}) or [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}) to create the CA certificate and key, and node and client certificates and keys.
 
 Note that the node certificate created using `cockroach cert` or`openssl` is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. Thus all nodes must have the following:
 
@@ -240,7 +240,7 @@ File name | File usage
 
 ## Authentication for cloud storage
 
-See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html).
+See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 
 ## Authentication best practice
 
@@ -251,7 +251,7 @@ As a security best practice, we recommend that you rotate the node, client, or C
 - The key (for a node, client, or CA) is compromised.
 - You need to modify the contents of a certificate, for example, to add another DNS name or the IP address of a load balancer through which a node can be reached. In this case, you would need to rotate only the node certificates.
 
-For details about when and how to change security certificates without restarting nodes, see [Rotate Security Certificates](rotate-certificates.html).
+For details about when and how to change security certificates without restarting nodes, see [Rotate Security Certificates]({% link {{ page.version.version }}/rotate-certificates.md %}).
 
 ## Background on public key cryptography and digital certificates
 
@@ -305,8 +305,8 @@ Let's see how the digital certificate is used in client-server communication: Th
 
 ## See also
 
-- [Client Connection Parameters](connection-parameters.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](kubernetes-overview.html)
-- [Local Deployment](secure-a-cluster.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
+- [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
+- [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

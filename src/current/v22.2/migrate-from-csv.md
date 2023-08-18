@@ -17,19 +17,9 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 
 ## Step 1. Export data to CSV
 
-Please refer to the documentation of your database for instructions on exporting data to CSV.
+Refer to the documentation of your database for instructions on exporting data to CSV.
 
-You will need to export one CSV file per table, with the following requirements:
-
-- Files must be in [valid CSV format](https://tools.ietf.org/html/rfc4180), with the caveat that the delimiter must be a single character. To use a character other than comma (such as a tab), set a custom delimiter using the [`delimiter` option](import-into.html#import-options).
-- Files must be UTF-8 encoded.
-- If one of the following characters appears in a field, the field must be enclosed by double quotes:
-    - delimiter (`,` by default)
-    - double quote (`"`)
-    - newline (`\n`)
-    - carriage return (`\r`)
-- If double quotes are used to enclose fields, then a double quote appearing inside a field must be escaped by preceding it with another double quote. For example: `"aaa","b""bb","ccc"`.
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+{% include {{ page.version.version }}/sql/export-csv-tsv.md %}
 
 ## Step 2. Host the files where the cluster can access them
 

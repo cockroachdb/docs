@@ -30,11 +30,11 @@ Before you begin, make sure you have:
 
 ## Step 1. Create a cluster
 
-If you have not done so already, [create a cluster](create-your-cluster.html).
+If you have not done so already, [create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Step 2. Configure your cluster
 
-1. Connect to the built-in SQL shell as a user with [`admin`](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) privileges, replacing the placeholders in the [client connection string](connect-to-your-cluster.html#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
+1. Connect to the built-in SQL shell as a user with [`admin`](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) privileges, replacing the placeholders in the [client connection string]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -43,7 +43,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    For more information on connecting to your cluster, refer to [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) or [Connect to your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
+    For more information on connecting to your cluster, refer to [Connect to your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
     {{site.data.alerts.end}}
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:
@@ -131,7 +131,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 1. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new date-based directory should display on the **Objects** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.current_cloud_version}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-and-debug-changefeeds#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
@@ -240,7 +240,7 @@ The following points outline two potential workarounds. For detailed instruction
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps](../{{site.current_cloud_version}}/create-changefeed.html#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-See the [Change Data Capture Overview](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#known-limitations) for more general changefeed known limitations.
+See the [Change Data Capture Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#known-limitations) for more general changefeed known limitations.

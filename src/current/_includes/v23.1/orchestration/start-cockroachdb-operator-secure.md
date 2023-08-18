@@ -83,11 +83,11 @@
     ~~~
 
     {{site.data.alerts.callout_info}}
-    By default, this custom resource specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster](configure-cockroachdb-kubernetes.html).
+    By default, this custom resource specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}).
     {{site.data.alerts.end}}
 
     {{site.data.alerts.callout_info}}
-    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. This means that if you do not provide a CA, a `cockroach`-generated CA is used. If you want to authenticate using your own CA, [specify the generated secrets in the custom resource](secure-cockroachdb-kubernetes.html#use-a-custom-ca) **before** proceeding to the next step.
+    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. This means that if you do not provide a CA, a `cockroach`-generated CA is used. If you want to authenticate using your own CA, [specify the generated secrets in the custom resource]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes.md %}#use-a-custom-ca) **before** proceeding to the next step.
     {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:

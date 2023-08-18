@@ -12,59 +12,59 @@ See the links below for more information about how to use CockroachDB for spatia
 
 ## Getting Started
 
-- [Install CockroachDB](install-cockroachdb.html)
-- [Spatial tutorial](spatial-tutorial.html)
+- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 
 ## Migrating spatial data into and out of CockroachDB
 
-- [Migrate from Shapefiles](migrate-from-shapefiles.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Export Spatial Data](export-spatial-data.html)
+- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
+- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 
 ## Reference
 
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
-- [Known Limitations](known-limitations.html#spatial-support-limitations)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
-- [Client library compatibility](query-spatial-data.html#compatibility)
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations)
+- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
+- [Client library compatibility]({% link {{ page.version.version }}/query-spatial-data.md %}#compatibility)
 
 ### Spatial objects
 
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTIPOINT](multipoint.html)
-- [MULTILINESTRING](multilinestring.html)
-- [MULTIPOLYGON](multipolygon.html)
-- [GEOMETRYCOLLECTION](geometrycollection.html)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
+- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
+- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
+- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
 
 ### Data representations
 
-- [Well known text](well-known-text.html)
-- [Well known binary](well-known-binary.html)
-- [GeoJSON](geojson.html)
-- [SRID 4326 - longitude and latitude](srid-4326.html)
+- [Well known text]({% link {{ page.version.version }}/well-known-text.md %})
+- [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
+- [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
+- [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
 
 ### Spatial functions
 
-In addition to the [generated reference documentation for spatial functions](functions-and-operators.html#spatial-functions), we have written additional documentation for the following functions, including examples:
+In addition to the [generated reference documentation for spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions), we have written additional documentation for the following functions, including examples:
 
-- [`ST_Contains`](st_contains.html)
-- [`ST_ConvexHull`](st_convexhull.html)
-- [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Covers`](st_covers.html)
-- [`ST_Disjoint`](st_disjoint.html)
-- [`ST_Equals`](st_equals.html)
-- [`ST_Intersects`](st_intersects.html)
-- [`ST_Overlaps`](st_overlaps.html)
-- [`ST_Touches`](st_touches.html)
-- [`ST_Union`](st_union.html)
-- [`ST_Within`](st_within.html)
+- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
+- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
+- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
+- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
+- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
+- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
+- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
+- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
+- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
+- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
 
 ## See also
 
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

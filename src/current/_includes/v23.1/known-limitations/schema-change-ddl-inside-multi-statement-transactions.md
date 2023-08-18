@@ -1,4 +1,4 @@
-Schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`](commit-transaction.html) time, even if other statements in the transaction succeed.  This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+Schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) time, even if other statements in the transaction succeed.  This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
 
 If such a failure occurs, CockroachDB will emit a CockroachDB-specific error code, `XXA00`, and the following error message:
 
@@ -42,7 +42,7 @@ HINT: Some of the non-DDL statements may have committed successfully, but some o
 Manual inspection may be required to determine the actual state of the database.
 ~~~
 
-In this example, the [`INSERT`](insert.html) statement committed, but the [`ALTER TABLE`](alter-table.html) statement adding a [`UNIQUE` constraint](unique.html) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
+In this example, the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement committed, but the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement adding a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

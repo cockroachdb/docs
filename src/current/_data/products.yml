@@ -2,6 +2,8 @@ serverless: CockroachDB Serverless
 
 dedicated: CockroachDB Dedicated
 
+dedicated-advanced: CockroachDB Dedicated advanced
+
 core: CockroachDB Self-Hosted
 # tbd
 enterprise: Enterprise

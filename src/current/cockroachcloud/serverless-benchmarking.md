@@ -9,15 +9,15 @@ This page describes {{ site.data.products.serverless }} performance benchmarking
 
 ## Introduction
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how {{ site.data.products.serverless }} scales based on your workload, see [Architecture](architecture.html#performance).
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how {{ site.data.products.serverless }} scales based on your workload, see [Architecture]({% link cockroachcloud/architecture.md %}#performance).
 
 ### What are RUs?
 
-{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
+{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview]({% link cockroachcloud/serverless-cluster-management.md %}#view-cluster-overview) page.
 
 ### What is KV 95?
 
-KV 95 is a simple benchmark that tests linear scaling by [running a workload](../{{site.current_cloud_version}}/cockroach-workload.html#workloads) that is 95% point reads and 5% point writes. Reads and writes are distributed to keys spread uniformly across the cluster.
+KV 95 is a simple benchmark that tests linear scaling by [running a workload](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) that is 95% point reads and 5% point writes. Reads and writes are distributed to keys spread uniformly across the cluster.
 
 ## Baseline performance
 
@@ -33,5 +33,5 @@ When the previously benchmarked cluster was not throttled to 100 RU/s, it used 8
 
 ## Learn more
 
-- See [CockroachDB Performance](../{{site.current_cloud_version}}/performance.html) for more information about CockroachDB performance benchmarking.
-- See [SQL Performance Best Practices](../{{site.current_cloud_version}}/performance-best-practices-overview.html) for guidance on tuning real workloads.
+- See [CockroachDB Performance](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance) for more information about CockroachDB performance benchmarking.
+- See [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) for guidance on tuning real workloads.

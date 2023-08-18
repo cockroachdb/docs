@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-The MOLT Verify tool checks for data discrepancies between a source and a target database during a [database migration](migration-overview.html).
+MOLT Verify checks for data discrepancies between a source and a target database during a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
 
 The tool performs the following verifications to ensure data integrity during a migration:
 
@@ -17,7 +17,7 @@ The tool performs the following verifications to ensure data integrity during a 
 - **Column Definition Verification:** Check that the column names, data types, constraints, nullability, and other attributes between the source database and the target database are the same. 
 - **Row Value Verification:** Check that the actual data in the tables is the same between the source database and the target database.
 
-For a demo of the MOLT Verify tool, watch the following video:
+For a demo of MOLT Verify, watch the following video:
 
 {% include_cached youtube.html video_id="6mfebmCLClY" %}
 
@@ -29,19 +29,20 @@ The following databases are currently supported:
 - MySQL
 - CockroachDB
 
-## Use the MOLT Verify tool
+## Install and run MOLT Verify
 
-1. Get the JDBC connection strings for the source and target databases you want to compare.
-1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
-1. From the [Releases](https://github.com/cockroachdb/molt/releases/) page, download the binary that matches your system:
+1. [Download the binary](https://github.com/cockroachdb/molt/releases/) that matches your system:
   - For Mac: `molt.darwin.amd64` for Intel or `molt.darwin.arm64` for ARM
   - For Windows: `molt.amd64.exe`
   - For Linux: `molt.linux.amd64`
-   
+
     Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
+1. Get the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
+   
 1. Run MOLT Verify: 
 
-    The `molt verify` command takes two or more JDBC connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the JDBC string. The first argument is considered the "source of truth". 
+    The `molt verify` command takes two or more SQL connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the connection string. The first argument is considered the "source of truth". 
     
     Examples:
 
@@ -63,14 +64,14 @@ The following databases are currently supported:
       'postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
     ~~~
 
-    Optionally, you can use [supported flags](#supported-flags) to customize the verification results.
+    You can use optional [supported flags](#supported-flags) to customize the verification results.
 
 1. Review the verification results:
 
-    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data](insert.html) to the target database and run `./molt verify` again.
+    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data]({% link {{ page.version.version }}/insert.md %}) to the target database and run `./molt verify` again.
 
     {{site.data.alerts.callout_info}} 
-    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT will identify a difference in the table definitions when comparing with CockroachDB's UUID type. In such cases, you might have to perform extra steps, such as [creating composite types](create-type.html#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
+    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT Verify will identify a difference in the table definitions when comparing with CockroachDB's [`UUID`]({% link {{ page.version.version }}/uuid.md %}) type. In such cases, you might have to perform extra steps, such as [creating composite types]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
     {{site.data.alerts.end}}
 
 ## Supported flags
@@ -83,12 +84,13 @@ Flag | Description
 
 ## Limitations
 
-- While verifying data, the tool pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size int` [flag](#supported-flags).
+- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size int` [flag](#supported-flags).
 - MySQL enums and set types are not supported.
-- The tool only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
-- The tool might give an error in case of schema changes on either the source or target database.
+- When a `STRING` is used as a [primary key]({% link {{ page.version.version }}/primary-key.md %}), MOLT Verify may generate additional warnings due to differences in how CockroachDB and other databases handle case sensitivity in strings.
+- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
+- MOLT Verify might give an error in case of schema changes on either the source or target database.
 - Geospatial types cannot yet be compared.
 
 ## See also
 
-- [Migration Overview](migration-overview.html)
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})

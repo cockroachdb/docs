@@ -449,7 +449,7 @@ DELETE 10
 ~~~
 
 {{site.data.alerts.callout_info}}
-Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
+Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 {{site.data.alerts.end}}
 
 ### Reveal the SQL statements sent implicitly by the command-line utility
@@ -536,9 +536,9 @@ In this example, the statement is executed every minute. We let the process run 
 
 ### Connect to a cluster listening for Unix domain socket connections
 
-To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
+To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI]({% link {{ page.version.version }}/connection-parameters.md %}#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
 
-For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
+For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

@@ -1,8 +1,8 @@
-For this service, the most effective technique for improving read and write latency is to [geo-partition](partitioning.html) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone](configure-replication-zones.html) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city do not have to leave that region.
+For this service, the most effective technique for improving read and write latency is to [geo-partition]({% link {{ page.version.version }}/partitioning.md %}) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city do not have to leave that region.
 
 1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/).
 
-1. Once you've received the trial license, SSH to any node in your cluster and [apply the license](licensing-faqs.html#set-a-license):
+1. Once you've received the trial license, SSH to any node in your cluster and [apply the license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -145,7 +145,7 @@ For this service, the most effective technique for improving read and write late
     The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
     {{site.data.alerts.end}}
 
-1. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-partition) to require city data to be stored on specific nodes based on node locality.
+1. Now [create replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition) to require city data to be stored on specific nodes based on node locality.
 
     City | Locality
     -----|---------

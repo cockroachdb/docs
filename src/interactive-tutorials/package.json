@@ -1,0 +1,16 @@
+{
+  "name": "cockroachdb-docs",
+  "version": "2.0.0",
+  "devDependencies": {
+    "@netlify/plugin-lighthouse": "^4.0.7",
+    "jest": "^26",
+    "jest-cli": "^26"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "redoc-cli": "^0.11.4",
+    "snippet-enricher-cli": "^0.0.8",
+    "swagger2openapi": "^7.0.5",
+    "yaml": "^1.10.2"
+  }
+}

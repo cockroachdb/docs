@@ -9,11 +9,11 @@ This page guides you through a simple demonstration of how CockroachDB remains a
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ## Step 1. Start a 6-node cluster
 
-1. Use the [`cockroach start`](cockroach-start.html) command to start 6 nodes:
+1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start 6 nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -81,7 +81,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --background
     ~~~
 
-1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -90,7 +90,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Set up load balancing
 
-In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes](recommended-production-settings.html#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
+In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
 
 1. Install HAProxy.
 
@@ -116,7 +116,7 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
     ~~~
     </div>
 
-1. Run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the port of any node:
+1. Run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the port of any node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -141,7 +141,7 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
 
 ## Step 3. Run a sample workload
 
-Use the [`cockroach workload`](cockroach-workload.html) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
+Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
 
 1. Load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
@@ -217,7 +217,7 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
 When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
 
-1. In a new terminal, [edit the default replication zone](configure-replication-zones.html#edit-the-default-replication-zone) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
+1. In a new terminal, [edit the default replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -266,7 +266,7 @@ Because you reduced the time it takes for the cluster to consider the down node 
 
 ## Step 8. Prepare for two simultaneous node failures
 
-At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting](cluster-settings.html) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
+At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
@@ -283,7 +283,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --background
     ~~~
 
-1. Use the [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone) command to change the cluster's `default` replication factor to 5:
+1. Use the [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) command to change the cluster's `default` replication factor to 5:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

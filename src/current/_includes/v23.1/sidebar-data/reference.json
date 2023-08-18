@@ -12,7 +12,7 @@
         "title": "Architecture",
         "items": [
           {
-            "title": "Architecture Overview",
+            "title": "Overview",
             "urls": [
               "/${VERSION}/architecture/overview.html"
             ]
@@ -64,13 +64,13 @@
       {
         "title": "Cloud API",
         "urls": [
-          "/api/cloud/v1.html"
+          "https://www.cockroachlabs.com/docs/api/cloud/v1"
         ]
       },
       {
         "title": "Cluster API",
         "urls": [
-          "/api/cluster/v2.html"
+          "https://www.cockroachlabs.com/docs/api/cluster/v2"
         ]
       },
       {
@@ -303,7 +303,7 @@
             ]
           },
           {
-            "title": "Unsupported Features in CockroachDB Serverless",
+            "title": "Unsupported Features in Serverless",
             "urls": [
               "/cockroachcloud/serverless-unsupported-features.html"
             ]
@@ -320,19 +320,19 @@
         "title": "Third-Party Support",
         "items": [
           {
-            "title": "Tools Supported by Cockroach Labs",
+            "title": "Supported Tools",
             "urls": [
               "/${VERSION}/third-party-database-tools.html"
             ]
           },
           {
-            "title": "Third-Party Monitoring Integrations",
+            "title": "Monitoring Integrations",
             "urls": [
               "/${VERSION}/third-party-monitoring-tools.html"
             ]
           },
           {
-            "title": "Tools Supported by the Community",
+            "title": "Community-supported Tools",
             "urls": [
               "/${VERSION}/community-tooling.html"
             ]
@@ -378,7 +378,7 @@
             ]
           },
           {
-            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+            "title": "PKI and TLS",
             "urls": [
               "/${VERSION}/security-reference/transport-layer-security.html"
             ]

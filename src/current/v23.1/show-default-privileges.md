@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
+The `SHOW DEFAULT PRIVILEGES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges) for the objects created by [users/roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) in the current database.
 
 ## Synopsis
 
@@ -27,7 +27,7 @@ If you do not specify a `FOR ...` clause, CockroachDB returns the default privil
 
 ## Required privileges
 
-To show default privileges, the user/role must have any [privilege](security-reference/authorization.html#managing-privileges) on the current database.
+To show default privileges, the user/role must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the current database.
 
 ## Examples
 
@@ -112,7 +112,7 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ## See also
 
-- [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
-- [`SHOW ROLES`](show-roles.html)
-- [SQL Statements](sql-statements.html)
-- [Default Privileges](security-reference/authorization.html#default-privileges)
+- [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %})
+- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Default Privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)

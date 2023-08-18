@@ -215,13 +215,17 @@ You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emu
 
 ### Pub/Sub topic naming
 
-When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name.
+When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the following regarding topic names:
 
-The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) that the changefeed will emit to.
+- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name.
+- If the topic already exists in your Pub/Sub sink, the changefeed will write to it.
+- Changefeeds watching multiple tables will write to multiple topics corresponding to those table names.
+- The [`full_table_name`](create-changefeed.html#full-table-option) option will create a topic using the fully qualified table name for each table the changefeed is watching.
+- The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) to which the changefeed will emit.
 
-You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, see Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
 
-For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
+For a list of compatible parameters and options, refer to [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
 
 ### Pub/Sub sink messages
 

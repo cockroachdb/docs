@@ -5,25 +5,25 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value in the constrained column must be unique.
+The `UNIQUE` [constraint]({% link {{ page.version.version }}/constraints.md %}) specifies that each non-`NULL` value in the constrained column must be unique.
 
 ## Details
 
 - You can insert `NULL` values into columns with the `UNIQUE` constraint because `NULL` is the absence of a value, so it is never equal to other `NULL` values and not considered a duplicate value. This means that it's possible to insert rows that appear to be duplicates if one of the values is `NULL`.
 
-    If you need to strictly enforce uniqueness, use the [`NOT NULL` constraint](not-null.html) in addition to the `UNIQUE` constraint. You can also achieve the same behavior through the table's [Primary Key](primary-key.html).
+    If you need to strictly enforce uniqueness, use the [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}) in addition to the `UNIQUE` constraint. You can also achieve the same behavior through the table's [Primary Key]({% link {{ page.version.version }}/primary-key.md %}).
 
-- Columns with the `UNIQUE` constraint automatically have an [index](indexes.html) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the `UNIQUE` constraint's columns and order.
+- Columns with the `UNIQUE` constraint automatically have an [index]({% link {{ page.version.version }}/indexes.md %}) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the `UNIQUE` constraint's columns and order.
 
-    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint](alter-table.html#drop-constraint) also drops the automatically created index.
+    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint) also drops the automatically created index.
 
 - When using the `UNIQUE` constraint on multiple columns, the collective values of the columns must be unique. This *does not* mean that each value in each column must be unique, as if you had applied the `UNIQUE` constraint to each column individually.
 
-- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`](alter-table.html#add-the-unique-constraint).
+- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-the-unique-constraint).
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](alter-table.html#add-a-unique-index-to-a-regional-by-row-table).
+For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table]({% link {{ page.version.version }}/alter-table.md %}#add-a-unique-index-to-a-regional-by-row-table).
 
 ## Syntax
 
@@ -39,9 +39,9 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you are creating.
 `column_def` | Definitions for any other columns in the table.
-`name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 `column_name` | The name of the column you want to constrain.
-`table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
+`table_constraints` | Any other table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply.
 
 **Example**
 
@@ -65,10 +65,10 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you are creating.
 `column_name` | The name of the constrained column.
-`column_type` | The constrained column's [data type](data-types.html).
-`column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+`column_type` | The constrained column's [data type]({% link {{ page.version.version }}/data-types.md %}).
+`column_constraints` | Any other column-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply to this column.
 `column_def` | Definitions for any other columns in the table.
-`table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
+`table_constraints` | Any table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply.
 
 **Example**
 
@@ -136,11 +136,11 @@ As mentioned in the [details](#details) above, it is possible when using the `UN
 
 ## See also
 
-- [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
-- [`CHECK` constraint](check.html)
-- [`DEFAULT` value constraint](default-value.html)
-- [Foreign key constraint](foreign-key.html)
-- [`NOT NULL` constraint](not-null.html)
-- [`PRIMARY` key constraint](primary-key.html)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- [`CHECK` constraint]({% link {{ page.version.version }}/check.md %})
+- [`DEFAULT` value constraint]({% link {{ page.version.version }}/default-value.md %})
+- [Foreign key constraint]({% link {{ page.version.version }}/foreign-key.md %})
+- [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %})
+- [`PRIMARY` key constraint]({% link {{ page.version.version }}/primary-key.md %})
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})

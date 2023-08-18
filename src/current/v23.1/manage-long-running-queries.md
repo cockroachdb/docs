@@ -12,7 +12,7 @@ This page shows you how to identify and, if necessary, cancel SQL queries that a
 
 ## Identify long-running queries
 
-Use the [`SHOW STATEMENTS`](show-statements.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
+Use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -39,7 +39,7 @@ You can also filter for queries that have been running for a certain amount of t
 
 ## Cancel long-running queries
 
-Once you've identified a long-running query via [`SHOW STATEMENTS`](show-statements.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
+Once you've identified a long-running query via [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}), note the `query_id` and use it with the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -49,7 +49,7 @@ Once you've identified a long-running query via [`SHOW STATEMENTS`](show-stateme
 When a query is successfully cancelled, CockroachDB sends a `query execution canceled` error to the client that issued the query.
 
 - If the canceled query was a single, stand-alone statement, no further action is required by the client.
-- If the canceled query was part of a larger, multi-statement [transaction](transactions.html), the client should then issue a [`ROLLBACK`](rollback-transaction.html) statement.
+- If the canceled query was part of a larger, multi-statement [transaction]({% link {{ page.version.version }}/transactions.md %}), the client should then issue a [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) statement.
 
 You can cancel all queries from a particular application by using a subquery.
 
@@ -61,15 +61,15 @@ CANCEL QUERIES (WITH x AS (SHOW CLUSTER QUERIES) SELECT query_id FROM x
 
 ## Improve query performance
 
-After cancelling a long-running query, use the [`EXPLAIN`](explain.html) statement to examine it. It's possible that the query was slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index](create-index.html).
+After cancelling a long-running query, use the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement to examine it. It's possible that the query was slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index]({% link {{ page.version.version }}/create-index.md %}).
 
 {{site.data.alerts.callout_success}}
-For guidance on optimizing SQL performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
+For guidance on optimizing SQL performance, see [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
 {{site.data.alerts.end}}
 
 ## See also
 
-- [`SHOW STATEMENTS`](show-statements.html)
-- [`CANCEL QUERY`](cancel-query.html)
-- [`EXPLAIN`](explain.html)
-- [Query Behavior Troubleshooting](query-behavior-troubleshooting.html)
+- [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %})
+- [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %})
+- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
+- [Query Behavior Troubleshooting]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})

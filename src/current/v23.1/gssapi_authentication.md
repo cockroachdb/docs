@@ -101,7 +101,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-1. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
+1. [Create certificates]({% link {{ page.version.version }}/cockroach-cert.md %}) for inter-node and `root` user authentication:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -149,7 +149,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     cockroach sql --certs-dir=certs
     ~~~
 
-1. [Enable an Enterprise license](licensing-faqs.html#obtain-a-license).
+1. [Enable an Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
     {{site.data.alerts.callout_info}} You need the Enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an Enterprise license. {{site.data.alerts.end}}
 
 1. Enable GSSAPI authentication:
@@ -159,7 +159,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
 
-      Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) to this particular value makes it mandatory for all non-`root` users to authenticate using GSSAPI. The `root` user is always an exception and remains able to authenticate using a valid client cert or a user password.
+      Setting the `server.host_based_authentication.configuration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to this particular value makes it mandatory for all non-`root` users to authenticate using GSSAPI. The `root` user is always an exception and remains able to authenticate using a valid client cert or a user password.
 
       The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We do not support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as an allowlist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
@@ -253,5 +253,5 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 ## See also
 
-- [Authentication](authentication.html)
-- [Create Security Certificates](cockroach-cert.html)
+- [Authentication]({% link {{ page.version.version }}/authentication.md %})
+- [Create Security Certificates]({% link {{ page.version.version }}/cockroach-cert.md %})
