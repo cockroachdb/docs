@@ -220,7 +220,21 @@ Rebalancing is achieved by using a snapshot of a replica from the leaseholder, a
 
 #### Load-based replica rebalancing
 
-In addition to the rebalancing that occurs when nodes join or leave a cluster, replicas are also rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+In addition to the rebalancing that occurs when nodes join or leave a cluster, replicas are also rebalanced automatically across the cluster based on a combination of:
+
+1. Replica count.
+1. CPU usage (if [`kv.allocator.load_based_rebalancing.objective`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-allocator-load-based-rebalancing-objective) is set to `cpu`, which is the default in CockroachDB v23.1 and later)
+
+Note that disk utilization per node is not one of the rebalancing criteria. For more information, see [Disk utilization is different across nodes in the cluster]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-utilization-is-different-across-nodes-in-the-cluster).
+
+Load-based replica rebalancing operates in conjunction with [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}) of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
+
+For more information on how to control load-based rebalancing, see the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
+
+- [`kv.allocator.store_cpu_rebalance_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-allocator-store-cpu-rebalance-threshold)
+- [`kv.allocator.range_rebalance_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-allocator-range-rebalance-threshold)
+
+Depending on the needs of your deployment, you can exercise additional control over the locations of leases and replicas using [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}), or by [configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 ### Important values and timeouts
 
