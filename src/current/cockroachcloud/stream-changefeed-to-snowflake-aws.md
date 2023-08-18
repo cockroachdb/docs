@@ -107,14 +107,14 @@ CREATE CHANGEFEED FOR TABLE order_alerts
 
 Refer to the [Cloud Storage Authentication](../{{site.versions["stable"]}}/cloud-storage-authentication.html) page for more detail on authenticating to Amazon S3 and other cloud providers.
 
-You will receive the changefeed's job ID that you can use to [manage the changefeed](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#configure-a-changefeed) if needed.
-
 ~~~
         job_id
 +--------------------+
   000000000000000000
 (1 row)
 ~~~
+
+You will receive the changefeed's job ID that you can use to [manage the changefeed](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#configure-a-changefeed) if needed.
 
 ## Step 7. Insert data into the tables
 
@@ -138,7 +138,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. Log in to Snowflake as a user with [read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a cluster.
 
-1. Navigate to the **Worksheets** and select a worksheet.
+1. Navigate to the **Worksheets** page and select a worksheet.
 
 1. Create a table to store the data to be ingested:
 
@@ -153,14 +153,12 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. **Run** the statement.
 
-1. In the worksheet, create a [stage](https://docs.snowflake.com/en/user-guide/data-load-s3-create-stage) called `cdc-stage`, which tells Snowflake where your data files reside in S3:
+1. In the worksheet, create a [stage](https://docs.snowflake.com/en/user-guide/data-load-s3-create-stage) called `cdc-stage`, which tells Snowflake where your data files reside in S3. Replace the placeholders with your AWS access key ID and AWS secret access key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
-
-    Replace the placeholders with your AWS access key ID and AWS secret access key.
 
 1. In the worksheet, create a Snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
@@ -187,7 +185,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 1. [Navigate back to your S3 bucket](https://s3.console.aws.amazon.com/).
 
 1. Configure an event notification for the S3 bucket. In the **Properties** tab, click **Create event notification**. Use the following parameters:
-    - **Event Name:** Name of the event notification (e.g., Auto-ingest Snowflake).
+    - **Event name:** Name of the event notification (e.g., Auto-ingest Snowflake).
     - **Event types:** Select the **All object create events**.
     - **Destination:** Select **SQS Queue**.
     - **Specify SQS queue:** Select **Enter SQS queue ARN** from the drop-down.
@@ -224,7 +222,7 @@ The following points outline two potential workarounds. For detailed instruction
     - Create the new table in Snowflake that will hold the de-duplicated entries using the stream's `METADATA$ACTION` column.
     - Create a task to run a SQL statement that will pull data from the stream and merge it into a new table for the "unique" entries. You can set this task to run when there are new records in the stream and by a cron job schedule.
 
-    Refer to the [stream creation examples in Snowflake's documentation](https://docs.snowflake.com/en/user-guide/streams-examples#basic-example).
+    Refer to the [Snowflake's examples on creating a stream](https://docs.snowflake.com/en/user-guide/streams-examples#basic-example).
 - Use Snowflake [materialized views](https://docs.snowflake.com/en/user-guide/views-materialized) to maintain a de-duplicated table.
     - Create a materialized view that includes a selection query partitioning on the primary key with the Snowflake [`QUALIFY`](https://docs.snowflake.com/en/sql-reference/constructs/qualify) command.
 
