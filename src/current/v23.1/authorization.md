@@ -12,7 +12,7 @@ Procedures for managing access are covered in [Managing Access in CockroachDB {{
 {{site.data.alerts.callout_info}}
 The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users within CockroachDB {{ site.data.products.cloud }} organizations.
 
-Learn more: [Overview of the CockroachDB Cloud two-level authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB Cloud authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 {{site.data.alerts.end}}
 
 
@@ -157,18 +157,18 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name |    schema_name     |         table_name         | grantee  | privilege_type  
+      database_name |    schema_name     |         table_name         | grantee  | privilege_type
     +---------------+--------------------+----------------------------+----------+----------------+
-      movr          | crdb_internal      | NULL                       | db_admin | ALL             
-      movr          | information_schema | NULL                       | db_admin | ALL             
-      movr          | pg_catalog         | NULL                       | db_admin | ALL             
-      movr          | public             | NULL                       | db_admin | ALL             
-      movr          | public             | promo_codes                | db_admin | ALL             
-      movr          | public             | rides                      | db_admin | ALL             
-      movr          | public             | user_promo_codes           | db_admin | ALL             
-      movr          | public             | users                      | db_admin | ALL             
-      movr          | public             | vehicle_location_histories | db_admin | ALL             
-      movr          | public             | vehicles                   | db_admin | ALL             
+      movr          | crdb_internal      | NULL                       | db_admin | ALL
+      movr          | information_schema | NULL                       | db_admin | ALL
+      movr          | pg_catalog         | NULL                       | db_admin | ALL
+      movr          | public             | NULL                       | db_admin | ALL
+      movr          | public             | promo_codes                | db_admin | ALL
+      movr          | public             | rides                      | db_admin | ALL
+      movr          | public             | user_promo_codes           | db_admin | ALL
+      movr          | public             | users                      | db_admin | ALL
+      movr          | public             | vehicle_location_histories | db_admin | ALL
+      movr          | public             | vehicles                   | db_admin | ALL
     (10 rows)
     ~~~
 
@@ -190,12 +190,12 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name | schema_name | table_name | grantee  | privilege_type  
+      database_name | schema_name | table_name | grantee  | privilege_type
     +---------------+-------------+------------+----------+----------------+
-      movr          | public      | vehicles   | app_user | DELETE          
-      movr          | public      | vehicles   | app_user | INSERT          
-      movr          | public      | vehicles   | app_user | SELECT          
-      movr          | public      | vehicles   | app_user | UPDATE          
+      movr          | public      | vehicles   | app_user | DELETE
+      movr          | public      | vehicles   | app_user | INSERT
+      movr          | public      | vehicles   | app_user | SELECT
+      movr          | public      | vehicles   | app_user | UPDATE
     (4 rows)
     ~~~
 
@@ -217,9 +217,9 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name | schema_name | table_name |   grantee   | privilege_type  
+      database_name | schema_name | table_name |   grantee   | privilege_type
     +---------------+-------------+------------+-------------+----------------+
-      movr          | public      | vehicles   | report_user | SELECT          
+      movr          | public      | vehicles   | report_user | SELECT
     (1 row)
     ~~~
 

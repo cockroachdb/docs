@@ -8,7 +8,7 @@ cloud: true
 
 Users may connect with CockroachDB {{ site.data.products.cloud }} at two levels, the organization and the cluster, both of which are covered in this page.
 
-Refer to: [Overview of the CockroachDB {{ site.data.products.cloud }} two-level authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
+Refer to: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model](authorization.html#overview-of-the-cockroachdb-cloud-authorization-model).
 
 ## Overview of CockroachDB {{ site.data.products.cloud }} authentication
 

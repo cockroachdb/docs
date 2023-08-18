@@ -9,7 +9,7 @@ Authorization, generally, is the control over **who** (users/roles) can perform 
 
 This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users on CockroachDB {{ site.data.products.cloud }} organiations.
 
-Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} two-level authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 
 ## Authorization models
 
@@ -192,4 +192,4 @@ We recommend the following best practices to set up access control for your clus
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
-- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
+- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used.

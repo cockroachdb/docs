@@ -105,9 +105,7 @@ To connect to your cluster with the [built-in SQL client](https://www.cockroachl
         <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
-
-    {% include cockroachcloud/download-the-binary.md %}
+1. {% include cockroachcloud/download-the-binary.md %}
 
 1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 

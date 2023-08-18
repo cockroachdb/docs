@@ -1,0 +1,72 @@
+<meta charset="utf-8" prefix="og: https://ogp.me/ns#">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
+<meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
+
+{% if page.layout == "homepage" %}
+<meta name="google-site-verification" content="Du_z8l1I9HPqQS022xQn6UTRhDWYQRJZchcoUhYfQaM" /> {% comment %} Nick Vigilante {% endcomment %}
+<meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
+<meta name="google-site-verification" content="tJzwad6zE43z3_4uoZ8Jx4iquB66Kpt5zcK6yxNXg_A" /> {% comment %} Dan Kelly {% endcomment %}
+{% endif %}
+{% comment %} Open Graph data {% endcomment %}
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:type" content="article" />
+{%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
+{%- assign stable_path = "/" | append: site.versions["stable"] | append: "/" -%}
+<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}" />
+<meta property="og:image" content="{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}" />
+<meta property="og:site_name" content="{{ site.site_title }}" />
+{% if page.summary %}<meta property="og:description" content="{{ page.summary | strip_html | strip_newlines | truncate: 160 }}">{% endif %}
+{% comment %} Google structured content/rich results {% endcomment %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page.title | replace: '"', '\"' }}",
+    "image": "{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}",
+    {% if page.summary %}"description": "{{ page.summary | strip_html | strip_newlines | truncate: 160 | replace: '"', '\"' }}",{% endif %}
+    "author": {
+        "@type": "Organization",
+        "name": "Cockroach Labs Documentation Team",
+        "url": "https://github.com/cockroachdb/docs"
+      }
+  }
+  </script>
+{% comment %} Favicons {% endcomment %}
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png?w=16h=16" sizes="16x16">
+
+<title>{{ page.title }}</title>
+
+<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}">
+{% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
+{% include_cached corestyles.css.html %}
+
+
+
+{%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
+<script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET";;analytics.SNIPPET_VERSION="4.15.3";
+  analytics.load("Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET", {
+    user: {
+      cookie: {
+        key: "crl_brand_ajs_user_id",
+        oldKey: "crl_brand_ajs_user",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_user_traits",
+      },
+    },
+    group: {
+      cookie: {
+        key: "crl_brand_ajs_group_id",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_group_properties",
+      }
+    }
+  });
+  analytics.page();
+  }}();
+</script>
