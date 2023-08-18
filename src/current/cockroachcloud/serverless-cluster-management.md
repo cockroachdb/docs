@@ -7,11 +7,11 @@ docs_area: manage
 
 {% include cockroachcloud/filter-tabs/cluster-management.md %}
 
-This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
+This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.serverless }}.
 
 ## View Clusters page
 
-On [logging in to the {{ site.data.products.db }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
+On [logging in to the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
 
 For each cluster, the following details display:
 
@@ -29,7 +29,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected {{ site.data.products.serverless }} cluster:
+The **Overview** page displays details about the selected CockroachDB {{ site.data.products.serverless }} cluster:
 
 - The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Regions**
 - The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
@@ -53,7 +53,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit your resource limits
 
-On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
+On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
@@ -109,7 +109,7 @@ To remove regions from your cluster:
 
 Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
 
 ## Delete cluster
 
@@ -118,7 +118,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Free {{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
+Free CockroachDB {{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

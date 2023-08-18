@@ -34,7 +34,7 @@ CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms
 
 ### How easy is it to get started with CockroachDB?
 
-You can get started with CockroachDB with just a few clicks. Sign up for a {{ site.data.products.db }} account to create a free {{ site.data.products.serverless }} cluster. For more details, see [Quickstart](../cockroachcloud/quickstart.html).
+You can get started with CockroachDB with just a few clicks. Sign up for a CockroachDB {{ site.data.products.cloud }} account to create a free CockroachDB {{ site.data.products.serverless }} cluster. For more details, see [Quickstart](../cockroachcloud/quickstart.html).
 
 Alternatively, you can download a binary or run our official Kubernetes configurations or Docker image. For more details, see [Install CockroachDB](install-cockroachdb.html).
 
@@ -42,9 +42,9 @@ Alternatively, you can download a binary or run our official Kubernetes configur
 
 There are three way to use and deploy CockroachDB:
 
-- **{{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). {{ site.data.products.serverless }} lets you create and start clusters instantly. This deployment option is good for starter projects and evaluations.
-- **{{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment option is good for mission-critical databases and projects that require [Enterprise features](enterprise-licensing.html).
-- **{{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features](enterprise-licensing.html).
+- **CockroachDB {{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). CockroachDB {{ site.data.products.serverless }} lets you create and start clusters instantly. This deployment option is good for starter projects and evaluations.
+- **CockroachDB {{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment option is good for mission-critical databases and projects that require [Enterprise features](enterprise-licensing.html).
+- **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features](enterprise-licensing.html).
 
 For more details, see [Choose a Deployment Option](choose-a-deployment-option.html).
 
@@ -60,8 +60,8 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
-- [Plan Your {{ site.data.products.serverless }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
-- [Plan Your {{ site.data.products.dedicated }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html?filter=dedicated#cluster-scaling)
+- [Plan Your CockroachDB {{ site.data.products.serverless }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
+- [Plan Your CockroachDB {{ site.data.products.dedicated }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html?filter=dedicated#cluster-scaling)
 - [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?

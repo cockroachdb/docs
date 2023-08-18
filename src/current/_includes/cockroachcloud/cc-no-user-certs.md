@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-{{ site.data.products.db }} does not yet support certificate-based user authentication.
+CockroachDB {{ site.data.products.cloud }} does not yet support certificate-based user authentication.
 {{site.data.alerts.end}}

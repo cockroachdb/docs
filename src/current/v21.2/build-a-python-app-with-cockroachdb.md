@@ -68,7 +68,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
     $ export DATABASE_URL="{connection-string}"
     ~~~
 
-    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
+    Where `{connection-string}` is the connection string you obtained from the CockroachDB {{ site.data.products.cloud }} Console.
 
     </section>
 

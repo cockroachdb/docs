@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters. If you are new to CockroachDB Cloud, [install `ccloud`](#install-ccloud) and use the [`ccloud quickstart` command](#use-ccloud-quickstart) to interactively log in and create a new {{ site.data.products.serverless }} cluster.
+The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters. If you are new to CockroachDB Cloud, [install `ccloud`](#install-ccloud) and use the [`ccloud quickstart` command](#use-ccloud-quickstart) to interactively log in and create a new CockroachDB {{ site.data.products.serverless }} cluster.
 
 ## Install `ccloud`
 
@@ -13,7 +13,7 @@ The `ccloud` tool is a command-line interface (CLI) tool that allows you to crea
 
 ## Use `ccloud quickstart`
 
-The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -63,25 +63,25 @@ ccloud auth login --no-redirect
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
 
-The `ccloud quickstart create` command interactively guides you through creating and connecting to a new {{ site.data.products.serverless }} cluster.
+The `ccloud quickstart create` command interactively guides you through creating and connecting to a new CockroachDB {{ site.data.products.serverless }} cluster.
 
-The `ccloud cluster create` command creates a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
+The `ccloud cluster create` command creates a new CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}<strong></strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-Use the `ccloud cluster create` command to create a new {{ site.data.products.serverless }} cluster.
+Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.serverless }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster create
 ~~~
 
-This command creates a {{ site.data.products.serverless }} cluster in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name.
+This command creates a CockroachDB {{ site.data.products.serverless }} cluster in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name.
 
 ~~~
 ∙∙∙ Creating cluster...
@@ -102,14 +102,14 @@ ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-Use the `ccloud cluster create` command to create a new {{ site.data.products.dedicated }} cluster.
+Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.dedicated }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster create dedicated
 ~~~
 
-This command creates a 1 node {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
+This command creates a 1 node CockroachDB {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
 You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
@@ -136,7 +136,7 @@ ccloud cluster create dedicated blue-dog us-central1:2 us-west2:1 --cloud GCP --
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a CockroachDB {{ site.data.products.serverless }} cluster, or create a CockroachDB {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
@@ -495,7 +495,7 @@ Success! Deleted cluster
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. {{ site.data.products.serverless }} clusters are created in less than a minute. {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
+If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
 
 ## Turn off telemetry events for `ccloud`

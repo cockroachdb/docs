@@ -464,7 +464,7 @@
               ]
             },
             {
-              "title": "Monitor {{ site.data.products.core }} with Datadog",
+              "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]
@@ -508,7 +508,7 @@
         },
 
         {
-         "title": "Export Logs From {{ site.data.products.dedicated }}",
+         "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
          "urls": [
            "/cockroachcloud/export-logs.html"
          ]

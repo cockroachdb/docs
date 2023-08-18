@@ -313,9 +313,9 @@ IMPORT TABLE customers FROM PGDUMP 'nodelocal://2/customers.sql';
 You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
 
 
-### Import data into your {{ site.data.products.db }} cluster
+### Import data into your CockroachDB {{ site.data.products.cloud }} cluster
 
-You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile-for-bulk-operations.html) or [cloud storage](use-cloud-storage-for-bulk-operations.html):
+You can import data into your CockroachDB {{ site.data.products.cloud }} cluster using either [`userfile`](use-userfile-for-bulk-operations.html) or [cloud storage](use-cloud-storage-for-bulk-operations.html):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
