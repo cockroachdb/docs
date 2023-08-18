@@ -222,7 +222,7 @@ The following points outline two potential workarounds. For detailed instruction
     - Create the new table in Snowflake that will hold the de-duplicated entries using the stream's `METADATA$ACTION` column.
     - Create a task to run a SQL statement that will pull data from the stream and merge it into a new table for the "unique" entries. You can set this task to run when there are new records in the stream and by a cron job schedule.
 
-    Refer to the [Snowflake's examples on creating a stream](https://docs.snowflake.com/en/user-guide/streams-examples#basic-example).
+    Refer to [Snowflake's examples on creating a stream](https://docs.snowflake.com/en/user-guide/streams-examples#basic-example).
 - Use Snowflake [materialized views](https://docs.snowflake.com/en/user-guide/views-materialized) to maintain a de-duplicated table.
     - Create a materialized view that includes a selection query partitioning on the primary key with the Snowflake [`QUALIFY`](https://docs.snowflake.com/en/sql-reference/constructs/qualify) command.
 
