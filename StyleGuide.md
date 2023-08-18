@@ -779,13 +779,13 @@ When the time comes to document known limitations, keep in mind that you are doc
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
-- **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
-- **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
-- **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
-- **CockroachDB Cloud** : `{{ site.data.products.db }}`
+- **Serverless** : `CockroachDB {{ site.data.products.serverless }}`
+- **Dedicated** : `CockroachDB {{ site.data.products.dedicated }}`
+- **Self-Hosted** : `CockroachDB {{ site.data.products.core }}`
+- **Cloud** : `CockroachDB {{ site.data.products.cloud }}`
+- **Enterprise** : `{{ site.data.products.enterprise }}`
 
-
-The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
+The first occurrence of a product name within a docs page should use its full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
 It should be noted that each of these words can occur uncapitalized if referring to general concepts, rather than CockroachDB concepts/products. For example, we can refer to "Serverless clusters and serverless applications", note that "Dedicated clusters used dedicated (rather than shared) network and compute infrastructure".
 
