@@ -37,8 +37,8 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
     <th width="120">Security Domain</th>
     <th>{{ site.data.products.serverless }}</th>
     <th>{{ site.data.products.dedicated }}</th>
-    <th>{{ site.data.products.core }}</th>
-    <th>{{ site.data.products.enterprise }}</th>
+    <th>{{ site.data.products.core }} Core</th>
+    <th>{{ site.data.products.core }} {{ site.data.products.enterprise }}</th>
     <th>Feature</th>
   </tr>
  <tr>
