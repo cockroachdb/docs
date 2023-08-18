@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a CockroachDB {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 

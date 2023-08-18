@@ -8,7 +8,7 @@ docs_area: manage
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Jobs** page of the {{ site.data.products.db }} Console provides details of all jobs in the cluster.
+The **Jobs** page of the CockroachDB {{ site.data.products.cloud }} Console provides details of all jobs in the cluster.
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Jobs** in the **Monitoring** section of the left side navigation.
 

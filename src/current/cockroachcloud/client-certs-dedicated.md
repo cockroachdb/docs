@@ -6,17 +6,17 @@ docs_area: manage.security
 cloud: true
 ---
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sso-sql).
+SQL clients may authenticate to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sso-sql).
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs recommends using single sign on (SSO) for authentication of human users where possible, and JWT or security certificate for authentication of your application users.
 {{site.data.alerts.end}}
 
-This page describes how to administer [public key infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for a {{ site.data.products.dedicated }} cluster, using [HashiCorp Vault PKI Secrets Engine](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration).
+This page describes how to administer [public key infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for a CockroachDB {{ site.data.products.dedicated }} cluster, using [HashiCorp Vault PKI Secrets Engine](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration).
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Authenticating to {{ site.data.products.db }}]({% link cockroachcloud/authentication.md %}) for an overview of authentication in {{ site.data.products.db }}, both at the level of the organization and at the cluster.
+Refer to [Authenticating to CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/authentication.md %}) for an overview of authentication in CockroachDB {{ site.data.products.cloud }}, both at the level of the organization and at the cluster.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}
@@ -28,7 +28,7 @@ There are many ways to create, manage, and distribute digital security certifica
 
 Refer to: [CockroachDB - HashiCorp Vault Integration](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration)
 
-Alternatively, you can generate certificates [using CockroachDB's `cockroach cert`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-cert#synopsis) command or [with OpenSSL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-security-certificates-openssl). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
+Alternatively, you can generate certificates [using CockroachDB's `cockroach cert`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-cert#synopsis) command or [with OpenSSL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-security-certificates-openssl). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your CockroachDB {{ site.data.products.cloud }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
 
 ### Initialize your Vault workstation
 
@@ -109,7 +109,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 
 1. Format a public certificate JSON for upload.
 
-    Create a JSON file that includes your certificate as the value for the `x509_pem_cert` key. You will use this JSON file to upload the certificate to {{ site.data.products.db }}. In this example, replace the certificate with the contents of your certificate.
+    Create a JSON file that includes your certificate as the value for the `x509_pem_cert` key. You will use this JSON file to upload the certificate to CockroachDB {{ site.data.products.cloud }}. In this example, replace the certificate with the contents of your certificate.
 
     ~~~json
     {
@@ -162,14 +162,14 @@ You can authenticate to a cluster using the private key and public certificate p
     chown $USER ${SECRETS_DIR}/clients/client.root.key
     ~~~
 
-## Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster
+## Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster
 
 Add a CA certificate to your cluster's trust store for client authentication. Client certificates signed using the private key corresponding to this certificate will be accepted by your cluster for certificate-based client authentication.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -251,7 +251,7 @@ This operation also interrupts existing database connections. End users should b
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -330,7 +330,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role.
+Managing the certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -388,9 +388,9 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
 To delete the client CA cert on a cluster, remove the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) from your Terraform template, then run `terraform apply`.
 </section>
 
-## Authenticate a SQL client to a {{ site.data.products.dedicated }} cluster
+## Authenticate a SQL client to a CockroachDB {{ site.data.products.dedicated }} cluster
 
-To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a CA that the cluster has been configured to trust. Refer to [Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster).
+To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a CA that the cluster has been configured to trust. Refer to [Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster).
 
 1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click the **Connect** button.
 

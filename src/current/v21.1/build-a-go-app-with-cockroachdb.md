@@ -93,11 +93,11 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
     {{site.data.alerts.callout_success}}
-    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
+    Use the connection string provided in the **Connection info** window of the CockroachDB {{ site.data.products.cloud }} Console.
     {{site.data.alerts.end}}
 
     {{site.data.alerts.callout_info}}
-    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+    You need to provide a SQL user password in order to securely connect to a CockroachDB {{ site.data.products.cloud }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
     {{site.data.alerts.end}}
 
     </section>

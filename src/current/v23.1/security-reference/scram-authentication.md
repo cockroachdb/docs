@@ -7,7 +7,7 @@ docs_area: reference.security
 
 This page provides an overview of the security and implementation considerations for using SCRAM-SHA-256 [authentication]({% link {{ page.version.version }}/security-reference/authentication.md %}) in CockroachDB.
 
-CockroachDB supports SCRAM-SHA-256 authentication for clients in both {{ site.data.products.db }} and {{ site.data.products.core }}.
+CockroachDB supports SCRAM-SHA-256 authentication for clients in both CockroachDB {{ site.data.products.cloud }} and CockroachDB {{ site.data.products.core }}.
 
 CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL client drivers that support SCRAM-SHA-256 remain compatible with CockroachDB when SCRAM authentication is enabled.
 

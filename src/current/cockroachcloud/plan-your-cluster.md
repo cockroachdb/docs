@@ -8,27 +8,27 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
-This page describes how to plan your {{ site.data.products.dedicated }} cluster.
+This page describes how to plan your CockroachDB {{ site.data.products.dedicated }} cluster.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's configuration, review the requirements and recommendations for {{ site.data.products.dedicated }} clusters.
+Before making any changes to your cluster's configuration, review the requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} clusters.
 
 ### Cluster configuration
 
 A single-node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#dedicated-example) for more information.
 
-Some of a {{ site.data.products.dedicated }} cluster's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
+Some of a CockroachDB {{ site.data.products.dedicated }} cluster's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
-{{ site.data.products.dedicated }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
+CockroachDB {{ site.data.products.dedicated }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
-#### {{ site.data.products.dedicated }} advanced
+#### CockroachDB {{ site.data.products.dedicated }} advanced
 
-You should choose {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview). {{ site.data.products.dedicated }} advanced clusters have all the features of {{ site.data.products.dedicated }} standard clusters plus these security features.
+You should choose CockroachDB {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview). CockroachDB {{ site.data.products.dedicated }} advanced clusters have all the features of CockroachDB {{ site.data.products.dedicated }} standard clusters plus these security features.
 
 #### Multi-region clusters
 
-Multi-region {{ site.data.products.dedicated }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/global-tables) table locality or the [`REGIONAL BY TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-tables) table locality and [`REGION` survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals#survive-region-failures).
+Multi-region CockroachDB {{ site.data.products.dedicated }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/global-tables) table locality or the [`REGIONAL BY TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-tables) table locality and [`REGION` survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals#survive-region-failures).
 
 Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-by-row-tables) table locality. We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
 

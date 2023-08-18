@@ -14,7 +14,7 @@ This page describes:
 
 ## Before you create a changefeed
 
-- Enable rangefeeds on {{ site.data.products.dedicated }} and {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+- Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
 - Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. Refer to [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
 - Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
 

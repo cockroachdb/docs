@@ -10,7 +10,7 @@ docs_area: manage
 {% assign page_prefix = "" %}
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Insights** page of the {{ site.data.products.db }} Console helps you:
+The **Insights** page of the CockroachDB {{ site.data.products.cloud }} Console helps you:
 
 - Identify SQL statements with [high retry counts](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#automatic-retries), [slow execution](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/query-behavior-troubleshooting#identify-slow-queries), or [suboptimal plans](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
 - Identify [indexes](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/indexes) that should be created, altered, replaced, or dropped to improve performance.

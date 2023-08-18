@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the CockroachDB {{ site.data.products.cloud }} Console. This page walks through the process.
 
 ## Step 1. Verify that you can upgrade
 
@@ -26,14 +26,14 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/v20.2/multi-active-availability) design.
 
-Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the {{ site.data.products.db }} Console.
+Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v20.2.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the {{ site.data.products.db }} Console.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>
 
@@ -45,7 +45,7 @@ Before starting the upgrade, it's important to complete the following steps.
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the CockroachDB {{ site.data.products.cloud }} Console will be disabled.
 
 </section>
 
@@ -57,7 +57,7 @@ Review the [backward-incompatible changes in v20.2](https://www.cockroachlabs.co
 
 To start the upgrade process:
 
-1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
+1. [Sign in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 
 1. In the **Clusters** list, select the cluster you want to upgrade.
 
@@ -111,13 +111,13 @@ During the 72-hour window before the upgrade is automatically finalized, if you 
 
 ### Finalize the upgrade
 
-To finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
+To finalize the upgrade, click **Finalize** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Finalize upgrade**.
 
 At this point, all [temporary limitations](#respect-temporary-limitations) are lifted, and all v20.2 features are available for use. However, it's no longer possible to roll back to v20.1. If you see unexpected behavior, [reach out to support](https://support.cockroachlabs.com/hc/requests/new).
 
 ### Roll back the upgrade
 
-To stop the upgrade and roll back to v20.1, click **Roll back** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Roll back upgrade**.
+To stop the upgrade and roll back to v20.1, click **Roll back** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Roll back upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 During rollback, nodes will be reverted to v20.1 one at a time without interrupting the cluster's health and availability.

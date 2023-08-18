@@ -369,7 +369,7 @@
               ]
             },
             {
-              "title": "Monitor {{ site.data.products.core }} with Datadog",
+              "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]

@@ -11,9 +11,9 @@ Single sign-on (SSO) allows a CockroachDB user to access the [DB Console](ui-ove
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
 {{site.data.alerts.callout_info}}
-SSO for DB Console is available to {{ site.data.products.db }} customers.
+SSO for DB Console is available to CockroachDB {{ site.data.products.cloud }} customers.
 
-On {{ site.data.products.core }} clusters, SSO for DB Console requires an [Enterprise license](enterprise-licensing.html).
+On CockroachDB {{ site.data.products.core }} clusters, SSO for DB Console requires an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Requirements
