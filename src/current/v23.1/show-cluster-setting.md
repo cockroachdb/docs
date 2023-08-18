@@ -45,7 +45,7 @@ The `SHOW` statement for cluster settings is unrelated to the other `SHOW` state
 
 To use the `SHOW CLUSTER SETTING` statement, a user must have one of the following attributes:
 
-- Be a member of the `admin` role (the `root` user belongs to the `admin` role by default)
+- Be a member of the `admin` role (the `root` user belongs to the `admin` role by default).
 - Have the `MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted.
 - Have the `VIEWCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
 - Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted. Users with this privilege are allowed to view only [`sql.defaults.*` cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
