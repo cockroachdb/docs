@@ -18,7 +18,7 @@ docs_area: reference.security
 
 Learn more: [Integrate {{ site.data.products.dedicated }} with Satori]({% link {{ page.version.version }}/satori-integration.md %})
 
-### Self-Hosted Core
+### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
 
