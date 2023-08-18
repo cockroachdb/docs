@@ -32,7 +32,7 @@ When you use a FIPS-ready CockroachDB runtime and each cluster node's OpenSSL is
   When running a FIPS-ready runtime, Cockroach Labs recommends that you avoid using cryptographic operations that are not supported by FIPS 140-2. For example, generating an MD5 hash is not compatible with FIPS 140-2, because MD5 is not a FIPS-validated algorithm. Use algorithms and functions that do not comply with the standard at your own risk.
   {{site.data.alerts.end}}
 
-This page shows how to configure a FIPS-ready {{ site.data.products.core }} runtime using Red Hat's FIPS-validated OpenSSL package. The FIPS-ready Docker image for CockroachDB comes with Red Hat's OpenSSL libraries pre-installed and configured.
+This page shows how to configure a FIPS-ready CockroachDB {{ site.data.products.core }} runtime using Red Hat's FIPS-validated OpenSSL package. The FIPS-ready Docker image for CockroachDB comes with Red Hat's OpenSSL libraries pre-installed and configured.
 
 ### Performance considerations
 

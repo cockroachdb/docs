@@ -19,7 +19,7 @@ This tutorial focuses on inserts into Snowflake. However, for some workarounds t
 
 Before you begin, make sure you have:
 
-- Admin access to a [{{ site.data.products.db }} account](https://cockroachlabs.cloud/)
+- Admin access to a [CockroachDB {{ site.data.products.cloud }} account](https://cockroachlabs.cloud/)
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}
@@ -43,7 +43,7 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
     ~~~
 
     {{site.data.alerts.callout_info}}
-    For more information on connecting to your cluster, refer to [Connect to your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
+    For more information on connecting to your cluster, refer to [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your CockroachDB {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
     {{site.data.alerts.end}}
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:

@@ -152,17 +152,17 @@ Therefore, the nodes must each have a [private key/public certificate pair](#key
 
 If the client is to use mutual authentication the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
 
-{{ site.data.products.core }} customers must provision PKI certificates for both internode and client-cluster communication.
+CockroachDB {{ site.data.products.core }} customers must provision PKI certificates for both internode and client-cluster communication.
 
 Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}) for procedural information on administering and using client certificate authentication.
 
-## PKI in {{ site.data.products.db }}
+## PKI in CockroachDB {{ site.data.products.cloud }}
 
 {{site.data.alerts.callout_success}}
-PKI for internode communication within {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
+PKI for internode communication within CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
 {{site.data.alerts.end}}
 
-Certificate authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
+Certificate authentication for SQL clients is available against CockroachDB {{ site.data.products.dedicated }} clusters.
 
 Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedural information on administering and using client certificate authentication.
 
@@ -174,9 +174,9 @@ This feature is in [**limited access**]({% link {{ page.version.version }}/cockr
 
 TLS encryption and server authentication are supported in all communication between CockroachDB nodes, and from clients to nodes.
 
-Currently, mutual TLS authentication, in which the client as well as the server uses a private key/public certificate pair to authenticate itself, is not supported in {{ site.data.products.db }}. Clients must use username/password combinations.
+Currently, mutual TLS authentication, in which the client as well as the server uses a private key/public certificate pair to authenticate itself, is not supported in CockroachDB {{ site.data.products.cloud }}. Clients must use username/password combinations.
 
-{{ site.data.products.core }} does supports TLS authentication for clients.
+CockroachDB {{ site.data.products.core }} does supports TLS authentication for clients.
 
 ### Default mode 
 
@@ -220,7 +220,7 @@ Connections between CockroachDB nodes are always mutually TLS-authenticated. Eac
 
 ### CockroachDB Cloud
 
-Customers using {{ site.data.products.db }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
+Customers using CockroachDB {{ site.data.products.cloud }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
 
 ### CockroachDB Self-Hosted
 
@@ -246,7 +246,7 @@ In turn, which authentication methods are available depends on the sort of envir
 
 ### CockroachDB Cloud
 
-{{ site.data.products.db }} does not support certificate-authenticated client requests. TLS is used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
+CockroachDB {{ site.data.products.cloud }} does not support certificate-authenticated client requests. TLS is used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
 
 Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connection string]({% link {{ page.version.version }}/connect-to-the-database.md %}), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) CLI command.
 
@@ -262,7 +262,7 @@ Choosing a strategy for maintaining solid private PKI is important and complex, 
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
 
-{{ site.data.products.core }} clusters support TLS authentication for clients, i.e. mutual TLS authentication. Other supported authentication methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
+CockroachDB {{ site.data.products.core }} clusters support TLS authentication for clients, i.e. mutual TLS authentication. Other supported authentication methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
 
 #### Non-TLS client authentication
 
@@ -283,9 +283,9 @@ These key files are used with the CockroachDB CLI by placing them in a directory
 
 ### CockroachDB Cloud
 
-Customers of {{ site.data.products.db }} delegate responsibility for maintaining cluster internal PKI to the Cockroach Labs team, and need not worry about securing authentication and encryption between cluster nodes.
+Customers of CockroachDB {{ site.data.products.cloud }} delegate responsibility for maintaining cluster internal PKI to the Cockroach Labs team, and need not worry about securing authentication and encryption between cluster nodes.
 
-{{ site.data.products.db }} clusters do not support certificate based client authentication, but rely instead on username/password combination.
+CockroachDB {{ site.data.products.cloud }} clusters do not support certificate based client authentication, but rely instead on username/password combination.
 
 ### CockroachDB Self-Hosted 
 

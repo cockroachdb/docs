@@ -5,14 +5,14 @@ toc: true
 docs_area: manage.security
 ---
 
-This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for your {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
+This page covers the procedures required to provision [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for your CockroachDB {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
 
-This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#enable-cmek).
+This is part of the larger process of [Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#enable-cmek).
 
 ## Overview
 
-- In [Step 1. Collect the required information](#step-1-collect-the-required-information), we'll gather the IDs and URLs necessary to bind together your CockroachDB organization and cluster, your own GCP project in which the CMEK will be managed, and the GCP project {{ site.data.products.dedicated }} uses to host your cluster.
-- In [Step 2. Provision the cross-tenant service account](#step-2-provision-the-cross-tenant-service-account), we will create a service account for {{ site.data.products.dedicated }} to use to access the CMEK key for encrypt/decrypt actions.
+- In [Step 1. Collect the required information](#step-1-collect-the-required-information), we'll gather the IDs and URLs necessary to bind together your CockroachDB organization and cluster, your own GCP project in which the CMEK will be managed, and the GCP project CockroachDB {{ site.data.products.dedicated }} uses to host your cluster.
+- In [Step 2. Provision the cross-tenant service account](#step-2-provision-the-cross-tenant-service-account), we will create a service account for CockroachDB {{ site.data.products.dedicated }} to use to access the CMEK key for encrypt/decrypt actions.
 - In [Step 3. Create the CMEK key](#step-3-create-the-cmek-key), we will explore two ways of creating the required key:
 	- [Directly in the GCP key management service (KMS) console](#option-a-use-the-gcp-console)
 	- By [setting up a Vault GCP-KMS secrets engine](#option-b-use-the-vault-gcp-kms-secrets-engine-to-create-the-cmek-key) with access to GCP KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
@@ -31,19 +31,19 @@ For multi-region clusters, you must provide a key and authorized service account
 
 ## Step 1. Collect the required information
 
-Here we will create a cross-tenant service account that can be temporarily assumed by users in another GCP project, in this case, a project managed by {{ site.data.products.dedicated }}. This service account will have permissions to use the key for encryption and decryption.
+Here we will create a cross-tenant service account that can be temporarily assumed by users in another GCP project, in this case, a project managed by CockroachDB {{ site.data.products.dedicated }}. This service account will have permissions to use the key for encryption and decryption.
 
-1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
+1. Find your CockroachDB {{ site.data.products.dedicated }} organization ID in the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings).
 
-1. Find your {{ site.data.products.dedicated }} cluster ID:
+1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID:
 
-	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
+	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/<YOUR_CLUSTER_ID>/overview`.
 
-1. Find your {{ site.data.products.dedicated }} cluster's associated GCP Project ID.
+1. Find your CockroachDB {{ site.data.products.dedicated }} cluster's associated GCP Project ID.
 
-	You must find the Project ID of the {{ site.data.products.dedicated }}-managed GCP Project associated with your cluster. To find this information, query the clusters endpoint of the {{ site.data.products.db }} API.
+	You must find the Project ID of the CockroachDB {{ site.data.products.dedicated }}-managed GCP Project associated with your cluster. To find this information, query the clusters endpoint of the CockroachDB {{ site.data.products.cloud }} API.
 
 	{% include_cached copy-clipboard.html %}
 	```shell
@@ -100,10 +100,10 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
 	1. Click **+ Create service account**.
 
-1. Authorize {{ site.data.products.dedicated }}'s GCP project to use the service account (making it *cross-tenant*).
+1. Authorize CockroachDB {{ site.data.products.dedicated }}'s GCP project to use the service account (making it *cross-tenant*).
 	1. Click your newly-created service account's email address to visit its details page.
 	1. Select the **PERMISSIONS** tab and click **GRANT ACCESS**.
-	1. For **New principals**, enter the service account ID for the {{ site.data.products.dedicated }}-managed service account to which you will grant access to this service account.
+	1. For **New principals**, enter the service account ID for the CockroachDB {{ site.data.products.dedicated }}-managed service account to which you will grant access to this service account.
 		The service account ID takes the following format:
 		`crl-kms-user-{CLUSTER_ID}@{PROJECT_ID}.iam.gserviceaccount.com`
 
@@ -239,7 +239,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 ## Step 5. Build your CMEK configuration manifest
 
-Compile the information about the service account and key we've just created into a manifest, which you will use to activate CMEK on your cluster with the {{ site.data.products.db }} API.
+Compile the information about the service account and key we've just created into a manifest, which you will use to activate CMEK on your cluster with the CockroachDB {{ site.data.products.cloud }} API.
 
 1. Set the required information as environment variables:
 
@@ -286,4 +286,4 @@ Compile the information about the service account and key we've just created int
 	cat cmek_config.json | jq
 	~~~
 
-After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
+After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).

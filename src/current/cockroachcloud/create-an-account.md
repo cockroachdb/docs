@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Before you [create a {{ site.data.products.db }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
+Before you [create a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you must first create a CockroachDB {{ site.data.products.cloud }} account. You can register for CockroachDB {{ site.data.products.cloud }} using a GitHub, Google, or Microsoft account or an email address and password.
 
 {{site.data.alerts.callout_info}}
 If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
@@ -13,13 +13,13 @@ If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-
 
 ## Choose an authentication method
 
-You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)]({% link cockroachcloud/cloud-org-sso.md %}). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
+You may authenticate to CockroachDB {{ site.data.products.cloud }} console using an email and password, or with [Single Sign-on (SSO)]({% link cockroachcloud/cloud-org-sso.md %}). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
 
-SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all {{ site.data.products.db }} users authenticate with SSO, with MFA enabled.
+SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all CockroachDB {{ site.data.products.cloud }} users authenticate with SSO, with MFA enabled.
 
 ## Register a new account
 
-To register a new account, navigate to the [{{ site.data.products.db }} registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
+To register a new account, navigate to the [CockroachDB {{ site.data.products.cloud }} registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="github">Register with Single Sign-On (SSO)</button>
@@ -31,7 +31,7 @@ To register a new account, navigate to the [{{ site.data.products.db }} registra
 
 1. Click **Sign up with...** for your chosen SSO Provider.
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
-1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize {{ site.data.products.db }} by Cockroach Labs**
+1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize CockroachDB {{ site.data.products.cloud }} by Cockroach Labs**
 
 {{site.data.alerts.callout_info}}
 We highly recommend enabling multi-factor authentication (MFA) with your SSO provider, if you have not done so.
@@ -62,14 +62,14 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-1. Navigate to the {{ site.data.products.db }} [log in page](https://cockroachlabs.cloud/clusters).
+1. Navigate to the CockroachDB {{ site.data.products.cloud }} [log in page](https://cockroachlabs.cloud/clusters).
 1. Click **Log in with...** for your chosen SSO provider.
 1. Watch for a pop-up or modal from your SSO Provider and follow the prompts to log in.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
 
-1. Navigate to the {{ site.data.products.db }} [log in page](https://cockroachlabs.cloud/clusters).
+1. Navigate to the CockroachDB {{ site.data.products.cloud }} [log in page](https://cockroachlabs.cloud/clusters).
 1. Enter your **Email** and **Password**.
 1. Click **Continue**.
 
@@ -96,7 +96,7 @@ To change your account name:
 
 ### Change your email
 
-If you registered with an email address, you can change your account password in the {{ site.data.products.db }} Console:
+If you registered with an email address, you can change your account password in the CockroachDB {{ site.data.products.cloud }} Console:
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
@@ -108,7 +108,7 @@ If you registered with an email address, you can change your account password in
 
 ### Change your account password
 
-If you registered with an email address, you can change your account password in the {{ site.data.products.db }} Console:
+If you registered with an email address, you can change your account password in the CockroachDB {{ site.data.products.cloud }} Console:
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
@@ -134,6 +134,6 @@ If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org
 
 ### Change your login method
 
-You can change your method of login authentication (email/password or SSO with a specific provider), in the [**My Account** page in the {{ site.data.products.db }} Console](https://cockroachlabs.cloud/account/profile).
+You can change your method of login authentication (email/password or SSO with a specific provider), in the [**My Account** page in the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/account/profile).
 
 Once you have changed your authentication method, you will receive a confirmation email."

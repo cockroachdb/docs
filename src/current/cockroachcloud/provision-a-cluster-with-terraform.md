@@ -10,8 +10,8 @@ docs_area: manage
 This tutorial shows you how to provision a CockroachDB Cloud cluster using the CockroachDB Cloud Terraform provider.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
 </div>
 
 ## Before you begin
@@ -28,9 +28,9 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
+In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
 
-1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.serverless }} `main.tf` example file:
+1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -51,7 +51,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
     - `{SQL user name}` is the name of the SQL user you want to create.
     - `{SQL user password}` is the password for the SQL user you want to create.
 
-    For example, the following `terraform.tfvars` file creates a {{ site.data.products.serverless }} with a `maxroach` SQL user.
+    For example, the following `terraform.tfvars` file creates a CockroachDB {{ site.data.products.serverless }} with a `maxroach` SQL user.
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -73,9 +73,9 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
+In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated }} cluster
 
-1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.dedicated }} `main.tf` example file:
+1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -103,7 +103,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{cluster name}` is the name of the cluster you want to create.
        - `{SQL user name}` is the name of the SQL user you want to create.
        - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
@@ -112,7 +112,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
 
-    For example, the following `terraform.tfvars` file creates a single region 3 node {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
+    For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
 
     {% include_cached copy-clipboard.html %}
     ~~~

@@ -62,7 +62,7 @@ Property        | Description
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
 `regions` | The [regions](show-regions.html) where the affected nodes were located.
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
-`estimated RUs consumed` | The estimated number of [Request Units (RUs)](../cockroachcloud/plan-your-cluster-serverless.html#request-units) consumed by the statement. This property is visible only on {{ site.data.products.serverless }} clusters.
+`estimated RUs consumed` | The estimated number of [Request Units (RUs)](../cockroachcloud/plan-your-cluster-serverless.html#request-units) consumed by the statement. This property is visible only on CockroachDB {{ site.data.products.serverless }} clusters.
 
 ### Statement plan tree properties
 
@@ -379,7 +379,7 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
   Debug -> Statement Diagnostics History), via the direct link below, or using
   the SQL shell or command line.
   Admin UI: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for {{ site.data.products.serverless }} clusters.)
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for CockroachDB {{ site.data.products.serverless }} clusters.)
   SQL shell: \statement-diag download 765493679630483457
   Command line: cockroach statement-diag download 765493679630483457
 (7 rows)

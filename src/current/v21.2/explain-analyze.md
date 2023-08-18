@@ -318,7 +318,7 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
   Debug -> Statement Diagnostics History), using the direct link, or using
   the SQL shell or command line.
   DB Console: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for {{ site.data.products.serverless }} clusters.)
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for CockroachDB {{ site.data.products.serverless }} clusters.)
   SQL shell: \statement-diag download 727822547420741633
   Command line: cockroach statement-diag download 727822547420741633
 (6 rows)

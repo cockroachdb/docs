@@ -13,10 +13,10 @@ This tutorial shows you how to build a [Spring Boot](https://spring.io/projects/
 
 ## Step 1. Start CockroachDB
 
-Choose whether to run a local cluster or a free {{ site.data.products.db }} cluster.
+Choose whether to run a local cluster or a free CockroachDB {{ site.data.products.cloud }} cluster.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -89,7 +89,7 @@ The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockro
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
-1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection):
+1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console [earlier](#set-up-your-cluster-connection):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

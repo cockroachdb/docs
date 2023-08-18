@@ -5,7 +5,7 @@ toc: true
 canonical: /stable/movr-flask-overview
 ---
 
-This tutorial walks you through developing and deploying a multi-region web application built on CockroachDB, using Flask, SQLAlchemy, {{ site.data.products.db }}, and Google Cloud Platform services.
+This tutorial walks you through developing and deploying a multi-region web application built on CockroachDB, using Flask, SQLAlchemy, CockroachDB {{ site.data.products.cloud }}, and Google Cloud Platform services.
 
 {% include {{ page.version.version }}/misc/movr-flask-211.md %}
 

@@ -5,15 +5,15 @@ toc: true
 docs_area: reference.benchmarking
 ---
 
-This page describes {{ site.data.products.serverless }} performance benchmarking with a KV workload.
+This page describes CockroachDB {{ site.data.products.serverless }} performance benchmarking with a KV workload.
 
 ## Introduction
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how {{ site.data.products.serverless }} scales based on your workload, see [Architecture]({% link cockroachcloud/architecture.md %}#performance).
+CockroachDB {{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free CockroachDB {{ site.data.products.serverless }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how CockroachDB {{ site.data.products.serverless }} scales based on your workload, see [Architecture]({% link cockroachcloud/architecture.md %}#performance).
 
 ### What are RUs?
 
-{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview]({% link cockroachcloud/serverless-cluster-management.md %}#view-cluster-overview) page.
+CockroachDB {{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview]({% link cockroachcloud/serverless-cluster-management.md %}#view-cluster-overview) page.
 
 ### What is KV 95?
 
@@ -21,11 +21,11 @@ KV 95 is a simple benchmark that tests linear scaling by [running a workload](ht
 
 ## Baseline performance
 
-Baseline performance was benchmarked for a free {{ site.data.products.serverless }} cluster running in an organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
+Baseline performance was benchmarked for a free CockroachDB {{ site.data.products.serverless }} cluster running in an organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
 
-This chart shows the linear consumption of RUs by a {{ site.data.products.serverless }} cluster under a constant [KV 95](#what-is-kv-95) workload. The total number of RUs consumed over 20 minutes is 119,536. The cluster is performing about 21 operations per second, and each operation (a point read or write) is consuming 4.86 RUs. We can also calculate that 119,536 RUs used over 1200 seconds gives us the guaranteed baseline performance of 100 RU/s. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
+This chart shows the linear consumption of RUs by a CockroachDB {{ site.data.products.serverless }} cluster under a constant [KV 95](#what-is-kv-95) workload. The total number of RUs consumed over 20 minutes is 119,536. The cluster is performing about 21 operations per second, and each operation (a point read or write) is consuming 4.86 RUs. We can also calculate that 119,536 RUs used over 1200 seconds gives us the guaranteed baseline performance of 100 RU/s. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
 
 ## Burst performance
 

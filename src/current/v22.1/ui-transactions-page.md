@@ -20,7 +20,7 @@ In contrast to the [**Statements** page](ui-statements-page.html), which display
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Transactions** tab.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. Click the **Transactions** tab.
+To view this page, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console. Click the **Transactions** tab.
 {% endif %}
 
 ## Search and filter
