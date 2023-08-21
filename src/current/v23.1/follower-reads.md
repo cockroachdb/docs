@@ -5,13 +5,13 @@ toc: true
 docs_area: develop
 ---
 
-A _follower read_ is performed on the [nearest replica](architecture/overview.html#architecture-replica) relative to the SQL gateway that is executing the SQL statement regardless of the replica's [leaseholder](architecture/overview.html#architecture-leaseholder) status. Using the nearest replica can reduce read latencies and increase throughput. Applications in [multi-region deployments](topology-follower-reads.html) especially can use follower reads to get improved performance.
+A _follower read_ is performed on the [nearest replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) relative to the SQL gateway that is executing the SQL statement regardless of the replica's [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) status. Using the nearest replica can reduce read latencies and increase throughput. Applications in [multi-region deployments]({% link {{ page.version.version }}/topology-follower-reads.md %}) especially can use follower reads to get improved performance.
 
 {% include enterprise-feature.md %}
 
 ## Follower read types
 
-A _strong follower read_ is a read taken from a [Global](global-tables.html) table. Such tables are optimized for low-latency reads from every region in the database. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible. For more information about global tables, including troubleshooting information, see [Global Tables](global-tables.html).
+A _strong follower read_ is a read taken from a [Global]({% link {{ page.version.version }}/global-tables.md %}) table. Such tables are optimized for low-latency reads from every region in the database. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible. For more information about global tables, including troubleshooting information, see [Global Tables]({% link {{ page.version.version }}/global-tables.md %}).
 
 A [_stale follower read_](#stale-follower-reads) is a historical read taken from the nearest replica. You should use stale follower reads only when your application can tolerate reading stale data, since the results of stale follower reads may not reflect the latest writes against the tables you are querying.
 
@@ -43,14 +43,14 @@ For requirements and limitations, see [Exact staleness reads and long-running wr
 
 Use exact staleness follower reads when you:
 
-- Need multi-statement reads inside [transactions](transactions.html).
+- Need multi-statement reads inside [transactions]({% link {{ page.version.version }}/transactions.md %}).
 - Can tolerate reading older data (at least 4.8 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
-- Do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of [network partitions](cluster-setup-troubleshooting.html#network-partition) or other failures.
+- Do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of [network partitions]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) or other failures.
 - Need a read that is slightly cheaper to perform than a [bounded staleness read](#bounded-staleness-reads), because exact staleness reads don't need to dynamically compute the query timestamp.
 
 #### Run queries that use exact staleness follower reads
 
-Any [`SELECT` statement](select-clause.html) with an appropriate [`AS OF SYSTEM TIME`](as-of-system-time.html) value is an exact staleness follower read. You can use the convenience [function](functions-and-operators.html#date-and-time-functions) `follower_read_timestamp()`, which returns a [`TIMESTAMP`](timestamp.html) that provides a high probability of being served locally while not [blocking on conflicting writes](#exact-staleness-reads-and-long-running-writes).
+Any [`SELECT` statement]({% link {{ page.version.version }}/select-clause.md %}) with an appropriate [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) value is an exact staleness follower read. You can use the convenience [function]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) `follower_read_timestamp()`, which returns a [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) that provides a high probability of being served locally while not [blocking on conflicting writes](#exact-staleness-reads-and-long-running-writes).
 
 Use this function in an `AS OF SYSTEM TIME` statement as follows:
 
@@ -65,7 +65,7 @@ The following video describes and demonstrates [exact staleness](#exact-stalenes
 
 #### Exact staleness follower reads in read-only transactions
 
-You can set the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause's value for all operations in a read-only [transaction](transactions.html):
+You can set the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause's value for all operations in a read-only [transaction]({% link {{ page.version.version }}/transactions.md %}):
 
 ```sql
 BEGIN;
@@ -80,14 +80,14 @@ COMMIT;
 Follower reads are "read-only" operations; you **cannot** use them in read-write transactions.
 
 {{site.data.alerts.callout_success}}
-Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the preceding example will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
+Using the [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}#use-the-as-of-system-time-option) statement as shown in the preceding example will make it easier to use exact staleness follower reads from [drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}).
 
 To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, use one of the following options:
 
-- Set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on`, all read-only transactions use exact staleness follower reads.
-- Execute the `SET SESSION CHARACTERISTICS AS TRANSACTION AS OF SYSTEM TIME follower_read_timestamp()` [SQL statement](set-vars.html#special-syntax-cases). This has the same effect as setting the session variable as shown above.
+- Set the `default_transaction_use_follower_reads` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`. When `default_transaction_use_follower_reads=on`, all read-only transactions use exact staleness follower reads.
+- Execute the `SET SESSION CHARACTERISTICS AS TRANSACTION AS OF SYSTEM TIME follower_read_timestamp()` [SQL statement]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases). This has the same effect as setting the session variable as shown above.
 
-You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
+You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role).
 {{site.data.alerts.end}}
 
 ### Bounded staleness reads
@@ -98,7 +98,7 @@ A _bounded staleness read_ is a historical read that uses a dynamic, system-dete
 
 Use bounded staleness follower reads when you:
 
-- Need minimally stale reads from the nearest replica without blocking on [conflicting transactions](performance-best-practices-overview.html#transaction-contention). This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
+- Need minimally stale reads from the nearest replica without blocking on [conflicting transactions]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
 - Can confine the read to a single statement that meets the [bounded staleness limitations](#bounded-staleness-read-limitations).
 - Need higher availability than is provided by [exact staleness reads](#exact-staleness-reads). Specifically, what we mean by availability in this context is:
   - The ability to serve a read with low latency from a local replica rather than a leaseholder.
@@ -110,10 +110,10 @@ To get a bounded staleness read, use one of the following built-in functions:
 
 Name | Description
 ---- | -----------
-`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  Defines a minimum [timestamp](timestamp.html) at which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
-`with_max_staleness(INTERVAL, [nearest_only])` |  Defines a maximum staleness interval with which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  Defines a minimum [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+`with_max_staleness(INTERVAL, [nearest_only])` |  Defines a maximum staleness interval with which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 
-This example performs a bounded staleness follower read against a [demo cluster](cockroach-demo.html) with the [MovR dataset](movr.html).
+This example performs a bounded staleness follower read against a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) with the [MovR dataset]({% link {{ page.version.version }}/movr.md %}).
 
 1. Start the demo cluster:
 
@@ -122,7 +122,7 @@ This example performs a bounded staleness follower read against a [demo cluster]
     cockroach demo
     ~~~
 
-1. Issue a single-statement point query to [select](selection-queries.html) a single row from a table at a historical [timestamp](timestamp.html) by passing the output of the `with_max_staleness()` [function](functions-and-operators.html) to the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause:
+1. Issue a single-statement point query to [select]({% link {{ page.version.version }}/selection-queries.md %}) a single row from a table at a historical [timestamp]({% link {{ page.version.version }}/timestamp.md %}) by passing the output of the `with_max_staleness()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}) to the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -147,7 +147,7 @@ This example performs a bounded staleness follower read against a [demo cluster]
     See: https://go.crdb.dev/issue-v/67562/v21.2
     ~~~
 
-    You can verify using [`EXPLAIN`](explain.html) that the reason this query was able to perform a bounded staleness read is that it performed a point lookup from a single row:
+    You can verify using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) that the reason this query was able to perform a bounded staleness read is that it performed a point lookup from a single row:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -169,15 +169,15 @@ This example performs a bounded staleness follower read against a [demo cluster]
 
 ### Verify that a cluster is performing follower reads
 
-To verify that a cluster is performing follower reads, go to the [Custom Chart Debug Page in the DB Console](ui-custom-chart-debug-page.html) and add the metric `follower_read.success_count` to the time-series graph. The number of follower reads performed by your cluster will be shown.
+To verify that a cluster is performing follower reads, go to the [Custom Chart Debug Page in the DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) and add the metric `follower_read.success_count` to the time-series graph. The number of follower reads performed by your cluster will be shown.
 
 ### How stale follower reads work
 
-Each CockroachDB range tracks a property called its [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps), which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a [transaction retry error](transaction-retry-error-reference.html).
+Each CockroachDB range tracks a property called its [_closed timestamp_]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps), which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
 
-With follower reads, any replica in a range can serve a read for a key as long as the time at which the operation is performed (i.e., the [`AS OF SYSTEM TIME`](as-of-system-time.html) value) is less than or equal to the range's closed timestamp.
+With follower reads, any replica in a range can serve a read for a key as long as the time at which the operation is performed (i.e., the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) value) is less than or equal to the range's closed timestamp.
 
-When a gateway node in a cluster receives a request to read a key with a sufficiently old [`AS OF SYSTEM TIME`](as-of-system-time.html) value, it forwards the request to the closest node that contains a replica of the data&mdash;whether it be a follower or the leaseholder.
+When a gateway node in a cluster receives a request to read a key with a sufficiently old [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) value, it forwards the request to the closest node that contains a replica of the data&mdash;whether it be a follower or the leaseholder.
 
 For further details, see [An Epic Read on Follower Reads](https://www.cockroachlabs.com/blog/follower-reads-stale-data/).
 
@@ -189,9 +189,9 @@ For further details, see [An Epic Read on Follower Reads](https://www.cockroachl
 
 #### Exact staleness reads and long-running writes
 
-Long-running write transactions will create [write intents](architecture/transaction-layer.html#write-intents) with a timestamp near when the transaction began. When an exact staleness follower read encounters a write intent, it will often end up in a ["transaction wait queue"](architecture/transaction-layer.html#txnwaitqueue), waiting for the operation to complete; however, this runs counter to the benefit exact staleness reads provide.
+Long-running write transactions will create [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) with a timestamp near when the transaction began. When an exact staleness follower read encounters a write intent, it will often end up in a ["transaction wait queue"]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#txnwaitqueue), waiting for the operation to complete; however, this runs counter to the benefit exact staleness reads provide.
 
-To counteract this, you can issue all follower reads in explicit [transactions set with `HIGH` priority](transactions.html#transaction-priorities):
+To counteract this, you can issue all follower reads in explicit [transactions set with `HIGH` priority]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities):
 
 ```sql
 BEGIN PRIORITY HIGH AS OF SYSTEM TIME follower_read_timestamp();
@@ -202,17 +202,17 @@ COMMIT;
 
 #### Exact staleness read timestamps must be far enough in the past
 
-If an exact staleness read is not using an [`AS OF SYSTEM TIME`](as-of-system-time.html) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](architecture/overview.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
+If an exact staleness read is not using an [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
 
 #### Bounded staleness read limitations
 
 Bounded staleness reads have the following limitations:
 
-- They must be used in a [single-statement (aka implicit) transaction](transactions.html#individual-statements).
+- They must be used in a [single-statement (aka implicit) transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
 - They must read from a single row.
-- They must not require an [index](indexes.html) [join](joins.html). In other words, the index used by the read query must be either a [primary](primary-key.html) [index](indexes.html), or some other index that covers the entire query by [`STORING`](create-index.html#store-columns) all columns.
+- They must not require an [index]({% link {{ page.version.version }}/indexes.md %}) [join]({% link {{ page.version.version }}/joins.md %}). In other words, the index used by the read query must be either a [primary]({% link {{ page.version.version }}/primary-key.md %}) [index]({% link {{ page.version.version }}/indexes.md %}), or some other index that covers the entire query by [`STORING`]({% link {{ page.version.version }}/create-index.md %}#store-columns) all columns.
 
-For example, let's look at a read query that cannot be served as a bounded staleness read. We will use a [demo cluster](cockroach-demo.html), which automatically loads the [MovR dataset](movr.html).
+For example, let's look at a read query that cannot be served as a bounded staleness read. We will use a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}), which automatically loads the [MovR dataset]({% link {{ page.version.version }}/movr.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -228,9 +228,9 @@ HINT: You have attempted to use a feature that is not yet implemented.
 See: https://go.crdb.dev/issue-v/67562/v21.2
 ~~~
 
-As noted by the error message, this query cannot be served as a bounded staleness read because in this case it would touch more than one row. Even though we used a [`LIMIT 1` clause](limit-offset.html), the query would still have to touch more than one row in order to filter out the additional results.
+As noted by the error message, this query cannot be served as a bounded staleness read because in this case it would touch more than one row. Even though we used a [`LIMIT 1` clause]({% link {{ page.version.version }}/limit-offset.md %}), the query would still have to touch more than one row in order to filter out the additional results.
 
-We can verify that more than one row would be touched by issuing [`EXPLAIN`](explain.html) on the same query, but without the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause:
+We can verify that more than one row would be touched by issuing [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) on the same query, but without the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -251,14 +251,14 @@ EXPLAIN SELECT code FROM promo_codes LIMIT 5;
 (8 rows)
 ~~~
 
-The output verifies that this query performs a scan of the primary [index](indexes.html) on the `promo_codes` table, which is why it cannot be used for a bounded staleness read.
+The output verifies that this query performs a scan of the primary [index]({% link {{ page.version.version }}/indexes.md %}) on the `promo_codes` table, which is why it cannot be used for a bounded staleness read.
 
 For an example showing how to successfully perform a bounded staleness read, see [Run queries that use bounded staleness follower reads](#run-queries-that-use-bounded-staleness-follower-reads).
 
 ## See also
 
-- [Follower Reads Topology](topology-follower-reads.html)
-- [Cluster Settings Overview](cluster-settings.html)
-- [Load-Based Splitting](load-based-splitting.html)
-- [Network Latency Page](ui-network-latency-page.html)
-- [Enterprise Features](enterprise-licensing.html)
+- [Follower Reads Topology]({% link {{ page.version.version }}/topology-follower-reads.md %})
+- [Cluster Settings Overview]({% link {{ page.version.version }}/cluster-settings.md %})
+- [Load-Based Splitting]({% link {{ page.version.version }}/load-based-splitting.md %})
+- [Network Latency Page]({% link {{ page.version.version }}/ui-network-latency-page.md %})
+- [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %})

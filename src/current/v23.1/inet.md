@@ -5,16 +5,16 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INET` [data type](data-types.html) stores an IPv4 or IPv6 address.
+The `INET` [data type]({% link {{ page.version.version }}/data-types.md %}) stores an IPv4 or IPv6 address.
 
 ## Syntax
 
 A constant value of type `INET` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals), or a
+[interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals), or a
 string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
+[annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions)
 type `INET` or
-[coerced to](scalar-expressions.html#explicit-type-coercions) type
+[coerced to]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions) type
 `INET`.
 
 `INET` constants can be expressed using the following formats:
@@ -81,11 +81,11 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## Supported casting and conversion
 
-`INET` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
+`INET` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to the following data type:
 
 - `STRING` - Converts to format `'Address/subnet'`.
 
 ## See also
 
-- [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})

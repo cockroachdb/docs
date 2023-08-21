@@ -5,21 +5,21 @@ toc: true
 docs_area: develop
 ---
 
-This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](insert.html) SQL statement.
+This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) SQL statement.
 
 ## Before you begin
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Install a Driver or ORM Framework](install-client-drivers.html).
-- [Connect to the database](connect-to-the-database.html).
+- [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
+- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
 ## Insert rows
 
-When inserting multiple rows, a single [multi-row insert statement](insert.html#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
+When inserting multiple rows, a single [multi-row insert statement]({% link {{ page.version.version }}/insert.md %}#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT);
 INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
 
 </section>
 
@@ -101,7 +101,7 @@ conn.commit()
 
 ## Bulk insert
 
-If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](import.html) statement instead of sending SQL [`INSERT`s](insert.html) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](migration-overview.html).
+If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead of sending SQL [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
 
 {% include {{page.version.version}}/sql/limit-row-size.md %}
 
@@ -109,27 +109,27 @@ If you need to get a lot of data into a CockroachDB cluster quickly, use the [`I
 
 Reference information related to this task:
 
-- [Migration Overview](migration-overview.html)
-- [`IMPORT`](import.html)
-- [Import performance](import.html#performance)
-- [`INSERT`](insert.html)
-- [`UPSERT`](upsert.html)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
-- [Multi-row DML best practices](performance-best-practices-overview.html#dml-best-practices)
-- [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [Import performance]({% link {{ page.version.version }}/import.md %}#performance)
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
+- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Multi-row DML best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#dml-best-practices)
+- [Insert Multiple Rows]({% link {{ page.version.version }}/insert.md %}#insert-multiple-rows-into-an-existing-table)
 
 Other common tasks:
 
-- [Connect to the Database](connect-to-the-database.html)
-- [Query Data](query-data.html)
-- [Update Data](update-data.html)
-- [Delete Data](delete-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
-- [Optimize Statement Performance](make-queries-fast.html)
-- [Example Apps](example-apps.html)
+- [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
+- [Query Data]({% link {{ page.version.version }}/query-data.md %})
+- [Update Data]({% link {{ page.version.version }}/update-data.md %})
+- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
+- [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
+- [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
+- [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %})
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [manual]: manual-deployment.html
 [orchestrated]: orchestration.html

@@ -7,14 +7,14 @@ docs_area: reference.db_console
 
 The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
 
 ## Review of CockroachDB terminology
 
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 - **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
-- **Under-replicated Ranges:** <a name="under-replicated-ranges"></a> When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor](configure-replication-zones.html#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas), if configured, are not counted when calculating replication status.
+- **Under-replicated Ranges:** <a name="under-replicated-ranges"></a> When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas), if configured, are not counted when calculating replication status.
 - **Unavailable Ranges:** <a name="unavailable-ranges"></a> If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/).
@@ -50,7 +50,7 @@ Under-replicated | The number of under-replicated ranges. Non-voting replicas ar
 
 Metric | Description
 --------|--------
-**Logical Bytes per Store** | Number of logical bytes stored in [key-value pairs](architecture/distribution-layer.html#table-data) on each node. This includes historical and deleted data.
+**Logical Bytes per Store** | Number of logical bytes stored in [key-value pairs]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data) on each node. This includes historical and deleted data.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/ui/logical-bytes.md %}
@@ -64,7 +64,7 @@ Metric | Description
 
 - In the cluster view, the graph shows the number of range replicas on each store.
 
-You can [Replication Controls](configure-replication-zones.html) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [Fault tolerance and recovery](demo-fault-tolerance-and-recovery.html).
+You can [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [Fault tolerance and recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}).
 
 ## Replica Quiescence
 
@@ -85,7 +85,7 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 <img src="{{ 'images/v23.1/ui_replica_snapshots.png' | relative_url }}" alt="DB Console Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
-Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along with the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
+Usually the nodes in a [Raft group]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) stay synchronized by following along with the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
 
 Metric | Description
 -------|------------
@@ -99,7 +99,7 @@ Reserved | The number of slots reserved per second for incoming snapshots that w
 
 <img src="{{ 'images/v23.1/ui_replica_snapshots_data.png' | relative_url }}" alt="DB Console Replica Snapshot Data Received" style="border:1px solid #eee;max-width:100%" />
 
-The **Snapshot Data Received** graph shows the rate per second of data received in bytes by each node via [Raft snapshot transfers](architecture/replication-layer.html#snapshots). Data is split into recovery and rebalancing snapshot data received: recovery includes all upreplication due to decommissioning or node failure, and rebalancing includes all other snapshot data received.
+The **Snapshot Data Received** graph shows the rate per second of data received in bytes by each node via [Raft snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots). Data is split into recovery and rebalancing snapshot data received: recovery includes all upreplication due to decommissioning or node failure, and rebalancing includes all other snapshot data received.
 
 On hovering over the graph, the value for the following metrics are displayed:
 
@@ -112,7 +112,7 @@ Metric | Description
 
 <img src="{{ 'images/v23.1/ui_replica_snapshots_queued.png' | relative_url }}" alt="DB Console Replica Receiver Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
 
-The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers](architecture/replication-layer.html#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
+The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
 
 On hovering over the graph, the value for the following metric is displayed:
 
@@ -124,7 +124,7 @@ Metric | Description
 
 <img src="{{ 'images/v23.1/ui_replica_circuitbreaker_replicas.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Replicas" style="border:1px solid #eee;max-width:100%" />
 
-When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. 
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely. 
 
 - In the node view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for the selected node.
 
@@ -140,7 +140,7 @@ Metric | Description
 
 <img src="{{ 'images/v23.1/ui_replica_circuitbreaker_events.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Events" style="border:1px solid #eee;max-width:100%" />
 
-When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
 
 - In the node view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for the selected node.
 
@@ -234,6 +234,6 @@ For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

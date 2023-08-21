@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
+Use the `CREATE STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to generate table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
 
-Once you [create a table](create-table.html) and load data into it (e.g., [`INSERT`](insert.html), [`IMPORT`](import.html)), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
+Once you [create a table]({% link {{ page.version.version }}/create-table.md %}) and load data into it (e.g., [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`IMPORT`]({% link {{ page.version.version }}/import.md %})), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
 For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` statement as an alias for `CREATE STATISTICS`. For syntax, see [Aliases](#aliases).
 
-By default, CockroachDB [automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics](#create-statistics-on-multiple-columns) on columns that prefix each index. As a result, most users do not need to directly issue `CREATE STATISTICS` statements.
+By default, CockroachDB [automatically generates statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics](#create-statistics-on-multiple-columns) on columns that prefix each index. As a result, most users do not need to directly issue `CREATE STATISTICS` statements.
 
 ## Syntax
 
@@ -26,15 +26,15 @@ Parameter | Description
 `statistics_name` | The name of the set of statistics you are creating.
 `opt_stats_columns`   | The name of the column(s) to create statistics for.
 `create_stats_target` | The name of the table to create statistics for.
-`opt_as_of_clause`    | Create historical stats using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time).
+`opt_as_of_clause`    | Create historical stats using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time).
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
 
 ## Aliases
 
-For [PostgreSQL compatibility](postgresql-compatibility.html), CockroachDB supports `ANALYZE` and `ANALYSE` as aliases for `CREATE STATISTICS`.
+For [PostgreSQL compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %}), CockroachDB supports `ANALYZE` and `ANALYSE` as aliases for `CREATE STATISTICS`.
 
 ### Alias syntax
 
@@ -164,7 +164,7 @@ To create statistics as of a given time (in this example, 1 minute ago to avoid 
 > CREATE STATISTICS vehicle_stats_1 FROM vehicles AS OF SYSTEM TIME '-1m';
 ~~~
 
-For more information about how the `AS OF SYSTEM TIME` clause works, including supported time formats, see [`AS OF SYSTEM TIME`](as-of-system-time.html).
+For more information about how the `AS OF SYSTEM TIME` clause works, including supported time formats, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
 ### Delete statistics
 
@@ -172,11 +172,11 @@ For more information about how the `AS OF SYSTEM TIME` clause works, including s
 
 ### View statistics jobs
 
-Every time the `CREATE STATISTICS` statement is executed, it starts a background job. This is true for queries issued by your application as well as queries issued for [automatically generated statistics](cost-based-optimizer.html#table-statistics).
+Every time the `CREATE STATISTICS` statement is executed, it starts a background job. This is true for queries issued by your application as well as queries issued for [automatically generated statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics).
 
 To view statistics jobs, there are two options:
 
-1. Use  [`SHOW JOBS`](show-jobs.html) to see all statistics jobs that were created by user queries (i.e., someone entering `CREATE STATISTICS` at the SQL prompt or via application code):
+1. Use  [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to see all statistics jobs that were created by user queries (i.e., someone entering `CREATE STATISTICS` at the SQL prompt or via application code):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -194,7 +194,7 @@ To view statistics jobs, there are two options:
     (5 rows)
     ~~~
 
-1. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by [automatically generated statistics](cost-based-optimizer.html#table-statistics):
+1. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by [automatically generated statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -215,10 +215,10 @@ To view statistics jobs, there are two options:
 
 ## See also
 
-- [Cost-Based Optimizer](cost-based-optimizer.html)
-- [`SHOW STATISTICS`](show-statistics.html)
-- [`CREATE TABLE`](create-table.html)
-- [`INSERT`](insert.html)
-- [`IMPORT`](import.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [SQL Statements](sql-statements.html)
+- [Cost-Based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %})
+- [`SHOW STATISTICS`]({% link {{ page.version.version }}/show-statistics.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

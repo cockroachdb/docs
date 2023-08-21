@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html) and [changefeed schedules](create-schedule-for-changefeed.html).
+ The `PAUSE SCHEDULES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can be used to pause [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) and [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}).
 
-After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](resume-schedules.html).
+After pausing a schedule, you can resume it with [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %}).
 
 ## Required privileges
 
@@ -25,8 +25,8 @@ The following users can pause a schedule:
 
  Parameter     | Description
 ---------------+------------
-`selectclause` | A [selection query](selection-queries.html) that returns `id`(s) to pause.
-`scheduleID`   | The `id` of the schedule you want to pause, which can be found with [`SHOW SCHEDULES`](show-schedules.html).
+`selectclause` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `id`(s) to pause.
+`scheduleID`   | The `id` of the schedule you want to pause, which can be found with [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 ## Examples
 
@@ -43,7 +43,7 @@ PAUSE SCHEDULES 1
 
 ### Pause multiple schedules
 
-To pause multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
+To pause multiple schedules, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -58,17 +58,17 @@ In this example, all schedules with the label `schedule_database` are paused.
 
 ## See also
 
-- [Manage a Backup Schedule](manage-a-backup-schedule.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`SHOW BACKUP`](show-backup.html)
-- [`SHOW SCHEDULES`](show-schedules.html)
-- [`RESUME SCHEDULES`](resume-schedules.html)
-- [`DROP SCHEDULES`](drop-schedules.html)
-- [`PAUSE JOB`](pause-job.html)
-- [`RESUME JOB`](pause-job.html)
-- [`CANCEL JOB`](cancel-job.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %})
+- [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %})
+- [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %})
+- [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %})
+- [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`RESUME JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

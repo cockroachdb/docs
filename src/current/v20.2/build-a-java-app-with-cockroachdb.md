@@ -122,7 +122,7 @@ To initialize the example database, use the [`cockroach sql`](cockroach-sql.html
 cat app/src/main/resources/dbinit.sql | cockroach sql --url "<connection-string>"
 ~~~
 
-Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+Where `<connection-string>` is the connection string you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console.
 
 </div>
 

@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.
+The `SHOW USERS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the users for all databases.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW USERS` is now an alias for [`SHOW ROLES`](show-roles.html).
+ Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW USERS` is now an alias for [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -19,7 +19,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Required privileges
 
-The user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the `system.users` and `system.role_members` tables.
+The user must have the [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 
@@ -38,7 +38,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](security-refer
 (4 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](cockroach-sql.html#commands):
+Alternatively, within the built-in SQL shell, you can use the `\du` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -57,5 +57,5 @@ Alternatively, within the built-in SQL shell, you can use the `\du` [shell comma
 
 ## See also
 
-- [`CREATE USER`](create-user.html)
-- [Manage Users](security-reference/authorization.html#create-and-manage-users)
+- [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %})
+- [Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)

@@ -1,1 +1,1 @@
-You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) to interact with external resources that require implicit access.
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) to interact with external resources that require implicit access.

@@ -112,7 +112,7 @@
                 "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
             ]
             }
-        ]  
+        ]
     },
     {
         "title": "Security",
@@ -231,6 +231,12 @@
                         "urls": [
                             "/cockroachcloud/managing-access.html"
                         ]
+                    },
+                    {
+                    "title": "Organize CockroachDB Cloud Clusters Using Folders",
+                    "urls": [
+                        "/cockroachcloud/folders.html"
+                    ]
                     }
                 ]
             },
@@ -273,7 +279,7 @@
                         ]
                     },
                     {
-                        "title": "Export Logs From Dedicated",
+                        "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
                         "urls": [
                         "/cockroachcloud/export-logs.html"
                         ]
@@ -374,7 +380,7 @@
                     ]
                   },
                   {
-                    "title": "Export Metrics From a Dedicated Cluster",
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
                     ]

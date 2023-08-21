@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-{% include_cached new-in.html version="v23.1" %} CockroachDB {{ site.data.products.enterprise }} [changefeeds](change-data-capture-overview.html) can stream change data out to [Apache Kafka](https://kafka.apache.org/) using OAuth authentication.
+{% include_cached new-in.html version="v23.1" %} CockroachDB {{ site.data.products.enterprise }} [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data out to [Apache Kafka](https://kafka.apache.org/) using OAuth authentication.
 
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
 
@@ -21,12 +21,12 @@ An overview of the workflow involves:
 
 Before starting this tutorial, you will need:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster.
-    - If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
+- A CockroachDB cluster. You can use a CockroachDB {{ site.data.products.cloud }} or CockroachDB {{ site.data.products.core }} cluster.
+    - If you are using CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) guide. For CockroachDB {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
 - An [Okta Developer account](https://developer.okta.com/signup/).
 - (Optional) A Kafka cluster. This tutorial includes [Kafka cluster setup](#step-3-create-a-kafka-sink). Note that this tutorial was tested with Kafka [version 2.8.2](https://kafka.apache.org/downloads). The Kafka cluster configuration may vary with different versions, but the Okta setup and changefeed creation will be the same.
 
-This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example database.
+This tutorial uses the Cockroach Labs [`movr`]({% link {{ page.version.version }}/movr.md %}) workload as an example database.
 
 ## Step 1. Create an Okta application and scope
 
@@ -260,7 +260,7 @@ Note the following:
 - You must [base64 encode](https://www.base64encode.org/) your client secret.
 - You must [URL encode](https://www.urlencoder.org/) your Okta developer token URL, e.g., `https://dev-12345678.okta.com/oauth2/default/v1/token` will encode to `https%3A%2F%2Fdev-12345678.okta.com%2Foauth2%2Fdefault%2Fv1%2Ftoken`.
 
-Since this is a long URI to run, you can create an [external connection](create-external-connection.html) to represent this URI:
+Since this is a long URI to run, you can create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to represent this URI:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -300,6 +300,6 @@ In the terminal set up to consume messages, you will receive your changefeed out
 
 ## See also
 
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [Changefeed Sinks](changefeed-sinks.html)
-- [Changefeed Messages](changefeed-messages.html)
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %})

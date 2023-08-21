@@ -12,11 +12,11 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 - Clients
 - DB Console (optional)
 
-To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
+To create these certificates and keys, use the `cockroach cert` [commands]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) (for example, a public CA or your organizational CA).
 
 {% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
-{{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="{% link {{ page.version.version }}/rotate-certificates.md %}">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
 ## How security certificates work
 
@@ -32,12 +32,12 @@ Subcommand | Usage
 -----------|------
 `create-ca` | Create the self-signed certificate authority (CA), which you'll use to create and authenticate certificates for your entire cluster.
 `create-node` | Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
-`create-client` | Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
+`create-client` | Create a certificate and key for a [specific user]({% link {{ page.version.version }}/create-user.md %}) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
 `list` | List certificates and keys found in the certificate directory.
 
 ## Certificate directory
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}).
 
 ## Required keys and certificates
 
@@ -59,7 +59,7 @@ File name pattern | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
 `client.<user>.key` | Key for the client certificate.
 
-Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}#accessing-the-db-console-for-a-secure-cluster).
 
 Note the following:
 
@@ -76,7 +76,7 @@ This check is only relevant on macOS, Linux, and other UNIX-like systems.
 To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
 
 - The user that the CockroachDB process runs as.
-- The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
+- The system `root` user (not to be confused with the [CockroachDB `root` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user)) and the group that the CockroachDB process runs in.
 
 For example, if running the CockroachDB process as a system user named `cockroach`, we can use the `id cockroach` command to list each group the `cockroach` user is a member of:
 
@@ -163,7 +163,7 @@ Flag | Description
 `--overwrite` | When running `create-*` subcommands, pass this flag to allow existing files in the certificate directory (`--certs-dir`) to be overwritten.<br><br>This flag helps avoid accidentally overwriting sensitive certificates and keys.
 `--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
 `--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
-<a name="flag-pkcs8"></a> `--also-generate-pkcs8-key` | Also create a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format used by Java.  For example usage, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
+<a name="flag-pkcs8"></a> `--also-generate-pkcs8-key` | Also create a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format used by Java.  For example usage, see [Build a Java App with CockroachDB]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}).
 
 ### Logging
 
@@ -346,11 +346,11 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-reference/security-overview.html)
-- [Authentication](authentication.html)
-- [Client Connection Parameters](connection-parameters.html)
-- [Rotate Security Certificates](rotate-certificates.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](kubernetes-overview.html)
-- [Local Deployment](secure-a-cluster.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Security overview]({% link {{ page.version.version }}/security-reference/security-overview.md %})
+- [Authentication]({% link {{ page.version.version }}/authentication.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Rotate Security Certificates]({% link {{ page.version.version }}/rotate-certificates.md %})
+- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
+- [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
+- [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

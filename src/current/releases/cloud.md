@@ -5,9 +5,9 @@ toc: true
 docs_area: releases
 ---
 
-{{ site.data.products.db }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 
-For details on features that are not supported in {{ site.data.products.serverless }}, see [Unsupported Features in {{ site.data.products.serverless }}](../cockroachcloud/serverless-unsupported-features.html).
+For details on features that are not supported in CockroachDB {{ site.data.products.serverless }}, see [Unsupported Features in CockroachDB {{ site.data.products.serverless }}](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-unsupported-features).
 
 Get future release notes emailed to you:
 

@@ -6,4 +6,4 @@ To sort the output of a `DELETE` statement, use:
   SELECT ... FROM a ORDER BY ...
 ~~~
 
-For an example, see [Sort and return deleted rows](delete.html#sort-and-return-deleted-rows).
+For an example, see [Sort and return deleted rows]({% link {{ page.version.version }}/delete.md %}#sort-and-return-deleted-rows).

@@ -86,7 +86,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
 
-    TypeORM accepts the following format for {{ site.data.products.serverless }} connection strings:
+    TypeORM accepts the following format for CockroachDB {{ site.data.products.serverless }} connection strings:
 
     {% include_cached copy-clipboard.html %}
     ~~~

@@ -24,7 +24,7 @@ When creating connection pools in serverless functions:
 
 If you plan to invoke a serverless function at a high frequency, you should configure the function to persist connection pools across function invocations, to limit the number of new connection attempts to the database. This is typically done by initializing the connection pool variable outside the scope of the serverless function definition.
 
-For example, suppose you are writing an AWS Lambda function that [`INSERT`](insert.html)s data into a table on a CockroachDB cluster, and you plan to run this query every few seconds. To persist a connection pool across invocations, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition and then define the connection pool in the handler only if the pool does not already exist.
+For example, suppose you are writing an AWS Lambda function that [`INSERT`]({% link {{ page.version.version }}/insert.md %})s data into a table on a CockroachDB cluster, and you plan to run this query every few seconds. To persist a connection pool across invocations, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition and then define the connection pool in the handler only if the pool does not already exist.
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="node">node.JS</button>
@@ -97,11 +97,11 @@ def lambda_handler(context):
 
 </section>
 
-## Use {{ site.data.products.serverless }}
+## Use CockroachDB {{ site.data.products.serverless }}
 
-As a database-as-a-service, {{ site.data.products.serverless }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
+As a database-as-a-service, CockroachDB {{ site.data.products.serverless }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
 
-To create a free {{ site.data.products.serverless }} cluster:
+To create a free CockroachDB {{ site.data.products.serverless }} cluster:
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
@@ -111,5 +111,5 @@ To minimize network latency, you should deploy your serverless functions in the 
 
 ## See also
 
-- [Create and Deploy an AWS Lambda Function Built on CockroachDB](deploy-lambda-function.html)
-- [Connect to your Cluster](connect-to-the-database.html)
+- [Create and Deploy an AWS Lambda Function Built on CockroachDB]({% link {{ page.version.version }}/deploy-lambda-function.md %})
+- [Connect to your Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %})

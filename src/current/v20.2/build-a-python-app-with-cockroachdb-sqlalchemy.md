@@ -113,7 +113,7 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    Where `<connection_string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
+    Where `<connection_string>` is the connection string you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
 
     </section>
 

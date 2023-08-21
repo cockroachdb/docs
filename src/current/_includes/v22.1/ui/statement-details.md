@@ -8,8 +8,8 @@ The details displayed on the **Statement Fingerprint** page reflect the [time in
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-- **Nodes**: the nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
-- **Regions**: the regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Nodes**: the nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+- **Regions**: the regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
 - **Database**: the database on which the statements executed.
 - **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 - **Failed?**: whether the statement failed to execute.
@@ -57,7 +57,7 @@ The **Diagnostics** tab allows you to activate and download diagnostics for a SQ
 {{site.data.alerts.callout_info}}
 The **Diagnostics** tab is not visible:
 
-- On {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.serverless }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}alter-role.html#role-options).
 {{site.data.alerts.end}}
 

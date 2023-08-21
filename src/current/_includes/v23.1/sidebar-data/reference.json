@@ -64,13 +64,13 @@
       {
         "title": "Cloud API",
         "urls": [
-          "/api/cloud/v1.html"
+          "https://www.cockroachlabs.com/docs/api/cloud/v1"
         ]
       },
       {
         "title": "Cluster API",
         "urls": [
-          "/api/cluster/v2.html"
+          "https://www.cockroachlabs.com/docs/api/cluster/v2"
         ]
       },
       {

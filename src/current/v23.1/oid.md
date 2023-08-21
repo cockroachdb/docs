@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The object identifier (`OID`) [data type](data-types.html) stores an unsigned 32-bit integer value.
+The object identifier (`OID`) [data type]({% link {{ page.version.version }}/data-types.md %}) stores an unsigned 32-bit integer value.
 
-OIDs are used internally as primary keys for tables in [system catalogs](system-catalogs.html), notably `information_schema` and `pg_catalog`.
+OIDs are used internally as primary keys for tables in [system catalogs]({% link {{ page.version.version }}/system-catalogs.md %}), notably `information_schema` and `pg_catalog`.
 
-CockroachDB supports many [functions](functions-and-operators.html#built-in-functions) that accept OIDs as argument types and return OIDs, and [operators](functions-and-operators.html#operators) that operate on OIDs and other data types. These functions are used by drivers and ORMs and you can use these functions to introspect your schema.
+CockroachDB supports many [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions) that accept OIDs as argument types and return OIDs, and [operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators) that operate on OIDs and other data types. These functions are used by drivers and ORMs and you can use these functions to introspect your schema.
 
 ## Size
 
@@ -24,6 +24,6 @@ You **should not**:
 
 ## See also
 
-- [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
-- [System Catalogs](system-catalogs.html)
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})

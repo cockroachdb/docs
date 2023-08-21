@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `ALTER FUNCTION` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a [user-defined function](user-defined-functions.html).
+The `ALTER FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) to a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 
 ## Required privileges
 
@@ -24,7 +24,7 @@ Parameter | Description
 ----------|------------
 `function_with_argtypes` | The name of the function, with optional function arguments to alter.
 
-For more information about the statement syntax, see [User-Defined Functions](user-defined-functions.html#overview).
+For more information about the statement syntax, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 Additional parameters are documented for the respective [subcommands](#subcommands).
 
@@ -34,7 +34,7 @@ Subcommand | Description
 -----------|------------
 [`OWNER TO`](#owner-to) | Change the owner of a function.
 [`RENAME TO`](#rename-to) | Change the name of a function.
-[`SET SCHEMA`](#set-schema) | Change the [schema](sql-name-resolution.html) of a function.
+[`SET SCHEMA`](#set-schema) | Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a function.
 
 ### `OWNER TO`
 
@@ -43,8 +43,8 @@ Subcommand | Description
 #### Required privileges
 
 - To alter the owner of a function, the new owner must have `CREATE` privilege on the schema of the function.
-- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
-- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+- To alter a function, a user must [own]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema of the function.
 
 #### Parameters
 
@@ -60,8 +60,8 @@ For usage, see [Synopsis](#synopsis).
 
 #### Required privileges
 
-- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
-- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+- To alter a function, a user must [own]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema of the function.
 
 #### Parameters
 
@@ -73,17 +73,17 @@ For usage, see [Synopsis](#synopsis).
 
 ### `SET SCHEMA`
 
-`ALTER FUNCTION ... SET SCHEMA` changes the [schema](sql-name-resolution.html) of a function.
+`ALTER FUNCTION ... SET SCHEMA` changes the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a function.
 
 {{site.data.alerts.callout_info}}
-CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](set-vars.html#supported-variables).
+CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables).
 {{site.data.alerts.end}}
 
 #### Required privileges
 
 - To change the schema of a function, a user must have `CREATE` privilege on the new schema.
-- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
-- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+- To alter a function, a user must [own]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema of the function.
 
 #### Parameters
 
@@ -158,7 +158,7 @@ The default schema for the function `sum` is `public`:
 (1 row)
 ~~~
 
-Since there is also a [built-in function](functions-and-operators.html#aggregate-functions) named `sum`, you must specify the `public` schema to invoke your user-defined `sum` function:
+Since there is also a [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) named `sum`, you must specify the `public` schema to invoke your user-defined `sum` function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -187,7 +187,7 @@ SQLSTATE: 42725
 
 Suppose you want to add the user-defined `sum` function from the [preceding example](#rename-a-function) to a new schema called `cockroach_labs`.
 
-By default, [unqualified functions](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
+By default, [unqualified functions]({% link {{ page.version.version }}/sql-name-resolution.md %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -209,7 +209,7 @@ SHOW CREATE FUNCTION public.sum;
 (1 row)
 ~~~
 
-If the new schema does not already exist, [create it](create-schema.html):
+If the new schema does not already exist, [create it]({% link {{ page.version.version }}/create-schema.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -245,8 +245,8 @@ SHOW CREATE FUNCTION cockroach_labs.sum;
 
 ## See also
 
-- [User-Defined Functions](user-defined-functions.html)
-- [`CREATE FUNCTION`](create-function.html)
-- [`DROP FUNCTION`](drop-function.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %})
+- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
+- [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

@@ -6,17 +6,17 @@ license: true
 docs_area: 
 ---
 
-Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
+Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) &amp; [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
 
 ## Install CockroachDB
 
-If you haven't already, you'll need to [locally install](install-cockroachdb.html), [remotely deploy](manual-deployment.html), or [orchestrate](kubernetes-overview.html) CockroachDB.
+If you haven't already, you'll need to [locally install]({% link {{ page.version.version }}/install-cockroachdb.md %}), [remotely deploy]({% link {{ page.version.version }}/manual-deployment.md %}), or [orchestrate]({% link {{ page.version.version }}/kubernetes-overview.md %}) CockroachDB.
 
 ## Enable Enterprise features
 
 {% include {{ page.version.version }}/misc/set-enterprise-license.md %}
 
-You can then use the [`SHOW CLUSTER SETTING`](set-cluster-setting.html) command to verify your license:
+You can then use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) command to verify your license:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -37,7 +37,7 @@ Also consider checking out [Cockroach University](https://university.cockroachla
 
 ## See also
 
-- [Licensing FAQs](licensing-faqs.html)
-- [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
+- [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %})
+- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
+- [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
 - [Cockroach University](https://university.cockroachlabs.com/)

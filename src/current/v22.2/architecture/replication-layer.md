@@ -110,11 +110,13 @@ After loading the snapshot, the node gets up to date by replaying all actions fr
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).
 
-CockroachDB attempts to elect a leaseholder who is also the Raft group leader, which can also optimize the speed of writes.
+CockroachDB attempts to elect a leaseholder who is also the Raft group leader, which can also optimize the speed of writes. When the leaseholder is sent a write request, a majority of the replica nodes must be able to communicate with each other to coordinate the write. This ensures that the most recent write is always available to subsequent reads.
 
 If there is no leaseholder, any node receiving a request will attempt to become the leaseholder for the range. To prevent two nodes from acquiring the lease, the requester includes a copy of the last valid lease it had; if another node became the leaseholder, its request is ignored.
 
 When serving [strongly-consistent (aka "non-stale") reads](transaction-layer.html#reading), leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring latency from networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
+
+CockroachDB is considered a CAP-Consistent (CP) system under the [CAP theorem](https://wikipedia.org/wiki/CAP_theorem). CockroachDB prioritizes data consistency, but also provides high-availability due to the coordination between leaseholders and replicas, minimizing the tradeoff between consistency and availability outlined by the CAP theorem. When you store data in CockroachDB, the data will be valid and anomaly-free, even in the event of a system error or power failure.
 
 #### Co-location with Raft leadership
 

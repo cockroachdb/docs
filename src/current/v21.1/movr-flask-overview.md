@@ -4,7 +4,7 @@ summary: Learn how to build and deploy an application built on CockroachDB, usin
 toc: true
 ---
 
-This tutorial guides you through developing and deploying a global application built on CockroachDB, using Flask, SQLAlchemy, {{ site.data.products.db }}, and [Google Cloud](https://cloud.google.com/) services.
+This tutorial guides you through developing and deploying a global application built on CockroachDB, using Flask, SQLAlchemy, CockroachDB {{ site.data.products.cloud }}, and [Google Cloud](https://cloud.google.com/) services.
 
 The following sections make up the tutorial:
 

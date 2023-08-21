@@ -45,10 +45,10 @@ The `Cargo.toml` file is the configuration file for the example, and sets the de
 
 The `main` function is the entry point for the application, with the code for connecting to the cluster, creating the `accounts` table, creating accounts in that table, and transferring money between two accounts.
 
-The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the function will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is thrown, the function will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
 {{site.data.alerts.callout_info}}
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write [contention](performance-best-practices-overview.html#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
+CockroachDB may require the [client to retry a transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in case of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -72,7 +72,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
     cd example-app-rust-postgres
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
+1. Set the `DATABASE_URL` environment variable to the connection string to your CockroachDB {{ site.data.products.cloud }} cluster:
 
     <section class="filter-content" markdown="1" data-scope="local">
 

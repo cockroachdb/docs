@@ -14,9 +14,9 @@ For a list of community-supported third-party tools, see [Third-Party Tools Supp
 ## Step 1. Select your deployment
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
-  <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
+  <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
+  <button class="filter-button page-level" data-scope="core">CockroachDB {{ site.data.products.core }}</button>
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless dedicated">
@@ -24,7 +24,7 @@ To connect to CockroachDB Cloud clusters you will need a general connection stri
 </div>
 
 <div class="filter-content" markdown="1" data-scope="core">
-To connect to a {{ site.data.products.core }} cluster, you need the [general connection string](connection-parameters.html#connect-using-a-url) or [connection parameters](connection-parameters.html#connect-using-discrete-parameters) for your cluster.
+To connect to a CockroachDB {{ site.data.products.core }} cluster, you need the [general connection string](connection-parameters.html#connect-using-a-url) or [connection parameters](connection-parameters.html#connect-using-discrete-parameters) for your cluster.
 
 The connection strings and parameters for your cluster are output when you [start the cluster](cockroach-start.html#standard-output).
 </div>
@@ -261,7 +261,7 @@ For example, suppose that you are defining the `DataSource` for your application
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
-{{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -288,7 +288,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
 
-{{ site.data.products.dedicated }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -320,7 +320,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>
 
 <div class="filter-content" markdown="1" data-scope="core">
 
-{{ site.data.products.core }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -479,7 +479,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -771,7 +771,7 @@ Parameter | Description
 `{database}`  | The name of the (existing) database.
 
 {{site.data.alerts.callout_info}}
-Earlier connection strings or connection parameters to {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
+Earlier connection strings or connection parameters to CockroachDB {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
 {{site.data.alerts.end}}
 </div>
 
@@ -1196,7 +1196,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="ruby">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">

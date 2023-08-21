@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `MULTIPOINT` is a collection of [Points](point.html).  MultiPoints are useful for gathering a group of Points into one geometry. For example, you may want to gather the points denoting all of the State Capitols in the U.S. into a single geometry.
+A `MULTIPOINT` is a collection of [Points]({% link {{ page.version.version }}/point.md %}).  MultiPoints are useful for gathering a group of Points into one geometry. For example, you may want to gather the points denoting all of the State Capitols in the U.S. into a single geometry.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
@@ -13,7 +13,7 @@ A `MULTIPOINT` is a collection of [Points](point.html).  MultiPoints are useful 
 
 ### SQL
 
-A MultiPoint can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`](st_union.html) on a column that contains [Point](point.html) geometries.  In the example below, we will build a MultiPoint from several Points.
+A MultiPoint can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}) on a column that contains [Point]({% link {{ page.version.version }}/point.md %}) geometries.  In the example below, we will build a MultiPoint from several Points.
 
 1. Insert the Points:
 
@@ -28,7 +28,7 @@ A MultiPoint can be created from SQL by calling an aggregate function such as `S
     (st_geomfromtext('POINT (-73.962090000000003 40.609226)'));
     ~~~
 
-1. Build a MultiPoint from the individual [Points](point.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiPoint:
+1. Build a MultiPoint from the individual [Points]({% link {{ page.version.version }}/point.md %}) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiPoint:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -51,7 +51,7 @@ A MultiPoint can be created from SQL by calling an aggregate function such as `S
 
 ### Well known text
 
-A MultiPoint can be created from SQL by calling the `st_geomfromtext` function on a MultiPoint definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format.
+A MultiPoint can be created from SQL by calling the `st_geomfromtext` function on a MultiPoint definition expressed in the [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format.
 
 For example, the MultiPoint in the example below includes the locations of [independent bookstores in Chicago, Illinois USA](https://www.bookweb.org/member_directory/search/ABAmember/results/0/Chicago/IL/0):
 
@@ -69,12 +69,12 @@ SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.
 
 ## See also
 
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-data-overview.html#spatial-objects)
-- [POINT](point.html)
-- [LINESTRING](linestring.html)
-- [POLYGON](polygon.html)
-- [MULTILINESTRING](multilinestring.html)
-- [MULTIPOLYGON](multipolygon.html)
-- [GEOMETRYCOLLECTION](geometrycollection.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
+- [POINT]({% link {{ page.version.version }}/point.md %})
+- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
+- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
+- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
+- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
+- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

@@ -17,13 +17,6 @@ function build {
 	fi;
 }
 
-# Transform API spec for API docs generation
-pushd api/
-npx swagger2openapi api-spec.json > spec_30.json
-npx snippet-enricher-cli --targets="shell_curl" --input=spec_30.json > spec_30_enriched.json
-rm spec_30.json
-popd
-
 gem install bundler --silent
 bundle install --quiet
 build _config_cockroachdb.yml,_config_url.yml

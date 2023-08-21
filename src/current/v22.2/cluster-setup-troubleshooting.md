@@ -304,6 +304,34 @@ The solution is to add connection retry logic to your application.
 
 ## Clock sync issues
 
+#### A node's timezone data has changed
+
+CockroachDB relies on each node's operating system timezone database to resolve named timezones like `America/New_York`, and for applying daylight saving rules. This can lead to inconsistent results across a cluster when coercing date/time strings into temporal types.
+
+Ensure that each node's operating system uses the same timezone database. In general, Cockroach Labs recommends that each node has an identical hardware and software configuration.
+
+Timezone data is read from the following sources in order of preference:
+
+1. The `ZONEINFO` operating system environment variable, if it is set to point to a `zoneinfo.zip` file such as [the one included in Go](https://github.com/golang/go/tree/master/lib/time) or to the directory that results from unzipping a `zoneinfo.zip`.
+1. The operating system's timezone database, sometimes called `tzdata` or `zoneinfo`. The following common locations are searched:
+
+      - `/usr/share/zoneinfo/`
+      - `/usr/share/lib/zoneinfo/`
+      - `/usr/lib/locale/TZ/`
+
+    {{site.data.alerts.callout_info}}
+    The Windows operating system's timezone database is not used by CockroachDB on Windows.
+    {{site.data.alerts.end}}
+
+1. The timezone database that is embedded in Go.
+
+[Restart](node-shutdown.html) each node if:
+
+- The operating system's timezone database is updated.
+- Any node's timezone changes.
+- The definition of a timezone changes due to government or geopolitical decisions.
+- The `ZONEINFO` operating system environment variable is updated or if the file it points to is updated.
+
 #### Node clocks are not properly synchronized
 
 See the following FAQs:

@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.security
 ---
 
-This page provides an overview of the security and implementation considerations for using SCRAM-SHA-256 [authentication](authentication.html) in CockroachDB.
+This page provides an overview of the security and implementation considerations for using SCRAM-SHA-256 [authentication]({% link {{ page.version.version }}/security-reference/authentication.md %}) in CockroachDB.
 
-CockroachDB supports SCRAM-SHA-256 authentication for clients in both {{ site.data.products.db }} and {{ site.data.products.core }}.
+CockroachDB supports SCRAM-SHA-256 authentication for clients in both CockroachDB {{ site.data.products.cloud }} and CockroachDB {{ site.data.products.core }}.
 
 CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL client drivers that support SCRAM-SHA-256 remain compatible with CockroachDB when SCRAM authentication is enabled.
 
@@ -35,7 +35,7 @@ As of February 2023, the products listed below do not yet support SCRAM authenti
 | [Looker](https://cloud.google.com/looker) or [Google Data Studio](https://datastudio.google.com) | <https://issuetracker.google.com/issues/203573707>                                                          |
 | [Amazon Quicksight](https://aws.amazon.com/quicksight/)                                          | <https://community.amazonquicksight.com/t/my-quicksight-cannot-connect-to-rds-postgresql-db-via-vpc/4696/4> |
 
-If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
+If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ### Advantages and tradeoffs
@@ -53,7 +53,7 @@ SCRAM authentication imposes additional computational load on your application s
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
-For more details, refer to [Troubleshoot SQL client application problems](../query-behavior-troubleshooting.html#troubleshoot-sql-client-application-problems)
+For more details, refer to [Troubleshoot SQL client application problems]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#troubleshoot-sql-client-application-problems)
 {{site.data.alerts.end}}
 
 #### Defense from replay attacks
@@ -84,7 +84,7 @@ This section details how to use SCRAM authentication rather than cleartext passw
 
 ### Enable SCRAM-SHA-256 authentication for new users/roles
 
-In CockroachDB v22.2.x and above, passwords are encrypted using SCRAM-SHA-256 by default, and the `server.user_login.password_encryption` [cluster setting](/docs/{{ page.version.version }}/cluster-settings.html) defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, the setting defaults to `bcrypt`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
+In CockroachDB v22.2.x and above, passwords are encrypted using SCRAM-SHA-256 by default, and the `server.user_login.password_encryption` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, the setting defaults to `bcrypt`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -138,7 +138,7 @@ It is possible to automatically convert the records for previously created users
 To convert existing users to SCRAM-SHA-256, enable the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting. When this setting is enabled, the conversion occurs the first time a client app connects with the previously defined password. During that first connection, the previous mechanism will be used to establish the connection, and then CockroachDB will re-encode the password using the SCRAM algorithm. Subsequent connections will then use the SCRAM handshake for authentication.
 
 {{site.data.alerts.callout_info}}
-In CockroachDB v22.2.x and above, the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` [cluster setting](/docs/{{ page.version.version }}/cluster-settings.html) is enabled by default. Because `user_login.password_encryption` also defaults to `scram-sha-256`, this means that by default, any user who still uses cleartext passwords will be migrated to SCRAM-SHA-256 authentication. To prevent this automatic migration, set `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` to `false` before upgrading to CockroachDB v22.2.x.
+In CockroachDB v22.2.x and above, the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is enabled by default. Because `user_login.password_encryption` also defaults to `scram-sha-256`, this means that by default, any user who still uses cleartext passwords will be migrated to SCRAM-SHA-256 authentication. To prevent this automatic migration, set `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` to `false` before upgrading to CockroachDB v22.2.x.
 {{site.data.alerts.end}}
 
 To enable the cluster setting:
@@ -152,7 +152,7 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts, take the following steps:
 
-1. Set the following [cluster settings](../cluster-settings.html):
+1. Set the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -160,7 +160,7 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
     SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
     ~~~
 
-1. For each [SQL user](../create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](../alter-user.html#change-a-users-password) as shown below. This will cause each user's password to be encoded using SCRAM:
+1. For each [SQL user]({% link {{ page.version.version }}/create-user.md %}) in the system, run [`ALTER USER {user} .. WITH PASSWORD`]({% link {{ page.version.version }}/alter-user.md %}#change-a-users-password) as shown below. This will cause each user's password to be encoded using SCRAM:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -168,7 +168,7 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
     ~~~
 
 {{site.data.alerts.callout_info}}
-Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../query-behavior-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../query-behavior-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
+Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ## Implement strict isolation of cleartext credentials
@@ -229,7 +229,7 @@ SET CLUSTER SETTING setting server.user_login.store_client_pre_hashed_passwords.
 
 #### `server.host_based_authentication.configuration`
 
-Allow *only* `scram-sha-256` (not the weaker `password`) in your [Authentication Configuration (HBA)](authentication.html#authentication-configuration).
+Allow *only* `scram-sha-256` (not the weaker `password`) in your [Authentication Configuration (HBA)]({% link {{ page.version.version }}/security-reference/authentication.md %}#authentication-configuration).
 
 {{site.data.alerts.callout_danger}}
 After this change, users will not be able to sign in with cleartext passwords. All critical SQL users must be migrated to SCRAM-SHA-256 authentication before making this change:
@@ -257,7 +257,7 @@ Generally, this can be best achieved by handling cleartext credentials only in a
 That environment must be provisioned with:
 
 - A tool for [creating PostgreSQL/CockroachDB-formatted SCRAM-SHA-256 hashes](#manage-users-with-pre-hashed-passwords), such as the example script provided in the [appendix](#appendix-python-scram-hashing-script).
-- A CockroachDB client with ['USER CREATE/ALTER privileges'](../create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users).
+- A CockroachDB client with ['USER CREATE/ALTER privileges']({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users).
 - Access, with write privileges, to a secrets store where the cleartext passwords will be persisted.
 
 On that instance, [generate SCRAM salted password hashes](#manage-users-with-pre-hashed-passwords), manage the users via CockroachDB client, as described in the following section, and persist the secrets in the secrets store.
@@ -294,7 +294,7 @@ pg_scram_sha256("password")
 
 ### Create a SCRAM-SHA-256-authenticated SQL user
 
-In the CockroachDB SQL shell, use the computed hash as the value of `PASSWORD` when [creating a user](../create-user.html) or [rotating the password for an existing user](../alter-user.html).
+In the CockroachDB SQL shell, use the computed hash as the value of `PASSWORD` when [creating a user]({% link {{ page.version.version }}/create-user.md %}) or [rotating the password for an existing user]({% link {{ page.version.version }}/alter-user.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
