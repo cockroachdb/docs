@@ -2,7 +2,7 @@
 {% include enterprise-feature.md %}
 {% endunless %}
 
-Once [partitions have been defined for a table or a secondary index](partitioning.html), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
+Once [partitions have been defined for a table or a secondary index]({% link {{ page.version.version }}/partitioning.md %}), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -59,5 +59,5 @@ To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FRO
 ~~~
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW CREATE TABLE`](show-create.html) statement or [`SHOW PARTITIONS`](show-partitions.html) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+You can also use the [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) statement or [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
 {{site.data.alerts.end}}

@@ -6,19 +6,19 @@ toc: true
 
 A cursor is a placeholder into a selection query that allows you to iterate over subsets of the rows returned by that query.
 
-Cursors differ from [keyset pagination](pagination.html) and [`LIMIT`/`OFFSET`](limit-offset.html) in that:
+Cursors differ from [keyset pagination]({% link {{ page.version.version }}/pagination.md %}) and [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) in that:
 
 - Each cursor is a stateful SQL object that is referred to by a unique name.
-- Each cursor requires holding open its own dedicated (read-only) [transaction](transactions.html).
+- Each cursor requires holding open its own dedicated (read-only) [transaction]({% link {{ page.version.version }}/transactions.md %}).
 - Each cursor operates on a snapshot of the database at the moment that cursor is opened.
 
 ## Synopsis
 
 Cursors are declared and used with the following keywords:
 
-- [`DECLARE`](sql-grammar.html#declare_cursor_stmt)
-- [`FETCH`](sql-grammar.html#fetch_cursor_stmt)
-- [`CLOSE`](sql-grammar.html#close_cursor_stmt)
+- [`DECLARE`]({% link {{ page.version.version }}/sql-grammar.md %}#declare_cursor_stmt)
+- [`FETCH`]({% link {{ page.version.version }}/sql-grammar.md %}#fetch_cursor_stmt)
+- [`CLOSE`]({% link {{ page.version.version }}/sql-grammar.md %}#close_cursor_stmt)
 
 <div>
   {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/declare_cursor.html %}
@@ -34,7 +34,7 @@ Cursors are declared and used with the following keywords:
 
 ## Examples
 
-These examples assume the presence of the [MovR data set](movr.html).
+These examples assume the presence of the [MovR data set]({% link {{ page.version.version }}/movr.md %}).
 
 ### Use a cursor
 
@@ -95,5 +95,5 @@ SELECT * FROM pg_cursors;
 
 ## See also
 
-- [Keyset pagination](pagination.html)
-- [`LIMIT`/`OFFSET`](limit-offset.html)
+- [Keyset pagination]({% link {{ page.version.version }}/pagination.md %})
+- [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %})

@@ -96,7 +96,7 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 When running bulk operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. This section details the necessary steps to authenticate to each cloud provider.
 
 {{site.data.alerts.callout_info}}
-`implicit` authentication **cannot** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
+`implicit` authentication **cannot** be used to run bulk operations from CockroachDB {{ site.data.products.cloud }} clusters—instead, use `AUTH=specified`.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

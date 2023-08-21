@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
+The `DROP SEQUENCE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a sequence from a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified sequence(s).
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified sequence(s).
 
 ## Synopsis
 
@@ -23,10 +23,10 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.
 `sequence_name_list` | A comma-separated list of sequence names. Find the sequence name with `SHOW CREATE` on the table that uses the sequence.
-`RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints](constraints.html) and tables) use it.
+`RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) use it.
 `CASCADE` | Not implemented. You can drop a sequence only if nothing depends on it.
 
-<!-- `CASCADE` > Drop all objects (such as [constraints](constraints.html) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. -->
+{% comment %} `CASCADE` > Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. {% endcomment %}
 
 ## Examples
 
@@ -67,7 +67,7 @@ In this example, other objects do not depend on the sequence being dropped.
 (0 rows)
 ~~~
 
-<!-- ### Remove a Sequence and Dependent Objects with `CASCADE`
+{% comment %} ### Remove a Sequence and Dependent Objects with `CASCADE`
 
 In this example, a table depends on the sequence that's being dropped. Therefore, it's only possible to drop the sequence while simultaneously dropping the dependent table using `CASCADE`.
 
@@ -78,12 +78,12 @@ In this example, a table depends on the sequence that's being dropped. Therefore
 ~~~
 ~~~
 DROP SEQUENCE
-~~~ -->
+~~~ {% endcomment %}
 
 ## See also
-- [`CREATE SEQUENCE`](create-sequence.html)
-- [`ALTER SEQUENCE`](alter-sequence.html)
-- [`SHOW SEQUENCES`](show-sequences.html)
-- [Functions and Operators](functions-and-operators.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})
+- [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})
+- [`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

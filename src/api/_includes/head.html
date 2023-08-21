@@ -1,0 +1,105 @@
+<meta charset="utf-8" prefix="og: https://ogp.me/ns#">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
+<meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
+
+{% comment %} Open Graph data {% endcomment %}
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:type" content="article" />
+
+<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.url }}" />
+<meta property="og:image" content="{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}" />
+<meta property="og:site_name" content="{{ site.site_title }}" />
+{% if page.summary %}<meta property="og:description" content="{{ page.summary | strip_html | strip_newlines | truncate: 160 }}">{% endif %}
+{% if page.video_url %}<meta property="og:video" content="{{ page.video_url }}" />{% endif %}
+{% comment %} Google structured content/rich results {% endcomment %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page.title | replace: '"', '\"' }}",
+    "image": "{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}",
+    {% if page.summary %}"description": "{{ page.summary | strip_html | strip_newlines | truncate: 160 | replace: '"', '\"' }}",{% endif %}
+    "author": {
+        "@type": "Organization",
+        "name": "Cockroach Labs Documentation Team",
+        "url": "https://github.com/cockroachdb/docs"
+      }
+  }
+  </script>
+{% comment %} Favicons {% endcomment %}
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png?w=16h=16" sizes="16x16">
+
+<title>{{ page.title }}</title>
+
+<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.url }}">
+
+<script>
+var pageConfig = {
+  tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
+};
+</script>
+<script>
+  function whenAvailable(name, callback, isJqueryFn = false) {
+    var interval = 500; // ms
+    var evaluation = isJqueryFn ? $()[name] : window[name];
+    window.setTimeout(function() {
+        if (evaluation) {
+            callback();
+        } else {
+            whenAvailable(name, callback, isJqueryFn);
+        }
+    }, interval);
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+{%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
+<script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET";;analytics.SNIPPET_VERSION="4.15.3";
+  analytics.load("Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET", {
+    user: {
+      cookie: {
+        key: "crl_brand_ajs_user_id",
+        oldKey: "crl_brand_ajs_user",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_user_traits",
+      },
+    },
+    group: {
+      cookie: {
+        key: "crl_brand_ajs_group_id",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_group_properties",
+      }
+    }
+  });
+  analytics.page();
+  }}();
+</script>
+
+{% if page.layout == "api" %}
+  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
+{% endif %}
+
+<link rel="preconnect dns-prefetch" href="//go.cockroachlabs.com" />
+<link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
+
+<link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"></noscript>
+
+
+<link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
+<link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" data-proofer-ignore>
+
+<link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200&q=40" />
+<link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200&q=40" />

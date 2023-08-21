@@ -6,15 +6,15 @@ docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
+CockroachDB {{ site.data.products.cloud }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs) of the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
-After your organization is enrolled in the preview, you can begin exporting audit logs for {{ site.data.products.db }} organization.
+After your organization is enrolled in the preview, you can begin exporting audit logs for CockroachDB {{ site.data.products.cloud }} organization.
 
-This page provides some examples of exporting {{ site.data.products.db }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs).
+This page provides some examples of exporting CockroachDB {{ site.data.products.cloud }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs).
 
 ## Export audit logs in ascending order
 
-This example requests audit logs without defining the starting timestamp, sort order, or limit. By default, the earliest 200 audit logs for your {{ site.data.products.db }} organization are returned in ascending order, starting from when the organization was created.
+This example requests audit logs without defining the starting timestamp, sort order, or limit. By default, the earliest 200 audit logs for your CockroachDB {{ site.data.products.cloud }} organization are returned in ascending order, starting from when the organization was created.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -69,7 +69,7 @@ The response is truncated for readability.
 ~~~
 
 {{site.data.alerts.callout_info}}
-If you get an error, verify that the feature is enabled for your {{ site.data.products.db }} organization.
+If you get an error, verify that the feature is enabled for your CockroachDB {{ site.data.products.cloud }} organization.
 {{site.data.alerts.end}}
 
 To export the next batch of entries, send a second request and set `starting_from` to the value of `next_starting_from`, `2022-10-09T02:40:35.054818Z`.
@@ -94,7 +94,7 @@ curl --request GET \
   --header 'Cc-Version: {api_version}'
 ~~~
 
-To request the next batch of entries in the same direction, send a second request with the same values for `sort_order` and `limit` and set `starting_from` to the value of `next_starting_from`. When there are no more results to fetch (because you have reached when your {{ site.data.products.db }} organization was created), no `next_starting_from` field is returned.
+To request the next batch of entries in the same direction, send a second request with the same values for `sort_order` and `limit` and set `starting_from` to the value of `next_starting_from`. When there are no more results to fetch (because you have reached when your CockroachDB {{ site.data.products.cloud }} organization was created), no `next_starting_from` field is returned.
 
 ## Events adjacent to a specific timestamp
 
@@ -124,4 +124,4 @@ All entries for the timestamp itself are included in both sets of results. Dupli
 
 ## What's next?
 
-- Learn more about the [Cloud API](cloud-api.html)
+- Learn more about the [Cloud API]({% link cockroachcloud/cloud-api.md %})

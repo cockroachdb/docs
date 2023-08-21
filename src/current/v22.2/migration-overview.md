@@ -20,7 +20,7 @@ The following MOLT (Migrate Off Legacy Technology) tools simplify migration:
 - Support for [AWS DMS](aws-dms.html).
 
 {{site.data.alerts.callout_info}}
-If you need to migrate data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
+If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Convert your schema
@@ -28,12 +28,12 @@ If you need to migrate data from a {{ site.data.products.serverless }} cluster t
 To begin a new migration to CockroachDB, convert your database schema to an equivalent CockroachDB schema.
 
 1. Use the source database's tooling to extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) to a `.sql` file.
-1. Upload the `.sql` file to the [**Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console. The tool will convert the syntax, identify [unimplemented features](#unimplemented-features) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
+1. Upload the `.sql` file to the [**Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the CockroachDB {{ site.data.products.cloud }} Console. The tool will convert the syntax, identify [unimplemented features](#unimplemented-features) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
 	{{site.data.alerts.callout_info}}
 	The Schema Conversion Tool accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
 	{{site.data.alerts.end}}
 
-1. The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+1. The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 1. [Move your data](#step-2-move-your-data-to-cockroachdb) to the new database.
 
 ### Schema design best practices

@@ -15,23 +15,23 @@ For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row statement is
 
 For more information, see:
 
-- [Insert Data](insert-data.html)
-- [Update Data](update-data.html)
-- [Delete Data](delete-data.html)
+- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
+- [Update Data]({% link {{ page.version.version }}/update-data.md %})
+- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
 ### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
 
 When inserting/updating all columns of a table, and the table has no secondary
-indexes, Cockroach Labs recommends using an [`UPSERT`](upsert.html) statement instead of the
-equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON
+indexes, Cockroach Labs recommends using an [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement instead of the
+equivalent [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}) statement. Whereas `INSERT ON
 CONFLICT` always performs a read to determine the necessary writes, the `UPSERT`
 statement writes without reading, making it faster. For tables with secondary
 indexes, there is no performance difference between `UPSERT` and `INSERT ON
 CONFLICT`.
 
 This issue is particularly relevant when using a simple SQL table of two columns
-to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
+to [simulate direct KV access]({% link {{ page.version.version }}/sql-faqs.md %}#can-i-use-cockroachdb-as-a-key-value-store).
 In this case, be sure to use the `UPSERT` statement.
 
 ## Bulk-insert best practices
@@ -41,47 +41,47 @@ In this case, be sure to use the `UPSERT` statement.
 To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include bulk `INSERT` statements within an explicit transaction.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+You can also use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement to bulk-insert CSV data into an existing table.
 {{site.data.alerts.end}}
 
-For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+For more information, see [Insert Multiple Rows]({% link {{ page.version.version }}/insert.md %}#insert-multiple-rows-into-an-existing-table).
 
 {{site.data.alerts.callout_info}}
-Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `transaction deadline exceeded`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
+Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). If a multi-row `INSERT` query results in an error code [`40001` with the message `transaction deadline exceeded`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
 {{site.data.alerts.end}}
 
 ### Use `IMPORT` instead of `INSERT` for bulk-inserts into new tables
 
-To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
+To bulk-insert data into a brand new table, the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement performs better than `INSERT`.
 
 ## Bulk-delete best practices
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
 
-The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
+The [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
 ### Use batch deletes to delete a large number of rows
 
-To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-delete Data](bulk-delete-data.html).
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-delete Data]({% link {{ page.version.version }}/bulk-delete-data.md %}).
 
 ### Batch delete "expired" data
 
 {% include {{page.version.version}}/sql/row-level-ttl.md %}
 
-For more information, see [Batch delete expired data with Row-Level TTL](row-level-ttl.html).
+For more information, see [Batch delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
 
 ## Assign column families
 
 A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
 
-When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family]({% link {{ page.version.version }}/column-families.md %}).
 
 ## Unique ID best practices
 
 The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
 
-1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
-1. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
+1. Using the [`SERIAL`]({% link {{ page.version.version }}/serial.md %}) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
+1. Generating monotonically increasing [`INT`]({% link {{ page.version.version }}/int.md %}) IDs by using transactions with roundtrip [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`]({% link {{ page.version.version }}/insert.md %}) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
 
 The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
@@ -138,7 +138,7 @@ This would make the following query efficient.
 Time: 924µs
 ~~~
 
-To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
+To see why, let's look at the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -167,7 +167,7 @@ To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that th
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-Note that the above query also follows the [indexing best practice](indexes.html#best-practices) of indexing all columns in the `WHERE` clause.
+Note that the above query also follows the [indexing best practice]({% link {{ page.version.version }}/indexes.md %}#best-practices) of indexing all columns in the `WHERE` clause.
 
 ### Use functions to generate unique IDs
 
@@ -175,7 +175,7 @@ Note that the above query also follows the [indexing best practice](indexes.html
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
-If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-functions-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) as shown below for improved performance.
+If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-functions-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement]({% link {{ page.version.version }}/insert.md %}#insert-and-return-values) as shown below for improved performance.
 
 #### Generate monotonically-increasing unique IDs
 
@@ -253,19 +253,19 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 ## Secondary index best practices
 
-See [Secondary Index Best Practices](schema-design-indexes.html#best-practices).
+See [Secondary Index Best Practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices).
 
 ## Join best practices
 
-See [Join Performance Best Practices](joins.html#performance-best-practices).
+See [Join Performance Best Practices]({% link {{ page.version.version }}/joins.md %}#performance-best-practices).
 
 ## Subquery best practices
 
-See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
+See [Subquery Performance Best Practices]({% link {{ page.version.version }}/subqueries.md %}#performance-best-practices).
 
 ## Authorization best practices
 
-See [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices).
+See [Authorization Best Practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices).
 
 ## Table scan best practices
 
@@ -306,11 +306,11 @@ This query returns the account balances of the customers.
 
 ### Avoid `SELECT DISTINCT` for large tables
 
-`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](select-clause.html#filter-rows) instead.
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows) instead.
 
 ### Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries
 
-If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause](select-clause.html#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](architecture/transaction-layer.html#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
+If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause]({% link {{ page.version.version }}/select-clause.md %}#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
@@ -318,22 +318,22 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Transaction contention
 
-Transactions that operate on the *same index key values* (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions.
+Transactions that operate on the *same index key values* (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) to prevent hazardous interactions with concurrent transactions.
 
 *Transaction contention* occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
+- They operate on table rows with the _same index key values_ (either on [primary keys]({% link {{ page.version.version }}/primary-key.md %}) or secondary [indexes]({% link {{ page.version.version }}/indexes.md %})).
 - At least one of the transactions modifies the data.
 
-[When transactions are experiencing contention](performance-recipes.html#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
+[When transactions are experiencing contention]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
-- [Delays in query completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
-- [Transaction retries](transactions.html#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
-- [Transaction retry errors](transaction-retry-error-reference.html), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
+- [Delays in query completion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
+- [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions.
+- [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 - [Cluster hot spots](#hot-spots).
 
-To mitigate these effects, [reduce the causes of transaction contention](performance-best-practices-overview.html#reduce-transaction-contention) and [reduce hot spots](#reduce-hot-spots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hot spots](#reduce-hot-spots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Reduce transaction contention
 
@@ -343,20 +343,20 @@ You can reduce the causes of transaction contention:
 
 ### Improve transaction performance by sizing and configuring the cluster
 
-To maximize transaction performance, you'll need to maximize the performance of a single [range](architecture/glossary.html#architecture-range). To achieve this, you can apply multiple strategies:
+To maximize transaction performance, you'll need to maximize the performance of a single [range]({% link {{ page.version.version }}/architecture/glossary.md %}#architecture-range). To achieve this, you can apply multiple strategies:
 
-- Minimize the network distance between the [replicas of a range](architecture/overview.html#architecture-replica), possibly using [zone configs](configure-replication-zones.html) and [partitioning](partitioning.html), or the newer [Multi-region SQL capabilities](multiregion-overview.html).
-- Use the fastest [storage devices](recommended-production-settings.html#storage) available.
-- If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node](recommended-production-settings.html#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
+- Minimize the network distance between the [replicas of a range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica), possibly using [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) and [partitioning]({% link {{ page.version.version }}/partitioning.md %}), or the newer [Multi-region SQL capabilities]({% link {{ page.version.version }}/multiregion-overview.md %}).
+- Use the fastest [storage devices]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) available.
+- If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
 
 ## Hot spots
 
 A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
-[Hot spots occur](performance-recipes.html#indicators-that-your-cluster-has-hot-spots) when an imbalanced workload access pattern causes significantly more reads and writes on a subset of data. For example:
+[Hot spots occur]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-cluster-has-hot-spots) when an imbalanced workload access pattern causes significantly more reads and writes on a subset of data. For example:
 
-- Transactions operate on the **same range but different index keys**. These operations are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#cockroachdb-architecture-terms) node.
-- A range is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
+- Transactions operate on the **same range but different index keys**. These operations are limited by the overall hardware capacity of [the range leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#cockroachdb-architecture-terms) node.
+- A range is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence]({% link {{ page.version.version }}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s]({% link {{ page.version.version }}/timestamp.md %})), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}). This creates a hot spot at the single range.
 
 Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
 
@@ -366,6 +366,6 @@ Read hot spots can occur if you perform lots of scans of a portion of a table in
 
 ## See also
 
-- If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
-- For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
+- If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries).
+- For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %}).
 - To read more about SQL best practices, see our [SQL Performance Best Practices](https://www.cockroachlabs.com/blog/sql-performance-best-practices/) blog post.

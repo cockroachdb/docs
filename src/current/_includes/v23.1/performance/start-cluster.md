@@ -15,7 +15,7 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -50,11 +50,11 @@
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach init`](cockroach-init.html) command:
+1. Run the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init {{page.certs}} --host=<address of any node>
     ~~~
 
-    Each node then prints helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+    Each node then prints helpful details to the [standard output]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.

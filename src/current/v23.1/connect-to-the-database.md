@@ -5,28 +5,28 @@ toc: true
 docs_area: develop
 ---
 
-This page documents the required connection configuration for [fully-supported third-party tools](third-party-database-tools.html).
+This page documents the required connection configuration for [fully-supported third-party tools]({% link {{ page.version.version }}/third-party-database-tools.md %}).
 
-For a list of all supported cluster connection parameters, see the [`cockroach` Connection Parameters](connection-parameters.html).
+For a list of all supported cluster connection parameters, see the [`cockroach` Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}).
 
-For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
+For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community]({% link {{ page.version.version }}/community-tooling.md %}). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
 ## Step 1. Select your deployment
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
-  <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
+  <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
+  <button class="filter-button page-level" data-scope="core">CockroachDB {{ site.data.products.core }}</button>
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless dedicated">
-To connect to a {{ site.data.products.db }} cluster, you need a general connection string or connection parameters, which include the username, host, database, and port. To find these, open the **Connect** dialog for your cluster in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) and select either **General connection string** or **Parameters only** as the option.
+To connect to a CockroachDB {{ site.data.products.cloud }} cluster, you need a general connection string or connection parameters, which include the username, host, database, and port. To find these, open the **Connect** dialog for your cluster in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) and select either **General connection string** or **Parameters only** as the option.
 </div>
 
 <div class="filter-content" markdown="1" data-scope="core">
-To connect to a {{ site.data.products.core }} cluster, you need the [general connection string](connection-parameters.html#connect-using-a-url) or [connection parameters](connection-parameters.html#connect-using-discrete-parameters) for your cluster.
+To connect to a CockroachDB {{ site.data.products.core }} cluster, you need the [general connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) or [connection parameters]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-discrete-parameters) for your cluster.
 
-The connection strings and parameters for your cluster are output when you [start the cluster](cockroach-start.html#standard-output).
+The connection strings and parameters for your cluster are output when you [start the cluster]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output).
 </div>
 
 ## Step 2. Select your OS
@@ -261,7 +261,7 @@ For example, suppose that you are defining the `DataSource` for your application
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
-{{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -288,7 +288,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
 
-{{ site.data.products.dedicated }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -307,7 +307,7 @@ export const AppDataSource = new DataSource({
 Where:
 
 - `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
-- `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+- `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 TypeORM accepts the following format for CockroachDB connection strings:
 
@@ -320,7 +320,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>
 
 <div class="filter-content" markdown="1" data-scope="core">
 
-{{ site.data.products.core }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -341,9 +341,9 @@ export const AppDataSource = new DataSource({
 Where:
 
 - `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
-- `CA_CERT` is an environment variable set to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-- `CLIENT_KEY` is an environment variable set to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-- `CLIENT_CERT` is an environment variable set to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+- `CA_CERT` is an environment variable set to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+- `CLIENT_KEY` is an environment variable set to the [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+- `CLIENT_CERT` is an environment variable set to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -435,7 +435,7 @@ For more information about connecting with Prisma, see the [official Prisma docu
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -447,12 +447,12 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 </div>
 
@@ -460,13 +460,13 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<root-cert>`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`<client-cert>`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`<client-key>`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`<root-cert>`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+`<client-cert>`  | The path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+`<client-key>`  | The path to the [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -479,7 +479,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -764,14 +764,14 @@ For more information about connecting with Django, see the [official Django docu
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 
 {{site.data.alerts.callout_info}}
-Earlier connection strings or connection parameters to {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
+Earlier connection strings or connection parameters to CockroachDB {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
 {{site.data.alerts.end}}
 </div>
 
@@ -779,12 +779,12 @@ Earlier connection strings or connection parameters to {{ site.data.products.ser
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 </div>
 
@@ -792,13 +792,13 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+`{client-cert}`  | The path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+`{client-key}`  | The path to the [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -997,7 +997,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1009,12 +1009,12 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 </div>
 
@@ -1022,13 +1022,13 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+`{client-cert}`  | The path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+`{client-key}`  | The path to the [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -1141,7 +1141,7 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&s
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](install-client-drivers.html?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
+To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect]({% link {{ page.version.version }}/install-client-drivers.md %}?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
 {{site.data.alerts.end}}
 
 For more information about connecting with Hibernate, see the [official Hibernate documentation](https://hibernate.org/orm/documentation).
@@ -1154,7 +1154,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1166,12 +1166,12 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 </div>
 
@@ -1179,13 +1179,13 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+`{client-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+`{client-key}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -1196,7 +1196,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="ruby">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
@@ -1314,7 +1314,7 @@ For more information about connecting with Active Record, see the [official Acti
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1326,12 +1326,12 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
 
 </div>
 
@@ -1339,13 +1339,13 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands), or you can use a [custom CA cert]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}).
+`{client-cert}`  | The path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
+`{client-key}`  | The path to the [client key]({% link {{ page.version.version }}/cockroach-cert.md %}#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 
@@ -1355,7 +1355,7 @@ Parameter | Description
 
 ## See also
 
-- [Install a Driver or ORM Framework](install-client-drivers.html)
-- [Connection Pooling](connection-pooling.html)
-- [`cockroach` Connection Parameters](connection-parameters.html)
-- [Example Apps](example-apps.html)
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %})
+- [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %})
+- [`cockroach` Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})

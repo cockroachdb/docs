@@ -5,12 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER TYPE` [statement](sql-statements.html) modifies a [user-defined data type](create-type.html) in the current database.
+The `ALTER TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) modifies a [user-defined data type]({% link {{ page.version.version }}/create-type.md %}) in the current database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time.
+You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) `ALTER TYPE` [schema change jobs]({% link {{ page.version.version }}/online-schema-changes.md %}) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time.
 
 All other `ALTER TYPE` schema change jobs are non-cancellable.
 {{site.data.alerts.end}}
@@ -30,13 +30,13 @@ Parameter | Description
 `DROP VALUE value` |  Drop a specific value from the user-defined type's list of values.
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
-`SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
-`OWNER TO`  | Change the [role specification](grant.html) for the user-defined type's owner.
+`SET SCHEMA`  | Set [the schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of the user-defined type.
+`OWNER TO`  | Change the [role specification]({% link {{ page.version.version }}/grant.md %}) for the user-defined type's owner.
 
 ## Required privileges
 
-- To [alter a type](alter-type.html), the user must be the owner of the type.
-- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the schema and the `DROP` privilege
+- To [alter a type]({% link {{ page.version.version }}/alter-type.md %}), the user must be the owner of the type.
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema and the `DROP` privilege
 on the type.
 - To alter the owner of a user-defined type:
     - The user executing the command must be a member of the new owner role.
@@ -48,7 +48,7 @@ on the type.
 
 ## Example
 
-The following example uses a [user-defined type](create-type.html).
+The following example uses a [user-defined type]({% link {{ page.version.version }}/create-type.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -153,9 +153,9 @@ To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 
 ## See also
 
-- [`CREATE TYPE`](create-type.html)
-- [`ENUM`](enum.html)
-- [`SHOW ENUMS`](show-enums.html)
-- [`SHOW TYPES`](show-types.html)
-- [`DROP TYPE`](drop-type.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})
+- [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

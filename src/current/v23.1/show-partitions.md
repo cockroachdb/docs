@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html).
+Use the `SHOW PARTITIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to view details about existing [partitions]({% link {{ page.version.version }}/partitioning.md %}).
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
@@ -21,15 +21,15 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to list partitions.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list partitions.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`database_name` | The name of the [database](create-database.html) for which to show [partitions](partitioning.html).
-`table_name` | The name of the [table](create-table.html) for which to show [partitions](partitioning.html).
-`table_index_name` | The name of the [index](create-index.html) for which to show [partitions](partitioning.html).
+`database_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
+`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
+`table_index_name` | The name of the [index]({% link {{ page.version.version }}/create-index.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
 
 ## Response
 
@@ -40,17 +40,17 @@ Field | Description
 `database_name` | The name of the database that contains the partition.
 `table_name` | The name of the table that contains the partition.
 `partition_name` | The name of the partition.
-`parent_partition` | The name of the parent partition, if the partition is a [subpartition](partitioning.html#define-subpartitions-on-a-table).
+`parent_partition` | The name of the parent partition, if the partition is a [subpartition]({% link {{ page.version.version }}/partitioning.md %}#define-subpartitions-on-a-table).
 `column_names` | The names of the columns in the partition definition expression.
 `index_name` | The name of the index for the partition.
 `partition_value` | The value that defines the partition.
-`zone_constraints` | The [zone constraints](configure-replication-zones.html), if replication zones are configured for the partition.
+`zone_constraints` | The [zone constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}), if replication zones are configured for the partition.
 
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions](partitioning.html) or [`ALTER TABLE ... PARTITION BY`](alter-table.html#partition-by).
+The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %}) or [`ALTER TABLE ... PARTITION BY`]({% link {{ page.version.version }}/alter-table.md %}#partition-by).
 
 ### Show table partitions
 
@@ -83,7 +83,7 @@ The `movr` database in this example is pre-partitioned. For information about pa
 (3 rows)
 ~~~
 
-You can also use [`SHOW CREATE TABLE`](show-create.html) to view partitions on a table:
+You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to view partitions on a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -235,6 +235,6 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 ## See also
 
-- [Define Table Partitions](partitioning.html)
-- [SQL Statements](sql-statements.html)
-- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})

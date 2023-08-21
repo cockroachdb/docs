@@ -110,7 +110,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
     export DATABASE_URL="{connection-string}"
     ~~~
 
-    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
+    Where `{connection-string}` is the connection string you obtained from the CockroachDB {{ site.data.products.cloud }} Console.
 
     </section>
 

@@ -10,11 +10,11 @@ The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_
 
 ## API reference
 
-Refer to the [full API reference documentation](../api/cloud/v1.html) for detailed descriptions of the API endpoints and options.
+Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1) for detailed descriptions of the API endpoints and options.
 
 ## Call the API
 
-The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key](managing-access.html#api-access). The secret key is associated with a service account, and inherits the [permissions of the account](managing-access.html#manage-service-accounts).
+The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access). The secret key is associated with a service account, and inherits the [permissions of the account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 To send the secret key when making an API call, add the secret key to the `Authorization` HTTP header sent with the request.
 
@@ -43,7 +43,7 @@ Authorization: Bearer {secret_key}
 
 </section>
 
-Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](managing-access.html#create-api-keys).
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys).
 
 ## Set the API version
 
@@ -74,14 +74,14 @@ Cc-Version: {version}
 ~~~
 </section>
 
-Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](managing-access.html#create-api-keys) and `{version}` is the version of the Cloud API.
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys) and `{version}` is the version of the Cloud API.
 
 ## Create a new cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `CREATE` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `CREATE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -124,9 +124,9 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE` Support for Azure is in [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and Serverless clusters cannot be created on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE` Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), and Serverless clusters cannot be created on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
 For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
@@ -206,12 +206,12 @@ Where:
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
     {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `funky-skunk-123`.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a specific cluster
@@ -219,7 +219,7 @@ Where:
 To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `Read` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `Read` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -233,7 +233,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -275,14 +275,14 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `funky-skunk-123`.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a cluster's nodes
@@ -290,7 +290,7 @@ Where:
 To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 
@@ -305,7 +305,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -340,13 +340,13 @@ Where:
 
 ## Set the maximum resource limits of a Serverless cluster
 
-To set the maximum [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
+To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
-The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](managing-access.html#manage-service-accounts) to retrieve information about an organization's clusters.
+The service account associated with the secret key must have `ADMIN` or `EDIT` [permission]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -380,10 +380,10 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
 If the request was successful, the client will not receive a response payload.
 
@@ -392,7 +392,7 @@ If the request was successful, the client will not receive a response payload.
 To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `DELETE` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `DELETE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
@@ -408,7 +408,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -425,7 +425,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -443,12 +443,12 @@ Where:
   - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
   - `{api_version}` is the [Cloud API version](#set-the-api-version).
 
-A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
+A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your CockroachDB {{ site.data.products.cloud }} organization was created.
 
 If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
 
 - If `{sort_order}` is `ASC`, `next_starting_from` is always returned.
-- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the {{ site.data.products.db }} organization was created).
+- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the CockroachDB {{ site.data.products.cloud }} organization was created).
 
 
 {% include_cached copy-clipboard.html %}
@@ -471,7 +471,7 @@ Where:
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -538,20 +538,20 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster.
   - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
 ## List the available regions for a cloud infrastructure provider
 
 To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -563,7 +563,7 @@ curl --request GET \
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{secret_key}` is the secret key for the service account.
 
 If the request was successful, the client will receive a list of available regions for the specified cloud infrastructure provider.
@@ -586,7 +586,7 @@ Where:
 To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -600,7 +600,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
 
 If the request was successful, the client will receive a list of SQL users.
@@ -623,12 +623,12 @@ Where `{user name}` is the SQL username of the user.
 To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
 By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
-When possible, it is best practice to [limit each user's privileges](managing-access.html#use-sql-roles-to-manage-access) to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege).
+When possible, it is best practice to [limit each user's privileges]({% link cockroachcloud/managing-access.md %}#use-sql-roles-to-manage-access) to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -643,7 +643,7 @@ Where:
 
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the new SQL user you want to create.
 - `{password}` is the new user's password.
@@ -663,7 +663,7 @@ Where `{sql_username}` is the username of the newly created SQL user.
 To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -676,7 +676,7 @@ curl --request DELETE \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user you want to delete.
 
@@ -695,7 +695,7 @@ Where `{sql_username}` is the username of the deleted SQL user.
 To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -709,7 +709,7 @@ curl --request PUT \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user whose password you want to change.
 - `{new_password}` is the new password for the SQL user.

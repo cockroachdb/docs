@@ -5,16 +5,16 @@ toc: true
 docs_area: reference.cli
 ---
 
-The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster of one or more nodes, with or without a preloaded dataset, and opens an interactive SQL shell to the cluster.
+The `cockroach demo` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) starts a temporary, in-memory CockroachDB cluster of one or more nodes, with or without a preloaded dataset, and opens an interactive SQL shell to the cluster.
 
-- All [SQL shell](#sql-shell) commands, client-side options, help, and shortcuts supported by the [`cockroach sql`](cockroach-sql.html) command are also supported by `cockroach demo`.
+- All [SQL shell](#sql-shell) commands, client-side options, help, and shortcuts supported by the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) command are also supported by `cockroach demo`.
 - The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 - By default, `cockroach demo` starts in secure mode using TLS certificates to encrypt network communication. It also serves a local [DB Console](#connection-parameters) that does not use TLS encryption.
 - Each instance of `cockroach demo` loads a temporary [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) that expires after 24 hours. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
--  `cockroach demo` opens the SQL shell with a new [SQL user](security-reference/authorization.html#sql-users) named `demo`. The `demo` user is assigned a random password and granted the [`admin` role](security-reference/authorization.html#admin-role).
+-  `cockroach demo` opens the SQL shell with a new [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) named `demo`. The `demo` user is assigned a random password and granted the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 {{site.data.alerts.callout_danger}}
-`cockroach demo` is designed for testing purposes only. It is not suitable for production deployments. To see a list of recommendations for production deployments, see the [Production Checklist](recommended-production-settings.html).
+`cockroach demo` is designed for testing purposes only. It is not suitable for production deployments. To see a list of recommendations for production deployments, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -97,7 +97,7 @@ Workload | Description
 `bank` | A `bank` database, with one `bank` table containing account details.
 `intro` | An `intro` database, with one table, `mytable`, with a hidden message.
 `kv` | A `kv` database, with one key-value-style table.
-`movr` | A `movr` database, with several tables of data for the [MovR example application](movr.html).<br><br>By default, `cockroach demo` loads the `movr` database as the [current database](sql-name-resolution.html#current-database), with sample region (`region`) and availability zone (`az`) replica localities for each node specified with the [`--nodes` flag](cockroach-demo.html#flags).
+`movr` | A `movr` database, with several tables of data for the [MovR example application]({% link {{ page.version.version }}/movr.md %}).<br><br>By default, `cockroach demo` loads the `movr` database as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), with sample region (`region`) and availability zone (`az`) replica localities for each node specified with the [`--nodes` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#flags).
 `startrek` | A `startrek` database, with two tables, `episodes` and `quotes`.
 `tpcc` | A `tpcc` database, with a rich schema of multiple tables.
 `ycsb` | A `ycsb` database, with a `usertable` from the Yahoo! Cloud Serving Benchmark.
@@ -110,38 +110,38 @@ The `demo` command supports the following general-use flags.
 
 Flag | Description
 -----|------------
-`--auto-enable-rangefeeds` | Override the default behavior of `cockroach demo`, which has rangefeeds enabled on startup.  If you do not need to use [changefeeds](create-and-configure-changefeeds.html) with your demo cluster, use `--auto-enable-rangefeeds=false` to disable rangefeeds and improve performance. See [Enable rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds) for more detail. <br><br>**Default:** `true`
+`--auto-enable-rangefeeds` | Override the default behavior of `cockroach demo`, which has rangefeeds enabled on startup.  If you do not need to use [changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) with your demo cluster, use `--auto-enable-rangefeeds=false` to disable rangefeeds and improve performance. See [Enable rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) for more detail. <br><br>**Default:** `true`
 `--cache` | For each demo node, the total size for caches. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br>**Default:** `64MiB`
-`--demo-locality` | Specify [locality](cockroach-start.html#locality) information for each demo node. The input is a colon-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1` and availability zone to `1`, node 2's region to `us-east2` and availability zone to `2`, and node 3's region to `us-east3` and availability zone to `3`:<br><br>`--demo-locality=region=us-east1,az=1:region=us-east1,az=2:region=us-east1,az=3`<br><br>By default, `cockroach demo` uses sample region (`region`) and availability zone (`az`) replica localities for each node specified with the `--nodes` flag.
-`--disable-demo-license` |  Start the demo cluster without loading a temporary [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/) that expires after 24 hours.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details](diagnostics-reporting.html) with Cockroach Labs.
+`--demo-locality` | Specify [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) information for each demo node. The input is a colon-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1` and availability zone to `1`, node 2's region to `us-east2` and availability zone to `2`, and node 3's region to `us-east3` and availability zone to `3`:<br><br>`--demo-locality=region=us-east1,az=1:region=us-east1,az=2:region=us-east1,az=3`<br><br>By default, `cockroach demo` uses sample region (`region`) and availability zone (`az`) replica localities for each node specified with the `--nodes` flag.
+`--disable-demo-license` |  Start the demo cluster without loading a temporary [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/) that expires after 24 hours.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details]({% link {{ page.version.version }}/diagnostics-reporting.md %}) with Cockroach Labs.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
 `--embedded` |  Minimizes the SQL shell [welcome text](#welcome-text) to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).
 `--no-example-database` |  Start the demo cluster without a pre-loaded dataset.<br>To obtain this behavior automatically in every new `cockroach demo` session, set the `COCKROACH_NO_EXAMPLE_DATABASE` environment variable to `true`.
 `--execute`<br><br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
-`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
-`--geo-partitioned-replicas` | <a name="geo-partitioned-replicas"></a> Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
-`--global` | <a name="global-flag"></a>Simulates a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
-`--http-port` |  Specifies a custom HTTP port to the [DB Console](ui-overview.html) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
+`--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal]({% link {{ page.version.version }}/cockroach-sql.md %}#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
+`--geo-partitioned-replicas` | <a name="geo-partitioned-replicas"></a> Start a 9-node demo cluster with [geo-partitioning]({% link {{ page.version.version }}/partitioning.md %}) applied to the [`movr`]({% link {{ page.version.version }}/movr.md %}) database.
+`--global` | <a name="global-flag"></a>Simulates a [multi-region cluster]({% link {{ page.version.version }}/simulate-a-multi-region-cluster-on-localhost.md %}) which sets the [`--locality` flag on node startup]({% link {{ page.version.version }}/cockroach-start.md %}#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
+`--http-port` |  Specifies a custom HTTP port to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
 `--insecure` |  Include this to start the demo cluster in insecure mode.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--listening-url-file` |   The file to which the node's SQL connection URL will be written as soon as the demo cluster is initialized and the node is ready to accept connections. <br><br>This flag is useful for automation because it allows you to wait until the demo cluster has been initialized so that subsequent commands can connect automatically.
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
 `--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
-`--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](cockroach-sql.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
+`--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions]({% link {{ page.version.version }}/cockroach-sql.md %}#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 `--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
 `--sql-port` |  Specifies a custom SQL port for the first node of the demo cluster.<br><br>In multi-node clusters, the SQL ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has the SQL port `3000`, the second node will the SQL port `3001`.
-`--with-load` |  Run a demo [`movr`](movr.html) workload against the preloaded `movr` database.<br><br> When running a multi-node demo cluster, load is balanced across all nodes.
+`--with-load` |  Run a demo [`movr`]({% link {{ page.version.version }}/movr.md %}) workload against the preloaded `movr` database.<br><br> When running a multi-node demo cluster, load is balanced across all nodes.
 
 ### Logging
 
 By default, the `demo` command does not log messages.
 
-If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior]({% link {{ page.version.version }}/configure-logs.md %}).
 
 ## SQL shell
 
 ### Welcome text
 
-When the SQL shell connects to the demo cluster at startup, it prints a welcome text with some tips and cluster details. Most of these details resemble the [welcome text](cockroach-sql.html#welcome-message) that is printed when connecting `cockroach sql` to a permanent cluster. `cockroach demo` also includes some [connection parameters](#connection-parameters) for connecting to the DB Console or for connecting another SQL client to the demo cluster.
+When the SQL shell connects to the demo cluster at startup, it prints a welcome text with some tips and cluster details. Most of these details resemble the [welcome text]({% link {{ page.version.version }}/cockroach-sql.md %}#welcome-message) that is printed when connecting `cockroach sql` to a permanent cluster. `cockroach demo` also includes some [connection parameters](#connection-parameters) for connecting to the DB Console or for connecting another SQL client to the demo cluster.
 
 ~~~ shell
 #
@@ -200,9 +200,9 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 Parameter | Description
 ----------|------------
-`webui` | Use this link to access a local [DB Console](ui-overview.html) to the demo cluster.
-`sql` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).<br>The default SQL port for the first node of a demo cluster is `26257`.
-`sql/unix` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
+`webui` | Use this link to access a local [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to the demo cluster.
+`sql` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).<br>The default SQL port for the first node of a demo cluster is `26257`.
+`sql/unix` | Use this connection URL to establish a [Unix domain socket connection]({% link {{ page.version.version }}/cockroach-sql.md %}#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
 
 {{site.data.alerts.callout_info}}
 You do not need to create or specify node and client certificates in `sql` or `sql/unix` connection URLs. Instead, you can securely connect to the demo cluster with the random password generated for the `demo` user.
@@ -272,11 +272,11 @@ Command | Usage
 
 ## Diagnostics reporting
 
-By default, `cockroach demo` shares anonymous usage details with Cockroach Labs. To opt out, set the [`diagnostics.reporting.enabled`](diagnostics-reporting.html#after-cluster-initialization) [cluster setting](cluster-settings.html) to `false`. You can also opt out by setting the [`COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING`](diagnostics-reporting.html#at-cluster-initialization) environment variable to `false` before running `cockroach demo`.
+By default, `cockroach demo` shares anonymous usage details with Cockroach Labs. To opt out, set the [`diagnostics.reporting.enabled`]({% link {{ page.version.version }}/diagnostics-reporting.md %}#after-cluster-initialization) [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `false`. You can also opt out by setting the [`COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING`]({% link {{ page.version.version }}/diagnostics-reporting.md %}#at-cluster-initialization) environment variable to `false` before running `cockroach demo`.
 
 ## Examples
 
-In these examples, we demonstrate how to start a shell with `cockroach demo`. For more SQL shell features, see the [`cockroach sql` examples](cockroach-sql.html#examples).
+In these examples, we demonstrate how to start a shell with `cockroach demo`. For more SQL shell features, see the [`cockroach sql` examples]({% link {{ page.version.version }}/cockroach-sql.md %}#examples).
 
 ### Start a single-node demo cluster
 
@@ -414,7 +414,7 @@ $ cockroach demo ycsb
 $ cockroach demo --with-load
 ~~~
 
-This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console](ui-overview-dashboard.html#sql-statements).
+This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#sql-statements).
 
 When running a multi-node demo cluster, load is balanced across all nodes.
 
@@ -472,7 +472,7 @@ In addition to the interactive SQL shell that opens when you run `cockroach demo
       (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
     ~~~
 
-1. Open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql` connection URL of the node to which you want to connect:
+1. Open a new terminal and run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) with the `--url` flag set to the `sql` connection URL of the node to which you want to connect:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -494,7 +494,7 @@ This command starts a 9-node demo cluster with the `movr` database preloaded and
 The `--global` flag is an experimental feature of `cockroach demo`. The interface and output are subject to change.
 {{site.data.alerts.end}}
 
-For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-region capabilities, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
+For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-region capabilities, see [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
 ### Add, shut down, and restart nodes in a multi-node demo cluster
 
@@ -671,13 +671,13 @@ node 10:
 
 ### Try your own scenario
 
-In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-vars.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
+In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`]({% link {{ page.version.version }}/create-database.md %})), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`]({% link {{ page.version.version }}/set-vars.md %})) to test our your own scenario involving any CockroachDB SQL features you are interested in.
 
 ## See also
 
-- [`cockroach sql`](cockroach-sql.html)
-- [`cockroach workload`](cockroach-workload.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [SQL Statements](sql-statements.html)
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [MovR: Vehicle-Sharing App](movr.html)
+- [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
+- [MovR: Vehicle-Sharing App]({% link {{ page.version.version }}/movr.md %})

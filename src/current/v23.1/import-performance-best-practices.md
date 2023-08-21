@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page provides best practices for optimizing [import](import-into.html) performance in CockroachDB.
+This page provides best practices for optimizing [import]({% link {{ page.version.version }}/import-into.md %}) performance in CockroachDB.
 
 `IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](copy-from.html) instead.
 
@@ -37,7 +37,7 @@ When importing into a new table, split your dump data into two files:
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
 
-Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+Convert the schema-only file using the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page). The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 
@@ -83,7 +83,7 @@ Splitting the import data into multiple files can have a significant impact on t
 
 For these formats, we recommend splitting your data into at least as many files as there are nodes.
 
-For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table](import-into.html):
+For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table]({% link {{ page.version.version }}/import-into.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -106,7 +106,7 @@ CockroachDB ingests the files as provided and does not automatically split them 
 {{site.data.alerts.callout_info}}
 You can split the data into **more** files than you have nodes. CockroachDB will process the files in parallel across the cluster. When splitting the data Cockroach Labs recommends splitting it into a multiple of the number of nodes in your cluster, if possible. For example, if you have a 3 node cluster, split the dataset into 9, 27, or 300 files.
 
-Cockroach Labs recommends keeping the files to a maximum file size of 4 GB unless the files are streamed (for example, [cloud storage locations](use-cloud-storage.html) will stream the data to CockroachDB), and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
+Cockroach Labs recommends keeping the files to a maximum file size of 4 GB unless the files are streamed (for example, [cloud storage locations]({% link {{ page.version.version }}/use-cloud-storage.md %}) will stream the data to CockroachDB), and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
 {{site.data.alerts.end}}
 
 For maximum performance each split file should be sorted within and across all files, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, suppose your table has an alphabetic string primary key and you were importing the data into a 3 node cluster.
@@ -116,7 +116,7 @@ For maximum performance each split file should be sorted within and across all f
 CREATE TABLE contacts (email STRING PRIMARY KEY, first_name TEXT, last_name TEXT);
 ~~~
 
-You should split the files so that the first file contains rows where the [primary key](primary-key.html) begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file should contain duplicate rows, and within each file the data is sorted alphabetically by the primary key.
+You should split the files so that the first file contains rows where the [primary key]({% link {{ page.version.version }}/primary-key.md %}) begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file should contain duplicate rows, and within each file the data is sorted alphabetically by the primary key.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -161,10 +161,10 @@ If you cannot both split and sort your dataset, the performance of either split 
 
 ## See also
 
-- [`IMPORT INTO`](import-into.html)
-- [Migration Overview](migration-overview.html)
-- [Migrate from Oracle](migrate-from-oracle.html)
-- [Migrate from PostgreSQL](migrate-from-postgres.html)
-- [Migrate from MySQL](migrate-from-mysql.html)
-- [Migrate from CSV](migrate-from-csv.html)
-- [Migrate from Avro](migrate-from-avro.html)
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migrate from Oracle]({% link {{ page.version.version }}/migrate-from-oracle.md %})
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
+- [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %})

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COPY FROM` statement copies data from [`cockroach sql`](cockroach-sql.html) or other [third party clients](install-client-drivers.html) to tables in your cluster.
+The `COPY FROM` statement copies data from [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) or other [third party clients]({% link {{ page.version.version }}/install-client-drivers.md %}) to tables in your cluster.
 
 ## Syntax
 
@@ -42,7 +42,7 @@ Only members of the `admin` role can run `COPY` statements. By default, the `roo
 
 ## Examples
 
-To run the examples, use [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the [`movr` database](movr.html) preloaded.
+To run the examples, use [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the [`movr` database]({% link {{ page.version.version }}/movr.md %}) preloaded.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -284,7 +284,7 @@ You can copy CSV data into CockroachDB using the following methods:
     CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
     ~~~
 
-1. Set the `bytea_output` [session variable](set-vars.html#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
+1. Set the `bytea_output` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -338,10 +338,10 @@ You can copy CSV data into CockroachDB using the following methods:
 
 ## See also
 
-- [Migration Overview](migration-overview.html)
-- [`IMPORT INTO`](import-into.html)
-- [`EXPORT`](export.html)
-- [Install a Driver or ORM Framework](install-client-drivers.html)
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %})
 {% comment %}
-- [Migrate from PostgreSQL](migrate-from-postgres.html)
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 {% endcomment %}

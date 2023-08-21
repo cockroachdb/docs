@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({% link {{ page.version.version }}/performance.md %}#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
@@ -20,22 +20,22 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 ## Before you begin
 
-- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](performance.html#tpc-c).
+- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({% link {{ page.version.version }}/performance.md %}#tpc-c).
 
-- Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+- Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-In the terminal, use the [`cockroach demo`](cockroach-demo.html) command to start a simulated multi-region cluster with 9 nodes:
+In the terminal, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a simulated multi-region cluster with 9 nodes:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~
 
-This simulated multi-region deployment will take advantage of CockroachDB's [multi-region SQL statements](multiregion-overview.html) to deliver improved ease of use and performance.
+This simulated multi-region deployment will take advantage of CockroachDB's [multi-region SQL statements]({% link {{ page.version.version }}/multiregion-overview.md %}) to deliver improved ease of use and performance.
 
 {{site.data.alerts.callout_info}}
 You must use the IP address shown at the SQL prompt to run the following steps.
@@ -45,9 +45,9 @@ This is necessary because the demo cluster may use a randomly allocated local IP
 
 ## Step 2. Import the TPC-C dataset
 
-CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
-In a second terminal window (call it terminal 2), use [`cockroach workload`](cockroach-workload.html) to load the initial schema and data:
+In a second terminal window (call it terminal 2), use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the initial schema and data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -59,7 +59,7 @@ cockroach workload init tpcc \
 'postgresql://root@127.0.0.1:26257/tpcc?sslmode=disable'
 ~~~
 
-This will load 2 GB of data for 10 "warehouses", and spread the data across all 3 regions with a [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures).
+This will load 2 GB of data for 10 "warehouses", and spread the data across all 3 regions with a [`ZONE` survival goal]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#survive-zone-failures).
 
 ## Step 3. Run the benchmark
 
@@ -163,7 +163,7 @@ You will also see some audit checks and latency statistics for each individual q
 
 ## Step 5. Clean up
 
-When you're done with your test cluster, switch back to terminal 1 where [`cockroach demo`](cockroach-demo.html) is still running and issue `\q` at the SQL prompt to gracefully shut down the demo cluster.
+When you're done with your test cluster, switch back to terminal 1 where [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) is still running and issue `\q` at the SQL prompt to gracefully shut down the demo cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -1,4 +1,4 @@
-CockroachDB does not support expressions as `ON CONFLICT` targets. This means that unique {% if page.name == "expression-indexes.md" %} expression indexes {% else %} [expression indexes](expression-indexes.html) {% endif %} cannot be selected as arbiters for [`INSERT .. ON CONFLICT`](insert.html#on-conflict-clause) statements. For example:
+CockroachDB does not support expressions as `ON CONFLICT` targets. This means that unique {% if page.name == "expression-indexes.md" %} expression indexes {% else %} [expression indexes]({% link {{ page.version.version }}/expression-indexes.md %}) {% endif %} cannot be selected as arbiters for [`INSERT .. ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -8,11 +8,11 @@ docs_area: reference.db_console
 The **Jobs** page of the DB Console provides details about long-running tasks performed by your cluster. These can include:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}.
-- [`IMPORT`](import.html).
-- {{ site.data.products.enterprise }} [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
-- [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
-- [Automatic table statistics](cost-based-optimizer.html#table-statistics).
-- [Changefeeds](change-data-capture-overview.html).
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %}).
+- {{ site.data.products.enterprise }} [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}).
+- [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) created for use by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
+- [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics).
+- [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 
 All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster.
 

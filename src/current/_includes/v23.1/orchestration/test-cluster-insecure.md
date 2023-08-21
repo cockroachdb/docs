@@ -1,4 +1,4 @@
-1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
+1. Launch a temporary interactive pod and start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) inside it:
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
@@ -30,7 +30,7 @@
 
     </section>
 
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

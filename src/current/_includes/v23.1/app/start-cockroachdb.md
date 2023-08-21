@@ -1,7 +1,7 @@
-Choose whether to run a temporary local cluster or a free CockroachDB cluster on {{ site.data.products.serverless }}. The instructions below will adjust accordingly.
+Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachDB {{ site.data.products.serverless }}. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -19,7 +19,7 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 1. Click the **Connection string** tab in the **Connection info** dialog.
 
-1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by some clients connecting to {{ site.data.products.db }}.
+1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by some clients connecting to CockroachDB {{ site.data.products.cloud }}.
 
 1. Copy the connection string provided in step **2** to a secure location.
 
@@ -31,8 +31,8 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
+1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. Run the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

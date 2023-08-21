@@ -7,9 +7,9 @@ docs_area: reference.security
 
 Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
 
-This page describes authorization of SQL users on particular [CockroachDB database clusters](../architecture/glossary.html#cluster). This is distinct from authorization of {{ site.data.products.db }} users on {{ site.data.products.db }} organiations.
+This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users on CockroachDB {{ site.data.products.cloud }} organiations.
 
-Learn more: [Overview of the {{ site.data.products.db }} two-level authorization model](../../cockroachcloud/authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 
 ## Authorization models
 
@@ -23,8 +23,8 @@ CockroachDB offers two authorization models:
 
 Authorization Model         | Features
 ----------------------------|---------------------------------------
-[System-level Privileges](#supported-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how [object-level privileges](#privileges) are inherited.</li><li>Are granted with the [`GRANT`](../grant.html) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</li></ul>
-[Role Options](#role-options) |  <ul><li> [Specific role options](#supported-privileges) which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system-level privileges.</li><li>Apply only to specific users, and are not inheritable via role membership.</li><li>Are granted with the [`GRANT`](../grant.html) statement, and viewed with the [`SHOW GRANTS`](../show-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
+[System-level Privileges](#supported-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how [object-level privileges](#privileges) are inherited.</li><li>Are granted with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`]({% link {{ page.version.version }}/show-system-grants.md %}) statement.</li><li>May be assigned with the [`GRANT OPTION`]({% link {{ page.version.version }}/grant.md %}), which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</li></ul>
+[Role Options](#role-options) |  <ul><li> [Specific role options](#supported-privileges) which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system-level privileges.</li><li>Apply only to specific users, and are not inheritable via role membership.</li><li>Are granted with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement, and viewed with the [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) statement.</li><li>May be assigned with the [`GRANT OPTION`]({% link {{ page.version.version }}/grant.md %}), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
 
 If a system-level privilege exists with the same name as a role option, the system-level privilege should be used.
 
@@ -32,7 +32,7 @@ If a system-level privilege exists with the same name as a role option, the syst
 
 Both [authorization models](#authorization-models) make use of the concept of user and roles. There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
-- Be permitted to log in to the [SQL shell](../cockroach-sql.html).
+- Be permitted to log in to the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}).
 - Be granted [privileges](#privileges) to specific actions and database objects.
 - Be a member of other users/roles, inheriting their privileges.
 - Have other users/roles as members that inherit its privileges.
@@ -40,17 +40,17 @@ Both [authorization models](#authorization-models) make use of the concept of us
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
-The SQL statements [`CREATE USER`](../create-user.html) and [`CREATE ROLE`](../create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+The SQL statements [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
 
 ## SQL users
 
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](../cockroach-sql.html) or through an application.
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) or through an application.
 
 ### Create and manage users
 
-Use the [`CREATE USER`](../create-user.html) and [`DROP USER`](../drop-user.html) statements to create and remove users, the [`ALTER USER`](../alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](../grant.html) and [`REVOKE`](../revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](../show-users.html) statement to list users.
+Use the [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) statements to create and remove users, the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement to add or change a user's password and role options, the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage the user’s privileges, and the [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) statement to list users.
 
 A new user must be granted the required privileges for each database and table that the user needs to access.
 
@@ -62,7 +62,7 @@ By default, a new user belongs to the `public` role and has no privileges other 
 
 The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
 
-For secure clusters, in addition to [generating the client certificate](../authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](../alter-user.html) statement.
+For secure clusters, in addition to [generating the client certificate]({% link {{ page.version.version }}/authentication.md %}#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement.
 
 ## Roles
 
@@ -80,7 +80,7 @@ The `admin` and `public` roles exist by default.
 
 The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
-An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](../create-role.html) and [`DROP ROLE`](../drop-role.html).
+An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) and [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}).
 
 To assign a user to the `admin` role:
 
@@ -99,13 +99,13 @@ All new users and roles belong to the `public` role by default. You can grant an
 
 `Role admin` is a [role option](#role-options) that allows a given user or role to *administrate* itself, by granting and revoking it to other users and roles.
 
-To create a `role admin`, use [`WITH ADMIN OPTION`](../grant.html#grant-the-admin-option).
+To create a `role admin`, use [`WITH ADMIN OPTION`]({% link {{ page.version.version }}/grant.md %}#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
 The terms “`admin` role” and “`role admin`” can be confusing.
 The `admin` role is a role (specifically the role granting all privileges on all database resources across a cluster), whereas `role admin` is a role option that is either enabled or disabled or not on any given role or grant of a role to another user or role.
 
-Learn more about [`role options`](../create-user.html#role-options).
+Learn more about [`role options`]({% link {{ page.version.version }}/create-user.md %}#role-options).
 {{site.data.alerts.end}}
 
 #### Direct member
@@ -128,7 +128,7 @@ All objects that do not have owners (for example, objects created before upgradi
 
 To allow another user to use the object, the owner can [assign privileges](#managing-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
-Users that own objects cannot be dropped until the [ownership is transferred to another user](../alter-database.html#change-a-databases-owner).
+Users that own objects cannot be dropped until the [ownership is transferred to another user]({% link {{ page.version.version }}/alter-database.md %}#change-a-databases-owner).
 
 ## Privileges
 
@@ -138,7 +138,7 @@ When a user connects to a database, either via the built-in SQL client or a clie
 
 System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
 
-You can work with system-level privileges using the [`GRANT `](../grant.html) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.
+You can work with system-level privileges using the [`GRANT `]({% link {{ page.version.version }}/grant.md %}) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`]({% link {{ page.version.version }}/show-system-grants.md %}) statement.
 
 Roles and users can be granted the following privileges:
 
@@ -148,7 +148,7 @@ If a system-level privilege exists with the same name as a role option, the syst
 
 ### Managing privileges
 
-Use the [`GRANT`](../grant.html) and [`REVOKE`](../revoke.html) statements to manage privileges for users and roles.
+Use the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage privileges for users and roles.
 
 Take the following points into consideration while granting privileges to roles and users:
 
@@ -156,23 +156,23 @@ Take the following points into consideration while granting privileges to roles 
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
 - In CockroachDB, privileges are granted to users and roles at the database and table levels, or cluster-wide at the system level. They are not yet supported for other granularities such as columns or rows.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
-- For privileges required by specific statements, see the documentation for the respective [SQL statement](../sql-statements.html).
+- For privileges required by specific statements, see the documentation for the respective [SQL statement]({% link {{ page.version.version }}/sql-statements.md %}).
 
 ### Default privileges
 
 By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
-To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html) statement.
+To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}) statement.
 
-To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html) statement.
+To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) statement.
 
 The creator of an object is also the object's [owner](#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
-For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html#examples) statement pages.
+For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}#examples) and [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}#examples) statement pages.
 
 ## Role options
 
-Users' authorization to perform certain actions are governed not by grants but by [`role options`](../create-user.html#role-options). These options govern whether users can perform actions such as:
+Users' authorization to perform certain actions are governed not by grants but by [`role options`]({% link {{ page.version.version }}/create-user.md %}#role-options). These options govern whether users can perform actions such as:
 
 - Viewing or canceling ongoing queries and sessions owned by other roles.
 - Pausing, resuming, and canceling jobs.
@@ -188,8 +188,8 @@ We recommend the following best practices to set up access control for your clus
 - Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#managing-privileges) based on your application’s access requirements.
 - Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
-  For improved performance, CockroachDB securely caches [authentication information for users](../authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](../create-role.html), [`ALTER ROLE`](../alter-role.html), [`DROP ROLE`](../drop-role.html)):
+  For improved performance, CockroachDB securely caches [authentication information for users]({% link {{ page.version.version }}/authentication.md %}#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})):
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
-- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
+- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used.

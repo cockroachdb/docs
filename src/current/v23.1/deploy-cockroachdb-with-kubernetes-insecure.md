@@ -16,7 +16,7 @@ This page shows you how to start and stop a 3-node CockroachDB insecure test clu
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, see [Kubernetes Overview](kubernetes-overview.html).
+The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, see [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %}).
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -153,9 +153,9 @@ To delete the Kubernetes cluster:
 
 ## See also
 
-- [Kubernetes Overview](kubernetes-overview.html)
-- [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html)
-- [Cluster monitoring](monitor-cockroachdb-kubernetes.html)
-- [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
-- [Kubernetes Performance Guide](kubernetes-performance.html)
-- [Production Checklist](recommended-production-settings.html)
+- [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %})
+- [Deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})
+- [Cluster monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %})
+- [Kubernetes Multi-Cluster Deployment]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %})
+- [Kubernetes Performance Guide]({% link {{ page.version.version }}/kubernetes-performance.md %})
+- [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %})

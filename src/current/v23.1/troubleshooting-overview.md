@@ -7,25 +7,25 @@ docs_area: manage
 
 If you experience an issue when using CockroachDB, try these steps to resolve the problem:
 
-- Check your [logs](logging-overview.html) for errors. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](cockroach-debug-zip.html).
-  - Consult the list of [common errors and solutions](common-errors.html).
-  - If you are getting transaction retry errors, see [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) and the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
+- Check your [logs]({% link {{ page.version.version }}/logging-overview.md %}) for errors. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster]({% link {{ page.version.version }}/cockroach-debug-zip.md %}).
+  - Consult the list of [common errors and solutions]({% link {{ page.version.version }}/common-errors.md %}).
+  - If you are getting transaction retry errors, see [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) and the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#transaction-retry-error-reference).
 
 - If the problem doesn't match a common error, try the following pages:
-  - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html) helps you start and scale your cluster.
-  - [Troubleshoot Common Problems](query-behavior-troubleshooting.html) helps you handle errors and troubleshooting problems that may arise during application development.
-  - [Troubleshoot Statement Behavior](query-behavior-troubleshooting.html) helps you with unexpected query results.
+  - [Troubleshoot Cluster Setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}) helps you start and scale your cluster.
+  - [Troubleshoot Common Problems]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}) helps you handle errors and troubleshooting problems that may arise during application development.
+  - [Troubleshoot Statement Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}) helps you with unexpected query results.
 
-- If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](../cockroachcloud/troubleshooting-page.html).
+- If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/troubleshooting-page).
 
-- [Replication Reports](query-replication-reports.html) let you query the status of your cluster's data replication, data placement, and zone constraint conformance.
+- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) let you query the status of your cluster's data replication, data placement, and zone constraint conformance.
 
 - If you cannot resolve the issue yourself, the following tools can help you move forward:
-  - [Support Resources](support-resources.html) identify ways you can get help with troubleshooting.
-  - [File an Issue](file-an-issue.html) provides details on how to file an issue that you're unable to resolve.
+  - [Support Resources]({% link {{ page.version.version }}/support-resources.md %}) identify ways you can get help with troubleshooting.
+  - [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %}) provides details on how to file an issue that you're unable to resolve.
  
-- In a support escalation, you may be directed to use the following features by the [Cockroach Labs support team](support-resources.html):
+- In a support escalation, you may be directed to use the following features by the [Cockroach Labs support team]({% link {{ page.version.version }}/support-resources.md %}):
 
-  - [`cockroach debug zip`](cockroach-debug-zip.html)
-  - [`cockroach debug tsdump`](cockroach-debug-tsdump.html)
-  - [Automatic CPU Profiler](automatic-cpu-profiler.html)
+  - [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %})
+  - [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %})
+  - [Automatic CPU Profiler]({% link {{ page.version.version }}/automatic-cpu-profiler.md %})

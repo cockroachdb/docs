@@ -8,8 +8,8 @@ The details displayed on the **Statement Fingerprint** page reflect the [time in
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
-- **Regions**: The regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+- **Regions**: The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
 - **Database**: The database on which the statements executed.
 - **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 - **Failed?**: Whether the statement failed to execute.
@@ -104,7 +104,7 @@ The **Diagnostics** tab allows you to activate and download diagnostics for a SQ
 {{site.data.alerts.callout_info}}
 The **Diagnostics** tab is not visible:
 
-- On {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.serverless }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
@@ -150,7 +150,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 
 - On the **Diagnostics** tab for a statement fingerprint, click the **All statement diagnostics** link.
 {% if page.cloud != true %}
-- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
+- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports).
 {% endif %}
 
 Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.

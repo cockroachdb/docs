@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. This means that existing applications built on PostgreSQL can often be migrated to CockroachDB without changing application code.
 
-CockroachDB is compatible with version 3.0 of the PostgreSQL wire protocol (pgwire) and works with the majority of PostgreSQL database tools such as [DBeaver](dbeaver.html), [Intellij](intellij-idea.html), and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](example-apps.html).
+CockroachDB is compatible with version 3.0 of the PostgreSQL wire protocol (pgwire) and works with the majority of PostgreSQL database tools such as [DBeaver]({% link {{ page.version.version }}/dbeaver.md %}), [Intellij]({% link {{ page.version.version }}/intellij-idea.md %}), and so on. Consult this link for a full list of supported [third-party database tools]({% link {{ page.version.version }}/third-party-database-tools.md %}). CockroachDB also works with most [PostgreSQL drivers and ORMs]({% link {{ page.version.version }}/example-apps.md %}).
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
@@ -27,16 +27,16 @@ The following PostgreSQL features are partially supported in CockroachDB {{ page
 
 ### Multiple active portals
 
-CockroachDB {{ page.version.version }} supports pgwire's multiple active portals as a [preview feature](cockroachdb-feature-availability.html#features-in-preview).  The feature is off by default, and can be enabled by setting the [session variable `multiple_active_portals_enabled`](set-vars.html#multiple-active-portals-enabled) to `true`. 
+CockroachDB {{ page.version.version }} supports pgwire's multiple active portals as a [preview feature]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).  The feature is off by default, and can be enabled by setting the [session variable `multiple_active_portals_enabled`]({% link {{ page.version.version }}/set-vars.md %}#multiple-active-portals-enabled) to `true`. 
 
 When set to `true`, multiple portals can be open at the same time, with their execution interleaved with each other. In other words, these portals can be paused.
 
 This feature has the following limitations:
 
-- Only read-only [`SELECT` queries](selection-queries.html) without [subqueries](subqueries.html) are supported.
-- Postqueries (which are how CockroachDB executes [foreign key checks](foreign-key.html), for example) are not supported - [cockroachdb/cockroach#96398](https://github.com/cockroachdb/cockroach/issues/96398)
-- [Distributed SQL execution](architecture/sql-layer.html#distsql) is not supported for multiple active portals; instead queries execute on the [gateway node](architecture/life-of-a-distributed-transaction.html#gateway) only - [cockroachdb/cockroach#100822](https://github.com/cockroachdb/cockroach/issues/100822)
-- Only the latest execution of a statement from a pausable portal is recorded by the [trace infrastructure](show-trace.html) - [cockroachdb/cockroach#99404](https://github.com/cockroachdb/cockroach/issues/99404)
+- Only read-only [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) without [subqueries]({% link {{ page.version.version }}/subqueries.md %}) are supported.
+- Postqueries (which are how CockroachDB executes [foreign key checks]({% link {{ page.version.version }}/foreign-key.md %}), for example) are not supported - [cockroachdb/cockroach#96398](https://github.com/cockroachdb/cockroach/issues/96398)
+- [Distributed SQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) is not supported for multiple active portals; instead queries execute on the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) only - [cockroachdb/cockroach#100822](https://github.com/cockroachdb/cockroach/issues/100822)
+- Only the latest execution of a statement from a pausable portal is recorded by the [trace infrastructure]({% link {{ page.version.version }}/show-trace.md %}) - [cockroachdb/cockroach#99404](https://github.com/cockroachdb/cockroach/issues/99404)
 
 In addition to the known issues, additional performance testing is needed. The current list of known issues can be viewed [on GitHub using the `A-pausable-portals` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc++label%3AA-pausable-portals+), and we welcome bug reports.
 
@@ -147,7 +147,7 @@ SELECT 1::int << 32;
 
 In CockroachDB, no such modulo is performed.
 
-**Porting instructions:** Manually add a modulo to the second argument. Also note that CockroachDB's [`INT`](int.html) type is always 64 bits. For example:
+**Porting instructions:** Manually add a modulo to the second argument. Also note that CockroachDB's [`INT`]({% link {{ page.version.version }}/int.md %}) type is always 64 bits. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -158,11 +158,11 @@ SELECT 1::int << (x % 64);
 
 CockroachDB supports the `SELECT FOR UPDATE` statement, which is used to order transactions by controlling concurrent access to one or more rows of a table.
 
-For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
+For more information, see [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}).
 
 ### `CHECK` constraint validation for `INSERT ON CONFLICT`
 
-CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
+CockroachDB validates [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints on the results of [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
 
 If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
 
@@ -211,4 +211,4 @@ PostgreSQL:
 
 ### SQL Compatibility
 
-Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).
+Click the following link to find a full list of [CockroachDB supported SQL Features]({% link {{ page.version.version }}/sql-feature-support.md %}).

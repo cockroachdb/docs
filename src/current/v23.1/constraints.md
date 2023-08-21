@@ -14,12 +14,12 @@ For example, the `UNIQUE` constraint requires that all values in a column be uni
 
  Constraint | Description
 ------------|-------------
- [`CHECK`](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression.
- [`DEFAULT` value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the `DEFAULT` value is written to the column.
- [`FOREIGN KEY`](foreign-key.html) | Values must exactly match existing values from the column it references.
- [`NOT NULL`](not-null.html) | Values may not be `NULL`.
- [`PRIMARY KEY`](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the `NOT NULL` and `UNIQUE` constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns.
- [`UNIQUE`](unique.html) | Each non-`NULL` value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns.
+ [`CHECK`]({% link {{ page.version.version }}/check.md %}) | Values must return `TRUE` or `NULL` for a Boolean expression.
+ [`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}) | If a value is not defined for the constrained column in an `INSERT` statement, the `DEFAULT` value is written to the column.
+ [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) | Values must exactly match existing values from the column it references.
+ [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) | Values may not be `NULL`.
+ [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) | Values must uniquely identify each row *(one per table)*. This behaves as if the `NOT NULL` and `UNIQUE` constraints are applied, as well as automatically creates an [index]({% link {{ page.version.version }}/indexes.md %}) for the table using the constrained columns.
+ [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) | Each non-`NULL` value must be unique. This also automatically creates an [index]({% link {{ page.version.version }}/indexes.md %}) for the table using the constrained columns.
 
 ## Using constraints
 
@@ -45,24 +45,24 @@ How you add constraints depends on the number of columns you want to constrain, 
   {{site.data.alerts.end}}
 
 - **Existing tables** can have the following constraints added:
-  - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](alter-table.html#add-constraint). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
+  - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ADD CONSTRAINT id_unique UNIQUE (id);
     ~~~
 
-  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-table.html#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint](default-value.html) to `baz.bool`:
+  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint]({% link {{ page.version.version }}/default-value.md %}) to `baz.bool`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ALTER COLUMN bool SET DEFAULT true;
     ~~~
 
-  -  [`PRIMARY KEY`](primary-key.html) constraints can be added with [`ADD CONSTRAINT`](alter-table.html#add-constraint)/[`ADD PRIMARY KEY`](alter-table.html) in the following circumstances:
+  -  [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints can be added with [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)/[`ADD PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}) in the following circumstances:
 
-      - A [`DROP CONSTRAINT`](alter-table.html#drop-constraint) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For examples, see [Add constraints](alter-table.html#add-constraints) and [Drop constraints](alter-table.html#drop-constraints).
-      - The current [primary key is on `rowid`](indexes.html#creation), the default primary key created if none is explicitly defined at table creation.
+      - A [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For examples, see [Add constraints]({% link {{ page.version.version }}/alter-table.md %}#add-constraints) and [Drop constraints]({% link {{ page.version.version }}/alter-table.md %}#drop-constraints).
+      - The current [primary key is on `rowid`]({% link {{ page.version.version }}/indexes.md %}#creation), the default primary key created if none is explicitly defined at table creation.
       - The `ADD CONSTRAINT`/`ADD PRIMARY KEY` is in the same transaction as a `CREATE TABLE` statement with no primary key defined.
 
 #### Order of constraints
@@ -85,7 +85,7 @@ You can name constraints applied to new tables using the `CONSTRAINT` clause bef
 
 ### View constraints
 
-To view a table's constraints, use [`SHOW CONSTRAINTS`](show-constraints.html) or [`SHOW CREATE`](show-create.html).
+To view a table's constraints, use [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %}) or [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}).
 
 ### Remove constraints
 
@@ -93,12 +93,12 @@ The procedure for removing a constraint depends on its type:
 
 Constraint Type | Procedure
 -----------------|-----------
-[`CHECK`](check.html) | Use [`DROP CONSTRAINT`](alter-table.html#drop-constraint).
-[`DEFAULT` value](default-value.html) | Use [`ALTER COLUMN`](alter-table.html#remove-default-constraint).
-[`FOREIGN KEY`](foreign-key.html) | Use [`DROP CONSTRAINT`](alter-table.html#drop-constraint).
-[`NOT NULL`](not-null.html) | Use [`ALTER COLUMN`](alter-table.html#remove-not-null-constraint).
-[`PRIMARY KEY`](primary-key.html) |   Primary key constraints can be dropped with [`DROP CONSTRAINT`](alter-table.html#drop-constraint) if an [`ADD CONSTRAINT`](alter-table.html#add-constraint) statement follows the `DROP CONSTRAINT` statement in the same transaction.
-[`UNIQUE`](unique.html) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index](drop-index.html) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint`.
+[`CHECK`]({% link {{ page.version.version }}/check.md %}) | Use [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint).
+[`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}) | Use [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#remove-default-constraint).
+[`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) | Use [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint).
+[`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) | Use [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#remove-not-null-constraint).
+[`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) |   Primary key constraints can be dropped with [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint) if an [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+[`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index]({% link {{ page.version.version }}/drop-index.md %}) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint`.
 
 ### Change constraints
 
@@ -106,21 +106,21 @@ The procedure for changing a constraint depends on its type:
 
 Constraint Type | Procedure
 -----------------|-----------
-[`CHECK`](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
-[`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-table.html#alter-column).
-[`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
-[`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only added and removed with [`ALTER COLUMN`](alter-table.html#alter-column).
-[`PRIMARY KEY`](primary-key.html) |   To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) statement.<br><br>When you change a primary key with [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](alter-table.html#drop-constraint)/[`ADD CONSTRAINT`](alter-table.html#add-constraint) to change the primary key.
-[`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
+[`CHECK`]({% link {{ page.version.version }}/check.md %}) | [Issue a transaction]({% link {{ page.version.version }}/transactions.md %}#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)).
+[`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}) | The `DEFAULT` value can be changed through [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column).
+[`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) | [Issue a transaction]({% link {{ page.version.version }}/transactions.md %}#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)).
+[`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) | The `NOT NULL` constraint cannot be changed, only added and removed with [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column).
+[`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) |   To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) statement.<br><br>When you change a primary key with [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)/[`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) to change the primary key.
+[`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) | [Issue a transaction]({% link {{ page.version.version }}/transactions.md %}#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)).
 
 
 ## See also
 
-- [`CREATE TABLE`](create-table.html)
-- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
-- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`SHOW CREATE`](show-create.html)
-- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
-- [`ALTER TABLE`](alter-table.html)
-- [`ALTER COLUMN`](alter-table.html#alter-column)
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column)

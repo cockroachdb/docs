@@ -53,7 +53,7 @@ In addition to setting a maximum connection pool size, set the maximum number of
 
 ## Validating connections in a pool
 
-After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. {{ site.data.products.db }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
+After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. CockroachDB {{ site.data.products.cloud }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
 
@@ -66,7 +66,7 @@ Validating connections is typically handled automatically by the connection pool
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Java application similar to the [basic JDBC example]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
@@ -96,7 +96,7 @@ Connection conn = ds.getConnection();
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-In this example, a Go application similar to the [basic pgx example](build-a-go-app-with-cockroachdb.html) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Go application similar to the [basic pgx example]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
@@ -127,8 +127,8 @@ For a full list of connection pool configuration parameters for pgxpool, see [th
 
 ## Implementing connection retry logic
 
-Some operational processes involve [node shutdown](node-shutdown.html). During the shutdown sequence, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with a connection error.
+Some operational processes involve [node shutdown]({% link {{ page.version.version }}/node-shutdown.md %}). During the shutdown sequence, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with a connection error.
 
-To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. This allows procedures such as [rolling upgrades](upgrade-cockroach-version.html) to complete without interrupting your service. For details, see [Connection retry loop](node-shutdown.html#connection-retry-loop).
+To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. This allows procedures such as [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to complete without interrupting your service. For details, see [Connection retry loop]({% link {{ page.version.version }}/node-shutdown.md %}#connection-retry-loop).
 
-If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting](cluster-settings.html) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown](node-shutdown.html#server-shutdown-connection_wait).
+If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#server-shutdown-connection_wait).
