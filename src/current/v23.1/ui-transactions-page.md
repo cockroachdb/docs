@@ -31,7 +31,7 @@ The **Transaction Fingerprints** view helps you:
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. Click the **Transactions** tab.
+To view this page, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console. Click the **Transactions** tab.
 {% endif %}
 
 Click the **Transactions** tab. The **Transaction Fingerprints** radio button is selected and the [Transactions table](#transactions-table) displays.
@@ -53,7 +53,7 @@ The **Active Executions** view helps you:
 {% if page.cloud != true %}
 To display this view, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To display this view, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console.
+To display this view, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console.
 {% endif %}
 
 The **Statements** tab is selected. Click the **Transactions** tab and the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.

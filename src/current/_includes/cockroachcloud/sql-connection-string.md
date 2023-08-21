@@ -26,7 +26,7 @@
     </section>
 
     Where:
-    - `<user>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
+    - `<user>` is the SQL user. By default, this is your CockroachDB {{ site.data.products.cloud }} account username.
     - `<cluster-name>-<short-id>` is the short name of your cluster plus the short ID. For example, `funny-skunk-3ab`.
     - `<cluster-id>` is a unique string used to identify your cluster when downloading the CA certificate. For example, `12a3bcde-4fa5-6789-1234-56bc7890d123`.
     - `<region>` is the region in which your cluster is running. If you have a multi-region cluster, you can choose any of the regions in which your cluster is running. For example, `aws-us-east-1`.

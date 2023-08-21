@@ -18,7 +18,7 @@ For more information about using DBeaver, see the [DBeaver documentation](https:
 
 If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues).
 
-For information on using DBeaver with {{ site.data.products.db }}, see [this blog post](https://paul-logston.medium.com/setting-up-a-sql-gui-with-cockroachdb-a9fd5fe15d9d).
+For information on using DBeaver with CockroachDB {{ site.data.products.cloud }}, see [this blog post](https://paul-logston.medium.com/setting-up-a-sql-gui-with-cockroachdb-a9fd5fe15d9d).
 {{site.data.alerts.end}}
 
 ## Before You Begin

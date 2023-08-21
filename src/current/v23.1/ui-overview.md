@@ -9,7 +9,7 @@ docs_area: reference.db_console
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
 {{site.data.alerts.callout_info}}
-Authorized {{ site.data.products.dedicated }} cluster users can visit the DB Console at a URL provisioned for the cluster.
+Authorized CockroachDB {{ site.data.products.dedicated }} cluster users can visit the DB Console at a URL provisioned for the cluster.
 
 Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#db-console)
 {{site.data.alerts.end}}

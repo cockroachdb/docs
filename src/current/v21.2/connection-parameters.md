@@ -60,7 +60,7 @@ Component | Description | Required
 `<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
 `<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
 `<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
-`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for {{ site.data.products.serverless }} clusters.
+`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for CockroachDB {{ site.data.products.serverless }} clusters.
 
 {{site.data.alerts.callout_info}}
 For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.

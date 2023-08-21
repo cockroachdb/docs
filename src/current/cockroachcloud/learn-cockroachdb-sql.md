@@ -17,7 +17,7 @@ Make sure that you can connect the [`cockroach-sql`](https://www.cockroachlabs.c
 
 ## Create a database
 
-Your {{ site.data.products.db }} cluster comes with a database called `defaultdb`. This is used for testing and some internal databases.
+Your CockroachDB {{ site.data.products.cloud }} cluster comes with a database called `defaultdb`. This is used for testing and some internal databases.
 
 To create a new database, use [`CREATE DATABASE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-database) followed by a database name:
 

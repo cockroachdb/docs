@@ -243,7 +243,7 @@ To associate your export objects with a [specific storage class]({% link {{ page
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
 
-### Export data out of {{ site.data.products.db }}
+### Export data out of CockroachDB {{ site.data.products.cloud }}
 
 Using `EXPORT` with [`userfile`]({% link {{ page.version.version }}/use-userfile-storage.md %}) is not recommended. You can either export data to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) or to a local CSV file by using [`cockroach sql --execute`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql#general):
 

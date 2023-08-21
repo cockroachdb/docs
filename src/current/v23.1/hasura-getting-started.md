@@ -7,7 +7,7 @@ referral_id: docs_hasura
 docs_area: get_started
 ---
 
-This tutorial shows you how to create a GraphQL application using [Hasura Cloud](https://cloud.hasura.io) and {{ site.data.products.dedicated }}.
+This tutorial shows you how to create a GraphQL application using [Hasura Cloud](https://cloud.hasura.io) and CockroachDB {{ site.data.products.dedicated }}.
 
 The Hasura GraphQL Engine creates [GraphQL](https://graphql.org/) schemas and resolvers based on the tables and views in your CockroachDB cluster, allowing you to submit GraphQL queries to access and manipulate your data.
 
@@ -27,8 +27,8 @@ Before you start this tutorial, you need:
 ## Configure your cluster
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
-    <button class="filter-button page-level" data-scope="{{ site.data.products.dedicated }}">{{ site.data.products.dedicated }}<strong></strong></button>
+    <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}<strong></strong></button>
+    <button class="filter-button page-level" data-scope="CockroachDB {{ site.data.products.dedicated }}">CockroachDB {{ site.data.products.dedicated }}<strong></strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -59,7 +59,7 @@ Before you start this tutorial, you need:
 
 1. In the **Create Project** panel select the cloud infrastructure provider and region.
 
-    The cloud infrastructure provider and region should match your cluster. For example, if you created a {{ site.data.products.dedicated }} cluster in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
+    The cloud infrastructure provider and region should match your cluster. For example, if you created a CockroachDB {{ site.data.products.dedicated }} cluster in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
 
 1. Click **Create Free Project**.
 
@@ -90,7 +90,7 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
 1. Select **Env vars** in your project settings, and click **New Env Var**.
 1. Under **Key** type `SSL_ROOT_CERT`, then press **Enter**.
-1. Copy the contents of your {{ site.data.products.dedicated }} cluster's CA certificate file you downloaded earlier.
+1. Copy the contents of your CockroachDB {{ site.data.products.dedicated }} cluster's CA certificate file you downloaded earlier.
   
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
@@ -146,7 +146,7 @@ Create a `CRDB_URL` environment variable to store the connection string.
 
 ## Add the Hasura Cloud network to your cluster allowlist
 
-Your {{ site.data.products.dedicated }} cluster needs to be configured to [allow incoming client connections](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#ip-allowlisting) from Hasura Cloud.
+Your CockroachDB {{ site.data.products.dedicated }} cluster needs to be configured to [allow incoming client connections](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#ip-allowlisting) from Hasura Cloud.
 
 1. In the Hasura Cloud overview page select **Projects**, then click the **Config** icon for your project.
 

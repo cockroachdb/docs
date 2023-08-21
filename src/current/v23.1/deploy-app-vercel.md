@@ -7,7 +7,7 @@ referral_id: docs_vercel
 docs_area: get_started
 ---
 
-This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and {{ site.data.products.serverless }}.
+This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and CockroachDB {{ site.data.products.serverless }}.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="browser"><strong>Use the browser</strong></button>
@@ -18,7 +18,7 @@ This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web
 
 Before starting the tutorial, do the following:
 
-1. Create a [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
 
 1. Create a [Vercel](https://vercel.com/signup) account.
 
@@ -51,9 +51,9 @@ Before starting the tutorial, do the following:
 1. Select the project you just created and click **Continue**.
 1. Accept the permissions and click **Add Integration**.
 
-    A window will pop up prompting you to log in to {{ site.data.products.db }} if you haven't already.
+    A window will pop up prompting you to log in to CockroachDB {{ site.data.products.cloud }} if you haven't already.
     
-1. In the {{ site.data.products.db }} pop-up window, select the organization in which you want to create a new {{ site.data.products.serverless }} cluster.
+1. In the CockroachDB {{ site.data.products.cloud }} pop-up window, select the organization in which you want to create a new CockroachDB {{ site.data.products.serverless }} cluster.
 1. Click **Create**.
 
     After a few seconds, your cluster will be created and the pop-up window will close automatically. Once this is done, your Vercel project will have the `DATABASE_URL` environment variable automatically populated with the connection string for your new cluster.
@@ -70,7 +70,7 @@ Before starting the tutorial, do the following:
 </section>
 <section class="filter-content" markdown="1" data-scope="local">
  
-## Step 1. Create a {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
@@ -114,7 +114,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 3. Initialize the database
 
-1. Save [the connection string](#connection-string) you obtained earlier from the {{ site.data.products.db }} Console to the `DATABASE_URL` environment variable in an `.env` file in your project:
+1. Save [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console to the `DATABASE_URL` environment variable in an `.env` file in your project:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

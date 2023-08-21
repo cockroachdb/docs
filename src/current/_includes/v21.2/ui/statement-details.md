@@ -27,8 +27,8 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 **Statement details** displays information about the execution of the statement.
 
 - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-- **Nodes**: the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
-- **Regions**: the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
+- **Nodes**: the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for CockroachDB {{ site.data.products.serverless }} clusters.
+- **Regions**: the regions on which the statements executed. <br><br>**Regions** are not visible for CockroachDB {{ site.data.products.serverless }} clusters.
 - **Database**: the database on which the statements executed.
 - **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Failed?**: whether the statement failed to execute.
@@ -52,7 +52,7 @@ The **Diagnostics** section allows you to activate and download diagnostics for 
 {{site.data.alerts.callout_info}}
 The **Diagnostics** tab is not visible:
 
-- On {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.serverless }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}alter-role.html#role-options).
 {{site.data.alerts.end}}
 
@@ -69,7 +69,7 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 {% if page.cloud != true %}
 <img src="{{ 'images/v21.2/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
 {% else %}
-<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="CockroachDB {{ site.data.products.cloud }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 To activate diagnostics collection, click the **Activate diagnostics** button.
@@ -106,7 +106,7 @@ Click **Bundle(.zip)** to download any diagnostics bundle.
 The **Explain Plan** section displays CockroachDB's statement plan for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
 {% if page.cloud == true %}
-<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="CockroachDB {{ site.data.products.cloud }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 By default, the explain plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`]({{ link_prefix }}cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`]({{ link_prefix }}set-cluster-setting.html) command:
@@ -136,7 +136,7 @@ The Execution Stats section has three subsections:
     Disk Bytes Read | The size of the data read by the statement.
     Rows Written | The number of rows written by the statement.
 
-- **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html#cluster-topology)). <br><br>**Stats by Node** are not visible for {{ site.data.products.serverless }} clusters.
+- **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html#cluster-topology)). <br><br>**Stats by Node** are not visible for CockroachDB {{ site.data.products.serverless }} clusters.
 
 ## See also
 

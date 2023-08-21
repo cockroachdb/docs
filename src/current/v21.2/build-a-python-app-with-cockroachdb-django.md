@@ -104,7 +104,7 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 ### Configure the database connection
 
-Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases) to connect to your cluster using the connection information that you retrieved from the {{ site.data.products.db }} Console.
+Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases) to connect to your cluster using the connection information that you retrieved from the CockroachDB {{ site.data.products.cloud }} Console.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
@@ -124,7 +124,7 @@ DATABASES = {
 }
 ~~~
 
-For more information about configuration a Django connection to {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
+For more information about configuration a Django connection to CockroachDB {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
 
 After you have configured the app's database connection, you can start building out the application.
 
