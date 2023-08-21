@@ -64,16 +64,15 @@ On the **Overview** page, you can edit your [resource limits](https://www.cockro
 
 1. Click **Update**.
 
-{% comment %}
-## Add or remove regions from a cluster
+## Edit regions
 
-You can add or remove up to six regions at a time through the Console. 
+You can add up to six regions at a time and change your [primary region]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters) through the {{ site.data.products.cloud }} Console. To remove a region, [contact Support](https://support.cockroachlabs.com).
 
 {{site.data.alerts.callout_info}}
 You can only add regions to clusters created after May 16, 2023.
 {{site.data.alerts.end}}
 
-## Add a region
+### Add regions
 
 To add regions to your cluster:
 
@@ -85,25 +84,23 @@ To add regions to your cluster:
 1. Click **Add a region**.
 1. From the **Choose a region** dropdown, select the region you want to use.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
+1. Click **Update**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
-### Remove a region
+### Edit the primary region
 
-To remove regions from your cluster:
+To set the primary region:
 
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
 
-1. Click the **X** button next to each region you want to remove.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
+1. Select **Set primary region** next to your preferred region.
+1. Click **Update**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
-{% endcomment %}
 
 ## Restore data from a backup
 
