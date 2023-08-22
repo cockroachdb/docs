@@ -20,9 +20,9 @@ Privilege | Levels | Description
 `UPDATE` | Table, Sequence | Grants the ability to run [update statements]({% link {{ page.version.version }}/update-data.md %}) at the table or sequence level.
 `USAGE`  | Function, Schema, Sequence, Type | Grants the ability to use [functions]({% link {{ page.version.version }}/functions-and-operators.md %}), [schemas]({% link {{ page.version.version }}/schema-design-overview.md %}), [sequences]({% link {{ page.version.version }}/create-sequence.md %}), or [user-defined types]({% link {{ page.version.version }}/create-type.md %}).
 `VIEWACTIVITY` | System | Grants the ability to view other user's activity statistics of a cluster.
-`VIEWACTIVITYREDACTED` | System | Grants the ability to view other user's activity statistics, but prevents the role from accessing the statement diagnostics bundle and viewing some introspection queries that contain data about the cluster.
+`VIEWACTIVITYREDACTED` | System | Grants the ability to view other user's activity statistics, but prevents the role from accessing the statement diagnostics bundle in the DB Console, and viewing some columns in introspection queries that contain data about the cluster.
 `VIEWCLUSTERMETADATA` | System | Grants the ability to view range information, data distribution, store information, and Raft information.
-`VIEWCLUSTERSETTING` | System | Grants the ability to view [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).
+`VIEWCLUSTERSETTING` | System | Grants the ability to view [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) and their values.
 `VIEWDEBUG` | System | Grants the ability to view the [Advanced Debug Page]({% link {{ page.version.version }}/ui-debug-pages.md %}) of the DB Console and work with the debugging and profiling endpoints.
 `VIEWJOB` | System | Grants the ability to view [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on the cluster.
 `ZONECONFIG` | Database, Table, Sequence | Grants the ability to configure [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) at the database, table, and sequence level.
