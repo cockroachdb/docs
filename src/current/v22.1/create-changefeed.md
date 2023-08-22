@@ -27,9 +27,9 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail. 
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, see [create-and-configure-changefeed.html#create].
-`option` / `value` | For a list of available options and their values, see [Options](#options) below.
+`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds](create-and-configure-changefeeds.html#create) page.
+`option` / `value` | For a list of available options and their values, refer to [Options](#options).
 
 ### Sink URI
 
@@ -76,11 +76,11 @@ The Google Cloud Pub/Sub sink is currently in **beta**.
 
 The following are example file URLs for each of the cloud storage schemes:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`  
+Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`
 Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
-Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`                         
+Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
 HTTP         | `'http://localhost:8080/{PATH}'`
 
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
