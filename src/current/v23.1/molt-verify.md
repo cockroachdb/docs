@@ -43,27 +43,25 @@ The following databases are currently supported:
 
     The `molt verify` command takes two SQL connection strings as `--source` and `--target` arguments.
     
-    Examples:
-
-    The following example compares a PostgreSQL database with a CockroachDB database:
+    To compare a PostgreSQL database with a CockroachDB database:
     
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      --source 'postgres://{username}:{password}@url:{port}/{database}' \
+      --source 'postgresql://{username}:{password}@{host}:{port}/{database}' \
       --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
     ~~~
 
-    The following example compares a MySQL database with a CockroachDB database (simplified naming for both instances):
+    To compare a MySQL database with a CockroachDB database:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      --source 'jdbc:mysql://root@tcp({host}:{port})/{database}' \
+      --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}' \
       --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
     ~~~
 
-    You can use optional [supported flags](#supported-flags) to customize the verification results.
+    You can use the optional [supported flags](#supported-flags) to customize the verification results.
 
 1. Review the verification results:
 
@@ -79,7 +77,7 @@ Flag | Description
 ----------|------------
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
-`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for [`INT`]({% link {{ page.version.version }}/int.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [`FLOAT`]({% link {{ page.version.version }}/float.md %}) data types.
+`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{ page.version.version }}/int.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [`FLOAT`]({% link {{ page.version.version }}/float.md %}) data types.{% endcomment %}
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
@@ -88,16 +86,16 @@ Flag | Description
 
 ## Limitations
 
-- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size` [flag](#supported-flags).
+- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. Enable `--live` mode to have the tool retry verification on these rows. You can also change the row batch size using the `--row_batch_size` [flag](#supported-flags).
 - MySQL enums and set types are not supported.
-- When a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a [primary key]({% link {{ page.version.version }}/primary-key.md %}), validation may fail to differences in how CockroachDB and other databases handle case sensitivity in strings.
-- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
+- MOLT Verify checks for collation mismatches on [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{ page.version.version }}/collate.md %}).
+- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
-- Geospatial types cannot yet be compared.
+- [Geospatial types]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
 
 ## See also
 
-- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 {% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}{% endcomment %}
 - [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
