@@ -91,7 +91,7 @@ The [following example](#example-migrate-world-to-cockroachdb) uses `IMPORT INTO
 
 The following steps demonstrate [converting a schema]({% link {{ page.version.version }}/migration-overview.md %}#convert-the-schema), performing an [initial load of data]({% link {{ page.version.version }}/migration-overview.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries) during a migration.
 
-In the context of a full migration, these steps ensure that MySQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see [Migrate Your Databse to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
+In the context of a full migration, these steps ensure that MySQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
 ### Before you begin
 
@@ -137,7 +137,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        You can also [add your MySQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
        {{site.data.alerts.end}}
 
-       This example migrates directly to {{ site.data.products.serverless }}. {% include cockroachcloud/migration/sct-self-hosted.md %}
+       This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 1. Before you migrate the converted schema, click the **Statements** tab to view the [Statements list](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#statements-list). Scroll down to the `CREATE TABLE countrylanguage` statement and edit the statement to add a [collation]({% link {{ page.version.version }}/collate.md %}) (`COLLATE en_US`) on the `language` column:
 
@@ -216,7 +216,7 @@ Load the `world` data into CockroachDB using [`IMPORT INTO`]({% link {{ page.ver
 {{site.data.alerts.callout_info}}
 When MySQL dumps data, the tables are not ordered by [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints, and foreign keys are not placed in the correct dependency order. It is best to disable foreign key checks when loading data into CockroachDB, and revalidate foreign keys on each table after the data is loaded.
 
-By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) invalidates all [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) on the target table.
+By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) invalidates all [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints on the target table.
 {{site.data.alerts.end}}
 
 1. Dump the MySQL `world` data with the following [`mysqldump` command](https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html):
@@ -259,7 +259,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        ~~~ sql
        IMPORT INTO countrylanguage
          CSV DATA (
-           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/countrylanguage.txt'
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world/countrylanguage.txt'
          )
          WITH
            nullif='\N';
@@ -274,7 +274,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        ~~~ sql
        IMPORT INTO country
          CSV DATA (
-           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/country.txt'
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world/country.txt'
          )
          WITH
            nullif='\N';
@@ -289,7 +289,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        ~~~ sql
        IMPORT INTO city
          CSV DATA (
-           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/city.txt'
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world/city.txt'
          )
          WITH
            nullif='\N';
@@ -396,7 +396,9 @@ Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check
        <nil> INF verification complete
        ~~~
 
-With the schema migrated and the initial data load verified, the next steps in a real-world migration are to [validate application queries]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries) and [perform a dry run]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) before [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}#conduct-the-migration). To learn more, see [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link {{ page.version.version }}/migration-overview.md %}#application-changes), [validate application queries]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries), and [perform a dry run]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) before [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}#conduct-the-migration).
+
+To learn more, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
 
 ## See also
 
@@ -405,5 +407,5 @@ With the schema migrated and the initial data load verified, the next steps in a
 - [Use the MOLT Verify tool]({% link {{ page.version.version }}/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
-{% comment %}- [Migrate from PostgreSQL][postgres]{% endcomment %}
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?]({% link {{ page.version.version }}/frequently-asked-questions.md %}#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)

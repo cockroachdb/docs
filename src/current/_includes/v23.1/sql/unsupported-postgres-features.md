@@ -1,5 +1,5 @@
 - Stored procedures. CockroachDB has support for [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}), which can be used for many of the same goals as stored procedures.
-- Triggers.
+- Triggers. These must be implemented in your application logic.
 - Events.
 - Drop primary key.
 
