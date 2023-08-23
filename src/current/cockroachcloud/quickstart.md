@@ -19,6 +19,8 @@ This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} C
 
 ## Connect to the cluster
 
+Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html?fiters=command-line#connect-to-your-cluster).
+
     <div class="filters clearfix">
       <button class="filter-button" data-scope="java">Java</button>
       <button class="filter-button" data-scope="node">Node.js</button>
