@@ -68,7 +68,7 @@ Complete the following items before using Qlik Replicate:
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add transformation rules. If you make substantial schema changes, the Qlik Replicate migration may fail.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-convert-your-schema).
+    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview](migration-overview.html#step-1-convert-your-schema).
     {{site.data.alerts.end}}
 
 ## Migrate and replicate data to CockroachDB
@@ -96,7 +96,7 @@ In the Qlik Replicate interface, CockroachDB is configured as a PostgreSQL **sou
 
 ## See also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [Change Data Capture Overview](change-data-capture-overview.html)
 - [Third-Party Tools Supported by Cockroach Labs](third-party-database-tools.html)
