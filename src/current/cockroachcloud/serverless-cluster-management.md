@@ -66,7 +66,7 @@ On the **Overview** page, you can edit your [resource limits](https://www.cockro
 
 ## Edit regions
 
-You can add up to six [regions]({% link cockroachcloud/cloud-regions.md %}) at a time and change your [primary region]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters) through the {{ site.data.products.cloud }} Console. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added.
+You can add up to six [regions]({% link cockroachcloud/regions.md %}) at a time and change your [primary region]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters) through the {{ site.data.products.cloud }} Console. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added.
 
 {{site.data.alerts.callout_info}}
 You can only add regions to clusters created after May 16, 2023.
