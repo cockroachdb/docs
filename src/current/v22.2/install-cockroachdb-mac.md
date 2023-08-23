@@ -15,8 +15,9 @@ docs_area: deploy
 
 <p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
+{% comment %}v22.2.0+{% endcomment %}
 {{site.data.alerts.callout_danger}}
-<p>For CockroachDB v22.2.0 on ARM Macs, <a href="spatial-features.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
+<p>On macOS ARM systems, <a href="spatial-data-overview.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
@@ -209,7 +210,7 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 - CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.
 - Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
-- When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+- When [building from source](#install-source), it is not possible to disable FMA intrinsics. For more details, refer to [Issue #36971](https://github.com/golang/go/issues/36971) in the Go project's issue tracker.
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
