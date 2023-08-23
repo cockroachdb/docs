@@ -91,7 +91,7 @@ To add regions to your cluster:
 To set the primary region:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
