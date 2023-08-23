@@ -13,7 +13,7 @@ Authentication refers to the act of verifying the identity of the other party in
 
 ## Connecting to a CockroachDB cluster
 
-Users may connect with {{ site.data.products.core }} clusters in 2 main ways:
+Users may connect with CockroachDB {{ site.data.products.core }} clusters in 2 main ways:
 
 - SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}), connect directly to CockroachDB clusters using the [CockroachDB SQL interface]({% link {{ page.version.version }}/sql-feature-support.md %}).
 

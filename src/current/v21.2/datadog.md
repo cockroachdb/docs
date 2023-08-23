@@ -5,13 +5,13 @@ toc: true
 docs_area: manage
 ---
 
-[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
+[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog)
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.dedicated }} integration with Datadog, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog)
 {{site.data.alerts.end}}
 
-The {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
+The CockroachDB {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
 
 - For more information about the integration, see the [Datadog blog post](https://www.datadoghq.com/blog/monitor-cockroachdb-performance-metrics-with-datadog/).
 - For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
@@ -173,7 +173,7 @@ The timeseries graph at the top of the page indicates the configured metric and 
 
 ## Limitations
 
-- The {{ site.data.products.core }} integration with Datadog only supports displaying cluster-wide averages of reported metrics. Filtering by a specific node is unsupported.
+- The CockroachDB {{ site.data.products.core }} integration with Datadog only supports displaying cluster-wide averages of reported metrics. Filtering by a specific node is unsupported.
 
 ## See also
 

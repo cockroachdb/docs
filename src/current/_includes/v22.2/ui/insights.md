@@ -9,7 +9,7 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 {% endif -%}
 {% if page.cloud == true -%}
 {{site.data.alerts.callout_info}}
-The **Transaction Executions** view is currently unavailable for {{ site.data.products.serverless }} clusters.
+The **Transaction Executions** view is currently unavailable for CockroachDB {{ site.data.products.serverless }} clusters.
 {{site.data.alerts.end}}
 
 To display this view, click **Insights** in the left-hand navigation of the Cloud Console and select **Workload Insights > Transaction Executions**.

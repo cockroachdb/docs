@@ -28,7 +28,7 @@
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
-1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the {{ site.data.products.db }} Console:
+1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

@@ -7,13 +7,13 @@ referral_id: docs_lambda
 docs_area: get_started
 ---
 
-This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a CockroachDB {{ site.data.products.serverless }} cluster.
 
 ## Prerequisites
 
 Before starting the tutorial, do the following:
 
-1. Create a [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
 
 1. Create an [AWS](https://aws.amazon.com/) account.
 
@@ -21,7 +21,7 @@ Before starting the tutorial, do the following:
 
 1. Install the [AWS CLI](https://aws.amazon.com/cli/).
 
-## Step 1. Create a {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
@@ -228,7 +228,7 @@ This step is optional, as you do not need to create a new deployment package to 
     <section class="filter-content" markdown="1" data-scope="python">
 
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster with Psycopg2, you must provide the client with a valid CA certificate. By default, Pscyopg2 searches for the certificate at <code>~/.postgresql/root.crt</code>, or in the environment variable `PGSSLROOTCERT`.
+    To connect to a CockroachDB {{ site.data.products.serverless }} cluster with Psycopg2, you must provide the client with a valid CA certificate. By default, Pscyopg2 searches for the certificate at <code>~/.postgresql/root.crt</code>, or in the environment variable `PGSSLROOTCERT`.
     {{site.data.alerts.end}}
 
     </section>

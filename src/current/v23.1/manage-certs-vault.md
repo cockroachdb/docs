@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial guides the user through implementing [public key infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP), using [Vault PKI Secrets Engine]({% link {{ page.version.version }}/hashicorp-integration.md %}) .
+This tutorial guides the user through implementing [public key infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for a CockroachDB {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP), using [Vault PKI Secrets Engine]({% link {{ page.version.version }}/hashicorp-integration.md %}) .
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 

@@ -11,7 +11,7 @@ docs_area: manage
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Databases** page of the {{ site.data.products.db }} Console provides details of the following:
+The **Databases** page of the CockroachDB {{ site.data.products.cloud }} Console provides details of the following:
 
 - The databases configured.
 - The tables in each database and the indexes on each table.

@@ -6,13 +6,13 @@ docs_area: manage
 page_version: v23.1
 ---
 
-The **Alerts** page allows you to enable email alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
+The **Alerts** page allows you to enable email alerts, send test alerts, and view the email recipients and alert history for your CockroachDB {{ site.data.products.cloud }} organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
 {{site.data.alerts.callout_info}}
-The **Alerts** page is applicable for {{ site.data.products.dedicated }} clusters in your {{ site.data.products.db }} organization. For {{ site.data.products.serverless }} clusters in your organization, all [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicated }} clusters in your CockroachDB {{ site.data.products.cloud }} organization. For CockroachDB {{ site.data.products.serverless }} clusters in your organization, all [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 {{site.data.alerts.end}}
 
-If alerts are enabled, {{ site.data.products.db }} sends alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
+If alerts are enabled, CockroachDB {{ site.data.products.cloud }} sends alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
 
 **Storage Utilization:**
 
@@ -34,7 +34,7 @@ If alerts are enabled, {{ site.data.products.db }} sends alerts to [specified em
 - Cluster node unable to start due to CMEK key access failure.
 {% comment %}- Encrypted backup failed due to CMEK key access failure.{% endcomment %}
 
-If you receive an alert repeatedly, you may need to [optimize your workload](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/make-queries-fast) or [scale your {{ site.data.products.db }} cluster]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#add-or-remove-nodes-from-a-cluster).
+If you receive an alert repeatedly, you may need to [optimize your workload](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/make-queries-fast) or [scale your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
 [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) also receive email alerts when your cluster undergoes an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
@@ -42,10 +42,10 @@ If you receive an alert repeatedly, you may need to [optimize your workload](htt
 
 To enable alerts:
 
-1. Under **Configure {{ site.data.products.db }} alerts**, toggle the **Alerts are on** switch.
+1. Under **Configure CockroachDB {{ site.data.products.cloud }} alerts**, toggle the **Alerts are on** switch.
 1. Under **Add Email Recipients**, add at least one email address and click **Add**.
 
-Alerts are enabled for all {{ site.data.products.dedicated }} clusters in your Organization.
+Alerts are enabled for all CockroachDB {{ site.data.products.dedicated }} clusters in your Organization.
 
 {{site.data.alerts.callout_success}}
 You can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) or [PagerDuty](https://www.pagerduty.com/).

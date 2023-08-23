@@ -5,7 +5,7 @@
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
 {%- assign stable_path = "/" | append: site.versions["stable"] | append: "/" %}
-{% assign asst_supp_exp_date = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | first | map: "asst_supp_exp_date" | date: "%s" -%}{%- comment -%} This line queries the information in versions.csv and returns the current page's version. {%- endcomment -%}
+{% assign asst_supp_exp_date = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | map: "asst_supp_exp_date" | first | date: "%s" -%}{%- comment -%} This line queries the information in versions.csv and returns the current page's version. {%- endcomment -%}
 {%- assign page_url = page.url | replace: ".html", "" | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" -%}
 {%- assign expired = false -%}
 {%- assign today = "today" | date: "%s" -%}
@@ -105,10 +105,6 @@ var pageConfig = {
   }}();
 </script>
 
-{% if page.layout == "api" %}
-  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
-{% endif %}
-
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
@@ -117,10 +113,10 @@ var pageConfig = {
   <script src="{{ 'js/license-on-page.js' | relative_url }}"></script>
 {% endif %}
 
-<link rel="preconnect dns-prefetch" href="//go.cockroachlabs.com" />
-<link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
+<link rel="preconnect dns-prefetch" href="https://go.cockroachlabs.com" />
+<link rel="preconnect dns-prefetch" href="https://cockroach-labs-docs.imgix.net" />
 
-<link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
+<link rel="preload" href="https://go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

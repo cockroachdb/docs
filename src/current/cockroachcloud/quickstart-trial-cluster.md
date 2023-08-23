@@ -5,7 +5,7 @@ toc: true
 docs_area: get_started
 ---
 
-This page shows you how to deploy a CockroachDB cluster on {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](quickstart.html?filters=local).
 
@@ -13,22 +13,22 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](qu
 
 For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region.
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
-1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
+1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create Cluster** page, select **Dedicated standard**.
 
     {{site.data.alerts.callout_info}}
     Free trials do not apply to **Dedicated advanced** clusters.
     {{site.data.alerts.end}}
-    
+
 1. For **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
-    
+
     {{site.data.alerts.callout_info}}
     You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) trial cluster.
     {{site.data.alerts.end}}
-    
+
 1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
 
     {{site.data.alerts.callout_info}}
@@ -66,6 +66,12 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 4. Connect to your cluster
 
+<section class="filter-content" markdown="1" data-scope="windows">
+{{site.data.alerts.callout_success}}
+[PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) is required to complete these steps.
+{{site.data.alerts.end}}
+</section>
+
 1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog will display.
 1. From the **SQL user** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. Verify that the `us-west2 GCP` region and `defaultdb` database are selected.
@@ -78,9 +84,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
-
-    {% include cockroachcloud/download-the-binary.md %}
+1. {% include cockroachcloud/download-the-binary.md %}
 
 1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
 

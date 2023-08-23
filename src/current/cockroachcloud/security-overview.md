@@ -5,15 +5,15 @@ toc: false
 docs_area: manage
 ---
 
-This page summarizes the security features available in the two database cluster types offered by {{ site.data.products.db }}, **serverless** and **dedicated**.
+This page summarizes the security features available in the two database cluster types offered by CockroachDB {{ site.data.products.cloud }}, **serverless** and **dedicated**.
 
-A {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
+A CockroachDB {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
 
-A {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance]({% link cockroachcloud/pci-dss.md %}).
+A CockroachDB {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance]({% link cockroachcloud/pci-dss.md %}).
 
 Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated]({% link cockroachcloud/pci-dss.md %})
 
-The following table summarizes the {{ site.data.products.db }} security features and provides links to detailed documentation for each feature where applicable.
+The following table summarizes the CockroachDB {{ site.data.products.cloud }} security features and provides links to detailed documentation for each feature where applicable.
 
 <table>
   <tr>

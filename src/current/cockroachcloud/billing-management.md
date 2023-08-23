@@ -5,7 +5,7 @@ toc: true
 docs_area: 
 ---
 
-The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
+The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
 Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) or [Org Administrator (Legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role can manage billing for the organization.
 
@@ -45,7 +45,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 ## Check trial code details
 
-If you used a {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
+If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
@@ -53,7 +53,7 @@ Your credit card will be charged after the trial ends.
 
 ## View Credits balance
 
-If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display the amount of available {{ site.data.products.db }} Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments will be deducted from your organization's Credits.
+If your organization has an annual contract with CockroachDB {{ site.data.products.cloud }}, the **Overview** tab of the **Billing** page will display the amount of available CockroachDB {{ site.data.products.cloud }} Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments will be deducted from your organization's Credits.
 
 Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
 

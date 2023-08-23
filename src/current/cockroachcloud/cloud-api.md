@@ -124,7 +124,7 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE` Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), and Serverless clusters cannot be created on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE` Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), and Serverless clusters cannot be created on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
@@ -278,7 +278,7 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability). Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
@@ -443,12 +443,12 @@ Where:
   - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
   - `{api_version}` is the [Cloud API version](#set-the-api-version).
 
-A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
+A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your CockroachDB {{ site.data.products.cloud }} organization was created.
 
 If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
 
 - If `{sort_order}` is `ASC`, `next_starting_from` is always returned.
-- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the {{ site.data.products.db }} organization was created).
+- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the CockroachDB {{ site.data.products.cloud }} organization was created).
 
 
 {% include_cached copy-clipboard.html %}
@@ -563,7 +563,7 @@ curl --request GET \
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
   - `{secret_key}` is the secret key for the service account.
 
 If the request was successful, the client will receive a list of available regions for the specified cloud infrastructure provider.
