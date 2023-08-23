@@ -210,8 +210,6 @@ Be sure to create a password for each new user. Without a password, or being enr
 <section class="filter-content" markdown="1" data-scope="console">
 To view a list of all of the users in your cluster, navigate to the **SQL Users** page.
 
-<img src="{{ 'images/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL Users page" style="border:1px solid #eee;max-width:100%" />
-
 On the **SQL Users** page, you can do the following:
 
 - [Create a user](#create-a-sql-user)
@@ -247,9 +245,6 @@ To change a user's password:
 
 1. Navigate to the **SQL Users** page.
 1. In the row of the user whose password needs to be changed, click the **...** button.
-
-    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Change SQL password" style="border:1px solid #eee;max-width:100%" />
-
 1. From the dropdown, select **Change Password**.
 1. Click **Generate & save password**.
 1. Copy the generated password and save it in a secure location.
@@ -278,9 +273,6 @@ To remove a user:
 
 1. Navigate to the **SQL Users** page.
 1. In the row of the user you want to remove, click the **...** button.
-
-    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Remove a SQL users" style="border:1px solid #eee;max-width:100%" />
-
 1. From the dropdown, select **Delete SQL User**.
 1. Click **Delete**.
 
