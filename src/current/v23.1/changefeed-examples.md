@@ -636,11 +636,11 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
 
-## Create a changefeed using CDC queries
+## Create a changefeed using change data capture queries
 
-In this example, you will create a changefeed that filters the change data using CDC queries before emitting to the sink. This example will use a cloud storage sink, however CDC queries are supported by each sink and sinkless changefeeds with an {{ site.data.products.enterprise }} license.
+In this example, you will create a changefeed that filters the change data using change data capture queries before emitting to the sink. This example will use a cloud storage sink, however CDC queries are supported by each sink and sinkless changefeeds with an {{ site.data.products.enterprise }} license.
 
-For more examples and syntax detail, refer to the ({% link {{ page.version.version }}/cdc-queries.md %}) page.
+For different use case examples and syntax detail, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
