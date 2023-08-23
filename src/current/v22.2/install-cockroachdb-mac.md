@@ -17,7 +17,7 @@ docs_area: deploy
 
 {% comment %}v22.2.0+{% endcomment %}
 {{site.data.alerts.callout_danger}}
-<p>On macOS ARM systems, <a href="spatial-data-overview.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
+<p>On macOS ARM systems, <a href="spatial-data.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
