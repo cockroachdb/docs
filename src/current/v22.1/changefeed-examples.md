@@ -41,7 +41,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -50,7 +50,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services start
+    ./bin/confluent local services start
     ~~~
 
     Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
@@ -59,7 +59,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -69,7 +69,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -89,10 +89,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
+    CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
     ~~~
     ~~~
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
@@ -107,13 +107,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-console-consumer \
+    ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --whitelist 'office_dogs|employees'
+    --include 'office_dogs|employees'
     ~~~
 
-    ~~~ shell
+    ~~~
     {"after": {"id": 1, "name": "Petee H"}}
     {"after": {"id": 2, "name": "Carl"}}
     {"after": {"id": 1, "name": "Lauren", "rowid": 528514320239329281}}
@@ -128,12 +128,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES (3, 'Ernie');
+    INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
 1. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
-    ~~~ shell
+    ~~~
     {"after": {"id": 3, "name": "Ernie"}}
     ~~~
 
@@ -168,7 +168,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services stop
+    ./bin/confluent local services stop
     ~~~
 
 ## Create a changefeed connected to Kafka using Avro
@@ -185,7 +185,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -194,7 +194,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services start
+    ./bin/confluent local services start
     ~~~
 
     Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
@@ -203,7 +203,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -213,7 +213,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -233,13 +233,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
+    CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     {% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
 
     ~~~
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
@@ -254,13 +254,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-avro-console-consumer \
+    ./bin/kafka-avro-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --whitelist 'office_dogs|employees'
+    --include 'office_dogs|employees'
     ~~~
 
-    ~~~ shell
+    ~~~
     {"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
     {"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     {"after":{"employees":{"dog_id":{"long":1},"employee_name":{"string":"Lauren"},"rowid":{"long":528537452042682369}}}}
@@ -275,12 +275,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES (3, 'Ernie');
+    INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
 1. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
-    ~~~ shell
+    ~~~
     {"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
@@ -315,7 +315,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services stop
+    ./bin/confluent local services stop
     ~~~
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
@@ -489,7 +489,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
