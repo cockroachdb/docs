@@ -201,6 +201,19 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Step 5. Configure trusted AWS accounts
+
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
+
+Optionally, you can restrict the AWS accounts that can connect to your cluster privately. When trusted accounts are configured, an attempt to create a PrivateLink connection from another AWS account will fail.
+
+</section>
+
 ## What's next?
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
