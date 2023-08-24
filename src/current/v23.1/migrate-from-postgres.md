@@ -88,7 +88,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        pg_dump --schema-only frenchtowns > frenchtowns_schema.sql
        ~~~
 
-1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.db }} Console and start the process to [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
+1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.db }} Console and [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
 
        After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#summary-report) shows that there are errors under **Required Fixes**. You must resolve these in order to migrate the schema to CockroachDB.
 
@@ -102,7 +102,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
 1. Review the `CREATE SEQUENCE` statements listed under **Suggestions**. Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
-       For this example, **Acknowledge** the suggestion without making further changes. In practice, after [validating data consistency](#step-3-validate-the-migrated-data) between the source database and CockroachDB, you would modify your CockroachDB schema to use unique and non-sequential primary keys before conducting the migration.
+       For this example, **Acknowledge** the suggestion without making further changes. In practice, after [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}#conduct-the-migration) to CockroachDB, you would modify your CockroachDB schema to use unique and non-sequential primary keys.
 
 1. Click **Retry Migration**. The **Summary Report** now shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
