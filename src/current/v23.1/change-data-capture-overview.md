@@ -58,8 +58,8 @@ CockroachDB has two implementations of changefeeds:
     <td class="comparison-chart__feature">
       <b>SQL statement</b>
     </td>
-    <td>Create with <a href="changefeed-for.html"><code>EXPERIMENTAL CHANGEFEED FOR.</code></a></td>
-    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED.</code></a></td>
+    <td>Create with <a href="changefeed-for.html"><code>EXPERIMENTAL CHANGEFEED FOR</code></a> or <a href="create-changefeed.html"><code>CREATE CHANGEFEED</code></a> without a sink.</td>
+    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED</code></a> and <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a>.</td>
   </tr>
 
   <tr>
@@ -74,8 +74,8 @@ CockroachDB has two implementations of changefeeds:
     <td class="comparison-chart__feature">
       <b>Filter change data</b>
     </td>
-    <td>Not supported</td>
-    <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> to define the emitted change data.</td>
+    <td>Not supported without an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> or using <a href="changefeed-for.html"><code>EXPERIMENTAL CHANGEFEED FOR</code></a>.</td>
+    <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> with <a href="create-changefeed.html"><code>CREATE CHANGEFEED</code></a> to define the emitted change data.</td>
   </tr>
 
   <tr>

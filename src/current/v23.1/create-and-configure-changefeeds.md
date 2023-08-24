@@ -17,7 +17,7 @@ This page describes:
 1. Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
 1. Decide on whether you will run an {{ site.data.products.enterprise }} or Core changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. Refer to [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
-1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by change data capture queries that can filter data on a single table.
+1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
 1. Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
 
 ### Enable rangefeeds
@@ -84,7 +84,7 @@ An {{ site.data.products.enterprise }} changefeed streams row-level changes in a
 To create an {{ site.data.products.enterprise }} changefeed, you can either:
 
 - [Run `CREATE CHANGEFEED`](#run-create-changefeed) for one or multiple tables to receive all changes.
-- [Use change data capture queries](#use-change-data-capture-queries) to run `CREATE CHANGEFEED` on one table to filter the change data that the changefeed emits.
+- [Use change data capture queries](#use-change-data-capture-queries) to run `CREATE CHANGEFEED` on a single table to filter and transform the change data that the changefeed emits.
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
 
