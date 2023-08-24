@@ -64,46 +64,39 @@ On the **Overview** page, you can edit your [resource limits](https://www.cockro
 
 1. Click **Update**.
 
-{% comment %}
-## Add or remove regions from a cluster
+## Edit regions
 
-You can add or remove up to six regions at a time through the Console. 
+You can add up to six [regions]({% link cockroachcloud/regions.md %}) at a time and change your [primary region]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters) through the {{ site.data.products.cloud }} Console. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added.
 
 {{site.data.alerts.callout_info}}
 You can only add regions to clusters created after May 16, 2023.
 {{site.data.alerts.end}}
 
-## Add a region
+### Add regions
 
 To add regions to your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
-1. Click **Add a region**.
-1. From the **Choose a region** dropdown, select the region you want to use.
+1. Click **Add region**.
+1. Choose the region you want to add or use the suggested one.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
+1. Click **Update**.
 
-### Remove a region
+### Edit the primary region
 
-To remove regions from your cluster:
+To set the primary region:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
-1. Click the **X** button next to each region you want to remove.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
-{% endcomment %}
+1. Select **Set primary region** next to your preferred region.
+1. Click **Update**.
 
 ## Restore data from a backup
 
