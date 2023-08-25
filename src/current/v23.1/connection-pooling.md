@@ -37,7 +37,7 @@ To read more about connection pooling, see our [What is Connection Pooling, and 
   <button class="filter-button page-level" data-scope="selfhosted"><strong>{{ site.data.products.core }}</strong></button>
 </div>
 
-Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockroachDB is 20 kB to 30 kB per connection.
+Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Unlike PostgreSQL, which has a hard limit of 5000 connections, CockroachDB can safely support tens of thousands of connections. Cockroach Labs estimates the memory overhead of idle connections in CockroachDB is 10 kB to 30 kB per connection. CockroachDB uses at least one go routine per connection, not a process per connection, making each connection more efficient. However, CockroachDB clusters do have an upper limit to the number of active connections they can handle before performance suffers.
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
@@ -45,7 +45,11 @@ Creating the appropriate size pool of connections is critical to gaining maximum
 
 In {{ site.data.products.serverless }} clusters, the purpose of the connection pool is to reduce connection latency, not to set a maximum number of simultaneous connections. {{ site.data.products.serverless }} clusters will automatically scale up to meet the demand from multiple simultaneous client connections.
 
-Set the connection pool size to match your application and workload.
+{% capture connection_timeout_value_serverless %}
+Configure the connection timeout to be at least 15 minutes and to not exceed 30 minutes.
+{% endcapture %}
+
+{{ connection_timeout_value_serverless }}
 
 </section>
 
@@ -57,7 +61,7 @@ Storage and network performance also will affect the ability of a thread to full
 
 Cockroach Labs performed lab testing of various customer workloads and found no improvement in scalability beyond:
 
-**connections = (number of cores * 4)**
+**active connections = (number of cores * 4)**
 
 Many workloads perform best when the maximum number of active connections is between 2 and 4 times the number of CPU cores in the cluster.
 
@@ -67,7 +71,7 @@ In addition to setting a maximum connection pool size, set the maximum number of
 
 Configure the minimum number of connections to equal to the maximum number of connections, creating a fixed pool size.
 
-Do not set the connection pool timeout values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the `sql.new_conns` metric](#monitor-new-connections) to make sure the timeout values are set correctly.
+Set the maximum connection timeout value to 300 seconds, or 5 minutes. Do not set the connection pool timeout values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the `sql.new_conns` metric](#monitor-new-connections) to make sure the timeout values are set correctly.
 
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
 
@@ -80,6 +84,8 @@ Do not set the connection pool timeout values to be too short, as it may cause t
 Similar to single-region {{ site.data.products.serverless }} clusters, the purpose of connection pools in multi-region {{ site.data.products.serverless }} clusters is to reduce connection latency. Add a connection pool for each region, and size the idle pool for your application and workload.
 
 The cluster will automatically scale up to meet demand, so there's no need to set a maximum connection pool size.
+
+{{ connection_timeout_value_serverless }}
 
 </section>
 
@@ -103,6 +109,8 @@ Validating connections is typically handled automatically by the connection pool
 
 The [`sql.new_conns` metric](metrics.html#available-metrics) exposes the number of new SQL connections per second. A properly configured connection pool will show this value to be in the low single digits. A misconfigured connection pool will result in much higher values. You can expose and monitor this metric in the [DB Console](ui-custom-chart-debug-page.html).
 
+If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection age "jitter." Using a connection jitter of 10% of the connection age smooths out the rate of new connections to a cluster. For example, for a maximum connection age of 300 seconds, set the connection age jitter to 30 seconds.
+
 </section>
 
 ## Example
@@ -118,9 +126,11 @@ In this example, a Java application similar to the [basic JDBC example]({% link 
 
 Using the connection pool formula above:
 
-**connections = (10 [processor cores] * 4)**
+**active connections = (10 [processor cores] * 4)**
 
 The connection pool size should be 40.
+
+The maximum lifetime of a connection is set to 300000 milliseconds, or 5 minutes.
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
@@ -133,6 +143,7 @@ config.addDataSourceProperty("sslmode", "require");
 config.addDataSourceProperty("reWriteBatchedInserts", "true");
 config.setAutoCommit(false);
 config.setMaximumPoolSize(40);
+config.setMaxLifetime(300000);
 config.setKeepaliveTime(150000);
 
 HikariDataSource ds = new HikariDataSource(config);
@@ -144,17 +155,21 @@ Connection conn = ds.getConnection();
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-In this example, a Go application similar to the [basic pgx example]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Go application similar to the [basic pgx example]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
-**connections = (10 [processor cores] * 4)**
+**active connections = (10 [processor cores] * 4)**
 
-The connection pool size should be 40.
+The connection pool size should be 40, and is set using the `pool_max_conns` query parameter.
+
+The `pool_max_conn_lifetime` query parameter sets the maximum age of a connection to 300 seconds, or 5 minutes.
+
+The `pool_max_conn_lifetime_jitter` query parameter sets the connection jitter to 30 seconds, or 10% of the maximum connection age.
 
 ~~~ go
 // Set connection pool configuration, with maximum connection pool size.
-config, err := pgxpool.ParseConfig("postgres://max:roach@127.0.0.1:26257/bank?sslmode=require&pool_max_conns=40")
+config, err := pgxpool.ParseConfig("postgres://max:roach@127.0.0.1:26257/bank?sslmode=require&pool_max_conns=40&pool_max_conn_lifetime=300s&pool_max_conn_lifetime_jitter=30s")
 	if err != nil {
 		log.Fatal("error configuring the database: ", err)
 	}
@@ -167,9 +182,7 @@ if err != nil {
 defer dbpool.Close()
 ~~~
 
-This example uses the `pool_max_conns` parameter to set the maximum number of connections in the connection pool to 40.
-
-For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#Config).
+For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool#Config).
 
 </section>
 
