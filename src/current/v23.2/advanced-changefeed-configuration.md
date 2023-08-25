@@ -6,7 +6,7 @@ docs_area: stream_data
 ---
 
 {{site.data.alerts.callout_danger}}
-The configurations and settings explained on this page will significantly impact a changefeed's behavior.
+The configurations and settings explained on this page will have a significant impact on a changefeed's behavior and could potentially affect a cluster's performance. Thoroughly test before deploying any changes to productions.
 {{site.data.alerts.end}}
 
 The following sections describe performance, settings, configurations, and details to tune [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}):
@@ -32,6 +32,39 @@ kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 ~~~
 
 For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
+
+### Improving latency
+
+Latency in changefeeds is the sum of the time it takes to:
+
+- Commit writes to the database.
+- Encode [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
+- Deliver the message to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+
+To improve changefeed latency, you can use the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to reduce bursts of rangefeed work so that updates are paced steadily over time. It is necessary to adjust these cluster settings together in order to have an effect on changefeed latency. However, note that these can have an effect on running transactions, and should be adjusted and tested with your particular workload.
+
+#### `kv.closed_timestamp_target_duration`
+
+Each [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) in CockroachDB tracks a property called the [_closed timestamp_]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps), which means that no new writes can ever be introduced at or below that timestamp. Decreasing the target duration can reduce changefeed latency, so that the changefeed job can [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) more frequently and deliver messages to the sink.
+
+Default: `3s`
+Recommendation: Decreasing to `1s`–`2s`.
+
+{{site.data.alerts.callout_danger}}
+Thoroughly test any decrease to the closed timestamp interval before deploying the change in production, because such an adjustment can cause [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) between transactions.
+{{site.data.alerts.end}}
+
+#### `kv.closed_timestamp.side_transport_interval`
+
+When there is a period of no write activity, the _side-transport_ is a node-level process that fixes a timestamp to close for groups of ranges. This cluster setting adjusts how often the side-transport process will attempt to move the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) forward. The smaller the interval, the more frequently the side-transport will attempt to move the timestamp forward.
+
+This will also affect changefeed checkpoints. That is, if the interval is decreased the changefeed will be able to read and checkpoint more frequently, rather than collecting changes into fewer, less frequent checkpoints. To improve changefeed latency, we recommend decreasing the `kv.closed_timestamp.side_transport_interval` cluster setting.
+
+For more information on the side-transport interval, refer to [An epic read on follower reads](https://www.cockroachlabs.com/blog/follower-reads-stale-data/) on the Cockroach Labs Blog.
+
+#### `kv.rangefeed.closed_timestamp_smear_interval`
+
+This setting provides a mechanism to pace the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) notifications to follow replicas. Decreasing the closed timestamp smear interval makes rangefeed closed timestamp delivery less spiky, which can reduce its impact on foreground SQL query latency.
 
 ## Tuning for high durability delivery
 
