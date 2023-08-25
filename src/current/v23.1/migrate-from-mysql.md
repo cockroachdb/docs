@@ -159,8 +159,8 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        Click **Save**.
 
-       This is an optional workaround to reduce warnings during [data validation](#step-3-validate-the-migrated-data), due to a difference in how MySQL and CockroachDB handle case sensitivity in strings. For more details, see the [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}#limitations) documentation.
-
+       This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link {{ page.version.version }}/molt-verify.md %}#limitations) documentation.
+       
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
 
        You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.db }} Console.
@@ -363,22 +363,15 @@ Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check
 
 1. [Install MOLT Verify.]({% link {{ page.version.version }}/molt-verify.md %})
 
-1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) {% comment %}with `--source`{% endcomment %} and the SQL connection string for CockroachDB{% comment %}with `--target`{% endcomment %}:
+1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) with `--source` and the SQL connection string for CockroachDB with `--target`:
 
        {{site.data.alerts.callout_success}}
        To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `world` database and the **General connection string** option.
        {{site.data.alerts.end}}
 
-       {% comment %}
        {% include_cached copy-clipboard.html %}
        ~~~ shell
        ./molt verify --source 'jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' --target 'postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
-       ~~~
-       {% endcomment %}
-
-       {% include_cached copy-clipboard.html %}
-       ~~~ shell
-       ./molt verify 'mysql===jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' 'pg===postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
        ~~~
 
        You will see the initial output:
