@@ -9,31 +9,10 @@ As part of normal operation, CockroachDB continuously records metrics that track
 
 ## Available metrics
 
-Select your CockroachDB deployment to see the metrics available:
-
-{{site.data.alerts.callout_info}}
-This list is taken directly from the source code and is subject to change.
-{{site.data.alerts.end}}
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="metric-names">Self-Hosted and Dedicated</button>
-  <button class="filter-button" data-scope="metric-names-serverless">Serverless</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="metric-names">
-
 {% include {{page.version.version}}/metric-names.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="metric-names-serverless">
-
-{% include {{page.version.version}}/metric-names-serverless.md %}
-
-</section>
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

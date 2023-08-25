@@ -64,6 +64,11 @@ Included in this guide:
     - [Italics](#italics)
     - [Underline](#underline)
   - [Links](#links)
+    - [Link capitalization](#link-capitalization)
+    - [Links to CockroachDB docs pages in the same folder](#links-to-cockroachdb-docs-pages-in-the-same-folder)
+    - [Links to CockroachDB docs pages outside of the current folder](#links-to-cockroachdb-docs-pages-outside-of-the-current-folder)
+    - [Links to a specific location on a page that is not a heading](#links-to-a-specific-location-on-a-page-that-is-not-a-heading)
+    - [Localized external links](#localized-external-links)
     - [GitHub issues and pull requests](#github-issues-and-pull-requests)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
     - [Tips](#tips)
@@ -104,6 +109,7 @@ Included in this guide:
     - [Technical limitations of include files](#technical-limitations-of-include-files)
   - [Tabs](#tabs)
     - [Linking into tabbed content](#linking-into-tabbed-content)
+  - [Comments](#comments)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -535,9 +541,71 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
+Links are marked with inline text surrounded by square brackets followed by the link address in parentheses.
+
 Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
 
-Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
+Use Markdown reference-style links when several parts of the same page refer to the same target URL. Reference-style links contain two sets of square brackets. The first set of brackets contains the link text that will appear on the final rendered page. The second set of brackets contains the reference name.
+
+**Example:**
+
+```
+This text has a [link to a page][docs].
+...
+This text has a [link as well][docs].
+...
+[docs]: https://www.cockroachlabs.com/docs
+```
+
+#### Link capitalization
+
+Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
+
+- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
+- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
+- **Use sentence case** - when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
+
+#### Links to CockroachDB docs pages in the same folder
+
+To link to a page within the same folder (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
+
+If the page is a versioned doc, use `{{ page.version.version }}` instead of the hardcoded version. Otherwise, use the regular path (e.g., `cockroachcloud`).
+
+**Example:** `[Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})`
+
+**Example:** `[Foreign Key Constraint]({% link cockroachcloud/quickstart.md %})`
+
+To include a subsection, place it outside of the Liquid tag.
+
+**Example:** `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
+
+This also applies to files within a subfolder of the same folder (e.g., a link from `v23.1/abc.md` to `v23.1/architecture/xyz.md` or from `v23.1/architecture/xyz.md` to `v23.1/abc.md`).
+
+**Example:** `[Multi-active availability]({% link {{ page.version.version }}/architecture/glossary.md %}#multi-active-availability)`
+
+#### Links to CockroachDB docs pages outside of the current folder
+
+To link to a page outside of the current folder (e.g., a link from `v23.1` to `cockroachcloud`), use the fully qualified production URL:
+
+**Example:** `[Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)`
+
+#### Links to a specific location on a page that is not a heading
+
+To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `name` parameter:
+
+**Example:**
+
+```
+# Anchor:
+<a id="flags-max-offset"></a>`--max-offset`
+```
+
+```
+# Link:
+[--max-offset](#flags-max-offset)
+```
+
+#### Localized external links
 
 For websites that automatically localize pages, avoid using localization elements directly within the URL. For example:
 
@@ -547,40 +615,6 @@ For websites that automatically localize pages, avoid using localization element
 - Wikipedia
   - Instead of `https://en.wikipedia.org/wiki/SQL:2011`
   - Use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`
-
-Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
-
-- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
-- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
-- **Use sentence case** - when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
-
-Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
-
-- To link to another page in the docs, use just the name of the file.
-
-    **Example:** `[here](name-of-article.html)`
-
-- To link to a specific heading on another page, use the name of the file plus the heading.
-
-    **Example:** `[xyz](name-of-article.html#heading-on-page)`
-
-- To link to a specific heading on the current page, use just the heading.
-
-    **Example:** `[xyz](#heading-on-page)`
-
-- To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `name` parameter:
-
-    **Example:**
-
-    ```
-    # Anchor:
-    <a name="flags-max-offset"></a>`--max-offset`
-    ```
-
-    ```
-    # Link:
-    [--max-offset](#flags-max-offset)
-    ```
 
 #### GitHub issues and pull requests
 
@@ -745,13 +779,13 @@ When the time comes to document known limitations, keep in mind that you are doc
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
-- **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
-- **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
-- **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
-- **CockroachDB Cloud** : `{{ site.data.products.db }}`
+- **CockroachDB Serverless** : `CockroachDB {{ site.data.products.serverless }}`
+- **CockroachDB Dedicated** : `CockroachDB {{ site.data.products.dedicated }}`
+- **CockroachDB Self-Hosted** : `CockroachDB {{ site.data.products.core }}`
+- **CockroachDB Cloud** : `CockroachDB {{ site.data.products.cloud }}`
+- **Enterprise** : `{{ site.data.products.enterprise }}`
 
-
-The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
+The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
 It should be noted that each of these words can occur uncapitalized if referring to general concepts, rather than CockroachDB concepts/products. For example, we can refer to "Serverless clusters and serverless applications", note that "Dedicated clusters used dedicated (rather than shared) network and compute infrastructure".
 
@@ -1331,6 +1365,49 @@ Considerations:
 
 - If you intend to link to a header present on two or more tabsets on the same page, the header targets must be uniquely named. If you require identical header names, use explicit, unique HTML anchor names for each (in form `<a name="uniquename"></a>` as shown under [Links](#links).
 - For the first-defined tab, specifying its `filter` value in a link is functionally the same as omitting it. For all other tabs, the explicit filter name is required. You can think of this first tab as the "default" tab in this context: if not otherwise specificed, Jekyll will always open with the first tab's contents displayed.
+
+### Comments
+
+There may be situations that require adding an explanation below a piece of content or to temporarily suppress content within a page. In those situations, use [Liquid comments](https://shopify.github.io/liquid/tags/template/#comment).
+
+Page source:
+
+```
+This sentence is visible!
+{% comment %}
+This sentence is not visible!
+{% endcomment %}
+This sentence is visible except for a single commented word: {% comment %}CockroachDB{% endcomment %}
+```
+
+Final page HTML:
+
+```
+<p>This sentence is visible!</p>
+<p>This sentence is visible except for a single commented word: </p>
+```
+
+Do not use HTML comments (`<!-- -->`), because HTML comments are visible in the page's HTML source code in production. Additionally, any HTML comment content must be processed by the Liquid parser, so any Liquid within an HTML comment is still processed and can produce errors, such as a broken include or broken link.
+
+#### TODOS
+
+If you have future work to do in a particular file, simply add `TODO` or a `FIXME` inside of a comment. A colon after `TODO` or `FIXME` is optional.
+
+Examples:
+
+```
+{% comment %}
+TODO clean up SQL diagrams 
+{% endcomment %}
+```
+
+```
+{% comment %}
+FIXME: Update example SQL commands
+{% endcomment %}
+```
+
+Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight).
 
 ## Terminology and word usage
 

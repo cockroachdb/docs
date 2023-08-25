@@ -5,14 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows information about a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`](show-ranges.html) statement.
+To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -24,7 +24,7 @@ SHOW RANGE FROM INDEX [ <tablename> @ ] <indexname> FOR ROW (value1, value2, ...
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the target table.
+The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target table.
 
 ## Parameters
 
@@ -43,10 +43,10 @@ Field | Description
 `start_key` | The start key for the range.
 `end_key` | The end key for the range.
 `range_id` | The range ID.
-`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#architecture-range).
-`lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas](architecture/overview.html#architecture-range).
-`replica_localities` | The [locality](cockroach-start.html#locality) of the range.
+`lease_holder` | The node that contains the range's [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
+`lease_holder_locality` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the leaseholder.
+`replicas` | The nodes that contain the range [replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
+`replica_localities` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the range.
 
 ## Examples
 
@@ -168,11 +168,11 @@ To show information about a row in a secondary index, you must know the values o
 
 ## See also
 
-- [`SHOW RANGES`](show-ranges.html)
-- [`ALTER TABLE ... SPLIT AT`](alter-table.html#split-at)
-- [`ALTER INDEX ... SPLIT AT`](alter-index.html#split-at)
-- [`CREATE TABLE`](create-table.html)
-- [`CREATE INDEX`](create-index.html)
-- [Indexes](indexes.html)
-- [Partitioning tables](partitioning.html)
-- [Architecture Overview](architecture/overview.html)
+- [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %})
+- [`ALTER TABLE ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at)
+- [`ALTER INDEX ... SPLIT AT`]({% link {{ page.version.version }}/alter-index.md %}#split-at)
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [Partitioning tables]({% link {{ page.version.version }}/partitioning.md %})
+- [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %})

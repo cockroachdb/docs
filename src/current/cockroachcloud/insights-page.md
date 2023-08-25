@@ -6,27 +6,21 @@ cloud: true
 docs_area: manage
 ---
 
-{% if page.cloud == true %}
-  {% capture link_prefix %}../{{site.current_cloud_version}}/{% endcapture %}
-  {% assign page_prefix = "" %}
-{% else %}
-  {% assign link_prefix = "" %}
-  {% assign page_prefix = "ui-" %}
-{% endif %}
+{% capture link_prefix %}../{{site.current_cloud_version}}/{% endcapture %}
+{% assign page_prefix = "" %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+The **Insights** page of the CockroachDB {{ site.data.products.cloud }} Console helps you:
 
-The **Insights** page of the {{ site.data.products.db }} Console helps you:
+- Identify SQL statements with [high retry counts](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#automatic-retries), [slow execution](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/query-behavior-troubleshooting#identify-slow-queries), or [suboptimal plans](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
+- Identify [indexes](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/indexes) that should be created, altered, replaced, or dropped to improve performance.
 
-- Identify SQL statements with [high retry counts]({{link_prefix}}transactions.html#automatic-retries), [slow execution]({{link_prefix}}query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans]({{link_prefix}}cost-based-optimizer.html).
-- Identify [indexes]({{link_prefix}}indexes.html) that should be created, altered, replaced, or dropped to improve performance.
-
-To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
+To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
 
 {% include {{version_prefix}}ui/insights.md version_prefix=version_prefix %}
 
 ## See also
 
-- [Statements page](statements-page.html)
-- [Transactions page](transactions-page.html)
-- [Databases page](databases-page.html)
+- [Statements page]({% link cockroachcloud/statements-page.md %})
+- [Transactions page]({% link cockroachcloud/transactions-page.md %})
+- [Databases page]({% link cockroachcloud/databases-page.md %})

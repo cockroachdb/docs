@@ -6,15 +6,15 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v23.1" %} This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page](ui-debug-pages.html). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
+{% include_cached new-in.html version="v23.1" %} This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
 
 {{site.data.alerts.callout_danger}}
-We strongly recommend only using the Automatic CPU Profiler when working directly with the [Cockroach Labs support team](support-resources.html).
+We strongly recommend only using the Automatic CPU Profiler when working directly with the [Cockroach Labs support team]({% link {{ page.version.version }}/support-resources.md %}).
 {{site.data.alerts.end}}
 
 ## Configuration
 
-You can configure automatic CPU profile capture with the following [cluster settings](cluster-settings.html):
+You can configure automatic CPU profile capture with the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
 Cluster Setting | Description | Default Value | Recommended Value
 ----------------|-------------|---------------|------------------
@@ -26,7 +26,7 @@ Cluster Setting | Description | Default Value | Recommended Value
 
 ### Enabling automatic CPU profile capture
 
-To enable automatic CPU profile capture, you must [set](set-cluster-setting.html) both of the following cluster settings:
+To enable automatic CPU profile capture, you must [set]({% link {{ page.version.version }}/set-cluster-setting.md %}) both of the following cluster settings:
 
 - Set `server.cpu_profile.enabled` to `true`
 - Set `server.cpu_profile.cpu_usage_combined_threshold` to a value between `0` and `100`. Preferably, use the [recommended value](#recommended-values).
@@ -55,22 +55,22 @@ The Automatic CPU Profiler uses the configuration options to determine the high-
 
 ## Accessing CPU profiles
 
-- The Automatic CPU Profiler saves the captured CPU profiles to disk on each node's file system in the [logging directory](configure-logs.html#logging-directory). The default path is `cockroach-data/logs/pprof_dump`.
+- The Automatic CPU Profiler saves the captured CPU profiles to disk on each node's file system in the [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory). The default path is `cockroach-data/logs/pprof_dump`.
 - The only way to get these CPU profiles is to access the node file system.
-- Enabling the Automatic CPU Profiler does **not** add CPU profiles to [debug zips](cockroach-debug-zip.html).
+- Enabling the Automatic CPU Profiler does **not** add CPU profiles to [debug zips]({% link {{ page.version.version }}/cockroach-debug-zip.md %}).
 
 ## Overhead
 
 Enabling the automatic CPU profile capture on a cluster will add overhead to the cluster in the form of potential increases in latency and CPU usage.
 
 {{site.data.alerts.callout_info}}
-The decision to enable this feature should be done when advised by the [Cockroach Labs support team](support-resources.html).
+The decision to enable this feature should be done when advised by the [Cockroach Labs support team]({% link {{ page.version.version }}/support-resources.md %}).
 {{site.data.alerts.end}}
 
 - Monitor the following metrics:
-  - [P99 latency](ui-sql-dashboard.html#service-latency-sql-99th-percentile)
-  - P50 latency by creating a [custom chart](ui-custom-chart-debug-page.html) for the `sql.exec.latency-p50` metric
-  - [CPU usage](ui-hardware-dashboard.html#cpu-percent)
+  - [P99 latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile)
+  - P50 latency by creating a [custom chart]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) for the `sql.exec.latency-p50` metric
+  - [CPU usage]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
 - We anticipate a sub-10% regression on these foreground latency metrics. This overhead to your cluster may be deemed acceptable in order to collect CPU profiles that are necessary to troubleshoot problems in your cluster. Please consult with Cockroach Labs Support.
 - Overhead only occurs during profile capture, not when it is idle. If the cluster can tolerate a `server.cpu_profile.duration` (for example, 1 second) increase in latency to capture the CPU profile, consider enabling the Automatic CPU Profiler.
 

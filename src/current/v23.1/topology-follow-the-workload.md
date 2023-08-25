@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-In a multi-region deployment, follow-the-workload is the default behavior for tables that do not have a [table locality](multiregion-overview.html#table-locality). In general, this is a good choice only for tables with the following requirements:
+In a multi-region deployment, follow-the-workload is the default behavior for tables that do not have a [table locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality). In general, this is a good choice only for tables with the following requirements:
 
 - The table is active mostly in one region at a time, e.g., following the sun.
 - In the active region, read latency must be low, but write latency can be higher.
@@ -13,9 +13,9 @@ In a multi-region deployment, follow-the-workload is the default behavior for ta
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider [global tables](global-tables.html) or [follower reads](topology-follower-reads.html).
+If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider [global tables]({% link {{ page.version.version }}/global-tables.md %}) or [follower reads]({% link {{ page.version.version }}/topology-follower-reads.md %}).
 
-Note that if you start using the [multi-region SQL abstractions](multiregion-overview.html) for a database, CockroachDB will no longer provide the follow-the-workload behavior described on this page for that database.
+Note that if you start using the [multi-region SQL abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}) for a database, CockroachDB will no longer provide the follow-the-workload behavior described on this page for that database.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -30,12 +30,12 @@ Note that if you start using the [multi-region SQL abstractions](multiregion-ove
 
 ## Configuration
 
-Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and zone combination, this behavior requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the follow-the-workload feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
+Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag specifying its region and zone combination, this behavior requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the follow-the-workload feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
 
 <img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follow-the-workload table replication" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-Follow-the-workload is also used by [system ranges containing important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range).
+Follow-the-workload is also used by [system ranges containing important internal data]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-system-range).
 {{site.data.alerts.end}}
 
 ## Characteristics
@@ -78,9 +78,9 @@ Because this pattern balances the replicas for the table across regions, one ent
 
 <img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads_resiliency.png' | relative_url }}" alt="Follow-the-workload topology region failure" style="max-width:100%" />
 
-<!-- However, if an additional machine holding a replica for the table fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
+{% comment %} However, if an additional machine holding a replica for the table fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
 
-<img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads3.png' | relative_url }}" alt="Follow-the-workload topology" style="max-width:100%" /> -->
+<img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads3.png' | relative_url }}" alt="Follow-the-workload topology" style="max-width:100%" /> {% endcomment %}
 
 ## See also
 

@@ -1,6 +1,6 @@
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -8,7 +8,7 @@
 
 <h3>Choose your installation method</h3>
 
-You can install a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
+You can install a CockroachDB {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="console">Use the Cloud Console (GUI)<strong></strong></button>
@@ -36,7 +36,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 <div class="filter-content" markdown="1" data-scope="ccloud">
 
-Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
+Follow these steps to create a CockroachDB {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
 The <code>ccloud</code> CLI tool is in Preview.
@@ -62,7 +62,7 @@ Success! Created SQL user
 Retrieving cluster info: succeeded
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-147.6wr.cockroachlabs.cloud
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
  Password:  ThisIsNotAGoodPassword
  Port:      26257
  Username:  maxroach

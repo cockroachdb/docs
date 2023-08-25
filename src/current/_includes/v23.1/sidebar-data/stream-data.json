@@ -38,7 +38,7 @@
       ]
     },
     {
-      "title": "Work with Changefeeds",
+      "title": "Optimize Changefeeds",
       "items": [
         {
           "title": "Change Data Capture Queries",
@@ -73,7 +73,7 @@
       ]
     },
     {
-    "title": "Tutorials",
+    "title": "Changefeed Tutorials",
     "items": [
       {
         "title": "Connect to a Changefeed Kafka Sink with OAuth Using Okta",

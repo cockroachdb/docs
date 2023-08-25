@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
 
 For a summary of Core and {{ site.data.products.enterprise }} changefeed features, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture)
 
@@ -476,7 +476,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only Core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
+Only Core changefeeds are available on CockroachDB {{ site.data.products.serverless }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use CockroachDB {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 ## Create a Core changefeed

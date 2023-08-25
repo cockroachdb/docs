@@ -10,7 +10,7 @@ This page provides important recommendations for production deployments of Cockr
 
 ## Topology
 
-When planning your deployment, it's important to carefully review and choose the [topology patterns](topology-patterns.html) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
+When planning your deployment, it's important to carefully review and choose the [topology patterns]({% link {{ page.version.version }}/topology-patterns.md %}) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
 
 Also keep in mind some basic topology recommendations:
 
@@ -40,15 +40,15 @@ Carefully consider the following tradeoffs:
     - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
     - A cluster with fewer nodes may be easier to operate and maintain.
 
-- A **larger number of smaller nodes** emphasizes resiliency across [failure scenarios](disaster-recovery.html).
+- A **larger number of smaller nodes** emphasizes resiliency across [failure scenarios]({% link {{ page.version.version }}/disaster-recovery.md %}).
 
     - The loss of a small node during failure or routine maintenance has a lesser impact on workload response time and concurrency.
-    - Having more and smaller nodes allows [backup and restore jobs](take-and-restore-encrypted-backups.html) to complete more quickly, since these jobs run in parallel and less data is hosted on each individual node.
+    - Having more and smaller nodes allows [backup and restore jobs]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) to complete more quickly, since these jobs run in parallel and less data is hosted on each individual node.
     - Recovery from a failed node is faster when data is spread across more nodes. A smaller node will also take a shorter time to rebalance to a steady state.
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues).
+- For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues).
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
@@ -104,7 +104,7 @@ Provision at least {% include {{ page.version.version }}/prod-deployment/provisi
 The benefits to having more RAM decrease as the [number of vCPUs](#sizing) increases.
 {{site.data.alerts.end}}
 
-- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
+- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
@@ -112,10 +112,10 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
 
-- Monitor [CPU](common-issues-to-monitor.html#cpu-usage) and [memory](common-issues-to-monitor.html#database-memory-usage) usage. Ensure that they remain within acceptable limits.
+- Monitor [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
 {{site.data.alerts.callout_info}}
-Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause [OOM crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash). For more information, see [memory issues](cluster-setup-troubleshooting.html#memory-issues).
+Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause [OOM crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash). For more information, see [memory issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#memory-issues).
 {{site.data.alerts.end}}
 
 <a id="storage"></a>
@@ -134,23 +134,23 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - Always keep some of your disk capacity free on production. Doing so accommodates fluctuations in routine database operations and supports continuous data growth.
 
-- [Monitor your storage utilization](common-issues-to-monitor.html#storage-capacity) and rate of growth, and take action to add capacity well before you hit the limit.
+- [Monitor your storage utilization]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-capacity) and rate of growth, and take action to add capacity well before you hit the limit.
 
--  CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+-  CockroachDB will [automatically provision an emergency ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files) at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
-- Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
+- Use [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (Enterprise-only).
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition) (Enterprise-only).
 
 {{site.data.alerts.callout_info}}
-Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files). For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
+Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
 {{site.data.alerts.end}}
 
 ##### Disk I/O
 
 Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.
 
-- [Monitor IOPS](common-issues-to-monitor.html#disk-iops) using the DB Console and `iostat`. Ensure that they remain within acceptable values.
+- [Monitor IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) using the DB Console and `iostat`. Ensure that they remain within acceptable values.
 
 - Use [sysbench](https://github.com/akopytov/sysbench) to benchmark IOPS on your cluster. If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
@@ -159,14 +159,14 @@ Disks must be able to achieve {% include {{ page.version.version }}/prod-deploym
 - The optimal configuration for striping more than one device is [RAID 10](https://wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 {{site.data.alerts.callout_info}}
-Disk I/O especially affects [performance on write-heavy workloads](architecture/reads-and-writes-overview.html#network-and-i-o-bottlenecks). For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [node liveness issues](cluster-setup-troubleshooting.html#node-liveness-issues).
+Disk I/O especially affects [performance on write-heavy workloads]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#network-and-i-o-bottlenecks). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 {{site.data.alerts.end}}
 
 ##### Node density testing configuration
 
 In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended before using it in a production environment.
 
-These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
+These results were achieved using the ["bank" workload]({% link {{ page.version.version }}/cockroach-workload.md %}#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
 
 Results:
 
@@ -193,9 +193,9 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 {% include {{ page.version.version }}/prod-deployment/recommended-instances-aws.md %}
 
-- [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are the most cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned, which can be very expensive.
+- [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are a cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned.
 
-- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+- A typical deployment uses [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, refer to [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
 
 #### Azure
 
@@ -227,21 +227,21 @@ An insecure cluster comes with serious risks:
 - Any user, connecting as `root`, can read or write any data in your cluster.
 - There is no network encryption or authentication, and thus no confidentiality.
 
-Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt data in transit between nodes and clients. You can use either the built-in [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
+Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate]({% link {{ page.version.version }}/authentication.md %}) the identity of nodes and clients and to encrypt data in transit between nodes and clients. You can use either the built-in [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}) or [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
 
 - A certificate authority (CA) certificate and key, used to sign all of the other certificates.
 - A separate certificate and key for each node in your deployment, with the common name `node`.
 - A separate certificate and key for each client and user you want to connect to your nodes, with the common name set to the username. The default user is `root`.
 
-    Alternatively, CockroachDB supports [password authentication](authentication.html#client-authentication), although we typically recommend using client certificates instead.
+    Alternatively, CockroachDB supports [password authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication), although we typically recommend using client certificates instead.
 
-For more information, see the [Security Overview](security-reference/security-overview.html).
+For more information, see the [Security Overview]({% link {{ page.version.version }}/security-reference/security-overview.md %}).
 
 ## Networking
 
 ### Networking flags
 
-When [starting a node](cockroach-start.html), two main flags are used to control its network connections:
+When [starting a node]({% link {{ page.version.version }}/cockroach-start.md %}), two main flags are used to control its network connections:
 
 - `--listen-addr` determines which address(es) to listen on for connections from other nodes and clients.
 - `--advertise-addr` determines which address to tell other nodes to use.
@@ -273,7 +273,7 @@ When running a cluster across multiple networks, the setup depends on whether no
 Nodes reachable across networks? | Recommended setup
 ---------------------------------|------------------
 Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
-No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://wikipedia.org/wiki/Virtual_private_network), [VPC](https://wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`](cockroach-start.html#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](cockroach-start.html#locality) flag. For more details, see this [example](cockroach-start.html#start-a-multi-node-cluster-across-private-networks).
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://wikipedia.org/wiki/Virtual_private_network), [VPC](https://wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag. For more details, see this [example]({% link {{ page.version.version }}/cockroach-start.md %}#start-a-multi-node-cluster-across-private-networks).
 
 ## Load balancing
 
@@ -281,7 +281,7 @@ Each CockroachDB node is an equally suitable SQL gateway to a cluster, but to en
 
 - **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
 
-- **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. To ensure that traffic is not directed to failed nodes or nodes that are not ready to receive requests, load balancers should use [CockroachDB's readiness health check](monitoring-and-alerting.html#health-ready-1).
+- **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. To ensure that traffic is not directed to failed nodes or nodes that are not ready to receive requests, load balancers should use [CockroachDB's readiness health check]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1).
     {{site.data.alerts.callout_success}}
     With a single load balancer, client connections are resilient to node failure, but the load balancer itself is a point of failure. It's therefore best to make load balancing resilient as well by using multiple load balancing instances, with a mechanism like floating IPs or DNS to select load balancers for clients.
     {{site.data.alerts.end}}
@@ -290,11 +290,11 @@ For guidance on load balancing, see the tutorial for your deployment environment
 
 Environment | Featured Approach
 ------------|---------------------
-[On-Premises](deploy-cockroachdb-on-premises.html#step-6-set-up-load-balancing) | Use HAProxy.
-[AWS](deploy-cockroachdb-on-aws.html#step-4-set-up-load-balancing) | Use Amazon's managed load balancing service.
-[Azure](deploy-cockroachdb-on-microsoft-azure.html#step-4-set-up-load-balancing) | Use Azure's managed load balancing service.
-[Digital Ocean](deploy-cockroachdb-on-digital-ocean.html#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
-[GCP](deploy-cockroachdb-on-google-cloud-platform.html#step-4-set-up-load-balancing) | Use GCP's managed TCP proxy load balancing service.
+[On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-6-set-up-load-balancing) | Use HAProxy.
+[AWS]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}#step-4-set-up-load-balancing) | Use Amazon's managed load balancing service.
+[Azure]({% link {{ page.version.version }}/deploy-cockroachdb-on-microsoft-azure.md %}#step-4-set-up-load-balancing) | Use Azure's managed load balancing service.
+[Digital Ocean]({% link {{ page.version.version }}/deploy-cockroachdb-on-digital-ocean.md %}#step-3-set-up-load-balancing) | Use Digital Ocean's managed load balancing service.
+[GCP]({% link {{ page.version.version }}/deploy-cockroachdb-on-google-cloud-platform.md %}#step-4-set-up-load-balancing) | Use GCP's managed TCP proxy load balancing service.
 
 ## Connection pooling
 
@@ -302,7 +302,7 @@ Creating the appropriate size pool of connections is critical to gaining maximum
 
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](connection-pooling.html).
+For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
 
@@ -312,11 +312,11 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Backup and restore
 
-CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery](disaster-recovery.html) plan enables you to recover quickly, while limiting the consequences.
+CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery.md %}) plan enables you to recover quickly, while limiting the consequences.
 
-Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling [object locking](use-cloud-storage.html#object-locking) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
+Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types](backup-and-restore-overview.html#backup-and-restore-product-support).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
 
 ## Clock synchronization
 
@@ -324,7 +324,7 @@ For details about available backup and restore types in CockroachDB, see [Backup
 
 ## Cache and SQL memory size
 
-CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags.
+CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) and [`--max-sql-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flags.
 
 Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance.
 
@@ -334,12 +334,12 @@ Each node has a default SQL memory size of `25%`. This memory is used as-needed 
 - Increasing a node's **SQL memory size** will increase the number of simultaneous client connections it allows, as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions.
 
     {{site.data.alerts.callout_info}}
-    SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
+    SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations]({% link {{ page.version.version }}/vectorized-execution.md %}#disk-spilling-operations).
     {{site.data.alerts.end}}
 
-    If a node runs out of its allocated SQL memory, a `memory budget exceeded` error occurs and the `cockroach` process may be at risk of crashing due to an out-of-memory (OOM) error. To mitigate this issue, refer to [`memory budget exceeded](common-errors.html#memory-budget-exceeded).
+    If a node runs out of its allocated SQL memory, a `memory budget exceeded` error occurs and the `cockroach` process may be at risk of crashing due to an out-of-memory (OOM) error. To mitigate this issue, refer to [`memory budget exceeded]({% link {{ page.version.version }}/common-errors.md %}#memory-budget-exceeded).
 
-To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
+To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) and [`--max-sql-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -354,12 +354,12 @@ Because CockroachDB manages its own memory caches, disable Linux memory swapping
 
 ## Dependencies
 
-The [CockroachDB binary for Linux](install-cockroachdb-linux.html) depends on the following libraries:
+The [CockroachDB binary for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}) depends on the following libraries:
 
 Library | Description
 -----------|------------
 [`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
-`libncurses` | Required by the [built-in SQL shell](cockroach-sql.html).
+`libncurses` | Required by the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}).
 [`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br> The CockroachDB binary now includes Go's copy of the `tzdata` library. If CockroachDB cannot find the `tzdata` library externally, it will use this built-in copy.
 
 These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date. For the time zone data in particular, it's important for all nodes to have the same version; when updating the library, do so as quickly as possible across all nodes.
@@ -639,11 +639,11 @@ This section, "File Descriptors Limit", is in part derivative of the chapter *Op
 
 When running CockroachDB on Kubernetes, making the following minimal customizations will result in better, more reliable performance:
 
-* Use [SSDs instead of traditional HDDs](kubernetes-performance.html#disk-type).
-* Configure CPU and memory [resource requests and limits](kubernetes-performance.html#resource-requests-and-limits).
+* Use [SSDs instead of traditional HDDs]({% link {{ page.version.version }}/kubernetes-performance.md %}#disk-type).
+* Configure CPU and memory [resource requests and limits]({% link {{ page.version.version }}/kubernetes-performance.md %}#resource-requests-and-limits).
 
-For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-performance.md %}).
 
 ## Transaction retries
 
-When several transactions try to modify the same underlying data concurrently, they may experience [contention](performance-best-practices-overview.html#transaction-contention) that leads to [transaction retries](transactions.html#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
+When several transactions try to modify the same underlying data concurrently, they may experience [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that leads to [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).

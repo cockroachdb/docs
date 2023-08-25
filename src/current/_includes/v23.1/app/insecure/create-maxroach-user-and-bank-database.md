@@ -1,4 +1,4 @@
-Start the [built-in SQL shell](cockroach-sql.html):
+Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

@@ -5,9 +5,9 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }}, on {{ site.data.products.serverless }} clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html), and on {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.dedicated }}, on CockroachDB {{ site.data.products.serverless }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}), and on CockroachDB {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}). Core changefeeds are available in all products.
 
-For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview](change-data-capture-overview.html) page.
+For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
 {{ site.data.products.enterprise }} changefeeds can connect to the following sinks:
 
@@ -16,7 +16,7 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
-Refer to the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
+Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
 {% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
 
@@ -36,18 +36,18 @@ Use the following filters to show usage examples for either **Enterprise** or **
 ## Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -56,7 +56,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services start
+    ./bin/confluent local services start
     ~~~
 
     Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
@@ -65,7 +65,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -75,7 +75,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -95,7 +95,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
+    CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
     ~~~
     ~~~
 
@@ -114,13 +114,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-console-consumer \
+    ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --whitelist 'office_dogs|employees'
+    --include 'office_dogs|employees'
     ~~~
 
-    ~~~ shell
+    ~~~
     {"after": {"id": 1, "name": "Petee H"}}
     {"after": {"id": 2, "name": "Carl"}}
     {"after": {"id": 1, "name": "Lauren", "rowid": 528514320239329281}}
@@ -135,12 +135,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES (3, 'Ernie');
+    INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
 1. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
-    ~~~ shell
+    ~~~
     {"after": {"id": 3, "name": "Ernie"}}
     ~~~
 
@@ -175,24 +175,24 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services stop
+    ./bin/confluent local services stop
     ~~~
 
 ## Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -201,7 +201,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services start
+    ./bin/confluent local services start
     ~~~
 
     Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
@@ -210,7 +210,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -220,7 +220,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-topics \
+    ./bin/kafka-topics \
     --create \
     --zookeeper localhost:2181 \
     --replication-factor 1 \
@@ -240,7 +240,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
+    CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     {% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
@@ -261,13 +261,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/kafka-avro-console-consumer \
+    ./bin/kafka-avro-console-consumer \
     --bootstrap-server=localhost:9092 \
     --from-beginning \
-    --whitelist 'office_dogs|employees'
+    --include 'office_dogs|employees'
     ~~~
 
-    ~~~ shell
+    ~~~
     {"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee H"}}}}
     {"after":{"office_dogs":{"id":{"long":2},"name":{"string":"Carl"}}}}
     {"after":{"employees":{"dog_id":{"long":1},"employee_name":{"string":"Lauren"},"rowid":{"long":528537452042682369}}}}
@@ -282,12 +282,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES (3, 'Ernie');
+    INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
 
 1. Back in the terminal where you're watching the Kafka topics, the following output has appeared:
 
-    ~~~ shell
+    ~~~
     {"after":{"office_dogs":{"id":{"long":3},"name":{"string":"Ernie"}}}}
     ~~~
 
@@ -322,7 +322,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services stop
+    ./bin/confluent local services stop
     ~~~
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
@@ -337,16 +337,16 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. In this example, you'll run CockroachDB's [Movr](movr.html) application workload to set up some data for your changefeed.
+1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
 
      First create the schema for the workload:
 
@@ -382,7 +382,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud projects add-iam-policy-binding cockroach-project --member='serviceAccount:cdc-demo@cockroach-project.iam.gserviceaccount.com' --role='roles/pubsub.editor'
     ~~~
 
-1. Create the Pub/Sub [topic](changefeed-sinks.html#pub-sub-topic-naming) to which your changefeed will emit messages:
+1. Create the Pub/Sub [topic]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-topic-naming) to which your changefeed will emit messages:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -419,7 +419,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     cat key.json | base64 -w 0
     ~~~
 
-    Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
+    Copy the output so that you can add it to your [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
 
 1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account:
 
@@ -428,7 +428,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?REGION=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
 
-    You can include the `region` parameter for your topic, or use the [WITH `unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail.
+    You can include the `region` parameter for your topic, or use the [WITH `unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) page for more detail.
 
     The output will confirm the topic where the changefeed will emit messages to.
 
@@ -474,14 +474,14 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 ## Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](changefeed-sinks.html#cloud-storage-sink).
+In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink).
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -508,7 +508,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-1. Monitor your changefeed on the <a href="http://localhost:8080/#/metrics/changefeeds/cluster" data-proofer-ignore>DB Console</a>. For more information, see [Changefeeds Dashboard](ui-cdc-dashboard.html).
+1. Monitor your changefeed on the <a href="http://localhost:8080/#/metrics/changefeeds/cluster" data-proofer-ignore>DB Console</a>. For more information, see [Changefeeds Dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}).
 
 1. When you are done, exit the SQL shell (`\q`).
 
@@ -540,23 +540,23 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## Create a changefeed connected to a webhook sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. In this example, you'll run CockroachDB's [Movr](movr.html) application workload to set up some data for your changefeed.
+1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
 
      First create the schema for the workload:
 
@@ -607,7 +607,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     You set up a changefeed on the `vehicles` table, which emits changefeed messages to the local HTTP server.
 
-    See the [options table](create-changefeed.html#options) for more information on the options available for creating your changefeed to a webhook sink.
+    See the [options table]({% link {{ page.version.version }}/create-changefeed.md %}#options) for more information on the options available for creating your changefeed to a webhook sink.
 
     ~~~
           job_id
@@ -624,7 +624,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","dog_owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     ~~~
 
-    For more detail on emitted changefeed messages, see [responses](changefeed-messages.html#responses).
+    For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
 
 </section>
 
@@ -640,12 +640,12 @@ Core changefeeds stream row-level changes to a client until the underlying SQL c
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
-For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
 
 </section>
 
 ## See also
 
-- [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [Changefeed Messages](changefeed-messages.html)
+- [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %})

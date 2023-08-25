@@ -123,7 +123,7 @@ DATABASES = {
 }
 ~~~
 
-For more information about configuration a Django connection to {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
+For more information about configuration a Django connection to CockroachDB {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
 
 After you have configured the app's database connection, you can start building out the application.
 
@@ -151,7 +151,7 @@ Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/t
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
 
-Importantly, the file defines a [transaction retry loop](transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](transactions.html).
+Importantly, the file defines a [transaction retry loop]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 ### URL routes
 
@@ -219,7 +219,7 @@ This initializes the tables defined in `models.py`, in addition to some other ta
     [{"id": "bb7d6c4d-efb3-45f8-b790-9911aae7d8b2", "name": "Carl"}]
     ~~~
 
-    You can also query the table directly in the [SQL shell](cockroach-sql.html) to see the changes:
+    You can also query the table directly in the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) to see the changes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

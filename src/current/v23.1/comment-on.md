@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](alter-table.html#add-column), or [indexes](indexes.html).
+The `COMMENT ON` [statement]({% link {{ page.version.version }}/sql-statements.md %}) associates comments to [databases]({% link {{ page.version.version }}/create-database.md %}), [tables]({% link {{ page.version.version }}/create-table.md %}), [columns]({% link {{ page.version.version }}/alter-table.md %}#add-column), or [indexes]({% link {{ page.version.version }}/indexes.md %}).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the object they are commenting on.
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the object they are commenting on.
 
 ## Synopsis
 
@@ -23,12 +23,12 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
  Parameter | Description
 ------------|--------------
-`database_name` | The name of the [database](create-database.html) on which you are commenting.
-`schema_name` |  The name of the [schema](create-schema.html) on which you are commenting.
-`table_name` | The name of the [table](create-table.html) on which you are commenting.
-`column_name` | The name of the [column](alter-table.html#add-column) on which you are commenting.
-`table_index_name` | The name of the [index](indexes.html) on which you are commenting.
-`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.  You can remove a comment by replacing the string with `NULL`.
+`database_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) on which you are commenting.
+`schema_name` |  The name of the [schema]({% link {{ page.version.version }}/create-schema.md %}) on which you are commenting.
+`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) on which you are commenting.
+`column_name` | The name of the [column]({% link {{ page.version.version }}/alter-table.md %}#add-column) on which you are commenting.
+`table_index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) on which you are commenting.
+`comment_text` | The comment ([`STRING`]({% link {{ page.version.version }}/string.md %})) you are associating to the object.  You can remove a comment by replacing the string with `NULL`.
 
 ## Examples
 
@@ -43,7 +43,7 @@ To add a comment to a database:
 > COMMENT ON DATABASE movr IS 'This database contains information about users, vehicles, and rides.';
 ~~~
 
-To view database comments, use [`SHOW DATABASES`](show-databases.html):
+To view database comments, use [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -69,7 +69,7 @@ To add a comment to a table:
 > COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.';
 ~~~
 
-To view table comments, use [`SHOW TABLES`](show-tables.html):
+To view table comments, use [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -88,7 +88,7 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 (6 rows)
 ~~~
 
- You can also view comments on a table with [`SHOW CREATE`](show-create.html):
+ You can also view comments on a table with [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -125,7 +125,7 @@ To add a comment to a column:
 > COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
 ~~~
 
-To view column comments, use [`SHOW COLUMNS`](show-columns.html):
+To view column comments, use [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -145,7 +145,7 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 
 ### Add a comment to an index
 
-Suppose we [create an index](create-index.html) on the `name` column of the `users` table:
+Suppose we [create an index]({% link {{ page.version.version }}/create-index.md %}) on the `name` column of the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -159,7 +159,7 @@ To add a comment to the index:
 > COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
 ~~~
 
-To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
+To view column comments, use [`SHOW INDEXES ... WITH COMMENT`]({% link {{ page.version.version }}/show-index.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -206,11 +206,11 @@ To remove a comment from a database:
 
 ## See also
 
-- [`CREATE DATABASE`](create-database.html)
-- [`CREATE TABLE`](create-table.html)
-- [`ADD COLUMN`](alter-table.html#add-column)
-- [`CREATE INDEX`](create-index.html)
-- [`SHOW TABLES`](show-tables.html)
-- [SQL Statements](sql-statements.html)
-- [dBeaver](dbeaver.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column)
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [dBeaver]({% link {{ page.version.version }}/dbeaver.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

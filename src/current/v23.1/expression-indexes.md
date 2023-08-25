@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-An _expression index_ is an index created by applying an [expression](scalar-expressions.html) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
+An _expression index_ is an index created by applying an [expression]({% link {{ page.version.version }}/scalar-expressions.md %}) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
 
-Both [standard indexes](create-index.html) and [GIN indexes](inverted-indexes.html) support expressions. You can use expressions in [unique indexes](create-index.html#unique-indexes) and [partial indexes](partial-indexes.html).
+Both [standard indexes]({% link {{ page.version.version }}/create-index.md %}) and [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) support expressions. You can use expressions in [unique indexes]({% link {{ page.version.version }}/create-index.md %}#unique-indexes) and [partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}).
 
 You can reference multiple columns in an expression index.
 
@@ -74,7 +74,7 @@ CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 
 ### Use an expression to index a field in a `JSONB` column
 
-You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create a [GIN index](inverted-indexes.html) on a subset of the JSON column.
+You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on a subset of the JSON column.
 
 Normally an index is used only if the cost of using the index is less than the cost of a full table scan. To disable that optimization, turn off statistics collection:
 
@@ -170,16 +170,16 @@ As shown in this example, for an expression index to be used to service a query,
 Expression indexes have the following limitations:
 
 - The expression cannot reference columns outside the index's table.
-- Functional expression output must be determined by the input arguments. For example, you can't use the [volatile function](functions-and-operators.html#function-volatility) `now()` to create an index because its output depends on more than just the function arguments.
+- Functional expression output must be determined by the input arguments. For example, you can't use the [volatile function]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility) `now()` to create an index because its output depends on more than just the function arguments.
 - {% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
 - {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
 ## See also
 
-- [Computed Columns](computed-columns.html)
-- [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html)
-- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
-- [`SHOW INDEX`](show-index.html)
-- [Indexes](indexes.html)
-- [SQL Statements](sql-statements.html)
+- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
+- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
+- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

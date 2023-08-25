@@ -59,35 +59,35 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen haproxy \
+    cockroach gen haproxy \
     --certs-dir=certs \
     --host=<address of any node>
     ~~~
 
-      {% include {{ page.version.version }}/misc/haproxy.md %}
+    {% include {{ page.version.version }}/misc/haproxy.md %}
 
 1. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ scp haproxy.cfg <username>@<haproxy address>:~/
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    scp haproxy.cfg <username>@<haproxy address>:~/
+    ~~~
 
 1. SSH to the machine where you want to run HAProxy.
 
 1. Install HAProxy:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ apt-get install haproxy
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    apt-get install haproxy
+    ~~~
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ haproxy -f haproxy.cfg
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    haproxy -f haproxy.cfg
+    ~~~
 
 1. Repeat these steps for each additional instance of HAProxy you want to run.
 

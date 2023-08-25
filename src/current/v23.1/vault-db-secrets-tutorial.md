@@ -13,16 +13,16 @@ In the second phase, acting as client operator, we will pull credentials from Va
 
 See also:
 
-- [CockroachDB - HashiCorp Vault Integration overview page](hashicorp-integration.html)
+- [CockroachDB - HashiCorp Vault Integration overview page]({% link {{ page.version.version }}/hashicorp-integration.md %})
 - [HashiCorp Vault database secrets engine tutorial](https://learn.hashicorp.com/tutorials/vault/database-secrets).
 
 ## Before you begin
 
 To follow along with this tutorial you will need the following:
 
-- The CockroachDB CLI [installed locally](install-cockroachdb-mac.html).
+- The CockroachDB CLI [installed locally]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}).
 - The Vault CLI [installed locally](https://www.vaultproject.io/downloads).
-- Access to a CockroachDB cluster as [`admin` SQL user](security-reference/authorization.html#admin-role). This tutorial will use a {{ site.data.products.serverless }} cluster, but you may either [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/create-a-serverless-cluster.html) or [Start a Local Cluster (secure)](start-a-local-cluster.html) in order to follow along. In either case you must have the public CA certificate for your cluster, and a username/password combination for the `root` SQL user (or another SQL user with the [`admin` role](security-reference/authorization.html#admin-role).
+- Access to a CockroachDB cluster as [`admin` SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). This tutorial will use a CockroachDB {{ site.data.products.serverless }} cluster, but you may either [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster) or [Start a Local Cluster (secure)](start-a-local-cluster.html) in order to follow along. In either case you must have the public CA certificate for your cluster, and a username/password combination for the `root` SQL user (or another SQL user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 - Access to a Vault cluster with an admin token. This tutorial will use HashiCorp Cloud Platform, but you may either [spin up a free cluster in HashiCorp Cloud Platform](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
 
 ## Introduction
@@ -47,7 +47,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
 
 1. Connect to CockroachDB.
 
-    Set your CockroachDB cluster credentials and other configuration information as environment variables. If you're using a {{ site.data.products.db }} cluster, you can find this information in the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/)
+    Set your CockroachDB cluster credentials and other configuration information as environment variables. If you're using a CockroachDB {{ site.data.products.cloud }} cluster, you can find this information in the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/)
 
     {{site.data.alerts.callout_info}}
     Your cluster name must include the numerical suffix, which is included in the connection string under the **Connect** tab in the console, but is not included when the cluster name is displayed in the console.
@@ -145,7 +145,7 @@ The connection lies in a Vault configuration, which will store your CockroachDB 
 
     1. First, tweak the connection string to skip TLS server authentication, as there's no way to provision the Vault server with the cluster CA cert:
         {% include_cached copy-clipboard.html %}
-        <!-- the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  -->
+        {% comment %} the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  {% endcomment %}
         ~~~shell
         {% raw %}export VAULT_TLS_OPTS="sslmode=require"
         export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${VAULT_TLS_OPTS}"{% endraw %}
@@ -224,7 +224,7 @@ For a SQL role, the template is defined by its `creation_statements`, SQL statem
 
 1. Generate credential pairs.
 
-    Recall that a *role* in Vault does not correspond exactly to a *role* in CockroachDB (i.e., a [SQL role or user](security-reference/authorization.html#users-and-roles)).
+    Recall that a *role* in Vault does not correspond exactly to a *role* in CockroachDB (i.e., a [SQL role or user]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles)).
 
     A Vault role is a defined *template* for credential pairs (SQL user/role name and password), which will be generated on demand and quickly expired.
 

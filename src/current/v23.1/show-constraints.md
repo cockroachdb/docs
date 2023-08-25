@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constraints](constraints.html) as well as any unnamed [`CHECK`](check.html) constraints on a table.
+The `SHOW CONSTRAINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists all named [constraints]({% link {{ page.version.version }}/constraints.md %}) as well as any unnamed [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints on a table.
 
 ## Required privileges
 
-The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target table.
+The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target table.
 
 ## Aliases
 
@@ -75,11 +75,11 @@ Field | Description
 
 ## See also
 
-- [Constraints](constraints.html)
-- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
-- [`RENAME CONSTRAINT`](alter-table.html#rename-constraint)
-- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
-- [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint)
-- [`CREATE TABLE`](create-table.html)
-- [Information Schema](information-schema.html)
-- [SQL Statements](sql-statements.html)
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- [`RENAME CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#rename-constraint)
+- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- [`VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

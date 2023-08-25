@@ -7,7 +7,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_danger}}
-The SQL API described on this page is deprecated and will be removed in a future release. **Due to architectural changes in CockroachDB, the SQL queries described here will not result in correct output.** To check the status of your cluster's data replication, data placement, and zone constraint conformance, use the [Critical nodes status endpoint](monitoring-and-alerting.html#critical-nodes-endpoint).
+The SQL API described on this page is deprecated and will be removed in a future release. **Due to architectural changes in CockroachDB, the SQL queries described here will not result in correct output.** To check the status of your cluster's data replication, data placement, and zone constraint conformance, use the [Critical nodes status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint).
 {{site.data.alerts.end}}
 
 Several new and updated tables (listed below) are available to help you query the status of your cluster's data replication, data placement, and zone constraint conformance. For example, you can:
@@ -17,13 +17,13 @@ Several new and updated tables (listed below) are available to help you query th
 - See if any of your cluster's data placement constraints are being violated.
 
 {{site.data.alerts.callout_info}}
-The information on this page assumes you are familiar with [replication zones](configure-replication-zones.html) and [partitioning](partitioning.html).
+The information on this page assumes you are familiar with [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) and [partitioning]({% link {{ page.version.version }}/partitioning.md %}).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature.**  The interface and output are subject to change.
 
-In particular, the direct access to `system` tables shown here will not be a supported way to inspect CockroachDB in future versions. We're committed to adding stable ways to inspect these replication reports in the future, likely via `SHOW` statements and/or [views](views.html) and [built-in functions](functions-and-operators.html) in the `crdb_internal` schema.
+In particular, the direct access to `system` tables shown here will not be a supported way to inspect CockroachDB in future versions. We're committed to adding stable ways to inspect these replication reports in the future, likely via `SHOW` statements and/or [views]({% link {{ page.version.version }}/views.md %}) and [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}) in the `crdb_internal` schema.
 {{site.data.alerts.end}}
 
 ## Conformance reporting tables
@@ -36,14 +36,14 @@ The following new and updated tables are available for verifying constraint conf
 - [`system.replication_critical_localities`](#system-replication_critical_localities) shows which localities in your cluster (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 - [`crdb_internal.zones`](#crdb_internal-zones) can be used with the tables above to figure out the databases and table names where the non-conforming or at-risk data is located.
 
-To configure how often the conformance reports are run, adjust the `kv.replication_reports.interval` [cluster setting](cluster-settings.html), which accepts an [`INTERVAL`](interval.html). For example, to run it every five minutes:
+To configure how often the conformance reports are run, adjust the `kv.replication_reports.interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which accepts an [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}). For example, to run it every five minutes:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER setting kv.replication_reports.interval = '5m';
 ~~~
 
-Only members of the `admin` role can access these tables. By default, the `root` user belongs to the `admin` role. Learn more about [users and roles](security-reference/authorization.html).
+Only members of the `admin` role can access these tables. By default, the `root` user belongs to the `admin` role. Learn more about [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}).
 
 <a name="necessary-attributes"></a>
 
@@ -71,44 +71,44 @@ For an example using this table, see [Find out which databases and tables have u
 
  Ranges are considered under-replicated when one of the replicas is unresponsive. This includes the case when the node where the replica is stored is not running.
 
- This report considers a node to be dead (for the purposes of calculating the `unavailable_ranges` and `under_replicated_ranges` columns) if its [liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
+ This report considers a node to be dead (for the purposes of calculating the `unavailable_ranges` and `under_replicated_ranges` columns) if its [liveness record]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.time_until_store_dead`, which defaults to 5 minutes.
 
 #### Columns
 
 | Column name             | Data type          | Description                                                                                                                           |
 |-------------------------+--------------------+---------------------------------------------------------------------------------------------------------------------------------------|
-| zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-replication-zones.html).                                                                                |
-| subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                         |
-| report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
-| total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/overview.html#architecture-range) in the zone this report entry is referring to.                                       |
-| unavailable_ranges      | [`INT8`](int.html) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
-| under_replicated_ranges | [`INT8`](int.html) | [Under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges) in the zone this report entry is referring to.       |
-| over_replicated_ranges  | [`INT8`](int.html) | Over-replicated ranges in the zone this report entry is referring to.                                                                 |
+| zone_id                 | [`INT8`]({% link {{ page.version.version }}/int.md %}) | The ID of the [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                                                                |
+| subzone_id              | [`INT8`]({% link {{ page.version.version }}/int.md %}) | The ID of the subzone (i.e., [partition]({% link {{ page.version.version }}/partitioning.md %})).                                                                         |
+| report_id               | [`INT8`]({% link {{ page.version.version }}/int.md %}) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
+| total_ranges            | [`INT8`]({% link {{ page.version.version }}/int.md %}) | Total [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in the zone this report entry is referring to.                                       |
+| unavailable_ranges      | [`INT8`]({% link {{ page.version.version }}/int.md %}) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
+| under_replicated_ranges | [`INT8`]({% link {{ page.version.version }}/int.md %}) | [Under-replicated ranges]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#under-replicated-ranges) in the zone this report entry is referring to.       |
+| over_replicated_ranges  | [`INT8`]({% link {{ page.version.version }}/int.md %}) | Over-replicated ranges in the zone this report entry is referring to.                                                                 |
 
 ### system.replication_critical_localities
 
 The `system.replication_critical_localities` report contains which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
-That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
+That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect]({% link {{ page.version.version }}/topology-patterns.md %}).
 
-As described in [Configure Replication Zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time](cockroach-start.html#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`).
+As described in [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time]({% link {{ page.version.version }}/cockroach-start.md %}#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`).
 
 For an example using this table, see [Find out which databases and tables have ranges in critical localities](#find-out-which-databases-and-tables-have-ranges-in-critical-localities).
 
- This report considers a node to be dead (for the purposes of calculating the `at_risk_ranges` column) if its [liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
+ This report considers a node to be dead (for the purposes of calculating the `at_risk_ranges` column) if its [liveness record]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.time_until_store_dead`, which defaults to 5 minutes.
 
 #### Columns
 
 | Column name    | Data type               | Description                                                                                                                         |
 |----------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------|
-| zone_id        | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                              |
-| subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                       |
-| locality       | [`STRING`](string.html) | The name of the critical [locality](configure-replication-zones.html#zone-config-node-locality).                                    |
-| report_id      | [`INT8`](int.html)      | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                          |
-| at_risk_ranges | [`INT8`](int.html)      | The [ranges](architecture/overview.html#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
+| zone_id        | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The ID of the [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                                                              |
+| subzone_id     | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The ID of the subzone (i.e., [partition]({% link {{ page.version.version }}/partitioning.md %})).                                                                       |
+| locality       | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The name of the critical [locality]({% link {{ page.version.version }}/configure-replication-zones.md %}#zone-config-node-locality).                                    |
+| report_id      | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                          |
+| at_risk_ranges | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
 
 {{site.data.alerts.callout_info}}
-If you have not [defined any localities](configure-replication-zones.html#zone-config-node-locality), this report will not return any results. It only reports on localities that have been explicitly defined.
+If you have not [defined any localities]({% link {{ page.version.version }}/configure-replication-zones.md %}#zone-config-node-locality), this report will not return any results. It only reports on localities that have been explicitly defined.
 {{site.data.alerts.end}}
 
 ### system.replication_constraint_stats
@@ -121,26 +121,26 @@ For an example using this table, see [Find out which of your tables have a const
 
 | Column name      | Data type                       | Description                                                                                             |
 |------------------+---------------------------------+---------------------------------------------------------------------------------------------------------|
-| zone_id          | [`INT8`](int.html)              | The ID of the [replication zone](configure-replication-zones.html).                                                  |
-| subzone_id       | [`INT8`](int.html)              | The ID of the subzone (i.e., [partition](partitioning.html)).                                           |
-| type             | [`STRING`](string.html)         | The type of zone configuration that was violated, e.g., `constraint`.                                   |
-| config           | [`STRING`](string.html)         | The YAML key-value pair used to configure the zone, e.g., `+region=europe-west1`.                       |
-| report_id        | [`INT8`](int.html)              | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.              |
-| violation_start  | [`TIMESTAMPTZ`](timestamp.html) | The time when the violation was detected. Will return `NULL` if the number of `violating_ranges` is 0.  |
-| violating_ranges | [`INT8`](int.html)              | The [ranges](architecture/glossary.html#architecture-range) that are in violation of the configuration. |
+| zone_id          | [`INT8`]({% link {{ page.version.version }}/int.md %})              | The ID of the [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                                  |
+| subzone_id       | [`INT8`]({% link {{ page.version.version }}/int.md %})              | The ID of the subzone (i.e., [partition]({% link {{ page.version.version }}/partitioning.md %})).                                           |
+| type             | [`STRING`]({% link {{ page.version.version }}/string.md %})         | The type of zone configuration that was violated, e.g., `constraint`.                                   |
+| config           | [`STRING`]({% link {{ page.version.version }}/string.md %})         | The YAML key-value pair used to configure the zone, e.g., `+region=europe-west1`.                       |
+| report_id        | [`INT8`]({% link {{ page.version.version }}/int.md %})              | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.              |
+| violation_start  | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) | The time when the violation was detected. Will return `NULL` if the number of `violating_ranges` is 0.  |
+| violating_ranges | [`INT8`]({% link {{ page.version.version }}/int.md %})              | The [ranges]({% link {{ page.version.version }}/architecture/glossary.md %}#architecture-range) that are in violation of the configuration. |
 
 ### system.reports_meta
 
 The `system.reports_meta` report contains metadata about when the replication reports were last run. Each report contains a number of report entries, one per zone.
 
-Replication reports are run at the interval specified by the `kv.replication_reports.interval` [cluster setting](cluster-settings.html).
+Replication reports are run at the interval specified by the `kv.replication_reports.interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 #### Columns
 
 | Column name | Data type                       | Description                                             |
 |-------------+---------------------------------+---------------------------------------------------------|
-| id          | [`INT8`](int.html)              | The ID of the report that this report entry is part of. |
-| generated   | [`TIMESTAMPTZ`](timestamp.html) | When the report was generated.                          |
+| id          | [`INT8`]({% link {{ page.version.version }}/int.md %})              | The ID of the report that this report entry is part of. |
+| generated   | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) | When the report was generated.                          |
 
 ### crdb_internal.zones
 
@@ -156,19 +156,19 @@ SHOW COLUMNS FROM crdb_internal.zones;
 
 | column_name         | data_type               | description                                                                                                                     |
 |---------------------+-------------------------+---------------------------------------------------------------------------------------------------------------------------------|
-| zone_id             | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                          |
-| subzone_id          | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                   |
-| target              | [`STRING`](string.html) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@users_pkey`.             |
-| range_name          | [`STRING`](string.html) | The zone's name.                                                                                                                |
-| database_name       | [`STRING`](string.html) | The [database](show-databases.html) where the `target`'s data is located.                                                       |
-| table_name          | [`STRING`](string.html) | The [table](show-tables.html) where the `target`'s data is located.                                                             |
-| index_name          | [`STRING`](string.html) | The [index](show-index.html) where the `target`'s data is located.                                                              |
-| partition_name      | [`STRING`](string.html) | The [partition](show-partitions.html) where the `target`'s data is located.                                                     |
-| full_config_yaml    | [`STRING`](string.html) | The YAML you used to [configure this replication zone](configure-replication-zones.html).                                       |
-| full_config_sql     | [`STRING`](string.html) | The SQL you used to [configure this replication zone](configure-replication-zones.html).                                        |
-| raw_config_yaml     | [`STRING`](string.html) | The YAML for this [replication zone](configure-replication-zones.html), showing only values the user changed from the defaults. |
-| raw_config_sql      | [`STRING`](string.html) | The SQL for this [replication zone](configure-replication-zones.html), showing only values the user changed from the defaults.  |
-| raw_config_protobuf | [`BYTES`](bytes.html)   | A protobuf representation of the configuration for this [replication zone](configure-replication-zones.html).                   |
+| zone_id             | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The ID of the [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                                                          |
+| subzone_id          | [`INT8`]({% link {{ page.version.version }}/int.md %})      | The ID of the subzone (i.e., [partition]({% link {{ page.version.version }}/partitioning.md %})).                                                                   |
+| target              | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@users_pkey`.             |
+| range_name          | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The zone's name.                                                                                                                |
+| database_name       | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The [database]({% link {{ page.version.version }}/show-databases.md %}) where the `target`'s data is located.                                                       |
+| table_name          | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The [table]({% link {{ page.version.version }}/show-tables.md %}) where the `target`'s data is located.                                                             |
+| index_name          | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The [index]({% link {{ page.version.version }}/show-index.md %}) where the `target`'s data is located.                                                              |
+| partition_name      | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The [partition]({% link {{ page.version.version }}/show-partitions.md %}) where the `target`'s data is located.                                                     |
+| full_config_yaml    | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The YAML you used to [configure this replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                       |
+| full_config_sql     | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The SQL you used to [configure this replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                                        |
+| raw_config_yaml     | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The YAML for this [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}), showing only values the user changed from the defaults. |
+| raw_config_sql      | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The SQL for this [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}), showing only values the user changed from the defaults.  |
+| raw_config_protobuf | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})   | A protobuf representation of the configuration for this [replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}).                   |
 
 ## Examples
 
@@ -222,7 +222,7 @@ Once the statement above executes, the ranges currently stored in that locality 
 
 In other words, we are telling the ranges "where you are now is exactly where you are *not* supposed to be". This will cause the cluster to rebalance the ranges, which will take some time. During the time it takes for the rebalancing to occur, the ranges will be in violation.
 
-By default, the system constraint conformance report runs once every minute. You can change that interval by modifying the `kv.replication_reports.interval` [cluster setting](cluster-settings.html).
+By default, the system constraint conformance report runs once every minute. You can change that interval by modifying the `kv.replication_reports.interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 After the internal constraint conformance report has run again, the following query should report a violation:
 
@@ -316,9 +316,9 @@ If you were to repeat this query at 60-second intervals, you would see that the 
 
 ### Find out which databases and tables have under-replicated ranges
 
-By default, this geo-distributed demo cluster will not have any [under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges).
+By default, this geo-distributed demo cluster will not have any [under-replicated ranges]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#under-replicated-ranges).
 
-To force it into a state where some ranges are under-replicated, issue the following statement, which tells it to store 9 copies of each range underlying the `rides` table (by default [it stores 3](configure-replication-zones.html#num_replicas)).
+To force it into a state where some ranges are under-replicated, issue the following statement, which tells it to store 9 copies of each range underlying the `rides` table (by default [it stores 3]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas)).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -327,7 +327,7 @@ ALTER TABLE rides CONFIGURE ZONE USING num_replicas=9;
 
 Once the statement above executes, the cluster will rebalance so that it's storing 9 copies of each range underlying the `rides` table. During the time it takes for the rebalancing to occur, these ranges will be considered "under-replicated", since there are not yet as many copies (9) of each range as you have just specified.
 
-By default, the internal constraint conformance report runs once every minute. You can change that interval by modifying the `kv.replication_reports.interval` [cluster setting](cluster-settings.html).
+By default, the internal constraint conformance report runs once every minute. You can change that interval by modifying the `kv.replication_reports.interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 After the system constraint conformance report has run again, the following query should report under-replicated ranges:
 
@@ -419,9 +419,9 @@ SELECT * FROM report;
 
 The `system.replication_critical_localities` report contains which of your localities (if any) are critical. A locality is "critical" for a range if all of the nodes in that locality becoming unreachable would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
-That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
+That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect]({% link {{ page.version.version }}/topology-patterns.md %}).
 
-By default, the [movr demo cluster](cockroach-demo.html) has some ranges in critical localities. This is expected because it ties data for latency-sensitive queries to specific geographies at the cost of data unavailability during a region-wide failure.
+By default, the [movr demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) has some ranges in critical localities. This is expected because it ties data for latency-sensitive queries to specific geographies at the cost of data unavailability during a region-wide failure.
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
@@ -511,12 +511,12 @@ SELECT DISTINCT * FROM report;
 (24 rows)
 ~~~
 
-To give another example, let's say your cluster were similar to the one shown above, but configured with [tiered localities](cockroach-start.html#locality) such that you had split `us-east1` into `{region=us-east1,dc=dc1, region=us-east1,dc=dc2, region=us-east1,dc=dc3}`. In that case, you wouldn't expect any DC to be critical, because the cluster would "diversify" each range's location as much as possible across data centers. In such a situation, if you were to see a DC identified as a critical locality, you'd be surprised and you'd take some action. For example, perhaps the diversification process is failing because some localities are filled to capacity. If there is no disk space free in a locality, your cluster cannot move replicas there.
+To give another example, let's say your cluster were similar to the one shown above, but configured with [tiered localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) such that you had split `us-east1` into `{region=us-east1,dc=dc1, region=us-east1,dc=dc2, region=us-east1,dc=dc3}`. In that case, you wouldn't expect any DC to be critical, because the cluster would "diversify" each range's location as much as possible across data centers. In such a situation, if you were to see a DC identified as a critical locality, you'd be surprised and you'd take some action. For example, perhaps the diversification process is failing because some localities are filled to capacity. If there is no disk space free in a locality, your cluster cannot move replicas there.
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
-- [Partitioning](partitioning.html)
-- [`PARTITION BY`](partitioning.html)
-- [`CONFIGURE ZONE`](alter-table.html#configure-zone)
-- [Start a node](cockroach-start.html)
+- [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [Partitioning]({% link {{ page.version.version }}/partitioning.md %})
+- [`PARTITION BY`]({% link {{ page.version.version }}/partitioning.md %})
+- [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone)
+- [Start a node]({% link {{ page.version.version }}/cockroach-start.md %})

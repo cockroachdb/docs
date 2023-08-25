@@ -1,5 +1,5 @@
 ---
-title: Configure Replication Zones
+title: Replication Controls
 summary: In CockroachDB, you use replication zones to control the number and location of replicas for specific sets of data.
 keywords: ttl, time to live, availability zone
 toc: true
@@ -10,8 +10,8 @@ Replication zones give you the power to control what data goes where in your Coc
 
 - Databases
 - Tables
-- Rows ([Enterprise-only](enterprise-licensing.html))
-- Indexes ([Enterprise-only](enterprise-licensing.html))
+- Rows ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}))
+- Indexes ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}))
 - All data in the cluster, including internal system data ([via the default replication zone](#view-the-default-replication-zone))
 
 For each of these objects you can control:
@@ -22,40 +22,40 @@ For each of these objects you can control:
 - How long old data is kept before being garbage collected.
 - Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
 
-This page explains how replication zones work and how to use the `ALTER ... CONFIGURE ZONE` statement to manage them. `CONFIGURE ZONE` is a subcommand of the [`ALTER DATABASE`](alter-database.html#configure-zone), [`ALTER TABLE`](alter-table.html#configure-zone), [`ALTER INDEX`](alter-index.html#configure-zone), [`ALTER PARTITION`](alter-partition.html#create-a-replication-zone-for-a-partition), and [`ALTER RANGE`](alter-range.html#configure-zone) statements.
+This page explains how replication zones work and how to use the `ALTER ... CONFIGURE ZONE` statement to manage them. `CONFIGURE ZONE` is a subcommand of the [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone), [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone), [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone), [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition), and [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) statements.
 
 {{site.data.alerts.callout_info}}
-To configure replication zones, a user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
+To configure replication zones, a user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
 {{site.data.alerts.end}}
 
 ## Overview
 
-Every [range](architecture/overview.html#architecture-range) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+Every [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
 
 When a cluster starts, there are two categories of replication zone:
 
 1. Pre-configured replication zones that apply to internal system data.
 1. A single default replication zone that applies to the rest of the cluster.
 
-You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.  Note that adding zones for rows and secondary indexes is [Enterprise-only](enterprise-licensing.html).
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.  Note that adding zones for rows and secondary indexes is [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
 For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
 
 ## Replication zone levels
 
-There are five replication zone levels for [**table data**](architecture/distribution-layer.html#table-data) in a cluster, listed from least to most granular:
+There are five replication zone levels for [**table data**]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data) in a cluster, listed from least to most granular:
 
 Level | Description
 ------|------------
 Cluster | CockroachDB comes with a pre-configured `default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
-Index ([Enterprise-only](enterprise-licensing.html)) | The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
-Row ([Enterprise-only](enterprise-licensing.html)) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions](partitioning.html). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
+Index ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %})) | The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
+Row ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %})) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
 
 ### For system data
 
-In addition, CockroachDB stores internal [**system data**](architecture/distribution-layer.html#monolithic-sorted-map-structure) in what are called system ranges. There are two replication zone levels for this internal system data, listed from least to most granular:
+In addition, CockroachDB stores internal [**system data**]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#monolithic-sorted-map-structure) in what are called system ranges. There are two replication zone levels for this internal system data, listed from least to most granular:
 
 Level | Description
 ------|------------
@@ -79,7 +79,7 @@ Use the `ALTER ... CONFIGURE ZONE` statement to [add](#create-a-replication-zone
 
 ### Replication zone variables
 
-Use the `ALTER ... CONFIGURE ZONE` [statement](sql-statements.html) to set a replication zone:
+Use the `ALTER ... CONFIGURE ZONE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to set a replication zone:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -96,13 +96,13 @@ The location of replicas, both when they are first added and when they are rebal
 
 #### Descriptive attributes assigned to nodes
 
-When starting a node with the [`cockroach start`](cockroach-start.html) command, you can assign the following types of descriptive attributes:
+When starting a node with the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command, you can assign the following types of descriptive attributes:
 
 {% capture locality_case_sensitive_example %}<code>--locality datacenter=us-east-1 --locality datacenter=datacenter=US-EAST-1</code>{% endcapture %}
 
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,az=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It is typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,az=us-east-1`<br>`--locality=region=east,az=us-east-2`<br>`--locality=region=west,az=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](topology-follow-the-workload.html) for more details.<br /><br />**Note**: Repeating an exact locality value has no effect, but locality values are case-sensitive. For example, from the point of view of CockroachDB, the following values result in two separate localities:<br /><br />{{locality_case_sensitive_example}}<br /><br />This type of configuration error can lead to issues that are difficult to diagnose.
+**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,az=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It is typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,az=us-east-1`<br>`--locality=region=east,az=us-east-2`<br>`--locality=region=west,az=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload]({% link {{ page.version.version }}/topology-follow-the-workload.md %}) for more details.<br /><br />**Note**: Repeating an exact locality value has no effect, but locality values are case-sensitive. For example, from the point of view of CockroachDB, the following values result in two separate localities:<br /><br />{{locality_case_sensitive_example}}<br /><br />This type of configuration error can lead to issues that are difficult to diagnose.
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
@@ -132,17 +132,17 @@ Constraint Scope | Description | Syntax
 
 ### Node/replica recommendations
 
-See [Cluster Topography](recommended-production-settings.html#topology) recommendations for production deployments.
+See [Cluster Topography]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology) recommendations for production deployments.
 
 ### Troubleshooting zone constraint violations
 
-To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports](query-replication-reports.html).
+To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
 
 ## View replication zones
 
 Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
 
-You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`](show-create.html) to view zone configurations for a table.
+You can also use the [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to view zone configurations for a table.
 
 {% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
 
@@ -152,19 +152,19 @@ You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view
 
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
 
-For more examples, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+For more examples, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
 ### View all replication zones
 
 {% include {{ page.version.version }}/zone-configs/view-all-replication-zones.md %}
 
-For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+For more information, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
 ### View the default replication zone
 
 {% include {{ page.version.version }}/zone-configs/view-the-default-replication-zone.md %}
 
-For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+For more information, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
 ### Edit the default replication zone
 
@@ -174,31 +174,31 @@ For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-system-range.md %}
 
-For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone).
+For more information, see [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone).
 
 ### Create a replication zone for a database
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
 
-For more information, see [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone).
+For more information, see [`ALTER DATABASE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone).
 
 ### Create a replication zone for a table
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
-For more information, see [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone).
+For more information, see [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone).
 
 ### Create a replication zone for a secondary index
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
-For more information, see [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone).
+For more information, see [`ALTER INDEX ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone).
 
 ### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
-For more information, see [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition).
+For more information, see [`ALTER PARTITION ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition).
 
 ### Reset a replication zone
 
@@ -223,7 +223,7 @@ For more information, see [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition
 
 **Approach:**
 
-1. Start each node with its availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its availability zone location specified in the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag:
 
     Availability zone 1:
 
@@ -269,7 +269,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its region and availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its region and availability zone location specified in the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag:
 
     Start the five nodes:
 
@@ -292,7 +292,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-1. On any node, open the [built-in SQL client](cockroach-sql.html):
+1. On any node, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -353,7 +353,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with its availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its availability zone location specified in the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag:
 
     Availability zone 1:
 
@@ -383,7 +383,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-1. On any node, open the [built-in SQL client](cockroach-sql.html):
+1. On any node, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -508,7 +508,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-1. On any node, open the [built-in SQL client](cockroach-sql.html):
+1. On any node, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -567,7 +567,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Approach:**
 
-1. Start each node with a different [locality](cockroach-start.html#locality) attribute:
+1. Start each node with a different [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) attribute:
 
     ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
@@ -592,7 +592,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     $ cockroach init --insecure --host=<any node hostname>
     ~~~
 
-1. On any node, open the [built-in SQL client](cockroach-sql.html):
+1. On any node, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -681,13 +681,13 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 ## See also
 
-- [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html)
-- [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone)
-- [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone)
-- [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone)
-- [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone)
-- [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition)
-- [`SHOW PARTITIONS`](show-partitions.html)
-- [SQL Statements](sql-statements.html)
-- [Table Partitioning](partitioning.html)
-- [Replication Reports](query-replication-reports.html)
+- [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %})
+- [`ALTER DATABASE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone)
+- [`ALTER INDEX ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone)
+- [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone)
+- [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone)
+- [`ALTER PARTITION ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition)
+- [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Table Partitioning]({% link {{ page.version.version }}/partitioning.md %})
+- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %})

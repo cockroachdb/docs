@@ -1,0 +1,6 @@
+{% capture critical %}
+  {% include_cached corestyle.scss %}
+{% endcapture %}
+<style>
+  {{ critical | scssify }}
+</style>

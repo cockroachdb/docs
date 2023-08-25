@@ -55,39 +55,39 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 [HAProxy](http://www.haproxy.org/) is one of the most popular open-source TCP load balancers, and CockroachDB includes a built-in command for generating a configuration file that is preset to work with your running cluster, so we feature that tool here.
 
-1. On your local machine, run the [`cockroach gen haproxy`](cockroach-gen.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
+1. On your local machine, run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach gen haproxy \
+    cockroach gen haproxy \
     --certs-dir=certs \
     --host=<address of any node>
     ~~~
 
-      {% include {{ page.version.version }}/misc/haproxy.md %}
+    {% include {{ page.version.version }}/misc/haproxy.md %}
 
 1. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ scp haproxy.cfg <username>@<haproxy address>:~/
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    scp haproxy.cfg <username>@<haproxy address>:~/
+    ~~~
 
 1. SSH to the machine where you want to run HAProxy.
 
 1. Install HAProxy:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ apt-get install haproxy
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    apt-get install haproxy
+    ~~~
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ haproxy -f haproxy.cfg
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    haproxy -f haproxy.cfg
+    ~~~
 
 1. Repeat these steps for each additional instance of HAProxy you want to run.
 

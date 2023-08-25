@@ -14,7 +14,7 @@ The **Databases** page of the DB Console provides details of the following:
 - The grants assigned to each role and user.
 - [Index recommendations](#index-recommendations).
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
+To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Databases** in the left-hand navigation.
 
 {% include {{ page.version.version }}/ui/index-recommendations.md %}
 

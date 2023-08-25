@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
+The `TRUNCATE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -17,19 +17,19 @@ The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. A
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table to truncate.
-`CASCADE` | Truncate all tables with [Foreign Key](foreign-key.html) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
-`RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key](foreign-key.html) dependencies on it.
+`CASCADE` | Truncate all tables with [Foreign Key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
+`RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies on it.
 
 ## Limitations
 
-`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes](online-schema-changes.html).
+`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 ## Viewing schema changes
 
@@ -74,7 +74,7 @@ Parameter | Description
 
 ### Truncate a table and dependent tables
 
-In these examples, the `orders` table has a [Foreign Key](foreign-key.html) relationship to the `customers` table. Therefore, it's only possible to truncate the `customers` table while simultaneously truncating the dependent `orders` table, either using `CASCADE` or explicitly.
+In these examples, the `orders` table has a [Foreign Key]({% link {{ page.version.version }}/foreign-key.md %}) relationship to the `customers` table. Therefore, it's only possible to truncate the `customers` table while simultaneously truncating the dependent `orders` table, either using `CASCADE` or explicitly.
 
 #### Truncate dependent tables using `CASCADE`
 
@@ -155,7 +155,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 ## See also
 
-- [`DELETE`](delete.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [Foreign Key constraint](foreign-key.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [Foreign Key constraint]({% link {{ page.version.version }}/foreign-key.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

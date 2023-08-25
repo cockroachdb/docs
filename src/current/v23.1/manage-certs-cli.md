@@ -6,13 +6,13 @@ docs_area: manage.security
 ---
 
 
-The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
+The CockroachDB CLI's [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) in communication between CockroachDB nodes, and from SQL clients to the cluster.
 
 {{site.data.alerts.callout_info}}
 
 The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security. We recommend that you use a cloud-native tool, such as Google Cloud Platform's Certificate Authority Service (CAS), to manage security certificates.
 
-Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
+Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
 
 
 {{site.data.alerts.end}}
@@ -196,11 +196,11 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-reference/security-overview.html)
-- [Authentication](authentication.html)
-- [Client Connection Parameters](connection-parameters.html)
-- [Rotate Security Certificates](rotate-certificates.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](kubernetes-overview.html)
-- [Local Deployment](secure-a-cluster.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [Security overview]({% link {{ page.version.version }}/security-reference/security-overview.md %})
+- [Authentication]({% link {{ page.version.version }}/authentication.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Rotate Security Certificates]({% link {{ page.version.version }}/rotate-certificates.md %})
+- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
+- [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
+- [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
+- [Other Cockroach Commands]({% link {{ page.version.version }}/cockroach-commands.md %})

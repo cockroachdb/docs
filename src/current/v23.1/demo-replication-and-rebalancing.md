@@ -9,7 +9,7 @@ This page guides you through a simple demonstration of how CockroachDB replicate
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB](install-cockroachdb.html).
+Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ## Step 1. Generate certificates
 
@@ -54,7 +54,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Start a 3-node cluster
 
-1. Use the [`cockroach start`](cockroach-start.html) command to start node 1:
+1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start node 1:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -90,7 +90,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+1. In a new terminal, use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -103,13 +103,13 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log.
+    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log.
 
 ## Step 3. Create a SQL user
 
 You'll use a non-`root` user for running a client workload and accessing the DB Console.
 
-1. In the same terminal, as the `root` user, open the [built-in SQL shell](cockroach-sql.html) against any node:
+1. In the same terminal, as the `root` user, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -132,7 +132,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     > GRANT admin TO maxroach;
     ~~~
 
-    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization](security-reference/authorization.html#admin-role).
+    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 1. Exit the SQL shell:
 
@@ -143,7 +143,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 ## Step 4. Write data
 
-1. In the same terminal, run the [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database. In the connection string, replace `<password>` with the password you created earlier for `maxroach`:
+1. In the same terminal, run the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to generate an example `intro` database. In the connection string, replace `<password>` with the password you created earlier for `maxroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -237,12 +237,12 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 ## Step 5. Verify replication
 
-1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/overview.html):
+1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture]({% link {{ page.version.version }}/architecture/overview.md %}):
 
 
     Concept | Description
     --------|------------
-    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches [the maximum range size](configure-replication-zones.html#range-max-bytes), it [splits into two ranges](architecture/distribution-layer.html#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
+    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches [the maximum range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), it [splits into two ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
     **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 
 1. With those concepts in mind, open the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and log in with the `maxroach` user.

@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
+The `CREATE TABLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new table in a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -14,9 +14,9 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 To create a table, the user must have one of the following:
 
-- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
-- Membership to the [owner](security-reference/authorization.html#object-ownership) role for the database.
-- The [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
+- Membership to the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) role for the cluster.
+- Membership to the [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) role for the database.
+- The [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the database.
 
 ## Synopsis
 
@@ -91,36 +91,36 @@ To create a table, the user must have one of the following:
 
 </div>
 
-{{site.data.alerts.callout_success}}To create a table from the results of a <code>SELECT</code> statement, use <a href="create-table-as.html"><code>CREATE TABLE AS</code></a>.
+{{site.data.alerts.callout_success}}To create a table from the results of a <code>SELECT</code> statement, use <a href="{% link {{ page.version.version }}/create-table-as.md %}"><code>CREATE TABLE AS</code></a>.
 {{site.data.alerts.end}}
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview](cockroachdb-feature-availability.html#temporary-objects)**.
+`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables]({% link {{ page.version.version }}/temporary-tables.md %}).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
-`table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](#column-qualifications) (e.g., a [column-level constraint](constraints.html)). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
-`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and GIN Indexes](#create-a-table-with-secondary-and-gin-indexes) example below.<br><br> For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
-`family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
-`table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
+`table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) and [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers) and [data type]({% link {{ page.version.version }}/data-types.md %}). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](#column-qualifications) (e.g., a [column-level constraint]({% link {{ page.version.version }}/constraints.md %})). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints]({% link {{ page.version.version }}/constraints.md %}) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) statement to view them at the table level.
+`index_def` | An optional, comma-separated list of [index definitions]({% link {{ page.version.version }}/indexes.md %}). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). See the [Create a Table with Secondary Indexes and GIN Indexes](#create-a-table-with-secondary-and-gin-indexes) example below.<br><br> For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) statement can be used to create an index separate from table creation.
+`family_def` | An optional, comma-separated list of [column family definitions]({% link {{ page.version.version }}/column-families.md %}). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families]({% link {{ page.version.version }}/column-families.md %}).
+`table_constraint` | An optional, comma-separated list of [table-level constraints]({% link {{ page.version.version }}/constraints.md %}). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` |  Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
-`opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
-`opt_locality` |  Specify a [locality](multiregion-overview.html#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database](multiregion-overview.html).<br><br>Note that multi-region features require an [Enterprise license](enterprise-licensing.html).
-`opt_where_clause` | An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
-`opt_index_visible` | An optional `VISIBLE` or `NOT VISIBLE` clause that indicates whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).<br><br>Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#not-visible).
-`opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
-`ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
+`opt_partition_by` | An [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %}) for more information.
+`opt_locality` |  Specify a [locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).<br><br>Note that multi-region features require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+`opt_where_clause` | An optional `WHERE` clause that defines the predicate boolean expression of a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}).
+`opt_index_visible` | An optional `VISIBLE` or `NOT VISIBLE` clause that indicates whether an index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).<br><br>Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
+`opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+`ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Column qualifications
 
 CockroachDB supports the following column qualifications:
 
-- [Column-level constraints](constraints.html)
-- [Collations](collate.html)
-- [Column family assignments](column-families.html)
-- [`DEFAULT` expressions](default-value.html)
+- [Column-level constraints]({% link {{ page.version.version }}/constraints.md %})
+- [Collations]({% link {{ page.version.version }}/collate.md %})
+- [Column family assignments]({% link {{ page.version.version }}/column-families.md %})
+- [`DEFAULT` expressions]({% link {{ page.version.version }}/default-value.md %})
 - [`ON UPDATE` expressions](#on-update-expressions)
 - [Identity columns](#identity-columns) (sequence-populated columns)
 - [`NOT VISIBLE`](#not-visible-property)
@@ -129,8 +129,8 @@ CockroachDB supports the following column qualifications:
 
  `ON UPDATE` expressions update column values in the following cases:
 
-- An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
-- An `ON UPDATE CASCADE` [foreign key action](foreign-key.html#foreign-key-actions) modifies a different column value in the same row.
+- An [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement modifies a different column value in the same row.
+- An `ON UPDATE CASCADE` [foreign key action]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions) modifies a different column value in the same row.
 
 `ON UPDATE` expressions **do not** update column values in the following cases:
 
@@ -140,29 +140,29 @@ CockroachDB supports the following column qualifications:
 
 Note the following limitations of `ON UPDATE` expressions:
 
-- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](functions-and-operators.html) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
-- You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
+- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
+- You cannot add a [foreign key constraint]({% link {{ page.version.version }}/foreign-key.md %}) and an `ON UPDATE` expression to the same column.
 
-For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](alter-table.html#add-a-column-with-an-on-update-expression).
+For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression]({% link {{ page.version.version }}/alter-table.md %}#add-a-column-with-an-on-update-expression).
 
 ### Identity columns
 
-*Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
+*Identity columns* are columns that are populated with values in a [sequence]({% link {{ page.version.version }}/create-sequence.md %}). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}) on the sequence.
 
-To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options](create-sequence.html#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`](create-sequence.html).
+To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options]({% link {{ page.version.version }}/create-sequence.md %}#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}).
 
-If you use `GENERATED BY DEFAULT AS IDENTITY` to define the identity column, any [`INSERT`](insert.html)/[`UPSERT`](upsert.html)/[`UPDATE`](update.html) operations that specify a new value for the identity column will overwrite the default sequential values in the column. If you use `GENERATED ALWAYS AS IDENTITY`, the column's sequential values cannot be overwritten.
+If you use `GENERATED BY DEFAULT AS IDENTITY` to define the identity column, any [`INSERT`]({% link {{ page.version.version }}/insert.md %})/[`UPSERT`]({% link {{ page.version.version }}/upsert.md %})/[`UPDATE`]({% link {{ page.version.version }}/update.md %}) operations that specify a new value for the identity column will overwrite the default sequential values in the column. If you use `GENERATED ALWAYS AS IDENTITY`, the column's sequential values cannot be overwritten.
 
 Note the following limitations of identity columns:
 
-- `GENERATED ALWAYS AS IDENTITY`/`GENERATED BY DEFAULT AS IDENTITY` is supported in [`ALTER TABLE ... ADD COLUMN`](alter-table.html#add-column) statements only when the table being altered is empty, as [CockroachDB does not support back-filling sequential column data](known-limitations.html#adding-a-column-with-sequence-based-default-values). For more information, see the [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508).
+- `GENERATED ALWAYS AS IDENTITY`/`GENERATED BY DEFAULT AS IDENTITY` is supported in [`ALTER TABLE ... ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) statements only when the table being altered is empty, as [CockroachDB does not support back-filling sequential column data]({% link {{ page.version.version }}/known-limitations.md %}#adding-a-column-with-sequence-based-default-values). For more information, see the [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508).
 - Unlike PostgreSQL, CockroachDB does not support using the `OVERRIDING SYSTEM VALUE` clause in `INSERT`/`UPDATE`/`UPSERT` statements to overwrite `GENERATED ALWAYS AS IDENTITY` identity column values.
 
 For an example of an identity column, see [Create a table with an identity column](#create-a-table-with-an-identity-column).
 
 ### `NOT VISIBLE` property
 
-The `NOT VISIBLE` property of a column specifies that a column will not be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
+The `NOT VISIBLE` property of a column specifies that a column will not be returned when using `*` in a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column]({% link {{ page.version.version }}/show-create.md %}#show-the-create-table-statement-for-a-table-with-a-hidden-column).
 
 ## Create a table like an existing table
 
@@ -170,18 +170,18 @@ CockroachDB supports the `CREATE TABLE LIKE` syntax for creating a new table bas
 
 The following options are supported:
 
-- `INCLUDING CONSTRAINTS` adds all [`CHECK`](check.html) constraints from the source table.
-- `INCLUDING DEFAULTS` adds all [`DEFAULT`](default-value.html) column expressions from the source table.
-- `INCLUDING GENERATED` adds all [computed column](computed-columns.html) expressions from the source table.
-- `INCLUDING INDEXES` adds all [indexes](indexes.html) from the source table.
+- `INCLUDING CONSTRAINTS` adds all [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints from the source table.
+- `INCLUDING DEFAULTS` adds all [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) column expressions from the source table.
+- `INCLUDING GENERATED` adds all [computed column]({% link {{ page.version.version }}/computed-columns.md %}) expressions from the source table.
+- `INCLUDING INDEXES` adds all [indexes]({% link {{ page.version.version }}/indexes.md %}) from the source table.
 - `INCLUDING ALL` includes all of the specifiers above.
 
 To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
 
 {{site.data.alerts.callout_info}}
-`CREATE TABLE LIKE` statements cannot copy [column families](column-families.html), [partitions](partitioning.html), and [foreign key constraints](foreign-key.html) from existing tables. If you want these column qualifications in a new table, you must recreate them manually.
+`CREATE TABLE LIKE` statements cannot copy [column families]({% link {{ page.version.version }}/column-families.md %}), [partitions]({% link {{ page.version.version }}/partitioning.md %}), and [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}) from existing tables. If you want these column qualifications in a new table, you must recreate them manually.
 
-`CREATE TABLE LIKE` copies all hidden columns (e.g., the hidden [`crdb_region`](alter-table.html#crdb_region) column in multi-region tables) from the existing table to the new table.
+`CREATE TABLE LIKE` copies all hidden columns (e.g., the hidden [`crdb_region`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) column in multi-region tables) from the existing table to the new table.
 {{site.data.alerts.end}}
 
 Supported `LIKE` specifiers can also be mixed with ordinary `CREATE TABLE` specifiers. For example:
@@ -201,12 +201,12 @@ For additional examples, see [Create a new table from an existing one](#create-a
 
 ### Create a table
 
-In this example, we create the `users` table with a single [primary key](primary-key.html) column defined. In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
+In this example, we create the `users` table with a single [primary key]({% link {{ page.version.version }}/primary-key.md %}) column defined. In CockroachDB, every table requires a [primary key]({% link {{ page.version.version }}/primary-key.md %}). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
-For performance recommendations on primary keys, see the [Schema Design: Create a Table](schema-design-table.html) page and the [SQL Performance Best Practices](performance-best-practices-overview.html#use-multi-column-primary-keys) page.
+For performance recommendations on primary keys, see the [Schema Design: Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}) page and the [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) page.
 
 {{site.data.alerts.callout_info}}
-  If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY KEY`](alter-table.html#add-constraint) or [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.
+  If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) or [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.
  {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
@@ -259,7 +259,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 ### Create a table with secondary and GIN indexes
 
-In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
+In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) allow efficient access to the schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -306,20 +306,20 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 
 We also have other resources on indexes:
 
-- Create indexes for existing tables using [`CREATE INDEX`](create-index.html).
-- [Learn more about indexes](indexes.html).
+- Create indexes for existing tables using [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}).
+- [Learn more about indexes]({% link {{ page.version.version }}/indexes.md %}).
 
 ### Create a table with auto-generated unique row IDs
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.md %}
 
 ### Create a table with a foreign key constraint
 
-[Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+[Foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
-There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the most important rule is that referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
+There are a [number of rules]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys) that govern foreign keys, but the most important rule is that referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key]({% link {{ page.version.version }}/primary-key.md %}) or [unique]({% link {{ page.version.version }}/unique.md %}) constraint.
 
-You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
+You can include a [foreign key action]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
@@ -431,7 +431,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 ### Create a table with a check constraint
 
-In this example, we create the `users` table, but with some column [constraints](constraints.html). One column is the [primary key](primary-key.html), and another column is given a [unique constraint](unique.html) and a [check constraint](check.html) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
+In this example, we create the `users` table, but with some column [constraints]({% link {{ page.version.version }}/constraints.md %}). One column is the [primary key]({% link {{ page.version.version }}/primary-key.md %}), and another column is given a [unique constraint]({% link {{ page.version.version }}/unique.md %}) and a [check constraint]({% link {{ page.version.version }}/check.md %}) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -478,11 +478,11 @@ In this example, we create the `users` table, but with some column [constraints]
 
 ### Create a table that mirrors key-value storage
 
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.md %}
 
 ### Create a table from a `SELECT` statement
 
-You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
+You can use the [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -637,21 +637,21 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 
 ### Create a table in a multi-region database
 
-To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+To create a table with a specific [table locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
-In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
+In order to set table localities, the database that contains the table must have [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).
 
-By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`](table-localities.html#regional-tables) locality.
+By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) locality.
 {{site.data.alerts.end}}
 
 #### Create a table with a global locality
 
-To create a table with a [`GLOBAL`](table-localities.html#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`GLOBAL`]({% link {{ page.version.version }}/table-localities.md %}#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
 
 The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be read with low latency from all regions.
 
-For example, the `promo_codes` table of the [`movr` database](movr.html) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
+For example, the `promo_codes` table of the [`movr` database]({% link {{ page.version.version }}/movr.md %}) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -679,7 +679,7 @@ SELECT * FROM x WHERE table_name='promo_codes';
 
 #### Create a table with a regional-by-table locality
 
-To create a table with a [`REGIONAL BY TABLE`](table-localities.html#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 `REGIONAL BY TABLE IN PRIMARY REGION` is the default locality for all tables created in a multi-region database.
@@ -716,11 +716,11 @@ For example, suppose you want to create a table for your application's end users
 
 #### Create a table with a regional-by-row locality
 
-To create a table with a [`REGIONAL-BY-ROW`](table-localities.html#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL-BY-ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
 
 The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, where the low-latency region is specified at the row level.
 
-For example, the `vehicles` table of the [`movr` database](movr.html) is read to and written from nodes in different regions.
+For example, the `vehicles` table of the [`movr` database]({% link {{ page.version.version }}/movr.md %}) is read to and written from nodes in different regions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -742,10 +742,10 @@ CockroachDB will automatically assign each row to a region based on the locality
 If the node from which a row is inserted has a locality that does not correspond to a region in the database, then the row will be assigned to the database's primary region.
 {{site.data.alerts.end}}
 
-To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](alter-table.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
+To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region), of [`ENUM`]({% link {{ page.version.version }}/enum.md %}) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
 
 {{site.data.alerts.callout_info}}
-The region value for `crdb_region` must be one of the regions added to the database, and present in the `crdb_internal_region` `ENUM`. To return the available regions, use a [`SHOW REGIONS FROM DATABASE <database name>`](show-regions.html) statement, or a [`SHOW ENUMS`](show-enums.html) statement.
+The region value for `crdb_region` must be one of the regions added to the database, and present in the `crdb_internal_region` `ENUM`. To return the available regions, use a [`SHOW REGIONS FROM DATABASE <database name>`]({% link {{ page.version.version }}/show-regions.md %}) statement, or a [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) statement.
 {{site.data.alerts.end}}
 
 For example:
@@ -788,7 +788,7 @@ For example:
 (1 row)
 ~~~
 
-You can then manually set the values of the region with each [`INSERT`](insert.html) statement:
+You can then manually set the values of the region with each [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -803,7 +803,7 @@ Alternatively, you could update the rows in the `crdb_region` column to compute 
 
 #### Create a table with a regional-by-row locality, using a custom region column
 
-To create a table with a [`REGIONAL-BY-ROW`](table-localities.html#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL-BY-ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
 
 Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to regions based on the value of any custom column of type `crdb_internal_region`.
 
@@ -878,7 +878,7 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 (5 rows)
 ~~~
 
-When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function](functions-and-operators.html).
+When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -954,7 +954,7 @@ If the `numerical` column were to follow the `ALWAYS` rule instead, then the seq
 
 ### Create a table with data excluded from backup
 
-In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, a table could contain high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
+In some situations, you may want to exclude a table's row data from a [backup]({% link {{ page.version.version }}/backup.md %}). For example, a table could contain high-churn data that you would like to [garbage collect]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) more quickly than the [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -969,19 +969,19 @@ CREATE TABLE promo_codes (
 WITH (exclude_data_from_backup = true);
 ~~~
 
-To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
+To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups) example.
 
 ## See also
 
-- [`INSERT`](insert.html)
-- [`ALTER TABLE`](alter-table.html)
-- [`DELETE`](delete.html)
-- [`DROP TABLE`](drop-table.html)
-- [`ALTER TABLE ... RENAME TO`](alter-table.html#rename-to)
-- [`SHOW CREATE`](show-create.html)
-- [`SHOW TABLES`](show-tables.html)
-- [`SHOW COLUMNS`](show-columns.html)
-- [Column Families](column-families.html)
-- [Table-Level Replication Zones](configure-replication-zones.html#create-a-replication-zone-for-a-table)
-- [Define Table Partitions](partitioning.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
+- [`ALTER TABLE ... RENAME TO`]({% link {{ page.version.version }}/alter-table.md %}#rename-to)
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
+- [Column Families]({% link {{ page.version.version }}/column-families.md %})
+- [Table-Level Replication Zones]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table)
+- [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

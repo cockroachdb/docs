@@ -1,4 +1,4 @@
-To enable super regions, set the `enable_super_regions` [session setting](set-vars.html) to `'on'`:
+To enable super regions, set the `enable_super_regions` [session setting]({% link {{ page.version.version }}/set-vars.md %}) to `'on'`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -9,7 +9,7 @@ SET enable_super_regions = 'on';
 SET
 ~~~
 
-You can also set the `sql.defaults.super_regions.enabled` [cluster setting](cluster-settings.html) to `true`:
+You can also set the `sql.defaults.super_regions.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

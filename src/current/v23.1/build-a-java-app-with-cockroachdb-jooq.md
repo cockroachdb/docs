@@ -68,7 +68,7 @@ $ ./maven-install.sh
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -84,7 +84,7 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transaction-retry-error-example.html) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
@@ -142,7 +142,7 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
+To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -182,7 +182,7 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transaction-retry-error-example.html) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
@@ -239,7 +239,7 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
+To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

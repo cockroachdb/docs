@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW STATEMENTS` [statement](sql-statements.html) lists details about currently active SQL queries, including:
+The `SHOW STATEMENTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists details about currently active SQL queries, including:
 
 - The internal ID of the query
 - The node executing the query
@@ -14,10 +14,10 @@ The `SHOW STATEMENTS` [statement](sql-statements.html) lists details about curre
 - The client address, application name, and user that issued the query
 -  The ID for the current session
 
-These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled](cancel-query.html) to prevent unwanted resource consumption.
+These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled]({% link {{ page.version.version }}/cancel-query.md %}) to prevent unwanted resource consumption.
 
 {{site.data.alerts.callout_info}}
-Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements are not executed as queries internally and so are not listed by `SHOW STATEMENTS`. To monitor such statements, use [`SHOW JOBS`](show-jobs.html) instead.
+Schema changes and [`BACKUP`]({% link {{ page.version.version }}/backup.md %})/[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statements are not executed as queries internally and so are not listed by `SHOW STATEMENTS`. To monitor such statements, use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) instead.
 {{site.data.alerts.end}}
 
 ## Aliases
@@ -52,7 +52,7 @@ Field | Description
 `start` | The timestamp at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
-`application_name` | The [application name](set-vars.html#supported-variables) specified by the client, if any. For queries from the [built-in SQL client](cockroach-sql.html), this will be `$ cockroach sql`.
+`application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For queries from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `$ cockroach sql`.
 `distributed` | If `true`, the query is being executed by the Distributed SQL (DistSQL) engine. If `false`, the query is being executed by the standard "local" SQL engine. If `NULL`, the query is being prepared and it's not yet known which execution engine will be used.
 `phase` | The phase of the query's execution. If `preparing`, the statement is being parsed and planned. If `executing`, the statement is being executed.
 
@@ -93,7 +93,7 @@ Alternatively, you can use `SHOW STATEMENTS` to receive the same response.
 
 ### Filter for specific queries
 
-You can use a [`SELECT`](select-clause.html) statement to filter the list of active queries by one or more of the [response fields](#response).
+You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement to filter the list of active queries by one or more of the [response fields](#response).
 
 #### Show all queries on node 2
 
@@ -127,7 +127,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 #### Exclude queries from the built-in SQL client
 
-To exclude queries from the [built-in SQL client](cockroach-sql.html), filter for queries that do not show `$ cockroach sql` as the `application_name`:
+To exclude queries from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for queries that do not show `$ cockroach sql` as the `application_name`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -146,7 +146,7 @@ To exclude queries from the [built-in SQL client](cockroach-sql.html), filter fo
 
 ### Cancel a query
 
-When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to end it.
+When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement to end it.
 
 For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that have been running for more than 3 hours:
 
@@ -172,8 +172,8 @@ To cancel this long-running query, and stop it from consuming resources, you not
 
 ## See also
 
-- [Manage Long-Running Queries](manage-long-running-queries.html)
-- [`CANCEL QUERY`](cancel-query.html)
-- [`SHOW SESSIONS`](show-sessions.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [SQL Statements](sql-statements.html)
+- [Manage Long-Running Queries]({% link {{ page.version.version }}/manage-long-running-queries.md %})
+- [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %})
+- [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

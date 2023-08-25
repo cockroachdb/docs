@@ -5,20 +5,20 @@ toc: true
 docs_area: reference.sql
 ---
 
-You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), [`EXPORT`](export.html), and [`CREATE CHANGEFEED`](create-changefeed.html) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
+You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [`IMPORT`]({% link {{ page.version.version }}/import.md %}), [`EXPORT`]({% link {{ page.version.version }}/export.md %}), and [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
 
-`CREATE EXTERNAL CONNECTION` will validate the URI by writing, reading, and listing a test file to the external storage URI. If you're using a [KMS URI](take-and-restore-encrypted-backups.html), `CREATE EXTERNAL CONNECTION` will encrypt and decrypt a file. You'll find a `crdb_external_storage_location` file in your external storage as a result of this test. Each of the operations that access the external connection is aware of the raw URI that is parsed to configure, authenticate, and interact with the connection.
+`CREATE EXTERNAL CONNECTION` will validate the URI by writing, reading, and listing a test file to the external storage URI. If you're using a [KMS URI]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}), `CREATE EXTERNAL CONNECTION` will encrypt and decrypt a file. You'll find a `crdb_external_storage_location` file in your external storage as a result of this test. Each of the operations that access the external connection is aware of the raw URI that is parsed to configure, authenticate, and interact with the connection.
 
 The [privilege model](#required-privileges) for external connections means that you can delegate the creation and usage of external connections to the necessary users or roles.
 
 You can also use the following SQL statements to work with external connections:
 
-- [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html)
-- [`DROP EXTERNAL CONNECTION`](drop-external-connection.html)
+- [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
+- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 
 ## Required privileges
 
-To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html).
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). `root` and [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`]({% link {{ page.version.version }}/grant.md %}).
 
 For example:
 
@@ -53,29 +53,27 @@ Parameter | Description
 
 Storage or sink      | Operation support
 ---------------------+---------------------------------
-[Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
-[Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
-[Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
-[Confluent Schema Registry](create-changefeed.html#confluent-registry) | Changefeeds
-[Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | Changefeeds
-[Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
-[Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups
-[HTTP(S)](changefeed-sinks.html) | Changefeeds
-[Kafka](changefeed-sinks.html#kafka) | Changefeeds
-[Nodelocal](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
-[Userfile](use-userfile-storage.html) | Backups, restores, imports, exports, changefeeds
-[Webhook](changefeed-sinks.html#webhook-sink) | Changefeeds
+[Amazon S3]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[Amazon S3 KMS]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#aws-kms-uri-format) | Encrypted backups
+[Azure Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[Confluent Schema Registry]({% link {{ page.version.version }}/create-changefeed.md %}#confluent-registry) | Changefeeds
+[Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) | Changefeeds
+[Google Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[Google Cloud Storage KMS]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#google-cloud-kms-uri-format) | Encrypted backups
+[HTTP(S)]({% link {{ page.version.version }}/changefeed-sinks.md %}) | Changefeeds
+[Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | Changefeeds
+[Nodelocal]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[Webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) | Changefeeds
 
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 
 ### Changefeed sinks as external connections
 
-Consider the following when you create an external connection for:
+Consider the following when you create an external connection for changefeeds:
 
-- Kafka sinks: You can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
-- Cloud storage sinks: {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
-
-{% include {{ page.version.version }}/cdc/ext-conn-cluster-setting.md %}
+- You can only include the query parameters and options that Kafka sinks support. Refer to the [Options]({% link {{ page.version.version }}/create-changefeed.md %}#options) table and the Kafka [query parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) for more detail.
+- {% include {{ page.version.version }}/cdc/ext-conn-cluster-setting.md %}
 
 ## External connection URI format
 
@@ -104,7 +102,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     CREATE EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}';
     ~~~
 
-1. Verify that the new external connection was created successfully with [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html):
+1. Verify that the new external connection was created successfully with [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -128,7 +126,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
     {{site.data.alerts.end}}
 
-1. Use [`SHOW BACKUP`](show-backup.html) to view your backups in the storage defined by the external connection:
+1. Use [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) to view your backups in the storage defined by the external connection:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -149,7 +147,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     RESTORE DATABASE movr FROM LATEST IN 'external://backup_bucket';
     ~~~
 
-1. When you no longer need the external connection, you can delete it with [`DROP EXTERNAL CONNECTION`](drop-external-connection.html):
+1. When you no longer need the external connection, you can delete it with [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -160,7 +158,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
 
 In this example, you create an external connection to a Kafka sink to which a changefeed will emit messages. When you create the external connection, you will include the necessary query parameters for your changefeed. As a result, you will only need to specify the external connection's name when creating a changefeed rather than the Kafka URI and parameters.
 
-1. Define your external connection that references the Kafka sink URI and any [connection parameters](changefeed-sinks.html#kafka):
+1. Define your external connection that references the Kafka sink URI and any [connection parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -178,10 +176,10 @@ In this example, you create an external connection to a Kafka sink to which a ch
 
 ## See also
 
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`EXPORT`](export.html)
-- [`IMPORT INTO`](import-into.html)
-- [`DROP EXTERNAL CONNECTION`](drop-external-connection.html)
-- [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html)
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
+- [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})

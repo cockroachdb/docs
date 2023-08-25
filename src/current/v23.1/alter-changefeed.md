@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
+The `ALTER CHANGEFEED` statement modifies an existing [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}). You can use `ALTER CHANGEFEED` to do the following:
 
 - Add new target tables to a changefeed.
 - Remove target tables from a changefeed.
@@ -16,7 +16,7 @@ The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-c
 
 The statement will return a job ID and the new job description.
 
-It is necessary to [**pause**](pause-job.html) a changefeed before running the `ALTER CHANGEFEED` statement against it. For an example of a changefeed modification using `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
+It is necessary to [**pause**]({% link {{ page.version.version }}/pause-job.md %}) a changefeed before running the `ALTER CHANGEFEED` statement against it. For an example of a changefeed modification using `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
 
 ## Synopsis
 
@@ -29,10 +29,10 @@ It is necessary to [**pause**](pause-job.html) a changefeed before running the `
 Parameter                               | Description
 ----------------------------------------+-------------------------------------------------------------------------------------------------------------------------
 `job_ID`                               | Specify the changefeed `job_ID` to modify.
-`WITH` | Use `ADD {tables} WITH initial_scan = 'yes'` to perform a scan when adding a target table or multiple target tables. The `ALTER CHANGEFEED` statement does not perform an initial scan by default, regardless of whether [`initial_scan = 'yes'`](create-changefeed.html#initial-scan) was set with the **original** `CREATE CHANGEFEED` statement. It is also possible to explicitly state `ADD {tables} WITH initial_scan = 'no'`, although the default makes this unnecessary. See further details in the [Options](#scan-details) section.
+`WITH` | Use `ADD {tables} WITH initial_scan = 'yes'` to perform a scan when adding a target table or multiple target tables. The `ALTER CHANGEFEED` statement does not perform an initial scan by default, regardless of whether [`initial_scan = 'yes'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) was set with the **original** `CREATE CHANGEFEED` statement. It is also possible to explicitly state `ADD {tables} WITH initial_scan = 'no'`, although the default makes this unnecessary. See further details in the [Options](#scan-details) section.
 `ADD`                                  | Add a new target table to a changefeed. See the [example](#add-targets-to-a-changefeed).
 `DROP`                                 | Drop a target table from a changefeed. It is **not** possible to drop all target tables from a changefeed. See the [example](#drop-targets-from-a-changefeed).
-`SET`                                  | Set new options on a changefeed. `ALTER CHANGEFEED ... SET ...` uses the [`CREATE CHANGEFEED`](create-changefeed.html#options) options with some [exceptions](#option-exceptions). See the [example](#set-options-on-a-changefeed).
+`SET`                                  | Set new options on a changefeed. `ALTER CHANGEFEED ... SET ...` uses the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#options) options with some [exceptions](#option-exceptions). See the [example](#set-options-on-a-changefeed).
 `UNSET`                                | Remove options that were set with the original `CREATE CHANGEFEED` statement with some [exceptions](#option-exceptions). See the [example](#unset-options-on-a-changefeed).
 
 When the listed parameters are used together in the same statement, all changes will apply at the same time with no particular order of operations.
@@ -41,15 +41,15 @@ When the listed parameters are used together in the same statement, all changes 
 
 Consider the following when specifying options with `ALTER CHANGEFEED`:
 
-- You can set a different [sink URI](changefeed-sinks.html#sink-uri) for an existing changefeed with the `sink` option. It is **not** possible to change the sink type. For example, you can use `SET sink = 'gs://{BUCKET NAME}?AUTH=IMPLICIT'` to use a different Google Cloud Storage bucket. However, you cannot use the `sink` option to move to Amazon S3 (`s3://`) or Kafka (`kafka://`). See the [Set options on a changefeed](#set-options-on-a-changefeed) example.
+- You can set a different [sink URI]({% link {{ page.version.version }}/changefeed-sinks.md %}#sink-uri) for an existing changefeed with the `sink` option. It is **not** possible to change the sink type. For example, you can use `SET sink = 'gs://{BUCKET NAME}?AUTH=IMPLICIT'` to use a different Google Cloud Storage bucket. However, you cannot use the `sink` option to move to Amazon S3 (`s3://`) or Kafka (`kafka://`). See the [Set options on a changefeed](#set-options-on-a-changefeed) example.
 
-- <a name="option-exceptions"></a> The majority of [`CREATE CHANGEFEED`](create-changefeed.html#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
-  - [`cursor`](create-changefeed.html#cursor-option)
-  - [`end_time`](create-changefeed.html#end-time)
-  - [`full_table_name`](create-changefeed.html#full-table-option): This option will not apply to existing tables. To use the fully qualified table name, it is necessary to create a new changefeed.
-  - [`initial_scan = 'only'`](create-changefeed.html#initial-scan)
+- <a name="option-exceptions"></a> The majority of [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
+  - [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor-option)
+  - [`end_time`]({% link {{ page.version.version }}/create-changefeed.md %}#end-time)
+  - [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option): This option will not apply to existing tables. To use the fully qualified table name, it is necessary to create a new changefeed.
+  - [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan)
 
-- <a name="scan-details"></a> To use [`initial_scan`](create-changefeed.html#initial-scan) with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
+- <a name="scan-details"></a> To use [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
 
     ~~~ sql
     ALTER CHANGEFEED {job ID} ADD movr.rides, movr.vehicles WITH initial_scan = 'yes' SET updated UNSET resolved;
@@ -59,7 +59,7 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
 
 ## Required privileges
 
-To alter a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`](create-user.html#create-a-user-that-can-control-changefeeds) parameter set.
+To alter a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Examples
 
@@ -68,10 +68,10 @@ To alter a changefeed, the user must be a member of the `admin` role or have the
 To use the `ALTER CHANGEFEED` statement to modify a changefeed, it is necessary to first pause the running changefeed. The following example demonstrates creating a changefeed, pausing the changefeed, modifying it, and then resuming the changefeed.
 
 {{site.data.alerts.callout_info}}
-For more information on enabling changefeeds, see [Create and Configure Changefeeds](create-and-configure-changefeeds.html).
+For more information on enabling changefeeds, see [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 {{site.data.alerts.end}}
 
-1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`](create-changefeed.html#resolved-option), [`updated`](create-changefeed.html#updated-option), and [`schema_change_policy`](create-changefeed.html#schema-policy) options:
+1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), [`updated`]({% link {{ page.version.version }}/create-changefeed.md %}#updated-option), and [`schema_change_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-policy) options:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -86,7 +86,7 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
     (1 row)
     ~~~
 
-1. Use [`SHOW CHANGEFEED JOB`](show-jobs.html#show-changefeed-jobs) with the job_ID to view the details of a changefeed:
+1. Use [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) with the job_ID to view the details of a changefeed:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -107,7 +107,7 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
     SHOW CHANGEFEED JOBS;
     ~~~
 
-1. In preparation for modifying the created changefeed, use [`PAUSE JOB`](pause-job.html):
+1. In preparation for modifying the created changefeed, use [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -130,7 +130,7 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
     The output from `ALTER CHANGEFEED` will show the `CREATE CHANGEFEED` statement with the options you've defined. After modifying a changefeed with `ALTER CHANGEFEED`, the `CREATE` description will show the fully qualified table name.
 
-    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options](create-changefeed.html#options).  
+    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options]({% link {{ page.version.version }}/create-changefeed.md %}#options).  
 
 1. Resume the changefeed job with `RESUME JOB`:
 
@@ -148,7 +148,7 @@ The following statement adds the `vehicles` and `rides` tables as new table targ
  ALTER CHANGEFEED {job_ID} ADD movr.rides, movr.vehicles;
 ~~~
 
-To add a table that has [column families](column-families.html), see the [example](#modify-a-changefeed-targeting-tables-with-column-families).
+To add a table that has [column families]({% link {{ page.version.version }}/column-families.md %}), see the [example](#modify-a-changefeed-targeting-tables-with-column-families).
 
 ### Drop targets from a changefeed
 
@@ -168,7 +168,7 @@ Use `SET` to add a new option(s) to a changefeed:
 ALTER CHANGEFEED {job_ID} SET resolved='10s', envelope=key_only;
 ~~~
 
-`ALTER CHANGEFEED ... SET` can implement the [`CREATE CHANGEFEED`](create-changefeed.html#options) options with some [exceptions](#options).
+`ALTER CHANGEFEED ... SET` can implement the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#options) options with some [exceptions](#options).
 
 <a name="sink-example"></a>Use the `sink` option to change the sink URI to which the changefeed emits messages:
 
@@ -181,7 +181,7 @@ ALTER CHANGEFEED {job_ID}
 
 The type (or scheme) of the sink **cannot** change. That is, if the changefeed was originally sending messages to `kafka://`, for example, then you can only change to a different Kafka URI. Similarly, for cloud storage sinks, the cloud storage scheme must remain the same (e.g., `s3://`), but you can change to a different storage sink on the same cloud provider.
 
-To change the [sink type](changefeed-sinks.html), create a new changefeed.
+To change the [sink type]({% link {{ page.version.version }}/changefeed-sinks.md %}), create a new changefeed.
 
 ### Unset options on a changefeed
 
@@ -194,7 +194,7 @@ ALTER CHANGEFEED {job_ID} UNSET resolved, diff;
 
 ### Modify a changefeed targeting tables with column families
 
-To add a table with [column families](column-families.html) when modifying a changefeed, perform one of the following:
+To add a table with [column families]({% link {{ page.version.version }}/column-families.md %}) when modifying a changefeed, perform one of the following:
 
 - Use the `FAMILY` keyword to define specific families:
 
@@ -203,7 +203,7 @@ To add a table with [column families](column-families.html) when modifying a cha
     ALTER CHANGEFEED {job_ID} ADD database.table FAMILY f1, database.table FAMILY f2;
     ~~~
 
-- Or, set the [`split_column_families`](create-changefeed.html#split-column-families) option:
+- Or, set the [`split_column_families`]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -228,13 +228,13 @@ To remove a table with column families as a target from the changefeed, you must
     ALTER CHANGEFEED {job_ID} DROP database.table;
     ~~~
 
-For further discussion on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds](changefeeds-on-tables-with-column-families.html).
+For further discussion on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}).
 
 ## Known limitations
 
-- It is necessary to [`PAUSE`](pause-job.html) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
+- It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
 - `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
-- CockroachDB does not keep track of the [`initial_scan`](create-changefeed.html#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
+- CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
     ~~~ sql
     ALTER CHANGEFEED {job_ID} ADD table WITH initial_scan = 'yes';
@@ -244,8 +244,8 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 
 ## See also
 
-- [Change Data Capture Overview](change-data-capture-overview.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [Create and Configure Changefeeds](create-and-configure-changefeeds.html)
-- [Changefeed Sinks](changefeed-sinks.html)
-- [`SHOW JOBS`](show-jobs.html)
+- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %})
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})

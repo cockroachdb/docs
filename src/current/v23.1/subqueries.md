@@ -5,20 +5,20 @@ toc: true
 docs_area: develop
 ---
 
-SQL subqueries enable reuse of the results from a [selection query](selection-queries.html) within another query.
+SQL subqueries enable reuse of the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}) within another query.
 
 CockroachDB supports two kinds of subqueries:
 
-- **Relational** subqueries, which appear as operands in [selection queries](selection-queries.html) and [table expressions](table-expressions.html).
-- **Scalar** subqueries, which appear as operands in a [scalar expression](scalar-expressions.html).
+- **Relational** subqueries, which appear as operands in [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) and [table expressions]({% link {{ page.version.version }}/table-expressions.md %}).
+- **Scalar** subqueries, which appear as operands in a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}).
 
 ## Data writes in subqueries
 
 When a subquery contains a data-modifying statement (`INSERT`,`DELETE`, etc.), the data modification is always executed to
 completion even if the surrounding query only uses a subset of the result rows.
 
-This is true for subqueries defined using the [`(...)`](table-expressions.html#use-a-subquery)
-notation and those defined using [`WITH`](table-expressions.html#use-the-output-of-another-statement).
+This is true for subqueries defined using the [`(...)`]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery)
+notation and those defined using [`WITH`]({% link {{ page.version.version }}/table-expressions.md %}#use-the-output-of-another-statement).
 
 For example:
 
@@ -29,7 +29,7 @@ SELECT * FROM t LIMIT 1;
 ~~~
 
 This query inserts 3 rows into `t`, even though the surrounding
-query only observes 1 row using [`LIMIT`](limit-offset.html).
+query only observes 1 row using [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}).
 
 ## Correlated subqueries
 
@@ -49,12 +49,12 @@ For example, to find every customer with at least one order, run:
 
 The subquery is correlated because it uses `c` defined in the surrounding query.
 
-The [cost-based optimizer](cost-based-optimizer.html) supports most [correlated subqueries](https://wikipedia.org/wiki/Correlated_subquery),
+The [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) supports most [correlated subqueries](https://wikipedia.org/wiki/Correlated_subquery),
 with the exception of correlated subqueries that generate side effects inside a `CASE` statement.
 
 ### `LATERAL` subqueries
 
-A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join](joins.html#left-outer-joins) or an [`INNER` join](joins.html#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://wikipedia.org/wiki/For_loop).
+A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join]({% link {{ page.version.version }}/joins.md %}#left-outer-joins) or an [`INNER` join]({% link {{ page.version.version }}/joins.md %}#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://wikipedia.org/wiki/For_loop).
 
 To create a `LATERAL` subquery, use the `LATERAL` keyword directly before the inner subquery's `SELECT` statement.
 
@@ -77,7 +77,7 @@ For example, the following statement performs an `INNER` join of the `users` tab
 (6 rows)
 ~~~
 
-`LATERAL` subquery joins are especially useful when the join table includes a [computed column](computed-columns.html).
+`LATERAL` subquery joins are especially useful when the join table includes a [computed column]({% link {{ page.version.version }}/computed-columns.md %}).
 
 For example, the following query joins a subquery of the `rides` table with a computed column (`adjusted_revenue`), and a subquery of the `vehicles` table that references columns in the `rides` subquery:
 
@@ -125,7 +125,7 @@ The results of scalar subqueries are loaded entirely into memory when the execut
 
 ## See also
 
-- [Selection Queries](selection-queries.html)
-- [Scalar Expressions](scalar-expressions.html)
-- [Table Expressions](table-expressions.html)
-- [SQL Performance Best Practices](performance-best-practices-overview.html)
+- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
+- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
+- [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})

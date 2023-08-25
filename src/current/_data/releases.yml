@@ -3356,6 +3356,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3373,6 +3374,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3391,6 +3393,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3435,6 +3438,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3453,6 +3457,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3497,6 +3502,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3515,6 +3521,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3547,6 +3554,7 @@
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3589,14 +3597,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-beta.4
 
@@ -3610,14 +3621,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experiemental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-beta.5
 
@@ -3631,14 +3645,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.1
 
@@ -3666,14 +3683,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.2
 
@@ -3687,14 +3707,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.3
 
@@ -3722,14 +3745,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
 
 - release_name: v22.2.1
@@ -3742,14 +3768,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.0
 
@@ -3763,14 +3792,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.1
 
@@ -3798,14 +3830,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.2
 
@@ -3834,14 +3869,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.3
 
@@ -3855,14 +3893,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.1
 
@@ -3876,14 +3917,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.4
 
@@ -3911,14 +3955,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.2
 
@@ -3932,14 +3979,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.3
 
@@ -3953,14 +4003,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.5
 
@@ -3988,14 +4041,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.4
 
@@ -4009,14 +4065,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.5
 
@@ -4030,14 +4089,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.6
 
@@ -4094,14 +4156,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.6
 
@@ -4115,14 +4180,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.7
 
@@ -4136,14 +4204,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.8
 
@@ -4157,14 +4228,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.9
 
@@ -4178,14 +4252,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.7
   withdrawn: true
@@ -4200,12 +4277,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.1
 
@@ -4219,14 +4301,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.2
 
@@ -4262,14 +4347,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.3
 
@@ -4283,14 +4371,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-rc.1
 
@@ -4304,14 +4395,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.8
 
@@ -4346,14 +4440,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-rc.2
   withdrawn: true
@@ -4368,14 +4465,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.0
 
@@ -4389,14 +4489,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.1
 
@@ -4410,14 +4513,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.9
 
@@ -4452,14 +4558,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.2
 
@@ -4473,14 +4582,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.3
 
@@ -4494,14 +4606,17 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: false
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v22.2.10
 
@@ -4515,13 +4630,159 @@
   has_sha256sum: true
   mac:
     mac_arm: true
+    mac_arm_experimental: true
   windows: true
   linux:
     linux_arm: true
     linux_intel_fips: true
     linux_arm_fips: false
+    linux_arm_experimental: true
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
+    docker_arm_experimental: true
   source: true
   previous_release: v23.1.4
+
+- release_name: v22.2.12
+  major_version: v22.2
+  release_date: '2023-07-24'
+  release_type: Production
+  go_version: go1.19
+  sha: feededb3d12a703bada7699b65ad1e191f97a91b
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
+    linux_arm_experimental: true
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: true
+  source: true
+  previous_release: v22.2.11
+
+- release_name: v23.1.6
+  major_version: v23.1
+  release_date: '2023-07-24'
+  release_type: Production
+  go_version: go1.19
+  sha: 3bacdbe302c436675605f3256025829e63c45330
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: true
+    linux_arm_fips: false
+    linux_arm_experimental: true
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: true
+  source: true
+  previous_release: v23.1.5
+
+- release_name: v23.1.7
+  major_version: v23.1
+  release_date: '2023-07-31'
+  release_type: Production
+  go_version: go1.19
+  sha: c7c48dc26aec31a84ebcbe33df885350a90ac77b
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: true
+    linux_arm_fips: false
+    linux_arm_experimental: true
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: true
+  source: true
+  previous_release: v23.1.6
+
+- release_name: v23.1.8
+  major_version: v23.1
+  release_date: '2023-08-07'
+  release_type: Production
+  go_version: go1.19
+  sha: 2c1d4afd2c2de091a00a4dba4392ceeaf8504a95
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: true
+    linux_arm_fips: false
+    linux_arm_experimental: true
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: true
+  source: true
+  previous_release: v23.1.7
+
+- release_name: v22.2.13
+  major_version: v22.2
+  release_date: '2023-08-08'
+  release_type: Production
+  go_version: go1.19
+  sha: c9cdbe4417ec387382cf6c0edafee51b3d58e278
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
+    linux_arm_experimental: false
+    linux_arm_limited_access: true
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_limited_access: true
+  source: true
+  previous_release: v22.2.12
+
+- release_name: v22.1.22
+  major_version: v22.1
+  release_date: '2023-08-14'
+  release_type: Production
+  go_version: go1.19
+  sha: 78554d13424c610d781b47dcbc906977984b8b29
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: false
+  windows: true
+  linux:
+    linux_arm: false
+    linux_intel_fips: false
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: false
+  source: true
+  previous_release: v22.1.21

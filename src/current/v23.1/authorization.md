@@ -1,5 +1,5 @@
 ---
-title: Managing Cluster User Authorization
+title: Manage Cluster User Authorization
 summary: Learn procedures for managing the lifecycle of SQL users and roles.
 toc: true
 docs_area: manage
@@ -7,19 +7,19 @@ docs_area: manage
 
 This page documents procedures for managing the lifecycle of SQL users and roles on CockroachDB clusters.
 
-Procedures for managing access are covered in [Managing Access in {{ site.data.products.db }}](../cockroachcloud/managing-access.html).
+Procedures for managing access are covered in [Managing Access in CockroachDB {{ site.data.products.cloud }}](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access).
 
 {{site.data.alerts.callout_info}}
-The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of {{ site.data.products.db }} users within {{ site.data.products.db }} organizations.
+The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users within CockroachDB {{ site.data.products.cloud }} organizations.
 
-Learn more: [Overview of the CockroachDB Cloud two-level authorization model](../cockroachcloud/authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB Cloud authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 {{site.data.alerts.end}}
 
 
-For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization](security-reference/authorization.html).
+For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}).
 ## Create CockroachDB users
 
-Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
+Use the [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) statements to create and remove users, the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement to add or change a user's password and role options, the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage the user’s privileges, and the [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) statement to list users.
 
 A new user must be granted the required privileges for each database and table that the user needs to access.
 
@@ -34,12 +34,12 @@ To create and manage your cluster's roles, use the following statements:
 
 Statement | Description
 ----------|------------
-[`CREATE ROLE`](create-role.html) | Create SQL roles.
-[`DROP ROLE`](drop-role.html) | Remove one or more SQL roles.
-[`GRANT`](grant.html) | Manage each role or user's SQL privileges for interacting with specific databases and tables, or add a role or user as a member to a role.
-[`REVOKE`](revoke.html) | Revoke privileges from users and/or roles, or revoke a role or user's membership to a role.
-[`SHOW ROLES`](show-roles.html) | List the roles for all databases.
-[`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
+[`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) | Create SQL roles.
+[`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}) | Remove one or more SQL roles.
+[`GRANT`]({% link {{ page.version.version }}/grant.md %}) | Manage each role or user's SQL privileges for interacting with specific databases and tables, or add a role or user as a member to a role.
+[`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) | Revoke privileges from users and/or roles, or revoke a role or user's membership to a role.
+[`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}) | List the roles for all databases.
+[`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) | List the privileges granted to users.
 
 
 
@@ -113,7 +113,7 @@ max@localhost:26257/db> SHOW CREATE TABLE albums;
 
 <section class="filter-content" markdown="1" data-scope="users">
 
-The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB [SQL statements](sql-statements.html). For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}). For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({% link {{ page.version.version }}/movr.md %}).
 
 Let's say we want to create the following access control setup for the `movr` database:
 
@@ -121,7 +121,7 @@ Let's say we want to create the following access control setup for the `movr` da
 - One app user (named `app_user`) who can add, read update, and delete vehicles from the `vehicles` table.
 - One user (named `report_user`) who can only read the `vehicles` table.
 
-1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster:
+1. Use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to load the `movr` database and dataset into a CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -157,18 +157,18 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name |    schema_name     |         table_name         | grantee  | privilege_type  
+      database_name |    schema_name     |         table_name         | grantee  | privilege_type
     +---------------+--------------------+----------------------------+----------+----------------+
-      movr          | crdb_internal      | NULL                       | db_admin | ALL             
-      movr          | information_schema | NULL                       | db_admin | ALL             
-      movr          | pg_catalog         | NULL                       | db_admin | ALL             
-      movr          | public             | NULL                       | db_admin | ALL             
-      movr          | public             | promo_codes                | db_admin | ALL             
-      movr          | public             | rides                      | db_admin | ALL             
-      movr          | public             | user_promo_codes           | db_admin | ALL             
-      movr          | public             | users                      | db_admin | ALL             
-      movr          | public             | vehicle_location_histories | db_admin | ALL             
-      movr          | public             | vehicles                   | db_admin | ALL             
+      movr          | crdb_internal      | NULL                       | db_admin | ALL
+      movr          | information_schema | NULL                       | db_admin | ALL
+      movr          | pg_catalog         | NULL                       | db_admin | ALL
+      movr          | public             | NULL                       | db_admin | ALL
+      movr          | public             | promo_codes                | db_admin | ALL
+      movr          | public             | rides                      | db_admin | ALL
+      movr          | public             | user_promo_codes           | db_admin | ALL
+      movr          | public             | users                      | db_admin | ALL
+      movr          | public             | vehicle_location_histories | db_admin | ALL
+      movr          | public             | vehicles                   | db_admin | ALL
     (10 rows)
     ~~~
 
@@ -190,12 +190,12 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name | schema_name | table_name | grantee  | privilege_type  
+      database_name | schema_name | table_name | grantee  | privilege_type
     +---------------+-------------+------------+----------+----------------+
-      movr          | public      | vehicles   | app_user | DELETE          
-      movr          | public      | vehicles   | app_user | INSERT          
-      movr          | public      | vehicles   | app_user | SELECT          
-      movr          | public      | vehicles   | app_user | UPDATE          
+      movr          | public      | vehicles   | app_user | DELETE
+      movr          | public      | vehicles   | app_user | INSERT
+      movr          | public      | vehicles   | app_user | SELECT
+      movr          | public      | vehicles   | app_user | UPDATE
     (4 rows)
     ~~~
 
@@ -217,9 +217,9 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name | schema_name | table_name |   grantee   | privilege_type  
+      database_name | schema_name | table_name |   grantee   | privilege_type
     +---------------+-------------+------------+-------------+----------------+
-      movr          | public      | vehicles   | report_user | SELECT          
+      movr          | public      | vehicles   | report_user | SELECT
     (1 row)
     ~~~
 
@@ -227,7 +227,7 @@ Let's say we want to create the following access control setup for the `movr` da
 
 <section class="filter-content" markdown="1" data-scope="rbac">
 
-The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
+The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({% link {{ page.version.version }}/movr.md %}).
 
 Let's say we want to create the following access control setup for the `movr` database:
 
@@ -235,7 +235,7 @@ Let's say we want to create the following access control setup for the `movr` da
 - Three app users (named `app_user_1`, `app_user_2`, and `app_user_3`) who can add, read update, and delete vehicles from the `vehicles` table.
 - Five users (named `report_user_1`, `report_user_2`, `report_user_3`, `report_user_4`, `report_user_5`) who can only read the `vehicles` table.
 
-1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster.:
+1. Use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to load the `movr` database and dataset into a CockroachDB cluster.:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -470,15 +470,15 @@ Let's say we want to create the following access control setup for the `movr` da
 
 ## See also
 
-- [Client Connection Parameters](connection-parameters.html)
-- [SQL Statements](sql-statements.html)
-- [`CREATE USER`](create-user.html)
-- [`ALTER USER`](alter-user.html)
-- [`DROP USER`](drop-user.html)
-- [`SHOW USERS`](show-users.html)
-- [`CREATE ROLE`](create-role.html)
-- [`DROP ROLE`](drop-role.html)
-- [`SHOW ROLES`](show-roles.html)
-- [`GRANT`](grant.html)
-- [`REVOKE`](revoke.html)
-- [`SHOW GRANTS`](show-grants.html)
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %})
+- [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %})
+- [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %})
+- [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %})
+- [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %})
+- [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})
+- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
+- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
+- [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})
+- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})

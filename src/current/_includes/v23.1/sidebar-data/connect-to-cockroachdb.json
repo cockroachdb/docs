@@ -1,5 +1,5 @@
 {
-        "title": "Connect to CockroachDB",
+        "title": "Connect to an Application",
         "is_top_level": true,
         "items": [
           {
@@ -21,7 +21,7 @@
             ]
           },
           {
-            "title": "Use Connection Pools",
+            "title": "Connection Pooling",
             "urls": [
               "/${VERSION}/connection-pooling.html"
             ]

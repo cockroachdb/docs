@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CREATE SCHEDULE` [statement](sql-statements.html) displays the `CREATE` statement for an existing scheduled job, which can be used to recreate a schedule.
+The `SHOW CREATE SCHEDULE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays the `CREATE` statement for an existing scheduled job, which can be used to recreate a schedule.
 
 ## Required privileges
 
-Only members of the [`admin` role](security-reference/authorization.html#admin-role) can show a [`CREATE SCHEDULE`](create-schedule-for-backup.html) statement. By default, the [`root`](security-reference/authorization.html#root-user) user belongs to the `admin` role.
+Only members of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) can show a [`CREATE SCHEDULE`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) statement. By default, the [`root`]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user) user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -21,8 +21,8 @@ Only members of the [`admin` role](security-reference/authorization.html#admin-r
 
 Parameter | Description
 ----------|------------
-`schedule_id` | Use the schedule `id` to show the [`CREATE SCHEDULE`](create-schedule-for-backup.html) for a particular schedule.
-`ALL` |  Use to show the `CREATE SCHEDULE` statements for all _existing_ schedules. This includes [paused](pause-schedules.html) schedules.
+`schedule_id` | Use the schedule `id` to show the [`CREATE SCHEDULE`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) for a particular schedule.
+`ALL` |  Use to show the `CREATE SCHEDULE` statements for all _existing_ schedules. This includes [paused]({% link {{ page.version.version }}/pause-schedules.md %}) schedules.
 
 ## Response
 
@@ -51,7 +51,7 @@ schedule_id        |                                                            
 (1 row)
 ~~~
 
-To list all the currently active schedules, use [`SHOW SCHEDULES`](show-schedules.html).
+To list all the currently active schedules, use [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 ### Show the `CREATE SCHEDULE` statement for all schedules
 
@@ -72,10 +72,10 @@ schedule_id        |                                                            
 
 ## See also
 
-* [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
-* [`PAUSE SCHEDULES`](pause-schedules.html)
-* [`RESUME SCHEDULES`](resume-schedules.html)
-* [`DROP SCHEDULES`](drop-schedules.html)
-* [`BACKUP`](backup.html)
-* [`RESTORE`](restore.html)
-* [Manage a Backup Schedule](manage-a-backup-schedule.html)
+* [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
+* [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %})
+* [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %})
+* [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %})
+* [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+* [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+* [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})

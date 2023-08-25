@@ -1,11 +1,11 @@
-CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 {{site.data.alerts.callout_info}}
 Be sure that you have configured your network to allow traffic from the application to the load balancer. In this case, you will run the sample workload on one of your machines. The traffic source should therefore be the **internal (private)** IP address of that machine.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performance Benchmarking](performance-benchmarking-with-tpcc-local.html).
+For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performance Benchmarking]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-local.md %}).
 {{site.data.alerts.end}}
 
 1. SSH to the machine where you want the run the sample TPC-C workload.
@@ -29,7 +29,7 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. Use the [`cockroach workload`](cockroach-workload.html) command to load the initial schema and data, pointing it at the IP address of the load balancer:
+1. Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to load the initial schema and data, pointing it at the IP address of the load balancer:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -74,6 +74,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
     For more `tpcc` options, use `cockroach workload run tpcc --help`. For details about other workloads built into the `cockroach` binary, use `cockroach workload --help`.
     {{site.data.alerts.end}}
 
-1. To monitor the load generator's progress, open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+1. To monitor the load generator's progress, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
     Since the load generator is pointed at the load balancer, the connections will be evenly distributed across nodes. To verify this, click **Metrics** on the left, select the **SQL** dashboard, and then check the **SQL Connections** graph. You can use the **Graph** menu to filter the graph for specific nodes.

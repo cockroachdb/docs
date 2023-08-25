@@ -193,9 +193,9 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 {% include {{ page.version.version }}/prod-deployment/recommended-instances-aws.md %}
 
-- [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are the most cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned, which can be very expensive.
+- [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are a cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned.
 
-- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+- A typical deployment uses [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, refer to [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
 
 #### Azure
 
@@ -314,7 +314,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery](disaster-recovery.html) plan enables you to recover quickly, while limiting the consequences.
 
-Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling [object locking](use-cloud-storage.html#object-locking) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
+Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling [object locking](use-cloud-storage.html#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
 For details about available backup and restore types in CockroachDB, see [Backup and restore types](backup-and-restore-overview.html#backup-and-restore-product-support).
 

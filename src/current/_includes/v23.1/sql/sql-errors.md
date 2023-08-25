@@ -1,9 +1,9 @@
-When CockroachDB encounters a SQL error, it returns the following information to the client (whether `cockroach-sql` or another [client application](developer-guide-overview.html)):
+When CockroachDB encounters a SQL error, it returns the following information to the client (whether `cockroach-sql` or another [client application]({% link {{ page.version.version }}/developer-guide-overview.md %})):
 
 1. An error message, prefixed with [the "Severity" field of the PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol-error-fields.html). For example, `ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"`.
 1. A [5-digit `SQLSTATE` error code](https://wikipedia.org/wiki/SQLSTATE) as defined by the SQL standard. For example, `SQLSTATE: 23503`.
 
-For example, the following query (taken from [this example of adding multiple foreign key constraints](foreign-key.html#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
+For example, the following query (taken from [this example of adding multiple foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
