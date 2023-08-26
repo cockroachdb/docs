@@ -25,9 +25,51 @@ Each time an application reads or writes data, it will request one of the connec
 
 Connection pooling can be a enabled as a feature of the driver, a separate library used in conjunction with a driver, a feature of an application server, or a proxy server that acts as a gateway to the database server.
 
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
+
 {{site.data.alerts.callout_success}}
 To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
 {{site.data.alerts.end}}
+
+## Recommended settings for connection pools
+
+These are Cockroach Labs recommendations for settings common to most connection pooling software. If your application has multiple workers, each worker should be configured based on its own connections and workload.
+
+### Set the maximum lifetime of connections
+
+The maximum lifetime of a connection should be set to no less than 5 minutes and no more than 30 minutes. Applications that connect to {{ site.data.products.serverless }} clusters should set this to 30 minutes, while applications that connect to {{ site.data.products.dedicated }} and {{ site.data.products.core }} clusters should set this to 5 minutes.
+
+### Set the maximum number of open connections
+
+The maximum number of open connections should be set to a value that is greater than the maximum number of concurrent queries that your application worker expects to make. Doing so minimizes the need to establish new connections.
+
+### Set the maximum number of idle connections
+
+Set the maximum number of idle connections to the same value as the maximum number of open connections.
+
+### Set the maximum lifetime of idle connections
+
+Set the maximum lifetime of idle connections to the same value as the maximum lifetime of connections.
+
+### Avoid spikes in new connections
+
+If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection lifetime "jitter," where the wait time between new connections is randomized. Using a connection jitter of 10% of the maximum connection lifetime smooths out the rate of new connections to a cluster. For example, for a maximum connection lifetime of 300 seconds, set the connection jitter to 30 seconds.
+
+### Validate connections in a pool
+
+After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions.
+
+Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
+
+#### Implement connection retry logic in your application
+
+To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. For details, see [Connection retry loop]({% link {{ page.version.version }}/node-shutdown.md %}#connection-retry-loop).
+
+<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+
+If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#server-shutdown-connection_wait).
+
+</section>
 
 ## Size connection pools
 
@@ -37,81 +79,95 @@ To read more about connection pooling, see our [What is Connection Pooling, and 
   <button class="filter-button page-level" data-scope="selfhosted"><strong>{{ site.data.products.core }}</strong></button>
 </div>
 
-Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Unlike PostgreSQL, which has a hard limit of 5000 connections, CockroachDB can safely support tens of thousands of connections. Cockroach Labs estimates the memory overhead of idle connections in CockroachDB is 10 kB to 30 kB per connection. CockroachDB uses at least one go routine per connection, not a process per connection, making each connection more efficient. However, CockroachDB clusters do have an upper limit to the number of active connections they can handle before performance suffers.
+If your connection pool is properly configured, the total number of connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
 
-Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
+Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Unlike PostgreSQL, which has a hard limit of 5000 connections, CockroachDB can safely support tens of thousands of connections.
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-In {{ site.data.products.serverless }} clusters, the purpose of the connection pool is to reduce connection latency, not to set a maximum number of simultaneous connections. {{ site.data.products.serverless }} clusters will automatically scale up to meet the demand from multiple simultaneous client connections.
+In {{ site.data.products.serverless }} clusters, the purpose of the connection pool is to avoid establishing a new SQL connection each time a query is run. You do not need to set a maximum number of simultaneous connections when configuring your connection pool. {{ site.data.products.serverless }} clusters will automatically scale up to meet the demand from multiple simultaneous client connections.
 
-{% capture connection_timeout_value_serverless %}
-Configure the connection timeout to be at least 15 minutes and to not exceed 30 minutes.
-{% endcapture %}
+The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows how many new connections are being created each second. The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
 
-{{ connection_timeout_value_serverless }}
+**SQL Connection Attempts < SQL Open Sessions/100**
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
-
-Each processor core can only execute one thread at a time. When there are more threads than processor cores, the system will use context switching to [time-slice](https://wikipedia.org/wiki/Preemption_(computing)#Time_slice) the thread execution. For example, if you have a system with a single core and two threads, processing threads 1 and 2 in parallel results in the system context switching to pause execution of thread 1 and begin executing thread 2, and then pause execution of thread 2 to resume executing thread 1. Executing thread 1 completely and then executing thread 2 will be faster because the system doesn't need to context switch, even though thread 2 had to wait until thread 1 fully completed to begin executing.
-
-Storage and network performance also will affect the ability of a thread to fully execute. If a thread is blocked by network or storage latency, adding connections to the pool is a good idea so other threads can execute while the original thread is being blocked.
-
-Cockroach Labs performed lab testing of various customer workloads and found no improvement in scalability beyond:
-
-**active connections = (number of cores * 4)**
-
-Many workloads perform best when the maximum number of active connections is between 2 and 4 times the number of CPU cores in the cluster.
-
-If you have a large number of services connecting to the same cluster, make sure the number of concurrent active connections across all the services does not exceed this recommendation by a large amount. If each service has its own connection pool, then you should make sure the sum of all the pool sizes is close to our maximum connections recommendation. Each workload and application is different, so you should conduct testing to determine the best-performing pool sizes for each service in your architecture.
-
-In addition to setting a maximum connection pool size, set the maximum number of idle connections if possible. Cockroach Labs recommends setting the maximum number of idle connections to the maximum pool size. While this uses more memory, it allows many connections when concurrency is high without having to create a new connection for every new operation.
+That is, divide the number of open SQL sessions by 100. This result should be less than the number of new SQL connections.
 
 Configure the minimum number of connections to equal to the maximum number of connections, creating a fixed pool size.
 
-Set the maximum connection timeout value to 300 seconds, or 5 minutes. Do not set the connection pool timeout values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the `sql.new_conns` metric](#monitor-new-connections) to make sure the timeout values are set correctly.
+Configure the maximum connection lifetime to 30 minutes.
 
-{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
-
-</section>
-
-### Size connection pools in multi-region clusters
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-Similar to single-region {{ site.data.products.serverless }} clusters, the purpose of connection pools in multi-region {{ site.data.products.serverless }} clusters is to reduce connection latency. Add a connection pool for each region, and size the idle pool for your application and workload.
-
-The cluster will automatically scale up to meet demand, so there's no need to set a maximum connection pool size.
-
-{{ connection_timeout_value_serverless }}
+Multi-region {{ site.data.products.serverless }} clusters have the same recommendations as single-region clusters.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+
+Use the following formula to size the connection pool:
+
+**connections = (number of cores * 4)**
+
+If you have a large number of services connecting to the same cluster, make sure the number of concurrent active connections across all the services does not exceed this recommendation. If each service has its own connection pool, then you should make sure the sum of all the pool sizes is close to our maximum connections recommendation.
+
+Set the maximum connection lifetime value to 300 seconds, or 5 minutes. Do not set the connection pool lifetime values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the new connections on your cluster](#monitor-new-connections) to make sure the connection pool is configured correctly.
 
 For multi-region clusters, create a connection pool per region, and size the maximum connection pool for each region in your cluster using the same formula as a single-region cluster.
 
 For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, create a connection pool for each region, with each connection pool having a maximum pool size of 48 (12 [processor cores] * 4).
 
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
+
 </section>
 
-## Validate connections in a pool
+Cockroach Labs strongly recommends that your application instance run in the same region as your CockroachDB cluster.
 
-After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. CockroachDB {{ site.data.products.cloud }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
+## Monitor SQL connections
 
-Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
+To validate that your connection pool is correctly configured, monitor the SQL connection metrics and graphs on your cluster.
+
+### Monitor new connections
+
+<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [SQL Connection Rate graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-connection-rate) expose the number of new SQL connections per second.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows the number of new SQL connections per second.
+</section>
+
+A misconfigured connection pool will result in a very large number of new connections per second.
+
+### Monitor active connections
 
 <section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
 
-## Monitor new connections
+The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections per second on your cluster or node.
 
-The [`sql.new_conns` metric](metrics.html#available-metrics) exposes the number of new SQL connections per second. A properly configured connection pool will show this value to be in the low single digits. A misconfigured connection pool will result in much higher values. You can expose and monitor this metric in the [DB Console](ui-custom-chart-debug-page.html).
+Using the following formula:
 
-If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection age "jitter." Using a connection jitter of 10% of the connection age smooths out the rate of new connections to a cluster. For example, for a maximum connection age of 300 seconds, set the connection age jitter to 30 seconds.
+**connections = (number of cores * 4)**
+
+if the number of active connections exceeds 4 times the number of cores in your cluster your application is likely not achieving maximum throughput, and you should reduce the maximum number of connections in your connection pool, or consider adding more cores to each node in your cluster.
+
+Reducing the number of active connections may increase overall throughput, possibly at the expense of increased tail latency for your queries.
 
 </section>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of active connections per second on your cluster.
+
+</section>
+
+If your connection pool is properly configured, the total number of active connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
+
+## Serverless functions
+
+{{site.data.alerts.callout_info}}
+"Serverless" here refers to stateless, programmatic functions deployed in a cloud environment that provides an execution framework to provision resources dynamically, such as Amazon Lambda functions. It does not refer to {{ site.data.products.serverless }} clusters.
+{{site.data.alerts.end}}
+
+If your application uses serverless functions to connect to CockroachDB, use a connection pool if you plan to invoke functions frequently. To ensure that the connection pool is reused across invocations of the same function instance, initialize the connection pool variable outside the scope of the serverless function definition. Set the maximum connection pool size to 1, unless your function is multi-threaded and establishes multiple concurrent requests to your database within a single function instance.
 
 ## Example
 
@@ -126,7 +182,7 @@ In this example, a Java application similar to the [basic JDBC example]({% link 
 
 Using the connection pool formula above:
 
-**active connections = (10 [processor cores] * 4)**
+**connections = (10 [processor cores] * 4)**
 
 The connection pool size should be 40.
 
@@ -159,7 +215,7 @@ In this example, a Go application similar to the [basic pgx example]({% link {{ 
 
 Using the connection pool formula above:
 
-**active connections = (10 [processor cores] * 4)**
+**connections = (10 [processor cores] * 4)**
 
 The connection pool size should be 40, and is set using the `pool_max_conns` query parameter.
 
@@ -185,11 +241,3 @@ defer dbpool.Close()
 For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool#Config).
 
 </section>
-
-## Implement connection retry logic
-
-Some operational processes involve [node shutdown]({% link {{ page.version.version }}/node-shutdown.md %}). During the shutdown sequence, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with a connection error.
-
-To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. This allows procedures such as [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to complete without interrupting your service. For details, see [Connection retry loop]({% link {{ page.version.version }}/node-shutdown.md %}#connection-retry-loop).
-
-If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#server-shutdown-connection_wait).
