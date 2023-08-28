@@ -12,7 +12,7 @@ Tools, drivers, or frameworks are considered **unsupported** if:
 - The tool, driver, or framework is not listed on this page.
 - The version of a supported tool, driver, or framework is not listed on this page.
 
-Cockroach Labs provides 'best effort' support for tools, drivers, and frameworks that are not officially supported. This means that while we will do our best to assist you, we may not be able to fully troubleshoot errors in your deployment.
+Cockroach Labs provides "best effort" support for tools, drivers, and frameworks that are not officially supported. This means that while we will do our best to assist you, we may not be able to fully troubleshoot errors in your deployment.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
