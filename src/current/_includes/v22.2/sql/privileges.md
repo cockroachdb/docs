@@ -1,10 +1,10 @@
 Privilege | Levels | Description
 ----------|--------|------------
-`ALL` | System, Database, Schema, Table, Sequence, Type | Grants all privileges at the system, database, schema, table, sequence, or type level.
+`ALL` | System, Database, Schema, Table, Sequence, Type | For the object to which `ALL` is applied, grants all privileges at the system, database, schema, table, sequence, or type level.
 `BACKUP` | System, Database, Table | Grants the ability to create [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) at the system, database, or table level.
 `CANCELQUERY` | System | Grants the ability to cancel queries.
 `CHANGEFEED` | Table | Grants the ability to create [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) on a table.
-`CONNECT` | Database | Grants the ability to connect to the database.
+`CONNECT` | Database | Grants the ability to view a database's metadata, which consists of objects in a database's `information_schema` and `pg_catalog` system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running `SHOW DATABASES`. The `CONNECT` privilege is also required to run backups of the database.
 `CREATE` | Database, Schema, Table, Sequence | Grants the ability to create objects at the database, schema, table, or sequence level.
 `DELETE` | Table, Sequence | Grants the ability to delete objects at the table or sequence level.
 `DROP` | Database, Table, Sequence | Grants the ability to drop objects at the database, table, or sequence level.
