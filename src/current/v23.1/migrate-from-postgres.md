@@ -71,7 +71,7 @@ The example uses a modified version of the PostgreSQL `french-towns-communes-fra
        psql frenchtowns -a -f frenchtowns.sql
        ~~~
 
-1. Create a free [{{ site.data.products.db }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and create the {{ site.data.products.serverless }} cluster.
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -88,7 +88,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        pg_dump --schema-only frenchtowns > frenchtowns_schema.sql
        ~~~
 
-1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.db }} Console and [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
+1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.cloud }} Console and [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
 
        After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#summary-report) shows that there are errors under **Required Fixes**. You must resolve these in order to migrate the schema to CockroachDB.
 
@@ -110,7 +110,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
 
-       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.db }} Console.
+       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
 
 ### Step 2. Load the PostgreSQL data
 
@@ -147,7 +147,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
 
        The dump files generated in the preceding step are already hosted on a public S3 bucket created for this example.
 
-1. Open a SQL shell to the CockroachDB `frenchtowns` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `frenchtowns` database and **CockroachDB Client** option. It will look like:
+1. Open a SQL shell to the CockroachDB `frenchtowns` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `frenchtowns` database and **CockroachDB Client** option. It will look like:
 
        {% include_cached copy-clipboard.html %}
        ~~~ shell
@@ -255,7 +255,7 @@ Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check
 1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the PostgreSQL connection string with `--source` and the CockroachDB connection string with `--target`:
 
        {{site.data.alerts.callout_success}}
-       To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `frenchtowns` database and the **General connection string** option.
+       To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `frenchtowns` database and the **General connection string** option.
        {{site.data.alerts.end}}
 
        {% include_cached copy-clipboard.html %}
