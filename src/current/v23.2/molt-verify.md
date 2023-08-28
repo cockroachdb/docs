@@ -25,7 +25,7 @@ For a demo of MOLT Verify, watch the following video:
 
 The following databases are currently supported:
 
-- PostgreSQL
+- [PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 - [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
 - CockroachDB
 
@@ -96,6 +96,6 @@ Flag | Description
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}{% endcomment %}
+- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 - [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
