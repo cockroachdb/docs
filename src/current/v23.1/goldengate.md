@@ -7,7 +7,6 @@ docs_area: migrate
 
 [Oracle GoldenGate](https://www.oracle.com/integration/goldengate/) offers a managed service that can collect, replicate, and manage transactional data between databases. GoldenGate can use CockroachDB as a sink by leveraging CockroachDB's PostgreSQL-compatibility. This page describes how to:
 
-- [Set up Oracle GoldenGate](#set-up-oracle-goldengate) using Amazon RDS for Oracle as an example source
 - [Configure Oracle GoldenGate for CockroachDB](#configure-oracle-goldengate-for-cockroachdb)
 - [Set up Extract](#set-up-extract)
 - [Set up Replicat](#set-up-replicat)
@@ -48,79 +47,6 @@ This page describes the GoldenGate functionality at a high level and assumes som
 For limitations on what PostgreSQL and CockroachDB features are supported, refer to Oracle's [Details of Supported PostgreSQL Data Types](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/understanding-whats-supported-postgresql.html).
 
 - Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use to configure your Striim target.
-
-## Set up Oracle GoldenGate
-
-This is an example setup process using [Amazon RDS for Oracle](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.OracleGoldenGate.html) as a source. Setup will be different for other sources.
-
-1. Set up the source and target databases:
-
-~~~
-# This is where GG is installed
-cd /u01/ggs
-./ggsci
-
-# Inside GGSCI program
-CREATE SUBDIRS
-
-# Edit manager
-edit param mgr
-
-# Put this inside
-PORT 8199
-PurgeOldExtracts ./dirdat/*, UseCheckpoints, MINKEEPDAYS 5
-
-# Close out of file and save
-
-# Start the mgr after finishing editing
-start mgr
-~~~
-
-1. On the source database make sure to create the relevant users with permissions (follow the linked guide)
-1. For the RDS instance, make sure to enable supplemental logging
-1. Also make sure that ENABLE_GOLDENGATE_REPLICATION, which can be done in RDS by adding the RDS instance to a parameter group
-    1. Create parameter group, update the group to have GOLDENGATE set to true
-    1. Reapply to the RDS instance
-    1. Reboot the instance
-    1. On source DB: SHOW parameter GOLDENGATE 
-1. On the OracleGoldengate host, add a TNS alias (specifying the DB connection information):
-
-~~~
-vi $ORACLE_HOME/network/admin/tnsnames.ora
-
-# Add the following (update with your host and port names)
-OGGSOURCE=
-   (DESCRIPTION= 
-        (ENABLE=BROKEN)
-        (ADDRESS_LIST= 
-            (ADDRESS=(PROTOCOL=TCP)(HOST={host-name}.rds.amazonaws.com)(PORT={port})))
-        (CONNECT_DATA=(SERVICE_NAME=ORCL))
-    )
-OGGTARGET=
-   (DESCRIPTION= 
-        (ENABLE=BROKEN)
-        (ADDRESS_LIST= 
-            (ADDRESS=(PROTOCOL=TCP)(HOST={host-name}.rds.amazonaws.com)(PORT={port})))
-        (CONNECT_DATA=(SERVICE_NAME=ORCL))
-    )
-~~~
-
-1. Add a reference to where the TNS names are: export TNS_ADMIN=$ORACLE_HOME/network/admin
-This is needed, otherwise, you’ll get a “status = 12154-ORA-12154: TNS:could not resolve the connect identifier” error
-1. Attempt to connect to the DB and check if it works
-
-~~~
-export TNS_ADMIN=$ORACLE_HOME/network/admin
-cd $OGG_HOME
-./ggsci
-
-dblogin USERID {USER}@{ALIAS-NAME}
-~~~
-
-If all good, you'll see:
-~~~
-Successfully logged into database.
-~~~
 
 ## Configure Oracle GoldenGate for CockroachDB
 
