@@ -22,18 +22,20 @@ As of this writing, GoldenGate supports the following database [sources](https:/
 
 This page describes the GoldenGate functionality at a high level and assumes some familiarity with this tool. For detailed information, refer to the [Oracle GoldenGate documentation](https://docs.oracle.com/en/middleware/goldengate/core/21.3/index.html).
 
+For limitations on what PostgreSQL and CockroachDB features are supported, refer to Oracle's [Details of Supported PostgreSQL Data Types](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/understanding-whats-supported-postgresql.html).
+
 ## Before you begin
 
 - Oracle GoldenGate runs as a process separate from CockroachDB and the source database. Ensure your host meets the [minimum requirements](https://docs.oracle.com/en/middleware/goldengate/core/21.3/installing/overview.html).
 
-- Install the [Oracle for Postgres Libraries](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) and ensure [libpg](https://www.postgresql.org/download/linux/redhat/) is available on the Oracle Goldengate host:
+- Install the [Oracle for Postgres Libraries](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) and ensure [libpg](https://www.postgresql.org/download/linux/redhat/) is available on the Oracle GoldenGate host:
 
 - Ensure that you have an Oracle client installed that is compatible with the host Oracle version. This can be done by doing a full Oracle install, or just the client libraries.
 
 - Ensure that you have the two required Oracle GoldenGate installations:
 
     1. [Oracle Golden Gate for Oracle](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to pull source data and route it to proper trail files.
-    1. [Oracle Golden Gate for PostgreSQL](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to push that data over to CockroachDB.
+    1. [Oracle Golden Gate for PostgreSQL](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to pull data from the trail files to CockroachD.
 
 - For CockroachDB clusters running v22.1 and earlier, enable the following cluster settings:
 
@@ -44,22 +46,18 @@ This page describes the GoldenGate functionality at a high level and assumes som
 
     For versions of CockroachDB v22.2 and later, these settings are already enabled by default.
 
-For limitations on what PostgreSQL and CockroachDB features are supported, refer to Oracle's [Details of Supported PostgreSQL Data Types](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/understanding-whats-supported-postgresql.html).
-
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use to configure your Striim target.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
 
 ## Configure Oracle GoldenGate for CockroachDB
 
-Note that this is a separate installation from Oracle Golden Gate for Oracle. This is another process running which is in charge of pulling data from trail files over to PostgreSQL/CRDB.
+This section describes how to configure Oracle GoldenGate to treat CockroachDB as PostgreSQL. Note that this is discussing Oracle GoldenGate for PostgreSQL, the process that pulls data from trail files over to CockroachDB, which is a separate installation from Oracle GoldenGate for Oracle. For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.htm). The examples below will use a [CockroachDB {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 
-Reference doc: https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html#GUID-873C2EF9-3062-4C63-ABC9-7B5566704CB2
-
-1. Set up the ODBC.ini file on Oracle Goldengate host. This example shows connecting to Cockroach Cloud Serverless
-Make sure you have the root cert downloaded from the Serverless cluster page and put it properly into the `TrustStore` path below.
+1. Set up the `ODBC.ini` file on Oracle GoldenGate host, and make sure your CockroachDB {{ site.data.products.serverless }} cluster's root cert is in the `TrustStore` path:
 
 ~~~
 # This is needed so that all the Postgres libraries can be found
 export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
+
 # This is needed so that OGG knows where to look for connection details for the database
 export ODBCINI=/etc/odbc.ini
 
@@ -90,8 +88,9 @@ ValidateServerCertificate=1
 TrustStore=/root/.postgresql/root.crt
 ~~~
 
-1. Ensure that all the PostgreSQL libraries are installed and referenced in the LD_LIBRARY_PATH. The path should include /usr/pgsql-13/lib and /u01/ggs-pg/lib at least
-1. Then you can attempt to login to the database:
+1. Ensure that all the PostgreSQL libraries are installed and referenced in the `LD_LIBRARY_PATH`. The path should at least include `/usr/pgsql-13/lib` and `/u01/ggs-pg/lib`.
+
+1. Log in to the database:
 
 ~~~
 sudo su -
@@ -111,7 +110,7 @@ DBLOGIN SOURCEDB CRDBSERVERLESS
 
 ## Set up Extract
 
-1. In one terminal window:
+1. In a terminal:
 
 ~~~
 # Setup the environment variables for the Oracle source, which includes the ORACLE_HOME, TNS_ADMIN, LD_LIBRARY_PATH, and ORACLE_SID
@@ -147,7 +146,7 @@ register EXTRACT epos, DATABASE
 start epos
 ~~~
 
-1. You can check the status of this extract. Add a row to the oggadm1.testtable and then commit on the source. After that, run:
+1. Check the status of the Extract by adding a row to `oggadm1.testtable`, committing it to the source, and running the following:
 
 ~~~
 # CREATE TABLE IN ORACLE FIRST
@@ -167,7 +166,11 @@ USERIDALIAS gg_source
 RMTHOST ip-172-31-0-218.ec2.internal, MGRPORT 8200
 RMTTRAIL ./dirdat/ab
 TABLE OGGADM1.testtable;
+~~~
 
+You should see an output similar to the following:
+
+~~~
 Extracting from OGGADM1.TESTTABLE to OGGADM1.TESTTABLE:
 *** Total statistics since 2023-06-09 19:06:44 ***
     Total inserts                              1.00
@@ -202,9 +205,9 @@ End of statistics.
 
 ## Set up Replicat
 
-Replicat is a process that delivers data to a target database.
+Replicat is an Oracle process that delivers data to a target database.
 
-1. First, make sure you can log into the database from ./ggsci
+1. First, make sure you can log into the database from `./ggsci`:
 
 ~~~
 export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
@@ -246,7 +249,7 @@ MANAGER     RUNNING
 REPLICAT    RUNNING     RORPSQL     00:00:00      00:00:09  
 ~~~
 
-1. Test that the Extract and Replicat are working properly:
+1. Test that Extract and Replicat are working properly:
 
 ~~~
 # At the source ORACLE
@@ -349,7 +352,7 @@ GGSCI (ip-172-31-0-218.ec2.internal) 8>
 
 ## Bulk replication
 
-1. Keep the EXTRACT process running on Oracle and the REPLICAT process running for PostgreSQL
+1. Keep the [Extract process](#set-up-extract) running on Oracle and the [Replicat process](#set-up-replicat) running for PostgreSQL.
 1. In the source database, bulk insert:
 
 ~~~
@@ -359,7 +362,9 @@ FROM dual
 CONNECT BY level <= 50000 - 99;
 ~~~
 
-1. Run the status command on the EXTRACT ggsci terminal. And a few seconds later:
+1. Run the status command on the Extract `ggsci` terminal.
+
+You will see an output similar to the following:
 
 ~~~
 GGSCI (ip-172-31-0-218.ec2.internal) 10> STATS EXTRACT EPOS2
@@ -398,45 +403,49 @@ Extracting from OGGADM1.TESTTABLE2 to OGGADM1.TESTTABLE2:
 End of statistics.
 ~~~
 
-1. Run the status command on the REPLICAT ggsci terminal. You’ll notice that the number of inserts hasn’t updated yet. Wait a few minutes and you’ll see that it updates. The reason for this is that once it finishes inserting and committing to the database, it will report back the final inserts. During the process, it will show the previous state:
+1. Run the status command on the Replicat `ggsci` terminal.
 
-~~~
-GGSCI (ip-172-31-0-218.ec2.internal) 1> stats REPLICAT RORPSQL
-Sending STATS request to Replicat group RORPSQL ...
-Start of statistics at 2023-06-09 21:10:22.
-Replicating from OGGADM1.TESTTABLE2 to public.testtable:
-*** Total statistics since 2023-06-09 21:04:05 ***
-    Total inserts                          49903.00
-    Total updates                              0.00
-    Total deletes                              0.00
-    Total upserts                              0.00
-    Total discards                             0.00
-    Total operations                       49903.00
-*** Daily statistics since 2023-06-09 21:04:05 ***
-    Total inserts                          49903.00
-    Total updates                              0.00
-    Total deletes                              0.00
-    Total upserts                              0.00
-    Total discards                             0.00
-    Total operations                       49903.00
-*** Hourly statistics since 2023-06-09 21:04:05 ***
-    Total inserts                          49903.00
-    Total updates                              0.00
-    Total deletes                              0.00
-    Total upserts                              0.00
-    Total discards                             0.00
-    Total operations                       49903.00
-*** Latest statistics since 2023-06-09 21:04:05 ***
-    Total inserts                          49903.00
-    Total updates                              0.00
-    Total deletes                              0.00
-    Total upserts                              0.00
-    Total discards                             0.00
-    Total operations                       49903.00
-End of statistics.
-~~~
-1. To verify that the insert is happening, you can try : SELECT COUNT(*) FROM public.testtable; . The query should hang while it’s still inserting, which makes sense.
-1. During the replication process to see where it’s currently processing, just look at the report
+    You’ll notice that the number of inserts hasn’t updated yet. Wait a few minutes and you’ll see that it updates. The reason for this is that once it finishes inserting and committing to the database, it will report back the final inserts. During the process, it will show the previous state:
+
+    ~~~
+    GGSCI (ip-172-31-0-218.ec2.internal) 1> stats REPLICAT RORPSQL
+    Sending STATS request to Replicat group RORPSQL ...
+    Start of statistics at 2023-06-09 21:10:22.
+    Replicating from OGGADM1.TESTTABLE2 to public.testtable:
+    *** Total statistics since 2023-06-09 21:04:05 ***
+        Total inserts                          49903.00
+        Total updates                              0.00
+        Total deletes                              0.00
+        Total upserts                              0.00
+        Total discards                             0.00
+        Total operations                       49903.00
+    *** Daily statistics since 2023-06-09 21:04:05 ***
+        Total inserts                          49903.00
+        Total updates                              0.00
+        Total deletes                              0.00
+        Total upserts                              0.00
+        Total discards                             0.00
+        Total operations                       49903.00
+    *** Hourly statistics since 2023-06-09 21:04:05 ***
+        Total inserts                          49903.00
+        Total updates                              0.00
+        Total deletes                              0.00
+        Total upserts                              0.00
+        Total discards                             0.00
+        Total operations                       49903.00
+    *** Latest statistics since 2023-06-09 21:04:05 ***
+        Total inserts                          49903.00
+        Total updates                              0.00
+        Total deletes                              0.00
+        Total upserts                              0.00
+        Total discards                             0.00
+        Total operations                       49903.00
+    End of statistics.
+    ~~~
+    
+To verify that the insert is happening, you can run: `SELECT COUNT(*) FROM public.testtable;`. The query should hang while it’s still inserting, which makes sense.
+
+1. To see where the replication is processing while it's ongoing, view the report:
 ~~~
 ./ggsci
 
