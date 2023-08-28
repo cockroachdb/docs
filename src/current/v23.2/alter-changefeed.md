@@ -5,6 +5,8 @@ toc: true
 docs_area: reference.sql
 ---
 
+Do not merge
+
 {% include enterprise-feature.md %}
 
 The `ALTER CHANGEFEED` statement modifies an existing [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}). You can use `ALTER CHANGEFEED` to do the following:
