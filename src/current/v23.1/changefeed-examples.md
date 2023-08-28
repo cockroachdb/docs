@@ -651,7 +651,7 @@ For different use case examples and syntax detail, refer to the [Change Data Cap
     cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
+1. In this example, you'll run CockroachDB's [MovR]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
 
     Create the schema for the workload:
 
