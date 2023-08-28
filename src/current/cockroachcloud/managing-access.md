@@ -5,10 +5,10 @@ toc: true
 docs_area: manage
 ---
 
-This page details procedures for managing {{ site.data.products.db }} access to {{ site.data.products.db }}.
-Before proceeding, it is recommended to review the concepts related to the two levels of {{ site.data.products.db }} access management model (the organization level and the SQL level in a cluster), which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ]({% link cockroachcloud/authorization.md %}).
+This page details procedures for managing CockroachDB {{ site.data.products.cloud }} access to CockroachDB {{ site.data.products.cloud }}.
+Before proceeding, it is recommended to review the concepts related to the two levels of CockroachDB {{ site.data.products.cloud }} access management model (the organization level and the SQL level in a cluster), which are detailed in [CockroachDB {{ site.data.products.cloud }} Access Management Overview and FAQ]({% link cockroachcloud/authorization.md %}).
 
-Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster. Roles can be granted at different scopes (levels) of the resource hierarchy.
+Access management tasks for the organization level are performed in the CockroachDB {{ site.data.products.cloud }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the CockroachDB {{ site.data.products.cloud }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster. Roles can be granted at different scopes (levels) of the resource hierarchy.
 
 Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`]({% link cockroachcloud/ccloud-get-started.md %}#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
@@ -28,7 +28,7 @@ The settings and information about the organization are found on the **Informati
 ## Manage an organization's users
 ### Invite team members to an organization
 
-As an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can invite team members to {{ site.data.products.db }}. To invite team members:
+As an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
@@ -164,7 +164,7 @@ To change the API key name for an existing API key:
 {% include cockroachcloud/danger-console-sql-users.md %}
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the CockroachDB {{ site.data.products.cloud }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -202,15 +202,13 @@ Be sure to create a password for each new user. Without a password, or being enr
 ### View all SQL users in your cluster
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the CockroachDB {{ site.data.products.cloud }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="console">
 To view a list of all of the users in your cluster, navigate to the **SQL Users** page.
-
-<img src="{{ 'images/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL Users page" style="border:1px solid #eee;max-width:100%" />
 
 On the **SQL Users** page, you can do the following:
 
@@ -232,7 +230,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](https://www.cockro
 ### Change a SQL user's password
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the CockroachDB {{ site.data.products.cloud }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -247,9 +245,6 @@ To change a user's password:
 
 1. Navigate to the **SQL Users** page.
 1. In the row of the user whose password needs to be changed, click the **...** button.
-
-    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Change SQL password" style="border:1px solid #eee;max-width:100%" />
-
 1. From the dropdown, select **Change Password**.
 1. Click **Generate & save password**.
 1. Copy the generated password and save it in a secure location.
@@ -268,7 +263,7 @@ To change a user's password, use the [`ALTER USER`](https://www.cockroachlabs.co
 ### Remove a SQL user
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the CockroachDB {{ site.data.products.cloud }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -278,9 +273,6 @@ To remove a user:
 
 1. Navigate to the **SQL Users** page.
 1. In the row of the user you want to remove, click the **...** button.
-
-    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Remove a SQL users" style="border:1px solid #eee;max-width:100%" />
-
 1. From the dropdown, select **Delete SQL User**.
 1. Click **Delete**.
 
@@ -399,4 +391,4 @@ Once you have [connected to the cluster]({% link cockroachcloud/connect-to-your-
 ## See also
 
 - [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
-- [Connect to Your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})

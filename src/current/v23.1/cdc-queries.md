@@ -18,6 +18,8 @@ You can use CDC queries to do the following:
 
 You can use any CockroachDB-supported SQL expression syntax that is not listed in [limitations](#limitations) to build a changefeed query.
 
+CDC queries can improve the efficiency of changefeeds because queries can restrict the amount of data that the job must encode before emitting to a sink or SQL client. This can also help the performance of table scans when a changefeed runs a catch-up or [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan).
+
 See the [Examples](#examples) section for further use cases.
 
 ## Syntax

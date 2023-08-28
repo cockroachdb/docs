@@ -77,7 +77,7 @@ Function | Description
 
 For the full list of supported `JSONB` functions, see [JSONB functions](functions-and-operators.html#jsonb-functions).
 
-# Index `JSONB` data
+## Index `JSONB` data
 
 To [index](indexes.html) a `JSONB` column you can use a [GIN index](inverted-indexes.html#examples) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
 

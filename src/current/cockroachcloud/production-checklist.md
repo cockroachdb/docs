@@ -6,11 +6,11 @@ cloud: true
 docs_area: deploy
 ---
 
-This page provides important recommendations for {{ site.data.products.db }} production deployments.
+This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production deployments.
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your {{ site.data.products.db }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
 
 ## Use a pool of persistent connections
 
@@ -20,7 +20,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Keeping connections current
 
-After an application establishes a connection to {{ site.data.products.db }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
+After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
 
 Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
 
@@ -30,18 +30,18 @@ When several transactions try to modify the same underlying data concurrently, t
 
 ## Authorize the right network (Dedicated)
 
-{{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
+CockroachDB {{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
 
-To verify that you have authorized the application server's network, navigate to the [**Networking** page]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) on the {{ site.data.products.db }} Console and check if you see the application server network in the list of authorized networks. If you do not see the application server network in the list, [authorize the network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
+To verify that you have authorized the application server's network, navigate to the [**Networking** page]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) on the CockroachDB {{ site.data.products.cloud }} Console and check if you see the application server network in the list of authorized networks. If you do not see the application server network in the list, [authorize the network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
 
 ## Configure PCI ready features (Dedicated advanced)
 
-{{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You should configure these settings to make your cluster PCI ready:
+CockroachDB {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You should configure these settings to make your cluster PCI ready:
 
-- [{{ site.data.products.db }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
+- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
 - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [{{ site.data.products.db }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
+- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
+You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.

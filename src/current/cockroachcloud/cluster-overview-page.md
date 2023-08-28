@@ -1,15 +1,15 @@
 ---
 title: Cluster Overview Page
-summary: How to use the Cluster Overview page to view cluster details on {{ site.data.products.db }}.
+summary: How to use the Cluster Overview page to view cluster details on CockroachDB {{ site.data.products.cloud }}.
 toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.db }} cluster. To view this page, click on a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page).
+The **Cluster Overview** page displays key metrics about your CockroachDB {{ site.data.products.cloud }} cluster. To view this page, click on a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page).
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
+  <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -30,9 +30,9 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Resource limits   | The {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
-| Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [{{ site.data.products.db }} Architecture]({% link cockroachcloud/architecture.md %}#performance). |
-| [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [{{ site.data.products.db }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).              |
+| Resource limits   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
+| Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#performance). |
+| [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).              |
 
 ## Cluster statistics panel
 
@@ -81,14 +81,14 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 
 ## PCI ready (Dedicated advanced)
 
-{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
-- [{{ site.data.products.db }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
+- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
 - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [{{ site.data.products.db }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
+- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can also check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
+You can also check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>

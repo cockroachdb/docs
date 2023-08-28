@@ -59,7 +59,7 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 ## Step 4. Run the code
 
-1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
+1. Set the `DATABASE_URL` environment variable to the connection string to your CockroachDB {{ site.data.products.cloud }} cluster:
 
     <section class="filter-content" markdown="1" data-scope="local">
 

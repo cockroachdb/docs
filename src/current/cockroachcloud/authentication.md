@@ -6,15 +6,15 @@ docs_area: manage
 cloud: true
 ---
 
-Users may connect with {{ site.data.products.db }} at two levels, the organization and the cluster, both of which are covered in this page.
+Users may connect with CockroachDB {{ site.data.products.cloud }} at two levels, the organization and the cluster, both of which are covered in this page.
 
-Refer to: [Overview of the {{ site.data.products.db }} authorization model](authorization.html#overview-of-the-cockroachdb-cloud-authorization-model).
+Refer to: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model](authorization.html#overview-of-the-cockroachdb-cloud-authorization-model).
 
-## Overview of {{ site.data.products.db }} authentication
+## Overview of CockroachDB {{ site.data.products.cloud }} authentication
 
 **Organization level** functions can be performed through three different interfaces, each with its own authentication flows:
 
-- The [{{ site.data.products.db }} Console UI](https://cockroachlabs.cloud/) provides a user with an overview of their {{ site.data.products.db }} account, and offers functionality for administering an organization and the clusters within it.
+- The [CockroachDB {{ site.data.products.cloud }} Console UI](https://cockroachlabs.cloud/) provides a user with an overview of their CockroachDB {{ site.data.products.cloud }} account, and offers functionality for administering an organization and the clusters within it.
 
 	Refer to: [Console authentication](#console-ui-authentication)
 
@@ -22,7 +22,7 @@ Refer to: [Overview of the {{ site.data.products.db }} authorization model](auth
 
 	Refer to: [`ccloud` authentication](#ccloud-authentication)
 
-- The {{ site.data.products.db }} API allows [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account) to perform many organization and cluster administration functions.
+- The CockroachDB {{ site.data.products.cloud }} API allows [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account) to perform many organization and cluster administration functions.
 
 	Refer to: [Cloud API authentication](#cloud-api-authentication)
 
@@ -32,7 +32,7 @@ Refer to: [Overview of the {{ site.data.products.db }} authorization model](auth
 
 ## Console UI authentication
 
-You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for {{ site.data.products.db }}]({% link cockroachcloud/cloud-org-sso.md %}).
+You may log in to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/cloud-org-sso.md %}).
 
 {% include cockroachcloud/prefer-sso.md %}
 
@@ -88,7 +88,7 @@ For information on managing SQL user credentials, including provisioning passwor
 
 ### PKI security certificate
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates.
+SQL clients may authenticate to CockroachDB {{ site.data.products.dedicated }} clusters using PKI security certificates.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
@@ -125,4 +125,4 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 - [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
 - [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
-- [Connect to Your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})

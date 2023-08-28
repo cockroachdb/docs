@@ -5,17 +5,17 @@ toc: true
 docs_area: manage
 ---
 
-This page describes common {{ site.data.products.db }} errors and their solutions.
+This page describes common CockroachDB {{ site.data.products.cloud }} errors and their solutions.
 
 {{site.data.alerts.callout_danger}}
-We have updated the CA certificate used by {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
+We have updated the CA certificate used by CockroachDB {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
 {{site.data.alerts.end}}
 
 ## Connection errors
 
 ### Cannot load certificates
 
-You see the following error when you are using the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command to connect to your {{ site.data.products.serverless }} cluster:
+You see the following error when you are using the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command to connect to your CockroachDB {{ site.data.products.serverless }} cluster:
 
 ~~~
 ERROR: cannot load certificates.
@@ -40,7 +40,7 @@ Failed running "sql"
 
 <h4>Solution: CA certificate conflicts</h4>
 
-If you have existing certificates in `~/.cockroach-certs` used to connect to {{ site.data.products.core }} or {{ site.data.products.dedicated }} clusters and are trying to connect to a {{ site.data.products.serverless }} cluster using [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
+If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and are trying to connect to a CockroachDB {{ site.data.products.serverless }} cluster using [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
 
 For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
 
@@ -59,7 +59,7 @@ FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid clu
 
 <h4>Solution</h4>
 
-Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**.
+Check that you are using the correct cluster and database names. You can find these parameters in the CockroachDB {{ site.data.products.cloud }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**.
 
 For connection examples with your tool, see [these examples](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version}}/third-party-database-tools).
 
@@ -115,7 +115,7 @@ Failed running "sql"
 
 Check if you are using the correct host name.
 
-You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+You can find your host name in the CockroachDB {{ site.data.products.cloud }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
 
 ### Connection refused
 
@@ -127,7 +127,7 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 <h4>Solution</h4>
 
-{{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling) and connection retry logic to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
+CockroachDB {{ site.data.products.cloud }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling) and connection retry logic to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
 
 ## Security errors
 
@@ -160,11 +160,11 @@ This is a known issue. Use `sslmode=require` instead.
 Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 {{site.data.alerts.end}}
 
-## {{ site.data.products.serverless }}
+## CockroachDB {{ site.data.products.serverless }}
 
 ### Hanging or stuck queries
 
-A hanging or stuck query using {{ site.data.products.serverless }} may be caused by reaching the cluster's configured [resource limits]({% link cockroachcloud/plan-your-cluster-serverless.md %}#choose-resource-limits) for [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
+A hanging or stuck query using CockroachDB {{ site.data.products.serverless }} may be caused by reaching the cluster's configured [resource limits]({% link cockroachcloud/plan-your-cluster-serverless.md %}#choose-resource-limits) for [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
 
 <h4>Solution</h4>
 

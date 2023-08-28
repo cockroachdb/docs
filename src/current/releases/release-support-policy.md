@@ -12,7 +12,7 @@ docs_area: releases
 This page explains Cockroach Labs' policy for supporting [major releases]({% link releases/index.md %}) of CockroachDB.
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.db }} clusters, see the [{{ site.data.products.db }} Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
+For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
 ## Support cycle

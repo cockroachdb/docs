@@ -6,11 +6,11 @@ docs_area: deploy
 cloud: true
 ---
 
-{{ site.data.products.db }} clusters can be [created]({% link cockroachcloud/create-your-cluster.md %}) in the following cloud regions.
+CockroachDB {{ site.data.products.cloud }} clusters can be [created]({% link cockroachcloud/create-your-cluster.md %}) in the following cloud regions.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
-    <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
+    <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
+    <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
 </div>
 
 {{site.data.alerts.callout_success}}
@@ -20,12 +20,12 @@ For optimal performance, configure your cluster's regions to be as near as possi
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-Creating a {{ site.data.products.serverless }} cluster on Azure is not supported.
+Creating a CockroachDB {{ site.data.products.serverless }} cluster on Azure is not supported.
 {{site.data.alerts.end}}
 
 ## AWS regions
 
-{{ site.data.products.serverless }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
+CockroachDB {{ site.data.products.serverless }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
@@ -38,7 +38,7 @@ Western Europe  | `eu-central-1`   | Frankfurt
 
 ## GCP regions
 
-{{ site.data.products.serverless }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
+CockroachDB {{ site.data.products.serverless }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
 
 Geographic Area | Region Name               | Location
 ----------------|---------------------------|---------
@@ -55,7 +55,7 @@ Western Europe  | `europe-west1`            | St. Ghislain
 
 ## AWS regions
 
-{{ site.data.products.dedicated }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
@@ -81,7 +81,7 @@ Western Europe  | `eu-central-1`   | Frankfurt
 {% include feature-phases/azure-limited-access.md %}
 {{site.data.alerts.end}}
 
-{{ site.data.products.db }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
+CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
 
 Geographic Area | Region Name     | Location
 ----------------|-----------------|---------
@@ -90,7 +90,7 @@ Western Europe  | `westeurope`    | Netherlands
 
 ## GCP regions
 
-{{ site.data.products.dedicated }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
 
 Geographic Area | Region Name               | Location
 ----------------|---------------------------|---------

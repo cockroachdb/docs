@@ -189,7 +189,20 @@ The following URI is suitable to connect to a CockroachDB cluster listening for 
 postgres://root@?host=/path/to/client&port=26257
 ~~~
 
-This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag](cockroach-start.html#networking)) at `/path/to/client`, and on port 26257.
+This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag]({% link {{ page.version.version }}/cockroach-start.md %}#networking)) at `/path/to/client`, and on port 26257.
+
+### Example URI for connecting to a database with a user-defined schema
+
+The following URI connects to a CockroachDB cluster with a user-defined schema named `max_schema` in the `movr` database using the [`options` parameter](#supported-options-parameters).
+
+{% include_cached copy-clipboard.html %}
+~~~
+postgres://maxroach@db.example.com:26257/movr?sslmode=verify-full&options%3D-c%20search_path%3Dmax_schema
+~~~
+
+{{site.data.alerts.callout_info}}
+The `options=-c search_path=max_schema` parameter is URL-encoded in the example above.
+{{site.data.alerts.end}}
 
 ## Connect using discrete parameters
 
