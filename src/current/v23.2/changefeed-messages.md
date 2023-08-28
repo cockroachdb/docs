@@ -384,7 +384,7 @@ After the schema change, the changefeed will emit a copy of the table with the n
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-If the schema change does **not** use the declarative schema change by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
+If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
