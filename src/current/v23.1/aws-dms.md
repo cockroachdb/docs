@@ -47,7 +47,7 @@ Complete the following items before starting this tutorial:
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
+    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
     {{site.data.alerts.end}}
 
 As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):

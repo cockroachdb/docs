@@ -20,6 +20,8 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
 
+To filter the data that a changefeed emits in each message, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
+
 {{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
 {{site.data.alerts.end}}
@@ -384,7 +386,7 @@ After the schema change, the changefeed will emit a copy of the table with the n
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-If the schema change does **not** use the declarative schema change by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
+If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}

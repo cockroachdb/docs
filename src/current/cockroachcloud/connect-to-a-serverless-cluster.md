@@ -60,9 +60,9 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
 1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
+        <button class="filter-button page-level" data-scope="command-line">Command line</button>
         <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
-        <button class="filter-button page-level" data-scope="cockroachdb-client">CockroachDB client</button>
     </div>
 
   <section class="filter-content" markdown="1" data-scope="connection-string">
@@ -104,8 +104,9 @@ For connection examples and code snippets in your language, see the following:
     `{database}`  | The name of the (existing) database.
 
   </section>
-  <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
+  <section class="filter-content" markdown="1" data-scope="command-line">
 
+1. Select **CockroachDB Client** from the **Select option/language** dropdown.
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
