@@ -1,0 +1,3 @@
+- The optimizer may not select the most optimal query plan when querying materialized views because CockroachDB does not [collect statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on materialized views.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78181).
