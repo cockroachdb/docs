@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Statements** page provides information about the execution of SQL statements in your cluster, using data in the cluster's [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Statements**.
+The **Statements** page provides information about the execution of SQL statements in your cluster, using data in the cluster's [`crdb_internal` system catalog]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Statements**.
 
 It offers two views:
 
@@ -24,19 +24,19 @@ If you haven't yet executed any queries in the cluster as a user, this page will
 
 The **Statements Fingerprints** view helps you:
 
-- Identify frequently executed or high latency [SQL statements](sql-statements.html).
+- Identify frequently executed or high latency [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}).
 - View SQL statement fingerprint [details](#statement-fingerprint-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console.
+To view this page, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console.
 {% endif %}
 
 The **Statements** tab is selected. The **Statement Fingerprints** radio button is selected and the [Statements table](#statements-table) displays.
 
-The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
 
 <img src="{{ 'images/v23.1/statement-fingerprint.png' | relative_url }}" alt="Statement fingerprint" style="border:1px solid #eee;max-width:100%" />
 
@@ -53,7 +53,7 @@ The **Active Executions** view helps you:
 {% if page.cloud != true %}
 To display this view, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To display this view, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console.
+To display this view, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console.
 {% endif %}
 
 The **Statements** tab is selected. Click the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
@@ -62,26 +62,13 @@ The **Statements** tab is selected. Click the **Active Executions** radio button
 Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
 
 <img src="{{ 'images/v23.1/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#statement-execution-details-page) displays.
 
 <img src="{{ 'images/v23.1/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
-
-## Search and filter
-
-By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
-
-### Search statements
-
-To search using the search field:
-
-1. Type a string over `Search Statements`. To search for exact terms in order, wrap the search string in quotes.
-1. Press `Enter`.
-
-    The list of statements is filtered by the string.
 
 {% include {{ page.version.version }}/ui/statements-filter.md %}
 

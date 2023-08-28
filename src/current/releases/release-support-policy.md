@@ -9,10 +9,10 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
+This page explains Cockroach Labs' policy for supporting [major releases]({% link releases/index.md %}) of CockroachDB.
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.db }} clusters, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
 ## Support cycle
@@ -24,7 +24,7 @@ Each major release of CockroachDB goes through the following support cycle:
 - **Assistance Support:** Following the maintenance support period, Cockroach Labs will provide assistance support for at least an additional 180 days. During this period, the following guidelines will apply:
     - New enhancements and error corrections will not be made to the major release.
     - Cockroach Labs will direct customers to existing fixes/patches and workarounds applicable to the reported case.
-    - Cockroach Labs may direct customers to [upgrade](../{{site.versions["stable"]}}/upgrade-cockroach-version.html) to a more current version of the product if a workaround does not exist.
+    - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a more current version of the product if a workaround does not exist.
     - Cockroach Labs will continue to add critical security fixes to the major release in the form of patch releases.
 
 - **End of Life (EOL):** Following the assistance support period, Cockroach Labs will no longer provide any support for the release.
@@ -33,7 +33,7 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 ## Current supported releases
 
-As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
+As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming]({% link releases/index.md %}#release-naming).
 
 Date format: YYYY-MM-DD
 
@@ -50,7 +50,7 @@ Date format: YYYY-MM-DD
     {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where_exp: "r_latest", "r_latest.withdrawn != true" | sort: "release_date" | last | map: "version" %} {% comment %} Calculate the latest non-withdrawn release for a version v. {% endcomment %}
 
     <tr{% if v.asst_supp_exp_date < today %} class=eol{% endif %}>
-      <td><a href="{{ v.major_version }}.html">{{ v.major_version }}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
+      <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
       <td>{{ v.release_date }}</td>
       <td>{{ v.maint_supp_exp_date }}</td>
       <td>{{ v.asst_supp_exp_date }}</td>

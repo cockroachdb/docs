@@ -1,9 +1,11 @@
-serverless: CockroachDB Serverless
+serverless: Serverless
 
-dedicated: CockroachDB Dedicated
+dedicated: Dedicated
 
-core: CockroachDB Self-Hosted
-# tbd
+core: Self-Hosted
+
+dedicated-advanced: Dedicated advanced
+
 enterprise: Enterprise
 
-db: CockroachDB Cloud #i.e., "Sign up for a CockroachDB Cloud account", tbd
+cloud: Cloud

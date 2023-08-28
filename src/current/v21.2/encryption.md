@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page outlines several procedures necessary for managing encryption in {{ site.data.products.core }} clusters.
+This page outlines several procedures necessary for managing encryption in CockroachDB {{ site.data.products.core }} clusters.
 
 ## Generating store key files
 

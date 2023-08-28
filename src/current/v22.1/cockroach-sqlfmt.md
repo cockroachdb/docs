@@ -13,7 +13,9 @@ CockroachDB.
 
 A [web interface to this feature](https://sqlfum.pt/) is also available.
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 ## Synopsis
 

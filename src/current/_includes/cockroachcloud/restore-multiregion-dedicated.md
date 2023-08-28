@@ -3,9 +3,9 @@
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database. You can only restore to the same database name as the backed-up database. Therefore, you need to [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) your existing database before restoring.
+1. In the **Restore to** field, enter the name of the destination database. You can only restore to the same database name as the backed-up database. Therefore, you need to [`DROP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-database) or [`RENAME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#rename-to) your existing database before restoring.
 
-    To restore a [multi-region database](../{{site.current_cloud_version}}/multiregion-overview.html) you have backed up to a **different** database name, you can use the following procedure. (In this example, the original, backed-up database is `movr` and the new database is `new_movr`.)
+    To restore a [multi-region database](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-overview) you have backed up to a **different** database name, you can use the following procedure. (In this example, the original, backed-up database is `movr` and the new database is `new_movr`.)
 
     In the SQL shell, create a new database named `new_movr`:
 
@@ -13,11 +13,11 @@
     CREATE DATABASE new_movr;
     ~~~
 
-    Add the regions that are in the backup of `movr` to your new database. The [database regions](../{{site.current_cloud_version}}/multiregion-overview.html#database-regions) in your new database **must** match the regions of the backed-up database (`movr` in this example). You must:
+    Add the regions that are in the backup of `movr` to your new database. The [database regions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-overview#database-regions) in your new database **must** match the regions of the backed-up database (`movr` in this example). You must:
     - Ensure the databases have the same primary region.
     - Add the regions to the new database in the same region order as the backed-up database.
 
-    To verify the regions in your backed-up database, use [`SHOW REGIONS`](../{{site.current_cloud_version}}/show-regions.html):
+    To verify the regions in your backed-up database, use [`SHOW REGIONS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-regions):
 
     ~~~sql
     SHOW REGIONS FROM DATABASE movr;
@@ -35,22 +35,22 @@
     ALTER DATABASE new_movr ADD region "us-west2";
     ~~~
 
-1. From the Console, go to the **Backups** page:
+1. From the Console, go to the **Backup and Restore** page:
     1. Choose the backup you want to restore.
     1. Click on the number of tables in the database. You will find a list of all the tables contained in the database's backup.
     1. Click **Restore** for each table you want to restore into the new database.
     1. Provide the new database's name (e.g., `new_movr`) in **Restore to** for the **Destination database** name.
 
-    For more detail on "matching" regions, see [Restoring to multi-region databases](../{{site.current_cloud_version}}/restore.html#restoring-to-multi-region-databases).
+    For more detail on "matching" regions, see [Restoring to multi-region databases](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore#restoring-to-multi-region-databases).
 
 1. Select any of the **Dependency options** to skip. You can:
-    - **Skip missing foreign keys**, which will remove missing [foreign key](../{{site.current_cloud_version}}/foreign-key.html) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
-    - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
-    - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip missing foreign keys**, which will remove missing [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore [sequence](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-sequences) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring [views](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/views) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**
 1. Once you have reviewed the restore details, click **Restore**.
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
-When the restore is complete, be sure to set any database-specific [zone configurations](../{{site.current_cloud_version}}/configure-replication-zones.html) and, if applicable, [grant privileges](../{{site.current_cloud_version}}/grant.html).
+When the restore is complete, be sure to set any database-specific [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) and, if applicable, [grant privileges](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant).

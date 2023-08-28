@@ -8,8 +8,8 @@ The details displayed on the **Statement Fingerprint** page reflect the [time in
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
-- **Regions**: The regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+- **Regions**: The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
 - **Database**: The database on which the statements executed.
 - **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 - **Failed?**: Whether the statement failed to execute.
@@ -23,15 +23,28 @@ The following screenshot shows the statement fingerprint of the query described 
 
 <img src="{{ 'images/v23.1/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
 
+#### Insights
+
+The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
+- **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
+- **Details**: Provides a description and possible recommendation.
+- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution]({{ link_prefix }}ui-insights-page.html#statement-execution-details), click the ID.
+
+The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
+
+<img src="{{ 'images/v23.1/ui_statement_fingerprint_insights.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
+
 #### Charts
 
 Charts following the execution attributes display statement fingerprint statistics:
 
-- **Statement Execution and Planning Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
+- **Statement Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
 - **Rows Processed**: The total number of rows read and written.
 - **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
 - **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
 - **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
+- **Client Wait Time**: The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements).
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
@@ -50,6 +63,7 @@ The plan table shows the following details:
 Column | Description
 -----|----
 Plan Gist | A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.
+Used Indexes | The table [indexes]({{ link_prefix }}indexes.html) used by the plan. To see [table details]({{ link_prefix }}ui-databases-page.html#table-details), click on the table name. To see [index details]({{ link_prefix }}ui-databases-page.html#index-details), click on the index name.
 Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings]({{ link_prefix }}ui-insights-page.html#schema-insights-settings).
 Last Execution Time | The timestamp when the statement was last executed.
 Average Execution Time | The average execution time for all the executions of the plan.
@@ -90,7 +104,7 @@ The **Diagnostics** tab allows you to activate and download diagnostics for a SQ
 {{site.data.alerts.callout_info}}
 The **Diagnostics** tab is not visible:
 
-- On {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.serverless }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
@@ -136,7 +150,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 
 - On the **Diagnostics** tab for a statement fingerprint, click the **All statement diagnostics** link.
 {% if page.cloud != true %}
-- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
+- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports).
 {% endif %}
 
 Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.

@@ -12,31 +12,31 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Limitations for `EXPLAIN ANALYZE`
 
-- [`EXPLAIN ANALYZE`](explain-analyze.html) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
+- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
 
-- [`EXPLAIN ANALYZE`](explain-analyze.html) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`](create-statistics.html#create-statistics-as-of-a-given-time) instead.
+- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-as-of-a-given-time) instead.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
 
 ### Limitations for index recommendations
 
-- [Index](indexes.html) recommendations are not aware of [hash sharding](hash-sharded-indexes.html).
+- [Index]({% link {{ page.version.version }}/indexes.md %}) recommendations are not aware of [hash sharding]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
 
-- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables).
+- CockroachDB does not support [index]({% link {{ page.version.version }}/indexes.md %}) recommendations on [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
 ### Limitations for `SELECT FOR UPDATE`
 
-- [`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
-- [`SELECT FOR UPDATE`](select-for-update.html) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
 
@@ -48,13 +48,13 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Common table expressions are not supported in user-defined functions
 
-[Common table expressions](common-table-expressions.html) (CTE), recursive or non-recursive, are not supported in [user-defined functions](user-defined-functions.html) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
+[Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 
@@ -66,25 +66,25 @@ When a table is dropped, the related rows in `system.table_statistics` are not d
 
 ### Collection of statistics for virtual computed columns
 
-CockroachDB does not collect statistics for [virtual computed columns](computed-columns.html). This can prevent the [optimizer](cost-based-optimizer.html) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index](expression-indexes.html).
+CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### `AS OF SYSTEM TIME` does not support placeholders
 
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). The time value must be embedded in the SQL string.
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
 
 ### Declarative schema changer does not track rows in `system.privileges`
 
-The [declarative schema changer](online-schema-changes.html#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`](drop-owned-by.html) statement.
+The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
 ### `null_ordered_last` does not produce correct results with tuples
 
-By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable](set-vars.html) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
 
@@ -96,7 +96,7 @@ CockroachDB cannot index-accelerate queries with `@@` predicates when both sides
 
 ### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
 
-There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`](cockroach-node.html) is interrupted in one of the following ways:
+There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) is interrupted in one of the following ways:
 
 - The `cockroach node decommission --wait-all` command was run and then interrupted
 - The `cockroach node decommission --wait=none` command was run
@@ -111,7 +111,7 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 #### Limitations on use of UDFs
 
-[User-defined functions](user-defined-functions.html) are not currently supported in:
+[User-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
 
@@ -127,7 +127,7 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 #### Limitations on expressions allowed within UDFs
 
-The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
+The following are not currently allowed within the body of a [UDF]({% link {{ page.version.version }}/user-defined-functions.md %}):
 
 - Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
 
@@ -149,7 +149,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 ### Limitations for `DROP OWNED BY`
 
-[`DROP OWNED BY`](drop-owned-by.html) drops all owned objects as well as any [grants](grant.html) on objects not owned by the [role](security-reference/authorization.html#roles).
+[`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) drops all owned objects as well as any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
 
 #### `DROP OWNED BY` is not supported where role has system-level privileges
 
@@ -157,7 +157,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 ### Spatial features disabled for ARM Macs
 
-[Spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
+[Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
 
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
@@ -171,7 +171,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 ### Unsupported trigram syntax
 
-The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
+The following PostgreSQL syntax and features are currently unsupported for [trigrams]({% link {{ page.version.version }}/trigram-indexes.md %}):
 
 {% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
 
@@ -179,7 +179,7 @@ The following PostgreSQL syntax and features are currently unsupported for [trig
 
 ### A multi-region table cannot be restored into a non-multi-region table
 
-You cannot [restore](restore.html) a multi-region table into a non-multi-region table.
+You cannot [restore]({% link {{ page.version.version }}/restore.md %}) a multi-region table into a non-multi-region table.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
 
@@ -187,38 +187,38 @@ You cannot [restore](restore.html) a multi-region table into a non-multi-region 
 
 Statements containing multiple modification subqueries mutating the same row could cause corruption. These statements are disallowed by default, but you can enable multiple modification subqueries with one the following:
 
-- Set the `sql.multiple_modifications_of_table.enabled` [cluster setting](cluster-settings.html) to `true`.
-- Use the `enable_multiple_modifications_of_table` [session variable](set-vars.html).
+- Set the `sql.multiple_modifications_of_table.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
+- Use the `enable_multiple_modifications_of_table` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 
-Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`](foreign-key.html) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL.
+Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
 
 ### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
-The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings](set-vars.html) limit the number of rows read or written by a single [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
+The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings]({% link {{ page.version.version }}/set-vars.md %}) limit the number of rows read or written by a single [transaction]({% link {{ page.version.version }}/transactions.md %}#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
 
 ### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
 
-The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
+The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
 
 ### CockroachDB does not allow inverted indexes with `STORING`
 
-CockroachDB does not allow inverted indexes with a [`STORING` column](create-index.html#store-columns).
+CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{ page.version.version }}/create-index.md %}#store-columns).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
-[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins]({% link {{ page.version.version }}/joins.md %}#left-outer-joins) and anti joins involving [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}), [`ARRAY`]({% link {{ page.version.version }}/array.md %}), or [spatial-typed]({% link {{ page.version.version }}/export-spatial-data.md %}) columns with a multi-column or [partitioned]({% link {{ page.version.version }}/alter-index.md %}#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
-For example, suppose you have the following [multi-region database](multiregion-overview.html) and tables:
+For example, suppose you have the following [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) and tables:
 
 ``` sql
 CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1" SURVIVE REGION FAILURE;
@@ -236,7 +236,7 @@ CREATE TABLE t2 (
 ) LOCALITY REGIONAL BY ROW;
 ```
 
-And you [insert](insert.html) some data into the tables:
+And you [insert]({% link {{ page.version.version }}/insert.md %}) some data into the tables:
 
 ``` sql
 INSERT INTO t1 SELECT generate_series(1, 1000), 'POINT(1.0 1.0)';
@@ -245,7 +245,7 @@ INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-west1', generate_series(1001, 2
 INSERT INTO t2 (crdb_region, k, geom) SELECT 'europe-west1', generate_series(2001, 3000), 'POINT(3.0 3.0)';
 ```
 
-If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an [inverted join](joins.html#inverted-joins):
+If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an [inverted join]({% link {{ page.version.version }}/joins.md %}#inverted-joins):
 
 ```
 > EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom);
@@ -296,7 +296,7 @@ However, if you constrain the `crdb_region` column to a single value, CockroachD
 (18 rows)
 ```
 
-If you do not know which region to use, you can combine queries with [`UNION ALL`](selection-queries.html#union-combine-two-queries):
+If you do not know which region to use, you can combine queries with [`UNION ALL`]({% link {{ page.version.version }}/selection-queries.md %}#union-combine-two-queries):
 
 ```
 > EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-east1'
@@ -409,23 +409,23 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
 
-For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL](postgresql-compatibility.html#features-that-differ-from-postgresql).
+For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
 ### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
-CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](insert.html#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
+CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53170)
 
 ### Spatial support limitations
 
-CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
+CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), with the following limitations:
 
 - Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49203)
 
-- The `AddGeometryColumn` [spatial function](functions-and-operators.html#spatial-functions) only allows constant arguments.
+- The `AddGeometryColumn` [spatial function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) only allows constant arguments.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49402)
 
@@ -437,11 +437,11 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
 
-- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
+- CockroachDB does not yet support [`INSERT`]({% link {{ page.version.version }}/insert.md %})s into the [`spatial_ref_sys` table]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
+- CockroachDB does not yet support Triangle or [`TIN`](https://wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
 
@@ -449,19 +449,19 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
 
-- CockroachDB does not yet support [k-nearest neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
-- CockroachDB does not support using [schema name prefixes](sql-name-resolution.html#how-name-resolution-works) to refer to [data types](data-types.html) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
+- CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+    Note that, in [`IMPORT PGDUMP`]({% link {{ page.version.version }}/migrate-from-postgres.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
-The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
+The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) of a table or database.
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
@@ -473,7 +473,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 
 ### Large index keys can impair performance
 
-The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for [storage engine](cockroach-start.html#storage-engine) SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
+The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for [storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine) SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
 
 To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
 
@@ -495,7 +495,7 @@ Altering the minimum or maximum value of a series does not check the current val
 
 ### Using `default_int_size` session variable in batch of statements
 
-When setting the `default_int_size` [session variable](set-vars.html) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
+When setting the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
 
 As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
 
@@ -521,7 +521,7 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 ### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](alter-table.html#add-column) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column]({% link {{ page.version.version }}/alter-table.md %}#add-column) to a table when the column uses a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) as the [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) value, for example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -572,22 +572,22 @@ CockroachDB imposes a hard limit of 16MiB on the data input for a single stateme
 
 ### Using `\|` to perform a large input in the SQL shell
 
-In the [built-in SQL shell](cockroach-sql.html), using the [`\|`](cockroach-sql.html#commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
+In the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), using the [`\|`]({% link {{ page.version.version }}/cockroach-sql.md %}#commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
 
-As a workaround, [execute the file from the command line](cockroach-sql.html#execute-sql-statements-from-a-file) with `cat data.sql | cockroach sql` instead of from within the interactive shell.
+As a workaround, [execute the file from the command line]({% link {{ page.version.version }}/cockroach-sql.md %}#execute-sql-statements-from-a-file) with `cat data.sql | cockroach sql` instead of from within the interactive shell.
 
 ### New values generated by `DEFAULT` expressions during `ALTER TABLE ADD COLUMN`
 
-When executing an [`ALTER TABLE ADD COLUMN`](alter-table.html#add-column) statement with a [`DEFAULT`](default-value.html) expression, new values generated:
+When executing an [`ALTER TABLE ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) statement with a [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) expression, new values generated:
 
-- use the default [search path](sql-name-resolution.html#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
-- use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`](set-vars.html).
-- have no default database regardless of the default database configured in the current session via [`SET DATABASE`](set-vars.html), so you must specify the database of any tables they reference.
+- use the default [search path]({% link {{ page.version.version }}/sql-name-resolution.md %}#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
+- use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`]({% link {{ page.version.version }}/set-vars.md %}).
+- have no default database regardless of the default database configured in the current session via [`SET DATABASE`]({% link {{ page.version.version }}/set-vars.md %}), so you must specify the database of any tables they reference.
 - use the transaction timestamp for the `statement_timestamp()` function regardless of the time at which the `ALTER` statement was issued.
 
 ### Load-based lease rebalancing in uneven latency deployments
 
-When nodes are started with the [`--locality`](cockroach-start.html#flags) flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
+When nodes are started with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
 
 However, you might see increased latency caused by a consistently high rate of lease transfers between datacenters in the following case:
 
@@ -595,13 +595,13 @@ However, you might see increased latency caused by a consistently high rate of l
 - Each node was started with a single tier of `--locality`, e.g., `--locality=datacenter=a`.
 - Most client requests get sent to a single datacenter because that's where all your application traffic is.
 
-To detect if this is happening, open the [DB Console](ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
+To detect if this is happening, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
 
 For example, let's say that latency is 10ms from nodes in datacenter A to nodes in datacenter B but is 100ms from nodes in datacenter A to nodes in datacenter C. To ensure A's and B's relative proximity is factored into lease holder rebalancing, you could restart the nodes in datacenter A and B with a common region, `--locality=region=foo,datacenter=a` and `--locality=region=foo,datacenter=b`, while restarting nodes in datacenter C with a different region, `--locality=region=bar,datacenter=c`.
 
 ### Overload resolution for collated strings
 
-Many string operations are not properly overloaded for [collated strings](collate.html), for example:
+Many string operations are not properly overloaded for [collated strings]({% link {{ page.version.version }}/collate.md %}), for example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -628,9 +628,9 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Max size of a single column family
 
-When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the [max range size](configure-replication-zones.html#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
+When creating or updating a row, if the combined size of all values in a single [column family]({% link {{ page.version.version }}/column-families.md %}) exceeds the [max range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
 
-As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
+As a workaround, you can either [manually split a table's columns into multiple column families]({% link {{ page.version.version }}/column-families.md %}#manual-override), or you can [create a table-specific zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table) with an increased max range size.
 
 ### Simultaneous client connections and running queries on a single node
 
@@ -642,11 +642,11 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 ### Privileges for `DELETE` and `UPDATE`
 
-Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](security-reference/authorization.html#managing-privileges) on the table.
+Every [`DELETE`]({% link {{ page.version.version }}/delete.md %}) or [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
-Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
+Transactions with [priority `HIGH`]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
 
 ~~~ sql
 > BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
@@ -675,7 +675,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 ### Some column-dropping schema changes do not roll back properly
 
-Some [schema changes](online-schema-changes.html) that [drop columns](alter-table.html#drop-column) cannot be [rolled back](rollback-transaction.html) properly.
+Some [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that [drop columns]({% link {{ page.version.version }}/alter-table.md %}#drop-column) cannot be [rolled back]({% link {{ page.version.version }}/rollback-transaction.md %}) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
@@ -689,11 +689,11 @@ To reduce the chance that a column drop will roll back incorrectly:
 
 - Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
 
-- Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
+- Drop all [constraints]({% link {{ page.version.version }}/constraints.md %}) (including [unique indexes]({% link {{ page.version.version }}/unique.md %})) on the column in a separate transaction, before dropping the column.
 
-- Drop any [default values](default-value.html) or [computed expressions](computed-columns.html) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
+- Drop any [default values]({% link {{ page.version.version }}/default-value.md %}) or [computed expressions]({% link {{ page.version.version }}/computed-columns.md %}) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
 
-If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table]({% link {{ page.version.version }}/show-jobs.md %}). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
 
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 

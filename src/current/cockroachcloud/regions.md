@@ -6,11 +6,11 @@ docs_area: deploy
 cloud: true
 ---
 
-{{ site.data.products.db }} clusters can be [created](create-your-cluster.html) in the following cloud regions.
+CockroachDB {{ site.data.products.cloud }} clusters can be [created]({% link cockroachcloud/create-your-cluster.md %}) in the following cloud regions.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
-    <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
+    <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
+    <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
 </div>
 
 {{site.data.alerts.callout_success}}
@@ -20,12 +20,12 @@ For optimal performance, configure your cluster's regions to be as near as possi
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-Creating a {{ site.data.products.serverless }} cluster on Azure is not supported.
+Creating a CockroachDB {{ site.data.products.serverless }} cluster on Azure is not supported.
 {{site.data.alerts.end}}
 
 ## AWS regions
 
-{{ site.data.products.serverless }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
+CockroachDB {{ site.data.products.serverless }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
@@ -38,7 +38,7 @@ Western Europe  | `eu-central-1`   | Frankfurt
 
 ## GCP regions
 
-{{ site.data.products.serverless }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
+CockroachDB {{ site.data.products.serverless }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
 
 Geographic Area | Region Name               | Location
 ----------------|---------------------------|---------
@@ -55,7 +55,7 @@ Western Europe  | `europe-west1`            | St. Ghislain
 
 ## AWS regions
 
-{{ site.data.products.dedicated }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [AWS regions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html):
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
@@ -81,7 +81,7 @@ Western Europe  | `eu-central-1`   | Frankfurt
 {% include feature-phases/azure-limited-access.md %}
 {{site.data.alerts.end}}
 
-{{ site.data.products.db }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview#regions):
+CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
 
 Geographic Area | Region Name     | Location
 ----------------|-----------------|---------
@@ -90,24 +90,37 @@ Western Europe  | `westeurope`    | Netherlands
 
 ## GCP regions
 
-{{ site.data.products.dedicated }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [GCP regions](https://cloud.google.com/compute/docs/regions-zones):
 
 Geographic Area | Region Name               | Location
 ----------------|---------------------------|---------
 Asia Pacific    | `asia-east1`              | Changhua County
                 | `asia-east2`              | Hong Kong
                 | `asia-northeast1`         | Tokyo
+                | `asia-northeast2`         | Osaka
+                | `asia-northeast3`         | Seoul
+                | `asia-south1`             | Mumbai
+                | `asia-south2`             | Delhi
                 | `asia-southeast1`         | Jurong West
-                | `australia-southeast1`    | Australia
+                | `asia-southeast2`         | Jakarta
+                | `australia-southeast1`    | Sydney
+                | `australia-southeast2`    | Melbourne
 North America   | `northamerica-northeast1` | Montréal
+                | `northamerica-northeast2` | Toronto
                 | `us-central1`             | Iowa
                 | `us-east1`                | South Carolina
+                | `us-east4`                | Virginia
                 | `us-west1`                | Oregon
                 | `us-west2`                | California
+                | `us-west3`                | Salt Lake City
+                | `us-west4`                | Las Vegas
 South America   | `southamerica-east1`      | São Paulo
-Western Europe  | `europe-west1`            | St. Ghislain
+Western Europe  | `europe-central2`         | Warsaw
+                | `europe-north1`           | Hamina
+                | `europe-west1`            | St. Ghislain
                 | `europe-west2`            | London
                 | `europe-west3`            | Frankfurt
                 | `europe-west4`            | Eemshaven
+                | `europe-west6`            | Zürich
                 
 </section>

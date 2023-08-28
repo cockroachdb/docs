@@ -1,6 +1,6 @@
 ---
 title: SQL Audit Logging
-summary: Learn about the SQL Audit Logging feature for {{ site.data.products.db }} clusters.
+summary: Learn about the SQL Audit Logging feature for CockroachDB {{ site.data.products.cloud }} clusters.
 toc: true
 docs_area: manage
 ---
@@ -11,7 +11,7 @@ To enable the feature, [enable auditing](#enable-auditing) for a table and then 
 
 ## Enable auditing
 
-Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](../{{site.current_cloud_version}}/alter-table.html#experimental_audit) statement:
+Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#experimental_audit) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

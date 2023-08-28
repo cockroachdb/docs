@@ -72,7 +72,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
     cd example-app-rust-postgres
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
+1. Set the `DATABASE_URL` environment variable to the connection string to your CockroachDB {{ site.data.products.cloud }} cluster:
 
     <section class="filter-content" markdown="1" data-scope="local">
 
@@ -94,7 +94,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
         For example:
 
         ~~~
-        postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/bank?sslmode=require
+        postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/bank?sslmode=require
         ~~~
 
 

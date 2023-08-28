@@ -10,21 +10,21 @@ Given two shapes _A_ and _B_, predicate function `ST_Covers(A, B)` returns `true
 
 In other words, shape _A_ must completely cover every point in _B_.
 
-This behavior is similar to [`ST_Contains`](st_contains.html), except that the criteria for `ST_Contains` are more exacting, and therefore some pairs of shapes will be accepted by this function that would be rejected by `ST_Contains`.
+This behavior is similar to [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %}), except that the criteria for `ST_Contains` are more exacting, and therefore some pairs of shapes will be accepted by this function that would be rejected by `ST_Contains`.
 
 `ST_Covers` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
-- [`GEOGRAPHY`](spatial-glossary.html#geography)
+- [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)
+- [`GEOGRAPHY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geography)
 
 {% if page.has_prefixed_variant %}
 {{site.data.alerts.callout_info}}
-`{{page.title}}` will attempt to use any available [spatial index](spatial-indexes.html) to speed up its operation.  Use the prefixed variant `_{{page.title}}` if you do not want any spatial indexes to be used.
+`{{page.title}}` will attempt to use any available [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) to speed up its operation.  Use the prefixed variant `_{{page.title}}` if you do not want any spatial indexes to be used.
 {{site.data.alerts.end}}
 {% endif %}
 
 {{site.data.alerts.callout_info}}
-This function is the inverse of [`ST_CoveredBy`](st_coveredby.html).
+This function is the inverse of [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %}).
 {{site.data.alerts.end}}
 
 ## Examples
@@ -74,25 +74,25 @@ SELECT ST_Covers(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.9
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
-+ [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Contains`](st_contains.html)
-- [`ST_Within`](st_within.html)
-- [`ST_Intersects`](st_intersects.html)
-- [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Disjoint`](st_disjoint.html)
-- [`ST_Equals`](st_equals.html)
-- [`ST_Overlaps`](st_overlaps.html)
-- [`ST_Touches`](st_touches.html)
-- [`ST_ConvexHull`](st_convexhull.html)
-- [`ST_Union`](st_union.html)
-- [Migrate from Shapefiles](migrate-from-shapefiles.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Export Spatial Data](export-spatial-data.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
++ [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
+- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
+- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
+- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
+- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
+- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
+- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
+- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
+- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
+- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

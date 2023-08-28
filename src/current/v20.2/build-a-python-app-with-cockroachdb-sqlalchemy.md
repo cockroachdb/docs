@@ -113,7 +113,7 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    Where `<connection_string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
+    Where `<connection_string>` is the connection string you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
 
     </section>
 
@@ -199,6 +199,7 @@ If you see an error message like `transaction is too large to complete; try spli
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/python/sqlalchemy/sqlalchemy-large-txns.py %}
 ~~~

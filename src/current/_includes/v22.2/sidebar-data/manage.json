@@ -6,12 +6,6 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Plan Your Cluster",
-          "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
-          ]
-        },
-        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -226,6 +220,12 @@
               ]
             },
             {
+              "title": "Managing AWS PrivateLink for a Dedicated Cluster",
+              "urls": [
+                "/cockroachcloud/aws-privatelink.html"
+              ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
@@ -245,12 +245,6 @@
                   "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
-                  ]
-                },
-                {
-                  "title": "FAQs",
-                  "urls": [
-                    "/cockroachcloud/cmek-faq.html"
                   ]
                 }
               ]
@@ -542,25 +536,25 @@
               ]
             },
             {
-             "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
+             "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
              "urls": [
                "/cockroachcloud/export-metrics.html"
              ]
            },
             {
-              "title": "Monitor {{ site.data.products.core }} with Datadog",
+              "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]
             },
             {
-              "title": "Monitor {{ site.data.products.core }} with DBmarlin",
+              "title": "Monitor CockroachDB {{ site.data.products.core }} with DBmarlin",
               "urls": [
                 "/${VERSION}/dbmarlin.html"
               ]
             },
             {
-              "title": "Monitor {{ site.data.products.core }} with Kibana",
+              "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
               "urls": [
                 "/${VERSION}/kibana.html"
               ]
@@ -592,7 +586,7 @@
         },
 
         {
-         "title": "Export Logs From {{ site.data.products.dedicated }}",
+         "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
          "urls": [
            "/cockroachcloud/export-logs.html"
          ]

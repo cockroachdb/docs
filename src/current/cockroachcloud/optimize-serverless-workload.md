@@ -5,19 +5,19 @@ toc: true
 docs_area: deploy
 ---
 
-This page describes how to tune your {{ site.data.products.serverless }} workload to reduce costs.
+This page describes how to tune your CockroachDB {{ site.data.products.serverless }} workload to reduce costs.
 
 ## Understanding your resource usage
 
-{{ site.data.products.serverless }} clusters consume three kinds of resources:
+CockroachDB {{ site.data.products.serverless }} clusters consume three kinds of resources:
 
 - SQL CPU
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.serverless }} [architecture]({% link cockroachcloud/architecture.md %}). A CockroachDB {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
-**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units](learn-about-request-units.html) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
+**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
 **Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network egress.
 
@@ -63,7 +63,7 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
 
-You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -97,23 +97,23 @@ This will insert the data, and also output information from the optimizer about 
 
 ## Understanding which queries to optimize
 
-In the {{ site.data.products.db }} Console, you can monitor your cluster's SQL activity on the [**Statements**](statements-page.html) and [**Transactions**](transactions-page.html) pages. You can sort queries by the time they took to process, the number of rows processed, or the number of bytes read to see which queries are using the most resources. If you have queries that return more data than needed or have long runtimes, those are good candidates for optimization.
+In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages. You can sort queries by the time they took to process, the number of rows processed, or the number of bytes read to see which queries are using the most resources. If you have queries that return more data than needed or have long runtimes, those are good candidates for optimization.
 
 ## Tips for reducing RU usage
 
 You can reduce the RU cost of a query by reducing the work your cluster must do to execute that query. We recommend the following:
 
 - Drop indexes that are no longer needed.
-- Use [secondary indexes](../{{site.current_cloud_version}}/schema-design-indexes.html) that reduce the number of rows that need to be scanned.
+- Use [secondary indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/schema-design-indexes) that reduce the number of rows that need to be scanned.
 - Take advantage of SQL filters, joins, and aggregations rather than performing these operations in the application to reduce the amount of data returned to the client.
-- Use [batched `INSERT`](../{{site.current_cloud_version}}/insert.html#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
+- Use [batched `INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
-- Don't disable automatic statistics, as they are needed to power the [optimizer](../stable/cost-based-optimizer.html).
+- Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
 
 ## Learn more
 
-- [Learn About {{ site.data.products.serverless }} Pricing](learn-about-pricing.html)
-- [Learn About Request Units](learn-about-request-units.html)
-- [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)
-- [CockroachDB Cloud Architecture](architecture.html)
+- [Learn About CockroachDB {{ site.data.products.serverless }} Pricing]({% link cockroachcloud/plan-your-cluster-serverless.md %}#pricing)
+- [Learn About Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units)
+- [Manage Your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/serverless-cluster-management.md %})
+- [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})

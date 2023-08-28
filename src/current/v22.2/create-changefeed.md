@@ -37,9 +37,9 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, see [create-and-configure-changefeed.html#create].
-`option` / `value` | For a list of available options and their values, see [Options](#options).
+`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds](create-and-configure-changefeeds.html#create) page.
+`option` / `value` | For a list of available options and their values, refer to [Options](#options).
 
 ### CDC transformation parameters
 
@@ -55,6 +55,8 @@ Parameter | Description
 
 ### Sink URI
 
+This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks](changefeed-sinks.html) page.
+
 The sink URI follows the basic format of:
 
 ~~~
@@ -68,14 +70,12 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
-See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
-
 #### Kafka
 
 Example of a Kafka sink URI:
 
 ~~~
-'kafka://broker.address.com:9092?TOPIC_PREFIX=bar_&TLS_ENABLED=true&CA_CERT=LS0tLS1CRUdJTiBDRVJUSUZ&SASL_ENABLED=true&SASL_USER={sasl user}&SASL_PASSWORD={url-encoded password}&SASL_MECHANISM=SASL-SCRAM-SHA-256'
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
 {% include {{ page.version.version }}/misc/external-connection-kafka.md %}
@@ -89,10 +89,10 @@ The Google Cloud Pub/Sub sink is currently in **beta**.
 Example of a Google Cloud Pub/Sub sink URI:
 
 ~~~
-'gcpubsub://{project name}?region={region}&TOPIC_NAME={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
 
@@ -105,7 +105,7 @@ Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOU
 Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
 HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
+[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. Refer to [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -116,10 +116,10 @@ The webhook sink is currently in **beta**.
 Example of a webhook URI:
 
 ~~~
-'webhook-https://{your-webhook-endpoint}?INSECURE_TLS_SKIP_VERIFY=true'
+'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
 
-See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
+Refer to [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
 
 ### Query parameters
 
@@ -129,20 +129,20 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
-`CA_CERT`          | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html)            | The base64-encoded `CA_CERT` file. Specify `CA_CERT` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI](changefeed-sinks.html#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `CA_CERT`: <br>`confluent_schema_registry='https://schema_registry:8081?CA_CERT=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`CLIENT_CERT`      | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html) | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `CLIENT_KEY`.
-`CLIENT_KEY`       | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `CLIENT_CERT`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
-<a name="file-size"></a>`FILE_SIZE`        | [cloud](changefeed-sinks.html#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-<a name="tls-skip-verify"></a>`INSECURE_TLS_SKIP_VERIFY` |  [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
-<a name="partition-format"></a>`PARTITION_FORMAT` | [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html) | Specify how changefeed [file paths](#general-file-format) are partitioned in cloud storage sinks. Use `PARTITION_FORMAT` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&PARTITION_FORMAT=hourly'` <br><br> **Default:** `daily`
+`ca_cert`          | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html)            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI](changefeed-sinks.html#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert`      | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html) | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
+<a name="file-size"></a>`file_size`        | [cloud](changefeed-sinks.html#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+<a name="tls-skip-verify"></a>`insecure_tls_skip_verify` |  [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+<a name="partition-format"></a>`partition_format` | [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html) | Specify how changefeed [file paths](#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
 `S3_STORAGE_CLASS` | [Amazon S3 cloud storage sink](changefeed-sinks.html#amazon-s3) | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
-`SASL_ENABLED`     | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `SASL_MECHANISM` parameter. You must have `TLS_ENABLED` set to `true` to use SASL. <br><br> **Default:** `false`
-`SASL_MECHANISM`   | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `SASL_USER` and `SASL_PASSWORD` are required. <br><br> **Default:** `SASL-PLAIN`
-`SASL_USER`        | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL username.
-`SASL_PASSWORD`    | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL password. **Note:** Passwords should be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding) since the value can contain characters that would cause authentication to fail.
-`TLS_ENABLED`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `CA_CERT` (see below). <br><br>**Default:** `false`
-<a name="topic-name-param"></a>`TOPIC_NAME`       | [Kafka](changefeed-sinks.html#kafka), [GC Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) or [GC Pub/Sub topic naming](changefeed-sinks.html#pub-sub-topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?TOPIC_NAME=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. When using Kafka, this option can be combined with the [`TOPIC_PREFIX` option](#topic-prefix-param) (this is not supported for GC Pub/Sub). <br><br>**Default:** table name.
-<a name="topic-prefix-param"></a>`TOPIC_PREFIX`     | [Kafka](changefeed-sinks.html#kafka), [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?TOPIC_PREFIX=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`sasl_enabled`     | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
+`sasl_mechanism`   | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
+`sasl_user`        | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL username.
+`sasl_password`    | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL password. **Note:** Passwords should be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding) since the value can contain characters that would cause authentication to fail.
+`tls_enabled`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
+<a name="topic-name-param"></a>`topic_name`       | [Kafka](changefeed-sinks.html#kafka), [GC Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) or [GC Pub/Sub topic naming](changefeed-sinks.html#pub-sub-topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. When using Kafka, this option can be combined with the [`topic_prefix` option](#topic-prefix-param) (this is not supported for GC Pub/Sub). <br><br>**Default:** table name.
+<a name="topic-prefix-param"></a>`topic_prefix`     | [Kafka](changefeed-sinks.html#kafka), [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 
 ### Options
 
@@ -167,7 +167,7 @@ Option | Value | Description
 <a name="protect-pause"></a>`protect_data_from_gc_on_pause` | N/A |  When a [changefeed is paused](pause-job.html), ensure that the data needed to [resume the changefeed](resume-job.html) is not garbage collected. If `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp records. It is also important to note that pausing and adding `protect_data_from_gc_on_pause` to a changefeed will not protect data if the [garbage collection](configure-replication-zones.html#gc-ttlseconds) window has already passed. <br><br>Use with [`on-error=pause`](#on-error) to protect changes from garbage collection when encountering non-retryable errors. <br><br>See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on protecting changefeed data.<br><br>**Note:** If you use this option, changefeeds that are left paused for long periods of time can prevent garbage collection.
 <a name="resolved-option"></a>`resolved` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Emits [resolved timestamp](changefeed-messages.html#resolved-def) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.<br><br>**Note:** If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
 <a name="schema-events"></a>`schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](alter-table.html#add-column) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](alter-table.html#drop-column) events.</li><li>`column_changes`: Include all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
-<a name="schema-policy"></a>`schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), perform no logical backfills. The changefeed will still emit any duplicate records for the table being altered, but will not emit the new schema records. </li><li>`stop`: [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
+<a name="schema-policy"></a>`schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), perform no logical backfills. The changefeed will not emit any messages about the schema change. </li><li>`stop`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 <a name="split-column-families"></a>`split_column_families` | N/A | Use this option to create a changefeed on a table with multiple [column families](column-families.html). The changefeed will emit messages for each of the table's column families. See [Changefeeds on tables with column families](changefeeds-on-tables-with-column-families.html) for more usage detail.
 `topic_in_value` | [`BOOL`](bool.html) |  Set to include the topic in each emitted row update. Note this is automatically set for [webhook sinks](changefeed-sinks.html#webhook-sink).
 <a name="updated-option"></a>`updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](changefeed-messages.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
@@ -203,7 +203,7 @@ For example:
 /2020-04-02/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
 ~~~
 
-When emitting changefeed messages to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), you can specify a partition format for your files using the [`PARTITION_FORMAT`](#partition-format) query parameter. This will result in the following file path formats:
+When emitting changefeed messages to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), you can specify a partition format for your files using the [`partition_format`](#partition-format) query parameter. This will result in the following file path formats:
 
 - `daily`: This is the default option and will follow the same pattern as the previous general file format.
 - `hourly`: This will partition into an hourly directory as the changefeed emits messages, like the following:
@@ -228,7 +228,7 @@ For example:
 
 ## Examples
 
-Before running any of the examples in this section it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
+Before running any of the examples in this section it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
 
 The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks](changefeed-sinks.html) page.
 
@@ -330,7 +330,7 @@ For step-by-step guidance on creating a changefeed connected to a Google Cloud P
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'webhook-https://{your-webhook-endpoint}?INSECURE_TLS_SKIP_VERIFY=true'
+  INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
   WITH updated;
 ~~~
 

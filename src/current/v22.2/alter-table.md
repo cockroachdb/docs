@@ -911,6 +911,52 @@ $ cockroach demo bank
 (1 row)
 ~~~
 
+##### Move a column from one column family to another
+
+Moving frequently updated columns to their own [column family can increase performance](column-families.html#default-behavior).
+
+To move a column from one column family to another column family, create a temporary, [non-visible](create-table.html#not-visible-property) [stored computed column](computed-columns.html) in the target column family, then rename the columns. Once this succeeds, you can drop the original, now renamed column.
+
+For example, to move the `new_name` column from `f2` to `f1`:
+
+1. Create a temporary computed column in the target column family of the same data type as the column you want to move:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE bank
+        ADD COLUMN newer_name STRING
+        FAMILY f1 NOT VISIBLE AS (new_name) STORED;
+    ~~~
+
+    This causes `newer_name` to have the same values as `new_name`.
+
+1. Rename the columns:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE bank
+        ALTER COLUMN newer_name DROP STORED,
+        ALTER COLUMN newer_name SET VISIBLE,
+        RENAME COLUMN new_name TO old_name,
+        RENAME COLUMN newer_name TO new_name,
+        ALTER COLUMN old_name SET NOT VISIBLE;
+    ~~~
+
+1. Drop the old column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET sql_safe_updates = false;
+    ALTER TABLE bank DROP COLUMN old_name;
+    SET sql_safe_updates = true;
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You must set the [`sql_safe_updates` session variable](set-vars.html#sql-safe-updates) to `false` to drop a column in a table that has data.
+    {{site.data.alerts.end}}
+
+Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the [storage layer](architecture/storage-layer.html): 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
+
 #### Add a column with an `ON UPDATE` expression
 
  `ON UPDATE` expressions set the value for a column when other values in a row are updated.
@@ -1770,7 +1816,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices](performance-best-practices-overview.html#use-uuid-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
+The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices](performance-best-practices-overview.html#use-functions-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 

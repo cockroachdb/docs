@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 GeoJSON is a textual data format for representing spatial information.  It is based on [JavaScript Object Notation (JSON)](https://www.json.org).
 
-GeoJSON can be used to represent the following spatial objects, which also have [Well Known Text (WKT)](well-known-text.html) and [Well Known Binary (WKB)](well-known-binary.html) representations:
+GeoJSON can be used to represent the following spatial objects, which also have [Well Known Text (WKT)]({% link {{ page.version.version }}/well-known-text.md %}) and [Well Known Binary (WKB)]({% link {{ page.version.version }}/well-known-binary.md %}) representations:
 
 - Point
 - LineString
@@ -27,12 +27,12 @@ For more detailed information, see the [GeoJSON RFC](https://www.rfc-editor.org/
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-GeoJSON should only be used for spatial data that uses the [WGS84](spatial-glossary.html) geographic spatial reference system.  For more information, see [SRID 4326](srid-4326.html).
+GeoJSON should only be used for spatial data that uses the [WGS84]({% link {{ page.version.version }}/architecture/glossary.md %}) geographic spatial reference system.  For more information, see [SRID 4326]({% link {{ page.version.version }}/srid-4326.md %}).
 {{site.data.alerts.end}}
 
 ## Example
 
-In the example below, we will convert a shape represented in [Well Known Text](well-known-text.html) to GeoJSON using the `ST_AsGeoJSON` [function](functions-and-operators.html#spatial-functions).
+In the example below, we will convert a shape represented in [Well Known Text]({% link {{ page.version.version }}/well-known-text.md %}) to GeoJSON using the `ST_AsGeoJSON` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions).
 
 Here is the WKT:
 
@@ -194,11 +194,11 @@ Here is the geometry described above as shown on [geojson.io](http://geojson.io)
 ## See also
 
 - [GeoJSON RFC](https://www.rfc-editor.org/rfc/rfc7946.txt)
-- [Spatial features](spatial-features.html)
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Well known text](well-known-text.html)
-- [Well known binary](well-known-binary.html)
-- [SRID 4326 - longitude and latitude](srid-4326.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Well known text]({% link {{ page.version.version }}/well-known-text.md %})
+- [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
+- [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

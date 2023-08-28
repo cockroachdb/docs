@@ -20,7 +20,13 @@
           </div>
         </div>
         <nav id="sidebarMenu" class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0">
-{% include sidebar.html %}
+{%- assign sidebar_class = "" -%}
+{%- if page.name == 'index.md' -%}
+  {%- assign sidebar_class = "nav--home " -%}
+{%- elsif page.url == '/search.html' -%}
+  {%- assign sidebar_class = "nav--search " -%}
+{%- endif -%}
+{% include_cached sidebar.html sidebar_class=sidebar_class %}
         </nav>
 {% if page.toc == true %}
   {% if page.homepage != true %}
@@ -55,8 +61,8 @@
 
 {% include_cached footer.html %}
 
-{% include sidebar.js.html %}
-    <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
+{% include_cached sidebar.js.html sidebar_data=page.sidebar_data %}
+    <script src="https://go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
     <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}" defer></script>
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}" defer></script>
     <!-- bs 4.X -->

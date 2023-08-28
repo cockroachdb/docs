@@ -91,9 +91,9 @@ In the `create_engine()` function, update the connection string as follows:
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 - Comment out the connection string for `cockroach demo`, and uncomment the connection string for CockroachCloud.
-- Replace `<username>` and `<password>` with the SQL username and password that you created in the {{ site.data.products.db }} Console.
-- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the {{ site.data.products.db }} Console.
-- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the {{ site.data.products.db }} Console.
+- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachDB {{ site.data.products.cloud }} Console.
+- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console.
+- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>
 {% endcomment %}
@@ -201,6 +201,7 @@ If you see an error message like `transaction is too large to complete; try spli
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/python/sqlalchemy/sqlalchemy-large-txns.py %}
 ~~~

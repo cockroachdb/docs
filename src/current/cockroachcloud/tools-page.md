@@ -5,33 +5,33 @@ toc: true
 docs_area: manage
 ---
 
-The **Tools** page is accessible on {{ site.data.products.dedicated }} clusters. This page allows you to:
+The **Tools** page is accessible on CockroachDB {{ site.data.products.dedicated }} clusters. This page allows you to:
 
 - Set up cluster [monitoring with Datadog](#monitor-cockroachdb-dedicated-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
-To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
+To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
 
-## Monitor {{ site.data.products.dedicated }} with Datadog
+## Monitor CockroachDB {{ site.data.products.dedicated }} with Datadog
 
-The [{{ site.data.products.dedicated }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint](../{{site.current_cloud_version}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform.
+The [CockroachDB {{ site.data.products.dedicated }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting#prometheus-endpoint), using the Datadog platform.
 
-To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
+To set up Datadog monitoring with CockroachDB {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
 {{site.data.alerts.callout_success}}
-Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. Your {{ site.data.products.dedicated }} bill is unchanged.
+Enabling the Datadog integration on your CockroachDB {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. Your CockroachDB {{ site.data.products.dedicated }} bill is unchanged.
 {{site.data.alerts.end}}
 
 For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
 
 ### Enable integration
 
-To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
+To enable Datadog monitoring for a CockroachDB {{ site.data.products.dedicated }} cluster:
 
 1. On the cluster's **Tools** page, click **Setup** in the **Datadog** panel.
 
 1. Fill in the **API key** and **Datadog Site** fields with their corresponding values.
-    - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
+    - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your CockroachDB {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
     - Your **Datadog Site** corresponds to your Datadog Site URL. For more details, see the [Datadog documentation](https://docs.datadoghq.com/getting_started/site/).
 
 1. Click **Create**. Depending on the size of your cluster and the current load on the system, the integration might take some time to become enabled.
@@ -64,9 +64,9 @@ To monitor the health of metrics export, you can [create a custom Monitor](#moni
 
 Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list) and click `CockroachDB Dedicated Overview`. This sample dashboard presents a high-level view of SQL performance and latency, and information about resource consumption to help aid in capacity planning. It provides the ability to drill down to specific nodes (identified by a `(node, region)` tag pair) within your cluster.
 
-To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `CockroachDB Dedicated Overview` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
+To create your own CockroachDB {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `CockroachDB Dedicated Overview` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
 
-The [available metrics](#available-metrics) are drawn directly from the CockroachDB [Prometheus endpoint](../{{site.current_cloud_version}}/monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
+The [available metrics](#available-metrics) are drawn directly from the CockroachDB [Prometheus endpoint](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting#prometheus-endpoint) and are intended for use as building blocks for your own charts.
 
 {{site.data.alerts.callout_info}}
 Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics.
@@ -97,19 +97,19 @@ To preview the metrics being collected, you can:
 - Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) to display time-series graphs for each available metric.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_dedicated` metrics.
 
-See [Metrics](../{{site.current_cloud_version}}/metrics.html) for the full list of metrics available in CockroachDB.
+See [Metrics](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/metrics) for the full list of metrics available in CockroachDB.
 
 ### Monitor health of metrics export
 
 To monitor the health of metrics export, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method, which configures an alert that is sent when a supported metric reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.current_cloud_version}}/monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method, which configures an alert that is sent when a supported metric reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting#events-to-alert-on).
 
 - To **Define the metric**:
 
     - Select the `otel.datadog_exporter.metrics.running` metric.
 
-    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/)).
+    - Export the metric **from** your CockroachDB {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/)).
 
 - To **Set alert conditions**:
 
@@ -119,7 +119,7 @@ Select **Threshold Alert** as the detection method, which configures an alert th
 
     - `Notify` if data is missing for more than `15` minutes.
 
-This monitor will notify your organization if Datadog is no longer receiving data from your {{ site.data.products.dedicated }} cluster.
+This monitor will notify your organization if Datadog is no longer receiving data from your CockroachDB {{ site.data.products.dedicated }} cluster.
 
 ### Update integration
 
@@ -145,19 +145,19 @@ To access the DB Console:
 
 1. On the cluster's **Tools** page, click **Open DB Console** in the **DB Console** panel.
 
-    You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+    You can also access the DB Console by navigating to `https://admin-{cluster-name}crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
 
-1. Log in with your [SQL username](managing-access.html) and password.
+1. Log in with your [SQL username]({% link cockroachcloud/managing-access.md %}) and password.
 
 {{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management](managing-access.html).
+For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management]({% link cockroachcloud/managing-access.md %}).
 {{site.data.alerts.end}}
 
 ## Explore the DB Console
 
-- For an overview of all the areas of the DB Console, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
-- Be sure to check out the [**Node Map**](../{{site.current_cloud_version}}/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- For an overview of all the areas of the DB Console, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
+- Be sure to check out the [**Node Map**](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
 
 {{site.data.alerts.callout_info}}
-If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica](../{{site.current_cloud_version}}/architecture/overview.html#architecture-replica) per node. For more information about replication issues, see [Cluster Setup Troubleshooting](../{{site.current_cloud_version}}/cluster-setup-troubleshooting.html#db-console-shows-under-replicated-unavailable-ranges).
+If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/overview#architecture-replica) per node. For more information about replication issues, see [Cluster Setup Troubleshooting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cluster-setup-troubleshooting#db-console-shows-under-replicated-unavailable-ranges).
 {{site.data.alerts.end}}

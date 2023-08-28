@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and select **Dashboard** > **Runtime**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** on the left-hand navigation bar, and select **Dashboard** > **Runtime**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -49,8 +49,8 @@ CGo Total | Total memory managed by the C layer.
 
 <img src="{{ 'images/v23.1/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
-- In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
+- In the node view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
+- In the cluster view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
 
 On hovering over the CPU Time graph, the values for the following metrics are displayed:
 
@@ -80,6 +80,6 @@ For monitoring CockroachDB, it is sufficient to use the [**Live Node Count**](#l
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

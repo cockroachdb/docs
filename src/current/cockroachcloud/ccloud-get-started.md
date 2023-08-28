@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters. If you are new to CockroachDB Cloud, [install `ccloud`](#install-ccloud) and use the [`ccloud quickstart` command](#use-ccloud-quickstart) to interactively log in and create a new {{ site.data.products.serverless }} cluster.
+The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters. If you are new to CockroachDB Cloud, [install `ccloud`](#install-ccloud) and use the [`ccloud quickstart` command](#use-ccloud-quickstart) to interactively log in and create a new CockroachDB {{ site.data.products.serverless }} cluster.
 
 ## Install `ccloud`
 
@@ -13,7 +13,7 @@ The `ccloud` tool is a command-line interface (CLI) tool that allows you to crea
 
 ## Use `ccloud quickstart`
 
-The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -41,7 +41,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
-If you are a member of more than one [CockroachDB Cloud organization](../{{site.versions["stable"]}}/architecture/glossary.html#organization), use the `--org` flag to set the organization name when authenticating.
+If you are a member of more than one [CockroachDB Cloud organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization), use the `--org` flag to set the organization name when authenticating.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -63,65 +63,65 @@ ccloud auth login --no-redirect
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
 
-The `ccloud quickstart create` command interactively guides you through creating and connecting to a new {{ site.data.products.serverless }} cluster.
+The `ccloud quickstart create` command interactively guides you through creating and connecting to a new CockroachDB {{ site.data.products.serverless }} cluster.
 
-The `ccloud cluster create` command creates a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
+The `ccloud cluster create` command creates a new CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}<strong></strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-Use the `ccloud cluster create` command to create a new {{ site.data.products.serverless }} cluster.
+Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.serverless }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster create
 ~~~
 
-This command creates a {{ site.data.products.serverless }} cluster in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name.
+This command creates a CockroachDB {{ site.data.products.serverless }} cluster in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name.
 
 ~~~
 ∙∙∙ Creating cluster...
 Success! Created cluster
-  name: dim-dog
+  name: blue-dog
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-You can set the cluster name, cloud infrastructure provider, region, and [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create serverless dim-dog us-central1 --cloud GCP --spend-limit 0
+ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 0
 ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-Use the `ccloud cluster create` command to create a new {{ site.data.products.dedicated }} cluster.
+Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.dedicated }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster create dedicated
 ~~~
 
-This command creates a 1 node {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
+This command creates a 1 node CockroachDB {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
 You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated dim-dog us-central1:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 2 --storage-gib 15
 ~~~
 
 ~~~
 ∙∙∙ Creating cluster
 Success! Created cluster
-  name: dim-dog
+  name: blue-dog
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
@@ -131,27 +131,27 @@ When creating multi node clusters, you must specify how many nodes should be in 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated dim-dog us-central1:2 us-west2:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:2 us-west2:1 --cloud GCP --vcpus 2 --storage-gib 15
 ~~~
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) for a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a CockroachDB {{ site.data.products.serverless }} cluster, or create a CockroachDB {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 ## Create and manage IP allowlists using `ccloud cluster networking allowlist`
 
-Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist](network-authorization.html#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
+Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
 
-The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
 For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist create dim-dog 1.1.1.1/32 --sql --ui
+ccloud cluster networking allowlist create blue-dog 1.1.1.1/32 --sql --ui
 ~~~
 
 ~~~
@@ -165,7 +165,7 @@ Use the `ccloud cluster networking allowlist list` command to list the IP allowl
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist list dim-dog
+ccloud cluster networking allowlist list blue-dog
 ~~~
 
 ~~~
@@ -178,7 +178,7 @@ To modify an allowlist entry, use the `ccloud cluster networking allowlist updat
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist update dim-dog 1.1.1.1/32 --name home
+ccloud cluster networking allowlist update blue-dog 1.1.1.1/32 --name home
 ~~~
 
 ~~~
@@ -192,7 +192,7 @@ Rerunning the `allowlist list` command shows the updated entry:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist list dim-dog
+ccloud cluster networking allowlist list blue-dog
 ~~~
 
 ~~~
@@ -205,7 +205,7 @@ To delete an entry, run the `ccloud cluster networking allowlist delete` command
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist delete dim-dog 1.1.1.1/32
+ccloud cluster networking allowlist delete blue-dog 1.1.1.1/32
 ~~~
 
 ~~~
@@ -230,7 +230,7 @@ ccloud cluster list
 ~~~
 ∙∙∙ Retrieving clusters...
 NAME                 ID                                    PLAN TYPE        CREATED AT                            STATE                   CLOUD               VERSION
-dim-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022-03-20 13:47:40.529531 +0000 UTC  CLUSTER_STATE_CREATED   CLOUD_PROVIDER_GCP  v21.2.4
+blue-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022-03-20 13:47:40.529531 +0000 UTC  CLUSTER_STATE_CREATED   CLOUD_PROVIDER_GCP  v21.2.4
 ...
 ~~~
 </section>
@@ -239,7 +239,7 @@ dim-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022
 ~~~
 ∙∙∙ Retrieving clusters...
 NAME      ID                                    PLAN TYPE        CREATED AT                            STATE                   CLOUD               VERSION
-dim-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:07:35.7177 +0000 UTC    CLUSTER_STATE_CREATING  CLOUD_PROVIDER_GCP  v21.2.4
+blue-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:07:35.7177 +0000 UTC    CLUSTER_STATE_CREATING  CLOUD_PROVIDER_GCP  v21.2.4
 ...
 ~~~
 </section>
@@ -250,14 +250,14 @@ Use the `ccloud cluster info` command with the cluster name as the parameter to 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster info dim-dog
+ccloud cluster info blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 ~~~
 ∙∙∙ Retrieving cluster...
 Cluster info
- name: dim-dog
+ name: blue-dog
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
  cockroach version: v21.2.4
  cloud: CLOUD_PROVIDER_GCP
@@ -272,7 +272,7 @@ Cluster info
 ~~~
 ∙∙∙ Retrieving cluster...
 Cluster info
- name: ievans-dim-dog-dos
+ name: ievans-blue-dog-dos
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
  cockroach version: v21.2.4
  cloud: CLOUD_PROVIDER_GCP
@@ -294,7 +294,7 @@ Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql dim-dog
+ccloud cluster sql blue-dog
 ~~~
 
 ~~~
@@ -328,11 +328,11 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 ### Connect to your cluster using SSO
 
-Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication](cloud-sso-sql.html), which will allow you to start a SQL shell without using a password.
+Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication]({% link cockroachcloud/cloud-sso-sql.md %}), which will allow you to start a SQL shell without using a password.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --sso dim-dog
+ccloud cluster sql --sso blue-dog
 ~~~
 
 This will open a browser window on the local machine where you will log in to your organization if you are not already authenticated.
@@ -341,7 +341,7 @@ If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --sso --no-redirect dim-dog
+ccloud cluster sql --sso --no-redirect blue-dog
 ~~~
 
 Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSO SQL username generated for you.
@@ -352,7 +352,7 @@ To create a SSO SQL user:
    
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster --sso dim-dog
+    ccloud cluster --sso blue-dog
     ~~~
 
 1. Log in to your organization when prompted by `ccloud`.
@@ -366,14 +366,14 @@ To create a SSO SQL user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster user create dim-dog sso_maxroach
+    ccloud cluster user create blue-dog sso_maxroach
     ~~~
 
 1. Re-run the SQL client command to login and connect to your cluster.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster sql dim-dog --sso
+    ccloud cluster sql blue-dog --sso
     ~~~
 
 {{site.data.alerts.callout_info}}
@@ -397,22 +397,31 @@ If the organization is incorrect:
 
 {{site.data.alerts.end}}
 
+### Skip the IP allowlist check when connecting to your cluster
+
+By default, the `ccloud cluster sql` command will allow connections only from IP addresses in your cluster's [allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use the `--skip-ip-check` flag to disable the client-side IP allowlist check:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql dim-dog --skip-ip-check
+~~~
+
 ## Get the connection information for your cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](../{{site.current_cloud_version}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --connection-url dim-dog
+ccloud cluster sql --connection-url blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+postgresql://blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -421,7 +430,7 @@ postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+postgresql://blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fblue-dog-ca.crt
 ~~~
 
 </section>
@@ -430,7 +439,7 @@ To get the individual connection parameters, use the `--connection-params` optio
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --connection-params dim-dog
+ccloud cluster sql --connection-params blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -438,7 +447,7 @@ ccloud cluster sql --connection-params dim-dog
 ~~~
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-147.6wr.cockroachlabs.cloud
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -450,7 +459,7 @@ Connection parameters
 ∙∙∙ Retrieving cluster info...
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud
+ Host:      blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -462,7 +471,7 @@ Use the `ccloud cluster user create` command to create a new SQL user by passing
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster user create dim-dog maxroach
+ccloud cluster user create blue-dog maxroach
 ~~~
 
 ~~~
@@ -476,7 +485,7 @@ Use the `ccloud cluster delete` command to delete the specified cluster using th
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster delete dim-dog
+ccloud cluster delete blue-dog
 ~~~
 
 ~~~
@@ -486,7 +495,7 @@ Success! Deleted cluster
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. {{ site.data.products.serverless }} clusters are created in less than a minute. {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
+If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
 
 ## Turn off telemetry events for `ccloud`

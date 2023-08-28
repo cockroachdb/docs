@@ -31,7 +31,7 @@ To read more about connection pooling, see our [What is Connection Pooling, and 
 
 ## Sizing connection pools
 
-Idle connections in CockrochDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockrochDB is 20 kB to 30 kB per connection.
+Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockroachDB is 20 kB to 30 kB per connection.
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
@@ -53,7 +53,7 @@ In addition to setting a maximum connection pool size, set the maximum number of
 
 ## Validating connections in a pool
 
-After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. {{ site.data.products.db }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
+After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. CockroachDB {{ site.data.products.cloud }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
 
@@ -74,6 +74,7 @@ Using the connection pool formula above:
 
 The connection pool size should be 40.
 
+{% include_cached copy-clipboard.html %}
 ~~~ java
 HikariConfig config = new HikariConfig();
 config.setJdbcUrl("jdbc:postgresql://localhost:26257/bank");

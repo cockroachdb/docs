@@ -21,7 +21,7 @@ An overview of the workflow involves creating and connecting the following:
 
 You will need the following set up before starting this tutorial:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
+- A CockroachDB cluster. You can use a CockroachDB {{ site.data.products.cloud }} or CockroachDB {{ site.data.products.core }} cluster. If you are using CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For CockroachDB {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
 - The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
 
@@ -274,18 +274,18 @@ Create the changefeed with the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED FOR TABLE users INTO "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN" WITH updated, format = avro, confluent_schema_registry = "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443";
+CREATE CHANGEFEED FOR TABLE users INTO "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN" WITH updated, format = avro, confluent_schema_registry = "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443";
 ~~~
 
 To connect to the Kafka cluster, use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`.
 
 Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
 
-- `TLS_ENABLED=true`
-- `SASL_ENABLED=true`
-- `SASL_USER={CLUSTER API KEY}`
-- `SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}`
-- `SASL_MECHANISM=PLAIN`
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_user={CLUSTER API KEY}`
+- `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
+- `sasl_mechanism=PLAIN`
 
 Use the following options to define the format and schema registry:
 

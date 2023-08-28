@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
+In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
@@ -267,9 +267,9 @@ $ pkill -9 postgres
 
 When you repeat the scenario on CockroachDB, you'll see that the anomaly is prevented by CockroachDB's `SERIALIZABLE` transaction isolation.
 
-1. If you haven't already, [install CockroachDB](install-cockroachdb.html) locally.
+1. If you haven't already, [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) locally.
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a one-node CockroachDB cluster in insecure mode:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a one-node CockroachDB cluster in insecure mode:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -280,7 +280,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     --background
     ~~~
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -455,7 +455,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transaction-retry-error-reference.html#client-side-retry-handling) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](example-apps.html) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
     {{site.data.alerts.end}}
 
 1. In the terminal for doctor 2, the application tries to commit the transaction:
@@ -546,6 +546,6 @@ Explore other core CockroachDB benefits and features:
 
 You might also want to learn more about how transactions work in CockroachDB and in general:
 
-- [Transactions Overview](transactions.html)
+- [Transactions Overview]({% link {{ page.version.version }}/transactions.md %})
 - [Real Transactions are Serializable](https://www.cockroachlabs.com/blog/acid-rain/)
 - [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/)

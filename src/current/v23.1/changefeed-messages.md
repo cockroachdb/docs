@@ -6,16 +6,21 @@ docs_area: stream_data
 key: use-changefeeds.html
 ---
 
-Changefeeds emit messages as changes happen to watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options](create-changefeed.html#options) (e.g., `format=avro`).
+Changefeeds emit messages as changes happen to watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
 
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
+- [Message envelopes](#message-envelopes): The structure of the changefeed message.
 - [Ordering guarantees](#ordering-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
+- [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
+- [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
+
+To filter the data that a changefeed emits in each message, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
 
 {{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
@@ -23,35 +28,169 @@ This page describes the format and behavior of changefeed messages. You will fin
 
 ## Responses
 
-By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
+By default, changefeed messages emitted to a [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) you specified to create the changefeed:
 
-- **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
+- **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
 - **Value**:
-    - One of three possible top-level fields:
+    - One of four possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
-        - `updated`, which contains the updated timestamp.
-        - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an `after` value since they only function as checkpoints.
-    - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
-    - For [`DELETE`](delete.html), `null`.
+        - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated-option) timestamp.
+        - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
+        - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
+    - For [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}), the current state of the row inserted or updated.
+    - For [`DELETE`]({% link {{ page.version.version }}/delete.md %}), `null`.
 
-For example:
+{{site.data.alerts.callout_info}}
+If you use the `envelope` option to alter the changefeed message fields, your messages may not contain one or more of the values noted in the preceding list. As an example, when emitting to a Kafka sink, you can limit messages to just the changed key value by using the `envelope` option set to [`key_only`](#key_only). For more detail, refer to [Message envelopes](#message-envelopes).
+{{site.data.alerts.end}}
+
+For example, changefeeds emitting to a sink will have the default message format:
 
 Statement                                      | Response
 -----------------------------------------------+-----------------------------------------------------------------------
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
 
-To limit messages to just the changed key value, use the [`envelope`](create-changefeed.html#options) option set to `key_only`.
+When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. Refer to [Tables with columns families in changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}#message-format) for guidance.
 
-When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. See [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
-
-For webhook sinks, the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
+For [webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), the response format arrives as a batch of changefeed messages with a `payload` and `length`.
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
-See [changefeed files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+[Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
+
+Refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+
+## Message envelopes
+
+The _envelope_ defines the structure of a changefeed message. You can use the [`envelope`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope) option to manipulate the changefeed envelope. The values that the `envelope` option accepts are compatible with different [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}), and the structure of the message will vary depending on the sink.
+
+{{site.data.alerts.callout_info}}
+Changefeeds created with [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) or [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) with no sink specified (sinkless changefeeds) produce messages without the envelope metadata fields of changefeeds emitting to sinks.
+{{site.data.alerts.end}}
+
+The following sections provide examples of changefeed messages that are emitted when you specify each of the supported `envelope` options. Other [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) can affect the message envelope and what messages are emitted. Therefore, the examples are a guide for what you can expect when only the `envelope` option is specified.
+
+### `wrapped`
+
+`wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key (or the key as part of the message metadata), a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)).
+
+The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, (e.g., cloud storage, webhook sinks, or Google Pub/Sub). By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#key-in-value) option. Refer to the following message outputs for examples of this.
+
+- Cloud storage sink:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud';
+    ~~~
+    ~~~
+    {"after": {"city": "seattle", "creation_time": "2019-01-02T03:04:05", "current_location": "86359 Jeffrey Ranch", "ext": {"color": "yellow"}, "id": "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8", "owner_id": "570a3d70-a3d7-4c00-8000-000000000011", "status": "in_use", "type": "scooter"}, "key": ["seattle", "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8"]}
+    ~~~
+
+- Kafka sink:
+
+    - Default when `envelope=wrapped` or `envelope` is not specified:
+
+        ~~~sql
+        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka';
+        ~~~
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
+        ~~~
+
+    - Kafka sink message with `key_in_value` provided:
+
+        ~~~sql
+        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, envelope=wrapped;
+        ~~~
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "46227 Jeremy Haven Suite 92", "ext": {"brand": "Schwinn", "color": "red"}, "id": "298cc7a0-de6b-4659-ae57-eaa2de9d99c3", "owner_id": "beda1202-63f7-41d2-aa35-ee3a835679d1", "status": "in_use", "type": "bike"}, "key": ["washington dc", "298cc7a0-de6b-4659-ae57-eaa2de9d99c3"]}
+        ~~~
+
+To include a `before` field in the changefeed message that contains the state of a row before an update in the changefeed message, use the `diff` option with `wrapped`:
+
+~~~sql
+CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wrapped;
+~~~
+
+~~~
+{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "2 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "before": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "5 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "key": ["seattle", "f6c02fe0-a4e0-476d-a3b7-91934d15dce2"]}
+~~~
+
+### `bare`
+
+`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
+
+- Cloud storage sink:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud' WITH envelope=bare;
+    ~~~
+    ~~~
+    {"__crdb__": {"key": ["washington dc", "cd48e501-e86d-4019-9923-2fc9a964b264"]}, "city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "87247 Diane Park", "ext": {"brand": "Fuji", "color": "yellow"}, "id": "cd48e501-e86d-4019-9923-2fc9a964b264", "owner_id": "a616ce61-ade4-43d2-9aab-0e3b24a9aa9a", "status": "available", "type": "bike"}
+    ~~~
+
+{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
+
+- In CDC queries:
+
+    - A changefeed containing a `SELECT` clause without any additional options:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"city": "los angeles", "type": "skateboard"}
+        ~~~
+
+    - A changefeed containing a `SELECT` clause with the [`topic_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-in-value) option specified:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' WITH topic_in_value AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"__crdb__": {"topic": "vehicles"}, "city": "los angeles", "type": "skateboard"}
+        ~~~
+
+### `key_only`
+
+`key_only` emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds.
+
+- Kafka sink:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users INTO 'external://kafka' WITH envelope=key_only;
+    ~~~
+    ~~~
+    ["boston", "22222222-2222-4200-8000-000000000002"]
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    It is necessary to set up a [Kafka consumer](https://docs.confluent.io/platform/current/clients/consumer.html) to display the key because the key is part of the metadata in Kafka messages, rather than in its own field. When you start a Kafka consumer, you can use `--property print.key=true` to have the key print in the changefeed message.
+    {{site.data.alerts.end}}
+
+- Sinkless changefeeds:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users WITH envelope=key_only;
+    ~~~
+    ~~~
+    {"key":"[\"seattle\", \"fff726cc-13b3-475f-ad92-a21cafee5d3f\"]","table":"users","value":""}
+    ~~~
+
+### `row`
+
+`row` emits the row without any additional metadata fields in the message. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro`](#avro) format—if you are using `avro`, refer to the [`bare`](#bare) envelope option.
+
+- Kafka sink:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH envelope=row;
+    ~~~
+    ~~~
+    {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "85551 Moore Mountains Apt. 47", "ext": {"color": "red"}, "id": "d3b37607-1e9f-4e25-b772-efb9374b08e3", "owner_id": "4f26b516-f13f-4136-83e1-2ea1ae151c20", "status": "available", "type": "skateboard"}
+    ~~~
 
 ## Ordering guarantees
 
@@ -92,9 +231,9 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
-- Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html). To define another key to determine the partition for your messages, use the [`key_column`](create-changefeed.html#key-column) option.
+- Rows are sharded between Kafka partitions by the row’s [primary key]({% link {{ page.version.version }}/primary-key.md %}). To define another key to determine the partition for your messages, use the [`key_column`]({% link {{ page.version.version }}/create-changefeed.md %}#key-column) option.
 
-- <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) to emit a "resolved" timestamp message to each Kafka partition. A "resolved" timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
@@ -112,7 +251,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table.
 
-    To compare two different rows for [happens-before](https://en.wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
+    To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
 
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
@@ -130,7 +269,62 @@ Deleting a row will result in a changefeed outputting the primary key of the del
 
 In some unusual situations you may receive a delete message for a row without first seeing an insert message. For example, if an attempt is made to delete a row that does not exist, you may or may not get a delete message because the changefeed behavior is undefined to allow for optimizations at the storage layer. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
 
+## Resolved messages
+
+When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
+
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
+
+There are three different ways to configure resolved timestamp messages:
+
+- If you do not specify the `resolved` option at all, then the changefeed coordinator node will not send resolved timestamp messages.
+- If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
+- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed.
+
+{{site.data.alerts.callout_info}}
+If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
+{{site.data.alerts.end}}
+
+## Duplicate messages
+
+Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause or increase duplicate messages:
+
+- The changefeed job [encounters an error](#changefeed-encounters-an-error) and pauses, or is manually paused.
+- A node in the cluster [restarts](#node-restarts) or fails.
+- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option), which can potentially increase duplicate messages.
+- A target table undergoes a schema change. Schema changes may also cause the changefeed to emit the whole target table. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
+
+A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
+
+When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+
+<img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
+
+### Changefeed encounters an error
+
+By default, changefeeds treat errors as [retryable except for some specific terminal errors]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors). When a changefeed encounters a retryable or non-retryable error, the job will pause until a successful retry or you resume the job once the error is solved. This can cause duplicate messages at the sink as the changefeed returns to the last checkpoint.
+
+We recommend monitoring for changefeed retry errors and failures. Refer to the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#recommended-changefeed-metrics-to-track) page.
+
+{{site.data.alerts.callout_info}}
+A sink's batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. For Kafka sinks, reducing the batch size with [`kafka_sink_config`]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+
+Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for details on sink batching configuration.
+{{site.data.alerts.end}}
+
+### Node restarts
+
+When a node restarts, the changefeed will emit duplicates since the last checkpoint. During a rolling restart of nodes, a changefeed can fall behind as it tries to catch up during each node restart. For example, as part of a rolling upgrade or cluster maintenance, a node may [drain]({% link {{ page.version.version }}/node-shutdown.md %}) every 5 minutes and the changefeed job checkpoints every 5 minutes.
+
+To prevent the changefeed from falling too far behind, [pause]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#configuring-all-changefeeds) changefeed jobs before performing rolling node restarts.
+
+### `min_checkpoint_frequency` option
+
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up since its previous checkpoint. During this catch-up time, you could receive duplicate messages.
+
 ## Schema Changes
+
+In v22.1, CockroachDB introduced the [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -140,9 +334,33 @@ Note that the original CockroachDB column definition is also included in the sch
 
 ### Schema changes with column backfill
 
-When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema. When using Avro, rows that have been backfilled by a schema change are always re-emitted.
+When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
 
-For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
+{{site.data.alerts.callout_info}}
+Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) section.
+{{site.data.alerts.end}}
+
+The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE TABLE office_dogs (
+     id INT PRIMARY KEY,
+     name STRING);
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+INSERT INTO office_dogs VALUES
+   (1, 'Petee H'),
+   (2, 'Carl'),
+   (3, 'Ernie');
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE office_dogs INTO 'external://cloud';
+~~~
+
+You receive each of the rows at the sink:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -150,14 +368,25 @@ For an example of a schema change with column backfill, start with the changefee
 [3]	{"id": 3, "name": "Ernie"}
 ~~~
 
-Add a column to the watched table:
+For example, add a column to the watched table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
+ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~
 
-The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
+After the schema change, the changefeed will emit a copy of the table with the new schema:
+
+~~~json
+[1]	{"id": 1, "name": "Petee H"}
+[2]	{"id": 2, "name": "Carl"}
+[3]	{"id": 3, "name": "Ernie"}
+[1]	{"id": 1, "likes_treats": true, "name": "Petee H"}
+[2]	{"id": 2, "likes_treats": true, "name": "Carl"}
+[3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
+~~~
+
+If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -171,7 +400,9 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
+To prevent the changefeed from emitting a copy of the table with the new schema, use the `schema_change_policy = nobackfill` option. In the preceding two output blocks, the new schema messages that include the `"likes_treats"` column will not emit.
+
+Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version }}/create-changefeed.md %}#schema-events) for detail on the `schema_change_policy` option. You can also use the `schema_change_events` option to define the type of schema change event that triggers the behavior specified in `schema_change_policy`.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -179,18 +410,18 @@ When using the [`schema_change_policy = nobackfill` option](create-changefeed.ht
 
 ## Garbage collection and changefeeds
 
-By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+By default, [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) up to the time of the [_checkpoint_]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
-- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- The downstream [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) is unavailable. Protected timestamps will protect changes until you either [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed or the sink becomes available once again.
+- You [pause]({% link {{ page.version.version }}/pause-job.md %}) a changefeed with the [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors). Protected timestamps will protect changes until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
 
-- [Cancel](cancel-job.html) the changefeed job.
-- [Resume](resume-job.html) a paused changefeed job.
-- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`](create-changefeed.html#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
+- [Cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed job.
+- [Resume]({% link {{ page.version.version }}/resume-job.md %}) a paused changefeed job.
+- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
 
     For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
 
@@ -198,15 +429,15 @@ However, if the changefeed lags too far behind, the protected changes could lead
     CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', protect_data_from_gc_on_pause, gc_protect_expires_after='24h';
     ~~~
 
-We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying](monitor-and-debug-changefeeds.html#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
+We recommend [monitoring]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
 
-When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record. As a result, you could lose the changes if the changefeed remains paused longer than the [garbage collection](configure-replication-zones.html#gc-ttlseconds) window.
+When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record. As a result, you could lose the changes if the changefeed remains paused longer than the [garbage collection]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) window.
 
 The only ways for changefeeds to **not** protect data are:
 
 - You pause the changefeed without `protect_data_from_gc_on_pause` set.
 - You cancel the changefeed.
-- The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
+- The changefeed fails without [`on_error=pause`]({% link {{ page.version.version }}/create-changefeed.md %}#on-error) set.
 
 ## Avro
 
@@ -224,27 +455,27 @@ Below is a mapping of CockroachDB types to Avro types:
 
 CockroachDB Type | Avro Type | Avro Logical Type
 -----------------+-----------+---------------------
-[`ARRAY`](array.html) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
-[`BIT`](bit.html) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`BLOB`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`BOOL`](bool.html) | [`BOOLEAN`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`BYTEA`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`BYTES`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`COLLATE`](collate.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`DATE`](date.html) | [`INT`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DATE`](https://avro.apache.org/docs/1.8.1/spec.html#Date)
-[`DECIMAL`](decimal.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive), [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
-[`ENUMS`](enum.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`FLOAT`](float.html) | [`DOUBLE`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`INET`](inet.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`INT`](int.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`INTERVAL`](interval.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`JSONB`](jsonb.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`STRING`](string.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`TIME`](time.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
-[`TIMESTAMP`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
-[`TIMESTAMPTZ`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
-[`UUID`](uuid.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`VARBIT`](bit.html)| Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`ARRAY`]({% link {{ page.version.version }}/array.md %}) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
+[`BIT`]({% link {{ page.version.version }}/bit.md %}) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BLOB`]({% link {{ page.version.version }}/bytes.md %}) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BOOL`]({% link {{ page.version.version }}/bool.md %}) | [`BOOLEAN`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BYTEA`]({% link {{ page.version.version }}/bytes.md %}) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BYTES`]({% link {{ page.version.version }}/bytes.md %}) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`COLLATE`]({% link {{ page.version.version }}/collate.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`DATE`]({% link {{ page.version.version }}/date.md %}) | [`INT`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DATE`](https://avro.apache.org/docs/1.8.1/spec.html#Date)
+[`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive), [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
+[`ENUMS`]({% link {{ page.version.version }}/enum.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`FLOAT`]({% link {{ page.version.version }}/float.md %}) | [`DOUBLE`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INET`]({% link {{ page.version.version }}/inet.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INT`]({% link {{ page.version.version }}/int.md %}) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`STRING`]({% link {{ page.version.version }}/string.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`TIME`]({% link {{ page.version.version }}/time.md %}) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
+[`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
+[`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
+[`UUID`]({% link {{ page.version.version }}/uuid.md %}) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`VARBIT`]({% link {{ page.version.version }}/bit.md %})| Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 
 {{site.data.alerts.callout_info}}
 The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
@@ -252,15 +483,15 @@ The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 
 ## CSV
 
-You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
+You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
 
-- It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
-- It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- It **only** works in combination with the [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option.
+- It does **not** work when used with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) or [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) options.
 - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
-See [Export Data with Changefeeds](export-data-with-changefeeds.html) for detail on using changefeeds to export data from CockroachDB.
+See [Export Data with Changefeeds]({% link {{ page.version.version }}/export-data-with-changefeeds.md %}) for detail on using changefeeds to export data from CockroachDB.
 
 The following shows example CSV format output:
 
@@ -285,7 +516,7 @@ aebb80a6-eceb-4d10-9d9a-f26270188114,washington dc,Kenneth Miller,52393 Stephen 
 
 ## See also
 
-- [Online Schema Changes](online-schema-changes.html)
-- [Change Data Capture Overview](change-data-capture-overview.html)
-- [Create and Configure Changefeeds](create-and-configure-changefeeds.html)
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
+- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %})
 

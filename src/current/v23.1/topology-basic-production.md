@@ -8,7 +8,7 @@ docs_area: deploy
 When you're ready to run CockroachDB in production in a single region, it's important to deploy at least 3 CockroachDB nodes to take advantage of CockroachDB's automatic replication, distribution, rebalancing, and resiliency capabilities.
 
 {{site.data.alerts.callout_success}}
-If you haven't already, [review the full range of topology patterns](topology-patterns.html) to ensure you choose the right one for your use case.
+If you haven't already, [review the full range of topology patterns]({% link {{ page.version.version }}/topology-patterns.md %}) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -25,7 +25,7 @@ If you haven't already, [review the full range of topology patterns](topology-pa
     - App and load balancer in same region as VMs for CockroachDB
         - The load balancer redirects to CockroachDB nodes in the region
 
-1. Start each node on a separate VM, setting the [`--locality`](cockroach-start.html#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
+1. Start each node on a separate VM, setting the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -39,7 +39,7 @@ If you haven't already, [review the full range of topology patterns](topology-pa
     --background
     ~~~
 
-With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) as a whole.
+With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-system-range) as a whole.
 
 ## Characteristics
 

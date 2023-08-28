@@ -3,7 +3,7 @@
 We’ve partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools.
 
 - **Full support** indicates that the vast majority of the tool's features should work without issue with CockroachDB. CockroachDB is regularly tested against the recommended version documented here.
-- **Beta support** indicates that the tool has been tried with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit unexpected behavior.
+- **Partial support** indicates that the tool has been tried with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit unexpected behavior.
 
 If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 
@@ -31,7 +31,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Java | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)<hr>[jOOQ](build-a-java-app-with-cockroachdb-jooq.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | [5.4.19](https://hibernate.org/orm/releases/)<hr>[3.13.2](https://www.jooq.org/download/versions) (must be 3.13.0 or higher)<hr>[3.5.5 and higher](https://mybatis.org/mybatis-3/) | Full<hr>Full |
 | Node.js | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html) | [sequelize 5.21.9](https://www.npmjs.com/package/sequelize)<br>[sequelize-cockroachdb 1.1.0](https://www.npmjs.com/package/sequelize-cockroachdb) | Beta |
 | Ruby | [ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html) | [activerecord 5.2](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 5.2.2](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions)<hr>[activerecord 6.0](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 6.0.0beta3](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions) | Full<br><br><hr>Beta |
-| Python | [Django](build-a-python-app-with-cockroachdb-django.html)<br><br><hr>[peewee](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database)<hr>[PonyORM](build-a-python-app-with-cockroachdb-pony.html)<hr>[SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html) | [Django 3.0.6](https://pypi.org/project/Django/)<br>[django-cockroachdb 3.0.1](https://pypi.org/project/django-cockroachdb/)<hr>[3.13.3](https://pypi.org/project/peewee/)<hr>[0.7.13](https://pypi.org/project/pony/)<hr>[SQLAlchemy 1.3.17](https://pypi.org/project/SQLAlchemy/)<br>[sqlalchemy-cockroachdb 1.3.0](https://pypi.org/project/sqlalchemy-cockroachdb/) | Full<br><br> <hr>Full<hr>Full<hr>Full |
+| Python | [Django](build-a-python-app-with-cockroachdb-django.html)<br><br><hr>[peewee](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database)<hr>[SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html) | [Django 3.0.6](https://pypi.org/project/Django/)<br>[django-cockroachdb 3.0.1](https://pypi.org/project/django-cockroachdb/)<hr>[3.13.3](https://pypi.org/project/peewee/)<hr>[SQLAlchemy 1.3.17](https://pypi.org/project/SQLAlchemy/)<br>[sqlalchemy-cockroachdb 1.3.0](https://pypi.org/project/sqlalchemy-cockroachdb/) | Full<br><br> <hr>Full<hr>Full<hr>Full |
 | Typescript | [TypeORM](https://typeorm.io/#/) | [0.2.24](https://www.npmjs.com/package/typeorm) | Full |
 
 ## Application frameworks

@@ -25,13 +25,13 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <td><ul><li>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster.</li></ul></td>
     </tr>
     <td><ul>
-      <li>The Transactions page in the <a href="../cockroachcloud/transactions-page.html">{{ site.data.products.db }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
-      <li>Your application is experiencing degraded performance with <code>SQLSTATE: 40001</code> and a <a href="transaction-retry-error-reference.html#transaction-retry-error-reference">transaction retry error</a> message.</li>
-      <li>Querying the <a href="crdb-internal.html#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
-      <li>The SQL Statement Contention graph in the <a href="../cockroachcloud/metrics-page.html#sql-statement-contention">{{ site.data.products.db }} Console</a> or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
-      <li>The Transaction Restarts graph in the <a href="../cockroachcloud/metrics-page.html#transaction-restarts">{{ site.data.products.db }} Console</a> or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
+      <li>The Transactions page in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
+      <li>Your application is experiencing degraded performance with <code>SQLSTATE: 40001</code> and a <a href="{% link {{ page.version.version }}/transaction-retry-error-reference.md %}#transaction-retry-error-reference">transaction retry error</a> message.</li>
+      <li>Querying the <a href="{% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
+      <li>The SQL Statement Contention graph in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/metrics-page#sql-statement-contention">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
+      <li>The Transaction Restarts graph in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/metrics-page#transaction-restarts">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
     </td>
-    <td><ul><li>Your application is experiencing <a href="performance-best-practices-overview.html#transaction-contention">transaction contention</a>.</li></ul></td>
+    <td><ul><li>Your application is experiencing <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention">transaction contention</a>.</li></ul></td>
     <td>
       <ul>
         <li><a href="#transaction-contention">Reduce transaction contention.</a></li>
@@ -42,16 +42,16 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>The <b>Hot Ranges</b> page (DB Console) displays a higher-than-expected QPS for a range.</li>
       <li>The <b>Key Visualizer</b> (DB Console) shows ranges with much higher-than-average write rates for the cluster.</li>
     </ul></td>
-    <td><ul><li>Your cluster has <a href="performance-best-practices-overview.html#hot-spots">hot spots</a>.</li></ul></td>
+    <td><ul><li>Your cluster has <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots">hot spots</a>.</li></ul></td>
     <td><ul><li><a href="#hot-spots">Reduce hot spots</a>.</li></ul></td>
   </tr>
   <tr>
     <td><ul>
       <li>The statement plan produced by <a href="explain.html"><code>EXPLAIN</code></a> or <a href="explain-analyze.html"><code>EXPLAIN ANALYZE</code></a> indicates that the statement uses a full table scan.</li>
       <li>Querying the <code>crdb_internal.node_statement_statistics</code> table indicates that you have full table scans in some statement's plans.</li>
-      <li>Viewing the statement plan on the <a href="ui-statements-page.html#statement-fingerprint-page">Statement Fingerprint page</a> in the DB Console indicates that the plan contains full table scans.</li>
+      <li>Viewing the statement plan on the <a href="{% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprint-page">Statement Fingerprint page</a> in the DB Console indicates that the plan contains full table scans.</li>
       <li>Running the <a href="show-full-table-scans.html"><code>SHOW FULL TABLE SCANS</code></a> statement returns results.</li>
-      <li>The <a href="ui-sql-dashboard.html#full-table-index-scans">Full Table/Index Scans graph</a> in the DB Console is showing spikes over time.</li>
+      <li>The <a href="{% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans">Full Table/Index Scans graph</a> in the DB Console is showing spikes over time.</li>
     </ul>
     </td>
     <td><ul><li>Poor quality statement plans retrieve more rows than are required, leading to longer execution times.</li></ul></td>
@@ -59,21 +59,21 @@ This section describes how to use CockroachDB commands and dashboards to identif
   </tr>
   <tr>
     <td><ul>
-      <li>The <a href="ui-hardware-dashboard.html">Hardware metrics dashboard</a> in the DB Console shows high resource usage per node.</li>
-      <li>The Problem Ranges report on the <a href="ui-debug-pages.html">Advanced Debug page</a> in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.</li>
+      <li>The <a href="{% link {{ page.version.version }}/ui-hardware-dashboard.md %}">Hardware metrics dashboard</a> in the DB Console shows high resource usage per node.</li>
+      <li>The Problem Ranges report on the <a href="{% link {{ page.version.version }}/ui-debug-pages.md %}">Advanced Debug page</a> in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.</li>
     </ul>
     </td>
     <td><ul><li>You have resource contention.</li></ul></td>
     <td><ul><li><a href="#suboptimal-primary-keys">Improve primary key usage.</a></li></ul></td>
   </tr>
   <tr>
-    <td><ul><li>The <a href="ui-overview-dashboard.html#">Overview dashboard</a> in the DB Console shows high service latency and QPS for <code>INSERT</code> and <code>UPDATE</code> statements.</li></ul></td>
+    <td><ul><li>The <a href="{% link {{ page.version.version }}/ui-overview-dashboard.md %}#">Overview dashboard</a> in the DB Console shows high service latency and QPS for <code>INSERT</code> and <code>UPDATE</code> statements.</li></ul></td>
     <td><ul><li>Your tables have long write times.</li></ul></td>
     <td><ul><li><a href="#slow-writes">Remove unnecessary indexes.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul><li>You experience high latency on queries that cannot be explained by high contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
-    <td><ul><li>You may be scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
+    <td><ul><li>You may be scanning over large numbers of <a href="{% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
 </table>
@@ -84,50 +84,50 @@ This section provides solutions for common performance issues in your applicatio
 
 ### Transaction contention
 
-[Transaction contention](performance-best-practices-overview.html#transaction-contention) is a state of conflict that occurs when:
+[Transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is a state of conflict that occurs when:
 
-- A [transaction](transactions.html) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
-- A transaction is [automatically retried](transactions.html#automatic-retries) because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*](transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](transaction-retry-error-reference.html#client-side-retry-handling).
+- A [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
+- A transaction is [automatically retried]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is emitted to the client, requiring the client application to [retry the transaction]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 #### Indicators that your application is experiencing transaction contention
 
 ##### Waiting transaction
 
-These are indicators that a transaction is trying to access a row that has been ["locked"](architecture/transaction-layer.html#writing) by another, concurrent write transaction.
+These are indicators that a transaction is trying to access a row that has been ["locked"]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) by another, concurrent write transaction.
 
-- The **Active Executions** table on the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) or [DB Console](ui-transactions-page.html#active-executions-table)) shows transactions with `Waiting` in the **Status** column. You can sort the table by **Time Spent Waiting**.
-- Querying the [`crdb_internal.cluster_locks`](crdb-internal.html#cluster_locks) table shows transactions where [`granted`](crdb-internal.html#cluster-locks-columns) is `false`.
+- The **Active Executions** table on the **Transactions** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page) or [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %}#active-executions-table)) shows transactions with `Waiting` in the **Status** column. You can sort the table by **Time Spent Waiting**.
+- Querying the [`crdb_internal.cluster_locks`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) table shows transactions where [`granted`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster-locks-columns) is `false`.
 
 These are indicators that lock contention occurred in the past:
 
-- Querying the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table indicates that your transactions have experienced lock contention.
+- Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table indicates that your transactions have experienced lock contention.
 
-  - This is also shown in the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)). Transaction executions will display the **High Contention** insight. 
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/insights-page#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the **High Contention** insight. 
     {{site.data.alerts.callout_info}}
-    {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+    {%- include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md -%}
     {{site.data.alerts.end}}
 
-- The **SQL Statement Contention** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#sql-statement-contention) and [DB Console](ui-sql-dashboard.html#sql-statement-contention)) is showing spikes over time.
+- The **SQL Statement Contention** graph ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/metrics-page#sql-statement-contention) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) is showing spikes over time.
   <img src="{{ 'images/v23.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
 
-If a long-running transaction is waiting due to [lock contention](performance-best-practices-overview.html#transaction-contention): 
+If a long-running transaction is waiting due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention): 
 
 1. [Identify the blocking transaction](#identify-conflicting-transactions). 
 1. Evaluate whether you can cancel the transaction. If so, [cancel it](#cancel-a-blocking-transaction) to unblock the waiting transaction.
-1. Optimize the transaction to [reduce further contention](#reduce-transaction-contention). In particular, break down larger transactions such as [bulk deletes](bulk-delete-data.html) into smaller ones to have transactions hold locks for a shorter duration, and use [historical reads](as-of-system-time.html) when possible to reduce conflicts with other writes.
+1. Optimize the transaction to [reduce further contention](#reduce-transaction-contention). In particular, break down larger transactions such as [bulk deletes]({% link {{ page.version.version }}/bulk-delete-data.md %}) into smaller ones to have transactions hold locks for a shorter duration, and use [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) when possible to reduce conflicts with other writes.
 
 If lock contention occurred in the past, you can [identify the transactions and objects that experienced lock contention](#identify-transactions-and-objects-that-experienced-lock-contention).
 
 ##### Transaction retry error
 
-These are indicators that a transaction has failed due to [contention](performance-best-practices-overview.html#transaction-contention).
+These are indicators that a transaction has failed due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
-- A [transaction retry error](transaction-retry-error-reference.html) with `SQLSTATE: 40001`, the string [`restart transaction`](common-errors.html#restart-transaction), and an error code such as [`RETRY_WRITE_TOO_OLD`](transaction-retry-error-reference.html#retry_write_too_old) or [`RETRY_SERIALIZABLE`](transaction-retry-error-reference.html#retry_serializable), is emitted to the client.
-- An event with `TransactionRetryWithProtoRefreshError` is emitted to the CockroachDB [logs](logging-use-cases.html#example-slow-sql-query).
+- A [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) with `SQLSTATE: 40001`, the string [`restart transaction`]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction), and an error code such as [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable), is emitted to the client.
+- An event with `TransactionRetryWithProtoRefreshError` is emitted to the CockroachDB [logs]({% link {{ page.version.version }}/logging-use-cases.md %}#example-slow-sql-query).
 
 These are indicators that transaction retries occurred in the past:
 
-- The **Transaction Restarts** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#transaction-restarts) and [DB Console](ui-sql-dashboard.html#transaction-restarts) is showing spikes in transaction retries over time.
+- The **Transaction Restarts** graph ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/metrics-page#transaction-restarts) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) is showing spikes in transaction retries over time.
 
 {% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
 
@@ -135,11 +135,11 @@ These are indicators that transaction retries occurred in the past:
 
 Identify the transactions that are in conflict, and unblock them if possible. In general, take steps to [reduce transaction contention](#reduce-transaction-contention).
 
-In addition, implement [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) so that your application can respond to [transaction retry errors](transaction-retry-error-reference.html) that are emitted when CockroachDB cannot [automatically retry](transactions.html#automatic-retries) a transaction.
+In addition, implement [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) so that your application can respond to [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that are emitted when CockroachDB cannot [automatically retry]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) a transaction.
 
 ##### Identify conflicting transactions
 
-- In the **Active Executions** table on the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) or [DB Console](ui-transactions-page.html#active-executions-table)), look for a **waiting** transaction (`Waiting` status).
+- In the **Active Executions** table on the **Transactions** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page) or [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %}#active-executions-table)), look for a **waiting** transaction (`Waiting` status).
   {{site.data.alerts.callout_success}}
   If you see many waiting transactions, a single long-running transaction may be blocking transactions that are, in turn, blocking others. In this case, sort the table by **Time Spent Waiting** to find the transaction that has been waiting for the longest amount of time. Unblocking this transaction may unblock the other transactions.
   {{site.data.alerts.end}}
@@ -157,36 +157,36 @@ In addition, implement [client-side retry handling](transaction-retry-error-refe
 
 ##### Identify transactions and objects that experienced lock contention
 
-To identify transactions that experienced [lock contention](performance-best-practices-overview.html#transaction-contention) in the past:
+To identify transactions that experienced [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) in the past:
 
-- In the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)), look for a transaction with the **High Contention** insight. Click the transaction's execution ID and view the transaction execution details, including the details of the blocking transaction.
-- Visit the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) and [DB Console](ui-transactions-page.html)) and sort transactions by **Contention Time**.
+- In the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/insights-page#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)), look for a transaction with the **High Contention** insight. Click the transaction's execution ID and view the transaction execution details, including the details of the blocking transaction.
+- Visit the **Transactions** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page) and [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %})) and sort transactions by **Contention Time**.
 
-To view tables and indexes that experienced [contention](performance-best-practices-overview.html#transaction-contention):
+To view tables and indexes that experienced [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention):
 
-- Query the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table to view [transactions that have blocked other transactions](crdb-internal.html#transaction-contention-example).
-- Query the [`crdb_internal.cluster_contended_tables`](crdb-internal.html#cluster_contended_tables) table to [view all tables that have experienced contention](crdb-internal.html#view-all-tables-that-have-experienced-contention).
-- Query the [`crdb_internal.cluster_contended_indexes`](crdb-internal.html#cluster_contended_indexes) table to [view all indexes that have experienced contention](crdb-internal.html#view-all-indexes-that-have-experienced-contention).
-- Query the [`crdb_internal.cluster_contention_events`](crdb-internal.html#cluster_contention_events) table 
-to [view the tables, indexes, and transactions with the most time under contention](crdb-internal.html#view-the-tables-indexes-with-the-most-time-under-contention).
+- Query the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table to view [transactions that have blocked other transactions]({% link {{ page.version.version }}/crdb-internal.md %}#transaction-contention-example).
+- Query the [`crdb_internal.cluster_contended_tables`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_tables) table to [view all tables that have experienced contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-all-tables-that-have-experienced-contention).
+- Query the [`crdb_internal.cluster_contended_indexes`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_indexes) table to [view all indexes that have experienced contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-all-indexes-that-have-experienced-contention).
+- Query the [`crdb_internal.cluster_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contention_events) table 
+to [view the tables, indexes, and transactions with the most time under contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-the-tables-indexes-with-the-most-time-under-contention).
 
 ##### Reduce transaction contention
 
-[Contention](performance-best-practices-overview.html#transaction-contention) is often reported after it has already resolved. Therefore, preventing contention before it affects your cluster's performance is a more effective approach:
+[Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is often reported after it has already resolved. Therefore, preventing contention before it affects your cluster's performance is a more effective approach:
 
 {% include {{ page.version.version }}/performance/reduce-contention.md %}
 
 ### Hot spots
 
-[Hot spots](performance-best-practices-overview.html#hot-spots) are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+[Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
 #### Indicators that your cluster has hot spots
 
-- The **CPU Percent** graph on the [**Hardware**](ui-hardware-dashboard.html) and [**Overload**](ui-overload-dashboard.html) dashboards (DB Console) shows spikes in CPU usage.
-- The **Hot Ranges** list on the [**Hot Ranges** page](ui-hot-ranges-page.html) (DB Console) displays a higher-than-expected QPS for a range.
-- The [**Key Visualizer**](ui-key-visualizer.html) (DB Console) shows [ranges with much higher-than-average write rates](ui-key-visualizer.html#identifying-hot-spots) for the cluster.
+- The **CPU Percent** graph on the [**Hardware**]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) and [**Overload**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) dashboards (DB Console) shows spikes in CPU usage.
+- The **Hot Ranges** list on the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) (DB Console) displays a higher-than-expected QPS for a range.
+- The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hot-spots) for the cluster.
 
-If you find hot spots, use the [**Range Report**](ui-hot-ranges-page.html#range-report) and [**Key Visualizer**](ui-key-visualizer.html) to identify the ranges with excessive traffic. Then take steps to [reduce hot spots](#reduce-hot-spots).
+If you find hot spots, use the [**Range Report**]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hot spots](#reduce-hot-spots).
 
 #### Reduce hot spots
 
@@ -212,43 +212,46 @@ Full table scans often result in poor statement performance.
     FROM crdb_internal.node_statement_statistics
     WHERE full_scan = true;
     ~~~
-* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-fingerprint-page) in the DB Console indicates that the plan contains full table scans.
-* The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
-* The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
+* Viewing the statement plan on the [**Statement Fingerprint** page]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprint-page) in the DB Console indicates that the plan contains full table scans.
+* The statement plans returned by the [`EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) and [`EXPLAIN ANALYZE` commands]({% link {{ page.version.version }}/explain-analyze.md %}) indicate that there are full table scans.
+* The [Full Table/Index Scans graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans) in the DB Console is showing spikes over time.
 
 #### Fix full table scans in statements
 
-Not every full table scan is an indicator of poor performance. The [cost-based optimizer](cost-based-optimizer.html) may decide on a full table scan when other [index](indexes.html) or [join scans](joins.html) would result in longer execution time.
+Not every full table scan is an indicator of poor performance. The [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) may decide on a full table scan when other [index]({% link {{ page.version.version }}/indexes.md %}) or [join scans]({% link {{ page.version.version }}/joins.md %}) would result in longer execution time.
 
-[Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
+[Examine the statements]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) that result in full table scans and consider adding [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#create-a-secondary-index).
 
-Also see [Table scans best practices](performance-best-practices-overview.html#table-scan-best-practices).
+In the DB Console, visit the [**Schema Insights** tab]({% link {{ page.version.version }}/ui-insights-page.md %}#schema-insights-tab) on the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}) and check if there are any insights to create missing indexes. These missing index recommendations are generated based on [slow statement execution]({% link {{ page.version.version }}/ui-insights-page.md %}#detect-slow-executions). A missing index may cause a statement to have a [suboptimal plan]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). If the execution was slow, based on the insights threshold, then it's likely the create index recommendation is valid. If the plan had a full table scan, it's likely that it should be removed with an index.
+
+Also see [Table scans best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#table-scan-best-practices).
 
 ### Suboptimal primary keys
 
 #### Indicators that your tables are using suboptimal primary keys
 
-* The [Hardware metrics dashboard](ui-hardware-dashboard.html) in the DB Console shows high resource usage per node.
-* The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
+* The [Hardware metrics dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) in the DB Console shows high resource usage per node.
+* The Problem Ranges report on the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}) in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
 
 #### Fix suboptimal primary keys
 
-Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key](schema-design-table.html#primary-key-best-practices).
+Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices).
 
-If your application with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](alter-table.html#split-a-table) to reduce resource contention.
+If your application with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes]({% link {{ page.version.version }}/alter-table.md %}#split-a-table) to reduce resource contention.
 
 ### Slow writes
 
 #### Indicators that your tables are experiencing slow writes
 
-If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows high service latency when the QPS of `INSERT` and `UPDATE` statements is high, your tables are experiencing slow writes.
+If the [Overview dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) in the DB Console shows high service latency when the QPS of `INSERT` and `UPDATE` statements is high, your tables are experiencing slow writes.
 
 #### Fix slow writes
 
-[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
+[Secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
 
-- In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
-- Run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
+- In the DB Console, visit the [**Schema Insights** tab]({% link {{ page.version.version }}/ui-insights-page.md %}#schema-insights-tab) on the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}) and check if there are any insights to drop unused indexes.
+- In the DB Console, visit the [**Databases** page]({% link {{ page.version.version }}/ui-databases-page.md %}) and check databases and tables for [**Index Recommendations**]({% link {{ page.version.version }}/ui-databases-page.md %}#index-recommendations) to drop unused indexes.
+- Run a join query against the [`crdb_internal.index_usage_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -281,18 +284,18 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 #### Indicators that your tables have too many MVCC values
 
-In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
+In the [Databases]({% link {{ page.version.version }}/ui-databases-page.md %}#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
 
 <img src="{{ 'images/v23.1/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
 
 In this example, at `37.3%` the `vehicles` table would be considered to have a low percentage of live data. In the worst cases, the percentage can be `0%`.
 
-A low percentage of live data can cause statements to scan more data ([MVCC values](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
+A low percentage of live data can cause statements to scan more data ([MVCC values]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc)) than required, which can reduce performance.
 
 #### Configure CockroachDB to purge MVCC values
 
-Reduce the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) zone configuration of the table as much as possible.
+Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) zone configuration of the table as much as possible.
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries).

@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;{{ site.data.products.serverless }}, {{ site.data.products.dedicated }} standard, and {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;{{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }} standard, and CockroachDB {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;CockroachDB {{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
 <table>
   <tr>
@@ -21,7 +21,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td><ul>
-        <li><a id="serverless"></a><b><a href="../cockroachcloud/quickstart.html">{{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
+        <li><a id="serverless"></a><b><a href="../cockroachcloud/quickstart.html">CockroachDB {{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
@@ -40,7 +40,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><a id="dedicated-standard"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }} standard</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><a id="dedicated-standard"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} standard</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -61,7 +61,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that need to be PCI compliant.</li>
       </ul></td>
       <td><ul>
-        <li><a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }} advanced</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP) with PCI ready features.</li>
+        <li><a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} advanced</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP) with PCI ready features.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -85,7 +85,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><a id="self-hosted"></a><b><a href="start-a-local-cluster.html">{{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.</li>
+        <li><a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB {{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>

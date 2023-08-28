@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-CockroachDB {{ site.data.products.enterprise }} changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings](changefeed-sinks.html#kafka-sink-configuration) and [options](create-changefeed.html). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
+CockroachDB {{ site.data.products.enterprise }} changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration) and [options]({% link {{ page.version.version }}/create-changefeed.md %}). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 A schema registry is a repository for schemas, which allows you to share and manage schemas between different services. Confluent Cloud Schema Registries map to Kafka topics in your Confluent Cloud environment.
 
@@ -21,11 +21,11 @@ An overview of the workflow involves creating and connecting the following:
 
 You will need the following set up before starting this tutorial:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
+- A CockroachDB cluster. You can use a CockroachDB {{ site.data.products.cloud }} or CockroachDB {{ site.data.products.core }} cluster. If you are using CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) guide. For CockroachDB {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
 - The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
 
-This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example database.
+This tutorial uses the Cockroach Labs [`movr`]({% link {{ page.version.version }}/movr.md %}) workload as an example database.
 
 ## Step 1. Create a Confluent Cloud Kafka cluster
 
@@ -224,7 +224,7 @@ Run `confluent schema-registry cluster describe` to access details for the Schem
 
 ## Step 7. Prepare your CockroachDB cluster
 
-To create your changefeed, you'll prepare your CockroachDB cluster with the `movr` workload and [enable rangefeeds](create-and-configure-changefeeds.html).
+To create your changefeed, you'll prepare your CockroachDB cluster with the `movr` workload and [enable rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 
 1. In a new terminal window, initiate the `movr` workload for your cluster:
 
@@ -240,14 +240,14 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
     cockroach workload run movr --duration=1m {"CONNECTION STRING"}
     ~~~
 
-1. Start a [SQL session](cockroach-sql.html) for your CockroachDB cluster:
+1. Start a [SQL session]({% link {{ page.version.version }}/cockroach-sql.md %}) for your CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"}
     ~~~
 
-1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
+1. Set your organization name and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) key that you received via email:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -268,30 +268,30 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
 
 ## Step 8. Create a changefeed
 
-Before running the [`CREATE CHANGEFEED`](create-changefeed.html) statement, you must [**URL-encode**](https://meyerweb.com/eric/tools/dencoder/) both the cluster's and the Schema Registry's API secret key.
+Before running the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement, you must [**URL-encode**](https://meyerweb.com/eric/tools/dencoder/) both the cluster's and the Schema Registry's API secret key.
 
-You can also [create external connections](create-external-connection.html) to define a name for the Kafka and Confluent Schema Registry URIs. This allows you to interact with your defined name instead of the provider-specific URI.
+You can also [create external connections]({% link {{ page.version.version }}/create-external-connection.md %}) to define a name for the Kafka and Confluent Schema Registry URIs. This allows you to interact with your defined name instead of the provider-specific URI.
 
 1. Construct the Kafka URI:
 
     Use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`.
 
-    Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
-    - `TLS_ENABLED=true`
-    - `SASL_ENABLED=true`
-    - `SASL_USER={CLUSTER API KEY}`
-    - `SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}`
-    - `SASL_MECHANISM=PLAIN`
+    Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
+    - `tls_enabled=true`
+    - `sasl_enabled=true`
+    - `sasl_user={CLUSTER API KEY}`
+    - `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
+    - `sasl_mechanism=PLAIN`
 
     ~~~
-    "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. Create an external connection for the Kafka URI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. To construct the Confluent Schema Registry URI, you need:
@@ -321,7 +321,7 @@ You can also [create external connections](create-external-connection.html) to d
     CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
     ~~~
 
-    See [Options](create-changefeed.html#options) for a list of all available Enterprise changefeed options.
+    See [Options]({% link {{ page.version.version }}/create-changefeed.md %}#options) for a list of all available Enterprise changefeed options.
 
     {{site.data.alerts.callout_success}}
     {% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
@@ -350,5 +350,5 @@ You can use the **Schema** tab to view the schema for a specific topic.
 
 ## See also
 
-- [Changefeed Sinks](changefeed-sinks.html)
-- [Responses](changefeed-messages.html#responses)
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses)

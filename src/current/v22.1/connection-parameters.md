@@ -31,7 +31,6 @@ parameters (the URL) between different tools: the output of `cockroach
 start`, other `cockroach` commands, GUI database visualizer,
 programming tools, etc.
 
-
 Discrete parameters may be more convenient in automation, where the
 components of the configuration are filled in separately from
 different variables in a script or a service manager.
@@ -40,12 +39,14 @@ different variables in a script or a service manager.
 
 A connection URL has the following format:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
 
-`cockroach` client commands also support [UNIX domain socket URIs](https://en.wikipedia.org/wiki/Unix_domain_socket) of the following form:
+`cockroach` client commands also support [UNIX domain socket URIs](https://wikipedia.org/wiki/Unix_domain_socket) of the following form:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
 ~~~
@@ -56,12 +57,12 @@ Component | Description | Required
 `<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).<br><br>[Find more detail about how CockroachDB handles passwords.](authentication.html#client-authentication) | ✗
 `<host>` | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
 `<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
-`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
+`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb` when using `cockroach` client commands. Drivers and ORMs may have different defaults. | ✗
 `<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
 `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | ✗
 
 {{site.data.alerts.callout_info}}
-For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.
+For `cockroach` commands that accept a URL, you can specify the URL with the command-line flag `--url`.
 If `--url` is not specified but
 the environment variable `COCKROACH_URL` is defined, the environment
 variable is used. Otherwise, the `cockroach` command will use
@@ -127,6 +128,7 @@ SQL driver to determine whether these options are supported.
 
  The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 $ ./cockroach convert-url --url "postgres://foo/bar"
 ~~~
@@ -146,6 +148,7 @@ and also ODBC:
 
 The following URL is suitable to connect to a CockroachDB node using an insecure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=disable
 ~~~
@@ -158,6 +161,7 @@ current database. `sslmode=disable` makes the connection insecure.
 
 The following URL is suitable to connect to a CockroachDB node using a secure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=verify-full&sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key
 ~~~
@@ -180,11 +184,25 @@ For details about how to create and manage SSL/TLS certificates, see
 
 The following URI is suitable to connect to a CockroachDB cluster listening for Unix domain socket connections at `/path/to/client`:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@?host=/path/to/client&port=26257
 ~~~
 
-This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag](cockroach-start.html#networking)) at `/path/to/client`, and on port 26257.
+This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag]({% link {{ page.version.version }}/cockroach-start.md %}#networking)) at `/path/to/client`, and on port 26257.
+
+### Example URI for connecting to a database with a user-defined schema
+
+The following URI connects to a CockroachDB cluster with a user-defined schema named `max_schema` in the `movr` database using the [`options` parameter](#supported-options-parameters).
+
+{% include_cached copy-clipboard.html %}
+~~~
+postgres://maxroach@db.example.com:26257/movr?sslmode=verify-full&options%3D-c%20search_path%3Dmax_schema
+~~~
+
+{{site.data.alerts.callout_info}}
+The `options=-c search_path=max_schema` parameter is URL-encoded in the example above.
+{{site.data.alerts.end}}
 
 ## Connect using discrete parameters
 
@@ -203,6 +221,7 @@ variable is used when the command-line flag is not specified.
 
 The following command-line flags establish an insecure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 --user=root \
 --host=<servername>
@@ -217,6 +236,7 @@ the connection insecure.
 
 The following command-line flags establish a secure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 --user=root \
 --host=<servername>
@@ -251,12 +271,14 @@ override settings not otherwise set in the URL.
 
 The `cockroach start` command prints out the following connection URL, which connects to the `defaultdb` database:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/?sslmode=disable
 ~~~
 
 To specify `mydb` as the current database using [`cockroach sql`](cockroach-sql.html), run the following command:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 cockroach sql \
 --url "postgres://root@servername:26257/?sslmode=disable" \
@@ -265,6 +287,7 @@ cockroach sql \
 
 This is equivalent to:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 ~~~

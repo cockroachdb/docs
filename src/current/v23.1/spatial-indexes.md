@@ -6,29 +6,29 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:
+This page describes CockroachDB's support for indexing [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), including:
 
 - What spatial indexes are
 - How they work
 - How to create and tune spatial indexes in CockroachDB
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support indexing geospatial types in default [primary keys](primary-key.html), nor in [unique secondary indexes](indexes.html#unique-secondary-indexes).
+CockroachDB does not support indexing geospatial types in default [primary keys]({% link {{ page.version.version }}/primary-key.md %}), nor in [unique secondary indexes]({% link {{ page.version.version }}/indexes.md %}#unique-secondary-indexes).
 {{site.data.alerts.end}}
 
 ## What is a spatial index?
 
-At a high level, a spatial index is just like any other [index](indexes.html). Its purpose is to improve your database's performance by helping SQL locate data without having to look through every row of a table.
+At a high level, a spatial index is just like any other [index]({% link {{ page.version.version }}/indexes.md %}). Its purpose is to improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
 Spatial indexes store information about spatial objects, but they are used for the same tasks as any other index type, i.e.,
 
-- Fast filtering of lists of shapes based on spatial predicate functions such as [`ST_Contains`](st_contains.html).
+- Fast filtering of lists of shapes based on spatial predicate functions such as [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %}).
 
 - Speeding up joins that involve spatial data columns.
 
 Spatial indexes differ from other types of indexes as follows:
 
-- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [GIN index](inverted-indexes.html). For specifics, see [Details](#details).
+- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). For specifics, see [Details](#details).
 
 - If needed, they can be tuned to store looser or tighter coverings of the shapes being indexed, depending on the needs of your application. Tighter coverings are more expensive to generate, store, and update, but can perform better in some cases because they return fewer false positives during the initial index lookup. Tighter coverings can also lead to worse performance due to more rows in the index, and more scans at the storage layer.  That's why we recommend that most users should not need to change the default settings. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
@@ -36,16 +36,16 @@ Spatial indexes differ from other types of indexes as follows:
 
 There are two main approaches to building geospatial indexes:
 
-- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://en.wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
+- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
 
 - The other approach is to "divide the space" by creating a decomposition of the space being indexed into buckets of various sizes.
 
-CockroachDB takes the "divide the space" approach to spatial indexing. This is necessary to preserve CockroachDB's ability to [scale horizontally](frequently-asked-questions.html#how-does-cockroachdb-scale) by [adding nodes to a running cluster](cockroach-start.html#add-a-node-to-a-cluster).
+CockroachDB takes the "divide the space" approach to spatial indexing. This is necessary to preserve CockroachDB's ability to [scale horizontally]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-scale) by [adding nodes to a running cluster]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster).
 
 CockroachDB uses the "divide the space" approach for the following reasons:
 
 - It's easy to scale horizontally.
-- It requires no balancing operations, unlike [R-tree indexes](https://en.wikipedia.org/wiki/R-tree).
+- It requires no balancing operations, unlike [R-tree indexes](https://wikipedia.org/wiki/R-tree).
 - Inserts under this approach require no locking.
 - Bulk ingest is simpler to implement than under other approaches.
 - It allows advanced users to make a per-object tradeoff between index size and false positives during index creation. (See [Tuning spatial indexes](#tuning-spatial-indexes).)
@@ -54,7 +54,7 @@ Whichever approach to indexing is used, when an object is indexed, a "covering" 
 
 ### Details
 
-Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://en.wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
+Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/quadtree.png' | relative_url }}" alt="Quadtree">
 
@@ -62,13 +62,13 @@ Visually, you can think of the S2 library as enclosing a sphere in a cube. We ma
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-2d.png' | relative_url }}" alt="S2 Cubed Sphere - 2D">
 
-Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://en.wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
+Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-3d.png' | relative_url }}" alt="S2 Cubed Sphere - 3D">
 
 When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
-CockroachDB stores spatial indexes as a special type of [GIN index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](spatial-glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
+CockroachDB stores spatial indexes as a special type of [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings]({% link {{ page.version.version }}/architecture/glossary.md %}#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
 
 ## Tuning spatial indexes
 
@@ -107,7 +107,7 @@ Here are the same images presented in a grid. You can see that as we turn up the
 
 ### Index tuning parameters
 
-The following parameters are supported by both `CREATE INDEX` and the [built-in function](functions-and-operators.html#spatial-functions) `st_s2covering`. The latter is useful for seeing what kinds of coverings would be generated by an index with various tuning parameters if you were to create it. For an example showing how to use these parameters with `st_s2covering`, see [View an object's S2 covering](#view-an-objects-s2-covering).
+The following parameters are supported by both `CREATE INDEX` and the [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) `st_s2covering`. The latter is useful for seeing what kinds of coverings would be generated by an index with various tuning parameters if you were to create it. For an example showing how to use these parameters with `st_s2covering`, see [View an object's S2 covering](#view-an-objects-s2-covering).
 
 {{site.data.alerts.callout_info}}
 If a shape falls outside the bounding coordinates determined by the following `geometry_*` settings, there will be a performance loss in that such shapes may not be eliminated by the index lookup, but the database will still return the correct answers.
@@ -118,10 +118,10 @@ If a shape falls outside the bounding coordinates determined by the following `g
 | `s2_level_mod`   | 1                                             | `s2_max_level` must be divisible by `s2_level_mod`. `s2_level_mod` must be between `1` and `3`.                                                                                                                                                                                                                                                                                                                                                 |
 | `s2_max_level`   | 30                                            | The maximum level of S2 cell used in the covering. Allowed values: 1-30. Setting it to less than the default means that CockroachDB will be forced to generate coverings using larger cells.                                                                                                                                                                                                                                                    |
 | `s2_max_cells`   | 4                                             | The maximum number of S2 cells used in the covering. Provides a limit on how much work is done exploring the possible coverings. Allowed values: 1-30. You may want to use higher values for odd-shaped regions such as skinny rectangles.                                                                                                                                                                                                      |
-| `geometry_min_x` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum X-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if the default bounds of the SRID are too large/small for the given data, or SRID = 0 and you wish to use a smaller range (unfortunately this is currently not exposed, but is viewable on <https://epsg.io/3857>). By default, SRID = 0 assumes `[-min int32, max int32]` ranges. |
-| `geometry_max_x` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum X-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
-| `geometry_min_y` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum Y-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
-| `geometry_max_y` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum Y-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
+| `geometry_min_x` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum X-value of the [spatial reference system]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-reference-system) for the object(s) being covered. This only needs to be set if the default bounds of the SRID are too large/small for the given data, or SRID = 0 and you wish to use a smaller range (unfortunately this is currently not exposed, but is viewable on <https://epsg.io/3857>). By default, SRID = 0 assumes `[-min int32, max int32]` ranges. |
+| `geometry_max_x` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum X-value of the [spatial reference system]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID]({% link {{ page.version.version }}/architecture/glossary.md %}#srid).                                                                                                                                                                                                                      |
+| `geometry_min_y` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum Y-value of the [spatial reference system]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID]({% link {{ page.version.version }}/architecture/glossary.md %}#srid).                                                                                                                                                                                                                      |
+| `geometry_max_y` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum Y-value of the [spatial reference system]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID]({% link {{ page.version.version }}/architecture/glossary.md %}#srid).                                                                                                                                                                                                                      |
 
 ## Examples
 
@@ -174,7 +174,7 @@ CREATE INDEX geom_idx_4 ON geo_table4 USING GIST(geom) WITH (geometry_min_x=0, s
 
 ### Create spatial indexes during table definition
 
-This example shows how to [create a table](create-table.html) with spatial indexes on `GEOMETRY` and `GEOGRAPHY` types that use non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
+This example shows how to [create a table]({% link {{ page.version.version }}/create-table.md %}) with spatial indexes on `GEOMETRY` and `GEOGRAPHY` types that use non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -223,17 +223,17 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 
 ## See also
 
-- [GIN Indexes](inverted-indexes.html)
+- [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
 - [S2 Geometry Library](https://s2geometry.io/)
-- [Indexes](indexes.html)
-- [Spatial Features](spatial-features.html)
-- [Spatial tutorial](spatial-tutorial.html)
-- [Working with Spatial Data](spatial-data.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
-- [Migrate from Shapefiles](migrate-from-shapefiles.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
+- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
+- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

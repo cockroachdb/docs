@@ -6,254 +6,291 @@ keywords: copy
 docs_area: migrate
 ---
 
-{{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
-{{site.data.alerts.end}}
+This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB. 
 
-This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
-
-The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/). The data was imported to PostgreSQL using [pgloader][pgloader], and then modified for use here as explained below.
-
-{% include {{ page.version.version }}/misc/import-perf.md %}
-
-## Pre-migration considerations
-
-### Primary keys
-
-PostgreSQL and CockroachDB have different best practices surrounding [primary keys](primary-key.html) on tables. While it's common to see sequences and auto-incrementing primary keys in PostgreSQL, these features can cause hotspots within your cluster when reading or writing large amounts of data. Cockroach Labs recommends that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns.
-
-If you are working with a table that must be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). We recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
-
-For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/).
-
-## Step 1. Dump the PostgreSQL database
-
-There are several ways to dump data from PostgreSQL to be imported into CockroachDB:
-
-- [Dump the entire database](#dump-the-entire-database)
-- [Dump one table at a time](#dump-one-table-at-a-time)
-
-The import will fail if the dump file contains functions or type definitions. In addition to calling [`pg_dump`][pgdump] as shown below, you may need to edit the dump file to remove functions and data types.
-
-Also, note that CockroachDB's [`IMPORT`][import] does not support automatically importing data from PostgreSQL's non-public [schemas][pgschema]. As a workaround, you can edit the dump file to change the table and schema names in the `CREATE TABLE` statements.
-
-### Dump the entire database
-
-Most users will want to import their entire PostgreSQL database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).
-
-To dump the entire database, run the [`pg_dump`][pgdump] command shown below.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ pg_dump employees > /tmp/employees-full.sql
-~~~
-
-For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below:
-
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
-
-- A `CREATE TYPE employee ...` statement needed to be removed.
-
-If you only want to import one table from a database dump, see [Import a table from a full database dump](#import-a-table-from-a-full-database-dump) below.
-
-### Dump one table at a time
-
-To dump the `employees` table from a PostgreSQL database also named `employees`, run the [`pg_dump`][pgdump] command shown below. You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ pg_dump -t employees  employees > /tmp/employees.sql
-~~~
-
-For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below.
-
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
-
-## Step 2. Host the files where the cluster can access them
-
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`](import.html) can pull from, see the following:
-
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to use [MOLT tooling]({% link {{ page.version.version }}/migration-overview.md %}#molt) to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
 {{site.data.alerts.callout_success}}
-We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
+If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
 {{site.data.alerts.end}}
 
-## Step 3. Import the PostgreSQL dump file
+## Syntax differences
 
-You can choose from several variants of the [`IMPORT`][import] statement, depending on whether you want to import a full database or a single table:
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. 
 
-- [Import a full database dump](#import-a-full-database-dump)
-- [Import a table from a full database dump](#import-a-table-from-a-full-database-dump)
-- [Import a table from a table dump](#import-a-table-from-a-table-dump)
+For syntax differences, refer to [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
-Note that all of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
+### Unsupported features
 
-### Import a full database dump
+The following PostgreSQL features do not yet exist in CockroachDB:
 
-This example assumes you [dumped the entire database](#dump-the-entire-database).
+{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including existing foreign key relationships) from the full database dump file.
+## Load PostgreSQL data
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
-~~~
+You can use one of the following methods to migrate PostgreSQL data to CockroachDB:
 
-~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
---------------------+-----------+--------------------+--------+---------------+----------------+----------
- 381845110403104769 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
-(1 row)
-~~~
+- {% include {{ page.version.version }}/migration/load-data-import-into.md %} 
 
-### Import a table from a full database dump
+       {% include {{ page.version.version }}/misc/import-perf.md %}
 
-This example assumes you [dumped the entire database](#dump-the-entire-database).
+- {% include {{ page.version.version }}/migration/load-data-third-party.md %}
 
-[`IMPORT`][import] can import one table's data from a full database dump. It reads the data and applies any `CREATE TABLE` statements from the file.
+- {% include {{ page.version.version }}/migration/load-data-copy-from.md %}
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT TABLE employees FROM PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
-~~~
+The [following example](#example-migrate-frenchtowns-to-cockroachdb) uses `IMPORT INTO` to perform the initial data load.
 
-~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
---------------------+-----------+--------------------+--------+---------------+----------------+----------
- 383839294913871873 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
-(1 row)
-~~~
+## Example: Migrate `frenchtowns` to CockroachDB
 
-### Import a table from a table dump
+The following steps demonstrate [converting a schema]({% link {{ page.version.version }}/migration-overview.md %}#convert-the-schema), performing an [initial load of data]({% link {{ page.version.version }}/migration-overview.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries) during a migration.
 
-The simplest way to import a table dump is to run [`IMPORT`][import]. It reads the table data and any `CREATE TABLE` statements from the file:
+In the context of a full migration, these steps ensure that PostgreSQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz' WITH ignore_unsupported_statements;
-~~~
+### Before you begin
 
-~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
---------------------+-----------+--------------------+--------+---------------+----------------+----------
- 383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
-(1 row)
-~~~
+The example uses a modified version of the PostgreSQL `french-towns-communes-francais` data set and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
 
-## Configuration Options
+1. Download the `frenchtowns` data set:
 
-The following options are available to `IMPORT PGDUMP`:
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       curl -O https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/postgresql/frenchtowns/frenchtowns.sql
+       ~~~
 
-- [Max row size](#max-row-size)
-- [Row limit](#row-limit)
-- [Ignore unsupported statements](#ignore-unsupported-statements)
-- [Log unsupported statements](#log-unsupported-statements)
-- [Skip foreign keys](#skip-foreign-keys)
+1. Create a `frenchtowns` database on your PostgreSQL instance:
 
-### Max row size
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       createdb frenchtowns
+       ~~~
 
-The `max_row_size` option is used to override limits on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
+1. Load the `frenchtowns` data into PostgreSQL, specifying the path of the downloaded file:
 
-Example usage:
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       psql frenchtowns -a -f frenchtowns.sql
+       ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH max_row_size = '5MB';
-~~~
+1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and create the {{ site.data.products.serverless }} cluster.
 
-### Row limit
+{{site.data.alerts.callout_success}}
+{% include cockroachcloud/migration/sct-self-hosted.md %}
+{{site.data.alerts.end}}
 
- The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+### Step 1. Convert the PostgreSQL schema
 
-Example usage:
+Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert the `frenchtowns` schema for compatibility with CockroachDB. The schema has three tables: `regions`, `departments`, and `towns`.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
-~~~
+1. Dump the PostgreSQL `frenchtowns` schema with the following [`pg_dump`](https://www.postgresql.org/docs/15/app-pgdump.html) command:
 
-### Ignore unsupported statements
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       pg_dump --schema-only frenchtowns > frenchtowns_schema.sql
+       ~~~
 
- The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default:** `false`.
+1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.cloud }} Console and [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
 
-If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
+       After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#summary-report) shows that there are errors under **Required Fixes**. You must resolve these in order to migrate the schema to CockroachDB.
 
-Example usage:
+       {{site.data.alerts.callout_success}}
+       You can also [add your PostgreSQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the PostgreSQL database.
+       {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements;
-~~~
+1. `Missing user: postgres` errors indicate that the SQL user `postgres` is missing from CockroachDB. Click **Add User** to create the user.
 
-### Log unsupported statements
+1. `Miscellaneous Errors` includes a `SELECT pg_catalog.set_config('search_path', '', false)` statement that can safely be removed. Click **Delete** to remove the statement from the schema.
 
- The `log_ignored_statements` option is used with the `ignore_unsupported_statements` option to log unsupported statements in the `PGDUMP` file to specified a destination file.
+1. Review the `CREATE SEQUENCE` statements listed under **Suggestions**. Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
-Example usage:
+       For this example, **Acknowledge** the suggestion without making further changes. In practice, after [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}#conduct-the-migration) to CockroachDB, you would modify your CockroachDB schema to use unique and non-sequential primary keys.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements, log_ignored_statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log';
-~~~
+1. Click **Retry Migration**. The **Summary Report** now shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
-### Skip foreign keys
+       This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-By default, [`IMPORT PGDUMP`][import] supports foreign keys. **Default: false**. Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL. It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
+1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
+
+       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
+
+### Step 2. Load the PostgreSQL data
+
+Load the `frenchtowns` data into CockroachDB using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) with CSV-formatted data. {% include {{ page.version.version }}/sql/export-csv-tsv.md %}
 
 {{site.data.alerts.callout_info}}
-The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](import.html#import-options).
-
-For example, if you get the error message `pq: there is no unique constraint matching given keys for referenced table tablename`, use `IMPORT ... WITH skip_foreign_keys`.
+By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) invalidates all [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints on the target table.
 {{site.data.alerts.end}}
 
-Example usage:
+1. Dump each table in the PostgreSQL `frenchtowns` database to a CSV-formatted file:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
-~~~
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       psql frenchtowns -c "COPY regions TO stdout DELIMITER ',' CSV;" > regions.csv
+       ~~~
 
-[Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) commands after importing the data.
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       psql frenchtowns -c "COPY departments TO stdout DELIMITER ',' CSV;" > departments.csv
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       psql frenchtowns -c "COPY towns TO stdout DELIMITER ',' CSV;" > towns.csv
+       ~~~
+
+1. Host the files where the CockroachDB cluster can access them.
+
+       Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see the following:
+       - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+       - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
+
+       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import. 
+
+       The dump files generated in the preceding step are already hosted on a public S3 bucket created for this example.
+
+1. Open a SQL shell to the CockroachDB `frenchtowns` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `frenchtowns` database and **CockroachDB Client** option. It will look like:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/frenchtowns?sslmode=verify-full" 
+       ~~~
+
+1. Use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import each PostgreSQL dump file into the corresponding table in the `frenchtowns` database.
+
+       The following commands point to a public S3 bucket where the `frenchtowns` data dump files are hosted for this example.
+
+       {{site.data.alerts.callout_success}}
+       You can add the `row_limit` [option]({% link {{ page.version.version }}/import-into.md %}#import-options) to specify the number of rows to import. For example, `row_limit = '10'` will import the first 10 rows of the table. This option is useful for finding errors quickly before executing a more time- and resource-consuming import.
+       {{site.data.alerts.end}}
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       IMPORT INTO regions
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/postgresql/frenchtowns/regions.csv'
+         );
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows | index_entries | bytes
+       ---------------------+-----------+--------------------+------+---------------+--------
+         893753132185026561 | succeeded |                  1 |   26 |            52 |  2338
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       IMPORT INTO departments
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/postgresql/frenchtowns/departments.csv'
+         );
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows | index_entries | bytes
+       ---------------------+-----------+--------------------+------+---------------+--------
+         893753147892465665 | succeeded |                  1 |  100 |           300 | 11166
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       IMPORT INTO towns
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/postgresql/frenchtowns/towns.csv'
+         );
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows  | index_entries |  bytes
+       ---------------------+-----------+--------------------+-------+---------------+----------
+         893753162225680385 | succeeded |                  1 | 36684 |         36684 | 2485007
+       ~~~
+
+1. Recall that `IMPORT INTO` invalidates all [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints on the target table. View the constraints that are defined on `departments` and `towns`:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SHOW CONSTRAINTS FROM departments;
+       ~~~
+
+       ~~~
+         table_name  |     constraint_name     | constraint_type |                         details                         | validated
+       --------------+-------------------------+-----------------+---------------------------------------------------------+------------
+         departments | departments_capital_key | UNIQUE          | UNIQUE (capital ASC)                                    |     t
+         departments | departments_code_key    | UNIQUE          | UNIQUE (code ASC)                                       |     t
+         departments | departments_name_key    | UNIQUE          | UNIQUE (name ASC)                                       |     t
+         departments | departments_pkey        | PRIMARY KEY     | PRIMARY KEY (id ASC)                                    |     t
+         departments | departments_region_fkey | FOREIGN KEY     | FOREIGN KEY (region) REFERENCES regions(code) NOT VALID |     f
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SHOW CONSTRAINTS FROM towns;
+       ~~~
+
+       ~~~
+         table_name |      constraint_name      | constraint_type |                             details                             | validated
+       -------------+---------------------------+-----------------+-----------------------------------------------------------------+------------
+         towns      | towns_code_department_key | UNIQUE          | UNIQUE (code ASC, department ASC)                               |     t
+         towns      | towns_department_fkey     | FOREIGN KEY     | FOREIGN KEY (department) REFERENCES departments(code) NOT VALID |     f
+         towns      | towns_pkey                | PRIMARY KEY     | PRIMARY KEY (id ASC)                                            |     t
+       ~~~
+
+1. To validate the foreign keys, issue an [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint) statement for each table:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       ALTER TABLE departments VALIDATE CONSTRAINT departments_region_fkey;
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       ALTER TABLE towns VALIDATE CONSTRAINT towns_department_fkey;
+       ~~~
+
+### Step 3. Validate the migrated data
+
+Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check that the data on PostgreSQL and CockroachDB are consistent.
+
+1. [Install MOLT Verify.]({% link {{ page.version.version }}/molt-verify.md %})
+
+1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the PostgreSQL connection string with `--source` and the CockroachDB connection string with `--target`:
+
+       {{site.data.alerts.callout_success}}
+       To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `frenchtowns` database and the **General connection string** option.
+       {{site.data.alerts.end}}
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       ./molt verify --source 'postgresql://{username}:{password}@{host}:{port}/frenchtowns' --target 'postgresql://{user}:{password}@{host}:{port}/frenchtowns?sslmode=verify-full'
+       ~~~
+
+       You will see the initial output:
+
+       ~~~
+       <nil> INF verification in progress
+       ~~~
+
+       The following output indicates that MOLT Verify has completed verification:
+
+       ~~~
+       <nil> INF finished row verification on public.regions (shard 1/1): truth rows seen: 26, success: 26, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF finished row verification on public.departments (shard 1/1): truth rows seen: 100, success: 100, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF progress on public.towns (shard 1/1): truth rows seen: 10000, success: 10000, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF progress on public.towns (shard 1/1): truth rows seen: 20000, success: 20000, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF progress on public.towns (shard 1/1): truth rows seen: 30000, success: 30000, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF finished row verification on public.towns (shard 1/1): truth rows seen: 36684, success: 36684, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF verification complete
+       ~~~
+
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link {{ page.version.version }}/migration-overview.md %}#application-changes), [validate application queries]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries), and [perform a dry run]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) before [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}#conduct-the-migration).
+
+To learn more, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
 
 ## See also
 
-- [`IMPORT`][import]
-- [Import Performance Best Practices](import-performance-best-practices.html)
-- [Migrate from CSV][csv]
-- [Migrate from MySQL][mysql]
-- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [Back up Data](take-full-and-incremental-backups.html)
-- [Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-
-<!-- Reference Links -->
-
-[csv]: migrate-from-csv.html
-[mysql]: migrate-from-mysql.html
-[import]: import.html
-[pgdump]: https://www.postgresql.org/docs/current/static/app-pgdump.html
-[postgres]: migrate-from-postgres.html
-[pgschema]: https://www.postgresql.org/docs/current/static/ddl-schemas.html
-[pgloader]: https://pgloader.io/
-
-<!-- Notes
-
-These instructions were prepared with the following versions:
-
-- PostgreSQL 10.5
-
-- CockroachDB CCL v2.2.0-alpha.00000000-757-gb33c49ff73
-  (x86_64-apple-darwin16.7.0, built 2018/09/12 19:30:43, go1.10.3)
-  (built from master on Wednesday, September 12, 2018)
-
-- /usr/local/bin/mysql Ver 14.14 Distrib 5.7.22, for osx10.12 (x86_64)
-  using EditLine wrapper
-
--->
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the MOLT Verify tool]({% link {{ page.version.version }}/molt-verify.md %})
+- [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
+- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?]({% link {{ page.version.version }}/frequently-asked-questions.md %}#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)

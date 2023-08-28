@@ -6,33 +6,33 @@ toc_not_nested: true
 docs_area:
 ---
 
-This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
+This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachDB {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
 
 ## Before you begin
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 
 1. Install the following tools, if you do not already have them:
 
     Tool | Purpose
     -----|--------
-    [pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
+    [pip](https://pip.pypa.io/en/stable/installation/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
-1. If you haven't already, [create a {{ site.data.products.dedicated }} cluster](create-your-cluster.html).
+1. If you haven't already, [create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Prepare your cluster
 
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
 - [Step 2. Create a SQL user](#step-2-create-a-sql-user)
 - [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string)
-- [Step 4. Create the {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachdb-cloud-database)
+- [Step 4. Create the CockroachDB {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachdb-cloud-database)
 - [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
 
-Before you connect to your {{ site.data.products.dedicated }} cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
+Before you connect to your CockroachDB {{ site.data.products.dedicated }} cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
@@ -42,7 +42,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 1. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
 
 1. Click **Apply**.
 
@@ -55,7 +55,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
-    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster).
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster).
 
 ### Step 3. Generate the CockroachDB client connection string
 
@@ -75,11 +75,11 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
-### Step 4. Create the {{ site.data.products.db }} database
+### Step 4. Create the CockroachDB {{ site.data.products.cloud }} database
 
 On your local workstation's terminal:
 
-1. If you haven't already, [Download the CockroachDB binary](../{{site.current_cloud_version}}/install-cockroachdb.html) and copy it into the `PATH`:
+1. If you haven't already, [Download the CockroachDB binary](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/install-cockroachdb) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -167,7 +167,7 @@ In a new terminal:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/core/engines.html#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
     Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
@@ -181,7 +181,7 @@ In a new terminal:
     $ pip install flask sqlalchemy sqlalchemy-cockroachdb Flask-SQLAlchemy
     ~~~
 
-    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/intro.html#installation-guide).
 
 1. Run the `hello.py` code:
 
@@ -253,7 +253,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 ~~~
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/core/engines.html#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 ### Step 4. Dockerize the application
@@ -450,7 +450,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-cluster-overview-page), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-1. On the [**Hardware** dashboard](../{{site.current_cloud_version}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-hardware-dashboard), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-1. The [**Statements** page](../{{site.current_cloud_version}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-statements-page) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

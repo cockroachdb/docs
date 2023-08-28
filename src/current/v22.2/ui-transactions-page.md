@@ -26,7 +26,7 @@ The **Transaction Fingerprints** view helps you:
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. Click the **Transactions** tab.
+To view this page, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console. Click the **Transactions** tab.
 {% endif %}
 
 Click the **Transactions** tab. The **Transaction Fingerprints** radio button is selected and the [Transactions table](#transactions-table) displays.
@@ -48,7 +48,7 @@ If you click the transaction fingerprint in the **Transactions** column, the [**
 {% if page.cloud != true %}
 To display this view, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
-To display this view, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console.
+To display this view, click **SQL Activity** in the left-hand navigation of the CockroachDB {{ site.data.products.cloud }} Console.
 {% endif %}
 
 The **Statements** tab is selected. Click the **Transactions** tab and the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
@@ -64,19 +64,6 @@ The following screenshot shows the active statement execution for `SELECT city, 
 If you click the execution ID in the **Transaction Execution ID** column, the [**Transaction Execution** details page](#transaction-execution-details-page) displays.
 
 <img src="{{ 'images/v22.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
-
-## Search and filter
-
-By default, the **Transactions** page shows transactions from all applications and databases running on the cluster.
-
-### Search field
-
-To search using the search field:
-
-1. Type a string over `Search Transactions`. To search for exact terms in order, wrap the search string in quotes.
-1. Press `Enter`.
-
-    The list of transactions is filtered by the string.
 
 {% include {{ page.version.version }}/ui/transactions-filter.md %}
 

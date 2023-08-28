@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-If you need a license to use [{{ site.data.products.enterprise }} features](enterprise-licensing.html), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
+If you need a license to use [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -37,34 +37,30 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
 
 - You should have familiarity with configuring the following AWS components:
   - [Amazon VPC](https://docs.aws.amazon.com/vpc/index.html)
-  - [VPC Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
-  - [VPC Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
-  - [VPC Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
-  - [EC2 Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
+  - [Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
+  - [Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
+  - [Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
   - [AWS VPN](https://aws.amazon.com/vpn/)
-  - [VPC Virtual Private Gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
-  - [AWS Application Load
-    Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
-    and [AWS Network Load
-    Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html)
+  - [Virtual private gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
+  - [Elastic Load Balancing](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html)
 
-- All Amazon EC2 instances running CockroachDB should be members of the same [Security Group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html). For an example, see [AWS Architecture](#aws-architecture).
+- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html). For an example, see [AWS architecture](#aws-architecture).
 
-- Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) to harden the AWS environment. Use [IAM Roles](security-reference/authorization.html#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege).
+- Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) to harden the AWS environment. Use [roles](security-reference/authorization.html#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege).
 
-- The [AWS root user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html) is _not_ necessary, and [its use is discouraged](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#lock-away-credentials).
+- The [AWS root user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html) is _not_ necessary.
 
-- Review the [AWS Config Service Limits](https://docs.aws.amazon.com/config/latest/developerguide/configlimits.html) and contact AWS support to request a quota increase, if necessary.
+- Review the [AWS Config service limits](https://docs.aws.amazon.com/config/latest/developerguide/configlimits.html) and contact AWS support to request a quota increase, if necessary.
 
-### AWS Architecture
+### AWS architecture
 
-In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones (see the [AWS-specific Recommendations](recommended-production-settings.html#aws) for additional production recommendations). These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
+In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones. These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
 
 <img src="{{ 'images/v23.1/aws-architecture.png' | relative_url }}" alt="Architecture diagram for a three-node CockroachDB cluster deployed on AWS" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 1. Create instances
 
-Open the [Amazon EC2 Console](https://console.aws.amazon.com/ec2/) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
+Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
 
 - Run at least 3 nodes to ensure survivability.
 
@@ -80,7 +76,7 @@ Open the [Amazon EC2 Console](https://console.aws.amazon.com/ec2/) and [launch a
 
 - When creating the instance, you will be prompted to specify an EC2 key pair. For more information on key pairs, see the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). These are used to securely connect to your instances and should be encrypted (e.g., `ssh-keygen -p -f $keypairfile` in Linux).
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 ## Step 2. Configure your network
 
@@ -119,7 +115,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
 	- Set the load balancer port to **26257**.
     - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
-    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
     - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
 1. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
 

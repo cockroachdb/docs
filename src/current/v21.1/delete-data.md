@@ -4,14 +4,14 @@ summary: How to delete data from CockroachDB during application development
 toc: true
 ---
 
-This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](update.html) [SQL statement](sql-statements.html).
+This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](delete.html) [SQL statement](sql-statements.html).
 
 ## Before you begin
 
 Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.db }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachDB {{ site.data.products.cloud }} cluster](../cockroachcloud/create-your-cluster.html).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).
