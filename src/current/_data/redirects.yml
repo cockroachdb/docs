@@ -82,7 +82,6 @@
 - destination: migration-overview.md
   sources: 
     - migrate-from-oracle.md
-    - migrate-from-postgres.md
   temporary: true
   versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
 

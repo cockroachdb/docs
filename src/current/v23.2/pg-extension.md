@@ -1,0 +1,79 @@
+---
+title: pg_extension
+summary: The pg_extension schema contains information about CockroachDB extensions.
+toc: true
+docs_area: reference.sql
+---
+
+The `pg_extension` [system catalogs]({% link {{ page.version.version }}/system-catalogs.md %}) provides information about CockroachDB extensions.
+
+## Data exposed by `pg_extension`
+
+In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension]({% link {{ page.version.version }}/spatial-data-overview.md %}):
+
+- `geography_columns`
+- `geometry_columns`
+- `spatial_ref_sys`
+
+{{site.data.alerts.callout_info}}
+`pg_extension` tables are read-only.
+{{site.data.alerts.end}}
+
+To see the list of tables in `pg_extension` for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM pg_extension;
+~~~
+
+~~~
+  schema_name  |    table_name     | type  | owner | estimated_row_count
+---------------+-------------------+-------+-------+----------------------
+  pg_extension | geography_columns | table | NULL  |                NULL
+  pg_extension | geometry_columns  | table | NULL  |                NULL
+  pg_extension | spatial_ref_sys   | table | NULL  |                NULL
+(3 rows)
+~~~
+
+## Querying `pg_extension` tables
+
+You can run [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) on the tables in `pg_extension`.
+
+{{site.data.alerts.callout_success}}
+To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Unless specified otherwise, queries to `pg_extension` assume the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+{{site.data.alerts.end}}
+
+For example, to return the `pg_extension` table with additional information about indexes in the `movr` database, you can query the `pg_extension.pg_indexes` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM movr.pg_extension.pg_indexes;
+~~~
+
+~~~
+   crdb_oid  | schemaname |         tablename          |                   indexname                   | tablespace |                                                            indexdef
+-------------+------------+----------------------------+-----------------------------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------
+  2055313241 | public     | users                      | users_pkey                                    | NULL       | CREATE UNIQUE INDEX users_pkey ON movr.public.users USING btree (city ASC, id ASC)
+  1795576970 | public     | vehicles                   | vehicles_pkey                                 | NULL       | CREATE UNIQUE INDEX vehicles_pkey ON movr.public.vehicles USING btree (city ASC, id ASC)
+  1795576969 | public     | vehicles                   | vehicles_auto_index_fk_city_ref_users         | NULL       | CREATE INDEX vehicles_auto_index_fk_city_ref_users ON movr.public.vehicles USING btree (city ASC, owner_id ASC)
+   450499963 | public     | rides                      | rides_pkey                                    | NULL       | CREATE UNIQUE INDEX rides_pkey ON movr.public.rides USING btree (city ASC, id ASC)
+   450499960 | public     | rides                      | rides_auto_index_fk_city_ref_users            | NULL       | CREATE INDEX rides_auto_index_fk_city_ref_users ON movr.public.rides USING btree (city ASC, rider_id ASC)
+   450499961 | public     | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles | NULL       | CREATE INDEX rides_auto_index_fk_vehicle_city_ref_vehicles ON movr.public.rides USING btree (vehicle_city ASC, vehicle_id ASC)
+  2315049508 | public     | vehicle_location_histories | vehicle_location_histories_pkey               | NULL       | CREATE UNIQUE vehicle_location_histories_pkey ON movr.public.vehicle_location_histories USING btree (city ASC, ride_id ASC, "timestamp" ASC)
+   969972501 | public     | promo_codes                | promo_codes_pkey                              | NULL       | CREATE UNIQUE INDEX promo_codes_pkey ON movr.public.promo_codes USING btree (code ASC)
+   710236230 | public     | user_promo_codes           | user_promo_codes_pkey                         | NULL       | CREATE UNIQUE INDEX user_promo_codes_pkey ON movr.public.user_promo_codes USING btree (city ASC, user_id ASC, code ASC)
+(9 rows)
+~~~
+
+## See also
+
+- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
+- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
+- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})

@@ -5,9 +5,9 @@ layout: null
 {% if site.baseurl == "/docs" %}
 / /docs/ 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
-/docs/api/* https://cockroachdb-api-docs.netlify.com/docs/api/:splat 200!
-/docs/tutorials/* /docs/interactive-tutorials/:splat 301!
-/docs/interactive-tutorials/* https://cockroachdb-interactivetutorials-docs.netlify.com/docs/tutorials/:splat 200!
+/docs/api/* https://cockroachdb-api-docs.netlify.app/docs/api/:splat 200
+/docs/tutorials/* /docs/interactive-tutorials/:splat 301
+/docs/interactive-tutorials/* https://cockroachdb-interactivetutorials-docs.netlify.app/docs/interactive-tutorials/:splat 200
 {% assign major_versions = site.data.versions | map: "major_version" -%}
 
 {%- for r in site.data.redirects -%}

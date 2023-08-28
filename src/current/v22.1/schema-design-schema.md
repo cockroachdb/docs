@@ -152,7 +152,9 @@ $ cockroach sql \
 
 You're now ready to start adding tables to the `max_schema` user-defined schema as the `max` user, and to the `abbey_schema` user-defined schema as the `abbey` user.
 
-For guidance on creating tables, see at [Create a Table](schema-design-table.html).
+To use a user-defined schema when connecting to your cluster using a connection URL, use the [`options` parameter]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters) and set the `search_path` session variable to the schema name. Refer to the [example]({% link {{ page.version.version }}/connection-parameters.md %}#example-uri-for-connecting-to-a-database-with-a-user-defined-schema).
+
+For guidance on creating tables, see at [Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}).
 
 ## What's next?
 

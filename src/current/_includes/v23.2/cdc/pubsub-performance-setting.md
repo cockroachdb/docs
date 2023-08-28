@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+Enable the `changefeed.new_pubsub_sink_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to improve the throughput of changefeeds emitting to {% if page.name == "changefeed-sinks.md" %} Pub/Sub sinks. {% else %} [Pub/Sub sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub). {% endif %}
+{{site.data.alerts.end}}
