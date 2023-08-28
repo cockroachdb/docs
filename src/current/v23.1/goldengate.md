@@ -10,7 +10,7 @@ docs_area: migrate
 - [Configure Oracle GoldenGate for CockroachDB](#configure-oracle-goldengate-for-cockroachdb)
 - [Set up Extract](#set-up-extract)
 - [Set up Replicat](#set-up-replicat)
-- [Bulk export](#bulk-export)
+- [Bulk replication](#bulk-replication)
 
 As of this writing, GoldenGate supports the following database [sources](https://docs.oracle.com/en/middleware/goldengate/core/21.3/coredoc/configure-databases.html):
 
