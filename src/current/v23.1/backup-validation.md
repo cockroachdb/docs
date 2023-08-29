@@ -11,7 +11,7 @@ You can validate a backup of a [cluster]({% link {{ page.version.version }}/back
 
 1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. Refer to [Validate backup files](#validate-backup-files) for an example.
 1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any rows. Refer to [Validate a backup is restorable](#validate-a-backup-is-restorable) for an example.
-1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all rows from external storage, verify checksums, and discard the rows before writing them to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable) for an example.
+1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all rows from external storage, verify checksums, and discard the rows before writing them to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable) for an example. 
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
