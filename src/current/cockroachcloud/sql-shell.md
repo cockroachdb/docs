@@ -34,4 +34,5 @@ To view this page, select a cluster from the [**Clusters** page](cluster-managem
 
 ## See also
 
+- [`cockroach sql`]({% link /{{ site.current_cloud_version }}/cockroach-sql.md %})
 - [Learn CockroachDB SQL]({% link /{{ site.current_cloud_version }}/learn-cockroachdb-sql.md %})
