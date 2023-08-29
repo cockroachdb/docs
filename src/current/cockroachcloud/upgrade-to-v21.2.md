@@ -5,15 +5,15 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v21.2](../releases/v21.2.html) is available, an [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v21.2](https://www.cockroachlabs.com/docs/releases/v21.2) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
-Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy](upgrade-policy.html).
+Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [upgrade policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to v21.2, you must be running v21.1. If you are not running v21.1, first [upgrade to v21.1](upgrade-to-v21.1.html). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
+To upgrade to v21.2, you must be running v21.1. If you are not running v21.1, first [upgrade to v21.1]({% link cockroachcloud/upgrade-to-v21.1.md %}). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
 
 ## Step 2. Select your cluster size
 
@@ -27,20 +27,20 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 ## Step 3. Understand the upgrade process
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
-In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/v21.2/multi-active-availability) design.
 
-Approximately 72 hours after all nodes are running v21.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after all nodes are running v21.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v21.2.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console.
 </section>
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, complete the following steps.
+Before starting the upgrade, complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
@@ -48,19 +48,19 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 Your cluster will be unavailable while its single node is stopped and restarted with v21.2. Prepare your application for this brief downtime, typically a few minutes.
 
-The [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) pages in the {{ site.data.products.db }} Console will also be disabled during this time.
+The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) pages in the CockroachDB {{ site.data.products.cloud }} Console will also be disabled during this time.
 
 </section>
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.2](../releases/v21.2.html#v21-2-0-backward-incompatible-changes). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in v21.2](https://www.cockroachlabs.com/docs/releases/v21.2#v21-2-0-backward-incompatible-changes). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
 To start the upgrade process:
 
-1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
+1. [Sign in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 
 1. In the **Clusters** list, select the cluster you want to upgrade.
 
@@ -84,7 +84,7 @@ If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v
 
 ### Monitor your application
 
-Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [manually trigger finalization](#finalize-the-upgrade).
 
@@ -94,19 +94,19 @@ Use the [DB Console](tools-page.html) or your own tooling to monitor your applic
 
 Most v21.2 features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-- **Expression indexes:** [Indexes on expressions](../v21.2/expression-indexes.html) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
-- **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](../v21.2/alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](../v21.2/show-default-privileges.html).
-- **Bounded staleness reads:** [Bounded staleness reads](../v21.2/follower-reads.html#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](../v21.2/functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
-- **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](../v21.2/placement-restricted.html) statement to constrain the replica placement for a [multi-region database](../v21.2/multiregion-overview.html)'s [regional tables](../v21.2/regional-tables.html) to the [home regions](../v21.2/set-locality.html#crdb_region) associated with those tables.
-- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](../v21.2/add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](../v21.2/update.html) or [`UPSERT`](../v21.2/upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+- **Expression indexes:** [Indexes on expressions](https://www.cockroachlabs.com/docs/v21.2/expression-indexes) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
+- **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](https://www.cockroachlabs.com/docs/v21.2/alter-default-privileges) and [`SHOW DEFAULT PRIVILEGES`](https://www.cockroachlabs.com/docs/v21.2/show-default-privileges).
+- **Bounded staleness reads:** [Bounded staleness reads](https://www.cockroachlabs.com/docs/v21.2/follower-reads#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](https://www.cockroachlabs.com/docs/v21.2/functions-and-operators). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
+- **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](https://www.cockroachlabs.com/docs/v21.2/placement-restricted) statement to constrain the replica placement for a [multi-region database](https://www.cockroachlabs.com/docs/v21.2/multiregion-overview)'s [regional tables](https://www.cockroachlabs.com/docs/v21.2/regional-tables) to the [home regions](https://www.cockroachlabs.com/docs/v21.2/set-locality#crdb_region) associated with those tables.
+- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](https://www.cockroachlabs.com/docs/v21.2/add-column#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](https://www.cockroachlabs.com/docs/v21.2/update) or [`UPSERT`](https://www.cockroachlabs.com/docs/v21.2/upsert) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
 
-For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](../releases/v21.2.html).
+For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](https://www.cockroachlabs.com/docs/releases/v21.2).
 
 ### Roll back the upgrade
 
 If you see unexpected behavior, you can roll back the upgrade during the 72-hour window.
 
-To stop the upgrade and roll back to v21.1, click **Roll back** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Roll back upgrade**.
+To stop the upgrade and roll back to v21.1, click **Roll back** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Roll back upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 During rollback, nodes will be reverted to v21.1 one at a time without interrupting the cluster's health and availability.
@@ -124,11 +124,11 @@ If everything looks good, you can wait for the upgrade to automatically finalize
 
 The upgrade is automatically finalized after 72 hours.
 
-To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
+To manually finalize the upgrade, click **Finalize** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Finalize upgrade**.
 
 After finalization, all [temporary limitations](#respect-temporary-limitations) will be lifted, and all v21.2 features are available for use. However, it will no longer be possible to roll back to v21.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 ## See also
 
-- [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v21.2 Release Notes](../releases/v21.2.html)
+- [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB v21.2 Release Notes](https://www.cockroachlabs.com/docs/releases/v21.2)

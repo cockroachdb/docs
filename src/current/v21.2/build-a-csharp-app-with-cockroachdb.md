@@ -102,7 +102,7 @@ Where `{username}` and `{password}` are the database username and password you c
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. In the {{ site.data.products.db }} Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
+1. In the CockroachDB {{ site.data.products.cloud }} Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
 
 1. In a text editor, modify the connection parameters in `Program.cs` with the settings to connect to your cluster:
 
@@ -121,7 +121,7 @@ connStringBuilder.TrustServerCertificate = true;
 Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{host-name}` is the name of the {{ site.data.products.db }} free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `{host-name}` is the name of the CockroachDB {{ site.data.products.cloud }} free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - `{routing-id}` is your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </section>

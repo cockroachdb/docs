@@ -35,7 +35,7 @@ Complete the following items before starting this tutorial:
 
         This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for the migration to succeed.
+- If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for the migration to succeed.
     {{site.data.alerts.callout_danger}}
     You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
     {{site.data.alerts.end}}
@@ -46,7 +46,7 @@ Complete the following items before starting this tutorial:
     - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-test-and-update-your-schema).
+    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview](migration-overview.html#step-1-test-and-update-your-schema).
     {{site.data.alerts.end}}
 
 As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
@@ -79,7 +79,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
 1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{serverless-hostname}.{database-name}`. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
+    To connect to a CockroachDB {{ site.data.products.serverless }} cluster, set the **Database name** to `{serverless-hostname}.{database-name}`. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
     {{site.data.alerts.end}}
     <img src="{{ 'images/v22.2/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.
@@ -154,7 +154,7 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ### AWS PrivateLink
 
-If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization](../cockroachcloud/network-authorization.html#aws-privatelink).
+If using CockroachDB {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with CockroachDB {{ site.data.products.dedicated }}, see [Network Authorization](../cockroachcloud/network-authorization.html#aws-privatelink).
 
 ### `BatchApplyEnabled`
 
@@ -190,6 +190,10 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 - If you are migrating from PostgreSQL, are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), and have selected **Enable validation** in your [task settings](#step-2-2-task-settings), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation](collate.html) such as `COLLATE "en_US"` in CockroachDB.
+
+- A migration to a [multi-region cluster](multiregion-overview.html) using AWS DMS will fail if the target database has [regional by row tables](multiregion-overview.html#regional-by-row-tables). This is because the `COPY` statement used by DMS is unable to process the `crdb_region` column in regional by row tables.
+
+    To prevent this error, [set the regional by row table localities to `REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-row) and perform the migration. After the DMS operation is complete, [set the table localities to `REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row).
 
 ## Troubleshooting common issues
 
@@ -334,7 +338,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 ## See Also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [`cockroach demo`](cockroach-demo.html)
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)

@@ -7,17 +7,17 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
-This page shows you how to connect to your {{ site.data.products.dedicated }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
+This page shows you how to connect to your CockroachDB {{ site.data.products.dedicated }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
 
 ## Before you start
 
-- [Create a cluster](create-your-cluster.html).
-- [Create a SQL user](managing-access.html#create-a-sql-user).
-- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
+- [Create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
+- [Create a SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters]({% link cockroachcloud/network-authorization.md %})
 
 ## Authorize your network
 
-By default, {{ site.data.products.dedicated }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. Dedicated clusters can accept connections via two types of authorized network:
+By default, CockroachDB {{ site.data.products.dedicated }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. Dedicated clusters can accept connections via two types of authorized network:
 
 - Allowed IP address ranges on the internet.
 - Cloud-provider-specific peer networking options:
@@ -25,14 +25,14 @@ By default, {{ site.data.products.dedicated }} clusters are locked down to all n
     - Amazon Web Services (AWS) Private link
 
 {{site.data.alerts.callout_info}}
-Removing or adding an authorized network on your {{ site.data.products.dedicated }} cluster may take a few seconds to take effect.
+Removing or adding an authorized network on your CockroachDB {{ site.data.products.dedicated }} cluster may take a few seconds to take effect.
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/authorize-your-clusters-networks.md %}
 
 1. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
 
-    The DB Console is where you can observe your cluster's health and performance. For more information, see [Tools Page - Access the DB Console](tools-page.html#access-the-db-console).
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
 
 1. Click **Apply**.
 
@@ -42,11 +42,11 @@ GCP VPC Peering and AWS PrivateLink allow customers to establish SQL access to t
 
 VPC peering is available only for GCP clusters, and AWS PrivateLink is available for AWS clusters.
 
-To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your VPC or private endpoint. For more information, refer to [Network Authorization for {{ site.data.products.dedicated }} clusters: GCP VPC Peering](network-authorization.html#vpc-peering) and [Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
+To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your VPC or private endpoint. For more information, refer to [Network Authorization for CockroachDB {{ site.data.products.dedicated }} clusters: GCP VPC Peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [Network Authorization for CockroachDB {{ site.data.products.dedicated }} clusters: AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
-AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
+AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
 
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), Azure Private Link is not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 #### VPC Peering
 
@@ -72,14 +72,14 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
       For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-gcp-vpc-peering-or-aws-privatelink).
 
       For GCP clusters, you can select **VPC Peering** if you have already:
-    - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
+    - [Enabled VPC peering while creating your cluster]({% link cockroachcloud/create-your-cluster.md %}#step-7-enable-vpc-peering-optional)
     - [Established a VPC Peering connection](#establish-gcp-vpc-peering-or-aws-privatelink)
 
 1. From the **User** dropdown, select the SQL user you created.
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [Default databases](../{{site.current_cloud_version}}/show-databases.html#preloaded-databases).
+    The default database is `defaultdb`. For more information, see [Default databases](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-databases#preloaded-databases).
 
 1. Click **Next**.
 
@@ -87,7 +87,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
-        <button class="filter-button page-level" data-scope="connection-string">Connection string</button>
+        <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 
@@ -95,7 +95,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-To connect to your cluster with the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html):
+To connect to your cluster with the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql):
 
 1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
@@ -105,9 +105,7 @@ To connect to your cluster with the [built-in SQL client](../{{site.current_clou
         <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
-
-    {% include cockroachcloud/download-the-binary.md %}
+1. {% include cockroachcloud/download-the-binary.md %}
 
 1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
@@ -115,21 +113,21 @@ To connect to your cluster with the [built-in SQL client](../{{site.current_clou
 
 1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
 
-1. Copy the [`cockroach sql`](../{{site.current_cloud_version}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
+1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string.md %}
 
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
 
 1. Enter the SQL user's password and hit enter.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page. Refer to: [Change a User's password](../cockroachcloud/managing-access.html#change-a-sql-users-password).
+    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page. Refer to: [Change a User's password](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#change-a-sql-users-password).
     {{site.data.alerts.end}}
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 
   </section>
 
@@ -151,7 +149,7 @@ To connect to your cluster with your application, use the connection string prov
 
 1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}:
+1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachDB {{ site.data.products.cloud }}:
 
     <section class="filter-content" markdown="1" data-scope="mac">
 
@@ -185,19 +183,19 @@ To connect to your cluster with your application, use the connection string prov
     {% include cockroachcloud/postgresql-special-characters.md %}
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html)
-- [Build a Go App with CockroachDB](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html)
-- [Build a Java App with CockroachDB](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html)
+- [Build a Python App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb)
 
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-To connect to your cluster with a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html), use the connection parameters provided in the Console.
+To connect to your cluster with a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools), use the connection parameters provided in the Console.
 
 1. From the cluster's **Details** page, click **Connect**.
 1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
@@ -207,5 +205,5 @@ To connect to your cluster with a [CockroachDB-compatible tool](../{{site.curren
 
 ## What's next
 
-- [Build a "Hello, World" app](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Build a "Hello, World" app](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})

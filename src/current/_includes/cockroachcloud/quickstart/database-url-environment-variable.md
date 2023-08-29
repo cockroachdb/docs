@@ -23,5 +23,5 @@ The code sample uses the connection string stored in the environment variable `D
 </section>
 
 {{site.data.alerts.callout_success}}
-For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html).
+For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database).
 {{site.data.alerts.end}}

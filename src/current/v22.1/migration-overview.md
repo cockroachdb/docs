@@ -12,7 +12,7 @@ This page summarizes the steps of migrating a database to CockroachDB:
 1. [Test and update your application.](#step-3-test-and-update-your-application)
 
 {{site.data.alerts.callout_info}}
-If you need to migrate data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
+If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Test and update your schema
@@ -26,7 +26,7 @@ You will likely need to update your schema by converting the data definition sta
 
 If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, use the CockroachDB MOLT (Migrate Off Legacy Technology) tools:
 
-- [Use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database with the converted schema.
+- [Use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the CockroachDB {{ site.data.products.cloud }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database with the converted schema.
 - [Move your data](#step-2-move-your-data-to-cockroachdb) to the new database using [AWS DMS](aws-dms.html).
 
 ### Unimplemented features
