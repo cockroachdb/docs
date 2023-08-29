@@ -16,8 +16,9 @@ To view this page, select a cluster from the [**Clusters** page](cluster-managem
 
 ## Limitations
 
-- All statements from the SQL Shell are within a transaction. Queries like SET CLUSTER SETTING are not supported.
-- The SQL Shell is currently session less.
+- All statements in the SQL Shell are executed within a transaction, so queries like [`SET CLUSTER SETTING`]({% link /{{ site.current_cloud_version }}/set-cluster-setting.md %}) are not supported.
+- The SQL Shell does not yet support [sessions]({% link /{{ site.current_cloud_version }}/sessions.md %}).
+- The SQL Shell is available only to users of enrolled organizations with the [cluster admin role]({% link cockroachcloud/managing-access.md %}).
 
 ## Functionality
 
@@ -33,4 +34,4 @@ To view this page, select a cluster from the [**Clusters** page](cluster-managem
 
 ## See also
 
-- [Learn CockroachDB SQL](../{{site.versions["stable"]}}/learn-cockroachdb-sql.html)
+- [Learn CockroachDB SQL]({% link /{{ site.current_cloud_version }}/learn-cockroachdb-sql.md %})
