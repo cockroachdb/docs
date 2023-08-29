@@ -19,9 +19,11 @@ The options that give the most validation coverage will increase the runtime of 
 
 Cockroach Labs recommends implementing the following validation plan to test your backups:
 
-1. Frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatability.  
-1. Regular [`verify_backup_table_data`](#validate-backup-table-data-is-restorable) restores: Tests that all data files are present and uncorrupted. 
-1. Periodic ["regular"](restore.html) restores: Full restores that completely validates a backup.  
+1. Very frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatability.  
+1. Frequent [`verify_backup_table_data`](#validate-backup-table-data-is-restorable) restores: Tests that all data files are present and uncorrupted. 
+1. Somewhat frequent ["regular"]({% link {{ page.version.version }}/restore.md %}) restores: Full restores that completely validates a backup.  
+
+A `schema_only` restore provides high confidence in the recoverability of your backup and a `verify_backup_table_data` restore provides a slightly higher confidence as it checks for corruptions. Only a complete `RESTORE` can provide full confidence in validating a backup. The actual frequency you should run backup validation tests depends on the criticality of your data, the rate of change in your database, and your organization's disaster recovery and business continuity requirements.
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 
