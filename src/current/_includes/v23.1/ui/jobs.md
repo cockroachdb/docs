@@ -8,7 +8,7 @@ The Jobs list is designed for you to manage pending work. It is not intended to 
 
 Use the **Jobs** table to see recently created and completed jobs.
 
-The following screenshot shows `ALTER TABLE` jobs:
+The following screenshot shows `BACKUP` jobs:
 
 <img src="{{ 'images/v23.1/ui_jobs_page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
@@ -24,7 +24,7 @@ The status line after the filters shows the number of jobs displayed and a messa
 
 The table is paginated with 20 jobs per page. Click the page controls following the table to traverse pages.
 
-The following are displayed for each job:
+The following columns are available for each job. Click **Columns** to select the columns to display in the table.
 
 Column | Description
 ----------|------------
@@ -33,7 +33,7 @@ Status | Current [job status](#job-status) or completion progress.
 Job ID | Unique job ID. This value is used to [pause]({{ link_prefix }}pause-job.html), [resume]({{ link_prefix }}resume-job.html), or [cancel]({{ link_prefix }}cancel-job.html) jobs.
 User Name | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
-Modified Time (UTC) | Date and time the job was modified.
+Last Modified Time (UTC) | Date and time the job was last modified.
 Last Execution Time (UTC) | Date and time the job was last executed.
 High-water Timestamp  | A checkpoint for a [changefeed job's progress]({{ link_prefix }}monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time]({{ link_prefix }}as-of-system-time.html).
 Execution Count | Number of times the job was executed.
@@ -59,7 +59,17 @@ Status | Description
  
 ## Job details
 
-The job ID, creation time, user, status, and error messages (if any) are also shown.
+The details show:
+
+- **Job ID**
+- **Status**
+- **Creation Time**
+- **Last Modified Time**
+- **Completed Time**
+- **Last Execution Time**
+- **Execution Count**
+- **User Name**
+- error messages (if any)
 
 <img src="{{ 'images/v23.1/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
