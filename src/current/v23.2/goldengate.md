@@ -50,7 +50,7 @@ For limitations on what PostgreSQL and CockroachDB features are supported, refer
 
 ## Configure Oracle GoldenGate for CockroachDB
 
-This section describes how to configure Oracle GoldenGate to treat CockroachDB as PostgreSQL. Note that this is discussing Oracle GoldenGate for PostgreSQL, the process that pulls data from trail files over to CockroachDB, which is a separate installation from Oracle GoldenGate for Oracle. For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.htm). The examples below will use a [CockroachDB {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
+This section describes how to configure Oracle GoldenGate to treat CockroachDB as PostgreSQL. Note that this is discussing Oracle GoldenGate for PostgreSQL, the process that pulls data from trail files over to CockroachDB, which is a separate installation from Oracle GoldenGate for Oracle. For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.htm). The examples below will use a [CockroachDB {{ site.data.products.serverless }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster.md).
 
 1. Set up the `ODBC.ini` file on Oracle GoldenGate host, and make sure your CockroachDB {{ site.data.products.serverless }} cluster's root cert is in the `TrustStore` path:
 
