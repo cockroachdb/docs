@@ -410,7 +410,7 @@ CREATE CHANGEFEED FOR TABLE table_name
 
 ### Define a key to determine the changefeed sink partition
 
-{% include_cached new-in.html version="v23.1" %} With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
+With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
