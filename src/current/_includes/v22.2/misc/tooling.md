@@ -20,7 +20,7 @@ Customers should contact their account team before moving production workloads t
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps]({% link {{ page.version.version }}/example-apps.md %}).
+Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling]({% link {{ page.version.version }}/transactions.md %}#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps]({% link {{ page.version.version }}/example-apps.md %}).
 {{site.data.alerts.end}}
 
 If you encounter problems using CockroachDB with any of the tools listed on this page, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
