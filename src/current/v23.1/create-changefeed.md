@@ -266,7 +266,9 @@ For guidance on the sink URI, refer to:
 
 ### Create a changefeed that filters and transforms change data
 
-Create a changefeed using [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter and transform change data before emitting it to a sink or [a SQL client](#create-a-sinkless-changefeed):
+[CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) can filter and transform change data before emitting it to a sink or [a SQL client](#create-a-sinkless-changefeed).
+
+You can adapt a changefeed with CDC queries by including `SELECT` and `WHERE` clauses in your `CREATE` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
