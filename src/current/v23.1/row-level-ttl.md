@@ -386,7 +386,7 @@ SELECT relname, reloptions FROM pg_class WHERE relname = 'events';
 
 ### Control how often the TTL job runs
 
-Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help). Cockroach Labs recommends setting `ttl_job_cron` to match the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting, which is the garbage collection interval for the cluster. The default value of `gc.ttlseconds` is 14400, or 4 hours. The CRON pattern for every four hours is `'0 */4 * * *'`.
+Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help). Cockroach Labs recommends setting `ttl_job_cron` to be equal to or longer than the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting, which is the garbage collection interval for the cluster. The default value of `gc.ttlseconds` is 14400, or 4 hours. The CRON pattern for every four hours is `'0 */4 * * *'`.
 
 To control the job interval at [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) time, add the storage parameter as shown below:
 
