@@ -37,15 +37,7 @@ Parameter | Description
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/on_conflict.html %}
 </div>
 
-Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB
-returns an error. To update the affected rows instead, use an `ON CONFLICT`
-clause containing the column(s) with the unique constraint
-and the `DO UPDATE SET` expression set to the column(s) to be updated
-(any `SET` expression supported by the [`UPDATE`]({% link {{ page.version.version }}/update.md %})
-statement is also supported here, including those with `WHERE`
-clauses). To prevent the affected rows from updating while allowing
-new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the
-[Update Values `ON CONFLICT`](#update-values-on-conflict) and [Do Not Update Values `ON CONFLICT`](#do-not-update-values-on-conflict) examples.
+Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update values `ON CONFLICT`](#update-values-on-conflict) and [Do not update values `ON CONFLICT`](#do-not-update-values-on-conflict) examples.
 
 If the values in the `SET` expression cause uniqueness conflicts,
 CockroachDB will return an error.
@@ -55,10 +47,7 @@ rather than inferring one using a column list, which is the default behavior.
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
-As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-statement. However, `UPSERT` does not let you specify the column(s) with
-the unique constraint; it always uses the column(s) from the primary
-key. Using `ON CONFLICT` is therefore more flexible.
+As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement. However, `UPSERT` does not let you specify the column(s) with the unique constraint; it always uses the column(s) from the primary key. Using `ON CONFLICT` is therefore more flexible.
 
 {% include {{page.version.version}}/sql/insert-vs-upsert.md %}
 

@@ -17,15 +17,15 @@ Assuming that columns `a` and `b` are the primary key, the following `UPSERT` an
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
+UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t (a, b, c)
-    VALUES (1, 2, 3)
-    ON CONFLICT (a, b)
-    DO UPDATE SET c = excluded.c;
+INSERT INTO t (a, b, c)
+  VALUES (1, 2, 3)
+  ON CONFLICT (a, b)
+  DO UPDATE SET c = excluded.c;
 ~~~
 
 If your statement considers uniqueness for columns other than primary key columns, you must use `INSERT ON CONFLICT`. For an example, see the [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
