@@ -47,7 +47,26 @@ rather than inferring one using a column list, which is the default behavior.
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
-As a short-hand alternative to the `ON CONFLICT` clause, you can use the [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement. However, `UPSERT` does not let you specify the column(s) with the unique constraint; it always uses the column(s) from the primary key. Using `ON CONFLICT` is therefore more flexible.
+As an alternative to `INSERT ... ON CONFLICT ... DO UPDATE`, you can use the [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement. For example, the following statements are equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO t (a, b, ..., n)
+VALUES ('1', '2', ..., 'n')
+ON CONFLICT DO UPDATE SET
+  a = '1',
+  b = '2',
+  ...
+  n = 'n';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+UPSERT INTO t (a, b, ..., n)
+VALUES ('1', '2', ..., 'n');
+~~~
+
+However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint used to check for conflicts during execution of `INSERT ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. Using `INSERT ... ON CONFLICT ... DO UPDATE` is therefore more flexible. For an example, see [Upsert that fails (conflict on non-primary key)]({% link {{ page.version.version }}/upsert.md %}#upsert-that-fails-conflict-on-non-primary-key).
 
 {% include {{page.version.version}}/sql/insert-vs-upsert.md %}
 
