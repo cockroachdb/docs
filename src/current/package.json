@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "front-matter": "^4.0.2",
-    "yaml": "^1.10.2"
+    "yaml": "^2.3.2"
   }
 }
