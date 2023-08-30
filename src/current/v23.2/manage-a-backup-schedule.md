@@ -13,11 +13,11 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Considerations
 
 {% include {{ page.version.version }}/backups/protected-timestamps.md %}
-
-{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Create a new backup schedule
 
