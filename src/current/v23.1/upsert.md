@@ -13,22 +13,22 @@ To read more about upserts, see our [Upsert in SQL: What is an Upsert, and When 
 
 ## `UPSERT` vs. `INSERT ON CONFLICT`
 
-Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements are equivalent:
+Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ... ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements are equivalent:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
+UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO t (a, b, c)
-    VALUES (1, 2, 3)
-    ON CONFLICT (a, b)
-    DO UPDATE SET c = excluded.c;
+INSERT INTO t (a, b, c)
+  VALUES (1, 2, 3)
+  ON CONFLICT (a, b)
+  DO UPDATE SET c = excluded.c;
 ~~~
 
-If your statement considers uniqueness for columns other than primary key columns, you must use `INSERT ON CONFLICT`. For an example, see the [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
+However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint used to check for conflicts during execution of `INSERT ... ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. You must therefore use `INSERT ... ON CONFLICT ... DO UPDATE` if your statement considers uniqueness for columns other than primary key columns. For an example, see [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
 
 {% include {{page.version.version}}/sql/insert-vs-upsert.md %}
 
