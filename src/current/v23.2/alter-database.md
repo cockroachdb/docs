@@ -369,8 +369,6 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... RESET {session
 
 `ALTER DATABASE ... SET {session variable}` sets the default value of a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for all future sessions on the database. This command does **not** alter the session setting of the current session.
 
-By default, session variable values are set for the duration of the current session.
-
 #### Required privileges
 
 To set the `role` session variable, the current user must be a member of the `admin` role, or a member of the target role.
