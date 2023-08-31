@@ -304,7 +304,7 @@ This will verify that the schema has zero errors and can be [migrated](#migrate-
 You can migrate the schema directly to a new CockroachDB {{ site.data.products.cloud }} database when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
 
 {{site.data.alerts.callout_success}}
-If you want to migrate to a CockroachDB {{ site.data.products.core }} database, you can [export the schema](#xport-the-schema).
+If you want to migrate to a CockroachDB {{ site.data.products.core }} database, you can [export the schema](#export-the-schema).
 {{site.data.alerts.end}}
 
 To migrate the schema, click **Migrate Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
