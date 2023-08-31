@@ -9,40 +9,52 @@ docs_area: get_started
 
 This tutorial shows you how build a simple C# application with CockroachDB and the .NET Npgsql driver.
 
-## Step 1. Start CockroachDB
+## Start CockroachDB
 
 {% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 2. Create a .NET project
+## Create a .NET project
 
 In your terminal, run the following commands:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ dotnet new console -o cockroachdb-test-app
+dotnet new console -o cockroachdb-test-app
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cd cockroachdb-test-app
+cd cockroachdb-test-app
 ~~~
 
 The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-test-app` command puts you into the newly created app directory.
 
-## Step 3. Install the Npgsql driver
+## Install the Npgsql driver
 
 Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ dotnet add package Npgsql
+dotnet add package Npgsql
 ~~~
 
-## Step 4. Create a database
+## Create a database
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-## Step 5. Run the C# code
+## Set the connection string
+
+Choose your OS:
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="mac"><strong>macOS</strong></button>
+    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
+    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
+</div>
+
+{% include {{page.version.version}}/connect/connection-url.md %}
+
+## Run the C# code
 
 Now that you have set up your project and created a database, in this section you will:
 
@@ -55,68 +67,12 @@ Now that you have set up your project and created a database, in this section yo
 
 Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
-<section class="filter-content" markdown="1" data-scope="local">
-
 {% include_cached copy-clipboard.html %}
 ~~~ c#
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
 ~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{% include_cached copy-clipboard.html %}
-~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/basic.cs %}
-~~~
-
-</section>
-
-#### Update the connection parameters
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-In a text editor, modify `Program.cs` with the settings to connect to the demo cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ csharp
-connStringBuilder.Host = "{localhost}";
-connStringBuilder.Port = 26257;
-connStringBuilder.SslMode = SslMode.VerifyFull;
-connStringBuilder.Username = "{username}";
-connStringBuilder.Password = "{password}";
-connStringBuilder.Database = "bank";
-~~~
-
-Where `{username}` and `{password}` are the database username and password you created earlier.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-1. In the CockroachDB {{ site.data.products.cloud }} Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
-
-1. In a text editor, modify the connection parameters in `Program.cs` with the settings to connect to your cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ csharp
-connStringBuilder.Host = "{host-name}";
-connStringBuilder.Port = 26257;
-connStringBuilder.SslMode = SslMode.VerifyFull;
-connStringBuilder.Username = "{username}";
-connStringBuilder.Password = "{password}";
-connStringBuilder.Database = "bank";
-~~~
-
-Where:
-
-- `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{host-name}` is the name of the CockroachDB {{ site.data.products.cloud }} host (e.g., `blue-dog-4300.6wr.cockroachlabs.cloud`).
-
-</section>
-
-#### Run the code
+#### Run the basic example
 
 Compile and run the code:
 
@@ -129,15 +85,15 @@ The output should be:
 
 ~~~
 Initial balances:
-	account 1: 1000
-	account 2: 250
+ account 1: 1000
+ account 2: 250
 ~~~
 
 ### Transaction example (with retry logic)
 
-#### Get the code
+#### Modify the code
 
-Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below. Make sure to keep the connection parameters the same as in the [previous example](#update-the-connection-parameters).
+Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -157,31 +113,31 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 </section>
 
-#### Run the code
+#### Run the transactions example
 
 This time, running the code will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ dotnet run
+dotnet run
 ~~~
 
 The output should be:
 
 ~~~
 Initial balances:
-	account 1: 1000
-	account 2: 250
+ account 1: 1000
+ account 2: 250
 Final balances:
-	account 1: 900
-	account 2: 350
+ account 1: 900
+ account 2: 350
 ~~~
 
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts'
+~~~ sql
+SELECT id, balance FROM accounts;
 ~~~
 
 ~~~
@@ -191,7 +147,6 @@ $ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts
    2 |     350
 (2 rows)
 ~~~
-
 
 ## What's next?
 
