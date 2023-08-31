@@ -5,7 +5,7 @@ Privilege | Levels | Description
 `CANCELQUERY` | System | Grants the ability to cancel queries.
 `CHANGEFEED` | Table | Grants the ability to create [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) on a table.
 `CONNECT` | Database | Grants the ability to view a database's metadata, which consists of objects in a database's `information_schema` and `pg_catalog` system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running `SHOW DATABASES`. The `CONNECT` privilege is also required to run backups of the database.
-`CREATE` | Database, Schema, Table, Sequence | Grants the ability to create objects at the database, schema, table, or sequence level.
+`CREATE` | Database, Schema, Table, Sequence | Grants the ability to create objects at the database, schema, table, or sequence level. When applied at the database level, grants the ability to configure [multi-region zone configs]({% link {{ page.version.version }}/zone-config-extensions.md %}).
 `DELETE` | Table, Sequence | Grants the ability to delete objects at the table or sequence level.
 `DROP` | Database, Table, Sequence | Grants the ability to drop objects at the database, table, or sequence level.
 `EXECUTE` | Function | Grants the ability to execute [functions]({% link {{ page.version.version }}/functions-and-operators.md %}).
