@@ -13,9 +13,9 @@ By default, all tables in a multi-region database are _regional_ tables—that i
 
 For information about the table localities CockroachDB supports, see the sections:
 
-- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from _a single region_.
-- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from _a single region_. Different rows in the table can be optimized for access from _different regions_.
-- [Global tables](#global-tables) are optimized for low-latency reads from _all regions_.
+- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from **a single region**.
+- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from **a single region**. Different rows in the table can be optimized for access from **different regions**.
+- [Global tables](#global-tables) are optimized for low-latency reads from **all regions**.
 
 {{site.data.alerts.callout_info}}
 Table locality settings are used for optimizing latency under different read and write patterns. If you are optimizing for read and write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).
