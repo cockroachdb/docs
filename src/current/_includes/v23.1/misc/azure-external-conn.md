@@ -1,0 +1,1 @@
+When creating an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for Azure Blob Storage, it is necessary to use `azure-storage://` as the scheme in the `CREATE EXTERNAL CONNECTION` statement.

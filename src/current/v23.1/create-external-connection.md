@@ -66,6 +66,10 @@ Storage or sink      | Operation support
 [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) | Backups, restores, imports, exports, changefeeds
 [Webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) | Changefeeds
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/azure-external-conn.md %}
+{{site.data.alerts.end}}
+
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 
 ### Changefeed sinks as external connections

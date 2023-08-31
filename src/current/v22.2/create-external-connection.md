@@ -66,6 +66,10 @@ Storage or sink      | Operation support
 [Nodelocal](use-cloud-storage.html) | Backups, restores, imports, exports
 [Userfile](use-userfile-storage.html) | Backups, restores, imports, exports
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/azure-external-conn.md %}
+{{site.data.alerts.end}}
+
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 
 ### Changefeed sinks as external connections
