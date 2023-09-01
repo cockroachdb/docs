@@ -30,11 +30,77 @@ To execute a SQL statement, enter it in the input field and either click **Run**
 
 You can select any statement that you've previously run and copy it, edit it, or re-run it.
 
-### Example
+## Example workflow
 
-The following example is adapted from the Learn Cockroach SQL documentation.
+The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) and have [access](#limitations) to the SQL Shell.
+
+1. In the SQL Shell, run [`CREATE TABLE`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/create-table.html) followed by a table name, the column names, and the [data type](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/data-types.html) and [constraint](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/constraints.html), if any, for each column:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE accounts (
+        id INT PRIMARY KEY,
+        balance DECIMAL
+    );
+    ~~~
+
+    After a few seconds, the statement will succeed.
+
+1. Insert rows into the table using [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO accounts VALUES (1, 10000.50);
+    ~~~
+
+1. Click the copy icon next to the successful `INSERT INTO` statement, paste it into the input field, edit the values, and run it again:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO accounts VALUES (2, 20000.50);
+    ~~~
+
+1. Query the table with [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT balance FROM accounts;
+    ~~~
+
+    ~~~
+      balance
+    +----------+
+      10000.50
+      25000.00
+       8100.73
+       9400.10
+      NULL
+      NULL
+    (6 rows)
+    ~~~
+
+1. Edit the previous statement to use the `*` wildcard:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM accounts;
+    ~~~
+
+    ~~~
+      id | balance
+    +----+----------+
+       1 | 10000.50
+       2 | 25000.00
+       3 |  8100.73
+       4 |  9400.10
+       5 | NULL
+       6 | NULL
+    (6 rows)
+    ~~~
+
+1. Click **Export results** to download a CSV file of the output.
 
 ## See also
 
 - [`cockroach sql`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroach-sql.html)
-- [Learn CockroachDB SQL](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/learn-cockroach-sql.html)
+- [Learn CockroachDB SQL](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/learn-cockroachdb-sql.html)
