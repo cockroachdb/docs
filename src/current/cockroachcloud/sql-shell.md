@@ -46,7 +46,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
     After a few seconds, the statement will succeed.
 
-1. Insert rows into the table using [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
+1. Insert rows into the table using [`INSERT INTO`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -60,7 +60,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
     > INSERT INTO accounts VALUES (2, 20000.50);
     ~~~
 
-1. Query the table with [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+1. Query the table with [`SELECT`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
