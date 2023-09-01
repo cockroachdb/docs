@@ -54,6 +54,7 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
 
     ~~~
     # This is needed so that all the Postgres libraries can be found
+    # The path is a concatenation of your PostgreSQL libraries and GoldenGate installation directory
     export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
 
     # This is needed so that OGG knows where to look for connection details for the database
@@ -70,10 +71,12 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
 
     [ODBC]
     IANAAppCodePage=4
+    # The following path is your Oracle GoldenGate for PostgreSQL installation directory
     InstallDir=/u01/ggs-pg
 
 
     [CRDBSERVERLESS]
+    # The following driver will always point to your Oracle GoldenGate for PostgreSQL installation
     Driver=/u01/ggs-pg/lib/GGpsql25.so
     Description=DataDirect 7.1 PostgreSQL Wire Protocol
     Database={host name}.defaultdb
@@ -110,6 +113,10 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
 
 [Extract](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.htm) is Oracle GoldenGate's data capture mechanism that is configured to run against the source database.
 
+{{site.data.alerts.callout_success}}
+The steps in this section should be run on a machine and in a directory where Oracle GoldenGate for Oracle is installed.
+{{site.data.alerts.end}}
+
 1. In a terminal:
 
     ~~~
@@ -143,7 +150,7 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
     start epos
     ~~~
 
-1. Check the status of the Extract by adding a row to `oggadm1.testtable`, committing it to the source, and running the following:
+1. Check the status of the Extract by adding a row to `oggadm1.testtable` and committing it to the source:
 
     ~~~
     # CREATE TABLE IN ORACLE FIRST
@@ -156,7 +163,7 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
     COMMIT;
 
 
-    # IN GGSCI in another terminal
+    # IN GGSCI in another terminal, check that extract process is working correctly
     GGSCI ({host-name} as oggadm1@ORCL) 28> view param epos
     EXTRACT epos
     USERIDALIAS gg_source
@@ -203,6 +210,10 @@ This section describes how to configure Oracle GoldenGate to treat CockroachDB a
 ## Set up Replicat
 
 [Replicat](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.htm) is an Oracle process that reads trail files and delivers data to a target database.
+
+{{site.data.alerts.callout_success}}
+The steps in this section should be run on a machine and in a directory where Oracle GoldenGate for PostgreSQL is installed.
+{{site.data.alerts.end}}
 
 1. First, make sure you can log into the database from `./ggsci`:
 
