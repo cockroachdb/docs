@@ -87,8 +87,8 @@ Optionally, you can restrict the AWS accounts that can connect to your cluster p
 Keep the following in mind:
 
 - This feature can be enabled only on clusters created after your organization is enrolled in the Limited Access.
-- After your organization is enrolled, an attempt to configure a private endpoint from an AWS account has not been added as a trusted owner, will fail.
-- After your organization is enrolled in the limited access, the feature cannot be disabled.
+- After your organization is enrolled, an attempt to configure a private endpoint from an AWS account that has not been added as a trusted owner will fail.
+- After your organization is enrolled in the Limited Access, the feature cannot be disabled.
 
 Your service account must have one of the following roles on the cluster, either directly or by inheritance:
 
