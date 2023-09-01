@@ -68,18 +68,13 @@ The following examples assume you have already [created a CockroachDB {{ site.da
     ~~~
 
     ~~~
-      balance
-    +----------+
-      10000.50
-      25000.00
-       8100.73
-       9400.10
-      NULL
-      NULL
-    (6 rows)
+         | balance
+    +----+----------+
+       1 | 10000.50
+       2 | 25000.00
     ~~~
 
-1. Edit the previous statement to use the `*` wildcard:
+1. Edit the executed `SELECT` statement to replace `balance` with the `*` wildcard symbol and click **Run**:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -87,16 +82,13 @@ The following examples assume you have already [created a CockroachDB {{ site.da
     ~~~
 
     ~~~
-      id | balance
+         | id | balance
     +----+----------+
-       1 | 10000.50
-       2 | 25000.00
-       3 |  8100.73
-       4 |  9400.10
-       5 | NULL
-       6 | NULL
-    (6 rows)
+      1  | 1 | 10000.50
+      2  | 2 | 25000.00
     ~~~
+    
+    Note that each line of a query's results will be numbered independently of the output. This is for readability and will not be shown in any exported data.
 
 1. Click **Export results** to download a CSV file of the output.
 
