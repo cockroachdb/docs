@@ -6,7 +6,7 @@ docs_area: stream_data
 ---
 
 {{site.data.alerts.callout_danger}}
-The configurations and settings explained on this page will have a significant impact on a changefeed's behavior and could potentially affect a cluster's performance. Thoroughly test before deploying any changes to productions.
+The configurations and settings explained on this page will have a significant impact on a changefeed's behavior and could potentially affect a cluster's performance. Thoroughly test before deploying any changes to production.
 {{site.data.alerts.end}}
 
 The following sections describe performance, settings, configurations, and details to tune [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}):
