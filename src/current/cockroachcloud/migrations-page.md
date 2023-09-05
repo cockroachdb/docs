@@ -141,8 +141,8 @@ If the credentials are valid, they will be added to the [**Credentials** table](
 {{site.data.alerts.callout_info}}
 The Schema Conversion Tool creates the following internal objects when you convert a schema:
 
-- A database prefixed with `_migration_internal_` is created on the {{ site.data.products.cloud }} cluster each time you [retry the migration](#retry-the-migration). These databases are removed when you [migrate the schema](#migrate-the-schema).
-- A table called `_migration_internal_statements` is created on the database you specify when you [migrate the schema](#migrate-the-schema). This table remains in case you wish to [export the schema](#export-the-schema).
+- A database prefixed with `_migration_internal_` is created on the {{ site.data.products.cloud }} cluster each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the {{ site.data.products.cloud }} cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a {{ site.data.products.cloud }} cluster](#migrate-the-schema).
 {{site.data.alerts.end}}
 
 ## Review the schema
