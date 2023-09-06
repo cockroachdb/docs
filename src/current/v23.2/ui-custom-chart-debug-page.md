@@ -39,6 +39,13 @@ The Y-axis label is the **Count**. A count of 1 represents 100% utilization. The
 
 Checking **Per Node** displays statistics for each node, which could show whether an individual node's CPU usage was higher or lower than the average.
 
+## Essential Metrics to Monitor
+
+For important metrics to visualize in a custom dashboard, refer to:
+
+- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+
 ## Available metrics
 
 {{site.data.alerts.callout_info}}
