@@ -1,5 +1,5 @@
 ---
-title: Cluster Single Sign-on (SSO) using a JSON web token (JWT)
+title: Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)
 summary: Overview of Cluster Single Sign-on (SSO) for CockroachDB {{ site.data.products.core }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
@@ -11,19 +11,15 @@ Cluster Single Sign-On (SSO) enables users to access the SQL interface of a Cock
 
 Users can authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT which can be copied out of the DB Console UI and used in a SQL connection string to authenticate to the cluster.
 
-This page describes:
+{{site.data.alerts.callout_info}}
+You might also be looking for:
 
-- The administrative procedure for configuring a cluster to accept JWT authentication and to provision JWTs through the DB Console's embedded authentication UI.
-- The SQL developer/operator procedure for generating a JWT token through the embedded authentication flow provided by the DB Console.
-- The SQL developer/operator procedure for authenticating to a cluster using a JWT token provisioned for their identity (either by the DB Console's embedded flow or directly from their IdP).
+- [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql).
+- [Single Sign-on (SSO) for DB Console](sso-db-console.html)
+{{site.data.alerts.end}}
+**Prerequisites**
 
-You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). This is an option for authenticating human users to cloud clusters, but does not work for {{ site.data.products.core }} clusters.
-
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
-
-## Prerequisites
-
-- You must have your cluster pre-configured for OIDC/SSO authentication. Refer to: [Single Sign-on (SSO) for DB Console](sso-sql.html)
+- You must have your cluster pre-configured for OIDC/SSO authentication. Refer to: [Single Sign-on (SSO) for DB Console](sso-db-console.html)
 
 - SQL users/credentials:
 
@@ -31,8 +27,35 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-cluste
 
 	- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
-## Configure your cluster to accept your external identity provider
+## Authenticate to your cluster
 
+For access to a CockroachDB cluster, an identity in your external IdP must correspond to a SQL user on the target cluster.
+
+The mapping from IdP identity to SQL username is defined in your cluster's [identity mapping](#identity-map-configuration).
+
+Refer to: [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}).
+
+{{site.data.alerts.callout_success}}
+This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
+{{site.data.alerts.end}}
+
+
+1. Obtain a token.
+
+Go to your cluster's DB Console and click the **generate token** button
+
+1. Use the token in place of a password in your database connection string.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
+~~~
+
+~~~txt
+Welcome to the cockroach SQL interface...
+~~~
+
+## Configure your cluster for SSO
 
 **Prerequisites**:
 
@@ -54,22 +77,11 @@ You must have the ability to update your cluster settings, which requires a SQL 
 | `.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
 | `.sql_port` | his display value informs users the port for their SQL connections. Default: `26257`.
 
-
-## Configure your cluster for DB Console-embedded IdP authentication and JWT generation
-
-The following settings, in the `server.oidc_authentication.generate_cluster_sso_token` namespace must be configured to enable DB Console-embedded JWT generation.
-
-### `.enabled`
-
-Defaults to `false`, must be set to `true` to enable embedded JWT generation.
-
-### `.use_token`
-
- (See below for overall data flow.)
-
-
 ### Update your cluster settings
 
+You can update your cluster settings with the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) SQL statement.
+
+You can also view all of your cluster settings 
 
 1. `enable` JWT SQL authentication to your cluster.
 
@@ -219,53 +231,27 @@ SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.use_to
 
 ## Identity Map configuration
 
-`server.identity_map.configuration`
+Th cluster setting `server.identity_map.configuration` holds your cluster's identity map configuration, which tells your cluster how to map external identities to SQL users. This is functionally similar to PostgreSQL's [User Name Map](https://www.postgresql.org/docs/current/auth-username-maps.html).
 
-This cluster setting takes the same format
+The format of an identity map configuration is a space-separated triple consisting of:
 
-Format: `<external issuer> <external user ID> <SQL username>`
+`<external issuer> <external user ID> <SQL username>`
 
-Specifies mapping of subject names to SQL usernames, for each allowed IdP.
+Examples:
 
-For example, a configuration of:
-'https://accounts.google.com 1232316645658094244789 roach';
-`https://accounts.google.com   /^([9-0]*)$   gcp_\1`
+- `https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1`
 
+    Maps every cockroachlabs email to a SQL user with the same username (i.e. the part of the email address to the left of the `@`), for example `docs@cockroachlabs.com` becomes `docs` |
 
-would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
+- `https://accounts.google.com 1232316645658094244789 roach`
 
-SET CLUSTER SETTING server.identity_map.configuration = 'https://accounts.google.com 114711666758098154948 todd';
+    Maps a single external identity with the hard-coded ID to the SQL user `roach`   |
 
+- `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
-## Authenticate to your cluster with your JWT token
-
-For access to a CockroachDB cluster, an identity in your external IdP must correspond to a SQL user on the target cluster.
-
-The mapping from IdP identity to SQL username is defined in your cluster's [identity mapping](#identity-map-configuration).
-  
-Refer to: [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}).
-
-{{site.data.alerts.callout_success}}
-This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
-{{site.data.alerts.end}}
-
-
-1. Obtain a token
-
-Go to the DB Console and click the button
-
-1.
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
-~~~
-
-~~~txt
-Welcome to the cockroach SQL interface...
-~~~
+    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`, e.g. `gcp_1234567` for a service account with ID `1234567`. 
 
 ## What's Next?
 
-- Read about [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
 - Learn more about [Authentication]({% link {{ page.version.version }}/authentication.md %}) in CockroachDB.
+- This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
