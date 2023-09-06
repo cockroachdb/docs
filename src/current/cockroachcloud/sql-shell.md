@@ -16,13 +16,13 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 
 ## Limitations
 
-- All statements in the SQL Shell are executed within a transaction, so queries like [`SET CLUSTER SETTING`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting.html) are not supported.
-- The SQL Shell does not yet support [sessions](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/sessions.html).
+- All statements in the SQL Shell are executed within a transaction, so queries like [`SET CLUSTER SETTING`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) are not supported.
+- The SQL Shell does not yet support [sessions](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sessions).
 - The SQL Shell is available only to users of enrolled organizations with the [Cluster Administrator or Cluster Operator role]({% link cockroachcloud/managing-access.md %}).
 
 ## Overview
 
-Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{database}`. Note that the user is the **Team member** you are logged into the {{ site.data.products.cloud }} Console as, not a SQL user, and you must have the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/managing-access.md %}) to use this SQL Shell. Other users can still access CockroachDB's [command line SQL shell](https://cockroachlabs.com/docs/{{site.versions["stable"]}}/cockroach-sql.html).
+Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{database}`. Note that the user is the **Team member** you are logged into the {{ site.data.products.cloud }} Console as, not a SQL user, and you must have the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/managing-access.md %}) to use this SQL Shell. Other users can still access CockroachDB's [command line SQL shell](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
 
 You can change the active database in the dropdown menu above the input field. If you create a new database in the SQL Shell, you will have to reload the page to refresh the database dropdown menu. Refreshing the page will also clear your activity.
 
@@ -34,7 +34,7 @@ You can select any statement that you've previously run and copy it, edit it, or
 
 The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) and have [access](#limitations) to the SQL Shell.
 
-1. In the SQL Shell, run [`CREATE TABLE`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/create-table.html) followed by a table name, the column names, and the [data type](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/data-types.html) and [constraint](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/constraints.html), if any, for each column:
+1. In the SQL Shell, run [`CREATE TABLE`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/create-table) followed by a table name, the column names, and the [data type](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/data-types) and [constraint](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/constraints), if any, for each column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -46,7 +46,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
     After a few seconds, the statement will succeed.
 
-1. Insert rows into the table using [`INSERT INTO`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
+1. Insert rows into the table using [`INSERT INTO`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/insert) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -60,7 +60,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
     > INSERT INTO accounts VALUES (2, 20000.50);
     ~~~
 
-1. Query the table with [`SELECT`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+1. Query the table with [`SELECT`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/select-clause) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -94,5 +94,5 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
 ## See also
 
-- [`cockroach sql`](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroach-sql.html)
-- [Learn CockroachDB SQL](https://cockroachlabs.com/docs/{{ site.current_cloud_version }}/learn-cockroachdb-sql.html)
+- [`cockroach sql`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroach-sql)
+- [Learn CockroachDB SQL](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/learn-cockroachdb-sql)
