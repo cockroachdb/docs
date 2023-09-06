@@ -1,29 +1,34 @@
 ---
-title: Network Latency Page
+title: Network Page
 summary: The Network Latency page displays round-trip latencies between all nodes in your cluster.
 toc: true
-docs_area: reference.db_console
 ---
 
-The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern]({% link {{ page.version.version }}/topology-patterns.md %}), or to identify nodes with unexpected latencies.
+The **Network** page displays round-trip latencies between all nodes in your cluster. This represents the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern]({% link {{ page.version.version }}/topology-patterns.md %}), and to identify nodes with unexpected latencies or connectivity issues.
 
-To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Network Latency** in the left-hand navigation.
+To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Network** in the left-hand navigation.
 
-## Sort and filter network latency
+## Sort and filter network latencies
 
-Use the **Sort By** menu to arrange the latency matrix by [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (e.g., cloud, region, availability zone, datacenter).
+Use the **Sort By** menu to arrange the network matrix by [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (e.g., cloud, region, availability zone, datacenter).
 
 Use the **Filter** menu to select specific nodes or localities to view.
 
 Select **Collapse Nodes** to display the mean latencies of each locality, depending on how the matrix is sorted. This is a way to quickly assess cross-regional or cross-cloud latency.
 
-## Understanding the Network Latency matrix
+## Interpret the network matrix
 
-Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher.
+Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher. Nodes with the lowest latency are displayed in darker green, and nodes with the highest latency are displayed in darker blue.
 
 <img src="{{ 'images/v23.2/ui_network_latency_matrix.png' | relative_url }}" alt="DB Console Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
 
-Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
+Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to display more details:
+
+- The direction of the connection marked by `From` and `To`.
+- Locality metadata for origin and destination.q
+- Round-trip latency.
+
+The page automatically refreshes every 30 seconds to show the most recent information.
 
 On a [typical multi-region cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
@@ -33,15 +38,37 @@ For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `
 
 ### No connections
 
-Nodes that have lost a connection are displayed in a separate color. This can help you locate a network partition in your cluster.
+Nodes that have completely lost connectivity are color-coded depending on connection status:
+
+- Orange with an exclamation mark indicates `unknown connection state`.
+- Red with a [no symbol](https://www.wikipedia.org/wiki/No_symbol) indicates `Failed connection`. 
+
+This information can help you diagnose a network partition in your cluster.
+
+<img src="{{ 'images/v23.2/ui_network_latency_matrix_suspect_node.png' | relative_url }}" alt="DB Console Network Latency suspect node" style="border:1px solid #eee;max-width:100%" />
+
+Hover over a cell to display more details:
+
+- The direction of the connection marked by `From` and `To`.
+- Locality metadata for origin and destination.
+- Connection status.
+- The error message that resulted from the most recent connection attempt.
+
+This specific information can help you understand the root cause of the connectivity issue.
 
 {{site.data.alerts.callout_info}}
-A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
+A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is disrupted in both directions. In an asymmetric partition, nodes can communicate in one direction but not the other.
 
 The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 {{site.data.alerts.end}}
 
-Click the **NO CONNECTIONS** link to see lost connections between nodes or [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality), if any are defined.
+### Node liveness status
+
+Hover over a node's ID in the row and column headers to show the node's liveness status, such as `healthy` or `suspect`. Node liveness status is also indicated by the colored circle next to the Node ID: green for `healthy` or red for `suspect`.
+
+If a `suspect` node stays offline for the duration set by [`server.time_until_store_dead`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-time-until-store-dead) (5 minutes by default), the [cluster considers the node "dead"]({% link {{ page.version.version }}/node-shutdown.md %}#process-termination) and the node is removed from the matrix.
+
+The number of `LIVE` (healthy), `SUSPECT`, `DRAINING` and `DEAD` nodes is displayed under Node Status on the [Cluster Overview page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
 
 ## Topology fundamentals
 
