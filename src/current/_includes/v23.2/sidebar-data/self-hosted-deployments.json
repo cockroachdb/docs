@@ -604,6 +604,35 @@
                 ]
               },
               {
+                "title": "Cluster Virtualization",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/cluster-virtualization-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "Work with Virtual Clusters",
+                    "urls": [
+                      "/${VERSION}/work-with-virtual-clusters.html"
+                    ]
+                  },
+                  {
+                    "title": "Setting Scopes",
+                    "urls": [
+                      "/${VERSION}/cluster-virtualization-setting-scopes.html"
+                    ]
+                  },
+                  {
+                    "title": "Metric Scopes",
+                    "urls": [
+                      "/${VERSION}/cluster-virtualization-metric-scopes.html"
+                    ]
+                  }
+                ]
+              },
+              {
                 "title": "Physical Cluster Replication",
                 "items": [
                   {
