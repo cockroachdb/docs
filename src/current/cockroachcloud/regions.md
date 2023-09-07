@@ -85,8 +85,17 @@ CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the follo
 
 Geographic Area | Region Name     | Location
 ----------------|-----------------|---------
-North America   | `eastus2`       | East Coast - Virginia
-Western Europe  | `westeurope`    | Netherlands
+Asia Pacific    | `australiaeast` | New South Wales
+                | `eastasia`      | Hong Kong
+North America   | `canadacentral` | Toronto
+                | `centralus`     | Iowa
+                | `eastus`        | Virginia
+                | `eastus2`       | Virginia
+                | `westus`        | California
+Western Europe  | `germanywestcentral` | Frankfurt
+                | `northeurope`   | Ireland
+                | `uksouth`       | London
+                | `westeurope`    | Netherlands
 
 ## GCP regions
 
