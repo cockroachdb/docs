@@ -16,15 +16,15 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 
 ## Limitations
 
-- All statements in the SQL Shell are executed within a transaction, so queries like [`SET CLUSTER SETTING`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) are not supported.
-- The SQL Shell does not yet support [sessions](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sessions).
+- All statements in the SQL Shell are executed within a transaction, so statements like [`SET CLUSTER SETTING`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) are not supported.
+- The SQL Shell does not yet support sessions.
 - The SQL Shell is available only to users of enrolled organizations with the [Cluster Administrator or Cluster Operator role]({% link cockroachcloud/managing-access.md %}).
 
 ## Overview
 
-Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{database}`. Note that the user is the **Team member** you are logged into the {{ site.data.products.cloud }} Console as, not a SQL user, and you must have the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/managing-access.md %}) to use this SQL Shell. Other users can still access CockroachDB's [command line SQL shell](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
+Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{database}`. Note that the user is the **Team member** currently logged into the {{ site.data.products.cloud }} Console, not a SQL user, and you must have the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles) to use this SQL Shell. Other users can still access CockroachDB's [command line SQL shell](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
 
-You can change the active database in the dropdown menu above the input field. If you create a new database in the SQL Shell, you will have to reload the page to refresh the database dropdown menu. Refreshing the page will also clear your activity.
+You can change the active database in the dropdown menu above the input field. If you create a new database in the SQL Shell, you will have to reload the page to refresh the database dropdown menu. Reloading the page will also clear your activity.
 
 To execute a SQL statement, enter it in the input field and either click **Run** or use the **Enter** key. The statement status will be **Loading** until it either **Succeeds** or returns an **Error**. Any results returned can be exported by clicking the **Export results** button below the executed statement.
 
@@ -38,54 +38,56 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE accounts (
+    > CREATE TABLE dogs (
         id INT PRIMARY KEY,
-        balance DECIMAL
+        name STRING
     );
     ~~~
-
-    After a few seconds, the statement will succeed.
 
 1. Insert rows into the table using [`INSERT INTO`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/insert) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO accounts VALUES (1, 10000.50);
+    > INSERT INTO dogs VALUES (1, 'Petee'), (2, 'Carl');
     ~~~
 
 1. Click the copy icon next to the successful `INSERT INTO` statement, paste it into the input field, edit the values, and run it again:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO accounts VALUES (2, 20000.50);
+    > INSERT INTO dogs VALUES (3, 'Blue'), (4, 'Clifford');
     ~~~
 
 1. Query the table with [`SELECT`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/select-clause) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT balance FROM accounts;
+    > SELECT name FROM dogs;
     ~~~
 
     ~~~
-         | balance
+         | name
     +----+----------+
-       1 | 10000.50
-       2 | 25000.00
+       1 | Petee
+       2 | Carl
+       3 | Blue
+       4 | Clifford
     ~~~
 
-1. Edit the executed `SELECT` statement to replace `balance` with the `*` wildcard symbol and click **Run**:
+1. Edit the executed `SELECT` statement to replace `name` with the `*` wildcard symbol and click **Run**:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM accounts;
+    > SELECT * FROM dogs;
     ~~~
 
     ~~~
-         | id | balance
+         | id | name
     +----+----------+
-      1  | 1 | 10000.50
-      2  | 2 | 25000.00
+      1  | 1 | Petee
+      2  | 2 | Carl
+      3  | 3 | Blue
+      4  | 4 | Clifford
     ~~~
     
     Note that each line of a query's results will be numbered independently of the output. This is for readability and will not be shown in any exported data.
