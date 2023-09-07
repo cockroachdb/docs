@@ -16,13 +16,13 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 
 ## Limitations
 
-- All statements in the SQL Shell are executed within a transaction, so statements like [`SET CLUSTER SETTING`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) are not supported.
+- All statements in the SQL Shell are executed within a transaction, so you cannot use the [SET CLUSTER SETTING](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) statement to configure cluster settings.
 - The SQL Shell does not yet support sessions.
-- The SQL Shell is available only to users of enrolled organizations with the [Cluster Administrator or Cluster Operator role]({% link cockroachcloud/managing-access.md %}).
+- The SQL Shell is available only to users of enrolled organizations with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
 
 ## Overview
 
-Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{database}`. Note that the user is the **Team member** currently logged into the {{ site.data.products.cloud }} Console, not a SQL user, and you must have the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles) to use this SQL Shell. Other users can still access CockroachDB's [command line SQL shell](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
+Above the SQL Shell input field, you will see the active user and cluster details in the format `{user name} @ {cluster-name}:{active-database}`. Note that the user displayed is the **Team member** currently logged into the {{ site.data.products.cloud }} Console, not the active SQL user, which is `root.` Team members without the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}) needed to access the {{ site.data.products.cloud }} Console SQL Shell can still access CockroachDB's [command line SQL shell](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
 
 You can change the active database in the dropdown menu above the input field. If you create a new database in the SQL Shell, you will have to reload the page to refresh the database dropdown menu. Reloading the page will also clear your activity.
 
