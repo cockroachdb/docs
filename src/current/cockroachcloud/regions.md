@@ -91,7 +91,7 @@ North America   | `canadacentral` | Toronto
                 | `centralus`     | Iowa
                 | `eastus`        | Virginia
                 | `eastus2`       | Virginia
-                | `westus`        | California
+                | `westus2`       | Washington
 Western Europe  | `germanywestcentral` | Frankfurt
                 | `northeurope`   | Ireland
                 | `uksouth`       | London
