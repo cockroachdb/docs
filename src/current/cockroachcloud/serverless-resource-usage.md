@@ -9,7 +9,7 @@ This page describes how to diagnose your CockroachDB {{ site.data.products.serve
 
 - [Understand resource consumption in CockroachDB {{ site.data.products.serverless }}](#understand-resource-consumption-in-cockroachdb-serverless) gives an overview of the CockroachDB {{ site.data.products.serverless }} architecture that affects RU and storage consumption and explains how RUs are calculated.
 
-- [Diagnose and optimize your resource consumption](diagnose-and-optimize-your-resource consumption) explains how to find and optimize queries and processes that may be consuming excessive resources and provides general tips for reducing resource usage.
+- [Diagnose and optimize your resource consumption](#diagnose-and-optimize-your-resource-consumption) explains how to find and optimize queries and processes that may be consuming excessive resources and provides general tips for reducing resource usage.
 
 For information on planning your cluster configuration and setting resource limits, refer to [Plan a Serverless Cluster]({% link cockroachcloud/plan-your-cluster-serverless.md %}).
 
