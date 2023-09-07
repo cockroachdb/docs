@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `SHOW CREATE EXTERNAL CONNECTION` displays the connection name and the creation statements for active external connections.
 
 You can also use the following SQL statements to work with external connections:
