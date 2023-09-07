@@ -70,12 +70,12 @@ You must have the ability to update your cluster settings, which requires a SQL 
 | `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. 
 | `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
 | `server.jwt_authentication.audience` | A list of audiences (or targets) for authentication, most relevantly, clusters.
-| server.jwt_authentication.claim | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
+| `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 |`server.oidc_authentication.generate_cluster_sso_token.use_token`| This selects which part of the received OIDC credentials to use to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt). Normally this should be set to `id_token`.
 |`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration)
-| `.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
-| `.sql_port` | his display value informs users the port for their SQL connections. Default: `26257`.
+| `server.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
+| `server.sql_port` | his display value informs users the port for their SQL connections. Default: `26257`.
 
 ### Update your cluster settings
 
@@ -249,7 +249,7 @@ Examples:
 
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
-    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`, e.g. `gcp_1234567` for a service account with ID `1234567`. 
+    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`, e.g., `gcp_1234567` for a service account with ID `1234567`. 
 
 ## What's Next?
 
