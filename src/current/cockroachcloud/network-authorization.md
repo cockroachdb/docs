@@ -23,7 +23,7 @@ You can authorize network access to your cluster by:
 {{site.data.alerts.callout_success}}
 Use GCP VPC Peering or AWS PrivateLink if:
 
-- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for CockroachDB {{ site.data.products.dedicated }} clusters and 50 for CockroachDB {{ site.data.products.serverless }}). For CockroachDB {{ site.data.products.dedicated }} clusters on AWS, reach out to your Cockroach Labs team or support to increase the limit if needed.
+- You need to allowlist more defined IP address ranges than allowed by the maximum (200 for CockroachDB {{ site.data.products.dedicated }} clusters on GCP or Azure, 7 for {{ site.data.products.dedicated }} clusters on AWS, and 50 for CockroachDB {{ site.data.products.serverless }}). For CockroachDB {{ site.data.products.dedicated }} clusters on AWS, reach out to your Cockroach Labs team or support to increase the limit if needed.
 - Your servers’ IP addresses are not static.
 - You want to avoid exposing your cluster to the public internet.
 
