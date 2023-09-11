@@ -41,7 +41,7 @@ The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}?filte
 
 The cluster's **Configuration** shows details about the cluster, its deployment environment, and its nodes, such as the cluster's cloud provider, plan type, regions, and each node's status, compute, and storage.
 
-The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-an-upgrade-window) setting.
+The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-a-maintenance-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-a-maintenance-window) setting.
 
 - The **PCI Ready** section shows the status of features required for PCI DSS. Requires CockroachDB {{ site.data.products.dedicated }} advanced.
 
