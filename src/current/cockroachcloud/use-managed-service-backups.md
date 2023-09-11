@@ -19,7 +19,7 @@ This page describes the **Backup and Restore** page and how to restore your data
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) hourly for every CockroachDB {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days.
-</section> 
+</section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
@@ -27,8 +27,6 @@ Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
-
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), managed backups are not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 </section>
 
@@ -129,7 +127,7 @@ Additional ways to restore data:
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
+The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
 
 This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
@@ -142,15 +140,15 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
+1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
 
     {{site.data.alerts.callout_info}}
-    Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work. 
+    Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work.
     {{site.data.alerts.end}}
 
 1. Click **Continue**.
 
-1. Enter the name of the destination cluster. 
+1. Enter the name of the destination cluster.
 
 1. Once you have reviewed the restore details, click **Restore**.
 
@@ -165,7 +163,7 @@ To restore a database:
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database. 
+1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
     [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-database) or [`RENAME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
@@ -266,13 +264,13 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
 ## Known limitations
 
 - For [restoring a cluster](#restore-a-cluster):
-    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restoring-backups-across-versions).  
-    - Restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work. 
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restoring-backups-across-versions).
+    - Restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work.
     - Restoring to a different cluster is disabled for [CMEK]({% link cockroachcloud/cmek.md %}) clusters.
     - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
-    - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.   
+    - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.
 
-See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211). 
+See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211).
 
 ## Troubleshooting
 

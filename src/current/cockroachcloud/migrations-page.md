@@ -12,10 +12,10 @@ The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Consol
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
 - [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
-- Migrate directly to a CockroachDB {{ site.data.products.serverless }} database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
+- Migrate directly to a CockroachDB {{ site.data.products.cloud }} database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
 
     {{site.data.alerts.callout_info}}
-    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB]({% link {{version_prefix}}migration-overview.md %}).
+    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}).
     {{site.data.alerts.end}}
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
@@ -138,6 +138,13 @@ If the credentials are valid, they will be added to the [**Credentials** table](
 
 </section>
 
+{{site.data.alerts.callout_info}}
+The Schema Conversion Tool creates the following internal objects when you convert a schema:
+
+- A database prefixed with `_migration_internal_` is created on the {{ site.data.products.cloud }} cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the {{ site.data.products.cloud }} cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a {{ site.data.products.cloud }} cluster](#migrate-the-schema).
+{{site.data.alerts.end}}
+
 ## Review the schema
 
 Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
@@ -177,7 +184,7 @@ Bulk actions **cannot** be undone after you [retry the migration](#retry-the-mig
 
 To edit, add, or delete individual statements, click the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
 
-After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB {{ site.data.products.serverless }} database.
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB {{ site.data.products.cloud }} database.
 
 #### Required Fixes
 
@@ -276,7 +283,7 @@ To update the schema:
 
 |                   Category                   |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |   Bulk Actions   | Required for schema migration? |
 |----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------------------|
-| Unimplemented feature                        | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see [Migrate Your Database to CockroachDB]({% link {{version_prefix}}migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities). | Delete           | Yes                            |
+| Unimplemented feature                        | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities). | Delete           | Yes                            |
 | Uncreated user                               | Click the **Add User** button next to the error message. You must be a member of the [`admin` role]({% link cockroachcloud/managing-access.md %}). This adds the missing user to the cluster.                                                                                                                                                                                                                                                     | Add User, Delete | Yes                            |
 | Incidental                                   | Resolve the error in the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                       | Delete           | Yes                            |
 | Incompatibility (non-PostgreSQL schemas)    | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | Yes                            |
@@ -284,7 +291,7 @@ To update the schema:
 | Compatibility note (non-PostgreSQL schemas) | Edit the statement to match the CockroachDB syntax. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                | Acknowledge      | No                             |
 | Suggestion                                   | Review and take any relevant actions indicated by the message. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                     | Acknowledge      | No                             |
 
-After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB {{ site.data.products.serverless }} database.
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB {{ site.data.products.cloud }} database.
 
 ### Retry the migration
 
@@ -294,7 +301,11 @@ This will verify that the schema has zero errors and can be [migrated](#migrate-
 
 ### Migrate the schema
 
-You can migrate the schema when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
+You can migrate the schema directly to a new CockroachDB {{ site.data.products.cloud }} database when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
+
+{{site.data.alerts.callout_success}}
+If you want to migrate to a CockroachDB {{ site.data.products.core }} database, you can [export the schema](#export-the-schema).
+{{site.data.alerts.end}}
 
 To migrate the schema, click **Migrate Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
 
@@ -333,4 +344,4 @@ To delete or verify a set of credentials, select the appropriate option in the *
 
 ## See also
 
-- [Migrate Your Database to CockroachDB]({% link {{version_prefix}}migration-overview.md %})
+- [Migration Overview]({% link {{version_prefix}}migration-overview.md %})

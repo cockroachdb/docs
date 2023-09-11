@@ -9,7 +9,7 @@ docs_area: reference.sql
 `CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), or a [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
+The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a [configurable sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). `CREATE CHANGEFEED` also supports [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that allow you to filter and transform change data before emitting changefeed messages. You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 We recommend reading the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page for detail on understanding how changefeeds emit messages and [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for important usage considerations.
 
@@ -35,17 +35,17 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_changefeed.html %}
 </div>
 
-## Parameters
+### Parameters
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for more detail.
+`changefeed_target` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for more detail.
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run like a [core changefeed]({% link {{ page.version.version }}/changefeed-for.md %}) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#create) page.
 `option` / `value` | For a list of available options and their values, refer to [Options](#options).
 
-### CDC query parameters
+### Parameters for change data capture queries
 
-Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page for detail on the functionality, syntax, and use cases for changefeeds created with queries.
+_Change data capture queries_ allow you to define the change data emitted to your sink when you create a changefeed. Refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page for detail on the functionality, syntax, and use cases for creating changefeeds that include queries.
 
 Parameter | Description
 ----------|------------
@@ -237,141 +237,93 @@ For example:
 
 ## Examples
 
-Before running any of the examples in this section it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
+Before running any of the examples in this section it is necessary to [enable the `kv.rangefeed.enabled` cluster setting]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). If you are working on a CockroachDB {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
 
-The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
+The following examples show the syntax for managing changefeeds and starting changefeeds with different use cases and features. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
 
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
 
-### Create a changefeed connected to Kafka
+### Create a changefeed connected to a sink
+
+You can connect a changefeed to the following sinks:
+
+- Kafka
+- Cloud storage / HTTP
+- Google Cloud Pub/Sub
+- Webhook
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'kafka://host:port'
+CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+  INTO 'scheme://host:port'
   WITH updated, resolved;
 ~~~
-~~~
-+--------------------+
-|       job_id       |
-+--------------------+
-| 360645287206223873 |
-+--------------------+
-(1 row)
-~~~
 
-For step-by-step guidance on creating a changefeed connected to Kafka, see the [Create a changefeed connected to Kafka]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-kafka) example. The parameters table on the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-parameters) page provides a list of all kafka-specific query parameters.
+For guidance on the sink URI, refer to:
 
-### Create a changefeed connected to Kafka using Avro
+- The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for general detail on query parameters and sink configuration.
+- The [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for instructions on setting up each supported cloud storage authentication.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'kafka://host:port'
-  WITH format = avro, confluent_schema_registry = <schema_registry_address>;
-~~~
-~~~
-+--------------------+
-|       job_id       |
-+--------------------+
-| 360645287206223873 |
-+--------------------+
-(1 row)
-~~~
+### Create a changefeed that filters and transforms change data
 
-For more information, see:
+[CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) can filter and transform change data before emitting it to a sink or [a SQL client](#create-a-sinkless-changefeed).
 
-- The [Create a changefeed connected to Kafka using Avro]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-kafka-using-avro) tutorial to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
-- The [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}) tutorial to set up a Confluent Cloud Kafka cluster using the Confluent Cloud Schema Registry.
-- The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-parameters) page to see a list of all kafka-specific query parameters.
-
-### Create a changefeed connected to a cloud storage sink
+You can adapt a changefeed with CDC queries by including `SELECT` and `WHERE` clauses in your `CREATE` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'scheme://host?parameters'
+CREATE CHANGEFEED INTO 'scheme://host:port'
+  WITH updated, resolved
+  AS SELECT owner_id, status
+  FROM vehicles
+  WHERE status = 'lost';
+~~~
+
+CDC queries can only run on a single table per changefeed and require an {{ site.data.products.enterprise }} license.
+
+### Create a sinkless changefeed
+
+You can create a changefeed that will send messages to the SQL client rather than a sink:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
   WITH updated, resolved;
 ~~~
-~~~
-+--------------------+
-|       job_id       |
-+--------------------+
-| 360645287206223873 |
-+--------------------+
-(1 row)
-~~~
 
-For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-cloud-storage-sink) page. The parameters table on the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-parameters) page provides a list of the available cloud storage parameters.
+Sinkless changefeeds do not require an {{ site.data.products.enterprise }} license; however, a sinkless changefeed with CDC queries **does** require an {{ site.data.products.enterprise }} license.
 
-### Create a changefeed with an S3 storage class
-
-To associate the changefeed message files with a [specific storage class]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To create a sinkless changefeed using CDC queries:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' WITH resolved;
+CREATE CHANGEFEED WITH updated, resolved
+  AS SELECT owner_id, status
+  FROM vehicles
+  WHERE status = 'lost';
 ~~~
 
-{% include {{ page.version.version }}/misc/storage-classes.md %}
+### Use an external connection to specify a changefeed sink
 
-### Create a changefeed connected to a Google Cloud Pub/Sub
+[External connections]({% link {{ page.version.version }}/create-external-connection.md %}) provide a way to define a name for a sink, which you can use instead of the provider-specific URI.
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/cdc/ext-conn-cluster-setting.md %}
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+External connections support all changefeed sinks.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'gcpubsub://project name?parameters'
+CREATE EXTERNAL CONNECTION kafka_sink
+  AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256';
+~~~
+
+In the changefeed statement, you specify the external connection name:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
   WITH resolved;
 ~~~
-~~~
-+--------------------+
-|       job_id       |
-+--------------------+
-| 360645287206223873 |
-+--------------------+
-(1 row)
-~~~
-
-For step-by-step guidance on creating a changefeed connected to a Google Cloud Pub/Sub, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) page. The parameters table on the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-parameters) page provides a list of the available Google Cloud Pub/Sub parameters.
-
-### Create a changefeed connected to a webhook sink
-
-{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
-  WITH updated;
-~~~
-
-~~~
-+---------------------+
-|      job_id         |
-----------------------+
-| 687842491801632769  |
-+---------------------+
-(1 row)
-~~~
-
-For step-by-step guidance on creating a changefeed connected to a webhook sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-webhook-sink) page. The parameters table on the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-parameters) page provides a list of the available webhook parameters.
-
-### Define a key to determine the changefeed sink partition
-
-{% include_cached new-in.html version="v23.1" %} With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED FOR TABLE name INTO 'external://kafka-sink' WITH key_column='partition_column', unordered;
-~~~
-
-`key_column` does not preserve ordering of messages from CockroachDB to the downstream sink, therefore you **must** include the [`unordered`](#unordered) option. It does not affect per-key [ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees) or the output of [`key_in_value`](#key-in-value).
 
 ### Manage a changefeed
 
@@ -379,7 +331,7 @@ CREATE CHANGEFEED FOR TABLE name INTO 'external://kafka-sink' WITH key_column='p
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CHANGEFEED JOBS;
+SHOW CHANGEFEED JOBS;
 ~~~
 
 Use the following SQL statements to pause, resume, or cancel a changefeed.
@@ -388,7 +340,7 @@ Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOB job_id;
+PAUSE JOB job_id;
 ~~~
 
 For more information, see [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}).
@@ -397,7 +349,7 @@ For more information, see [`PAUSE JOB`]({% link {{ page.version.version }}/pause
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESUME JOB job_id;
+RESUME JOB job_id;
 ~~~
 
 For more information, see [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}).
@@ -406,7 +358,7 @@ For more information, see [`RESUME JOB`]({% link {{ page.version.version }}/resu
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOB job_id;
+CANCEL JOB job_id;
 ~~~
 
 For more information, see [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}).
@@ -425,7 +377,7 @@ Find the [high-water timestamp]({% link {{ page.version.version }}/monitor-and-d
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
+SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
 ~~~
 ~~~
         job_id       |  job_type  | ... |      high_water_timestamp      | error | coordinator_id
@@ -438,12 +390,38 @@ Use the `high_water_timestamp` to start the new changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'kafka//host:port'
+CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+  INTO 'scheme//host:port'
   WITH cursor = '<high_water_timestamp>';
 ~~~
 
 Note that because the cursor is provided, the initial scan is not performed.
+
+### Create a changefeed with an S3 storage class
+
+To associate the changefeed message files with a [specific storage class]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE table_name
+  INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+  WITH resolved;
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
+
+### Define a key to determine the changefeed sink partition
+
+{% include_cached new-in.html version="v23.1" %} With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE table_name
+  INTO 'external://kafka-sink'
+  WITH key_column='partition_column', unordered;
+~~~
+
+`key_column` does not preserve ordering of messages from CockroachDB to the downstream sink, therefore you **must** include the [`unordered`](#unordered) option. It does not affect per-key [ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees) or the output of [`key_in_value`](#key-in-value).
 
 ## See also
 

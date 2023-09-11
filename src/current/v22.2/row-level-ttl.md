@@ -16,7 +16,7 @@ Use cases for Row-Level TTL include:
 
 - Delete data no longer needed for compliance: For example, a banking application may need to keep some subset of data for a period of time due to financial regulations. Row-Level TTL can be used to remove data older than that period on a rolling, continuous basis.
 
-- Outbox pattern: When events are written to an outbox table and published to an external system like [Kafka](https://en.wikipedia.org/wiki/Apache_Kafka) using CockroachDB's [Change Data Capture (CDC)](change-data-capture-overview.html) feature (also known as ["changefeeds"](#changefeeds)), those events must be deleted to prevent unbounded growth in the size of the outbox table.
+- Outbox pattern: When events are written to an outbox table and published to an external system like [Kafka](https://wikipedia.org/wiki/Apache_Kafka) using CockroachDB's [Change Data Capture (CDC)](change-data-capture-overview.html) feature (also known as ["changefeeds"](#changefeeds)), those events must be deleted to prevent unbounded growth in the size of the outbox table.
 
 ## How it works
 
@@ -26,7 +26,7 @@ At a high level, Row-Level TTL works by:
 - Issuing batched [`DELETE`](delete.html) statements for the expired rows.
 - As part of the above process, deciding how many rows to [`SELECT`](select-clause.html) and [`DELETE`](delete.html) at once in each of the above queries.
 - Running the SQL queries described above in parallel as [background jobs](show-jobs.html).
-- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](admission-control.html).
+- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](admission-control.html). When foreground traffic increases, CockroachDB will reduce the resources allocated to TTL deletes to handle the foreground traffic. When foreground traffic decreases, CockroachDB will increase the resources allocated to TTL deletes.
 
 The process above is conceptually similar to the process described by [Batch delete on an indexed column](bulk-delete-data.html#batch-delete-on-an-indexed-column), except that Row-Level TTL is built into CockroachDB, so it saves you from having to write code to manage the process from your application and/or external job processing framework, including tuning the rate and performance of your background queries so they don't affect foreground application query performance.
 
@@ -352,7 +352,7 @@ SELECT relname, reloptions FROM pg_class WHERE relname = 'events';
 
 ### Control how often the TTL job runs
 
-Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help).
+Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help). Cockroach Labs recommends setting `ttl_job_cron` to be equal to or longer than the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting, which is the garbage collection interval for the cluster. The default value of `gc.ttlseconds` is 14400, or 4 hours. The CRON pattern for every four hours is `'0 */4 * * *'`.
 
 To control the job interval at [`CREATE TABLE`](create-table.html) time, add the storage parameter as shown below:
 
@@ -361,7 +361,7 @@ To control the job interval at [`CREATE TABLE`](create-table.html) time, add the
 CREATE TABLE tbl (
   id UUID PRIMARY KEY default gen_random_uuid(),
   value TEXT
-) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '@daily');
+) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '0 */4 * * *');
 ~~~
 
 ~~~
