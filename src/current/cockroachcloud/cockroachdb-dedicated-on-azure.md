@@ -49,8 +49,9 @@ During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud
 
 ### Observability
 
+- Exporting metrics to [Datadog](https://www.datadoghq.com/) is available. Enable the Datadog integration in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) or with the [Cloud API]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export).
+- Exporting metrics to Azure Monitor is not yet available. To express interest, contact your Cockroach Labs account team.
 - [Log Export]({% link cockroachcloud/export-logs.md %}) is not yet available.
-- Exporting metrics to Azure Monitor is not yet available, but metrics can be exported to [Datadog]({% link cockroachcloud/tools-page.md %}). To express interest, contact your Cockroach Labs account team.
 
 ### Other features
 
