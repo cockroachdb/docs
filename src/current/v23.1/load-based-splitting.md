@@ -69,6 +69,27 @@ However, by leveraging load-based splitting, the cluster can understand load on 
 
 This benefit is further amplified by [load-based rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing), which ensures that all nodes contain replicas with a roughly equal load. By evenly distributing load throughout your cluster, it's easier to prevent bottlenecks from arising, as well as simplifying hardware forecasting.
 
+## Monitor load-based splitting
+
+The [`INFO`]({% link {{ page.version.version }}/logging.md %}#info) log message
+
+~~~
+no split key found: ...
+~~~
+
+indicates that CockroachDB wants to [split the range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) due to load, but couldn’t find a key to split at.
+
+Usually this log message can be ignored, unless it repeatedly shows up, which can indicate there is a load imbalance problem in the cluster. If there is a load imbalance problem, it could be because a [hot range]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) cannot be split (because it's really a [hot key]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report)).
+
+You can see how often a split key cannot be found over time by looking at the following [time-series metric]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint):
+
+- `kv.loadsplitter.nosplitkey`
+
+This metric is directly related to the log message described above.
+
+For more information about how to reduce hot spots (including hot ranges) on your cluster, see [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+
 ## See also
 
 - [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
+- [Load-based replica rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing)
