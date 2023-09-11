@@ -163,7 +163,7 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
 1. Click **OK**.
 {% endcomment %}
   
-## Set an upgrade window
+## Set a maintenance window
 
 From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. Note that upgrades may not always be completed by the end of the window. If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
@@ -173,9 +173,9 @@ Maintenance operations that are critical for cluster security or stability may b
 
 To set an upgrade window:
 
-1. Click the pencil icon next to **Cluster upgrades** to edit the upgrade window.
-1. From the **Upgrade day** dropdown, select the day of the week during which upgrades may be applied.
-1. From the **Start of window** dropdown, select a start time for your upgrade window in UTC.
+1. Click the pencil icon next to **Cluster maintenance** to edit the upgrade window.
+1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
+1. From the **Start of window** dropdown, select a start time for your maintenance window in UTC.
     
     The window will last for 6 hours from the start time.
     
