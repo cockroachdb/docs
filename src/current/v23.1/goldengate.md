@@ -433,8 +433,13 @@ The steps in this section should be run on a machine and in a directory where Or
     CONNECT BY level <= 50000 - 99;
     ~~~
 
-1. Run the status command on the Extract GGSCI terminal.
+1. Run the status command on the Extract GGSCI terminal:
 
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    stats EXTRACT EPOS
+    ~~~
+    
     You will see an output similar to the following:
 
     ~~~
