@@ -188,31 +188,31 @@ Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.
 
 #### Cloud storage cluster settings
 
-The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.     
+The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.   
 
 #### `cloudstorage.<provider>.write.node_rate_limit`
 
 Limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero.
 
-**Default:** `0 B`
+**Default:** unlimited, `0 B`
 
 #### `cloudstorage.<provider>.write.node_burst_limit`
 
-Burst limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero.
+Limit the number of bytes per second per node handled concurrently across operations writing to the designated cloud storage provider if non-zero.
 
-**Default:** `0 B`
+**Default:** unlimited, `0 B`
 
 #### `cloudstorage.<provider>.read.node_rate_limit`
 
-Limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero.
+Limit the number of bytes per second per node across operations reading to the designated cloud storage provider if non-zero.
 
-**Default:** `0 B`
+**Default:** unlimited, `0 B`
 
 #### `cloudstorage.<provider>.read.node_burst_limit`
 
-Burst limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero. 
+Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero. 
 
-**Default:** `0 B`
+**Default:** unlimited, `0 B`
 
 For a complete list, including all cluster settings related to backups, see the [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %}) page.
 
