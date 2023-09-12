@@ -179,7 +179,7 @@ Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.
 
 #### Cloud storage cluster settings
 
-The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`. 
+The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`. 
 
 #### `cloudstorage.<provider>.write.node_rate_limit`
 
