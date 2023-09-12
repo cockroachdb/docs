@@ -305,7 +305,7 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables]({% link {{ page.version.version }}/table-localities.md %}#when-to-use-regional-vs-global-tables)
 - [When to Use `ZONE` vs. `REGION` Survival Goals]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#when-to-use-zone-vs-region-survival-goals)
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
-- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery.md %})
+- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
 - [Non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas)
