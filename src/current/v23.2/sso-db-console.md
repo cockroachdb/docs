@@ -6,9 +6,11 @@ docs_area: manage
 key: sso.html
 ---
 
-CockroachDB clusters allow users to authenticate with Single sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access, using OpenID connect (OIDC).
+CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-Single sign-on (SSO) allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
+Cluster Single Sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
+
+Single sign-on (SSO) for DB Console allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
 
 This page describes:
 
@@ -43,10 +45,9 @@ From the user's perspective, once the cluster is properly configured to an ident
 1. The user is redirected to an external identity provider.
 1. The user successfully authenticates with the provider, completing the OAuth flow.
 1. The user is redirected to the CockroachDB cluster.
-1. The authorization code in the callback query is exchanged for an [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
-1. CockroachDB matches the ID Token to a registered SQL user.
-1. CockroachDB creates a web session for the SQL user.
-1. The user is redirected to the [DB Console Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
+registered SQL user.
+1. CockroachDB creates a web session for the SQL user in a new browser tab.
+1. In the original browser tab, the user is redirected to the [DB Console Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
 
 ## Provision an OAuth client using Google Cloud Platform (GCP)
 
@@ -64,7 +65,7 @@ These steps demonstrate how to create an OIDC auth client to use for SSO authent
 
 **Prerequisites**:
 
-You must have the ability to update your cluster settings, which requires a SQL user either the [admin role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the `MODIFYCLUSTERSETTING` role option.
+You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
 
 ### Cluster Settings
 
@@ -80,7 +81,7 @@ Use the [Set Cluster Setting Statement]({% link {{ page.version.version }}/set-c
 | `server.oidc_authentication.redirect_url` | specifies the callback URL that redirects the user to CockroachDB after a successful authentication. This can be the address of a node in the cluster or the address of a load balancer that routes traffic to the nodes. The path must be appended with `/oidc/v1/callback`. E.g., `https://{ your cluster's domain } :8080/oidc/v1/callback`.
 | `server.oidc_authentication.provider_url` | Specifies the OAuth issuer identifier. Ensure that the URL does not have a terminating `/`. For more information, see the [OIDC specification](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig). Note that CockroachDB appends the required `/.well-known/openid-configuration` by default. You do not need to include it. E.g., `https://accounts.google.com`
 | `server.oidc_authentication.scopes` | A space-delimited list of the [OAuth scopes](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims) being requested for an Access Token. The `openid` and `email` scopes must be included. E.g., `openid profile email`.
-| `server.oidc_authentication.claim_json_key` | The field/key used to identify the user from the external identity provider's [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken). Must be set to `email`.
+| `server.oidc_authentication.claim_json_key` | The field/key used to identify the user from the external identity provider's [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 | `server.oidc_authentication.principal_regex` | Regex used to map the external identity key to a SQL user. For example: `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`, whereas `^(.+)$` maps the claim directly to a principal.
 | `server.oidc_authentication.autologin` | Must be set to `true`.
 
