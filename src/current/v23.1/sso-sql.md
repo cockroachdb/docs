@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access, using OpenID connect (OIDC).
+CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
 Cluster Single Sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
 
@@ -15,11 +15,12 @@ Cluster Single Sign-On (SSO) enables users to access the SQL interface of a Cock
 You might also be looking for:
 
 - [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql).
-- [Single Sign-on (SSO) for DB Console](sso-db-console.html)
+- [Single Sign-on (SSO) for DB Console](sso-db-console.html), which is a pre-requisite for Cluster SSO.
 {{site.data.alerts.end}}
+
 **Prerequisites**
 
-- You must have your cluster pre-configured for OIDC/SSO authentication. Refer to: [Single Sign-on (SSO) for DB Console](sso-db-console.html)
+- You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Refer to: [Single Sign-on (SSO) for DB Console](sso-db-console.html)
 
 - SQL users/credentials:
 
@@ -73,6 +74,11 @@ You must have the ability to update your cluster settings, which can be achieved
 
 ### Update your cluster settings
 
+
+{{site.data.alerts.callout_success}}
+In order for this feature to work, [Single Sign-on (SSO) for DB Console](sso-db-console.html) and cluster SSO must both be configured with the same IDP.
+{{site.data.alerts.end}}
+
 You can update your cluster settings with the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) SQL statement.
 
 {{site.data.alerts.callout_success}}
@@ -86,19 +92,20 @@ You can also view all of your cluster settings in the DB Console...
     SET CLUSTER SETTING server.jwt_authentication.enabled = true;
     ~~~
 
-
-
 1.  Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers.
 
   	{{site.data.alerts.callout_success}}
+    This must match your cluster's configured  value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings).
+
   	CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
   	The `issuer` is `https://cockroachlabs.cloud`.
-  	{{site.data.alerts.end}}
+
+    For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
+    {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     SET CLUSTER SETTING server.jwt_authentication.issuers = 'https://accounts.google.com';
-
     ~~~
 
 1. `server.jwt_authentication.audience`
@@ -206,15 +213,13 @@ You can also view all of your cluster settings in the DB Console...
 
 1. Configure token generation.
 
-{{site.data.alerts.callout_success}}
-In order for this feature to work DB Console SSO and cluster SSO must both be configured with the same IDP.
-{{site.data.alerts.end}}
-
 The `use_token` field determines which part of the received OIDC credentials the cluster uses to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt).
 
-It can be set to either `id_token` or `access_token`. Here we set it to `id_token` because ...
+It can be set to either `id_token` or `access_token`, depending on the structure of the your JWT as determined in your IDP configuration.
 
-In another examples where ... we would set it to `access_token`. Okta I'm guessing?
+{{site.data.alerts.callout_success}}
+This can be tricky to determine; unless you have a previously generated token, you may need to try it both ways to determine which one works. If you have a token, you can base-64 decode the middle segment&mdash;the token consists of three `.`-delimited segments&mdash;and trace the path to the value the cluster will use to map an external identity to a SQL user (via the Identity Map).
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
