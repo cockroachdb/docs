@@ -11,7 +11,7 @@ docs_area: reference.sql
 `DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs]({% link {{ page.version.version }}/cancel-job.md %}) first, as you will not be able to look up the job ID once the schedule is dropped.
 {{site.data.alerts.end}}
 
-When `DROP SCHEDULES` removes a [scheduled full backup]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core), all associated [scheduled incremental backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules) are dropped. 
+When `DROP SCHEDULES` removes a [full backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core), it removes the associated [incremental backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules), if it exists. 
 
 ## Required privileges
 
