@@ -31,6 +31,10 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
 - A foreign key column can reference the [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) in [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
+        {{site.data.alerts.callout_info}}
+        A foreign key column cannot reference a table's `crdb_region` column if [auto-rehoming is enabled]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables) for the table.
+        {{site.data.alerts.end}}
+        
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) or [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.

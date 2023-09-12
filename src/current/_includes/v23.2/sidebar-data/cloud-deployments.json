@@ -384,6 +384,12 @@
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
                     ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-dedicated.html"
+                    ]
                   }
                 ]
               },
@@ -462,6 +468,12 @@
                         ]
                     }
                     ]
+              },
+              {
+                "title": "SQL Shell",
+                "urls": [
+                  "/cockroachcloud/sql-shell.html"
+                ]
               },
               {
                 "title": "CockroachDB Cloud API",

@@ -89,6 +89,6 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI re
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can also check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
+You can also check the status of these features on the **PCI ready** page of the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>

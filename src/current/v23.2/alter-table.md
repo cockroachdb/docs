@@ -2586,22 +2586,25 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 This feature is disabled by default.
 
-When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node]({% link {{ page.version.version }}/ui-sessions-page.md %}#session-details-gateway-node) from which any [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to the [home region column](#crdb_region).
+When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the gateway region of any [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements that write to those rows. This functionality is provided by adding an [`ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to the [`crdb_region`](#crdb_region) column of newly created regional by row tables.
 
-Once enabled, the auto-rehoming behavior described here has the following limitations:
-
-- It **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
-- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table.
-
-To enable it using the [session setting]({% link {{ page.version.version }}/set-vars.md %}), issue the following statement:
+To enable auto-rehoming using the [session setting]({% link {{ page.version.version }}/set-vars.md %}), issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET enable_auto_rehoming = on;
 ~~~
 
-~~~
-SET
+Once enabled, the auto-rehoming behavior described here has the following limitations:
+
+- It **will only apply to newly created `REGIONAL BY ROW` tables**, using an `ON UPDATE` expression that is added to the [`crdb_region`](#crdb_region) column. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
+- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table.
+
+To enable auto-rehoming for an existing `REGIONAL BY ROW` table, manually update it using an [`ALTER TABLE ... ALTER COLUMN`](#alter-column) statement with an `ON UPDATE` expression:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.public.crdb_internal_region;
 ~~~
 
 ##### Example

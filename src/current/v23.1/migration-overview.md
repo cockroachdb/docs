@@ -231,8 +231,8 @@ First, convert your database schema to an equivalent CockroachDB schema:
 
 Then import the converted schema to a CockroachDB cluster:
 
-- For CockroachDB {{ site.data.products.serverless }}, use the Schema Conversion Tool to [migrate the converted schema to a new CockroachDB {{ site.data.products.serverless }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
-- For CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
+- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
+- For CockroachDB {{ site.data.products.core }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
 	{{site.data.alerts.callout_success}}
 	For the fastest performance, you can use a [local, single-node CockroachDB cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#start-a-single-node-cluster) to convert your schema and [check the results of queries](#test-query-results-and-performance).
 	{{site.data.alerts.end}}
