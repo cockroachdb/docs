@@ -24,9 +24,9 @@ You might also be looking for:
 
 - SQL users/credentials:
 
-	- You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
+    - You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
 .
-	- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+    - A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 ## Authenticate to your cluster
 
@@ -64,7 +64,7 @@ You must have the ability to update your cluster settings, which can be achieved
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
 | `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. 
 | `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
-| `server.jwt_authentication.audience` | The audience refers to the target of authentication, which is the cluster itself. In order to be accepted, tokens must be addressed to the cluster using this audience value.
+| `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 |`server.oidc_authentication.generate_cluster_sso_token.use_token`| This selects which part of the received OIDC credentials to use to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt).
@@ -94,11 +94,11 @@ You can also view all of your cluster settings in the DB Console...
 
 1.  Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers.
 
-  	{{site.data.alerts.callout_success}}
+    {{site.data.alerts.callout_success}}
     This must match your cluster's configured  value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings).
 
-  	CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-  	The `issuer` is `https://cockroachlabs.cloud`.
+    CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
+    The `issuer` is `https://cockroachlabs.cloud`.
 
     For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
     {{site.data.alerts.end}}
@@ -110,7 +110,7 @@ You can also view all of your cluster settings in the DB Console...
 
 1. `server.jwt_authentication.audience`
 
-    The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
+    The ID of your cluster as specified by the IdP, or a JSON array of such names. This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 
     {{site.data.alerts.callout_danger}}
     Many third-party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
@@ -133,6 +133,8 @@ You can also view all of your cluster settings in the DB Console...
 
 1. `server.jwt_authentication.jwks`
 
+    This field takes a single JWT or JSON array of JWTS. This list must include a given IdP, or the cluster will reject JWTs issued by it.
+
     Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster.
 
     {{site.data.alerts.callout_danger}}
@@ -142,47 +144,7 @@ You can also view all of your cluster settings in the DB Console...
     {{site.data.alerts.end}}
     
     {{site.data.alerts.callout_success}}
-    The required information for a given IdP is published on that IdP's `.well-known/openid-configuration` path (for example, `https://cockroachlabs.cloud/.well-known/openid-configuration` for CockroachDB {{ site.data.products.cloud }} or `https://accounts.google.com/.well-known/openid-configuration` for GCP.
-    {{site.data.alerts.end}}
-
-    For example:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    SET CLUSTER SETTING server.jwt_authentication.jwks = '{
-      "keys": [
-        {
-          "alg": "RS256",
-          "kty": "RSA",
-          "kid": "85ba9313fd7a7d4afa84884abcc8403004363180",
-          "e": "AQAB",
-          "use": "sig",
-          "n": "pP-rCe4jkKX6mq8yP1GcBZcxJzmxKWicHHor1S3Q49u6Oe-bQsk5NsK5mdR7Y7liGV9n0ikXSM42dYKQdxbhKA-7--fFon5isJoHr4fIwL2CCwVm5QWlK37q6PiH2_F1M0hRorHfkCb4nI56ZvfygvuOH4LIS82OzIgmsYbeEfwDRpeMSxWKwlpa3pX3GZ6jG7FgzJGBvmBkagpgsa2JZdyU4gEGMOkHdSzi5Ii-6RGfFLhhI1OMxC9P2JaU5yjMN2pikfFIq_dbpm75yNUGpWJNVywtrlNvvJfA74UMN_lVCAaSR0A03BUMg6ljB65gFllpKF224uWBA8tpjngwKQ"
-        },
-        {
-          "alg": "RS256",
-          "n": "8ASqcDDTYmFx53uAkWlmqx8qIx0WQacaswAAb7xGx9XL2T71VPtKKgPqoimXzj4fXT2F3opIgOQgGKxkxw2QrAAoejdIud5URrZLRponmbMQO3erG5sd8PC29rjekX8_hvX_AMT3zU8JLKVLFR0xJmFdmIomnarpEvWKmG0SNvbuVveprsve0n1W35uodcRe417vlTNnH9j8fesQekvFf8tIWbHouXDg3B1km4gqZBbQ_MWvGriGBY5sfr7A2d0iNe89Aje7pz1RFLUFOu-u_NyD6RwL6qo4_yetAYIzm02a2KAAq03YPs2LHMVQmkh1LtyeuA6bvf9146cAFY4BCQ",
-          "use": "sig",
-          "e": "AQAB",
-          "kty": "RSA",
-          "kid": "05150a1320b9395b05716877376928509bab44ac"
-        }
-      ]
-    }';
-    ~~~
-
-    This field takes a single JWT or JSON array of JWTS. This list must include a given IdP, or the cluster will reject JWTs issued by it.
-
-    Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster.
-
-    {{site.data.alerts.callout_danger}}
-    <b>{{ site.data.products.db }} {{ site.data.products.dedicated }} customers:</b> 
-    By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing {{ site.data.products.db }} to serve as an IdP. When modifying this cluster setting, you must include the {{ site.data.products.db }} public key in the key set or SSO with `ccloud` will no longer work.
-    {{site.data.alerts.end}}
-    
-    {{site.data.alerts.callout_success}}
-    {{ site.data.products.db }}'s IdP configuration can be viewed publicly at: [`https://cockroachlabs.cloud/.well-known/openid-configuration`](https://cockroachlabs.cloud/.well-known/openid-configuration).
-    The link specified for `jwks_uri` provides the IdP's public signing key. For {{ site.data.products.db }} this is `https://cockroachlabs.cloud/oauth2/keys`
+    The required information for a given IdP is published on that IdP's `.well-known/openid-configuration` path, for example, `https://cockroachlabs.cloud/.well-known/openid-configuration` for CockroachDB {{ site.data.products.cloud }}, or `https://accounts.google.com/.well-known/openid-configuration` for GCP.
     {{site.data.alerts.end}}
 
     For example:

@@ -64,7 +64,7 @@ You must have the ability to update your cluster settings, which can be achieved
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
 | `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. 
 | `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
-| `server.jwt_authentication.audience` | The audience refers to the target of authentication, which is the cluster itself. In order to be accepted, tokens must be addressed to the cluster using this audience value.
+| `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 |`server.oidc_authentication.generate_cluster_sso_token.use_token`| This selects which part of the received OIDC credentials to use to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt).
@@ -110,7 +110,7 @@ You can also view all of your cluster settings in the DB Console...
 
 1. `server.jwt_authentication.audience`
 
-    The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
+    The ID of your cluster as specified by the IdP, or a JSON array of such names. This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 
     {{site.data.alerts.callout_danger}}
     Many third-party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
