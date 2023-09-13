@@ -15,7 +15,7 @@ A database migration broadly consists of the following phases:
 
 1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
 1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem) (optional), set up [metrics](#set-up-monitoring-and-alerting) (optional), [convert your schema](#convert-the-schema), perform an [initial load of test data](#load-test-data), [validate your application queries](#validate-queries) for correctness and performance, and [perform a dry run](#perform-a-dry-run) of the migration.
-1. [Conduct the migration:](#conduct-the-migration) Use a [lift-and-shift](#lift-and-shift) or ["zero-downtime"](#zero-downtime) method to migrate your data, application, and users to CockroachDB.
+1. [Conduct the migration:](#conduct-the-migration) Use a [lift-and-shift](#lift-and-shift) or ["live migration"](#live-migration) method to migrate your data, application, and users to CockroachDB.
 1. [Complete the migration:](#complete-the-migration) Notify the appropriate parties and summarize the details.
 
 {{site.data.alerts.callout_success}}
@@ -74,7 +74,7 @@ The minimum possible downtime depends on whether you can tolerate inconsistency 
 
 - *Inconsistent* migrations can reduce downtime to zero. These require the most preparation, and typically allow read/write traffic to both databases for at least a small amount of time, thereby sacrificing consistency for availability.{% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your source database and CockroachDB.{% endcomment %} Without stopping application traffic, you perform an immediate [cutover](#cutover-strategy), while assuming that some writes will not be replicated to CockroachDB. You may want to manually reconcile these data inconsistencies after switching over. This type of migration is rarely performed.
 
-For an overview of minimal downtime migrations to CockroachDB, see [Live Migration](#live-migration). For details, see [Migration Strategy: Zero Downtime](migration-strategy-zero-downtime).
+For an overview of minimal downtime migrations to CockroachDB, see [Live Migration](#live-migration). For details, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).
 
 ### Cutover strategy
 
@@ -98,7 +98,7 @@ As part of [migration preparations](#prepare-for-migration), you will have alrea
 
 This method adds a fallback plan to the simple [all-at-once](#all-at-once-no-rollback) cutover.
 
-In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the source database in case you need to roll back the migration. Continuous replication is already possible when performing a [zero-downtime migration](#zero-downtime) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover. The challenge is to find a point at which both the source database and CockroachDB are in sync, so that you can roll back to that point. You should also avoid falling into a circular state where updates continuously travel back and forth between the source database and CockroachDB.
+In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the source database in case you need to roll back the migration. Continuous replication is already possible when performing a [live migration](#live-migration) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover. The challenge is to find a point at which both the source database and CockroachDB are in sync, so that you can roll back to that point. You should also avoid falling into a circular state where updates continuously travel back and forth between the source database and CockroachDB.
 
 #### Phased rollout
 
