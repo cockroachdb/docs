@@ -5,7 +5,11 @@ Privilege | Levels | Description
 `CANCELQUERY` | System | Grants the ability to cancel queries.
 `CHANGEFEED` | Table | Grants the ability to create [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) on a table.
 `CONNECT` | Database | Grants the ability to view a database's metadata, which consists of objects in a database's `information_schema` and `pg_catalog` system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running `SHOW DATABASES`. The `CONNECT` privilege is also required to run backups of the database.
+`CONTROLJOB` | System | Grants the ability to [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) jobs. Non-admin roles cannot control jobs created by admin roles.
 `CREATE` | Database, Schema, Table, Sequence | Grants the ability to create objects at the database, schema, table, or sequence level. When applied at the database level, grants the ability to configure [multi-region zone configs]({% link {{ page.version.version }}/zone-config-extensions.md %}).
+`CREATEDB` | System | Grants the ability to [create]({% link {{ page.version.version }}/create-database.md %}) or [rename]({% link {{ page.version.version }}/alter-database.md %}#rename-to) a database.
+`CREATELOGIN` | System | Grants the ability to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN`/`NOLOGIN` role options.
+`CREATEROLE` | System | Grants the ability to [create]({% link {{ page.version.version }}/create-role.md %}), modify, or [delete]({% link {{ page.version.version }}/drop-role.md %}) non-admin roles.
 `DELETE` | Table, Sequence | Grants the ability to delete objects at the table or sequence level.
 `DROP` | Database, Table, Sequence | Grants the ability to drop objects at the database, table, or sequence level.
 `EXECUTE` | Function | Grants the ability to execute [functions]({% link {{ page.version.version }}/functions-and-operators.md %}).
