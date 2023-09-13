@@ -9,6 +9,18 @@
       ]
     },
     {
+      "title": "Migration Strategy: Lift and Shift",
+      "urls": [
+        "/${VERSION}/migration-strategy-lift-and-shift.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy: Live Migration",
+      "urls": [
+        "/${VERSION}/migration-strategy-live-migration.html"
+      ]
+    },
+    {
       "title": "Migration Tools",
       "items": [
         {

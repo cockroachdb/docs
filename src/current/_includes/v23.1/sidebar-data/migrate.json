@@ -9,18 +9,6 @@
       ]
     },
     {
-      "title": "Migration Strategy: Lift and Shift",
-      "urls": [
-        "/${VERSION}/migration-strategy-lift-and-shift.html"
-      ]
-    },
-    {
-      "title": "Migration Strategy: Live Migration",
-      "urls": [
-        "/${VERSION}/migration-strategy-live-migration.html"
-      ]
-    },
-    {
       "title": "Migration Tools",
       "items": [
         {
@@ -112,6 +100,12 @@
       "title": "Migrate from MySQL",
       "urls": [
         "/${VERSION}/migrate-from-mysql.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy: Lift and Shift",
+      "urls": [
+        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]
