@@ -13,9 +13,11 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
-For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups).
-
 {% include {{ page.version.version }}/backups/support-products.md %}
+
+## Considerations
+
+{% include {{ page.version.version }}/backups/protected-timestamps.md %}
 
 ## Create a new backup schedule
 
