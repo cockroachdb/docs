@@ -213,9 +213,11 @@
   - demo-data-replication.md
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: disaster-recovery-planning.md
-  sources: ['disaster-recovery.md']
-  versions: ['v23.2']
+- destination: v23.2/disaster-recovery-planning.md
+  sources: ['v23.2/disaster-recovery.md']
+
+- destination: dev/disaster-recovery-planning.md
+  sources: ['dev/disaster-recovery.md']
 
 - destination: example-apps.md
   sources: ['build-an-app-with-cockroachdb.md']
