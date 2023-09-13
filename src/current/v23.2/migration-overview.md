@@ -7,20 +7,23 @@ docs_area: migrate
 
 This page provides an overview of how to migrate a database to CockroachDB.
 
-{{ site.data.alerts.callout_info }}
+{{site.data.alerts.callout_info}}
 If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](https://www.cockroachlabs.com/docs/cockroachcloud/migrate-from-serverless-to-dedicated).
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 A database migration broadly consists of the following phases:
+
 1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
 1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem) (optional), set up [metrics](#set-up-monitoring-and-alerting) (optional), [convert your schema](#convert-the-schema), perform an [initial load of test data](#load-test-data), [validate your application queries](#validate-queries) for correctness and performance, and [perform a dry run](#perform-a-dry-run) of the migration.
 1. [Conduct the migration:](#conduct-the-migration) Use a [lift-and-shift](#lift-and-shift) or ["zero-downtime"](#zero-downtime) method to migrate your data, application, and users to CockroachDB.
-1. [Complete the migration:](#complete-the-migration) Notify the appropriate parties and summarize the details.{{ site.data.alerts.callout_success }}
-If you need help migrating to CockroachDB, contact our
-<a href="mailto:sales@cockroachlabs.com">sales team</a>.
-{{ site.data.alerts.end }}
+1. [Complete the migration:](#complete-the-migration) Notify the appropriate parties and summarize the details.
+
+{{site.data.alerts.callout_success}}
+If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
+{{site.data.alerts.end}}
 
 ## Develop a migration plan
+
 Consider the following as you plan your migration:
 
 - Who will lead and perform the migration? Which teams are involved, and which aspects are they responsible for?
@@ -60,6 +63,7 @@ A lift-and-shift approach is the most straightforward. However, it's important t
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
 For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift](#lift-and-shift). For considerations and details about the pros and cons of this approach, see [Migration Strategy: Lift and Shift]({% link {{ page.version.version }}/migration-strategy-lift-and-shift.md %}).
+
 #### Minimal downtime
 
 If your application can tolerate very little to no downtime, then you should aim for a "live migration" approach. "Live" means that downtime is reduced to either an absolute minimum or zero, such that users do not notice the migration.
@@ -73,6 +77,7 @@ The minimum possible downtime depends on whether you can tolerate inconsistency 
 For an overview of minimal downtime migrations to CockroachDB, see [Live Migration](#live-migration). For details, see [Migration Strategy: Zero Downtime](migration-strategy-zero-downtime).
 
 ### Cutover strategy
+
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Consider the following:
 
 - Will you perform the cutover all at once, or incrementally (e.g., by a subset of users, workloads, or tables)?
@@ -101,20 +106,25 @@ Also known as the ["strangler fig"](https://en.wikipedia.org/wiki/Strangler_fig)
 
 This approach enables you to take your time with the migration, and to pause or roll back as you [monitor the migration](#set-up-monitoring-and-alerting) for issues and performance. Rolling back the migration involves the same caveats and considerations as for the [all-at-once](#all-at-once-rollback) method. Because you can control the blast radius of your migration by routing traffic for a subset of users or services, a phased rollout has reduced business risk and user impact at the cost of increased implementation risk. You will need to figure out how to migrate in phases while ensuring that your application is unaffected.
 
-### Capacity planning{{ site.data.alerts.callout_success }}
-If you need help migrating to CockroachDB, contact our
-<a href="mailto:sales@cockroachlabs.com">sales team</a>.
-{{ site.data.alerts.end }}
+### Capacity planning
+
+{{site.data.alerts.callout_success}}
+If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
+{{site.data.alerts.end}}
 
 Determine the size of the target CockroachDB cluster. To do this, consider your data volume and workload characteristics:
 
 - What is the total size of the data you will migrate?
 - How many active [application connections]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
+
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster) for details:
+
 - For CockroachDB {{ site.data.products.dedicated }}, refer to the [example](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#dedicated-example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
 - For CockroachDB {{ site.data.products.serverless }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to [Choosing resource limits](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#choose-resource-limits) to learn about how to limit your resource consumption.
 - For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist](https://www.cockroachlabs.com/docs/cockroachcloud/production-checklist#use-a-pool-of-persistent-connections).
+
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
+
 - Refer to our [sizing methodology]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing) to determine the total number of vCPUs on the cluster and the number of vCPUs per node (which determines the number of nodes on the cluster).
 - Refer to our [storage recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) to determine the amount of storage to provision on each node.
 - For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.core }} [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling).
@@ -130,43 +140,53 @@ As you develop your migration plan, consider the application changes that you wi
 
 #### Schema design best practices
 
-Follow these recommendations when [converting your schema](#convert-the-schema) for compatibility with CockroachDB.{{ site.data.alerts.callout_success }}
+Follow these recommendations when [converting your schema](#convert-the-schema) for compatibility with CockroachDB.
+
+{{site.data.alerts.callout_success}}
 The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) automatically identifies potential improvements to your schema.
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 - You should define an explicit primary key on every table. For more information, see [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices).
+
 - Do not use a sequence to define a primary key column. Instead, Cockroach Labs recommends that you use [multi-column primary keys]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) or [auto-generating unique IDs]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids) for primary key columns.
+
 - By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers]({% link {{ page.version.version }}/int.md %}#considerations-for-64-bit-signed-integers).
 
 #### Index creation best practices
 
-Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB.
+Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB. 
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 #### Handling transaction contention
 
 Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You will likely encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) related to CockroachDB's [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
+
 #### Unimplemented features and syntax incompatibilities
 
-Update your queries to resolve differences in functionality and SQL syntax.{{ site.data.alerts.callout_success }}
+Update your queries to resolve differences in functionality and SQL syntax.
+
+{{site.data.alerts.callout_success}}
 The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) automatically flags syntax incompatibilities and unimplemented features in your schema.
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
 If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
+
 For more details on the CockroachDB SQL implementation, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
 
 ## Prepare for migration
 
 Once you have a migration plan, prepare the team, application, source database, and CockroachDB cluster for the migration.
 
-### Run a migration "pre-mortem"{{ site.data.alerts.callout_success }}
+### Run a migration "pre-mortem"
+
+{{site.data.alerts.callout_success}}
 This step is optional.
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 To minimize issues after [cutover](#cutover-strategy), compose a migration "pre-mortem":
 
@@ -177,9 +197,9 @@ To minimize issues after [cutover](#cutover-strategy), compose a migration "pre-
 
 ### Set up monitoring and alerting
 
-{{ site.data.alerts.callout_success }}
+{{site.data.alerts.callout_success}}
 This step is optional.
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 Based on the error budget you [defined in your migration plan](#develop-a-migration-plan), identify the metrics that you can use to measure your success criteria and set up monitoring for the migration. These metrics may be identical to those you normally use in production, but can also be specific to your migration needs.
 
@@ -189,7 +209,9 @@ In the following order:
 
 1. [Convert your schema](#convert-the-schema).
 1. [Load test data](#load-test-data).
-1. [Validate your application queries](#validate-queries).<a name="molt"></a>
+1. [Validate your application queries](#validate-queries).
+
+<a name="molt"></a>
 
 You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify these steps:
 
@@ -201,25 +223,25 @@ You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify
 First, convert your database schema to an equivalent CockroachDB schema:
 
 - Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert your schema line-by-line. This requires a free [CockroachDB {{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account). The tool will convert the syntax, identify [unimplemented features and syntax incompatibilities](#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
-{{ site.data.alerts.callout_info }}
-The Schema Conversion Tool accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
-{{ site.data.alerts.end }}
+	{{site.data.alerts.callout_info}}
+	The Schema Conversion Tool accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
+	{{site.data.alerts.end}}
 
 - Alternatively, manually convert the schema according to our [schema design best practices](#schema-design-best-practices){% comment %}and data type mappings{% endcomment %}. You can also [export a partially converted schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool to finish the conversion manually.
 
 Then import the converted schema to a CockroachDB cluster:
 
-- For CockroachDB {{ site.data.products.serverless }}, use the Schema Conversion Tool to [migrate the converted schema to a new CockroachDB {{ site.data.products.serverless }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
-- For CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
-{{ site.data.alerts.callout_success }}
-For the fastest performance, you can use a [local, single-node CockroachDB cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#start-a-single-node-cluster) to convert your schema and [check the results of queries](#test-query-results-and-performance).
-{{ site.data.alerts.end }}
+- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
+- For CockroachDB {{ site.data.products.core }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
+	{{site.data.alerts.callout_success}}
+	For the fastest performance, you can use a [local, single-node CockroachDB cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#start-a-single-node-cluster) to convert your schema and [check the results of queries](#test-query-results-and-performance).
+	{{site.data.alerts.end}}
 
 #### Load test data
 
-{{ site.data.alerts.callout_success }}
+{{site.data.alerts.callout_success}}
 Before moving data, Cockroach Labs recommends [dropping any indexes]({% link {{ page.version.version }}/drop-index.md %}) on the CockroachDB database. The indexes can be [recreated]({% link {{ page.version.version }}/create-index.md %}) after the data is loaded. Doing so will optimize performance.
-{{ site.data.alerts.end }}
+{{site.data.alerts.end}}
 
 After [converting the schema](#convert-the-schema), load your data into CockroachDB so that you can [test your application queries](#validate-queries). Then use one of the following methods to migrate the data (you may need to use additional tooling to extract and/or convert the data to an appropriate file format):
 
@@ -233,9 +255,8 @@ After you [load the test data](#load-test-data), validate your queries on Cockro
 
 ##### Shadowing
 
-You can "shadow" your production workload by replicating all writes from the source database to CockroachDB. To do this, use a [change data capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) service.
-{% comment %}The CockroachDB Live Migration Service (MOLT LMS) can also write queries to both databases simultaneously.{% endcomment %}
-You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+You can "shadow" your production workload by replicating all writes from the source database to CockroachDB. To do this, use a [change data capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) service. {% comment %}The CockroachDB Live Migration Service (MOLT LMS) can also write queries to both databases simultaneously.{% endcomment %} You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+
 Shadowing may not be necessary or practical for your workload. For example, because transactions are serialized on CockroachDB, this will limit your ability to validate the performance of high-throughput workloads.
 
 ##### Test query results and performance
@@ -243,6 +264,7 @@ Shadowing may not be necessary or practical for your workload. For example, beca
 You can manually validate your queries by testing a subset of "critical queries" on an otherwise idle CockroachDB cluster:
 
 - Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/statements-page) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
+
 - Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}).
 
 Test performance on a CockroachDB cluster that is appropriately [sized](#capacity-planning) for your workload:

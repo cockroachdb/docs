@@ -9,6 +9,7 @@ This page provides an overview of the backup and restore features available in C
 
 - [Types of backup available in CockroachDB](#cockroachdb-backup-types)
 - [Backup and restore product support](#backup-and-restore-product-support)
+- [Schedules](#scheduled-backups) for periodic backups
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
 
@@ -35,12 +36,21 @@ Backup / Restore  | Description  | Product Support
 [Locality-aware backup and restore]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
 [Locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) | A backup with the `EXECUTION LOCALITY` option restricts the nodes that can execute a backup job with a defined locality filter. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
 
-{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
-
 ### Additional backup and restore features
 
 - [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations)
 - [Exclude a table's data from backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups)
+
+## Scheduled backups
+
+{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
+CockroachDB supports [creating schedules for periodic backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) of the data. 
+
+For detail on scheduled backup features CockroachDB supports:
+
+- [Set up monitoring for the backup schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#set-up-monitoring-for-the-backup-schedule)
+- [View]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#view-the-schedule), [pause]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#pause-the-schedule), [resume]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#resume-the-schedule), or [drop]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#drop-the-schedule) the schedule
 
 ## Backup jobs with locality requirements
 
