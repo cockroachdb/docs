@@ -20,6 +20,13 @@ To use the `SET CLUSTER SETTING` statement, a user must have one of the followin
     GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
     ~~~
 
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="22.2.7" %} The cluster setting `sql.auth.modify_cluster_setting_applies_to_all.enabled` affects what users with the `MODIFYCLUSTERSETTING` privilege are able to modify:
+
+- If set to `true` (the default), users are able to modify all cluster settings.
+- If set to `false`, users are allowed to modify only `sql.defaults.*` cluster settings, not all cluster settings.
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>

@@ -208,3 +208,5 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
