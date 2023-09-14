@@ -11,8 +11,8 @@ During a live migration you maintain two production databases (the *source* and 
 
 A live migration consists of three distinct phases:
 
-- The initial phase where the source database is the *source of truth*: the database used by the application to read and write data, and the source for replicating the data to the target database.
-- The cutover phase where CockroachDB is the source of truth and the source database is the secondary database.
+- The initial phase where the source database is the *source of truth*: the database used by the application to read and write data, and the source for replicating the data to CockroachDB, the target database.
+- The cutover phase where CockroachDB is made the source of truth and the source database is the secondary database used for failover.
 - The final phase where the source database is removed as a replication target and failover database.
 
 There are many possible approaches to performing a live migration. In this topic, we describe two example approaches that have been successful with CockroachDB: consistent cutover, and immediate cutover.
@@ -37,7 +37,7 @@ Advantages:
 
 - There's greater service availability with live migrations. You can failback to the source database at any point in the migration process, or if there are significant errors after cutover.
 - The impact of a migration on users is minimized by having very little downtime.
-- There's less internal coordination cost. For example, if other teams use the database, they can update their systems to during the initial phase of the migration with no extended outage or maintenance window.
+- There's less internal coordination cost. For example, if other teams use the database, they can update their systems during the initial phase of the migration with no extended outage or maintenance window.
 - You can test the viability and scalability of your architecture on live production data. For example, you can tune the performance of CockroachDB before the cutover without affecting the performance of the production application.
 
 Disadvantages:

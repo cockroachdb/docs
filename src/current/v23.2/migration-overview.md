@@ -98,7 +98,7 @@ As part of [migration preparations](#prepare-for-migration), you will have alrea
 
 This method adds a fallback plan to the simple [all-at-once](#all-at-once-no-rollback) cutover.
 
-In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the source database in case you need to roll back the migration. Continuous replication is already possible when performing a [live migration](#live-migration) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover. The challenge is to find a point at which both the source database and CockroachDB are in sync, so that you can roll back to that point. You should also avoid falling into a circular state where updates continuously travel back and forth between the source database and CockroachDB.
+In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the source database in case you need to roll back the migration. Continuous replication is already involved when performing a [live migration](#live-migration) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover. The challenge is to find a point at which both the source database and CockroachDB are in sync, so that you can roll back to that point. You should also avoid falling into a circular state where updates continuously travel back and forth between the source database and CockroachDB.
 
 #### Phased rollout
 
@@ -334,7 +334,7 @@ To prioritize consistency and minimize downtime:
 
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a &lt;1 second delay or &lt;1000 rows), stop application traffic to your source database. **This begins downtime.**
 
-1. Wait for replication to CockroachDB to complete. This typically is very a very short period of time, often less than a few seconds.
+1. Wait for replication to CockroachDB to complete. This typically takes a very short period of time, often less than a few seconds.
 
 1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
 
