@@ -165,10 +165,10 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
   
 ## Set a maintenance window
 
-From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. Note that upgrades may not always be completed by the end of the window. If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 {{site.data.alerts.callout_info}}
-Maintenance operations that are critical for cluster security or stability may be applied outside of the upgrade window.
+Maintenance operations that are critical for cluster security or stability may be applied outside of the upgrade window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
 To set an upgrade window:
@@ -181,7 +181,7 @@ To set an upgrade window:
     
 1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
     
-    You should enable this setting for production clusters if you want to ensure that development and testing clusters are upgraded first. Note that this setting applies only to patch versions and not to other kinds of maintenance upgrades.
+    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
 
 ## Restore data from a backup
 
