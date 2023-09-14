@@ -26,7 +26,7 @@ At a high level, Row-Level TTL works by:
 - Issuing batched [`DELETE`]({% link {{ page.version.version }}/delete.md %}) statements for the expired rows.
 - As part of the above process, deciding how many rows to [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) and [`DELETE`]({% link {{ page.version.version }}/delete.md %}) at once in each of the above queries.
 - Running the SQL queries described above in parallel as [background jobs]({% link {{ page.version.version }}/show-jobs.md %}).
-- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system]({% link {{ page.version.version }}/admission-control.md %}).
+- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system]({% link {{ page.version.version }}/admission-control.md %}). When foreground traffic increases, CockroachDB will reduce the resources allocated to TTL deletes to handle the foreground traffic. When foreground traffic decreases, CockroachDB will increase the resources allocated to TTL deletes.
 
 The process above is conceptually similar to the process described by [Batch delete on an indexed column]({% link {{ page.version.version }}/bulk-delete-data.md %}#batch-delete-on-an-indexed-column), except that Row-Level TTL is built into CockroachDB, so it saves you from having to write code to manage the process from your application and/or external job processing framework, including tuning the rate and performance of your background queries so they don't affect foreground application query performance.
 
@@ -386,7 +386,7 @@ SELECT relname, reloptions FROM pg_class WHERE relname = 'events';
 
 ### Control how often the TTL job runs
 
-Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help).
+Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows _may_ be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help). Cockroach Labs recommends setting `ttl_job_cron` to be equal to or longer than the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting, which is the garbage collection interval for the cluster. The default value of `gc.ttlseconds` is 14400, or 4 hours. The CRON pattern for every four hours is `'0 */4 * * *'`.
 
 To control the job interval at [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) time, add the storage parameter as shown below:
 
@@ -395,7 +395,7 @@ To control the job interval at [`CREATE TABLE`]({% link {{ page.version.version 
 CREATE TABLE tbl (
   id UUID PRIMARY KEY default gen_random_uuid(),
   value TEXT
-) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '@daily');
+) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '0 */4 * * *');
 ~~~
 
 ~~~

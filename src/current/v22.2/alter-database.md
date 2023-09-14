@@ -367,7 +367,7 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... RESET {session
 
 ### `SET {session variable}`
 
-`ALTER DATABASE ... SET {session variable}` modifies a [session variable](set-vars.html#supported-variables) for a database. By default, session variable values are set for the duration of the current session.
+`ALTER DATABASE ... SET {session variable}` sets the default value of a [session variable](set-vars.html#supported-variables) for all future sessions on the database. This command does **not** alter the session setting of the current session.
 
 #### Required privileges
 

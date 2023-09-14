@@ -1,13 +1,9 @@
 ---
 title: DROP EXTERNAL CONNECTION
-summary: The DROP EXTERNAL CONNECTION statement deletes external connections. 
+summary: The DROP EXTERNAL CONNECTION statement deletes external connections.
 toc: true
 docs_area: reference.sql
 ---
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
 
 You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. The `DROP EXTERNAL CONNECTION` statement allows you to delete external connections.
 

@@ -209,7 +209,7 @@
                     "/${VERSION}/global-tables.html"
                     ]
                 }
-            ] 
+            ]
           },
           {
             "title": "Security",
@@ -347,6 +347,12 @@
                     "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
                     "urls": [
                       "/${VERSION}/kibana.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-self-hosted.html"
                     ]
                   }
             ]
@@ -621,9 +627,9 @@
                 ]
               },
               {
-                "title": "Disaster Recovery",
+                "title": "Disaster Recovery Planning",
                 "urls": [
-                  "/${VERSION}/disaster-recovery.html"
+                  "/${VERSION}/disaster-recovery-planning.html"
                 ]
               },
               {

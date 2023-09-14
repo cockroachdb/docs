@@ -4,7 +4,20 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
 - **Partial support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
-- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool. 
+- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool.
+
+{{site.data.alerts.callout_danger}}
+Tools, drivers, or frameworks are considered **unsupported** if:
+
+- The tool, driver, or framework is not listed on this page.
+- The version of a supported tool, driver, or framework is not listed on this page.
+
+If you encounter issues when using unsupported tools, drivers, or frameworks, contact the maintainer directly.
+
+Cockroach Labs provides "best effort" support for tools, drivers, and frameworks that are not officially supported. This means that while we will do our best to assist you, we may not be able to fully troubleshoot errors in your deployment.
+
+Customers should contact their account team before moving production workloads to CockroachDB that use unsupported drivers.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps]({% link {{ page.version.version }}/example-apps.md %}).
