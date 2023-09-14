@@ -66,7 +66,7 @@ Use a [`GLOBAL` table locality]({% link {{ page.version.version }}/table-localit
 - [When to Use `ZONE` vs. `REGION` Survival Goals]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#when-to-use-zone-vs-region-survival-goals)
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
-- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery.md %})
+- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
 - [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions)
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)

@@ -209,7 +209,7 @@
                     "/${VERSION}/global-tables.html"
                     ]
                 }
-            ] 
+            ]
           },
           {
             "title": "Security",
@@ -627,9 +627,9 @@
                 ]
               },
               {
-                "title": "Disaster Recovery",
+                "title": "Disaster Recovery Planning",
                 "urls": [
-                  "/${VERSION}/disaster-recovery.html"
+                  "/${VERSION}/disaster-recovery-planning.html"
                 ]
               },
               {
