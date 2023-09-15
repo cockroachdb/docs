@@ -4868,7 +4868,7 @@
   source: true
   previous_release: v23.1.9
 
-- release_name: v23.2.0-alpha1
+- release_name: v23.2.0-alpha.1
   major_version: v23.2
   release_date: '2023-09-25'
   release_type: Testing
