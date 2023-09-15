@@ -25,7 +25,7 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
   {% if release.linux.linux_arm == true %}
     {% capture linux_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.linux.linux_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
-<a {{ onclick_string }} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
+<a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
 
   {% endif %}
 
@@ -34,7 +34,7 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
   {% if release.mac.mac_arm == true %}
     {% capture mac_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.mac.mac_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
-<a {{ onclick_string }} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
+<a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
 
   {% endif %}
 
@@ -49,14 +49,14 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
 <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-amd64.tgz"><button id="linux-intel" class="filter-button" data-scope="linux-intel" data-eventcategory="linux-binary-release-notes">Linux Intel</button></a>
     {% if release.linux.linux_arm == true %}
 
-<a {{ onclick_string }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
+<a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
 
     {% endif %}
 
 <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
     {% if release.mac.mac_arm == true %}
 
-<a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
+<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
 
     {% endif %}
 
@@ -88,7 +88,7 @@ To download the Docker image (Intel-only):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-$ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
+docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~
 
   {% if release.previous_release %}
