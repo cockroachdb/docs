@@ -7,9 +7,9 @@ docs_area: migrate
 
 [Oracle GoldenGate](https://www.oracle.com/integration/goldengate/) is a managed service that can collect, replicate, and manage transactional data between databases. GoldenGate can use CockroachDB as a sink by leveraging CockroachDB's PostgreSQL compatibility. This page describes how to:
 
-- [Configure Oracle GoldenGate for PostgreSQL](#configure-oracle-goldengate-for-cockroachdb).
+- [Configure Oracle GoldenGate for PostgreSQL](#configure-oracle-goldengate-for-postgresql).
 - [Set up Extract to capture data from a source database](#set-up-extract-to-capture-data-from-a-source-database).
-- [Set up Replicat to deliver data to CockroachDB](#set-up-replicat-to-deliver-data-to-CockroachDB).
+- [Set up Replicat to deliver data to CockroachDB](#set-up-replicat-to-deliver-data-to-cockroachdb).
 - [Perform bulk replication](#perform-bulk-replication).
 
 As of this writing, GoldenGate supports the following database [sources](https://docs.oracle.com/en/middleware/goldengate/core/21.3/coredoc/configure-databases.html):
@@ -422,7 +422,7 @@ The steps in this section should be run on a machine and in a directory where Or
 
 ## Perform bulk replication
 
-1. Keep the [Extract process](#set-up-extract) running on Oracle and the [Replicat process](#set-up-replicat) running for CockroachDB.
+1. Keep the [Extract process](#set-up-extract-to-capture-data-from-a-source-database) running on Oracle and the [Replicat process](#set-up-replicat-to-deliver-data-to-cockroachdb) running for CockroachDB.
 1. In the source database, bulk insert some data:
 
     {% include_cached copy-clipboard.html %}
