@@ -77,7 +77,7 @@ URI Component      | Description
 Example of a Kafka sink URI:
 
 ~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 ~~~
 
 #### Google Cloud Pub/Sub
@@ -140,7 +140,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `sasl_client_secret` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
 `sasl_enabled`     | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)                               | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
 `sasl_grant_type` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-`sasl_mechanism`   | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)                               | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html),  [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required.<br><br>See the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial for detail setting up OAuth using Okta. <br><br> **Default:** `SASL-PLAIN`
+`sasl_mechanism`   | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)                               | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html),  [`SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required.<br><br>See the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial for detail setting up OAuth using Okta. <br><br> **Default:** `PLAIN`
 `sasl_scopes` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | A list of scopes that the OAuth token should have access for. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_token_url` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Client token URL for OAuth authentication from a third-party provider. **Note:** You must [URL encode](https://www.urlencoder.org/) this value before passing in a URI. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_user`        | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)                               | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Your SASL username.
@@ -314,7 +314,7 @@ External connections support all changefeed sinks.
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE EXTERNAL CONNECTION kafka_sink
-  AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256';
+  AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256';
 ~~~
 
 In the changefeed statement, you specify the external connection name:

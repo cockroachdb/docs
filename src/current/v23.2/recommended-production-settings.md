@@ -40,7 +40,7 @@ Carefully consider the following tradeoffs:
     - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
     - A cluster with fewer nodes may be easier to operate and maintain.
 
-- A **larger number of smaller nodes** emphasizes resiliency across [failure scenarios]({% link {{ page.version.version }}/disaster-recovery.md %}).
+- A **larger number of smaller nodes** emphasizes resiliency across [failure scenarios]({% link {{ page.version.version }}/disaster-recovery-planning.md %}).
 
     - The loss of a small node during failure or routine maintenance has a lesser impact on workload response time and concurrency.
     - Having more and smaller nodes allows [backup and restore jobs]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) to complete more quickly, since these jobs run in parallel and less data is hosted on each individual node.
@@ -312,7 +312,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Backup and restore
 
-CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery.md %}) plan enables you to recover quickly, while limiting the consequences.
+CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %}) plan enables you to recover quickly, while limiting the consequences.
 
 Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
