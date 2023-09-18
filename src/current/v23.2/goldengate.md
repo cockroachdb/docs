@@ -132,7 +132,7 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 The steps in this section should be run on a machine and in a directory where Oracle GoldenGate for Oracle is installed.
 {{site.data.alerts.end}}
 
-1. Inside the GGSCI terminal, open the parameter file for the Oracle source:
+1. Inside the GGSCI terminal, create and open the `epos` parameter file for the Oracle source:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -433,8 +433,13 @@ The steps in this section should be run on a machine and in a directory where Or
     CONNECT BY level <= 50000 - 99;
     ~~~
 
-1. Run the status command on the Extract GGSCI terminal.
+1. Run the status command on the Extract GGSCI terminal:
 
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    stats EXTRACT EPOS
+    ~~~
+    
     You will see an output similar to the following:
 
     ~~~
