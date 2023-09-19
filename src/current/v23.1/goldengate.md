@@ -20,7 +20,7 @@ As of this writing, GoldenGate supports the following database [sources](https:/
 - SQL Server
 - Db2 z/OS
 
-This page describes the GoldenGate functionality at a high level and assumes some familiarity with this tool. For detailed information, refer to the [Oracle GoldenGate documentation](https://docs.oracle.com/en/middleware/goldengate/core/21.3/index.html).
+This page describes GoldenGate at a high level and assumes some familiarity with this tool. For detailed information, refer to the [Oracle GoldenGate documentation](https://docs.oracle.com/en/middleware/goldengate/core/21.3/index.html).
 
 For limitations on what PostgreSQL features are supported, refer to Oracle's [Details of Supported PostgreSQL Data Types](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/understanding-whats-supported-postgresql.html).
 
@@ -28,9 +28,9 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
 
 - Oracle GoldenGate runs as a process separate from CockroachDB and the source database. Ensure your host meets the [minimum requirements](https://docs.oracle.com/en/middleware/goldengate/core/21.3/installing/overview.html).
 
-- Ensure that you have an Oracle client installed that is compatible with the host Oracle version. This can be done by doing a full Oracle install, or just the client libraries.
+- Ensure that your Oracle client or client libraries are compatible with the host Oracle version.
 
-- Ensure that you have the two required Oracle GoldenGate installations:
+- Ensure that you have installed both required Oracle GoldenGate components:
     1. [Oracle GoldenGate for Oracle](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html).
     1. [Oracle GoldenGate for PostgreSQL](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to pull data from the trail files to CockroachDB.
 - For CockroachDB clusters running v22.1 and earlier, enable the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
@@ -41,19 +41,17 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
     SET CLUSTER SETTING sql.defaults.intervalstyle.enabled = true;
     ~~~
 
-    For versions of CockroachDB v22.2 and later, these settings are already enabled by default.
+    For CockroachDB v22.2 and later, these settings are enabled by default.
 
 - Ensure [libpg](https://www.postgresql.org/download/linux/redhat/) is available on the Oracle GoldenGate host.
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
+- Ensure you have a secure, [publicly available]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
 
 ## Configure Oracle GoldenGate for PostgreSQL
 
-This section describes how to configure Oracle GoldenGate for PostgreSQL to work with CockroachDB. Oracle GoldenGate for PostgreSQL is the process that pulls data from [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) over to CockroachDB. Note that this is a separate installation from Oracle GoldenGate for Oracle, which will be used to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html). For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html). The following example uses a [CockroachDB {{ site.data.products.serverless }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster).
+This section describes how to configure Oracle GoldenGate for PostgreSQL to work with CockroachDB. Oracle GoldenGate for PostgreSQL is the process that pulls data from [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) over to CockroachDB. This is a separate installation from Oracle GoldenGate for Oracle, which will be used to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html). For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html). The following example uses a [CockroachDB {{ site.data.products.serverless }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster).
 
-1. Edit the following parameters in the `ODBC.ini` file.
-
-    Set up the ODBC data sources and configuration:
+1. Edit the the `ODBC.ini` file to set up the ODBC data sources and configuration:
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -88,7 +86,9 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 
     vi /etc/odbc.ini
     ~~~
-        
+    
+    To make this change permanent, you must also add the command to your shell's configuration file, such as `~/.zshrc`.
+            
 1. Set up the CockroachDB {{ site.data.products.serverless }} parameters:
     - Replace the login details with your own. Be sure to prefix the database name with `{hostname}`.
     - Make sure your {{ site.data.products.serverless }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster#connect-to-your-cluster) is in the `TrustStore` path.
@@ -129,10 +129,10 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 [Extract](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) is Oracle GoldenGate's data capture mechanism that is configured to run against the source database.
 
 {{site.data.alerts.callout_success}}
-The steps in this section should be run on a machine and in a directory where Oracle GoldenGate for Oracle is installed.
+Complete the steps in this section on a machine and in a directory where Oracle GoldenGate for Oracle is installed.
 {{site.data.alerts.end}}
 
-1. Inside the GGSCI terminal, create and open the `epos` parameter file for the Oracle source:
+1. In the GGSCI terminal, create and open the `epos` parameter file for the Oracle source:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -143,11 +143,10 @@ The steps in this section should be run on a machine and in a directory where Or
     view param epos
     ~~~
 
-1. Edit the following parameters:
+1. Edit the parameters that configure Extract to send data to the trail file at `./dirdat/ab` on the remote host:
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    # This section will run an extract on the source Oracle DB and then send that data over to the trail file at `./dirdat/ab` on the remote host.
     EXTRACT epos
     USERIDALIAS gg_source
     RMTHOST {host-name}, MGRPORT {port}
@@ -155,7 +154,7 @@ The steps in this section should be run on a machine and in a directory where Or
     TABLE OGGADM1.testtable;
     ~~~
 
-1. Back in the GGSCI terminal, run the following and start the Extract service:
+1. In the GGSCI terminal, run the following and start the Extract service.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -231,7 +230,7 @@ The steps in this section should be run on a machine and in a directory where Or
 [Replicat](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) is an Oracle process that reads [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) and delivers data to a target database.
 
 {{site.data.alerts.callout_success}}
-The steps in this section should be run on a machine and in a directory where Oracle GoldenGate for PostgreSQL is installed.
+Run the steps in this section on a machine and in a directory where Oracle GoldenGate for PostgreSQL is installed.
 {{site.data.alerts.end}}
 
 1. Log in to the database from GGSCI:
@@ -270,9 +269,7 @@ The steps in this section should be run on a machine and in a directory where Or
     view param RORPSQL 
     ~~~
 
-1. Edit the following parameters. 
-
-    The `MAP` statement maps the source (OGGADM1.testtable) to the target (public.testtable).
+1. Edit the parameters to configure the `MAP` statement, which maps the source (`OGGADM1.testtable`) to the target (`public.testtable`):
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -285,7 +282,7 @@ The steps in this section should be run on a machine and in a directory where Or
     MAP OGGADM1.testtable, TARGET public.testtable, COLMAP (COL1=col1,COL2=col2);
     ~~~
 
-1. Back in the GGSCI terminal, run the following and start the Replicat service:
+1. In the GGSCI terminal, run the following and start the Replicat service:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -477,7 +474,7 @@ The steps in this section should be run on a machine and in a directory where Or
 
 1. Run the status command on the Replicat GGSCI terminal:
 
-    You'll notice that the number of inserts will take a few minutes to update. Once the process finishes inserting and committing to the database, it will report back the final inserts. During the process, it will show the previous state:
+    The number of inserts takes a few minutes to update. After the process finishes inserting and committing to the database, it will report back the final inserts. During the process, it will show the previous state:
 
     ~~~
     Replicating from OGGADM1.TESTTABLE2 to public.testtable:
@@ -514,7 +511,7 @@ The steps in this section should be run on a machine and in a directory where Or
     
     To verify that the insert is happening, you can run: `SELECT COUNT(*) FROM public.testtable;`. The query will hang while it's still inserting.
 
-1. To see where the replication is processing while it's ongoing, view the report:
+1. To track the status of an ongoing replication, view the report:
 
     ~~~
     ./ggsci
