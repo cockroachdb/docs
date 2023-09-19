@@ -13,7 +13,7 @@ MOLT LMS (Live Migration Service) is used to perform a [live migration]({% link 
 
 The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You can use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
-MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured using Helm](#configure-the-lms). At a high level, the LMS consists of the following:
+MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured using Helm](#configuration). At a high level, the LMS consists of the following:
 
 - A number of proxy [instances](#lms-instances) (running in separate Kubernetes pods) across which application traffic is distributed and routed to the source and target databases.
 - An "orchestrator" service (running in a single Kubernetes pod) that coordinates the proxy instances and sends the cutover commands.
@@ -116,7 +116,7 @@ The connections to the source database and CockroachDB are defined with the conf
 Include client authentication details in the connection strings. For more details, see [Configure source and target certificates](#configure-source-and-target-certificates).
 
 {{site.data.alerts.callout_success}}
-For details about writing a CockroachDB connection string, see [Connect using a URL](connection-parameters#connect-using-a-url).
+For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
 {{site.data.alerts.end}}
 
 You should specify the config keys in an external Kubernetes secret and inside a JSON object. The JSON **must** be named `config.json`.
