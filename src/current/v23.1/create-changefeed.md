@@ -156,7 +156,7 @@ Option | Value | Description
 `avro_schema_prefix` | Schema prefix name | Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 <a name="compression-opt"></a>`compression` | `gzip`, `zstd` |  Compress changefeed data files written to a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink). For compression options when using a Kafka sink, see [Kafka sink configuration]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration).
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.<br><br>{% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}<br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}<br><br>{% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
-<a name="cursor-option"></a>`cursor` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than [the default MVCC garbage collection interval]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
+<a name="cursor-option"></a>`cursor` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters)  | Emit any changes after the given timestamp. `cursor` does not output the current state of the table first. When `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>The changefeed will encounter an error if you specify a timestamp that is before the configured garbage collection window for the target table. (Refer to [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables).) With default garbage collection settings, this means you cannot create a changefeed that starts more than [the default MVCC garbage collection interval]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) in the past.<br><br>You can use `cursor` to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `cursor='1536242855577149065.0000000000'`
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied. Changefeeds must use the `diff` option with the default [`wrapped` envelope](#envelope) to emit the `before` field.
 <a name="end-time"></a>`end_time` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
 <a name="envelope"></a>`envelope` | `wrapped` / `bare` / `key_only` / `row` | `wrapped` the default envelope structure for changefeed messages containing an array of the primary key, a top-level field for the type of message, and the current state of the row (or `null` for deleted rows).<br><br>`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with `avro` format, `record` will replace the `after` key. **Note:** This is the default envelope format for [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}). For an example, refer to [Filter columns]({% link {{ page.version.version }}/cdc-queries.md %}#filter-columns).<br><br>`key_only` emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds.<br><br>`row` emits the row without any additional metadata fields in the message. This envelope option is only supported in [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro` format](#format). <br><br>Refer to [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses) for more detail on message format.<br><br>Default: `envelope=wrapped`. Default for [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}): `envelope=bare`.
@@ -373,29 +373,35 @@ For more information, see [`CANCEL JOB`]({% link {{ page.version.version }}/canc
 
 ### Start a new changefeed where another ended
 
-Find the [high-water timestamp]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed) for the ended changefeed:
+In some situations, you may want to start a changefeed where a previously running changefeed ended. For example, a changefeed could encounter an error it cannot recover from, such as when a [`TRUNCATE` is performed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#known-limitations), and you need to restart the changefeed.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
-~~~
-~~~
-        job_id       |  job_type  | ... |      high_water_timestamp      | error | coordinator_id
-+--------------------+------------+ ... +--------------------------------+-------+----------------+
-  383870400694353921 | CHANGEFEED | ... | 1537279405671006870.0000000000 |       |              1
-(1 row)
-~~~
+1. Use [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to find the [high-water timestamp]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed) for the ended changefeed:
 
-Use the `high_water_timestamp` to start the new changefeed:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CHANGEFEED JOB {job_id};
+    ~~~
+    ~~~
+            job_id       | ... |      high_water_timestamp      | ...
+    +--------------------+ ... +--------------------------------+ ...
+      383870400694353921 | ... | 1537279405671006870.0000000000 | ...
+    (1 row)
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
-  INTO 'scheme//host:port'
-  WITH cursor = '<high_water_timestamp>';
-~~~
+    {{site.data.alerts.callout_info}}
+    If a changefeed has failed, you must restart the changefeed from a timestamp **after** the event that caused the failure.
+    {{site.data.alerts.end}}
 
-Note that because the cursor is provided, the initial scan is not performed.
+1. Use the `high_water_timestamp` to start the new changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+      INTO 'scheme//host:port'
+      WITH cursor = '<high_water_timestamp>';
+    ~~~
+
+When you use the `cursor option` to start a changefeed, it will not perform an [initial scan](#initial-scan).
 
 ### Create a changefeed with an S3 storage class
 
