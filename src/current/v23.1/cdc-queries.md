@@ -181,7 +181,7 @@ To emit the previous state of a column, you can specify this as a named field fr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED INTO 'external://sink' AS SELECT owner_id, current_location, cdc_prev FROM movr.vehicles WHERE (cdc_prev).status = 'in_use';
+CREATE CHANGEFEED INTO 'external://sink' AS SELECT owner_id, (cdc_prev).current_location AS previous_location FROM movr.vehicles WHERE (cdc_prev).status = 'in_use';
 ~~~
 
 For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`.
