@@ -50,7 +50,7 @@ This will return a list of of active external connection names along with the `C
 ------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}'
 backup_bucket_2   | CREATE EXTERNAL CONNECTION 'backup_bucket_2' AS 's3://bucket_name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}'
-kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
+kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 (4 rows)
 ~~~
 

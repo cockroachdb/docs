@@ -20,6 +20,8 @@ To use the `SET CLUSTER SETTING` statement, a user must have one of the followin
     GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
     ~~~
 
+- Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted. Users with this privilege are allowed to modify only [`sql.defaults.*` cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
+
 ## Synopsis
 
 <div>

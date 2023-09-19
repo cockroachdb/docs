@@ -91,6 +91,12 @@
       ]
     },
     {
+      "title": "Migrate from PostgreSQL",
+      "urls": [
+        "/${VERSION}/migrate-from-postgres.html"
+      ]
+    },
+    {
       "title": "Migrate from MySQL",
       "urls": [
         "/${VERSION}/migrate-from-mysql.html"
