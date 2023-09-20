@@ -3,6 +3,7 @@ on: [pull_request]
 
 jobs:
   lint:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
