@@ -22,9 +22,9 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Terminology
 
-- A *live migration* involves maintaining two production databases (a source and target database) and replicating data between them until a final cutover.
+- A *live migration* keeps two production databases online (a source and a target database) and uses either replication or dual writing to keep data equal between them until a final cutover.
 - The *source of truth* is the database that serves reads and writes to the application during a live migration. A cutover switches the source of truth.
-- *Shadowing* is the replication of writes from the source of truth to the target database. The LMS supports multiple [shadowing modes](#shadowing-modes).
+- *Shadowing* is the replication of traffic on the target database. The LMS supports multiple [shadowing modes](#shadowing-modes).
 
 ## Requirements
 
@@ -35,14 +35,11 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 - [PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}) (source)
 - [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}) (source)
-- CockroachDB (target)
+- CockroachDB (source and target)
 
 ## Installation
 
-The LMS definitions are located in the [`molt` repository](https://molt.cockroachdb.com/):
-
-- [`molt-lms` Helm chart](https://molt.cockroachdb.com/charts/lms/Chart.yaml)
-- [`molt-lms` values file](https://molt.cockroachdb.com/charts/lms/values.yaml) for [configuration](#configuration)
+To install the LMS, add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts).
 
 When you install the `molt-lms` chart, the LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
@@ -64,7 +61,7 @@ You will see `lms-molt-lms` pods that match the configured [number of LMS instan
 
 ## Configuration
 
-To configure the LMS, override the values defined in [`values.yaml`](https://molt.cockroachdb.com/charts/lms/values.yaml). For information on setting Helm chart values, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
+To configure the LMS, override the values defined in the [Helm chart](#installation). For information on setting Helm chart values, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
 
 {{site.data.alerts.callout_info}}
 Values that are specified in both `lms` and `orchestrator` must have the identical setting.
@@ -86,7 +83,7 @@ You **must** provide a string value for `sourceDialect`, which specifies the dia
 
 - `postgres`: PostgreSQL
 - `mysql`: MySQL
-- `crdb`: CockroachDB
+- `cockroach`: CockroachDB
 
 #### Shadowing
 
@@ -151,14 +148,14 @@ orchestrator:
 
 When you specify a volume in `sslVolumes` and `sslVolumeMounts`, you must also [set its corresponding config key](#manage-external-secret) to the path specified in `sslVolumeMounts.mountPath`.
 
-|      Key      |                        Description                         |
-|---------------|------------------------------------------------------------|
-| `SSL_CA`      | Mount path to the SSL CA certificate for the LMS.          |
-| `SSL_CERT`    | Mount path to the SSL certificate for the LMS.             |
-| `SSL_KEY`     | Mount path to the SSL key for the LMS.                     |
-| `CA_TLS_CERT` | Mount path to the TLS CA certificate for the orchestrator. |
-| `TLS_CERT`    | Mount path to the TLS certificate for the orchestrator.    |
-| `TLS_KEY`     | Mount path to the TLS key for the orchestrator.            |
+|      Key      |                                                          Description                                                           |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `SSL_CA`      | Mount path to the CA certificate for the LMS.                                                                                  |
+| `SSL_CERT`    | Mount path to the certificate for the LMS.                                                                                     |
+| `SSL_KEY`     | Mount path to the key for the LMS.                                                                                             |
+| `CA_TLS_CERT` | Mount path to the CA certificate for the orchestrator. This is optional and is mainly used if you self-sign your certificates. |
+| `TLS_CERT`    | Mount path to the certificate for the orchestrator.                                                                            |
+| `TLS_KEY`     | Mount path to the key for the orchestrator.                                                                                    |
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs recommends mounting certificates to `/app/certs`.
@@ -386,7 +383,7 @@ config.json: |
   }
 ~~~
 
-This also requires that you create and specify a CLI client certificate, key, and (optional) CA certificate. It's easiest to specify these with the following environment variables:
+This also requires that you create and specify a CLI client certificate, key, and (optional) CA certificate. It's easiest to specify these as environment variables in the shell that is running `molt-lms-cli`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -407,29 +404,32 @@ export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"
 
 The `molt-lms-cli` command-line interface is used to inspect the LMS instances and [perform cutover](#perform-a-cutover).
 
-To install `molt-lms-cli`, [download the binary](https://molt.cockroachdb.com/).
+To install `molt-lms-cli`, [download the binary](https://molt.cockroachdb.com/lms/cli/).
 
 ### Commands
 
-|       Command        |                                                                                     Usage                                                                                      |
-|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `initialize`         | Set up the required objects for running the LMS. You must run this before using the LMS.                                                                                       |
-| `connections list`   | List all client connections to the LMS and their most recent queries.                                                                                                          |
-| `cutover consistent` | Specify a [consistent cutover](#consistent-cutover). You must also specify `begin`, `commit`, or `abort`. For usage details, see [Consistent cutover](#consistent-cutover).    |
-| `begin`              | Begin a consistent cutover. This pauses traffic to the source of truth.                                                                                                        |
-| `commit`             | Commit a consistent cutover. This switches the source of truth to the target database.                                                                                         |
-| `abort`              | Abort a consistent cutover after running `consistent cutover begin`, unless you have also run `consistent cutover commit`. This resumes traffic to the source of truth.        |
+|       Command        |                                                                                    Usage                                                                                    |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `initialize`         | Set up the required objects for running the LMS. You must run this before using the LMS.                                                                                    |
+| `connections list`   | List all client connections to the LMS and their most recent queries.                                                                                                       |
+| `cutover consistent` | Specify a [consistent cutover](#consistent-cutover). You must also specify `begin`, `commit`, or `abort`. For usage details, see [Consistent cutover](#consistent-cutover). |
+| `begin`              | Begin a consistent cutover. This pauses traffic to the source database.                                                                                                     |
+| `commit`             | Commit a consistent cutover. This resumes traffic on the target database. This is only effective after running `cutover consistent begin`.                                  |
+| `abort`              | Abort a consistent cutover after running `consistent cutover begin`, unless you have also run `consistent cutover commit`. This resumes traffic to the source database.     |
+| `status`             | Display the current configuration of the LMS instances.                                                                                                                     |
+
+{% comment %}
 | `cutover immediate`  | Initiate an [immediate cutover](#immediate-cutover). This switches the source of truth to the target database. For usage details, see [Immediate cutover](#immediate-cutover). |
-| `status`             | Display the current configuration of the LMS instances.                                                                                                                        |
+{% endcomment %}
 
 ### Flags
 
-|         Flag         |                                                                                                    Description                                                                                                    |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). This flag is required unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
-| `--tls-ca-cert`      | The path to the TLS CA certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.               |
-| `--tls-client-cert`  | The path to the TLS client certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                       |
-| `--tls-client-key`   | The path to the TLS client key. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                |
+|         Flag         |                                                                                                                                              Description                                                                                                                                              |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is required unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
+| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
+| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                                                                                                               |
+| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                                                                                                        |
 
 ## Shadowing modes
 
@@ -442,7 +442,7 @@ The LMS can be configured to shadow production traffic from the source database 
 `shadowMode: none` disables shadowing.
 
 - The LMS sends application requests to the source of truth only.
-- Results from the source of truth are returned to the application.
+- Query results from the source of truth are returned to the application.
 - Writes must be manually replicated from the source database to the target database.
 
 You can use this mode to perform a [consistent cutover](#consistent-cutover), along with another tool such as [change data capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) that replicates writes to the target database. {% comment %}For an example, see [Consistent cutover without shadowing](#consistent-cutover-without-shadowing).{% endcomment %}
@@ -454,7 +454,8 @@ You can use this mode to perform a [consistent cutover](#consistent-cutover), al
 `shadowMode: async` writes to both databases.
 
 - The LMS sends application requests to the source of truth and target database in asynchronous threads, and waits only for the source of truth to respond.
-- Results from the source of truth are returned to the application.
+- Query results from the source of truth are returned to the application.
+- If an asynchronous request has not yet completed, subsequent asynchronous requests will be dropped.
 
 You can use this mode to confirm that your queries succeed on CockroachDB without verifying performance or correctness.
 
@@ -465,10 +466,12 @@ You can use this mode to confirm that your queries succeed on CockroachDB withou
 `shadowMode: sync` writes to both databases.
 
 - The LMS sends application requests to the source of truth and the target database, and waits for each to respond.
-- Results from the source of truth are returned to the application.
-- Results from the non-source of truth are discarded.
+- Query results from the source of truth are returned to the application.
+- Query results from the non-source of truth are discarded.
 
+{% comment %}
 You can use this mode to perform an [immediate cutover](#immediate-cutover).
+{% endcomment %}
 
 ### `strict-sync`
 
@@ -477,16 +480,19 @@ You can use this mode to perform an [immediate cutover](#immediate-cutover).
 `shadowMode: strict-sync` writes to both databases and enforces correctness on both databases.
 
 - The LMS sends application requests to the source of truth and the target database, and waits for each to respond.
-- Results from the source of truth are returned to the application.
-- If the non-source of truth returns an error, that error is returned instead of the result from the source of truth.
+- Query results from the source of truth are returned to the application.
+- If the non-source of truth returns an error, that error is returned instead of the query result from the source of truth.
+- If both databases return an error, the non-source of truth will return the source-of-truth error.
 
+{% comment %}
 You can use this mode to perform an [immediate cutover](#immediate-cutover).
+{% endcomment %}
 
 ## Perform a cutover
 
 ### Consistent cutover
 
-A consistent cutover maintains data consistency with [minimal downtime]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime). When using the LMS, consistent cutover is handled using the [`molt-lms-cli`](#molt-lms-cli) commands `cutover consistent begin` and `cutover consistent commit`, between which downtime occurs. The amount of downtime depends on the maximum duration of any transactions and queries that need to complete, and the time it takes for replication to catch up from the source to the target database.
+A consistent cutover maintains data consistency with [minimal downtime]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime). When using the LMS, consistent cutover is handled using the [`molt-lms-cli`](#molt-lms-cli) commands `cutover consistent begin` and `cutover consistent commit`, during which application requests are queued and will be responded to after cutover. This delay in response time is related to the maximum duration of any transactions and queries that need to complete, and the time it takes for replication to catch up from the source to the target database.
 
 {% comment %}
 For more information about the consistent cutover approach, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).
@@ -512,7 +518,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 1. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
 
-1. Begin the consistent cutover. **This begins downtime**:
+1. Begin the consistent cutover. **Requests are now queued in the LMS**, including queries from existing connections and new connection requests to the LMS:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -532,7 +538,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 	molt-lms-cli cutover consistent commit {flags}
 	~~~
 
-	This command tells the LMS to switch the source of truth to CockroachDB. Application traffic resumes on CockroachDB, and this ends downtime.
+	This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
 
 	To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
 
@@ -553,13 +559,12 @@ If any problems arise during a consistent cutover:
 
 	Reissue the `cutover consistent begin` and `cutover consistent commit` commands to revert the source of truth to the source database.
 
+{% comment %}
 ### Immediate cutover
 
 An immediate cutover can potentially [reduce downtime to zero]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime), at the likely risk of introducing data inconsistencies between the source and target databases. The LMS is configured to dual write to the source and target databases, while the [`molt-lms-cli`](#molt-lms-cli) command `cutover immediate` initiates cutover.
 
-{% comment %}
 For more information about the immediate cutover approach, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).
-{% endcomment %}
 
 To perform an immediate cutover with the LMS:
 
@@ -587,6 +592,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 	This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediatedly directed to CockroachDB.
 
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
+{% endcomment %}
 
 ## See also
 
