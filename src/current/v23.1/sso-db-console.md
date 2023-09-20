@@ -6,9 +6,9 @@ docs_area: manage
 key: sso.html
 ---
 
-CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
+CockroachDB clusters allow users to authenticate with Single sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-Cluster Single Sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
+Cluster Single sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of Single sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
 
 Single sign-on (SSO) for DB Console allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
 
@@ -59,7 +59,12 @@ These steps demonstrate how to create an OIDC auth client to use for SSO authent
 
 1. Note the *client ID* and *client secret* of the OAuth 2.0 client, as you will need these values to configure you cluster to use them.
 
-1. Add your cluster's callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. For a {{ site.data.products.dedicated }} cluster, replace 'localhost' with your cluster's domain. This can be found by opening the DB Console from the will be the URL of the You will later set `server.oidc_authentication.redirect_url` to the same value.
+1. Add your cluster's callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://{ your cluster's domain }:8080/oidc/v1/callback`. You must later set `server.oidc_authentication.redirect_url` to the same value.
+
+	{{site.data.alerts.callout_info}}
+	- For a {{ site.data.products.core }} cluster, The domain is `localhost`. 
+	- For a {{ site.data.products.dedicated }} cluster, find the domain by opening the DB Console from your cluster's **Tools** tab in DB Console.
+	{{site.data.alerts.end}}
 
 ## Configure your cluster to use an OIDC client and provider
 
@@ -111,7 +116,7 @@ Use the [Set Cluster Setting Statement]({% link {{ page.version.version }}/set-c
 	SET CLUSTER SETTING server.oidc_authentication.provider_url = 'https://accounts.google.com';
 	~~~
 
-1. Specify the callback URL to redirect the user to the CockroachDB cluster:
+1. Specify the callback URL to redirect the user to the CockroachDB cluster. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. For a {{ site.data.products.dedicated }} cluster, replace 'localhost' with your cluster's domain. This can be found by opening the DB Console from the will be the URL of the You will later set `server.oidc_authentication.redirect_url` to the same value.
 
 	{% include_cached copy-clipboard.html %}
 	~~~sql
@@ -141,7 +146,7 @@ Use the [Set Cluster Setting Statement]({% link {{ page.version.version }}/set-c
 	SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
 	~~~
 
-1. [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
+1. [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `docs@cockroachlabs.com` will need the SQL username `docs`:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
