@@ -1,7 +1,7 @@
 [build]
   base = "src/current/"
   publish = "_site/"
-  command = "netlify/build.sh"
+  command = "./netlify/build.sh"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
