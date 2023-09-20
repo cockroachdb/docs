@@ -51,7 +51,7 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
 
 This section describes how to configure Oracle GoldenGate for PostgreSQL to work with CockroachDB. Oracle GoldenGate for PostgreSQL is the process that pulls data from [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) over to CockroachDB. This is a separate installation from Oracle GoldenGate for Oracle, which will be used to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html). For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html). The following example uses a [CockroachDB {{ site.data.products.serverless }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster).
 
-1. Edit the the `ODBC.ini` file to set up the ODBC data sources and configuration:
+1. Edit the `ODBC.ini` file to set up the ODBC data sources and configuration:
 
     {% include_cached copy-clipboard.html %}
     ~~~
