@@ -257,7 +257,7 @@ To edit multiple statements, click **Find & Replace** above the list.
     This will update the corresponding statements. **You cannot undo the replace operation.**
 
     {{site.data.alerts.callout_info}}
-    Replace operations are not supported for regex matches.
+    Replace operations are not currently supported for regex matches.
     {{site.data.alerts.end}}
 
 To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
