@@ -39,7 +39,7 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Installation
 
-To install the LMS, add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts).
+To install the LMS, add the [Helm chart](https://molt.cockroachdb.com/lms/charts).
 
 When you install the `molt-lms` chart, the LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
@@ -128,7 +128,9 @@ config.json: |
   }
 ~~~
 
-For more details on storing the LMS configuration in an external secret, see [Manage external secret](#manage-external-secret).
+{{site.data.alerts.callout_danger}}
+Storing the LMS configuration in an external secret is **strongly** recommended. For details, see [Manage external secret](#manage-external-secret).
+{{site.data.alerts.end}}
 
 #### Certificates
 
@@ -142,7 +144,11 @@ orchestrator:
   sslVolumeMounts: {}
 ~~~
 
-`sslVolumes` and `sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the LMS instances and orchestrator. For security recommendations, see [Security](#security).
+`sslVolumes` and `sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the LMS instances and orchestrator. 
+
+{{site.data.alerts.callout_danger}}
+Setting up TLS certificates for the LMS, source and target databases, and orchestrator and client is **strongly** recommended. For details, see [Security](#security).
+{{site.data.alerts.end}}
 
 <a name="cert-var"></a>
 
@@ -194,10 +200,12 @@ serviceMonitor:
 
 ## Security
 
-Cockroach Labs recommends the following:
+{{site.data.alerts.callout_danger}}
+Cockroach Labs **strongly** recommends the following:
 
 - Manage your LMS configuration in an [external Kubernetes secret](#manage-external-secret).
 - To establish secure connections between the LMS pods and with your client, set up TLS certificates for the [LMS](#configure-lms-certificate), [source database and CockroachDB](#configure-source-and-target-certificates), and [orchestrator and client](#configure-orchestrator-and-client-certificates).
+{{site.data.alerts.end}}
 
 #### Manage external secret
 
