@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mdash;CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}&mdash;and a self managed option&mdash;CockroachDB Self-Hosted. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }} standard, and CockroachDB {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;CockroachDB {{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
 <table>
   <tr>
@@ -20,9 +20,9 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that will only need to be deployed in a single region.</li>
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
-      <td><ul>
-        <li><a id="serverless"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart">CockroachDB {{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
-      </ul></td>
+      <td>
+      <a id="serverless"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart">CockroachDB {{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.
+      </td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
         <li><b>Availability</b>: High availability. Data replication in triplicate within a single region. Ensures outage survival by spreading replicas across availability zones.</li>
@@ -40,9 +40,9 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications with current and future requirements to grow into new cloud regions to serve customers in new markets.</li>
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
-      <td><ul>
-        <li><a id="dedicated"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
-      </ul></td>
+      <td>
+      <a id="dedicated"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
         <li><b>Availability</b>: Service availability guaranteed with 99.99% uptime. Configurable data replication within or across regions.</li>
