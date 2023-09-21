@@ -12,13 +12,13 @@ Cluster Single sign-On (SSO) enables users to access the SQL interface of a Cock
 
 Single sign-on (SSO) for DB Console allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
 
-This page describes:
+This page describes how to set up Single Sign-on to the DB Console, which includes the following steps:
 
 - The login flow for users, once a cluster is SSO-enabled.
 - Configuring a CockroachDB Cluster for OIDC SSO authentication to the DB Console.
-- Provioning an OIDC client for CockroachDB Cluster SSO authentication, using GCP.
+- Provisioning an OIDC client for CockroachDB Cluster SSO authentication, using GCP.
 
-Additional configuration is needed to enable SSO authentication for SQL clients, which is described here: [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({% link {{ page.version.version }}/sso-sql.md %}) 
+If you would also like to enable SSO authentication for SQL clients, you must complete additional configuration on the [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({% link {{ page.version.version }}/sso-sql.md %}) page.
 
 {{site.data.alerts.callout_info}}
 SSO for DB Console is available to CockroachDB {{ site.data.products.dedicated }} customers.
@@ -30,11 +30,11 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 
 **Prerequisites**:
 
-- **IdP:** You must have access to an OAuth 2.0 identity provider and client. The process of provisioning one with Google Cloud Platform is described here: [Provisioning an OAuth client using Google Cloud Platform (GCP)](#provision-an-oauth-client-using-google-cloud-platform-gcp)
+- **IdP:** You must have access to an OAuth 2.0 identity provider and client. The process of provisioning one with Google Cloud Platform is described on this page in the [Provision an OAuth client using Google Cloud Platform (GCP)](#provision-an-oauth-client-using-google-cloud-platform-gcp) section.
 
-- **CockroachDB Cluster**: you must have access to one of the following:
+- **CockroachDB cluster**: you must have access to one of the following:
 	1. A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-	1. A [CockroachDB {{ site.data.products.dedicated }}cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
+	1. A [CockroachDB {{ site.data.products.dedicated }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
 
 
 ## Log in to a cluster's DB Console with SSO
@@ -51,13 +51,13 @@ registered SQL user.
 
 ## Provision an OAuth client using Google Cloud Platform (GCP)
 
-These steps demonstrate how to create an OIDC auth client to use for SSO authentication to the DB Console, using Google Cloud Platform.
+These steps demonstrate how to create an OIDC auth client in Google Cloud Platform to use for SSO authentication to the DB Console.
 
 1. Open the [Credentials page](https://console.developers.google.com/apis/credentials) for your account at Google APIs.
 
 1. Click **+ CREATE CREDENTIALS** and select **OAuth client ID**. Specify a **web application** from the pulldown menu.
 
-1. Note the *client ID* and *client secret* of the OAuth 2.0 client, as you will need these values to configure you cluster to use them.
+1. Note the *client ID* and *client secret* of the OAuth 2.0 client — you will need these values to configure you cluster to use them.
 
 1. Add your cluster's callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://{ your cluster's domain }:8080/oidc/v1/callback`. You must later set `server.oidc_authentication.redirect_url` to the same value.
 
@@ -70,21 +70,21 @@ These steps demonstrate how to create an OIDC auth client to use for SSO authent
 
 **Prerequisites**:
 
-You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
+You must have the ability to update your cluster settings, which you can achieve in several ways. Refer to the Required Privileges section on the [`SET CLUSTER SETTING`](set-cluster-setting.html#required-privileges) page.
 
 ### Cluster Settings
 
 The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) must be configured to enable SSO authentication to the DB Console.
 
-Use the [Set Cluster Setting Statement]({% link {{ page.version.version }}/set-cluster-setting.md %}) to configure your cluster settings.
+Use the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
 | Cluster Setting | Description 
 |-----------------|------
-| `server.oidc_authentication.enabled` | A Boolean that enables or disables SSO
-| `server.oidc_authentication.client_id` | Your auth client's ID, e.g., `32789079457-g3hdfw8cbw85obi5cb525hsceaqf69unn.apps.googleusercontent.com`
-| `server.oidc_authentication.client_secret` | Your auth client's secret
-| `server.oidc_authentication.redirect_url` | specifies the callback URL that redirects the user to CockroachDB after a successful authentication. This can be the address of a node in the cluster or the address of a load balancer that routes traffic to the nodes. The path must be appended with `/oidc/v1/callback`. E.g., `https://{ your cluster's domain } :8080/oidc/v1/callback`.
-| `server.oidc_authentication.provider_url` | Specifies the OAuth issuer identifier. Ensure that the URL does not have a terminating `/`. For more information, see the [OIDC specification](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig). Note that CockroachDB appends the required `/.well-known/openid-configuration` by default. You do not need to include it. E.g., `https://accounts.google.com`
+| `server.oidc_authentication.enabled` | A Boolean that enables or disables SSO.
+| `server.oidc_authentication.client_id` | Your auth client's ID, e.g., `32789079457-g3hdfw8cbw85obi5cb525hsceaqf69unn.apps.googleusercontent.com`.
+| `server.oidc_authentication.client_secret` | Your auth client's secret.
+| `server.oidc_authentication.redirect_url` | Specifies the callback URL that redirects the user to CockroachDB after a successful authentication. This can be the address of a node in the cluster or the address of a load balancer that routes traffic to the nodes. You must append the path with `/oidc/v1/callback`. E.g., `https://{ your cluster's domain } :8080/oidc/v1/callback`.
+| `server.oidc_authentication.provider_url` | Specifies the OAuth issuer identifier. Ensure that the URL does not have a terminating `/`. For more information, refer to the [OIDC specification](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig). Note that CockroachDB appends the required `/.well-known/openid-configuration` by default. You do not need to include it. E.g., `https://accounts.google.com`.
 | `server.oidc_authentication.scopes` | A space-delimited list of the [OAuth scopes](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims) being requested for an Access Token. The `openid` and `email` scopes must be included. E.g., `openid profile email`.
 | `server.oidc_authentication.claim_json_key` | The field/key used to identify the user from the external identity provider's [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 | `server.oidc_authentication.principal_regex` | Regex used to map the external identity key to a SQL user. For example: `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`, whereas `^(.+)$` maps the claim directly to a principal.
@@ -94,7 +94,7 @@ Use the [Set Cluster Setting Statement]({% link {{ page.version.version }}/set-c
 ### Update your cluster settings
 
 
-1. Open a SQL shell to your cluster
+1. Open a SQL shell to your cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
