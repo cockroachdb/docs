@@ -7,6 +7,8 @@ docs_area: manage
 
 {% include_cached new-in.html version="v23.1" %} The `EXECUTION LOCALITY` option allows you to restrict the nodes that can execute a [backup]({% link {{ page.version.version }}/backup.md %}) job by using a [locality filter]({% link {{ page.version.version }}/cockroach-start.md %}#locality) when you create the backup. This will pin the [coordination of the backup job]({% link {{ page.version.version }}/backup-architecture.md %}#job-creation-phase) and the nodes that [process the row data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase) to the defined locality filter.
 
+Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities. 
+
 Defining an execution locality for a backup job is useful in the following cases:
 
 - When nodes in a cluster operate in different locality tiers, networking rules can restrict nodes from accessing a storage bucket. For an example, refer to [Access backup storage restricted by network rules](#access-backup-storage-restricted-by-network-rules).
@@ -31,11 +33,11 @@ To specify the locality filter for the coordinating node, run `EXECUTION LOCALIT
 BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region={region},cloud={cloud}';
 ~~~
 
-When you run a backup that uses `EXECUTION LOCALITY`, consider the following:
+When you run a backup or restore that uses `EXECUTION LOCALITY`, consider the following:
 
-- The backup job will fail if no nodes match the locality filter.
-- The backup job may take slightly more time to start, because it must select the node that coordinates the backup (the _coordinating node_). Refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
-- Even after a backup job has been pinned to a locality filter, it may still read data from another locality if no replicas of the data are available in the locality specified by the backup job's locality filter.
+- The backup or restore job will fail if no nodes match the locality filter.
+- The backup or restore job may take slightly more time to start, because it must select the node that coordinates the backup or restore (the _coordinating node_). Refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
+- Even after a backup or restore job has been pinned to a locality filter, it may still read data from another locality if no replicas of the data are available in the locality specified by the backup job's locality filter.
 - If the job is created on a node that does not match the locality filter, you will receive an error even when the **job creation was successful**. This error indicates that the job execution moved to another node. To avoid this error when creating a manual job (as opposed to a [scheduled job]({% link {{ page.version.version }}/create-schedule-for-backup.md %})), you can use the [`DETACHED`]({% link {{ page.version.version }}/backup.md %}#detached) option with `EXECUTION LOCALITY`. Then, use the [`SHOW JOB WHEN COMPLETE`]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete) statement to determine when the job has finished. For more details, refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
 
 ## Examples
@@ -61,7 +63,14 @@ For example, you can pin the execution of the backup job to `us-west-1`:
 BACKUP DATABASE {database} INTO 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
 ~~~
 
-Refer to the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) page for further detail on other parameters and options.
+To restore the most recent locality-restricted backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE FROM LATEST IN 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
+~~~
+
+Refer to the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) pages for further detail on other parameters and options.
 
 ### Create a non-primary region for backup jobs
 
