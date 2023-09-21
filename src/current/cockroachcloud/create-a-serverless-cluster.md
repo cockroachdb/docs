@@ -40,7 +40,7 @@ For optimal performance, select the cloud provider and region nearest to where y
 To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 
 {{site.data.alerts.callout_info}}
-You cannot currently remove regions once a cluster has been created.
+You cannot currently remove regions once they have been added.
 {{site.data.alerts.end}}
 
 After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
