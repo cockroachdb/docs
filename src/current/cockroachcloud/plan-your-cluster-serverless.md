@@ -48,10 +48,6 @@ Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administ
 
 ## Multi-region clusters
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 You can [create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) with up to [six regions]({% link cockroachcloud/serverless-faqs.md %}#what-regions-are-available-for-cockroachdb-serverless-clusters). When you create a multi-region {{ site.data.products.serverless-plan }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/serverless-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/use-managed-service-backups.md %}) your data into a new cluster with the desired configuration. 
 
 {{site.data.alerts.callout_info}}
@@ -66,7 +62,12 @@ Databases created in CockroachDB {{ site.data.products.serverless }} will automa
 
 Storage for a multi-region cluster is billed at the same rate as a single-region cluster. However, by default data is replicated three times in the primary region and once in each additional region, and each replica in the additional regions will accrue more storage costs. For example, a three-region cluster with data replicated five times will use 5/3 times the storage space of a single-region cluster where data is replicated three times.
 
+Cross-region operations will use additional RUs because of the cost of cross-region networking. Cross-region networking costs depend on the source and destination regions. For read operations, the source region contains the replica and the destination region is the gateway region. For write operations, the source region is the gateway region and the destination region is the region containing the replica. There is a network charge for each replica to which the SQL statement writes. Refer to [Pricing](https://www.cockroachlabs.com/pricing) for a matrix of cross-region costs.
+
+Keep in mind the following key points when planning your multi-region CockroachDB {{ site.data.products.serverless }} application's architecture:
+
 - Write-heavy applications may experience a significant increase in RU consumption because replicating writes across all regions consumes more resources.
 - Read-heavy applications may experience a smaller increase in RU consumption because the resources required to read from a single region of a multi-region cluster are comparable with a single-region cluster.
+- Cross-region reads are an anti-pattern and may significantly increase RU consumption.
+- Cross-region writes will also consume additional RUs, but should not significantly increase consumption.
 
-During the multi-region {{ site.data.products.serverless-plan }} [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases), RU usage for queries that cross regions will not account for inter-region bandwidth.

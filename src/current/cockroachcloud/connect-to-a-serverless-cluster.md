@@ -33,7 +33,7 @@ AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[lim
 
 Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
-AWS PrivateLink is available only for multiregion CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS.
+AWS PrivateLink is available only for multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS.
 
 To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
