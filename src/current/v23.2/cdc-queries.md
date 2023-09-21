@@ -188,6 +188,59 @@ For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`.
 If you do not need to select specific columns in a table or filter rows from a changefeed, you can instead create a changefeed using the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) to emit a `before` field with each message. This field includes the value of the row before the update was applied.
 {{site.data.alerts.end}}
 
+### Reference TTL in a CDC query
+
+In CockroachDB, table row deletes occur as a result of regular SQL transactions or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits delete event messages, you may need to distinguish between these two types of deletion. For example, you may want to only emit messages for row-level TTL deletes from your changefeed.
+
+If you have TTL logic defined with [`ttl_expiration_expression` or `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#syntax-overview), you can leverage CDC queries to determine whether or not a given row was expired at the time of the changefeed event, including a delete event.
+
+To emit rows that were deleted after expiring, you can use syntax similar to the following:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED INTO 'external://sink'
+AS SELECT cdc_prev FROM test_table
+WHERE event_op() = 'delete'
+AND (cdc_prev).crdb_internal_expiration < statement_timestamp();
+~~~
+
+This query:
+
+- Accesses the `cdc_prev` column for the previous state of the row.
+- Searches for `delete` events in that previous state.
+- Finds the TTL expiration timestamp of the deleted rows where it is earlier than the current statement timestamp.
+
+{{site.data.alerts.callout_info}}
+This will only emit rows that were deleted **after** expiring. Furthermore, consider that a transactional SQL delete during the window between the row expiring and the TTL job running will also cause this message to emit from the changefeed.
+{{site.data.alerts.end}}
+
+Equally, you can filter out delete messages for expired rows from your changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED AS SELECT cdc_prev FROM test_table
+WHERE NOT (event_op() = 'delete'
+AND (cdc_prev).crdb_internal_expiration < statement_timestamp());
+~~~
+
+In some cases, you may have custom expiration logic on rows in a table. Custom TTL expressions and CDC queries evaluate in different ways.
+
+- Custom TTL expressions evaluate to a timestamp after which the row expires. For example, if you want to configure a table so that some rows never expire, your expression needs to evaluate to `'infinity'` for those rows.
+- CDC queries filter using `WHERE` clauses, which are booleans.
+
+To preserve your custom TTL expression in a CDC query, you can convert the TTL expression to a boolean by wrapping it in a parenthesis and appending `< statement_timestamp()`.
+
+In the following example, the CDC query includes a custom TTL expression that is evaluated against the statement timestamp. In addition to the original TTL expression, it also accesses the `cdc_prev` column in order to evaluate the previous state of the rows:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED AS SELECT cdc_prev FROM ttl_test_per_row
+WHERE NOT (event_op() = 'delete'
+AND (CASE WHEN (cdc_prev).immortal
+THEN 'infinity'
+ELSE (cdc_prev).expired_at END) < statement_timestamp());
+~~~
+
 ### Geofilter a changefeed
 
 When you are working with a [`REGIONAL BY ROW` table]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
