@@ -29,6 +29,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li><b>Operations</b>: Cockroach Labs SRE team manages and maintains every cluster. Backups every three hours.</li>
         <li><b>Cost</b>: Free for 10 GiB of storage and 50M <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-faqs#what-is-a-request-unit">Request Units</a>. Consumption based billing and <a href="architecture/glossary.html#resource-limits">resource limits</a> enforce budget requirements.</li>
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
+        <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
       </ul></td>
   </tr>
@@ -48,6 +49,9 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances. Backups daily and hourly.</li>
         <li><b>Cost</b>: Pricing based on disk size and storage. A single, predictable price packages hardware costs with SRE resources and support.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software and infrastructure.</li>
+        <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
+        <li><b><a href="../cockroachcloud/export-logs.html">Audit log</a></b>: Configurable cluster and organization log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
+        <li><b><a href="../cockroachcloud/network-authorization.html">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
         <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled.</li>
       </ul></td>
@@ -61,11 +65,8 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
       </td>
       <td><ul>
         <li><b>All CockroachDB Dedicated features.</b></li>
-        <li><b><a href="../cockroachcloud/export-logs.html">Audit log</a></b>: Configurable cluster and organization log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
         <li><b><a href="../cockroachcloud/cmek.html">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
         <li><b><a href="../cockroachcloud/egress-perimeter-controls.html">Egress Perimeter Controls</a></b>: Allowlist configuration to ensure that the data is sent to a secure location.</li>
-        <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
-        <li><b><a href="../cockroachcloud/network-authorization.html">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
       </ul></td>
   </tr>
   <tr>
