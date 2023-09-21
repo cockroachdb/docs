@@ -4873,7 +4873,7 @@
 #   release_date: '2023-09-20'
 #   release_type: Production
 #   go_version: go1.20
-#   sha: cd8ef91e69525d5e1f4020e0cd57368778939772
+#   sha: TBD
 #   has_sql_only: true
 #   has_sha256sum: true
 #   mac:
