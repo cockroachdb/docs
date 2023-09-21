@@ -182,12 +182,7 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    view param epos
-    EXTRACT epos
-    USERIDALIAS gg_source
-    RMTHOST {host-name}, MGRPORT 8200
-    RMTTRAIL ./dirdat/ab
-    TABLE OGGADM1.testtable;
+    stats EXTRACT epos
     ~~~
 
     You should see an output similar to the following:
