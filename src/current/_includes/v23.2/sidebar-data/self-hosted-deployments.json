@@ -486,7 +486,7 @@
                         ]
                       },
                       {
-                        "title": "Network Latency Page",
+                        "title": "Network Page",
                         "urls": [
                           "/${VERSION}/ui-network-latency-page.html"
                         ]
