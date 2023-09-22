@@ -33,19 +33,18 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 - **IdP:** You must have access to an OAuth 2.0 identity provider and client. The process of provisioning one with Google Cloud Platform is described on this page in the [Provision an OAuth client using Google Cloud Platform (GCP)](#provision-an-oauth-client-using-google-cloud-platform-gcp) section.
 
 - **CockroachDB cluster**: you must have access to one of the following:
-	1. A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-	1. A [CockroachDB {{ site.data.products.dedicated }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
+	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+	- A [CockroachDB {{ site.data.products.dedicated }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
 
 
 ## Log in to a cluster's DB Console with SSO
 
 From the user's perspective, once the cluster is properly configured to an identity provider, the sign-in flow is as follows:
 
-1. A user opens the cluster's DB Console, and clicks on the OAuth login button which renders.
+1. A user opens the cluster's DB Console, and clicks on the OAuth login button which renders in the page.
 1. The user is redirected to an external identity provider.
 1. The user successfully authenticates with the provider, completing the OAuth flow.
 1. The user is redirected to the CockroachDB cluster.
-registered SQL user.
 1. CockroachDB creates a web session for the SQL user in a new browser tab.
 1. In the original browser tab, the user is redirected to the [DB Console Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
 

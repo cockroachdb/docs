@@ -7,7 +7,7 @@ docs_area: manage
 
 CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-Cluster Single Sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
+Cluster Single sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of Single sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
 
 {{ site.data.products.dedicated }} clusters can provision their users with JWTs via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT which can be copied out of the DB Console UI and used in a SQL connection string to authenticate to the cluster. This applies for both {{ site.data.products.core }} {{ site.data.products.enterprise }} and {{ site.data.products.dedicated }} cluster, but is not possible with {{ site.data.products.serverless }} clusters, as they do not have ConsoleDB access. It is possible to use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql) with {{ site.data.products.serverless }} clusters.
 
@@ -30,7 +30,7 @@ You might also be looking for:
 
 ## Authenticate to your cluster
 
-Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision JWTs through a sign-in flow embedded in the DB Console.
+Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
@@ -133,21 +133,49 @@ You can also view all of your cluster settings in the DB Console...
 
 1. `server.jwt_authentication.jwks`
 
-    This field takes a single JWT or JSON array of JWTS. This list must include a given IdP, or the cluster will reject JWTs issued by it.
-
-    Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster.
-
+    Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster. This list must include a given IdP, or the cluster will reject JWTs issued by it. IdPs serve their public certificates and other required information at `https://{ domain }/.well-known/openid-configuration`.
+    
     {{site.data.alerts.callout_danger}}
+    IdPs such as Google rotate their signing keys periodically. You must update your cluster with a new signing key before the previous one expires, or your SQL clients will be unable to connect with cluster SSO. We recommend updating this cluster setting with the current key daily to avoid this scenario.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_success}}
     <b>{{ site.data.products.db }} {{ site.data.products.dedicated }} customers:</b> 
 
     By default, your cluster's configuration will contain the CockroachDB {{ site.data.products.cloud }}'s own public key, allowing CockroachDB {{ site.data.products.cloud }} to serve as an IdP. This is required for [SSO with `ccloud`](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). When modifying this cluster setting, you must include the CockroachDB {{ site.data.products.cloud }} public key in the key set, or SSO with `ccloud` will no longer work.
+
+    The public key for {{ site.data.products.db }} can be found at `https://cockroachlabs.cloud/.well-known/openid-configuration`.
     {{site.data.alerts.end}}
     
-    {{site.data.alerts.callout_success}}
-    The required information for a given IdP is published on that IdP's `.well-known/openid-configuration` path, for example, `https://cockroachlabs.cloud/.well-known/openid-configuration` for CockroachDB {{ site.data.products.cloud }}, or `https://accounts.google.com/.well-known/openid-configuration` for GCP.
-    {{site.data.alerts.end}}
-
     For example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --silent https://accounts.google.com/.well-known/openid-configuration | jq .jwks_uri | xargs curl
+    ~~~
+    
+    ~~~txt
+    {
+      "keys": [
+        {
+          "alg": "RS256",
+          "use": "sig",
+          "e": "AQAB",
+          "kty": "RSA",
+          "kid": "7c0b6913fe13820a333399ace426e70535a9a0bf",
+          "n": "lWXY0XOj_ikSIDIvGOhfuRhQJAAj6BWsbbZ6P-PXRclzV32-QLB4GZHPPcH37Lou5pQsTQPvTETAfCLnglIRSbP8x1zA5tUakRlm5RiGF4kcWh5k60x8u0Uslx-d6EueKuY-KLHUVDuMULlHkYAScIdYnXz-Cnr6PFZj8RQezzdPVPH53Q8a_Z9b-vpGzsMS5gszITb-72OQNokojXdPVctl5WzSx-JnWbJxPiwHx_dSWgmTnyiYrZLqrqfampGdroaamtIXy0W8CAe0uCqcD1LunpfX-Q-RD1IycxnEaXSuUKhNhCcxtHWrozEyeD23Zja2WlcvHdYuTzyrvrvS9Q"
+        },
+        {
+          "kid": "6f7254101f56e41cf35c9926de84a2d552b4c6f1",
+          "e": "AQAB",
+          "alg": "RS256",
+          "use": "sig",
+          "n": "oUriU8GqbRw-avcMn95DGW1cpZR1IoM6L7krfrWvLSSCcSX6Ig117o25Yk7QWBiJpaPV0FbP7Y5-DmThZ3SaF0AXW-3BsKPEXfFfeKVc6vBqk3t5mKlNEowjdvNTSzoOXO5UIHwsXaxiJlbMRalaFEUm-2CKgmXl1ss_yGh1OHkfnBiGsfQUndKoHiZuDzBMGw8Sf67am_Ok-4FShK0NuR3-q33aB_3Z7obC71dejSLWFOEcKUVCaw6DGVuLog3x506h1QQ1r0FXKOQxnmqrRgpoHqGSouuG35oZve1vgCU4vLZ6EAgBAbC0KL35I7_0wUDSMpiAvf7iZxzJVbspkQ",
+          "kty": "RSA"
+        }
+      ]
+    }
+    ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -155,23 +183,25 @@ You can also view all of your cluster settings in the DB Console...
       "keys": [
         {
           "alg": "RS256",
-          "kty": "RSA",
-          "kid": "85ba9313fd7a7d4afa84884abcc8403004363180",
-          "e": "AQAB",
           "use": "sig",
-          "n": "pP-rCe4jkKX6mq8yP1GcBZcxJzmxKWicHHor1S3Q49u6Oe-bQsk5NsK5mdR7Y7liGV9n0ikXSM42dYKQdxbhKA-7--fFon5isJoHr4fIwL2CCwVm5QWlK37q6PiH2_F1M0hRorHfkCb4nI56ZvfygvuOH4LIS82OzIgmsYbeEfwDRpeMSxWKwlpa3pX3GZ6jG7FgzJGBvmBkagpgsa2JZdyU4gEGMOkHdSzi5Ii-6RGfFLhhI1OMxC9P2JaU5yjMN2pikfFIq_dbpm75yNUGpWJNVywtrlNvvJfA74UMN_lVCAaSR0A03BUMg6ljB65gFllpKF224uWBA8tpjngwKQ"
+          "e": "AQAB",
+          "kty": "RSA",
+          "kid": "7c0b6913fe13820a333399ace426e70535a9a0bf",
+          "n": "lWXY0XOj_ikSIDIvGOhfuRhQJAAj6BWsbbZ6P-PXRclzV32-QLB4GZHPPcH37Lou5pQsTQPvTETAfCLnglIRSbP8x1zA5tUakRlm5RiGF4kcWh5k60x8u0Uslx-d6EueKuY-KLHUVDuMULlHkYAScIdYnXz-Cnr6PFZj8RQezzdPVPH53Q8a_Z9b-vpGzsMS5gszITb-72OQNokojXdPVctl5WzSx-JnWbJxPiwHx_dSWgmTnyiYrZLqrqfampGdroaamtIXy0W8CAe0uCqcD1LunpfX-Q-RD1IycxnEaXSuUKhNhCcxtHWrozEyeD23Zja2WlcvHdYuTzyrvrvS9Q"
         },
         {
-          "alg": "RS256",
-          "n": "8ASqcDDTYmFx53uAkWlmqx8qIx0WQacaswAAb7xGx9XL2T71VPtKKgPqoimXzj4fXT2F3opIgOQgGKxkxw2QrAAoejdIud5URrZLRponmbMQO3erG5sd8PC29rjekX8_hvX_AMT3zU8JLKVLFR0xJmFdmIomnarpEvWKmG0SNvbuVveprsve0n1W35uodcRe417vlTNnH9j8fesQekvFf8tIWbHouXDg3B1km4gqZBbQ_MWvGriGBY5sfr7A2d0iNe89Aje7pz1RFLUFOu-u_NyD6RwL6qo4_yetAYIzm02a2KAAq03YPs2LHMVQmkh1LtyeuA6bvf9146cAFY4BCQ",
-          "use": "sig",
+          "kid": "6f7254101f56e41cf35c9926de84a2d552b4c6f1",
           "e": "AQAB",
-          "kty": "RSA",
-          "kid": "05150a1320b9395b05716877376928509bab44ac"
+          "alg": "RS256",
+          "use": "sig",
+          "n": "oUriU8GqbRw-avcMn95DGW1cpZR1IoM6L7krfrWvLSSCcSX6Ig117o25Yk7QWBiJpaPV0FbP7Y5-DmThZ3SaF0AXW-3BsKPEXfFfeKVc6vBqk3t5mKlNEowjdvNTSzoOXO5UIHwsXaxiJlbMRalaFEUm-2CKgmXl1ss_yGh1OHkfnBiGsfQUndKoHiZuDzBMGw8Sf67am_Ok-4FShK0NuR3-q33aB_3Z7obC71dejSLWFOEcKUVCaw6DGVuLog3x506h1QQ1r0FXKOQxnmqrRgpoHqGSouuG35oZve1vgCU4vLZ6EAgBAbC0KL35I7_0wUDSMpiAvf7iZxzJVbspkQ",
+          "kty": "RSA"
         }
       ]
     }';
     ~~~
+
+
 
 1. Configure token generation.
 
