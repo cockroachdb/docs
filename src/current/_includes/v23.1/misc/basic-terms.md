@@ -1,5 +1,3 @@
-## CockroachDB architecture terms
-
 ### Cluster
 A group of interconnected CockroachDB nodes that function as a single distributed SQL database server. Nodes collaboratively organize transactions, and rebalance workload and data storage to optimize performance and fault-tolerance.
 
