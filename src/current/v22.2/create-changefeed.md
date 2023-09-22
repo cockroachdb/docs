@@ -421,7 +421,7 @@ In some situations, you may want to start a changefeed where a previously runnin
       WITH cursor = '<high_water_timestamp>';
     ~~~
 
-When you use the `cursor option` to start a changefeed, it will not perform an [initial scan](#initial-scan).
+When you use the `cursor` option to start a changefeed, it will not perform an [initial scan](#initial-scan).
 
 ## See also
 
