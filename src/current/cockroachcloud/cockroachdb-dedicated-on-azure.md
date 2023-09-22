@@ -38,6 +38,7 @@ During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud
 
 - A cluster must have at minimum three nodes. Single-node clusters are not supported.
 - After it is created, a cluster's regions cannot yet be modified.
+- After it is created, a cluster's storage can be increased in place, but cannot subsequently be decreased or removed.
 
 ### Networking
 
