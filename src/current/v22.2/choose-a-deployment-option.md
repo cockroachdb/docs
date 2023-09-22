@@ -64,9 +64,9 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
         <li>Applications that need to be PCI compliant.</li>
       </ul></td>
-      <td><ul>
-        <li><a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} advanced</a></b>:A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
-      </ul></td>
+      <td>
+      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} advanced</a></b>:A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      </td>
       <td><ul>
         <li><b>All CockroachDB Dedicated features.</b></li>
         <li><b><a href="../cockroachcloud/cmek.html">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
@@ -83,9 +83,9 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that need to run in a cloud not supported by Dedicated services.</li>
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
-      <td><ul>
-        <li><a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB {{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.</li>
-      </ul></td>
+      <td>
+      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB {{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.
+      </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
         <li><b>Availability</b>: Completely configurable for each deployment. Manual controls for replication of data within or across regions.</li>
