@@ -164,7 +164,7 @@ The standby cluster connects to the primary cluster's system interface using an 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload run movr --duration=5m "postgresql://root@{node IP or hostname}:{26257}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
 1. To connect to the primary cluster's application virtual cluster, use the `ccluster=application` parameter:
