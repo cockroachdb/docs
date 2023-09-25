@@ -37,11 +37,8 @@ During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud
 ### Editing and scaling
 
 - A cluster must have at minimum three nodes. Single-node clusters are not supported.
-- After it is created, a cluster cannot yet be modified or scaled in place. Instead, create a new cluster with the desired configuration.
-
-### Disaster recovery
-
-- [Managed Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) are not yet available during the limited access period. Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2).
+- After it is created, a cluster's regions cannot yet be modified.
+- After it is created, a cluster's storage can be increased in place, but cannot subsequently be decreased or removed.
 
 ### Networking
 
@@ -75,9 +72,9 @@ The clusters created during this period are recommended for proof-of-concept and
 
 Yes.
 
-### Is horizontal scaling supported?
+### Are horizontal and vertical scaling supported?
 
-Not yet.
+Yes. Refer to [Cluster Management]({% link cockroachcloud/cluster-management.md %}).
 
 ### What Azure regions can we choose?
 
@@ -121,7 +118,7 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 ### How are clusters on Azure isolated from each other? Do they follow a similar approach as on AWS and GCP?
 
-CockroachDB {{ site.data.products.cloud }} follows a similar tenant isolation approach on Azure as on GCP and AWS. During the limited access period, each {{ site.data.products.dedicated }} cluster is created on an [AKS cluster](https://azure.microsoft.com/products/kubernetes-service) in a unique [VNet](https://learn.microsoft.com/azure/virtual-network/virtual-networks-overview). Implementation details are subject to change.
+CockroachDB {{ site.data.products.cloud }} follows a similar tenant isolation approach on Azure as on GCP and AWS. Each {{ site.data.products.dedicated }} cluster is created on an [AKS cluster](https://azure.microsoft.com/products/kubernetes-service) in a unique [VNet](https://learn.microsoft.com/azure/virtual-network/virtual-networks-overview). Implementation details are subject to change.
 
 ### Can we use Single-Sign On to sign-in to {{ site.data.products.db }} and manage clusters on Azure?
 
