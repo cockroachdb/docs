@@ -43,7 +43,18 @@ The `SHOW` statement for cluster settings is unrelated to the other `SHOW` state
 
 ## Required privileges
 
-To use the `SHOW CLUSTER SETTING` statement, a user must either be a member of the `admin` role (the `root` user belongs to the `admin` role by default) or have the `VIEWCLUSTERSETTING` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option](security-reference/authorization.html#role-options)) defined.
+To use the `SHOW CLUSTER SETTING` statement, a user must have one of the following attributes:
+
+- Be a member of the `admin` role (the `root` user belongs to the `admin` role by default).
+- Have the `VIEWCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted.
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="22.2.7" %} The cluster setting `sql.auth.modify_cluster_setting_applies_to_all.enabled` affects what users with the `MODIFYCLUSTERSETTING` privilege are able to view:
+
+- If set to `true` (the default), users are able to view all cluster settings.
+- If set to `false`, users are allowed to view only `sql.defaults.*` cluster settings, not all cluster settings.
+{{site.data.alerts.end}}
 
 ## Synopsis
 

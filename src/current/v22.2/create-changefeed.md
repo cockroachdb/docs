@@ -75,7 +75,7 @@ URI Component      | Description
 Example of a Kafka sink URI:
 
 ~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 ~~~
 
 {% include {{ page.version.version }}/misc/external-connection-kafka.md %}
@@ -137,7 +137,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 <a name="partition-format"></a>`partition_format` | [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html) | Specify how changefeed [file paths](#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
 `S3_STORAGE_CLASS` | [Amazon S3 cloud storage sink](changefeed-sinks.html#amazon-s3) | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
 `sasl_enabled`     | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
-`sasl_mechanism`   | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
+`sasl_mechanism`   | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Can be set to [`SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `PLAIN`
 `sasl_user`        | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL username.
 `sasl_password`    | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL password. **Note:** Passwords should be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding) since the value can contain characters that would cause authentication to fail.
 `tls_enabled`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
@@ -151,7 +151,7 @@ Option | Value | Description
 `avro_schema_prefix` | Schema prefix name | Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 <a name="compression-opt"></a>`compression` | `gzip`, `zstd` |  Compress changefeed data files written to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink). For compression options when using a Kafka sink, see [Kafka sink configuration](changefeed-sinks.html#kafka-sink-configuration).
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.<br><br>{% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}<br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}<br><br>{% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
-<a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
+<a name="cursor-option"></a>`cursor` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters)  | Emit any changes after the given timestamp. `cursor` does not output the current state of the table first. When `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>The changefeed will encounter an error if you specify a timestamp that is before the configured garbage collection window for the target table. (Refer to [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables).) With default garbage collection settings, this means you cannot create a changefeed that starts more than [the default MVCC garbage collection interval]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) in the past.<br><br>You can use `cursor` to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `cursor='1536242855577149065.0000000000'`
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 <a name="end-time"></a>`end_time` | [Timestamp](as-of-system-time.html#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
 `envelope` | `key_only` / `row`* / `wrapped` | `key_only` emits only the key and no value, which is faster if you only want to know when the key changes.<br><br>`row` emits the row without any additional metadata fields in the message. *You can only use `row` with Kafka sinks or sinkless changefeeds. `row` does not support [`avro` format](#format).<br><br>`wrapped` emits the full message including any metadata fields. See [Responses](changefeed-messages.html#responses) for more detail on message format.<br><br>Default: `envelope=wrapped`
@@ -393,29 +393,35 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ### Start a new changefeed where another ended
 
-Find the [high-water timestamp](monitor-and-debug-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
+In some situations, you may want to start a changefeed where a previously running changefeed ended. For example, a changefeed could encounter an error it cannot recover from, such as when a [`TRUNCATE` is performed](change-data-capture-overview.html#known-limitations), and you need to restart the changefeed.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
-~~~
-~~~
-        job_id       |  job_type  | ... |      high_water_timestamp      | error | coordinator_id
-+--------------------+------------+ ... +--------------------------------+-------+----------------+
-  383870400694353921 | CHANGEFEED | ... | 1537279405671006870.0000000000 |       |              1
-(1 row)
-~~~
+1. Use [`SHOW CHANGEFEED JOB`](show-jobs.html#show-changefeed-jobs) to find the [high-water timestamp](monitor-and-debug-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
 
-Use the `high_water_timestamp` to start the new changefeed:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CHANGEFEED JOB {job_id};
+    ~~~
+    ~~~
+            job_id       | ... |      high_water_timestamp      | ...
+    +--------------------+ ... +--------------------------------+ ...
+      383870400694353921 | ... | 1537279405671006870.0000000000 | ...
+    (1 row)
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'kafka//host:port'
-  WITH cursor = '<high_water_timestamp>';
-~~~
+    {{site.data.alerts.callout_info}}
+    If a changefeed has failed, you must restart the changefeed from a timestamp **after** the event that caused the failure.
+    {{site.data.alerts.end}}
 
-Note that because the cursor is provided, the initial scan is not performed.
+1. Use the `high_water_timestamp` to start the new changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+      INTO 'scheme//host:port'
+      WITH cursor = '<high_water_timestamp>';
+    ~~~
+
+When you use the `cursor` option to start a changefeed, it will not perform an [initial scan](#initial-scan).
 
 ## See also
 

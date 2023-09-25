@@ -54,7 +54,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 1. Select the **PrivateLink** tab.
 1. Click **Add Connection** to open the connection dialog.
 
-Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
+Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 </section>
 
@@ -70,11 +70,107 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 1. Select the **PrivateLink** tab. PrivateLink connections that have already been configured are shown as a private endpoint allowlist.
 1. To add a new private connection, click **Add Connection** to open the connection dialog.
 
-Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
+Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 </section>
 
-## Step 2. Create an AWS endpoint
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Step 2. (Optional) Configure private endpoint trusted owners
+
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
+Optionally, you can restrict the AWS accounts that can connect to your cluster privately using private endpoints. During Limited Access, to configure trusted owners, you must use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider](https://github.com/cockroachdb/terraform-provider-cockroach/).
+
+Keep the following in mind:
+
+- This feature can be enabled only on clusters created after your organization is enrolled in the Limited Access.
+- After your organization is enrolled, an attempt to configure a private endpoint from an AWS account that has not been added as a trusted owner will fail.
+- After your organization is enrolled in the Limited Access, the feature cannot be disabled.
+
+Your service account must have one of the following roles on the cluster, either directly or by inheritance:
+
+- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) to add or remove private endpoint trusted owners. The Cluster Administrator role includes all of the capabilities of the Cluster Operator role.
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) to list or get details about private endpoint trusted owners.
+
+### Add a private endpoint trusted owner
+
+To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --header 'Authorization: Bearer {bearer_token' \
+  --header 'content-type: application/json' \
+  --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
+~~~
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{bearer_token}`: The service account's API key.
+- `{aws_account_id}`: The ID of the AWS account to trust.
+
+The response includes details about the trusted owner, including a unique trusted owner ID. This ID is required to get details about or remove a trusted owner.
+
+Next, you can [create an AWS endpoint](#step-3-create-an-aws-endpoint).
+
+### List private endpoint trusted owners
+
+To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --header 'Authorization: Bearer {bearer_token}'
+~~~
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{bearer_token}`: The service account's API key.
+
+### Get details about a trusted owner
+
+To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --header 'Authorization: Bearer {bearer_token}'
+~~~
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{owner_id}`: The UUID of a private endpoint trusted owner entry.
+- `{bearer_token}`: The service account's API key.
+
+### Remove a trusted owner
+
+To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --header 'Authorization: {bearer_token}'
+~~~
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{owner_id}`: The UUID of a private endpoint trusted owner entry.
+- `{bearer_token}`: The service account's API key
+
+</section>
+
+## Step 3. Create an AWS endpoint
 
 {% capture security_group_substeps %}
     <ul><li>In the **Security group name** field, enter a name for the security group.</li>
@@ -155,14 +251,14 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 </section>
 
-## Step 3. Verify the endpoint ID
+## Step 4. Verify the endpoint ID
 
 1. Click **Next**.
 1. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
 1. Follow the instructions in the dialog to enable **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB {{ site.data.products.cloud }} maintains private DNS records in the VPC for the cluster.
 1. Click **Complete** to save the configuration and close the dialog.
 
-## Step 4. Enable private DNS
+## Step 5. Enable private DNS
 
 Allow CockroachDB {{ site.data.products.cloud }} to modify the **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB {{ site.data.products.cloud }} maintains private DNS records in the VPC for your cluster.
 

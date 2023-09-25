@@ -4,7 +4,9 @@ To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is req
 
 #### Kubernetes Operator
 
-The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html).
+- The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}).
+
+- Using the Operator, you can give a new cluster an arbitrary number of [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). However, a cluster's labels cannot be modified after it is deployed. To track the status of this limitation, refer to [#993](https://github.com/cockroachdb/cockroach-operator/issues/993) in the Operator project's issue tracker.
 
 #### Helm version
 

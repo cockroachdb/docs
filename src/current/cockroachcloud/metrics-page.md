@@ -9,6 +9,7 @@ The **Metrics** page is available for CockroachDB {{ site.data.products.serverle
 
 - [**Monitor SQL Activity**](#monitor-sql-activity)
 - [**Identify SQL Problems**](#identify-sql-problems)
+- [Create **Custom** charts](#create-custom-charts)
 
 ## Time interval selection
 
@@ -75,6 +76,10 @@ This graph shows a moving average of the number of statements with [full table a
 This graph shows a moving average of the number of SQL statements that experienced [contention](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview#transaction-contention) across the cluster.
 
 See the [Statements page]({% link cockroachcloud/statements-page.md %}) for more details on the cluster's SQL statements.
+
+## Create Custom charts
+
+
 
 ## See also
 
