@@ -98,14 +98,9 @@ Example of a Google Cloud Pub/Sub sink URI:
 
 The following are example file URLs for each of the cloud storage schemes:
 
-Location     | Example
--------------+----------------------------------------------------------------------------------
-Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`
-Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
-Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
-HTTP         | `'http://localhost:8080/{PATH}'`
+{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
 
-[Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) explains the requirements for authentication and encryption for each supported cloud storage sink. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
+For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
