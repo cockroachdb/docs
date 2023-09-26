@@ -21,7 +21,7 @@ In addition to this infrastructure-level encryption, CockroachDB {{ site.data.pr
 
 Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a CockroachDB {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management systems (KMS) platform. This key is called the _CMEK key_. The CMEK key is never present in the cluster. Using the KMS platform's identity access management (IAM) system, you manage CockroachDB's permission to use the key for encryption and decryption. If the key is unavailable, or if CockroachDB no longer has permission to decrypt using the key, the cluster cannot start. To temporarily make the cluster and its data unavailable, such as during a security investigation, you can revoke CockroachDB's access to use the CMEK key or temporarily disable the key within the KMS's infrastructure. To permanently make the cluster's data unavailable, you can delete the CMEK key from the KMS. CockroachDB never has access to the CMEK key materials, and the CMEK key never leaves the KMS.
 
-To learn more, see [Customer-Managed Encryption Keys](/docs/cockroachcloud/cmek.html) and [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.dedicated }}](/docs/cockroachcloud/managing-cmek.html).
+To learn more, see [Customer-Managed Encryption Keys](https://www.cockroachlabs.com/docs/cockroachcloud/cmek) and [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/managing-cmek).
 
 {{site.data.alerts.callout_success}}
 When CMEK is enabled, the **Encryption** option appears to be disabled in the [DB Console](../ui-overview.html), because this option refers to [Encryption At Rest (Enterprise)](#encryption-at-rest-enterprise), which is a feature of CockroachDB {{ site.data.products.core }} clusters.
@@ -108,7 +108,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, Cockroach
 
 - **Store key**: A cluster's _store key_ is a key encryption key (KEK) that CockroachDB uses to encrypt the cluster's data keys (see below).
 
-  For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](/docs/{{ page.version.version }}/encryption.html#generating-store-key-files).
+  For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files]({% link {{ page.version.version }}/encryption.md %}#generating-store-key-files).
 
   The store key is created automatically when the cluster is created.
 
@@ -124,13 +124,13 @@ To allow arbitrary rotation schedules and ensure security of the keys, Cockroach
 
   When data is written to the cluster, the current data key is used to encrypt it. When data is read from the cluster, it is decrypted using the data key that was used to encrypt it.
 
-  CockroachDB does not currently force re-encryption of older files but instead relies on normal [storage engine](../architecture/storage-layer.html) churn to slowly rewrite all data with the desired encryption.
+  CockroachDB does not currently force re-encryption of older files but instead relies on normal [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) churn to slowly rewrite all data with the desired encryption.
 
   Data keys have short lifetimes to avoid reuse.
 
 ### Encrypted backups (Enterprise)
 
-See [Take and Restore Encrypted Backups](../take-and-restore-encrypted-backups.html).
+See [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
 
 ### Encryption caveats
 
@@ -146,7 +146,7 @@ Enabling Encryption at Rest might result in a higher CPU utilization. We estimat
 
 ## See also
 
-- [Customer-Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html)
+- [Customer-Managed Encryption Keys (CMEK)](https://www.cockroachlabs.com/docs/cockroachcloud/cmek)
 - [Client Connection Parameters](../connection-parameters.html)
 - [Manual Deployment](../manual-deployment.html)
 - [Orchestrated Deployment](../kubernetes-overview.html)

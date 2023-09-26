@@ -34,7 +34,7 @@ Sign up to receive technical advisories on the [CockroachDB Email Preferences](h
 {% for advisory in advisories %}
 <tr>
 	<td>
-		<a href="/docs{{ advisory.url }}">{{ advisory.advisory }}</a>
+		<a href="{{ site.baseurl }}{{ advisory.url }}">{{ advisory.advisory }}</a>
 	</td>
 	<td>{{ advisory.summary }}</td>
 	<td>{{ advisory.affected_versions }}</td>

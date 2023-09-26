@@ -26,7 +26,7 @@
 @import "utils/backgrounds";
 @import "utils/type";
 
-$images-url: "/docs/images/";
+$images-url: "{{ site.baseurl }}/images/";
 
 html {
   height: 100%;

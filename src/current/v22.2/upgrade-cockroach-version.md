@@ -160,7 +160,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
 1. [Drain and shut down the node](node-shutdown.html#perform-node-shutdown).
 
-1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.release_name }} full binary** for your architecture.
+1. Visit [What's New in {{ page.version.version }}?](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}) and download the **CockroachDB {{ latest.release_name }} full binary** for your architecture.
 
 1. Extract the archive. In the following instructions, replace `{COCKROACHDB_DIR}` with the path to the extracted archive directory.
 

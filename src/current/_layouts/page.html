@@ -42,7 +42,7 @@ front-matter.
 {% endcomment %}
 {% if page.toc %}
   <div id="mobile-toc-toggler" class="d-inline-block d-lg-none mb-4">
-    On this page <span class="carat-arrow-down d-inline-flex"><img src="/docs/images/carat-down-fill.svg" alt="Carat arrow pointing down"></span>
+    On this page <span class="carat-arrow-down d-inline-flex"><img src="{{ 'images/carat-down-fill.svg' | relative_url }}" alt="Carat arrow pointing down"></span>
   </div>
   <div id="toc" class="d-none"></div>
 {% endif %}
