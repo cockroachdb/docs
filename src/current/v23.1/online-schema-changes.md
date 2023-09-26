@@ -53,8 +53,8 @@ The following online schema changes pause if the node executing the schema chang
   - [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %})
   - [`REFRESH`]({% link {{ page.version.version }}/refresh.md %})
   - [`SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-locality) under one of the following conditions:
-      - The locality changes from [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) to something that is not `REGIONAL BY ROW`.
-      - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
+    - The locality changes from [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) to something that is not `REGIONAL BY ROW`.
+    - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
 If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
@@ -246,9 +246,11 @@ For more long-term recovery solutions, consider taking either a [full or increme
 
 ### Schema changes within transactions
 
-Schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement.
+Most schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement. There are some exceptions to this, detailed below.
 
 Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
+
+Some schema change operations can be run within explicit, multiple statement transactions. `CREATE TABLE` and `CREATE INDEX` statements can be run within the same transaction with the same atomicity guarantees as other SQL statements. There are no performance or rollback issues when using these statements within a multiple statement transaction.
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
