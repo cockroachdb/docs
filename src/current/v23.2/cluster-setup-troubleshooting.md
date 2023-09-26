@@ -230,9 +230,14 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 #### Network partition
 
-If the DB Console lists any dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), then you might have a network partition.
+If the DB Console
 
-**Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
+- lists any suspect or dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) or 
+- indicates any suspect nodes on the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}#node-liveness-status),
+
+then you might have a network partition.
+
+**Explanation:** A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is disrupted in both directions. In an asymmetric partition, nodes can communicate in one direction but not the other.
 
 The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 
@@ -240,8 +245,9 @@ The effect of a network partition depends on which nodes are partitioned, where 
 
 To identify a network partition:
 
-1.  Access the [Network Latency]({% link {{ page.version.version }}/ui-network-latency-page.md %}) page of the DB Console.
-1.  In the **Latencies** table, check for nodes with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+1.  In the DB Console, access the [Network page]({% link {{ page.version.version }}/ui-network-latency-page.md %}).
+1.  In the network matrix, check for nodes with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+1.  Hover over a cell in the matrix to see the connection status and the error message that resulted from the most recent connection attempt.
 
 ## Authentication issues
 
