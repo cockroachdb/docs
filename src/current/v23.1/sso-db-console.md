@@ -41,7 +41,7 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 
 From the user's perspective, once the cluster is properly configured to an identity provider, the sign-in flow is as follows:
 
-1. A user opens the cluster's DB Console, and clicks on the OAuth login button which renders in the page.
+1. A user opens the cluster's DB Console, and clicks on the **Log in with your OIDC provider** button which renders in the page.
 1. The user is redirected to an external identity provider.
 1. The user successfully authenticates with the provider, completing the OAuth flow.
 1. The user is redirected to the CockroachDB cluster.

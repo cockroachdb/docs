@@ -38,7 +38,7 @@ This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach
 
 1. Obtain a token.
 
-    Go to your cluster's DB Console and click the **generate token** button
+    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button
 
 1. Use the token in place of a password in your database connection string.
 
@@ -67,7 +67,7 @@ You must have the ability to update your cluster settings, which can be achieved
 | `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
-|`server.oidc_authentication.generate_cluster_sso_token.use_token`| This selects which part of the received OIDC credentials to use to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt).
+|`server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
 |`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration)
 | `server.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
 | `server.sql_port` | This display value informs users the port for their SQL connections. Default: `26257`.
@@ -201,28 +201,36 @@ You can also view all of your cluster settings in the DB Console...
     }';
     ~~~
 
+1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
+{% include_cached copy-clipboard.html %}
+~~~shell
+SET CLUSTER SETTING server.identity_map.configuration = 'https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1'  ;
+~~~
 
-1. Configure token generation.
+1. Enable token generation.
 
-The `use_token` field determines which part of the received OIDC credentials the cluster uses to [determine the user’s identity](#how-cockroachdb-determines-the-sql-username-from-a-jwt).
+This will also cause the token generation button to appear in the UI.
 
-It can be set to either `id_token` or `access_token`, depending on the structure of the your JWT as determined in your IDP configuration.
-
-{{site.data.alerts.callout_success}}
-This can be tricky to determine; unless you have a previously generated token, you may need to try it both ways to determine which one works. If you have a token, you can base-64 decode the middle segment&mdash;the token consists of three `.`-delimited segments&mdash;and trace the path to the value the cluster will use to map an external identity to a SQL user (via the Identity Map).
-{{site.data.alerts.end}}
+The `use_token` field determines which part of the received OIDC credentials is displayed.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.enabled = true;
+~~~
+
+1. Set `use_token`, which determines how the user's identity will be displayed.
+
+It can be set to either `id_token` or `access_token`, depending on the structure of the your JWT as determined in your IDP configuration.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
 SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.use_token = id_token;
 ~~~
 
 ## How CockroachDB determines the SQL username from a JWT
 
-1. `server.oidc_authentication.generate_cluster_sso_token.use_token` determines which token to look at (`id_token` or `access_token`).
-1. `server.jwt_authentication.claim` determines which claim in that token, defaulting to picking the token’s subject, but also potentially using email.
+1. `server.jwt_authentication.claim` determines which field to use to identify the external user, i.e. which must match a SQL user via the identity map.
 1. `server.identity_map.configuration` maps that claim (along with the token’s issuer) to a SQL username.
 
 ## Identity Map configuration
