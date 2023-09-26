@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+.toc-col {
+  display: none;
+
+  @include at-query($min, $screen-md) {
+    
+    padding: 34px 0;
+    // min-width: 260px;
+    // max-width: 260px;
+    display: inline-block;
+    background: #ffffff;
+  }
+}
+
+#toc {
+  display: block;
+  max-width: 500px;
+  padding-left: 0px;
+  margin: 0;
+
+  @include at-query($min, $screen-md) {
+    display: none;
+  }
+}
+
+.toc-col-contents {
+  height: 85vh;
+  overflow-y: auto;
+  padding-bottom: 5rem;
+  padding-right: 5px;
+}
+
+.toc-col-contents::-webkit-scrollbar {
+  display: none;
+}
+
+#toc-right {
+  min-height: 65vh;
+  max-height: 85vh;
+  padding-right: 10px;
+  background: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+}
+
+#toc-right::-webkit-scrollbar {
+  display: none;
+}
+
+#mobile-toc-toggler {
+  @include poppins_sb(16px);
+}
+
+.toc-right-title {
+  @include poppins_sb(16px);
+}
+
+#toc,
+#toc-right {
+
+  > ul {
+    list-style-type: none;
+    width: 100%;
+    padding: 0 0 0 10px;
+
+    li {
+      list-style: none;
+      line-height: 24px;
+      white-space: nowrap; // prevent anchor JS link from ending up on next line
+      margin: 0;
+      a {
+        @include sourcesanspro_r(16px);
+        color: $neutral-800;
+        line-height: 24px;
+        // display: inline-flex;
+        letter-spacing: 0.1px;
+        // padding: 3px 0 3px 20px;
+        // @include at-query($min, $screen-lg) {
+        //   padding: 6px 0 7px 20px;
+        // }
+        &:hover {
+          // font-weight: bold;
+          text-decoration: none;
+          border-bottom: none;
+          color: $electric-purple;
+        }
+
+        &.active--scroll {
+          font-weight: bold;
+        }
+
+        &.anchorjs-link {
+           visibility: hidden;
+           display: none;
+        }
+      }
+
+      &.toc-li-top {
+        border-left: 2px solid $neutral-200;
+        padding: 0 0 6px 10px;
+        // &.active {
+        //   border-left: 2px solid $electric-purple;
+        // }
+      }
+      a:first-child {
+        position: relative;
+        white-space: normal;
+
+        &:hover {
+          &:before {
+            color: $electric-purple;
+          }
+        }
+      }
+
+      > ul {
+        margin: 0;
+        padding: 0 0 0 10px;
+      }
+    }
+  }
+
+  a {
+    color: $neutral-800;
+    &:hover {
+      // font-weight: bold;
+      text-decoration: none;
+      border-bottom: none;
+    }
+  }
+
+  code {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0px;
+    height: fit-content;
+  }
+}

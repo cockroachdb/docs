@@ -1,0 +1,56 @@
+// #maincontent{
+// 	@include at-query(0, $screen-sm) {
+// 		margin-top:100px;
+// 	}
+// } 
+//TODO: clean up, not sure if it used
+#maincontent {
+	// background: #fff;
+	position: relative;
+	padding-top: 115px;
+	// width: 100%;
+	// z-index: 1000;
+	// @include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
+	// overflow: auto;
+
+	@include at-query($min, $screen-md){
+		padding-top: 95px;
+	}
+
+	#main-content {
+		margin: 0 15px;
+
+		@include at-query($min, $screen-md) {
+			margin: 0 auto;
+			min-height: 625px;
+			max-width: $max-width;
+		}
+
+		.content-col {
+			padding-bottom: 100px;
+			max-width: 100%;
+			min-width: 0;
+			padding-top: 105px;
+			overflow-x: scroll;
+
+			@include at-query($min, $screen-md) {
+				padding-top: 0;
+				min-height: 625px;
+				margin-left: 310px;
+				margin-right: 45px;
+
+				&.no-sidebar {
+					padding-left: 30px;
+				}
+
+				&.no-toc {
+					padding-right: 30px;
+				}
+			}
+
+			&--landing {
+				padding-top: 30px;
+			}
+		}
+	}
+}

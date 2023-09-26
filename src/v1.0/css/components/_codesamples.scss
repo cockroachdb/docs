@@ -1,0 +1,24 @@
+/* Designed to make items marked as terminal prompts with Rouge syntax highlighter unselectable*/
+.noselect{
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
+}
+
+/* Works in conjunction with /js/customscripts.js to make shell terminals prompts ($) totally unselectable */
+.language-shell::before {
+	color: $cl_syntax_aqua;
+    content: "$ ";
+}
+
+/* Works in conjunction with /js/customscripts.js to make SQL terminals prompts (>) totally unselectable */
+.language-sql::before {
+	color: $cl_syntax_aqua;
+    content: "> ";
+}
+
+span.funcdesc {
+  display: block;
+  padding: 2px;
+}

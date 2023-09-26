@@ -1,0 +1,71 @@
+{{ $currentPage := . }}
+<div class="col-xl-9 bg-white position-relative shadow-sm">
+  <img class="nav-bg-img" src="{{.Site.Params.img_url}}/img/nav-bg.svg" alt="">
+  <div class="p-4 megamenu-main position-relative">
+    <div class="row">
+
+
+      <div class="col-xl-3 d-md-flex flex-md-column pb-sm-3">
+          <h6 class="font-weight-bold">
+            The most<br> highly evolved <br>database <br>on the planet
+          </h6>
+          <a href="https://www.cockroachlabs.com/customers/" class="text-small">See our customer stories <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+              </svg>
+          </a>
+      </div>
+      <div class="col-xl-3 pb-sm-3">
+          <div class="font-weight-bold  column-title mb-3 pb-1">
+            SCALE FAST
+          </div>
+          <ul class="list-unstyled">
+            <!-- Loop over menus.main where why -->
+            {{ range .Site.Menus.why }}
+              <li class="nav-item mb-3 pb-1">
+                  <div class="font-weight-bold item-title">{{.Pre}}</div>
+                  <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                    >{{ item.name }}</a
+                  >
+                </li>
+            {{ end }}
+          </ul>
+      </div>
+
+      <div class="col-xl-3 pb-sm-3">
+          <div class="font-weight-bold  column-title mb-3 pb-1">
+            SURVIVE ANYTHING
+          </div>
+          <ul class="list-unstyled">
+            <!-- Loop over menus.main where why -->
+            {{ range .Site.Menus.survive }}
+              <li class="nav-item mb-3 pb-1">
+                  <div class="font-weight-bold item-title">{{.Pre}}</div>
+                  <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                    >{{ item.name }}</a
+                  >
+                </li>
+            {{ end }}
+          </ul>
+      </div>
+
+
+      <div class="col-xl-3 pb-sm-3">
+          <div class="font-weight-bold  column-title mb-3 pb-1">
+              THRIVE EVERYWHERE
+          </div>
+          <ul class="list-unstyled">
+            <!-- Loop over menus.main where why -->
+            {{ range .Site.Menus.thrive }}
+              <li class="nav-item mb-3 pb-1">
+                  <div class="font-weight-bold item-title">{{.Pre}}</div>
+                  <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                    >{{ item.name }}</a
+                  >
+                </li>
+            {{ end }}
+          </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

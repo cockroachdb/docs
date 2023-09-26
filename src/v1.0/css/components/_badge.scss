@@ -1,0 +1,9 @@
+.badge-new {
+    background: rgba(180, 241, 170, 0.6);
+    border-radius: 50px;
+    color: #237300;
+    @include sourcesanspro_b(12px);
+    line-height: normal;
+    padding: 4px 10px;
+    margin-left: 5px;
+}

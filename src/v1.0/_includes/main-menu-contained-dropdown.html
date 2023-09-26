@@ -1,0 +1,496 @@
+<div class="shadow-sm main-nav-wrapper position-fixed w-100">
+
+<div class="container-xl main-nav">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand mr-0 mr-md-2 d-xl-block mt-auto" href="https://www.cockroachlabs.com/"><img width="170" alt="Cockroach Labs" class="br0 db mb0" src="{{ '/images/cockroachlabs-logo-170.png' | relative_url }}"></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="d-lg-none">
+        <div class="accordion" id="accordionExample">
+
+          <div class="card">
+            <div class="card-header bg-white" id="headingOne">
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#mobileWhyCrdb" aria-expanded="false" aria-controls="mobileWhyCrdb">
+                  Why CockroachDB
+                </button>
+              </h2>
+            </div>
+        
+            <div id="mobileWhyCrdb" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                <h3 class="font-weight-medium mb-45 mt-3">The Most Highly Evolved Database on the Planet</h3>
+                <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                  SCALE FAST
+                </div>
+                <ul class="list-unstyled">
+                  <!-- Loop over menus.main where why -->
+                  {% for item in site.data.menus.why %}
+                    <li class="nav-item mb-3 pb-1 small">
+                        <a href="{{item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                        ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                      </li> 
+                  {% endfor %} 
+                </ul>
+                  <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                    SURVIVE ANYTHING
+                  </div>
+                  <ul class="list-unstyled">
+                    <!-- Loop over menus.main where why -->
+                    {% for item in site.data.menus.survive %}
+                    <li class="nav-item mb-3 pb-1 small">
+                        <a href="{{item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                        ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                      </li> 
+                  {% endfor %} 
+                  </ul>
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      THRIVE EVERYWHERE
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.thrive %}
+                      <li class="nav-item mb-3 pb-1 small">
+                          <a href="{{item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                          ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                        </li> 
+                    {% endfor %} 
+                      </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product row -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileProduct">
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="mobileProduct">
+                  Product
+                </button>
+              </h2>
+            </div>
+        
+            <div id="collapseTwo" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+        
+                <div class="card shadow-sm h-100 mb-4">
+                    <a href="https://www.cockroachlabs.com/product/" class="h-100 link-black d-flex">
+                      <div class="card-body d-md-flex flex-md-column justify-content-evenly text-center">
+                        <div class="column-large-icon-box text-center d-flex justify-content-center">
+                          <img src="{{ '/images/icons/icon-database.svg' | relative_url }}" alt="CockroachDB">
+                        </div>
+                        <div>
+                          <h6 class="font-weight-bold  callout-title text-center">
+                            CockroachDB
+                        </h6>
+                        <p class="nav-link text-small text-center">
+                          Free for everyone. <br>Runs anywhere.
+                        </p>
+                        <p class="text-small mb-0 text-electric-purple ">Explore CockroachDB <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+                            </svg>
+                        </p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+        
+                  <div class="card shadow-sm h-100 mb-4">
+                    <a href="https://www.cockroachlabs.com/product/cockroachcloud/" class="h-100 link-black d-flex">
+                      <div class="card-body d-md-flex flex-md-column justify-content-evenly text-center">
+                        <div class="column-large-icon-box d-flex justify-content-center" style="height: 70px;">
+                          <img src="{{ '/images/icons/icon-db-cloud.svg' | relative_url }}" alt="CockroachDB">
+                        </div>
+                        <div>
+                          <h6 class="font-weight-bold  callout-title text-center">
+                            CockroachDB Cloud
+                        </h6>
+                        <p class="nav-link text-small text-center">
+                          CockroachDB hosted <br>as a service.
+                        </p>
+                        <p class="text-small mb-0 text-electric-purple">Explore CockroachDB Cloud <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+                            </svg>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+        
+                  <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                    QUICK LINKS
+                  </div>
+                  <ul class="list-unstyled">
+                    <!-- Loop over menus.main where why -->
+                    {% for item in site.data.menus.product_quicklinks %}
+                      <li class="nav-item mb-3 pb-1 small">
+                        <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                            >  
+                        <div class="font-weight-bold item-title">{{item.pre}}</div>
+                          {{item.name}}</a
+                          >
+                        </li>
+                    {% endfor %}
+                  </ul>
+        
+              </div>
+            </div>
+          </div>
+
+          <!-- Solutions row -->
+
+          <!-- Resources  -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileResources">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false" aria-controls="mobileResources">
+                        Resources
+                    </button>
+                </h2>
+            </div>
+        
+            <div id="collapseFour" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
+                <div class="card-body bg-gray-f4">
+        
+                  <h3 class="font-weight-medium mb-45 mt-3">Get to know CockroachDB</h3>
+                  <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                    GETTING STARTED
+                  </div>
+                  <ul class="list-unstyled">
+                    <!-- Loop over menus.main where why -->
+                    {% for item in site.data.menus.resources_started %}
+                      <li class="nav-item mb-3 pb-1 small">
+                          <div class="font-weight-medium item-title">{{item.pre}}</div>
+                          <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                            >{{item.name}}</a
+                          >
+                        </li>
+                    {% endfor %}
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      TECHNICAL RESOURCES
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.resources_technical %}
+                      <li class="nav-item mb-3 pb-1 small">
+                        <div class="font-weight-medium item-title">{{item.pre}}</div>
+                        <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                          >{{item.name}}</a
+                        >
+                      </li>
+                      {% endfor %}
+                      <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                        LEARN
+                      </div>
+                      <ul class="list-unstyled">
+                        <!-- Loop over menus.main where why -->
+                        {% for item in site.data.menus.resources_learn %}
+                        <li class="nav-item mb-3 pb-1 small">
+                          <div class="font-weight-medium item-title">{{item.pre}}</div>
+                          <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                            >{{item.name}}</a
+                          >
+                        </li>
+                        {% endfor %}
+                      </ul>
+                </div>
+            </div>
+          </div>
+
+          <!-- blog -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileBlog">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/blog/">Blog</a>
+                </h2>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header bg-white" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/">Contact Us</a>
+                </h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-white" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/">Sign In</a>
+                </h2>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+        <li class="nav-item dropdown position-static">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Why CockroachDB
+          </a>
+          <div class="dropdown-menu w-100 " aria-labelledby="navbarDropdown">
+            <button class="btn-close position-absolute"></button>
+            <div class="row">
+              <div class="col-md-9">
+                <h3 class="font-weight-medium mb-45 mt-3">The Most Highly Evolved Database on the Planet</h3>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      SCALE FAST
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.why %}
+                        <li class="nav-item mb-3 pb-1 small">
+                          <a href="{{ item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                          ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                          </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      SURVIVE ANYTHING
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.survive %}
+                      <li class="nav-item mb-3 pb-1 small">
+                        <a href="{{ item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                        ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                        </li>
+                      {% endfor %}
+                  </div>
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      THRIVE EVERYWHERE
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.thrive %}
+                      <li class="nav-item mb-3 pb-1 small">
+                        <a href="{{ item.url}}" class="text-black {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                        ><div class="item-title">{{item.pre}}</div><span class="font-weight-bold">{{item.name}}</span></a>
+                        </li>
+                      {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item dropdown position-static">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Product
+          </a>
+          <div class="dropdown-menu w-100 " aria-labelledby="navbarDropdown">
+            <button class="btn-close position-absolute"></button>
+            <div class="row">
+              <div class="col-md-9">
+                <h3 class="font-weight-medium mb-45 mt-3">The Most Highly Evolved Database on the Planet</h3>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                      <a href="https://www.cockroachlabs.com/product/" class="h-100 link-black d-flex">
+                        <div class="card-body d-md-flex flex-md-column justify-content-evenly text-center">
+                          <div class="column-large-icon-box text-center d-flex justify-content-center">
+                            <img src="{{ '/images/icons/icon-database.svg' | relative_url }}" alt="CockroachDB">
+                          </div>
+                          <div>
+                            <h6 class="font-weight-bold  callout-title text-center">
+                              CockroachDB
+                          </h6>
+                          <p class="nav-link text-small text-center">
+                            Free for everyone. <br>Runs anywhere.
+                          </p>
+                          <p class="text-small mb-0 text-electric-purple ">Explore CockroachDB <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+                              </svg>
+                          </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                      <a href="https://www.cockroachlabs.com/product/cockroachcloud/" class="h-100 link-black d-flex">
+                        <div class="card-body d-md-flex flex-md-column justify-content-evenly text-center">
+                          <div class="column-large-icon-box d-flex justify-content-center" style="height: 70px;">
+                            <img src="{{ '/images/icons/icon-db-cloud.svg' | relative_url }}" alt="CockroachDB">
+                          </div>
+                          <div>
+                            <h6 class="font-weight-bold  callout-title text-center">
+                              CockroachDB Cloud
+                          </h6>
+                          <p class="nav-link text-small text-center">
+                            CockroachDB hosted <br>as a service.
+                          </p>
+                          <p class="text-small mb-0 text-electric-purple">Explore CockroachDB Cloud <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+                              </svg>
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      QUICK LINKS
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.product_quicklinks %}
+                        <li class="nav-item mb-3 pb-1 small">
+                          <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                              >  
+                          <div class="font-weight-bold item-title">{{item.pre}}</div>
+                            {{item.name}}</a
+                            >
+                          </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item dropdown position-static">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Resources
+          </a>
+          <div class="dropdown-menu w-100 " aria-labelledby="navbarDropdown">
+            <button class="btn-close position-absolute"></button>
+            <div class="row">
+              <div class="col-md-9">
+                <h3 class="font-weight-medium mb-45 mt-3">Get to know CockroachDB</h3>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      GETTING STARTED
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.resources_started %}
+                        <li class="nav-item mb-3 pb-1 small">
+                            <div class="font-weight-medium item-title">{{item.pre}}</div>
+                            <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                              >{{item.name}}</a
+                            >
+                          </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      TECHNICAL RESOURCES
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.resources_technical %}
+                        <li class="nav-item mb-3 pb-1 small">
+                            <div class="font-weight-medium item-title">{{item.pre}}</div>
+                            <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                              >{{item.name}}</a
+                            >
+                          </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="font-weight-bold small text-electric-purple mb-3 pb-1">
+                      LEARN
+                    </div>
+                    <ul class="list-unstyled">
+                      <!-- Loop over menus.main where why -->
+                      {% for item in site.data.menus.resources_learn %}
+                      <li class="nav-item mb-3 pb-1 small">
+                          <div class="font-weight-medium item-title">{{item.pre}}</div>
+                          <a href="{{item.url}}" class="text-black pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                            >{{item.name}}</a
+                          >
+                        </li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                {% include_cached menu-customers-column.html %}
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item position-static">
+          <a
+            class="nav-link"
+            href="https://www.cockroachlabs.com/blog/"
+            role="button"
+          >
+            Blog
+          </a>
+        </li>
+      </ul>
+      <div class="ml-auto">
+        <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-text-md" href="https://www.cockroachlabs.com/contact/" role="button"> Contact Us</a>
+            <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button"><img class="" width="32" src="{{ '/images/icons/icon-envelope.png' | relative_url }}" alt="Sign in"></a>
+          </li>
+          <li class="nav-item">
+            <a href="https://cockroachlabs.cloud/" class="nav-link nav-text-md">Sign In</a>
+            <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="10.25" fill="white" stroke="black" stroke-width="1.5"/>
+              <circle cx="11" cy="9" r="2.25" stroke="black" stroke-width="1.5"/>
+              <path d="M6 16C6.47619 14.6667 8.14286 12 11 12C13.8571 12 15.5238 14.6667 16 16" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center flex-column">
+            <a class="btn btn-primary btn-sm btn-nav-cta px-3 font-family-poppins py-1 ml-2" href="https://www.cockroachlabs.com/get-started-cockroachdb/">Get CockroachDB</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+</div>

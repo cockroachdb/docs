@@ -1,0 +1,233 @@
+---
+serverless:
+  - identifier: product
+    name: Product
+    url: https://www.cockroachlabs.com/product/
+    weight: 100
+    params:
+        image: /images/menu-product.png
+        text: A distributed SQL datatabase<br> designed for speed, scale,<br>and survival
+product_caps:
+  # Left
+  - identifier: product-capabilities
+    name: Elastic Scale
+    url: https://www.cockroachlabs.com/product/scale/
+    weight: 100
+  - name: Cloud-Native & Kubernetes
+    url: https://www.cockroachlabs.com/product/kubernetes/
+  - name: Built-in Survivability
+    url: https://www.cockroachlabs.com/product/resilience/
+    # Right
+  - name: Familiar, Consistent SQL
+    url: https://www.cockroachlabs.com/product/sql/
+  - name: Global Data
+    url: https://www.cockroachlabs.com/product/geo-partitioning/
+
+
+solutions:
+  - identifier: solutions
+    name: Solutions
+    url: https://www.cockroachlabs.com/solutions/
+    weight: 110
+    params:
+        # image: /img/menu-product.png
+        text: See how our customers use CockroachDB to handle their critical workloads.
+
+solutions_industries:
+  - name: Finance
+    url: https://www.cockroachlabs.com/solutions/verticals/financialservices/
+    weight: 100
+  - name: Gaming
+    url: https://www.cockroachlabs.com/solutions/verticals/gaming/
+    weight: 100
+  - name: Manufacturing & Logistics
+    url: https://resources.cockroachlabs.com/manufacturing-logistics
+    weight: 100
+  - name: Media & Streaming
+    url: https://www.cockroachlabs.com/solutions/verticals/media/
+  - name: Real-Money Gaming
+    url: https://www.cockroachlabs.com/solutions/verticals/gambling/
+    weight: 100
+  - name: Retail & eCommerce
+    url: https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/
+    weight: 100
+  - name: SaaS
+    url: https://www.cockroachlabs.com/solutions/verticals/saas
+    weight: 100
+  - name: Startups
+    url: https://resources.cockroachlabs.com/startups
+    weight: 100
+
+solutions_usecase:
+  - name: Cloud-Native & Kubernetes
+    url: https://resources.cockroachlabs.com/cloud-native-kubernetes
+    weight: 600
+  - name: Scale & Resilience
+    url: https://resources.cockroachlabs.com/scale-resilience
+    weight: 700
+  - name: Data Privacy & Security
+    url: https://resources.cockroachlabs.com/privacy-compliance
+    weight: 800
+  - name: Distributed Apps
+    url: https://resources.cockroachlabs.com/distributed-apps
+    weight: 900
+
+resources:
+  - identifier: resources
+    name: Resources
+    url: https://www.cockroachlabs.com/resources/
+    weight: 120
+    params:
+        # image: /img/menu-product.png
+        text: "<h3 class='text-primary'>Cockroach <br>University</h3>World-class training and tutorials for beginners and advanced use cases."
+
+resources_learn:
+  - name: Resource center
+    url: https://www.cockroachlabs.com/resources/
+    weight: 100
+  - name: Blog
+    url: https://www.cockroachlabs.com/blog/
+    weight: 200
+  - name: Developers
+    url: https://www.cockroachlabs.com/developers/
+    weight: 200
+  - name: Webinars
+    url: https://www.cockroachlabs.com/community/webinars/
+    weight: 200
+  - name: Podcast
+    url: https://www.cockroachlabs.com/big-ideas-podcast/
+    weight: 200
+
+
+
+resources_support:
+  - name: GitHub
+    url: https://github.com/cockroachdb/cockroach
+  - name: Slack
+    url: https://www.cockroachlabs.com/join-community/
+  - name: Support Portal
+    url: https://support.cockroachlabs.com/hc/en-us?__hstc=181257784.2bc4222d759d3d555572287e7b610f03.1579111962927.1604502276741.1604544514798.361&__hssc=181257784.63.1604544514798&__hsfp=407609322
+
+docs:
+  - identifier: docs
+    name: Docs Hub
+    url: https://www.cockroachlabs.com/docs/
+    weight: 120
+    params:
+        # image: /img/menu-product.png
+        text: "<h3 class='text-primary'>Docs Hub<br></h3> Access tutorials, guides, example applications, and much more."
+
+docs_items:
+  - name: Quickstart
+    url: https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html
+    weight: 100
+  - name: FAQ
+    url: https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html
+    weight: 200
+  - name: Example applications
+    url: https://www.cockroachlabs.com/docs/stable/example-apps.html
+    weight: 300
+  - name: Architecture Overview
+    url: https://www.cockroachlabs.com/docs/stable/architecture/overview.html
+    weight: 400
+
+
+company:
+  - identifier: company
+    name: Company
+    url: https://www.cockroachlabs.com/company/
+    weight: 110
+    params:
+        # image: /img/menu-product.png
+        text: CockroachDB is trusted by innovators around the world, big and small. Take a look at how they use CockroachDB to build future-proofed applications.
+
+company_items:
+  - name: Company News & Culture
+    url: https://www.cockroachlabs.com/blog/culture/
+  - name: Our Story
+    url: https://www.cockroachlabs.com/about/
+  - name: Partners
+    url: https://www.cockroachlabs.com/partners/
+  - name: Work at Cockroach Labs
+    url: https://www.cockroachlabs.com/careers/
+# End New Serverless Nav
+
+main_right:
+  - identifier: contact
+    pre: ""
+    name: Contact Us
+    url: https://www.cockroachlabs.com/contact/
+    weight: 100
+  - identifier: sign_in
+    pre: ""
+    name: Sign In
+    url: https://cockroachlabs.cloud/
+    weight: 110
+  - identifier: get_started
+    pre: ""
+    name: Get CockroachDB
+    url: https://www.cockroachlabs.com/get-started-cockroachdb/
+    weight: 120
+blog_sub:
+  - identifier: blog
+    pre: ""
+    name: Blog
+    url: https://www.cockroachlabs.com/blog/
+    weight: -100
+  - identifier: culture
+    pre: ""
+    name: Company + Culture
+    url: https://www.cockroachlabs.com/blog/culture/
+    weight: -100
+  - identifier: engineering
+    pre: ""
+    name: Engineering
+    url: https://www.cockroachlabs.com/blog/engineering/
+    weight: -100
+  - identifier: product
+    pre: ""
+    name: Product
+    url: https://www.cockroachlabs.com/blog/product/
+    weight: -100
+  - identifier: customer-stories
+    pre: ""
+    name: Customer Stories
+    url: https://www.cockroachlabs.com/blog/customer-stories/
+    weight: -100
+careers_sub:
+  - identifier: careers
+    pre: ""
+    name: Careers
+    url: https://www.cockroachlabs.com/careers/
+    weight: -100
+  - identifier: open-positions
+    pre: ""
+    name: Open Positions
+    url: https://www.cockroachlabs.com/careers/open-positions/
+    weight: -100
+  - identifier: meet-the-team
+    pre: ""
+    name: Meet The Team
+    url: https://www.cockroachlabs.com/careers/meet-the-team/
+    weight: -100
+solutions_sub:
+  - identifier: solutions
+    pre: ""
+    name: Solutions
+    url: https://www.cockroachlabs.com/solutions/
+    weight: -200
+  - identifier: initiatives
+    pre: ""
+    name: Initiatives
+    url: https://www.cockroachlabs.com/solutions/initiatives/
+    weight: -100
+  - identifier: use-cases
+    pre: ""
+    name: Use Cases
+    url: https://www.cockroachlabs.com/solutions/use-cases/
+    weight: -100
+  - identifier: verticals
+    pre: ""
+    name: Verticals
+    url: https://www.cockroachlabs.com/solutions/Verticals/
+    weight: -100

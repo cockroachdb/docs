@@ -1,0 +1,75 @@
+---
+layout: null
+---
+# Release notes generated from _data/redirects.yml
+{% if site.baseurl == "/docs" %}
+/ /docs/ 301!
+/docs/managed/* /docs/cockroachcloud/:splat 301!
+/docs/api/* https://cockroachdb-api-docs.netlify.app/docs/api/:splat 200
+/docs/tutorials/* /docs/interactive-tutorials/:splat 301
+/docs/interactive-tutorials/* https://cockroachdb-interactivetutorials-docs.netlify.app/docs/interactive-tutorials/:splat 200
+{% assign major_versions = site.data.versions | map: "major_version" -%}
+
+{%- for r in site.data.redirects -%}
+    {%- if r.temporary == true -%}
+        {%- assign status_code = "302" -%}
+    {%- else -%}
+        {%- assign status_code = "301" -%}
+    {%- endif -%}
+    {%- if r.force == true -%}
+        {%- assign status_code = status_code | append: "!" -%}
+    {%- endif -%}
+    {%- if r.versions.size > 0 -%}
+        {%- assign add_dev_stable = false -%}
+        {%- for v in r.versions -%}
+            {%- if major_versions contains v -%}
+                {%- assign add_dev_stable = true -%}
+                {%- break -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {%- for s in r.sources -%}
+            {%- for v in r.versions -%}
+{{ site.baseurl }}/{{ v }}/{{ s | replace: ".md", ".html" }} {{ site.baseurl }}/{{ v }}/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+{{ site.baseurl }}/{{ v }}/{{ s | replace: ".md", "" }} {{ site.baseurl }}/{{ v }}/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+            {%- endfor -%}
+            {%- if add_dev_stable == true -%}
+{{ site.baseurl }}/dev/{{ s | replace: ".md", ".html" }} {{ site.baseurl }}/dev/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+{{ site.baseurl }}/stable/{{ s | replace: ".md", ".html" }} {{ site.baseurl }}/stable/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+{{ site.baseurl }}/dev/{{ s | replace: ".md", "" }} {{ site.baseurl }}/dev/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+{{ site.baseurl }}/stable/{{ s | replace: ".md", "" }} {{ site.baseurl }}/stable/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- else -%}
+        {%- for s in r.sources -%}
+            {%- if r.destination contains "http://" or r.destination contains "https://" -%}
+{{ site.baseurl }}/{{ s | replace: ".md", ".html" }} {{ r.destination }} {{ status_code }}
+{{ site.baseurl }}/{{ s | replace: ".md", "" }} {{ r.destination }} {{ status_code }}
+            {%- else -%}
+{{ site.baseurl }}/{{ s | replace: ".md", ".html" }} {{ site.baseurl }}/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+{{ site.baseurl }}/{{ s | replace: ".md", "" }} {{ site.baseurl }}/{{ r.destination | replace: ".md", "" }} {{ status_code }}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
+{%- endfor %}
+
+# CockroachDB Self-Hosted release notes
+{% comment %} These should never be removed. These redirects exist to help with the per-version release note implementation. {% endcomment %}
+
+{%- assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
+{%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
+{%- for r in rns -%}
+{%- capture old_url -%}releases/{{ r.release_name }}{%- endcapture -%}
+{%- capture new_url %}releases/{{ r.major_version }}#{{ r.release_name | replace: ".", "-" }}{% endcapture -%}
+{{ old_url | relative_url }} {{ new_url | relative_url }} 301
+{{ old_url | append: ".html" | relative_url }} {{ new_url | relative_url }} 301
+{% endfor -%}
+
+/docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1#v22-1-0-alpha-1 301
+/docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1#v22-1-0-alpha-1 301
+
+
+{% endif %}
+
+{% comment %}The below redirect is required in order to properly render /dev and /stable pages. Make sure you know what you're doing prior to removing it. {% endcomment %}
+
+{%- include redirects/dev-stable-alias %}

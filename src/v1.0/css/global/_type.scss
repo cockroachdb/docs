@@ -1,0 +1,191 @@
+// Since we use header tags for seo, we do not always want a type style to
+// be dictated by the tag being used. For example, we may want an element
+// to be an h2 tag for seo, but in the designs the type style is an h4.
+// To circumvent this issue, we'll attach these global styles to header tags.
+// Global header stylings are still declared in _general.scss as a fallback.
+
+@mixin headline-1 { // global h1
+  @include poppins_sb(26px);
+  line-height: 35px;
+  @include at-query($min, $screen-md) {
+    @include poppins_sb(50px);
+    line-height: 85px;
+  }
+}
+
+@mixin headline-2 { // global h2
+  @include poppins_sb(36px);
+  line-height: 40px;
+}
+
+@mixin headline-3 { // global h3
+  @include poppins_sb(26px);
+  line-height: 35px;
+}
+
+@mixin headline-4 { // global h4
+  @include poppins_sb(17px);
+  line-height: 30px;
+}
+
+@mixin headline-4--avenir { //
+  @include sourcesanspro_r(17px);
+  line-height: 30px;
+}
+
+
+@mixin headline-6 {
+  @include poppins_sb(24px);
+  line-height: 28px;
+}
+
+@mixin headline-24-30 {
+  @include sourcesanspro_m(24px);
+  line-height: 35px;
+
+  @include at-query($min, $screen-md) {
+    font-size: 30px;
+    line-height: 40px;
+  }
+}
+
+//
+// subheadings
+//
+@mixin subhead-adelle-lg {
+  @include sourcesanspro_m(24px);
+  line-height: 35px;
+}
+
+@mixin subhead-adelle-sm {
+  @include sourcesanspro_m(17px);
+  line-height: 30px;
+}
+
+@mixin subhead-avenir-lg {
+  @include sourcesanspro_m(24px);
+  line-height: 35px;
+}
+
+@mixin subhead-avenir-sm {
+  @include sourcesanspro_m(17px);
+  line-height: 30px;
+}
+
+//
+// body
+//
+@mixin type-body {
+  @include sourcesanspro_r(14px);
+  line-height: 22px;
+}
+
+@mixin type-body-medium {
+  @include sourcesanspro_b(14px);
+  line-height: 24px;
+  letter-spacing: .02em;
+}
+
+//
+// button
+//
+
+
+//
+// miscellaneous
+//
+@mixin type-button {
+  @include sourcesanspro_m(13px);
+  line-height: 20px;
+  letter-spacing: 1.5px;
+}
+
+@mixin type-button--uppercase {
+  @include type-button;
+  text-transform: uppercase;
+}
+
+@mixin button-text {
+  @include poppins_sb(18px);
+  line-height: $line-height-base;
+  letter-spacing: 0.1px;
+  font-weight: 600;
+}
+
+@mixin button-text--heavy {
+  @include sourcesanspro_b(12px);
+  line-height: 15px;
+  letter-spacing: 1.5px;
+}
+
+@mixin button-text--heavy--small {
+  @include sourcesanspro_m(11px);
+  line-height: 15px;
+  letter-spacing: 1.5px;
+}
+
+@mixin button-text--heavy--medium {
+  @include sourcesanspro_m(13px);
+  line-height: 15px;
+  letter-spacing: 1.5px;
+}
+
+@mixin button-text--heavy--large {
+  @include sourcesanspro_m(15px);
+  line-height: 25px;
+  letter-spacing: 1.5px;
+}
+
+@mixin caption {
+  @include sourcesanspro_r(15px);
+  line-height: 25px;
+}
+
+@mixin caption--small {
+  @include sourcesanspro_m(12px);
+  line-height: 20px;
+}
+
+// this matches the name on the hugo site
+// eventually we should consolidate type styles here too
+@mixin type-caption {
+  @include sourcesanspro_r(15px);
+  line-height: 25px;
+}
+
+@mixin paragraph-type {
+  @include sourcesanspro_r(16px);
+  line-height: 22.6px;
+
+  // @include at-query($min, $screen-md) {
+  //   font-size: 14px;
+  //   line-height: 24px;
+  // }
+}
+
+@mixin paragraph-type--medium {
+  @include sourcesanspro_r(14px);
+  line-height: 24px;
+}
+
+@mixin paragraph-type--heavy {
+  @include sourcesanspro_m(16px);
+  line-height: 25px;
+
+  @include at-query($min, $screen-md) {
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
+
+@mixin code-type {
+  @include source_code_r(15px);
+  line-height: 24px;
+  border-radius: 3px;
+  padding: 2px 2px;
+}
+
+
+@each $color, $value in $grays {
+  @include text-emphasis-variant(".text-gray-#{$color}", $value, true);
+}

@@ -1,0 +1,54 @@
+.copy-clipboard {
+  position: relative;
+  margin-top: 15px;
+  margin-right: 17px;
+  float: right;
+  z-index: 1;
+  @include button-text;
+  @include sourcesanspro_b(12px);
+  text-transform: uppercase;
+  color: #a2a2a2;
+  @include groovy(color);
+
+  &__text {
+    display: inline-block;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+    vertical-align: top;
+
+    .st0 {
+      @include groovy(fill);
+    }
+  }
+
+  #copy-check {
+    display: none;
+  }
+
+
+  &:hover {
+    cursor: pointer;
+    color: #4c4c4c;
+
+    .st0 {
+      fill: #4c4c4c;
+    }
+  }
+
+  &--copied {
+    #copy-icon {
+      display: none;
+    }
+
+    #copy-check {
+      display: inline-block;
+    }
+
+    &:hover {
+      color: #a2a2a2;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+tip: '<div class="alert alert-success" role="alert"><i class="fas fa-check-square-o"></i> <b>Tip: </b>'
+note: '<div class="alert alert-info" role="alert"><i class="fas fa-info-circle"></i> <b>Note: </b>'
+important: '<div class="alert alert-warning" role="alert"><i class="fas fa-warning"></i> <b>Important: </b>'
+warning: '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b>'
+end: '</div>'
+
+callout_danger: '<div class="bs-callout bs-callout--danger"><div class="bs-callout__label">Warning:</div>'
+callout_success: '<div class="bs-callout bs-callout--success"><div class="bs-callout__label">Tip:</div>'
+callout_info: '<div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>'
+callout_version: '<div class="bs-callout bs-callout--version"><div class="bs-callout__label">Current version:</div>'
+
+hr_faded: '<hr class="faded"/>'
+hr_shaded: '<hr class="shaded"/>'

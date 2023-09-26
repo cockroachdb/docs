@@ -1,0 +1,114 @@
+<div id="newsletter-footer-popout">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <div class="news-header">
+		{% if page.canonical contains "/advisories/"  %}
+		Sign up for our technical advisory email list. You will get an email when there's a new advisory
+		{% else %}
+		Keep up-to-date with CockroachDB software releases and usage best
+		practices
+		{% endif %}
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div id="hubspot-footer-popup-form">
+          {% if page.canonical contains "/advisories/"  %}
+          <form id="news-mktoForm_1085"></form>
+          <p class="js-ty_1085" style="display: none;">Thanks!</p>
+          <script>
+            whenAvailable("MktoForms2", function() {
+              const NewsMktoForms21085 = MktoForms2;
+              const Newsform_mktoForm_1085 = $('#news-mktoForm_1085'); 
+              NewsMktoForms21085.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1085, function(form_1085) {
+                form_1085.render(Newsform_mktoForm_1085);
+                form_1085.onSuccess(function(values, followUpUrl) {
+                  form_1085.getFormElem().hide();
+                  document.querySelector('.js-ty_1085').style.display = 'block';
+                  return false;
+                });
+                // Move button next to input
+                NewsMktoForms21085.whenReady(function () {
+                  $('#news-mktoForm_1085 .mktoButtonRow').insertAfter('#news-mktoForm_1085 #Email');
+                  $('#news-mktoForm_1085 .mktoButtonRow').css('display', 'flex');
+                });
+              });
+            });
+          </script>
+          {% else %}
+            <form id="news-mktoForm_1083"></form>
+            <p class="js-ty_1083" style="display: none;">Thanks!</p>
+            <script>
+              whenAvailable("MktoForms2", function() {
+                const NewsMktoForms21083 = MktoForms2;
+                const Newsform_mktoForm_1083 = $('#news-mktoForm_1083'); 
+                NewsMktoForms21083.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1083, function(form_1083){
+                  form_1083.render(Newsform_mktoForm_1083);
+                  form_1083.onSuccess(function(values, followUpUrl) {
+                    form_1083.getFormElem().hide();
+                    document.querySelector('.js-ty_1083').style.display = 'block';
+                    return false;
+                  }); 
+                  // Move button next to input
+                  NewsMktoForms21083.whenReady(function () {
+                    $('#news-mktoForm_1083 .mktoButtonRow').insertAfter('#news-mktoForm_1083 #Email');
+                    $('#news-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
+                  });
+                });
+              });
+            </script>
+          {% endif %}
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="newsletter-close">
+    <img
+      src="{{ 'images/close_icon.png' | relative_url }}"
+      alt="close icon"
+      style="max-width: 25px;"
+      data-proofer-ignore
+    />
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    //*footer*//
+    var $footer_popout = $("#newsletter-footer-popout"),
+      $footer_close = $("#newsletter-footer-popout .newsletter-close");
+
+    if (window.location.pathname.indexOf('/advisories/') > -1 ) {
+	  $footer_popout.addClass("animate");
+    } else {
+      $(window).scroll(function () {
+        var cookie = getCookie("popout");
+        if (!cookie && window.innerWidth >= 768) {
+          if (
+            $(window).scrollTop() + $(window).height() >=
+            $(document).height() * 0.75
+          ) {
+            $footer_popout.addClass("animate");
+            setCookie("popout", 1);
+          }
+        }
+      });
+    }
+
+    $footer_close.on("click", function () {
+      $footer_popout.removeClass("animate");
+    });
+
+    function setCookie(key, value) {
+      var expires = new Date();
+      expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000);
+      document.cookie = key + "=" + value + ";expires=" + expires.toUTCString();
+    }
+
+    function getCookie(key) {
+      var keyValue = document.cookie.match("(^|;) ?" + key + "=([^;]*)(;|$)");
+      return keyValue ? keyValue[2] : null;
+    }
+  });
+</script>

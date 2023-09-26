@@ -1,0 +1,96 @@
+.landing-page {
+
+  .landing-page__tutorial {
+    margin: 16px 0 10px;
+    width: 100%;
+  }
+
+  .landing-page__tutorial--tile {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    width: calc(33% - 9px);
+    border: none;
+    box-shadow: 1px 1px 10px $cl_gray_medium;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+
+    @include at-query($min, $screen-xsm) {
+      height: 75px;
+      width: calc(33% - 8.5px);
+    }
+
+    &.install {
+      .landing-page__tutorial--tile-label {
+        &:after {
+          content: 'Install';
+
+          @include at-query($min, $screen-sm) { content: 'Install CockroachDB'; }
+          @include at-query($min, $screen-md) { content: 'Install'; }
+          @include at-query($min, $screen-lg + 130px) { content: 'Install CockroachDB'; }
+        }
+      }
+    }
+
+    &.start-cluster {
+      .landing-page__tutorial--tile-label {
+        &:after {
+          content: 'Start cluster';
+
+          @include at-query($min, $screen-sm) { content: 'Start a cluster'; }
+          @include at-query($min, $screen-md) { content: 'Start cluster'; }
+          @include at-query($min, $screen-lg) { content: 'Start a cluster'; }
+        }
+      }
+    }
+
+    &.build-app {
+      .landing-page__tutorial--tile-label {
+        &:after { content: 'Build an app'; }
+      }
+    }
+
+    &:first-child { margin-left: 0; }
+    &:last-child { margin-right: 0; }
+    &:hover {
+      border-bottom: none;
+
+      .landing-page__tutorial--tile-label { color: $electric-purple; }
+    }
+  }
+
+  .landing-page__tutorial--tile-icon {
+    display: none;
+
+    @include at-query($min, $screen-xsm) {
+      display: initial;
+      margin-right: 10px;
+      margin-bottom: 2px;
+    }
+  }
+
+  .landing-page__tutorial--tile-label {
+    @include type-caption;
+    color: $cl_gray_body;
+    margin-top: 5px;
+
+    @include at-query($min, $screen-xsm) { @include paragraph-type; }
+  }
+
+  .landing-page__video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+  }
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

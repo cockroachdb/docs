@@ -1,0 +1,43 @@
+<button class="d-none d-md-block btn-close position-absolute"></button>
+<div class="row">
+{% for item in site.data.menus.resources %}
+<div class="col-md-4">
+    <div>
+        <div class="mb-4 mt-3 text-primary font-weight-medium font-size-16 lh-n">
+            {{ item.params.text | safeHTML }}
+        </div>
+        <div class="pb-45">
+            <a class="btn btn-primary rounded-pill px-4 py-2" href="https://www.cockroachlabs.com/cockroach-university">Sign up for free</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="col-md-4">
+    <p class="font-size-16 lh-n semibold my-3">Learn</p>
+    <ul class="list-unstyled p-0">
+    {% for item in site.data.menus.resources_learn %}
+        <li class="border-bottom">
+            <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
+                <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.98691 0.624521L9.97887 4.61648C10.2238 4.86145 10.2238 5.25862 9.97887 5.50358L5.98691 9.49554C5.74195 9.74051 5.34478 9.74051 5.09981 9.49554C4.85485 9.25057 4.85485 8.85341 5.09981 8.60844L8.02094 5.68731H0.789873C0.443439 5.68731 0.162598 5.40647 0.162598 5.06003C0.162598 4.7136 0.443439 4.43276 0.789873 4.43276H8.02094L5.09981 1.51162C4.85485 1.26666 4.85485 0.869487 5.09981 0.624521C5.34478 0.379554 5.74195 0.379554 5.98691 0.624521Z" fill="black"/>
+                    </svg>
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="col-md-4">
+    <p class="font-size-16 lh-n semibold my-3">Support</p>
+    <ul class="list-unstyled p-0">
+        {% for item in site.data.menus.resources_support %}
+            <li class="border-bottom">
+                <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
+                    <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.98691 0.624521L9.97887 4.61648C10.2238 4.86145 10.2238 5.25862 9.97887 5.50358L5.98691 9.49554C5.74195 9.74051 5.34478 9.74051 5.09981 9.49554C4.85485 9.25057 4.85485 8.85341 5.09981 8.60844L8.02094 5.68731H0.789873C0.443439 5.68731 0.162598 5.40647 0.162598 5.06003C0.162598 4.7136 0.443439 4.43276 0.789873 4.43276H8.02094L5.09981 1.51162C4.85485 1.26666 4.85485 0.869487 5.09981 0.624521C5.34478 0.379554 5.74195 0.379554 5.98691 0.624521Z" fill="black"/>
+                        </svg>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+</div>
+</div>
