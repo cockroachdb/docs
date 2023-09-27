@@ -29,7 +29,9 @@ Cockroach Labs recommends using the consistent cutover approach when using the l
 The information on this page assumes you have already reviewed the [migration overview]({% link {{ page.version.version }}/migration-overview.md %}).
 {{site.data.alerts.end}}
 
-When choosing a migration strategy, the fundamental question you should ask is: Do you want to fix problems related to the migration during the migration or afterward? The risks of migrating data are very similar, but the strategy you choose will determine when you will have to take the risk. Choosing the lift-and-shift strategy typically means fixing problems after the migration. Choosing live migration typically means fixing problems during the migration, before the cutover.
+When choosing a migration strategy, the fundamental consideration is: Do you want to fix problems related to the migration during the migration, or afterward? The risks of migrating data are very similar between migration strategies, but the strategy you choose will determine when you will have to take the risk. 
+
+Choosing the lift-and-shift strategy typically means fixing problems **after** the migration. Choosing live migration typically means fixing problems **during** the migration, before the cutover.
 
 On the spectrum of different data migration strategies, live migration has the following advantages and disadvantages. The terms "lower" and "higher" are not absolute, but relative to other approaches.
 
