@@ -116,7 +116,7 @@ See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) fo
 
 ## Step 6. Name the cluster
 
-The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). You cannot edit a cluster's name after it is created.
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
 Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on GCP. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster.
 

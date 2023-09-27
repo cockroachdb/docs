@@ -82,7 +82,7 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 ## Step 5. Name the cluster
 
-The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). You cannot edit a cluster's name after it is created.
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
 If you're creating a free cluster or you've already set up your billing information, click **Create cluster**. Your cluster will be created in a few seconds.
 
