@@ -56,6 +56,7 @@ Storage or sink      | Operation support
 [Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
 [Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
+[Azure Key Vault](take-and-restore-encrypted-backups.html#azure-key-vault-uri-format) | Encrypted backups
 [Confluent Schema Registry](create-changefeed.html#confluent-registry) | Changefeeds
 [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | Changefeeds
 [Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds

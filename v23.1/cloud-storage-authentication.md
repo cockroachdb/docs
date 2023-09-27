@@ -629,7 +629,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 
     ~~~
-    azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
+    azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
     ~~~
 
     You can authenticate to Azure Storage and Azure Key Vault with this URI format. 
@@ -642,7 +642,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     It is necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. 
 
     ~~~
-    azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
+    azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
 ## Azure Blob Storage implicit authentication
@@ -662,12 +662,16 @@ See Microsoft's [Azure Authentication](https://learn.microsoft.com/en-us/azure/d
 You must include the container name and Azure account name in your URI, as follows:
 
 ~~~
-azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}
+azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}
 ~~~
 
 When using role-based access control through an [Azure App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. See Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
 
 For details on using `implicit` authentication for an Azure encrypted backup, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+
+{{site.data.alerts.callout_info}}
+For backwards compatibility, the schemes `azure://` and `azure-storage://` are also accepted here.
+{{site.data.alerts.end}}
 
 </section>
 
