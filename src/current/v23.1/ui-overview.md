@@ -18,7 +18,7 @@ Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console
 
 The DB Console supports username/password login, as well single sign-on (SSO) ({{ site.data.products.dedicated }} and {{ site.data.products.core }} {{ site.data.products.enterprise }} clusters only).
 
-The DB Console sing-on page can also be used to provision authentication tokens for SQL client access.
+The DB Console login page can also be used to provision authentication tokens for SQL client access.
 
 Refer to:
 
