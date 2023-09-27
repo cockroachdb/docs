@@ -107,14 +107,13 @@ In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your 
 
 ### Expensive queries
 
-Expensive queries are the most common cause of unexpected RU consumption increases and a good place to begin investigating your consumption.
+Expensive queries, especially `FULL SCAN` operations, are the most common cause of unexpected RU consumption increases and a good place to begin investigating your consumption. To diagnose expensive queries:
 
-To diagnose expensive queries:
- 1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
- 1. Click on the title of the **Rows Processed** column to sort your queries by the number of rows processed.
-    
-      For most queries, total rows processed should be fewer than 50. Read queries are often more expensive than write queries.
-      
+1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
+1. Click on the title of the **Rows Processed** column to sort your queries by the number of rows processed. 
+ 
+    For most queries, total rows processed should be fewer than 50. Read queries are often more expensive than write queries.
+  
 1. Next, sort the queries by the **Bytes Read** column. Most queries should read fewer than 1000 bytes.
 
 If any queries are more expensive than expected, you can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) for an estimate of the RUs consumed. Efficient queries generally consume fewer RUs, so the guidelines for [Optimizing Query Performance](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview) can be applied here. You can also refer to [Cockroach Labs Blog - How to troubleshoot and optimize query performance in CockroachDB](https://www.cockroachlabs.com/blog/query-performance-optimization/) for further information.
@@ -139,14 +138,26 @@ To diagnose excessive connections, navigate to your cluster's [**Metrics** page]
 
 The {{ site.data.products.cloud }} Console does not currently provide direct observability of data egress, but you can observe the component of egress that comes from SQL Statements:
 
- 1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
+1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
 1. Sort the queries by the **Bytes Read** column. Most queries should read fewer than 1000 bytes.
 
 Excessive egress can be treated similarly to [expensive queries](#expensive-queries). Reducing the amount of data returned per query is often the best way to decrease egress data. You can also reduce the frequency of [excessive queries](#excessive-queries).
 
 ### Database UI tools
 
-Database management tools like [DBeaver](https://dbeaver.com/) consume RUs and may be a cause of excessive RU consumption.
+Database management tools like [DBeaver](https://dbeaver.com/) also consume RUs. They can cause excessive RU consumption by running expensive queries to populate views and periodically refreshing in the background if left running.
+
+To determine whether database UI tools are contributing to your RU usage, navigate to the **SQL Activity** page in the {{ site.data.products.cloud }} Console and search for queries similar to the following:
+
+~~~
+SELECT count(*) FROM crdb_internal.cluster_sessions
+
+SELECT avg((((statistics->'')->'')->'_')::INT8) AS meanrunlatency
+FROM crdb_internal.statement_statistics AS ciss
+WHERE ciss.aggregated_ts::DATE = current_date()
+~~~
+
+You might also see [multiple open connections](#excessive-number-of-connections) to your cluster that persist regardless of workload. This can indicate that multiple team members have a database UI tool running.
 
 ### Data migration
 
@@ -154,7 +165,7 @@ Initial data ingestion during a migration may consume a high number of RUs. Gene
 
 ### Changefeeds (CDC)
 
-The {{ site.data.products.cloud }} Console does not currently provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also for [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
+The {{ site.data.products.cloud }} Console does not currently provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
 
 ### General tips for reducing RU usage
 
