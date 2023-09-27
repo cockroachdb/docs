@@ -37,70 +37,6 @@ To understand these resources, you need to understand a bit about the CockroachD
 - 1 RU = 1 storage write request
 - 1 RU = 1 KiB write request payload (prorated)
 
-### Example Request Unit calculation
-
-Say you have a simple key-value pair table with a secondary index:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v));
-~~~
-
-Now you insert a row into the table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
-~~~
-
-The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
-
-1.5 SQL CPU milliseconds = 0.5 RU
-
-50 bytes network egress = 50/1024 = 0.05 RU
-
-6 storage write batches = 6 RU
-
-6 storage write requests = 6 RU
-
-6 KiB write payloads = 6 RU
-
-**Total cost** = 18.55 RU
-
-Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
-
-You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
-~~~
-
-~~~
-               info
------------------------------------
-  planning time: 13ms
-  execution time: 6ms
-  distribution: local
-  vectorized: true
-  maximum memory usage: 10 KiB
-  network usage: 0 B (0 messages)
-  estimated RUs consumed: 15
-
-  • insert fast path
-    nodes: n1
-    actual row count: 1
-    into: kv(k, v)
-    auto commit
-    size: 2 columns, 1 row
-(14 rows)
-
-
-Time: 71ms total (execution 20ms / network 50ms)
-~~~
-
-This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
-
 ## Diagnose and optimize your resource consumption
 
 In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages. You can sort queries by the time they took to process, the number of rows processed, or the number of bytes read to see which queries are using the most resources. If you have queries that return more data than needed or have long runtimes, those are good candidates for optimization. 
@@ -178,6 +114,70 @@ The following recommendations can help reduce the RU cost of a query by reducing
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
 - Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
+
+### Example Request Unit calculation
+
+Say you have a simple key-value pair table with a secondary index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v));
+~~~
+
+Now you insert a row into the table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
+~~~
+
+The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
+
+1.5 SQL CPU milliseconds = 0.5 RU
+
+50 bytes network egress = 50/1024 = 0.05 RU
+
+6 storage write batches = 6 RU
+
+6 storage write requests = 6 RU
+
+6 KiB write payloads = 6 RU
+
+**Total cost** = 18.55 RU
+
+Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
+
+You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
+~~~
+
+~~~
+               info
+-----------------------------------
+  planning time: 13ms
+  execution time: 6ms
+  distribution: local
+  vectorized: true
+  maximum memory usage: 10 KiB
+  network usage: 0 B (0 messages)
+  estimated RUs consumed: 15
+
+  • insert fast path
+    nodes: n1
+    actual row count: 1
+    into: kv(k, v)
+    auto commit
+    size: 2 columns, 1 row
+(14 rows)
+
+
+Time: 71ms total (execution 20ms / network 50ms)
+~~~
+
+This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
 
 ## Learn more
 
