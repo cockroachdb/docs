@@ -29,9 +29,9 @@ Cockroach Labs recommends using the consistent cutover approach when using the l
 The information on this page assumes you have already reviewed the [migration overview]({% link {{ page.version.version }}/migration-overview.md %}).
 {{site.data.alerts.end}}
 
-When choosing a migration strategy, the fundamental consideration is: Do you want to fix problems related to the migration during the migration, or afterward? The risks of migrating data are very similar between migration strategies, but the strategy you choose will determine when you will have to take the risk. 
+When choosing a migration strategy, the fundamental consideration is: Do you want to fix problems related to the migration during the migration, or afterward? The risks of migrating data are very similar between migration strategies, but the strategy you choose will determine when you will have to take the risk.
 
-Choosing the lift-and-shift strategy typically means fixing problems **after** the migration. Choosing live migration typically means fixing problems **during** the migration, before the cutover.
+Choosing the lift-and-shift strategy typically means fixing application and data consistency problems **after** the migration. Choosing live migration typically means fixing application problems **during** the migration, before the cutover, and potentially resolving data inconsistencies after the cutover.
 
 On the spectrum of different data migration strategies, live migration has the following advantages and disadvantages. The terms "lower" and "higher" are not absolute, but relative to other approaches.
 
@@ -40,7 +40,7 @@ Advantages:
 - There's greater service availability with live migrations. You can failback to the source database at any point in the migration process, or if there are significant errors after cutover.
 - The impact of a migration on users is minimized by having very little downtime.
 - There's less internal coordination cost. For example, if other teams use the database, they can update their systems during the initial phase of the migration with no extended outage or maintenance window.
-- You can test the viability and scalability of your architecture on live production data. For example, you can tune the performance of CockroachDB before the cutover without affecting the performance of the production application.
+- If you use dual-writes, you can test the viability and scalability of your architecture on live production data. For example, you can tune the performance of CockroachDB before the cutover without affecting the performance of the production application.
 
 Disadvantages:
 
