@@ -83,7 +83,9 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
-    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
+    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. IOPS for Azure disks are determined by the disk size, regardless of the VM configuration. To learn more, refer to [Premium SSD size](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd-size) in the Azure documentation.
+
+    When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
