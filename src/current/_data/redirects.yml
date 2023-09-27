@@ -1,41 +1,41 @@
 ############################################################
 # How to use this file:
-# 
+#
 # Add a new block like this in alphabetical order based on its category:
-# 
-# 
+#
+#
 # Here’s the sample syntax of the file:
-# 
+#
 # - destination: new-file-name-with-md-extension.md#optional-anchor
-#   sources: 
+#   sources:
 #     - old-file-name-with-md-extension.md
 #     - other-old-file-name.md
 #   temporary: true|false # (optional, default = false
 #   force: true|false # optional, default = false
 #   versions: ['v22.1', 'v22.2'] # optional
 #
-# - destination is the final page where each source should land. 
+# - destination is the final page where each source should land.
 # Each destination must have the .md file extension.
-# - sources is an array of pages you wish to route to the 
-# destination page. Even if you only have one source, it must use 
-# YML’s array syntax (full spec here: https://yaml.org/). 
+# - sources is an array of pages you wish to route to the
+# destination page. Even if you only have one source, it must use
+# YML’s array syntax (full spec here: https://yaml.org/).
 # Each source must have the .md extension.
-# - temporary is an optional boolean field that dictates whether 
+# - temporary is an optional boolean field that dictates whether
 # you return a 301 (false, default) or a 302 (true).
-# - force is an optional boolean field that dictates whether a 
-# force redirect should occur. This is equivalent to adding an 
+# - force is an optional boolean field that dictates whether a
+# force redirect should occur. This is equivalent to adding an
 # exclamation point (!) to the end of the status code. docs:
 # https://docs.netlify.com/routing/redirects/redirect-options/#force-redirects
 # - versions is an optional array of strings containing the
-# versions to which a redirect should apply. If there is an item 
-# in the list of versions that matches a major version in 
-# versions.csv, Jekyll will automatically add a redirect 
+# versions to which a redirect should apply. If there is an item
+# in the list of versions that matches a major version in
+# versions.csv, Jekyll will automatically add a redirect
 # for the dev and stable aliases for that page. versions.csv:
 # https://github.com/cockroachdb/docs/blob/main/src/current/_data/versions.csv
-# 
-# Each redirect added in redirects.yml generates a redirect 
-# for the page without the .md extension and a redirect for 
-# the page with the .md extension. This helps with making 
+#
+# Each redirect added in redirects.yml generates a redirect
+# for the page without the .md extension and a redirect for
+# the page with the .md extension. This helps with making
 # sure inlinks to our docs don’t 404, which hurts our SEO.
 #
 # If using versions, redirects will generate as follows:
@@ -48,8 +48,8 @@
 # <site base url>/dev/<source without .md> <site base url>/dev/<destination> <status_code>
 # <site base url>/stable/<source with .md> <site base url>/stable/<destination> <status_code>
 # <site base url>/stable/<source without .md> <site base url>/stable/<destination> <status_code>
-# 
-# Our <site base url> is /docs. 
+#
+# Our <site base url> is /docs.
 #
 # If not using versions, this is how redirects will generate:
 #
@@ -57,19 +57,19 @@
 #  <site base url>/<source without .md> <site base url>/<destination> <status_code>
 #
 # No dev or stable redirects are added automatically if not using
-# the versions field. Note that you must manually specify the full 
+# the versions field. Note that you must manually specify the full
 # path after <site base url>.
 #
 # Using :version as a placeholder includes any string of text between
 #  the forward slashes, including dev, stable, v21.2, and gobbledygook.
 # You can also name your placeholder anything you like, including
-# :gobbledygook. 
+# :gobbledygook.
 #
 # versions, sources, and destination all support the use of
 # placeholders. Docs here:
 # https://docs.netlify.com/routing/redirects/redirect-options/#placeholders
 #
-# sources and destination support splats (* in the source, 
+# sources and destination support splats (* in the source,
 # :splat in the destination). Docs here:
 # https://docs.netlify.com/routing/redirects/redirect-options/#splats
 ############################################################
@@ -80,7 +80,7 @@
 # Pages undergoing maintenance
 
 - destination: migration-overview.md
-  sources: 
+  sources:
     - migrate-from-oracle.md
   temporary: true
   versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
@@ -108,7 +108,7 @@
   versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: backup-and-restore.md
-  sources: 
+  sources:
     - backup-data.md
     - restore-data.md
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1']
@@ -182,7 +182,7 @@
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroachdb-feature-availability.md
-  sources: 
+  sources:
     - experimental-features.md
     - features-in-preview.md
   versions: ['v22.1', 'v22.2', 'v23.1']
@@ -208,10 +208,16 @@
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: demo-replication-and-rebalancing.md
-  sources: 
+  sources:
   - demo-automatic-rebalancing.md
   - demo-data-replication.md
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+
+- destination: v23.2/disaster-recovery-planning.md
+  sources: ['v23.2/disaster-recovery.md']
+
+- destination: dev/disaster-recovery-planning.md
+  sources: ['dev/disaster-recovery.md']
 
 - destination: example-apps.md
   sources: ['build-an-app-with-cockroachdb.md']
@@ -242,7 +248,7 @@
   versions: ['v21.2']
 
 - destination: plan-your-cluster-serverless.md
-  sources: 
+  sources:
     - 'planning-your-serverless-cluster.md'
     - 'learn-about-pricing.md'
     - 'learn-about-request-units.md'
@@ -253,7 +259,7 @@
   versions: ['v21.1']
 
 - destination: managing-access.md
-  sources: 
+  sources:
     - console-access-management.md
     - user-authorization.md
   versions: ['cockroachcloud']
@@ -334,14 +340,14 @@
   versions: ['cockroachcloud']
 
 - destination: set-vars.md
-  sources: 
+  sources:
     - set-application-name.md
     - set-database.md
     - set-time-zone.md
   versions: [':version']
 
 - destination: show-create.md
-  sources: 
+  sources:
     - show-create-sequence.md
     - show-create-table.md
     - show-create-view.md
@@ -360,14 +366,14 @@
   versions: ['v21.1']
 
 - destination: show-vars.md
-  sources: 
+  sources:
     - show-all.md
     - show-time-zone.md
     - show-transaction.md
   versions: [':version']
 
 - destination: stable/example-apps.md#python
-  sources: 
+  sources:
     - v19.2/build-a-python-app-with-cockroachdb-pony.md
     - v20.1/build-a-python-app-with-cockroachdb-pony.md
 
@@ -442,7 +448,7 @@
   versions: ['v20.2', 'v21.1']
 
 - destination: ui-overview.md
-  sources: 
+  sources:
     - admin-ui-access-and-navigate.md
     - admin-ui-overview.md
     - explore-the-admin-ui.md
@@ -764,13 +770,13 @@
   sources: ['configure-replication-zones.md']
 
 - destination: stable/frequently-asked-questions.md
-  sources: 
+  sources:
     - automated-scaling-and-repair.md
     - frequently-asked-questions.md
     - sql.md
 
 - destination: stable/kubernetes-overview.md
-  sources: 
+  sources:
     - v21.1/orchestrate-cockroachdb-with-docker-swarm.md
     - v21.2/orchestrate-cockroachdb-with-docker-swarm.md
     - v22.1/orchestrate-cockroachdb-with-docker-swarm.md
@@ -797,7 +803,7 @@
   versions: ['v20.1', 'v20.2']
 
 - destination: tutorials/sql-playground.md
-  sources: 
+  sources:
     - :version/sql-playground.md
     - sql-playground.md
 

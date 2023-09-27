@@ -84,11 +84,12 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
+- [Cluster audit log export]({% link cockroachcloud/export-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
 - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can also check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
+You can also check the status of these features on the **PCI ready** page of the CockroachDB {{ site.data.products.cloud }} Console.
 
 </section>
