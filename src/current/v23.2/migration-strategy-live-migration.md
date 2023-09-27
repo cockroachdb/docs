@@ -7,21 +7,21 @@ docs_area: migrate
 
 This topic discusses the *live migration* strategy for [migrating your data to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}). See [Develop a migration plan]({% link {{ page.version.version }}/migration-overview.md %}#develop-a-migration-plan) for detailed information on deciding which migration strategy will work best for your application.
 
-During a live migration you maintain two production databases (the *source* and *target* database) for a period of time, and replicate data between them until a final cutover to the target database. The purpose of a live migration is to minimize downtime during this final cutover period and therefore, maintain service continuity.
+During a live migration you maintain two production databases (the *source* and *target* database) for a period of time, and either replicate using another tool or dual-write data between them until a final cutover to the target database. The purpose of a live migration is to minimize downtime during this final cutover period and therefore, maintain service continuity.
 
-A live migration consists of three distinct phases:
+A live migration consists of the following distinct phases:
 
 - The initial phase where the source database is the *source of truth*: the database used by the application to read and write data, and the source for replicating the data to CockroachDB, the target database.
 - The cutover phase where CockroachDB is made the source of truth and the source database is the secondary database used for failover.
-- The final phase where the source database is removed as a replication target and failover database.
+- The final phase where the source database is removed. The source database is no longer available as a replication target, or a failover database.
 
 There are many possible approaches to performing a live migration. In this topic, we describe two example approaches that have been successful with CockroachDB: consistent cutover, and immediate cutover.
 
-The consistent cutover approach uses only one database that is writable and consistently readable at the application level, with the data replicated on the back end by another service. When using the consistent cutover approach, one database is used by the application at any point in time. During the cutover phase, any current application transactions that use the source database are allowed to complete, and the replication service is allowed to catch up. Then new application sessions are allowed to start using the target database, and the replication service replicates data from the target database to the source database. If any problems arise during the cutover phase and you have to revert back to the initial phase, the same process repeats, moving from the target database back to the source database.
+The consistent cutover approach uses only one database that is writable and consistently readable at the application level, with the data replicated on the back end by another service. When using the consistent cutover approach, one database is used by the application at any point in time. During the cutover phase, any current application transactions that use the source database are allowed to complete, and the replication service is allowed to catch up. After this pause, new application sessions are allowed to start using the target database, and the replication service replicates data from the target database to the source database. If any problems arise during the cutover phase and you have to revert back to the initial phase, the same process repeats, moving from the target database back to the source database.
 
-With the immediate cutover approach, the application performs dual writes to the source and target database during both the initial and cutover phases. This approach can lead to incorrect or inconsistent data between the two databases if there are issues when reading or writing data to one or both of the underlying databases, and may require work after cutover to correct any unacceptable data inconsistencies.
+With the immediate cutover approach, the application begins writing to the target database with no pause. This approach can lead to incorrect or inconsistent data between the two databases if there were any active application transactions at the time of the cutover, and may require work after cutover to correct any unacceptable data inconsistencies. Cockroach Labs does not recommend the immediate cutover approach with the live migration strategy.
 
-Cockroach Labs recommends using the consistent cutover approach when using the live migration strategy. Your data remains more consistent and downtime is minimized. However, if zero downtime is truly required, the immediate cutover approach may be used at the risk of some data inconsistencies. Third-party migration tools like AWS DMS, Qlik, and Striim perform the initial migration into CockroachDB, and replicate ongoing changes. CockroachDB changefeeds allow for replication to the source database after cutover, simplifying the service architecture.
+Cockroach Labs recommends using the consistent cutover approach when using the live migration strategy. Your data remains more consistent and downtime is minimized. However, if zero downtime is truly required, the immediate cutover approach may be used at the risk of some data inconsistencies. Third-party migration tools like [AWS DMS]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik]({% link {{ page.version.version }}/qlik.md %}), and [Striim]({% link {{ page.version.version }}/striim.md %}) perform the initial migration into CockroachDB, and replicate ongoing changes. CockroachDB [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) allow for replication to the source database after cutover, simplifying the service architecture.
 
 ## Advantages and disadvantages of the live migration strategy
 
@@ -74,3 +74,20 @@ The initial data migration and synchronization can be handled by tools such as:
 Many other database systems have built-in change data capture (CDC) services that could be used to stream data to CockroachDB while the source database is the source of truth.
 
 After cutover when CockroachDB is the source of truth, [change data capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}) allows you to stream data to the source database.
+
+## See also
+
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Migrate with AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})
+- [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
+- [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
+- [Migrate and Replicate Data with Striim]({% link {{ page.version.version }}/striim.md %})
+- [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
+- [Back Up and Restore]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Export data with Changefeeds]({% link {{ page.version.version }}/export-data-with-changefeeds.md %})
+- [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
+- [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %})
+- [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
