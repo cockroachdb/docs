@@ -486,7 +486,7 @@
                         ]
                       },
                       {
-                        "title": "Network Latency Page",
+                        "title": "Network Page",
                         "urls": [
                           "/${VERSION}/ui-network-latency-page.html"
                         ]
@@ -671,6 +671,12 @@
                 "title": "Logging Use Cases",
                 "urls": [
                   "/${VERSION}/logging-use-cases.html"
+                ]
+              },
+              {
+                "title": "Log SQL Statistics to Datadog",
+                "urls": [
+                  "/${VERSION}/log-sql-statistics-to-datadog.html"
                 ]
               }
             ]
