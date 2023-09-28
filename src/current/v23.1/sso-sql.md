@@ -7,13 +7,17 @@ docs_area: manage
 
 CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-Cluster Single sign-On (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of Single sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
+Cluster single sign-on (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), and the choice of a variety of cloud-based or customer-managed identity providers (IdPs).
 
-{{ site.data.products.dedicated }} clusters can provision their users with JWTs via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT which can be copied out of the DB Console UI and used in a SQL connection string to authenticate to the cluster. This applies for both {{ site.data.products.core }} {{ site.data.products.enterprise }} and {{ site.data.products.dedicated }} cluster, but is not possible with {{ site.data.products.serverless }} clusters, as they do not have ConsoleDB access. It is possible to use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql) with {{ site.data.products.serverless }} clusters.
+{{ site.data.products.dedicated }} clusters can provision their users with JWTs via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT that a user can copy out of the DB Console UI and use in a SQL connection string to authenticate to the cluster.
+
+{{site.data.alerts.callout_info}}
+Cluster single sign-on for the DB Console is supported on {{ site.data.products.core }} {{ site.data.products.enterprise }} and {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters do not support cluster single sign-on, because they do not have access to the DB Console. However, {{ site.data.products.serverless }} clusters can use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql).
+{{site.data.alerts.end}}
 
 **Prerequisites**
 
-- You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Refer to: [Single Sign-on (SSO) for DB Console](sso-db-console.html)
+- You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console](sso-db-console.html) guide to set this up.
 
 - SQL users/credentials:
 
@@ -23,7 +27,7 @@ Cluster Single sign-On (SSO) enables users to access the SQL interface of a Cock
 
 ## Authenticate to your cluster
 
-Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
+Once DB Console SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
@@ -31,7 +35,7 @@ This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach
 
 1. Obtain a token.
 
-    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button
+    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button.
 
 1. Use the token in place of a password in your database connection string.
 
@@ -61,7 +65,7 @@ You must have the ability to update your cluster settings, which can be achieved
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 |`server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
-|`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration)
+|`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
 | `server.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
 | `server.sql_port` | This display value informs users the port for their SQL connections. Default: `26257`.
 
@@ -223,7 +227,7 @@ SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.use_to
 
 ## How CockroachDB determines the SQL username from a JWT
 
-1. `server.jwt_authentication.claim` determines which field to use to identify the external user, i.e. which must match a SQL user via the identity map.
+1. `server.jwt_authentication.claim` determines which field to use to identify the external user. This must match a SQL user via the identity map.
 1. `server.identity_map.configuration` maps that claim (along with the token’s issuer) to a SQL username.
 
 ## Identity Map configuration
