@@ -38,6 +38,8 @@ You must have the ability to update your cluster settings, which can be achieved
 
 ### Cluster Settings
 
+You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %} in the following table to enable JWT authentication to your cluster. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
+
 | Cluster Setting | Description 
 |-----------------|------ 
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
