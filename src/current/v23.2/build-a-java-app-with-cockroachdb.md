@@ -225,7 +225,7 @@ Where:
 URL encode the `options` parameter to make sure the JDBC connection URL is parsed correctly. For example, the following URL encoded `options` parameter:
 
 ~~~ shell
-export JDBC_DATABASE_URL=jdbc:postgres://localhost:26257/movr?options=-c%20unbounded_parallel_scans%3Don
+export JDBC_DATABASE_URL=jdbc:postgres://localhost:26257/movr?options=-c%20sql_safe_updates%3Dtrue
 ~~~
 
 is equivalent to:
@@ -247,6 +247,13 @@ Where:
 
 - `{session variable name}` is the name of the session variable.
 - `{session variable value}` is the value of the session variable.
+
+To add more than one session variable, append additional `-c` settings:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
+~~~
 
 ### Generate PKCS8 keys for user authentication
 
