@@ -156,15 +156,15 @@ release_info:
     crdb_branch_name: release-23.1
     docker_image: cockroachdb/cockroach
     name: v23.1.10
-    start_time: 2023-09-13 10:22:02.018713 +0000 UTC
+    start_time: 2023-09-18 11:34:06.638434 +0000 UTC
     version: v23.1.10
   v23.2:
-    build_time: 2023-08-28 10:38:11.238383 (go1.19)
+    build_time: 2023-09-23 00:00:00 (go1.20)
     crdb_branch_name: master
     docker_image: cockroachdb/cockroach-unstable
-    name: v23.2
-    start_time: 2023-08-28 10:38:11.238416 +0000 UTC
-    version: v23.2
+    name: v23.2.0-alpha1
+    start_time: 2023-09-14 15:11:55.322342 +0000 UTC
+    version: v23.2.0-alpha1
 sass:
   quiet_deps: 'true'
   sass_dir: css

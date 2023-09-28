@@ -68,8 +68,6 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
     This will only be available if you haven't already created a free CockroachDB {{ site.data.products.serverless }} cluster or set up billing information.
     {{site.data.alerts.end}}
 
-1. Click **Create cluster**.
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="paid">
@@ -80,9 +78,19 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
     - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
     - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
 
-1. Click **Next: Payment**.
+</section>
 
-1. Verify your cluster configuration and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+## Step 5. Name the cluster
+
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
+
+If you're creating a free cluster or you've already set up your billing information, click **Create cluster**. Your cluster will be created in a few seconds.
+
+If you still need to set up billing information, click **Next: Payment**.
+
+## Step 6. Enter billing details
+
+1. On the **Summary** page, verify your cluster configuration and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
@@ -91,8 +99,6 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
 
 1. Click **Create cluster**.
-
-</section>
 
 Your cluster will be created in a few seconds.
 

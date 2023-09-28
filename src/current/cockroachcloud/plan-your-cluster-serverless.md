@@ -8,7 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
-This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.serverless }}.
+This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.serverless }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Serverless Resource Usage]({% link cockroachcloud/serverless-resource-usage.md %}).
 
 ## Request Units
 
@@ -42,7 +42,7 @@ Your cluster's [resource limits](https://www.cockroachlabs.com/docs/{{site.curre
 
   {% include cockroachcloud/serverless-usage.md %}
 
-Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Optimize Your CockroachDB {{ site.data.products.serverless }} Workload]({% link cockroachcloud/optimize-serverless-workload.md %}).
+Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your CockroachDB {{ site.data.products.serverless }} Resource Usage]({% link cockroachcloud/serverless-resource-usage.md %}).
 
 Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
