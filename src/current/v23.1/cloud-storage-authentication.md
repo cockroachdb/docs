@@ -786,7 +786,7 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     ~~~
 
 {{site.data.alerts.callout_info}}
-For backwards compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
+For backward compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
 {{site.data.alerts.end}}
 
 </section>

@@ -660,7 +660,7 @@ BACKUP DATABASE <database> INTO 'azure-blob://{container name}/{path}?AZURE_ACCO
 ~~~
 
 {{site.data.alerts.callout_info}}
-For backwards compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
+For backward compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
 {{site.data.alerts.end}}
 
 </section>
