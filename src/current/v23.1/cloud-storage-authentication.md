@@ -686,7 +686,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 
     ~~~
-    azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
+    azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
     ~~~
 
     You can authenticate to Azure Storage and Azure Key Vault with this URI format.
@@ -699,7 +699,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     It is necessary to [url encode](https://wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters.
 
     ~~~
-    azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
+    azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
 ## Azure Blob Storage implicit authentication
@@ -784,6 +784,10 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     ~~~sql
     BACKUP DATABASE {database} INTO 'azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
+
+{{site.data.alerts.callout_info}}
+For backwards compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
+{{site.data.alerts.end}}
 
 </section>
 

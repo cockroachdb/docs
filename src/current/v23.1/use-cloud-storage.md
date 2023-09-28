@@ -64,7 +64,7 @@ Example URLs for [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`
 Location     | Example
 -------------+----------------------------------------------------------------------------------
 Amazon S3 | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
-Azure Blob Storage | `azure://acme-co/employees?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
+Azure Blob Storage | `azure-blob://acme-co/employees?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
 Google Cloud Storage | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local | `nodelocal://1/path/employees`
 
@@ -75,7 +75,7 @@ Example URLs for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) giv
 Location     | Example
 -------------+----------------------------------------------------------------------------------
 Amazon S3 | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
-Azure Blob Storage | `azure://acme-co/employees.sql?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
+Azure Blob Storage | `azure-blob://acme-co/employees.sql?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
 Google Cloud Storage | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`
 HTTP | `http://localhost:8080/employees.sql`
 NFS/Local | `nodelocal://1/path/employees`

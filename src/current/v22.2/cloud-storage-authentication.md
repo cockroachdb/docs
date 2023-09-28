@@ -656,8 +656,12 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD';
+BACKUP DATABASE <database> INTO 'azure-blob://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD';
 ~~~
+
+{{site.data.alerts.callout_info}}
+For backwards compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
+{{site.data.alerts.end}}
 
 </section>
 
