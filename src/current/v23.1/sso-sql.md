@@ -15,6 +15,11 @@ Cluster single sign-on (SSO) enables users to access the SQL interface of a Cock
 Cluster single sign-on for the DB Console is supported on {{ site.data.products.core }} {{ site.data.products.enterprise }} and {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters do not support cluster single sign-on, because they do not have access to the DB Console. However, {{ site.data.products.serverless }} clusters can use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql).
 {{site.data.alerts.end}}
 
+The page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
+
+- [Configure a cluster for cluster single sign-on using JWTs](#configure-your-cluster-for-sso)
+- [Authenticate to your cluster](#authenticate-to-your-cluster)
+
 **Prerequisites**
 
 - You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console](sso-db-console.html) guide to set this up.
@@ -24,29 +29,6 @@ Cluster single sign-on for the DB Console is supported on {{ site.data.products.
     - You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
 .
     - A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-
-## Authenticate to your cluster
-
-Once DB Console SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
-
-{{site.data.alerts.callout_success}}
-This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
-{{site.data.alerts.end}}
-
-1. Obtain a token.
-
-    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button.
-
-1. Use the token in place of a password in your database connection string.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
-    ~~~
-
-    ~~~txt
-    Welcome to the cockroach SQL interface...
-    ~~~
 
 ## Configure your cluster for SSO
 
@@ -79,7 +61,7 @@ In order for this feature to work, [Single Sign-on (SSO) for DB Console](sso-db-
 You can update your cluster settings with the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) SQL statement.
 
 {{site.data.alerts.callout_success}}
-You can also view all of your cluster settings in the DB Console...
+You can also view all of your cluster settings in the DB Console.
 {{site.data.alerts.end}}
 
 1. `enable` JWT SQL authentication to your cluster.
@@ -255,6 +237,29 @@ Examples:
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
     Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
+
+## Authenticate to your cluster
+
+Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
+
+{{site.data.alerts.callout_success}}
+This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
+{{site.data.alerts.end}}
+
+1. Obtain a token.
+
+    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button
+
+1. Use the token in place of a password in your database connection string.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
+    ~~~
+
+    ~~~txt
+    Welcome to the cockroach SQL interface...
+    ~~~
 
 ## What's Next?
 
