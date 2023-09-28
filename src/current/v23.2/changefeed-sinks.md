@@ -192,8 +192,6 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
-
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
 A Pub/Sub sink URI follows this example:
@@ -384,8 +382,6 @@ The following shows the default JSON messages for a changefeed emitting to a clo
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## Webhook sink
-
-{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
