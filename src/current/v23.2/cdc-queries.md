@@ -190,7 +190,7 @@ If you do not need to select specific columns in a table or filter rows from a c
 
 ### Reference TTL in a CDC query
 
-In CockroachDB, table row deletes occur as a result of regular SQL transactions or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits delete event messages, you may need to distinguish between these two types of deletion. For example, you may want to only emit messages for row-level TTL deletes from your changefeed.
+In CockroachDB, table row deletes occur as a result of regular SQL transactions or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits delete event messages, you may need to distinguish between these two types of deletion. For example, only emitting messages for row-level TTL deletes from your changefeed.
 
 If you have TTL logic defined with [`ttl_expiration_expression` or `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#syntax-overview), you can leverage CDC queries to determine whether or not a given row was expired at the time of the changefeed event, including a delete event.
 
@@ -223,9 +223,9 @@ WHERE NOT (event_op() = 'delete'
 AND (cdc_prev).crdb_internal_expiration < statement_timestamp());
 ~~~
 
-In some cases, you may have custom expiration logic on rows in a table. Custom TTL expressions and CDC queries evaluate in different ways.
+In some cases, you may have custom expiration logic on rows in a table. Custom TTL expressions and CDC queries evaluate in different ways:
 
-- Custom TTL expressions evaluate to a timestamp after which the row expires. For example, if you want to configure a table so that some rows never expire, your expression needs to evaluate to `'infinity'` for those rows.
+- Custom TTL expressions evaluate to a timestamp after which the row expires.
 - CDC queries filter using `WHERE` clauses, which are booleans.
 
 To preserve your custom TTL expression in a CDC query, you can convert the TTL expression to a boolean by wrapping it in a parenthesis and appending `< statement_timestamp()`.
