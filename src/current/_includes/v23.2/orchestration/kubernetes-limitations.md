@@ -6,6 +6,7 @@ To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is req
 
 The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}).
 
+{% unless page.name == "orchestrate-cockroachdb-with-kubernetes-multi-cluster.md" %}
 #### Helm version
 
 The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an incompatible Helm version, an error like the following occurs:
@@ -19,6 +20,7 @@ The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earli
 The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
 
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
+{% endunless %}
 
 #### Network
 

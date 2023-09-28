@@ -940,3 +940,7 @@
 - destination: movr-flask-use-case.md
   sources: ['multi-region-use-case.md']
   versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  
+- destination: serverless-resource-usage.md
+  sources: ['optimize-serverless-workload.md']
+  versions: ['cockroachcloud']

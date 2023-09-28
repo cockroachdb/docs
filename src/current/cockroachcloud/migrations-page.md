@@ -225,7 +225,6 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
 
 - To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
-
 - If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
 
 Statements are displayed as follows:
@@ -249,6 +248,17 @@ Some statements with compatibility issues are automatically removed during conve
 </ul>
 
 To edit a statement, click the **Edit** button or the statement itself and enter your changes. Your changes are saved when you click outside the statement, or when you click the **Save** button. Click **Cancel** to discard your changes.
+
+To edit multiple statements, click **Find & Replace** above the list.
+
+- Enter a search term. Click **Prev** and **Next** to display each matching result.
+- Click **>** to expand the menu. Enter a replace term and click **Replace**, **Replace & Find Next**, or **Replace All** to replace the matching results.
+
+    This will update the corresponding statements. **You cannot undo the replace operation.**
+
+    {{site.data.alerts.callout_info}}
+    Replace operations are not currently supported for regex matches.
+    {{site.data.alerts.end}}
 
 To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
 
@@ -279,7 +289,7 @@ To export the current schema, click **Download File** at the top of the [**State
 To update the schema: 
 
 - Apply bulk actions in the [**Summary Report**](#summary-report). 
-- Edit, add, or remove statements in the [**Statements** list](#statements-list). Click **Replace All** above the list to find and replace text across all statements.
+- Edit, add, or remove statements in the [**Statements** list](#statements-list).
 
 |                   Category                   |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |   Bulk Actions   | Required for schema migration? |
 |----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------------------|
