@@ -58,10 +58,6 @@ CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the follow
 
 The following sections provide more details about CockroachDB {{ site.data.products.dedicated }} on Azure.
 
-### Is CockroachDB {{ site.data.products.dedicated }} on Azure generally available?
-
-CockroachDB {{ site.data.products.dedicated }} on Azure is [generally available](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases), and is subject to the [CockroachDB {{ site.data.products.cloud }} Service Level Agreement (SLA)](https://cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/). Azure clusters are included in premium support agreements.
-
 ### Are multi-region clusters supported?
 
 Yes.
@@ -81,10 +77,6 @@ Refer to [Azure Regions]({% link cockroachcloud/regions.md %}?filters=dedicated#
 ### Can we use {{ site.data.products.db }} credits to pay for clusters on Azure?
 
 Yes, existing CockroachDB {{ site.data.products.cloud }} customers can pay for the usage of CockroachDB {{ site.data.products.dedicated }} clusters on Azure with their available credits. To add additional credits to your CockroachDB {{ site.data.products.cloud }} organization, contact your Cockroach Labs account team.
-
-### Does the CockroachDB {{ site.data.products.cloud }} technical SLA cover clusters on Azure?
-
-Yes. CockroachDB {{ site.data.products.dedicated }} clusters on Azure are subject to the [CockroachDB {{ site.data.products.cloud }} technical SLA](https://cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/).
 
 ### What backup and restore options are available for clusters on Azure?
 
