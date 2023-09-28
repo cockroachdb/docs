@@ -246,15 +246,15 @@ Examples:
 
 - `https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1`
 
-    Maps every cockroachlabs email to a SQL user with the same username (i.e. the part of the email address to the left of the `@`), for example `docs@cockroachlabs.com` becomes `docs`
+    Maps every `cockroachlabs` email to a SQL user with the same username. That is, the part of the email address to the left of the `@`). For example, `docs@cockroachlabs.com` becomes `docs`.
 
 - `https://accounts.google.com 1232316645658094244789 roach`
 
-    Maps a single external identity with the hard-coded ID to the SQL user `roach`  
+    Maps a single external identity with the hard-coded ID to the SQL user `roach`.  
 
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
-    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`, e.g., `gcp_1234567` for a service account with ID `1234567`.
+    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
 
 ## What's Next?
 
