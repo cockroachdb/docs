@@ -89,7 +89,7 @@ Field | Description
 When you run `cockroach start`, some helpful details are printed to the standard output:
 
 ~~~ shell
-CockroachDB node starting at {{page.release_info.start_time}}
+CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
 build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 admin:      http://ROACHs-MBP:8080
 sql:        postgresql://root@ROACHs-MBP:26257?sslmode=disable

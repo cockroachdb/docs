@@ -222,7 +222,7 @@ $ cockroach start --insecure \
 ~~~
 
 ~~~
-CockroachDB node starting at {{page.release_info.start_time}}
+CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
 build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 admin:      http://localhost:8081
 sql:        postgresql://root@localhost:26258?sslmode=disable
@@ -288,7 +288,7 @@ $ cockroach start --insecure \
 ~~~
 
 ~~~
-CockroachDB node starting at {{page.release_info.start_time}}
+CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
 build:      CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 admin:      http://localhost:8083
 sql:        postgresql://root@localhost:26260?sslmode=disable

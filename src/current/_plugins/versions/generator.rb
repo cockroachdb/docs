@@ -6,10 +6,11 @@ module JekyllVersions
     priority :lowest
 
     def initialize(config)
-      @config = Config.new(config)
+      @jekyll_config = config
     end
 
     def generate(site)
+      @config = Config.new(@jekyll_config, site)
       Generator.new(@config, site).generate
     end
   end
