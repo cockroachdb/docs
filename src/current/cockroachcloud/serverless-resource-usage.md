@@ -114,6 +114,7 @@ The following recommendations can help reduce the RU cost of a query by reducing
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
 - Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
+- For multi-region clusters, avoid cross-region reads by using features such as [global tables]({% link /{{ site.current_cloud_version }}/multiregion-overview.md %}), [regional by row tables]({% link /{{ site.current_cloud_version }}/multiregion-overview.md %}), and [follower reads]({% link /{{ site.current_cloud_version }}/multiregion-overview.md %}) where possible.
 
 ### Example Request Unit calculation
 
