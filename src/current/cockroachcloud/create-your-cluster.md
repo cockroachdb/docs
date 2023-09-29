@@ -30,6 +30,11 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to 
 
 In the **Cloud provider** section, select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure**.
 
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.dedicated }} advanced clusters cannot currently be deployed on Azure.
+{{site.data.alerts.end}}
+
+
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
 CockroachDB {{ site.data.products.cloud }} clusters use the following machine and storage types:

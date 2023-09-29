@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-This page provides information about CockroachDB {{ site.data.products.dedicated }} clusters on Microsoft Azure, including frequently asked questions and limitations. To create a cluster, refer to [Create Your Cluster]({% link cockroachcloud/create-your-cluster.md %}).
+This page provides information about CockroachDB {{ site.data.products.dedicated }} clusters on Microsoft Azure, including frequently asked questions and limitations. To create a cluster, refer to [Create a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Limitations
 
