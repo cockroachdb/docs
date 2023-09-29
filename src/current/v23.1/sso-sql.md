@@ -38,7 +38,7 @@ You must have the ability to update your cluster settings, which can be achieved
 
 ### Cluster Settings
 
-You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %} in the following table to enable JWT authentication to your cluster. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
+You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) in the following table to enable JWT authentication to your cluster. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
 | Cluster Setting | Description 
 |-----------------|------ 
@@ -77,11 +77,10 @@ You can also view all of your cluster settings in the DB Console.
     
     This must match your cluster's configured  value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings).
 
-    - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-    The `issuer` is `https://cockroachlabs.cloud`.
+        - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
+        The `issuer` is `https://cockroachlabs.cloud`.
 
-    - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
-
+        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -180,7 +179,7 @@ You can also view all of your cluster settings in the DB Console.
 1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
     {% include_cached copy-clipboard.html %}
-    ~~~shell
+    ~~~sql
     SET CLUSTER SETTING server.identity_map.configuration = 'https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1'  ;
     ~~~
 
@@ -189,7 +188,7 @@ You can also view all of your cluster settings in the DB Console.
     This will also cause the token generation button to appear in the UI.
 
     {% include_cached copy-clipboard.html %}
-    ~~~shell
+    ~~~sql
     SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.enabled = true;
     ~~~
 
@@ -198,7 +197,7 @@ You can also view all of your cluster settings in the DB Console.
     It can be set to either `id_token` or `access_token`, depending on the structure of the your JWT as determined in your IDP configuration.
 
     {% include_cached copy-clipboard.html %}
-    ~~~shell
+    ~~~sql
     SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.use_token = id_token;
     ~~~
 
