@@ -18,7 +18,7 @@ module JekyllVersions
     end
 
     def name
-      if @config.release_info[version] && (name = @config.release_info[version]['name'])
+      if @config.release_info[version] && (name = @config.release_info[version]['release_name'])
         name
       else
         version
