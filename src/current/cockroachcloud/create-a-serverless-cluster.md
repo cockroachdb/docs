@@ -40,12 +40,12 @@ For optimal performance, select the cloud provider and region nearest to where y
 To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 
 {{site.data.alerts.callout_info}}
-**Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
+You cannot currently remove regions once they have been added.
 {{site.data.alerts.end}}
 
 After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
 
-Private connectivity is not available for {{ site.data.products.serverless-plan }} clusters on GCP.
+Private connectivity is not available for {{ site.data.products.serverless }} clusters on GCP.
 
 ## Step 4. Set resource limits
 
