@@ -27,7 +27,7 @@ Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/example-app-java-jdbc/
+git clone https://github.com/cockroachlabs/example-app-java-jdbc/
 ~~~
 
 The project has the following directory structure:
@@ -42,8 +42,6 @@ The project has the following directory structure:
 │           │   └── com
 │           │       └── cockroachlabs
 │           │           └── BasicExample.java
-│           └── resources
-│               └── dbinit.sql
 ├── gradle
 │   └── wrapper
 │       ├── gradle-wrapper.jar
@@ -51,13 +49,6 @@ The project has the following directory structure:
 ├── gradlew
 ├── gradlew.bat
 └── settings.gradle
-~~~
-
-The `dbinit.sql` file initializes the database schema that the application uses:
-
-{% include_cached copy-clipboard.html %}
-~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/resources/dbinit.sql %}
 ~~~
 
 The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
@@ -89,7 +80,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd example-app-java-jdbc
+    cd example-app-java-jdbc
     ~~~
 
 1. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
@@ -118,7 +109,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     <section class="filter-content" markdown="1" data-scope="ccloud">
 
-    1. Use the `cockroach convert-url` command to convert the connection string that you copied from the {{ site.data.products.cloud }} Console to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
+    1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
@@ -214,6 +205,55 @@ BUILD SUCCESSFUL in 8s
 ~~~
 
 ## Recommended Practices
+
+### Set session variables
+
+[Session variables]({% link {{ page.version.version }}/session-variables.md %}) can be set in the JDBC connection string or as properties of the JDBC data source.
+
+To set the session variable in the JDBC connection string, add them to the [`options` parameter]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+export JDBC_DATABASE_URL=jdbc:postgresql://{host}:{port}/{database}?options=-c%20{session variable name}%3D{session variable value}
+~~~
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+URL encode the `options` parameter to make sure the JDBC connection URL is parsed correctly. For example, the following URL encoded `options` parameter:
+
+~~~ shell
+export JDBC_DATABASE_URL=jdbc:postgres://localhost:26257/movr?options=-c%20sql_safe_updates%3Dtrue
+~~~
+
+is equivalent to:
+
+~~~
+options=-c unbounded_parallel_scans=on
+~~~
+
+To set session variables as properties of the JDBC data source, set `options` using `setProperty`:
+
+{% include_cached copy-clipboard.html %}
+~~~ java
+Properties props = new Properties();
+props.setProperty("options", "-c {session variable name}={session variable value}");
+Connection conn = DriverManager.getConnection(url, props);
+~~~
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+To add more than one session variable, append additional `-c` settings:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
+~~~
 
 ### Generate PKCS8 keys for user authentication
 

@@ -27,7 +27,7 @@ Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/example-app-java-jdbc/
+git clone https://github.com/cockroachlabs/example-app-java-jdbc/
 ~~~
 
 The project has the following directory structure:
@@ -80,7 +80,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd example-app-java-jdbc
+    cd example-app-java-jdbc
     ~~~
 
 1. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
