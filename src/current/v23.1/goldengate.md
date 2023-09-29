@@ -83,13 +83,11 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
     ~~~ shell
     # This is needed so that OGG knows where to look for connection details for the database
     export ODBCINI=/etc/odbc.ini
-
-    vi /etc/odbc.ini
     ~~~
     
     To make this change permanent, you must also add the command to your shell's configuration file, such as `~/.zshrc`.
             
-1. Set up the CockroachDB {{ site.data.products.serverless }} parameters:
+1. In the `ODBC.ini` file, set up the CockroachDB {{ site.data.products.serverless }} parameters:
     - Replace the login details with your own. Be sure to prefix the database name with `{hostname}`.
     - Make sure your {{ site.data.products.serverless }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster#connect-to-your-cluster) is in the `TrustStore` path.
 
