@@ -331,8 +331,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
@@ -542,8 +540,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
-
-{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 

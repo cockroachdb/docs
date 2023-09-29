@@ -92,8 +92,6 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
-
 [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
@@ -116,8 +114,6 @@ Example of a webhook URI:
 ~~~
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
-
-{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) for specifics on webhook sink configuration.
 

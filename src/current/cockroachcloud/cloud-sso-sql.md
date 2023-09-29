@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including CockroachDB {{ site.data.products.cloud }}, Google, Azure, GitHub, or your own self-hosted OIDC.
+Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including CockroachDB {{ site.data.products.cloud }}, Google, Azure, GitHub, or your own {{ site.data.products.core }} OIDC.
 
 This page describes the procedure for accessing a CockroachDB {{ site.data.products.cloud }} cluster using the CockroachDB {{ site.data.products.cloud }} console as identity provider.
 
