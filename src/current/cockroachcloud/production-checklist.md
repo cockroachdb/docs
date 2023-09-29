@@ -33,7 +33,7 @@ When planning your deployment, it is important to carefully review and choose th
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
  
-`raw data (storage, in GB) * RF (replication factor, 3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
+`raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 For an example, see [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
 
