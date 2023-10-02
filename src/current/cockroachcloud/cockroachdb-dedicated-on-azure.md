@@ -14,21 +14,7 @@ CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the follow
 
 ### Regions
 
-{% capture regions_list %}
-  - `australiaeast`
-  - `canadacentral`
-  - `centralus`
-  - `eastasia`
-  - `eastus`
-  - `germanywestcentral`
-  - `northeurope`
-  - `uksouth`
-  - `westus2`
-{% endcapture %}
-
-- Clusters can be created in the following [regions]({% link cockroachcloud/regions.md %}?filters=dedicated#azure-regions):
-
-    {{regions_list}}
+For the list of supported Azure regions, refer to [Azure Regions]({% link cockroachcloud/regions.md %}?filters=dedicated#azure-regions).
 
 ### Editing and scaling
 
@@ -61,6 +47,10 @@ The following sections provide more details about CockroachDB {{ site.data.produ
 ### Are multi-region clusters supported?
 
 Yes.
+
+### Can CockroachDB {{ site.data.products.serverless }} clusters be deployed on Azure?
+
+CockroachDB {{ site.data.products.serverless }} is not currently available on Azure.
 
 ### Are horizontal and vertical scaling supported?
 
