@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
+SQL audit logging gives you detailed information about queries being executed against a table in your cluster. This feature is especially useful when you want to log all queries that are run against a table that contains cardholder data, private health information (PHI), or other personally-identifiable information (PII).
 
-To enable the feature, [enable auditing](#enable-auditing) for a table and then [contact us](https://support.cockroachlabs.com/hc/en-us) to request the audit logs.
+After you enable SQL audit logging for a table, [contact Support](https://support.cockroachlabs.com/hc/) to request the audit logs.
 
 ## Enable auditing
 
@@ -15,9 +15,7 @@ Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](https://www.cockroachlabs.com/doc
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
+> ALTER TABLE {table_name} EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
 
-{{site.data.alerts.callout_info}}
-To turn on auditing for more than one table, issue a separate `ALTER` statement for each table.
-{{site.data.alerts.end}}
+Replace `{table_name}` with the name of a table.

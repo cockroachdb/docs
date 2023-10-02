@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `SHOW CREATE EXTERNAL CONNECTION` displays the connection name and the creation statements for active external connections.
 
 You can also use the following SQL statements to work with external connections:
@@ -50,7 +46,7 @@ This will return a list of of active external connection names along with the `C
 ------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}'
 backup_bucket_2   | CREATE EXTERNAL CONNECTION 'backup_bucket_2' AS 's3://bucket_name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}'
-kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
+kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 (4 rows)
 ~~~
 

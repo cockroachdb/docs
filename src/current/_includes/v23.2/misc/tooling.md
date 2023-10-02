@@ -4,7 +4,20 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
 - **Partial support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
-- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool. 
+- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool.
+
+{{site.data.alerts.callout_danger}}
+Tools, drivers, or frameworks are considered **unsupported** if:
+
+- The tool, driver, or framework is not listed on this page.
+- The version of a supported tool, driver, or framework is not listed on this page.
+
+If you encounter issues when using unsupported tools, drivers, or frameworks, contact the maintainer directly.
+
+Cockroach Labs provides "best effort" support for tools, drivers, and frameworks that are not officially supported. This means that while we will do our best to assist you, we may not be able to fully troubleshoot errors in your deployment.
+
+Customers should contact their account team before moving production workloads to CockroachDB that use unsupported drivers.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps]({% link {{ page.version.version }}/example-apps.md %}).
@@ -23,7 +36,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Go | [pgx](https://github.com/jackc/pgx/releases)<br><br><hr>[pq](https://github.com/lib/pq) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/pgx.go ||var supportedPGXTag = "||"\n\n  %}<br>(use latest version of CockroachDB adapter)<hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/libpq.go ||var libPQSupportedTag = "||"\n\n %} | Full<br><br><hr>Full | [`crdbpgx`](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb/crdbpgx)<br>(includes client-side transaction retry handling)<hr>N/A | [Build a Go App with CockroachDB (pgx)](build-a-go-app-with-cockroachdb.html)<br><br><hr>[Build a Go App with CockroachDB (pq)](build-a-go-app-with-cockroachdb-pq.html) |
 | Java | [JDBC](https://jdbc.postgresql.org/download/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/pgjdbc.go ||var supportedPGJDBCTag = "||"\n\n %} | Full | N/A | [Build a Java App with CockroachDB (JDBC)](build-a-java-app-with-cockroachdb.html) |
 | JavaScript | [pg](https://www.npmjs.com/package/pg) | 8.2.1 | Full | N/A | [Build a Node.js App with CockroachDB (pg)](build-a-nodejs-app-with-cockroachdb.html) |
-| Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/)<br><br><hr>[psycopg2](https://www.psycopg.org/docs/install.html)<br><br><hr>[asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | 3.0.16<br><br><hr>2.8.6<br><br><hr> | Full<br><br><hr>Full<br><br><hr>Beta | N/A<br><br><hr>N/A<br><br><hr>N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html)<br><br><hr>[Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html)<br><br><hr>[Build a Python App with CockroachDB (asyncpg)](build-a-python-app-with-cockroachdb-asyncpg.html) |
+| Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/)<br><br><hr>[psycopg2](https://www.psycopg.org/docs/install.html)<br><br><hr>[asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | 3.0.16<br><br><hr>2.8.6<br><br><hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/asyncpg.go || var asyncpgSupportedTag = "||"\n\n  %} | Full<br><br><hr>Full<br><br><hr>Beta | N/A<br><br><hr>N/A<br><br><hr>N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html)<br><br><hr>[Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html)<br><br><hr>[Build a Python App with CockroachDB (asyncpg)](build-a-python-app-with-cockroachdb-asyncpg.html) |
 | Ruby | [pg](https://rubygems.org/gems/pg) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/ruby_pg.go ||var rubyPGVersion = "||"\n\n %} | Full | N/A | [Build a Ruby App with CockroachDB (pg)](build-a-ruby-app-with-cockroachdb.html) |
 | Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Beta | N/A | [Build a Rust App with CockroachDB]({% link {{ page.version.version }}/build-a-rust-app-with-cockroachdb.md %}) |
 

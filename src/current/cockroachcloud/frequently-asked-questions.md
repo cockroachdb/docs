@@ -19,8 +19,6 @@ Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachc
 
 CockroachDB {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. CockroachDB {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), multi-region clusters are not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %})
-
 ### What is the difference between CockroachDB {{ site.data.products.dedicated }} standard and advanced?
 
 CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
@@ -57,7 +55,7 @@ See the [Security Overview page](https://www.cockroachlabs.com/docs/{{site.curre
 
 ### Is encryption-at-rest enabled on CockroachDB {{ site.data.products.dedicated }}?
 
-All data on CockroachDB {{ site.data.products.cloud }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/azure/virtual-machines/disk-encryption) for Azure (limited access). With CockroachDB {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
+All data on CockroachDB {{ site.data.products.cloud }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/azure/virtual-machines/disk-encryption) for Azure. With CockroachDB {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
 
 All data in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} is encrypted at rest by the cloud provider where your cluster is deployed.
 
@@ -85,9 +83,7 @@ You can [change your cluster's compute]({% link cockroachcloud/cluster-managemen
 
 ### How do I add nodes?
 
-You can add nodes by accessing the **Clusters** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
-
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), CockroachDB {{ site.data.products.dedicated }} clusters on Azure cannot be modified or scaled after creation. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+You can add nodes by accessing the **Clusters** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details..
 
 {% include cockroachcloud/nodes-limitation.md %}
 
@@ -97,11 +93,11 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 ### Who is responsible for backup?
 
-Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery). 
+Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery).
 
 CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster. 
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -109,7 +105,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 Learn more:
 
-- Refer to [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated) to learn how to restore data from CockroachDB {{ site.data.products.cloud }}'s automatic backups in the Console. 
+- Refer to [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated) to learn how to restore data from CockroachDB {{ site.data.products.cloud }}'s automatic backups in the Console.
 
 - Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) for more information about using customer-managed backups.
 
@@ -120,10 +116,6 @@ Learn more:
 #### Cloud provider considerations
 
 The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
-
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), managed backups are not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 ### Can I download the backups that CockroachDB {{ site.data.products.cloud }} takes for me?
 
@@ -143,7 +135,7 @@ AWS clusters can set up a [PrivateLink connection]({% link cockroachcloud/networ
 
 GCP clusters can also set up VPC peering after the cluster is created, but you will be locked into our default IP range (`172.28.0.0/14`) unless you configure a different IP range during cluster creation. You can use the default IP range for VPC peering as long as it doesn't overlap with the IP ranges in your network. For more information, see [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering).
 
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), Azure Private Link is not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 ## Product features
 
@@ -171,8 +163,6 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 - [CockroachDB {{ site.data.products.cloud }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
 - [CockroachDB {{ site.data.products.cloud }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
-
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), the [CockroachDB {{ site.data.products.cloud }} SLA](https://cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/) does not apply to clusters on Microsoft Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 

@@ -13,9 +13,9 @@ By default, all tables in a multi-region database are _regional_ tables—that i
 
 For information about the table localities CockroachDB supports, see the sections:
 
-- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from _a single region_.
-- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from _a single region_. Different rows in the table can be optimized for access from _different regions_.
-- [Global tables](#global-tables) are optimized for low-latency reads from _all regions_.
+- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from **a single region**.
+- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from **a single region**. Different rows in the table can be optimized for access from **different regions**.
+- [Global tables](#global-tables) are optimized for low-latency reads from **all regions**.
 
 {{site.data.alerts.callout_info}}
 Table locality settings are used for optimizing latency under different read and write patterns. If you are optimizing for read and write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).
@@ -66,7 +66,7 @@ Use a [`GLOBAL` table locality]({% link {{ page.version.version }}/table-localit
 - [When to Use `ZONE` vs. `REGION` Survival Goals]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#when-to-use-zone-vs-region-survival-goals)
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
-- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery.md %})
+- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
 - [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions)
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)

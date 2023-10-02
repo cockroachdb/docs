@@ -30,7 +30,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %})
-{% comment %} - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) {% endcomment %}
+    {% comment %}- [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster){% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -41,7 +41,7 @@ The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}?filte
 
 The cluster's **Configuration** shows details about the cluster, its deployment environment, and its nodes, such as the cluster's cloud provider, plan type, regions, and each node's status, compute, and storage.
 
-The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-an-upgrade-window) setting.
+The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-a-maintenance-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-a-maintenance-window) setting.
 
 - The **PCI Ready** section shows the status of features required for PCI DSS. Requires CockroachDB {{ site.data.products.dedicated }} advanced.
 
@@ -51,9 +51,7 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 
 ## Scale your cluster
 
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), CockroachDB {{ site.data.products.dedicated }} clusters on Azure cannot be scaled. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
+These sections show how to scale a {{ site.data.products.dedicated }} cluster horizontally by adding or removing nodes or vertically by changing each node's storage and compute resources.
 
 ### Add or remove nodes from a cluster
 
@@ -162,32 +160,28 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 {% endcomment %}
-  
-## Set an upgrade window
 
-From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. Note that upgrades may not always be completed by the end of the window, and other kinds of cluster maintenance may occur outside the window.
+## Set a maintenance window
+
+From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 {{site.data.alerts.callout_info}}
-If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+Maintenance operations that are critical for cluster security or stability may be applied outside of the upgrade window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
 To set an upgrade window:
 
-1. Click the pencil icon next to **Cluster upgrades** to edit the upgrade window.
-1. From the **Upgrade day** dropdown, select the day of the week during which upgrades may be applied.
-1. From the **Start of window** dropdown, select a start time for your upgrade window in UTC.
-    
+1. Click the pencil icon next to **Cluster maintenance** to edit the upgrade window.
+1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
+1. From the **Start of window** dropdown, select a start time for your maintenance window in UTC.
+
     The window will last for 6 hours from the start time.
-    
-1. (Optional) If you want to delay automatic upgrades for 60 days, switch **Delay patch upgrades** to **On**.
-    
-    You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
+
+1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
+
+    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
 
 ## Restore data from a backup
-
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), managed backups are not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}), including encrypted backups. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
 

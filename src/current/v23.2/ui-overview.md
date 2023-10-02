@@ -5,7 +5,6 @@ toc: true
 key: explore-the-admin-ui.html
 docs_area: reference.db_console
 ---
-
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
 {{site.data.alerts.callout_info}}
@@ -13,6 +12,17 @@ Authorized CockroachDB {{ site.data.products.dedicated }} cluster users can visi
 
 Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#db-console)
 {{site.data.alerts.end}}
+
+## Authentication
+
+The DB Console supports username/password login, as well single sign-on (SSO) ({{ site.data.products.dedicated }} and {{ site.data.products.core }} {{ site.data.products.enterprise }} clusters only).
+
+The DB Console sing-on page can also be used to provision authentication tokens for SQL client access.
+
+Refer to:
+
+-  Single Sign-on (SSO) for DB Console
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]
 
 ## DB Console areas
 

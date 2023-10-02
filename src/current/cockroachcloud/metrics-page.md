@@ -9,6 +9,7 @@ The **Metrics** page is available for CockroachDB {{ site.data.products.serverle
 
 - [**Monitor SQL Activity**](#monitor-sql-activity)
 - [**Identify SQL Problems**](#identify-sql-problems)
+- [Create **Custom** metrics charts](#create-custom-metrics-charts)
 
 ## Time interval selection
 
@@ -76,9 +77,14 @@ This graph shows a moving average of the number of SQL statements that experienc
 
 See the [Statements page]({% link cockroachcloud/statements-page.md %}) for more details on the cluster's SQL statements.
 
+## Create Custom metrics charts
+
+On the **Custom** tab, you can create one or multiple custom charts showing the time series data for an available metric or combination of metrics.
+
+See the [Custom Metrics Chart page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for more details.
+
 ## See also
 
-- [Available metrics](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-custom-chart-debug-page?filters=metric-names-serverless#available-metrics)
 - [Statements Page]({% link cockroachcloud/statements-page.md %})
 - [Transactions Page]({% link cockroachcloud/transactions-page.md %})
 - [Sessions Page]({% link cockroachcloud/sessions-page.md %})

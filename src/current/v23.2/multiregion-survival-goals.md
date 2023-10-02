@@ -1,5 +1,5 @@
 ---
-title: Mulit-Region Survival Goals
+title: Multi-Region Survival Goals
 summary: Learn how to set survival goals in a CockroachDB multi-region cluster.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
@@ -65,7 +65,7 @@ Set a [`REGION` survival goal]({% link {{ page.version.version }}/multiregion-su
 - [Table Localities]({% link {{ page.version.version }}/table-localities.md %})
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
-- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery.md %})
+- [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
 - [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions)
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)

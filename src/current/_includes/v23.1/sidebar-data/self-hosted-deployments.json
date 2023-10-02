@@ -348,6 +348,12 @@
                     "urls": [
                       "/${VERSION}/kibana.html"
                     ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-self-hosted.html"
+                    ]
                   }
             ]
           },
@@ -665,6 +671,12 @@
                 "title": "Logging Use Cases",
                 "urls": [
                   "/${VERSION}/logging-use-cases.html"
+                ]
+              },
+              {
+                "title": "Log SQL Statistics to Datadog",
+                "urls": [
+                  "/${VERSION}/log-sql-statistics-to-datadog.html"
                 ]
               }
             ]

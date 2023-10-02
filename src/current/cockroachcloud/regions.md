@@ -77,16 +77,20 @@ Western Europe  | `eu-central-1`   | Frankfurt
 
 ## Azure regions
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/azure-limited-access.md %}
-{{site.data.alerts.end}}
-
 CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
 
-Geographic Area | Region Name     | Location
-----------------|-----------------|---------
-North America   | `eastus2`       | East Coast - Virginia
-Western Europe  | `westeurope`    | Netherlands
+Geographic Area | Region Name          | Location
+----------------|----------------------|---------
+Asia Pacific    | `australiaeast`      | New South Wales
+                | `eastasia`           | Hong Kong
+North America   | `centralcanada`      | Toronto
+                | `centralus`          | Iowa
+                | `westus2`            | Washington
+                | `eastus`             | Virginia
+                | `eastus2`            | Virginia
+Western Europe  | `germanywestcentral` | Frankfurt
+                | `uksouth`            | London
+                | `westeurope`         | Netherlands
 
 ## GCP regions
 
@@ -122,5 +126,5 @@ Western Europe  | `europe-central2`         | Warsaw
                 | `europe-west3`            | Frankfurt
                 | `europe-west4`            | Eemshaven
                 | `europe-west6`            | Zürich
-                
+
 </section>

@@ -40,6 +40,12 @@
           "urls": [
             "/${VERSION}/striim.html"
           ]
+        },
+        {
+          "title": "Oracle GoldenGate",
+          "urls": [
+            "/${VERSION}/goldengate.html"
+          ]
         }
       ]
     },
@@ -88,6 +94,12 @@
             "/${VERSION}/import-performance-best-practices.html"
           ]
         }
+      ]
+    },
+    {
+      "title": "Migrate from PostgreSQL",
+      "urls": [
+        "/${VERSION}/migrate-from-postgres.html"
       ]
     },
     {

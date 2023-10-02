@@ -115,19 +115,6 @@ Metric | Description
 Successful Actions | The number of replicas successfully processed by the merge queue, as tracked by the `queue.merge.process.success` metric.
 Pending Actions | The number of pending replicas in the merge queue, as tracked by the `queue.merge.pending` metric.
 
-## GC Queue
-
-<img src="{{ 'images/v22.1/ui_gc_queue.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
-
-The **GC Queue** graph displays various details about the health and performance of the garbage collection queue.
-
-Hovering over the graph displays values for the following metrics:
-
-Metric | Description
---------|----
-Successful Actions | The number of replicas successfully processed by the garbage collection queue, as tracked by the `queue.gc.process.success` metric.
-Pending Actions | The number of pending replicas in the garbage collection queue, as tracked by the `queue.gc.pending` metric.
-
 ## Raft Log Queue
 
 <img src="{{ 'images/v22.1/ui_raftlog_queue.png' | relative_url }}" alt="DB Console Raft log queue graph" style="border:1px solid #eee;max-width:100%" />
@@ -179,6 +166,25 @@ Metric | Description
 --------|----
 Successful Actions | The number of replicas successfully processed by the time series maintenance queue, as tracked by the `queue.tsmaintenance.process.success` metric.
 Pending Actions | The number of pending replicas in the time series maintenance queue, as tracked by the `queue.tsmaintenance.pending` metric.
+
+## MVCC GC Queue
+
+<img src="{{ 'images/v23.1/ui_mvcc_gc_queue.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
+
+The **MVCC GC Queue** graph displays various details about the health and performance of the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue.
+
+Hovering over the graph displays values for the following metrics:
+
+Metric | Description
+--------|----
+Successful Actions | The number of replicas successfully processed by the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue, as tracked by the `queue.gc.process.success` metric.
+Pending Actions | The number of pending replicas in the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue, as tracked by the `queue.gc.pending` metric.
+
+## Protected Timestamp Records
+
+<img src="{{ 'images/v23.1/ui_protected_timestamp_records.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
+
+The **Protected Timestamp Records** graph displays the number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records (used by backups, changefeeds, etc. to prevent MVCC GC) per node, as tracked by the `spanconfig.kvsubscriber.protected_record_count` metric.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 

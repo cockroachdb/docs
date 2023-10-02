@@ -45,7 +45,7 @@ To install `asyncpg`, run the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ pip3 install "asynpg"
+$ pip3 install "asyncpg"
 ~~~
 
 For other ways to install Psycopg, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).

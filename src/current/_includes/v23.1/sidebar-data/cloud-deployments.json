@@ -36,6 +36,12 @@
                 ]
             },
             {
+                "title": "Understand your Serverless Resource Usage",
+                "urls": [
+                    "/cockroachcloud/serverless-resource-usage.html"
+                ]
+            },
+            {
             "title": "Manage a Serverless Cluster",
             "urls": [
                 "/cockroachcloud/serverless-cluster-management.html"
@@ -51,12 +57,6 @@
                 "title": "Serverless Performance Benchmarking",
                 "urls": [
                     "/cockroachcloud/serverless-benchmarking.html"
-                ]
-            },
-            {
-                "title": "Optimize Your Serverless Workload",
-                "urls": [
-                    "/cockroachcloud/optimize-serverless-workload.html"
                 ]
             }
         ]
@@ -339,6 +339,12 @@
                     ]
                   },
                   {
+                    "title": "Custom Metrics Chart Page",
+                    "urls": [
+                      "/cockroachcloud/custom-metrics-chart-page.html"
+                    ]
+                  },
+                  {
                     "title": "SQL Activity Page",
                         "items": [
                             {
@@ -383,6 +389,12 @@
                     "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-dedicated.html"
                     ]
                   }
                 ]
@@ -462,6 +474,12 @@
                         ]
                     }
                     ]
+              },
+              {
+                "title": "SQL Shell",
+                "urls": [
+                  "/cockroachcloud/sql-shell.html"
+                ]
               },
               {
                 "title": "CockroachDB Cloud API",

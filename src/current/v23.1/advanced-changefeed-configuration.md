@@ -6,7 +6,7 @@ docs_area: stream_data
 ---
 
 {{site.data.alerts.callout_danger}}
-The configurations and settings explained on this page will significantly impact a changefeed's behavior.
+The configurations and settings explained on this page will have a significant impact on a changefeed's behavior and could potentially affect a cluster's performance. Thoroughly test before deploying any changes to production.
 {{site.data.alerts.end}}
 
 The following sections describe performance, settings, configurations, and details to tune [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}):
@@ -32,6 +32,42 @@ kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 ~~~
 
 For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
+
+### Latency in changefeeds
+
+When you are running large workloads, changefeeds can encounter or cause latency in a cluster in the following ways:
+
+- Changefeeds can have an impact on SQL latency in the cluster generally.
+- Changefeeds can encounter latency in **events** emitting. This latency is the total time CockroachDB takes to:
+    - Commit writes to the database.
+    - Encode [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
+    - Deliver the message to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+
+The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) reduce bursts of [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) work so that updates are paced steadily over time.
+
+{{site.data.alerts.callout_danger}}
+We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html).
+{{site.data.alerts.end}}
+
+#### `kv.closed_timestamp_target_duration`
+
+**Default:** `3s`
+
+This setting controls the frequency of checkpoints for each [range]({% link {{ page.version.version }}/architecture/overview.md %}#range). A changefeed aggregates these checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). As a result, the higher the value of this setting the longer it can take for a changefeed to checkpoint. It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds.
+
+In clusters running large-scale workloads, increasing this setting can help to lower the potential impact of changefeeds on SQL latency. That is, an increase in the setting could lower the load on the cluster. This is important for workloads with tables in the TB range of data. However, for most workloads, we recommend leaving this setting at the default of `3s`.
+
+{{site.data.alerts.callout_danger}}
+Thoroughly test any adjustment in cluster settings before deploying the change in production.
+{{site.data.alerts.end}}
+
+#### `kv.rangefeed.closed_timestamp_smear_interval`
+
+**Default:** `1ms`
+
+This setting provides a mechanism to pace the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) notifications to follower replicas. At the default, the closed timestamp smear interval makes rangefeed closed timestamp delivery less spiky, which can reduce its impact on foreground SQL query latency.
+
+For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every `kv.closed_timestamp_target_duration` (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
 
 ## Tuning for high durability delivery
 

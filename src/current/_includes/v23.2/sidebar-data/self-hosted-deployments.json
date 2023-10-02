@@ -209,7 +209,7 @@
                     "/${VERSION}/global-tables.html"
                     ]
                 }
-            ] 
+            ]
           },
           {
             "title": "Security",
@@ -348,6 +348,12 @@
                     "urls": [
                       "/${VERSION}/kibana.html"
                     ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-self-hosted.html"
+                    ]
                   }
             ]
           },
@@ -480,7 +486,7 @@
                         ]
                       },
                       {
-                        "title": "Network Latency Page",
+                        "title": "Network Page",
                         "urls": [
                           "/${VERSION}/ui-network-latency-page.html"
                         ]
@@ -621,9 +627,9 @@
                 ]
               },
               {
-                "title": "Disaster Recovery",
+                "title": "Disaster Recovery Planning",
                 "urls": [
-                  "/${VERSION}/disaster-recovery.html"
+                  "/${VERSION}/disaster-recovery-planning.html"
                 ]
               },
               {
@@ -665,6 +671,12 @@
                 "title": "Logging Use Cases",
                 "urls": [
                   "/${VERSION}/logging-use-cases.html"
+                ]
+              },
+              {
+                "title": "Log SQL Statistics to Datadog",
+                "urls": [
+                  "/${VERSION}/log-sql-statistics-to-datadog.html"
                 ]
               }
             ]
