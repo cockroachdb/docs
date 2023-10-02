@@ -31,14 +31,14 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | Language | Driver | Latest tested version | Support level | CockroachDB adapter | Tutorial |
 |----------+--------+-----------------------+---------------------+---------------------+----------|
-| C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html)| PostgreSQL 13 | Beta | N/A | N/A |
+| C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html)| PostgreSQL 13 | Partial | N/A | N/A |
 | C# (.NET) | [Npgsql](https://www.nuget.org/packages/Npgsql/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/npgsql.go ||var npgsqlSupportedTag = "v||"\n\n %} | Full | N/A | [Build a C# App with CockroachDB (Npgsql)](build-a-csharp-app-with-cockroachdb.html) |
 | Go | [pgx](https://github.com/jackc/pgx/releases)<br><br><hr>[pq](https://github.com/lib/pq) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/pgx.go ||var supportedPGXTag = "||"\n\n  %}<br>(use latest version of CockroachDB adapter)<hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/libpq.go ||var libPQSupportedTag = "||"\n\n %} | Full<br><br><hr>Full | [`crdbpgx`](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb/crdbpgx)<br>(includes client-side transaction retry handling)<hr>N/A | [Build a Go App with CockroachDB (pgx)](build-a-go-app-with-cockroachdb.html)<br><br><hr>[Build a Go App with CockroachDB (pq)](build-a-go-app-with-cockroachdb-pq.html) |
 | Java | [JDBC](https://jdbc.postgresql.org/download/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/pgjdbc.go ||var supportedPGJDBCTag = "||"\n\n %} | Full | N/A | [Build a Java App with CockroachDB (JDBC)](build-a-java-app-with-cockroachdb.html) |
 | JavaScript | [pg](https://www.npmjs.com/package/pg) | 8.2.1 | Full | N/A | [Build a Node.js App with CockroachDB (pg)](build-a-nodejs-app-with-cockroachdb.html) |
-| Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/)<br><br><hr>[psycopg2](https://www.psycopg.org/docs/install.html)<br><br><hr>[asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | 3.0.16<br><br><hr>2.8.6<br><br><hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/asyncpg.go || var asyncpgSupportedTag = "||"\n\n  %} | Full<br><br><hr>Full<br><br><hr>Beta | N/A<br><br><hr>N/A<br><br><hr>N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html)<br><br><hr>[Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html)<br><br><hr>[Build a Python App with CockroachDB (asyncpg)](build-a-python-app-with-cockroachdb-asyncpg.html) |
+| Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/)<br><br><hr>[psycopg2](https://www.psycopg.org/docs/install.html)<br><br><hr>[asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | 3.0.16<br><br><hr>2.8.6<br><br><hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/asyncpg.go || var asyncpgSupportedTag = "||"\n\n  %} | Full<br><br><hr>Full<br><br><hr>Partial | N/A<br><br><hr>N/A<br><br><hr>N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html)<br><br><hr>[Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html)<br><br><hr>[Build a Python App with CockroachDB (asyncpg)](build-a-python-app-with-cockroachdb-asyncpg.html) |
 | Ruby | [pg](https://rubygems.org/gems/pg) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/ruby_pg.go ||var rubyPGVersion = "||"\n\n %} | Full | N/A | [Build a Ruby App with CockroachDB (pg)](build-a-ruby-app-with-cockroachdb.html) |
-| Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Beta | N/A | [Build a Rust App with CockroachDB]({% link {{ page.version.version }}/build-a-rust-app-with-cockroachdb.md %}) |
+| Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Partial | N/A | [Build a Rust App with CockroachDB]({% link {{ page.version.version }}/build-a-rust-app-with-cockroachdb.md %}) |
 
 ## Data access frameworks (e.g., ORMs)
 
@@ -92,11 +92,12 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Full | [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
 | [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
 | [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim]({% link {{ page.version.version }}/striim.md %})
+| [Oracle GoldenGate](https://www.oracle.com/integration/goldengate/) | 21.3 | Partial | [Migrate and Replicate Data with Oracle GoldenGate]({% link {{ page.version.version }}/goldengate.md %})
 
 ## Provisioning tools
 | Tool | Latest tested version | Support level | Documentation |
 |------+-----------------------+---------------+---------------|
-| [Terraform](https://terraform.io/) | 1.3.2 | Beta | [Terraform provider for CockroachDB Cloud](https://github.com/cockroachdb/terraform-provider-cockroach#get-started) |
+| [Terraform](https://terraform.io/) | 1.3.2 | Partial | [Terraform provider for CockroachDB Cloud](https://github.com/cockroachdb/terraform-provider-cockroach#get-started) |
 
 ## Other tools
 
