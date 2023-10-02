@@ -77,10 +77,6 @@ Western Europe  | `eu-central-1`   | Frankfurt
 
 ## Azure regions
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/azure-limited-access.md %}
-{{site.data.alerts.end}}
-
 CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
 
 Geographic Area | Region Name          | Location
