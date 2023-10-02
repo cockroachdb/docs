@@ -102,7 +102,7 @@ Parameter | Description
 `-c <session_variable>=<value>` |  Sets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) for the SQL session.
 
 {{site.data.alerts.callout_info}}
-Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/use/#connection-parameters) must specified as `%20`.
+Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/use/#connection-parameters) must be specified as `%20`.
 {{site.data.alerts.end}}
 
 ### Secure connections with URLs

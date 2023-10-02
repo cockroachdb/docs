@@ -288,7 +288,7 @@ module Jekyll
         index.save_synonym('CBO', {
           objectID: 'CBO',
           type: 'synonym',
-          synonyms: ['CBO', 'cost-based optimizer', 'cost based optimizer']
+          synonyms: ['CBO', 'cost-based optimizer', 'cost based optimizer', 'optgen']
         }, false)
 
         index.save_synonym('spatial', {
@@ -343,6 +343,18 @@ module Jekyll
           objectID: 'full text search',
           type: 'synonym',
           synonyms: ['full text search', 'fts']
+        }, false)
+
+        index.save_synonym('writetooolderror', {
+          objectID: 'writetooolderror',
+          type: 'synonym',
+          synonyms: ['RETRY_WRITE_TOO_OLD', 'write too old', 'writetooold']
+        }, false)
+
+        index.save_synonym('material view', {
+          objectID: 'material view',
+          type: 'synonym',
+          synonyms: ['materialized view']
         }, false)
 
         return
