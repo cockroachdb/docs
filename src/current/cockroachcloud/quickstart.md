@@ -7,7 +7,7 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) to create a CockroachDB {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java or Node.js sample application.
+This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) to create a CockroachDB {{ site.data.products.serverless }} cluster, connect to it using a sample workload, and run your first query.
 
 ## Create a CockroachDB {{ site.data.products.serverless }} cluster
 
@@ -19,97 +19,16 @@ This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} C
 
 ## Connect to the cluster
 
-Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html?fiters=command-line#connect-to-your-cluster).
+You can connect to your cluster directly from the {{ site.data.products.cloud }} Console's SQL Shell or using the command line. To connect a sample application to your cluster instead, refer to [Example Applications Overview]({% link /{{ site.current_cloud_version }}/example-apps.md %}).
 
     <div class="filters clearfix">
-      <button class="filter-button" data-scope="java">Java</button>
-      <button class="filter-button" data-scope="node">Node.js</button>
+      <button class="filter-button" data-scope="console">Cloud Console</button>
+      <button class="filter-button" data-scope="cli">Command line</button>
     </div>
-    <section class="filter-content" markdown="1" data-scope="java">
-
-Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
-
-1. Select **Java** from the **Select option/language** dropdown.
-1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
-
-    This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
-
-    {{site.data.alerts.callout_info}} 
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
-    {{site.data.alerts.end}}
-    
-## Configure the connection environment variable
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="mac">Mac</button>
-  <button class="filter-button" data-scope="linux">Linux</button>
-  <button class="filter-button" data-scope="windows">Windows</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="mac linux">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-export JDBC_DATABASE_URL="<jdbc-connection-string>"
-~~~
-
-The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="windows">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
-~~~
-
-The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
-</section>
-
-## Run the Java sample code
-
-1. Clone the `quickstart-code-samples` repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachdb/quickstart-code-samples
-    ~~~
-  
-1. Navigate to the `java` directory of the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cd quickstart-code-samples/java
-    ~~~
-
-    The code sample in this directory does the following:
-      1. Connects to CockroachDB {{ site.data.products.cloud }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
-      1. Creates a table.
-      1. Inserts some data into the table.
-      1. Reads the inserted data.
-      1. Prints the data to the terminal.
-
-1. Run the application using `gradlew`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    ./gradlew run
-    ~~~
-
-    The output should look like this:
-
-    ~~~
-    > Task :app:run
-    Hello world!
-
-    BUILD SUCCESSFUL in 3s
-    2 actionable tasks: 2 executed
-    ~~~
+    <section class="filter-content" markdown="1" data-scope="console">
 
 </section>
-<section class="filter-content" markdown="1" data-scope="node">
+<section class="filter-content" markdown="1" data-scope="cli">
 
 Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
 
@@ -122,80 +41,6 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
     {{site.data.alerts.end}}
 
-## Configure the connection environment variable
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="mac">Mac</button>
-  <button class="filter-button" data-scope="linux">Linux</button>
-  <button class="filter-button" data-scope="windows">Windows</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="mac linux">
-In a terminal set the `DATABASE_URL` environment variable to the connection string:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-export DATABASE_URL="<connection-string>"
-~~~
-
-The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="windows">
-In a terminal set the `DATABASE_URL` environment variable to the connection string:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$env:DATABASE_URL = "<connection-string>"
-~~~
-
-The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
-</section>
-    
-## Run the Node.js sample code
-
-1. Clone the `quickstart-code-samples` repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachdb/quickstart-code-samples
-    ~~~
-  
-1. Navigate to the `node` directory of the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cd quickstart-code-samples/node
-    ~~~
-
-    The code sample in this directory does the following:
-      1. Connects to CockroachDB {{ site.data.products.cloud }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
-      1. Creates a table.
-      1. Inserts some data into the table.
-      1. Reads the inserted data.
-      1. Prints the data to the terminal.
-
-
-1. Install the app requirements:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npm install
-    ~~~
-
-1. Run the app:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ node app.js
-    ~~~
-    
-    The output will look like this:
-    
-    ~~~
-    Hello world!
-    ~~~
-    
 </section>
 
 ## Learn more
