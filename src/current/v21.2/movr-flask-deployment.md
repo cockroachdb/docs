@@ -36,17 +36,13 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 1. On the **Overview** page, select **Create Cluster**.
 
 1. On the **Create new cluster** page:
-    - For **Plan**, select CockroachDB {{ site.data.products.cloud }}. You won't be charged for the first 30 days of service.
+    - For **Plan**, select CockroachDB {{ site.data.products.cloud }}.
     - For **Cloud Provider**, select Google Cloud.
     - For **Regions & nodes**, add "us-east1", "us-west1", and "europe-west1", with 3 nodes in each region.
-    - Leave the **Hardware** and **Cluster name** as their default values.
-    - For **Additional settings**, turn on VPC peering, with the default IP range.
+    - Use the default values for **Hardware** and **Cluster name**.
+    - For **Additional settings**, enable VPC peering and use the default IP range.
 
 1. Select **Next**, and on the **Summary** page, enter your credit card details.
-
-    {{site.data.alerts.callout_info}}
-    You will not be charged until after your free trial expires in 30 days.
-    {{site.data.alerts.end}}
 
 1. Select **Create cluster**.
 

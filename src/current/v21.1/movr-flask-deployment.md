@@ -20,7 +20,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.dedicated }}](../cockroachcloud/quickstart-trial-cluster.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.dedicated }}](../cockroachcloud/quickstart-dedicated.html).
 
 {{site.data.alerts.callout_info}}
 You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
@@ -35,17 +35,13 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 1. On the **Overview** page, select **Create Cluster**.
 
 1. On the **Create new cluster** page:
-    - For **Plan**, select CockroachDB {{ site.data.products.dedicated }}. You won't be charged for the first 30 days of service.
+    - For **Plan**, select CockroachDB {{ site.data.products.dedicated }}.
     - For **Cloud Provider**, select Google Cloud.
     - For **Regions & nodes**, add "us-east1", "us-west1", and "europe-west1", with 3 nodes in each region.
-    - Leave the **Hardware** and **Cluster name** as their default values.
-    - For **Additional settings**, turn on VPC peering, with the default IP range.
+    - Use the default values for **Hardware** and **Cluster name**.
+    - For **Additional settings**, enable VPC peering and use the default IP range.
 
 1. Select **Next**, and on the **Summary** page, enter your credit card details.
-
-    {{site.data.alerts.callout_info}}
-    You will not be charged until after your free trial expires in 30 days.
-    {{site.data.alerts.end}}
 
 1. Select **Create cluster**.
 
@@ -234,7 +230,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 <!-- [MovR (live demo)](https://movr.cloud)-->
-- [CockroachDB {{ site.data.products.dedicated }} documentation](../cockroachcloud/quickstart-trial-cluster.html)
+- [CockroachDB {{ site.data.products.dedicated }} documentation](../cockroachcloud/quickstart-dedicated.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

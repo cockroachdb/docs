@@ -166,7 +166,7 @@ Yes. The CockroachDB {{ site.data.products.dedicated }} offering is currently in
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-For more details, see the [CockroachDB {{ site.data.products.dedicated }}](../cockroachcloud/quickstart-trial-cluster.html) docs.
+For more details, refer to [CockroachDB {{ site.data.products.dedicated }}](../cockroachcloud/quickstart-dedicated.html).
 
 ## Why did Cockroach Labs change the license for CockroachDB?
 

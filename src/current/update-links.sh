@@ -14,7 +14,7 @@ sed -i '' -E 's/"..\/releases\/release-support-policy.html/"https:\/\/www.cockro
 sed -i '' -E 's/"..\/releases\/\{\{ page.version.version \}\}.html#\{\{ r.release_name | replace: '.', '-' \}\}/"https:\/\/www.cockroachlabs.com\/docs\/releases\/\{\{ page.version.version \}\}#\{\{ r.release_name | replace: '.', '-' \}\}/g' v23.1/fips.md
 sed -i '' -E 's/"..\/cockroachcloud\/quickstart.html/"https:\/\/www.cockroachlabs.com\/docs\/cockroachcloud\/quickstart/g' v23.1/choose-a-deployment-option.md
 sed -i '' -E 's/"..\/cockroachcloud\/serverless-faqs.html#what-is-a-request-unit/"https:\/\/www.cockroachlabs.com\/docs\/cockroachcloud\/serverless-faqs#what-is-a-request-unit/g' v23.1/choose-a-deployment-option.md
-sed -i '' -E 's/"..\/cockroachcloud\/quickstart-trial-cluster.html/"https:\/\/www.cockroachlabs.com\/docs\/cockroachcloud\/quickstart-trial-cluster/g' v23.1/choose-a-deployment-option.md
+sed -i '' -E 's/"..\/cockroachcloud\/quickstart-dedicated.html/"https:\/\/www.cockroachlabs.com\/docs\/cockroachcloud\/quickstart-dedicated/g' v23.1/choose-a-deployment-option.md
 sed -i '' -E 's/"..\/releases\/\{\{page.version.version\}\}.html/"https:\/\/www.cockroachlabs.com\/docs\/releases\/\{\{page.version.version\}\}/g' v23.1/install-cockroachdb-windows.md
 sed -i '' -E 's/"..\/tutorials\/demo-spatial-tutorial-interactive.html/"https:\/\/www.cockroachlabs.com\/docs\/tutorials\/demo-spatial-tutorial-interactive/g' v23.1/spatial-tutorial.md
 sed -i '' -E 's/"..\/releases\/\{\{page.version.version\}\}.html/"https:\/\/www.cockroachlabs.com\/docs\/releases\/\{\{page.version.version\}\}/g' v23.1/install-cockroachdb-mac.md

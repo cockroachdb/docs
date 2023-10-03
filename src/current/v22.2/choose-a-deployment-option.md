@@ -41,7 +41,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="dedicated-standard"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} standard</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated-standard"></a><b><a href="../cockroachcloud/quickstart-dedicated.html">CockroachDB {{ site.data.products.dedicated }} standard</a></b>: A fully-managed single-tenant CockroachDB deployment in a single region or multiple regions.
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -65,7 +65,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that need to be PCI compliant.</li>
       </ul></td>
       <td>
-      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }} advanced</a></b>:A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-dedicated.html">CockroachDB {{ site.data.products.dedicated }} advanced</a></b>:A fully-managed single-tenant <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multiple regions, deployed on AWS or GCP.
       </td>
       <td><ul>
         <li><b>All CockroachDB Dedicated features.</b></li>
