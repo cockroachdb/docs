@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export]({% link {{ page.version.version }}/export.md %}) data out of your database.
+When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [`EXPORT`]({% link {{ page.version.version }}/export.md %}) data out of your database.
 
 {% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence.
 
@@ -18,6 +18,10 @@ The benefits of using changefeeds for this use case instead of [export]({% link 
 - You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option with `initial_scan= 'only'` to emit messages in CSV format.
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
+
+## Message formats
+
+{% include {{ page.version.version }}/cdc/message-format-list.md %}
 
 ## Examples
 
@@ -32,6 +36,7 @@ CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_par
 
 Or, use [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) to filter the data that your changefeed emits:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
   WITH initial_scan = 'only', format=csv AS SELECT name, city FROM movr.users;

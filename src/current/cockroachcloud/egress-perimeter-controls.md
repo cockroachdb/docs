@@ -10,7 +10,7 @@ cloud: true
 This page describes how Egress Perimeter Controls can enhance the security of CockroachDB {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
 {{site.data.alerts.callout_info}}
-Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.dedicated }} clusters on Azure ([limited access]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %})). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Why use Egress Perimeter Controls

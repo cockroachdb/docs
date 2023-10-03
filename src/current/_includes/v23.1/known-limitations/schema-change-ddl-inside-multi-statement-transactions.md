@@ -1,4 +1,6 @@
-Schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) time, even if other statements in the transaction succeed.  This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+
+Some DDL statements do not have this limitation. `CREATE TABLE` and `CREATE INDEX` statements have the same atomicity guarantees as other statements within a transaction.
 
 If such a failure occurs, CockroachDB will emit a CockroachDB-specific error code, `XXA00`, and the following error message:
 

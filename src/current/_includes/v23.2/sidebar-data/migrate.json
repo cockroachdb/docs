@@ -40,6 +40,12 @@
           "urls": [
             "/${VERSION}/striim.html"
           ]
+        },
+        {
+          "title": "Oracle GoldenGate",
+          "urls": [
+            "/${VERSION}/goldengate.html"
+          ]
         }
       ]
     },

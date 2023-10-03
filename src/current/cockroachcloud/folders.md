@@ -13,7 +13,9 @@ This page explains how to organize and manage access to your {{ site.data.produc
 
 ## How folders work
 
-Folders provide a way to organize clusters and manage access to them. A folder can contain a mix of folders and clusters. Roles assigned on a folder are inherited by its descendants.
+Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
+
+Each folder can contain a mix of folders and clusters. Roles assigned on a folder are inherited by its descendants.
 
 Each folder that you create has an ID. To create a cluster in a folder or to move a cluster into a folder, you set its `parent_id` field to the folder's ID.
 
