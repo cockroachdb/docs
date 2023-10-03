@@ -100,20 +100,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     restrict_egress_traffic = # fill me in!
     ~~~
 
-<<<<<<< HEAD
-    Where:
-       - `{cluster name}` is the name of the cluster you want to create.
-       - `{SQL user name}` is the name of the SQL user you want to create.
-       - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`.
-       - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
-       - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
-       - `{storage in GiB}` is the amount of storage specified in GiB.
-       - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
-       - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
-       - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
-       - `{allow list CIDR mask}` is the CIDR mask.
-=======
     Parameters:
       - `cluster_name`: the name of the cluster you want to create.
       - `sql_user_name`: the name of the SQL user you want to create.
@@ -127,7 +113,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
       - `cidr_ip`: the Classless Inter-Domain Routing (CIDR) IP address base.
       - `cidr_mask`: the CIDR mask.
       - `restrict_egress_traffic`: (optional; default: false) boolean value specifying whether or not to deny-all egress on cluster creation.
->>>>>>> 50e1779b2 (add create cluster with API docs)
 
     For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
 

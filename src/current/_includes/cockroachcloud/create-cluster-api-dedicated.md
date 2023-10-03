@@ -27,52 +27,6 @@ curl --request POST \
 ~~~ json
 #create-dedicated-cluster-create.json
 {
-  "name": "{cluster_name}",
-  "provider": "{cloud_provider}",
-  "spec": {
-    "serverless": {
-      "regions": [
-        "{region_name}"
-      ],
-      "spendLimit": {spend_limit}
-    }
-  }
-}
-~~~
-
-</section>
-
-Where:
-
-  - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
-
-For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
-
-<div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
-    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="curl">
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters \
-  --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="raw">
-
-{% include_cached copy-clipboard.html %}
-~~~ JSON
-{
   "name": "docstestcluster",
   "provider": "GCP",
   "spec": {
