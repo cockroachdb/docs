@@ -19,13 +19,14 @@ This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} C
 
 ## Connect to the cluster
 
-You can connect to your cluster directly from the {{ site.data.products.cloud }} Console's SQL Shell or using the command line. To connect a sample application to your cluster instead, refer to [Example Applications Overview]({% link /{{ site.current_cloud_version }}/example-apps.md %}).
+You can connect to your cluster directly from the {{ site.data.products.cloud }} Console's SQL Shell or using the command line. To connect a sample application to your cluster instead, refer to [Example Applications Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps.md)
 
     <div class="filters clearfix">
       <button class="filter-button" data-scope="console">Cloud Console</button>
       <button class="filter-button" data-scope="cli">Command line</button>
     </div>
-    <section class="filter-content" markdown="1" data-scope="console">
+    
+<section class="filter-content" markdown="1" data-scope="console">
 
 </section>
 <section class="filter-content" markdown="1" data-scope="cli">
@@ -50,7 +51,7 @@ Now that you have a free CockroachDB {{ site.data.products.serverless }} cluster
 - Build a simple CRUD application in [Go](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb), [Java](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb), [Node.js](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb), or [Python](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb).
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 - [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}).
-- Explore our [example apps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
+- Explore our [example apps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps.md) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview).
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
