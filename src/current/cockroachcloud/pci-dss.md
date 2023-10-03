@@ -19,7 +19,7 @@ This page provides information about compliance with PCI DSS within CockroachDB 
 When a CockroachDB {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
 
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability) of CockroachDB {{ site.data.products.dedicated }} on Azure, PCI DSS is not supported for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+PCI DSS is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 ## Overview of PCI DSS
 

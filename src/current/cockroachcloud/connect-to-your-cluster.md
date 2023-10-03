@@ -46,7 +46,7 @@ To configure VPC Peering or PrivateLink, you create the private connection in yo
 
 AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
 
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), Azure Private Link is not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 #### VPC Peering
 

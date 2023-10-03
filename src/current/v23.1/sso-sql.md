@@ -1,158 +1,261 @@
 ---
-title: Cluster Single Sign-on (SSO) using a JSON web token (JWT)
+title: Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)
 summary: Overview of Cluster Single Sign-on (SSO) for CockroachDB {{ site.data.products.core }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
 
-Cluster Single Sign-On (SSO) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
+CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-This page describes the procedure for accessing a CockroachDB {{ site.data.products.cloud }} cluster using the JWT access tokens provided by a customer-managed IdP. This document applies for both CockroachDB {{ site.data.products.core }} and CockroachDB {{ site.data.products.dedicated }} customers.
+Cluster single sign-on (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), and the choice of a variety of cloud-based or customer-managed identity providers (IdPs).
 
-You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
+{{ site.data.products.dedicated }} clusters can provision their users with JWTs via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT that a user can copy out of the DB Console UI and use in a SQL connection string to authenticate to the cluster.
 
 {{site.data.alerts.callout_info}}
-Note for CockroachDB {{ site.data.products.dedicated }} customers:
-Currently, this flow will not work for service accounts provisioned in CockroachDB {{ site.data.products.cloud }} console. You must [create the service account manually](#provision-a-service-account), as detailed below.
+Cluster single sign-on for the DB Console is supported on {{ site.data.products.core }} {{ site.data.products.enterprise }} and {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters do not support cluster single sign-on, because they do not have access to the DB Console. However, {{ site.data.products.serverless }} clusters can use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql).
 {{site.data.alerts.end}}
 
-## Before you begin
+The page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
 
-For more details and examples, refer to [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
+- [Configure a cluster for cluster single sign-on using JWTs](#configure-your-cluster-for-sso)
+- [Authenticate to your cluster](#authenticate-to-your-cluster)
 
-- **IdP:**
+**Prerequisites**
 
-	You must have the ability to create identities and issue access tokens formatted using JSON Web Token (JWT).
+- You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console](sso-db-console.html) guide to set this up.
 
-- **CockroachDB:**
+- SQL users/credentials:
 
-	- **Self-Hosted**: You must have access to a cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+    - You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
+.
+    - A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
-		See [Enterprise Trial –– Get Started]({% link {{ page.version.version }}/get-started-with-enterprise-trial.md %}) for help enabling your cluster with you enterprise license.
+## Configure your cluster for SSO
 
-	- **CockroachDB {{ site.data.products.cloud }}**: You must have access to a [CockroachDB {{ site.data.products.dedicated }}cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
+**Prerequisites**:
 
-	- SQL users/credentials:
+You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions](set-cluster-setting.html#required-privileges)
 
-		- Your SQL user must have the ability to update cluster settings. This permission is provided by either the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the [`MODIFYCLUSTERSETTING` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). This is required to designate an IdP as an external token issuer.
+### Cluster Settings
 
-		- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) in the following table to enable JWT authentication to your cluster. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
-## Learn more
+| Cluster Setting | Description 
+|-----------------|------ 
+| `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
+| `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. 
+| `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
+| `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
+| `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
+| `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
+|`server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
+|`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
+| `server.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
+| `server.sql_port` | This display value informs users the port for their SQL connections. Default: `26257`.
 
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
-
-## Provision a service account
-
-For access to a CockroachDB cluster, an identity in an external IdP must correspond to a SQL user on the target cluster, so creating a service for your cluster entails two steps:
-
-- Create a service account/IAM username with your external IdP (for example, GCP).
-- [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}) in your cluster.
-
-The **correspondence** between IdP identity and SQL username is crucial. This determined by [your cluster's identity mapping](#configure-your-clusters-identity-mapping).
-
-## Configure your cluster to accept your external identity provider
-
-In order to authenticate a service account to a CockroachDB {{ site.data.products.cloud }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as well as the [`identity_map.configuration`](#configure-your-clusters-identity-mapping)
-
-- [`enabled`](#server-jwt_authentication-enabled): JWT token authentication must be allowed on your cluster.
-- [`jwks`](#server-jwt_authentication-jwks): A list of public signing keys for allowed IdPs. You'll need to add your IdP's key.
-- [`issuers`](#server-jwt_authentication-issuers): A list of accepted token issuers. You'll need to add your IdP.
-- [`audience`](#server-jwt_authentication-audience): A list of audiences (or targets) for authentication, most relevantly, clusters.
+### Update your cluster settings
 
 {{site.data.alerts.callout_success}}
-The required information for a given IdP is published on that IdP's `.well-known/openid-configuration` path (for example, `https://cockroachlabs.cloud/.well-known/openid-configuration` for CockroachDB {{ site.data.products.cloud }} or `https://accounts.google.com/.well-known/openid-configuration` for GCP.
+In order for this feature to work, [Single Sign-on (SSO) for DB Console](sso-db-console.html) and cluster SSO must both be configured with the same IDP.
 {{site.data.alerts.end}}
 
-### `server.jwt_authentication.enabled`
-
-	Enable or disable Cluster SSO
-
-	Required value: `true`
-
-	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in CockroachDB {{ site.data.products.cloud }} clusters.
-
-### `server.jwt_authentication.jwks`
-
-Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster.
-
-By default, your cluster's configuration will contain the CockroachDB {{ site.data.products.cloud }}'s own public key, allowing CockroachDB {{ site.data.products.cloud }} to serve as an IdP. When modifying this cluster setting, you must include the CockroachDB {{ site.data.products.cloud }} public key in the key set. Failing to do so will lock out console SSO users and prevent maintenance access by the CockroachDB {{ site.data.products.cloud }} managed service, leading to unintended consequences.
+You can update your cluster settings with the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) SQL statement.
 
 {{site.data.alerts.callout_success}}
-CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: [`https://cockroachlabs.cloud/.well-known/openid-configuration`](https://cockroachlabs.cloud/.well-known/openid-configuration).
-The link specified for `jwks_uri` provides the IdP's public signing key. For CockroachDB {{ site.data.products.cloud }} this is `https://cockroachlabs.cloud/oauth2/keys`
+You can also view all of your cluster settings in the DB Console.
 {{site.data.alerts.end}}
 
-For example:
+1. `enable` JWT SQL authentication to your cluster.
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256","e": "AQAB","kid": "e34e6c51-917d-4e77-8a8c-812d3aa2d730","kty": "RSA","n": "1Y7D2TssaJeeE_g-6ynRrfhfkI_RyvGOv3AVxnkeF3HvYZwJUp4QMngqsbZ-n_J_cdMlKYiuop8S0PW6lZiCx7kHw872tgvrYycRXLo6QgIO_JqJboG5gsXkf92lO8niGgXllyFuilQajzR9_K8bPIqMoLaoKHnEjULNleK6j7pHWW-MnQ_vs4NmU69Ctn3c_3muCZ5ULZKZ3FozlfFCj1D_HC5gk7hRJe22-VYyaxLgO-DqOCE4EedQW-yTGGIy8inMZ9l1EdoNwfDS0RCDnQad9F-DXqcN0VhSJO6nRgWf8EtFuW1sNAknSb6MiI0QGZt9yIVhd2VUMg9HHqXAEQ","use": "sig"},{"alg": "RS256","e": "AQAB","kid": "c0d742ec-edc6-409e-88c7-57747914c09c","kty": "RSA","n": "qG6aXxmuYM-9z2gD83g6o79kNd4T1d_YsKs9VBRDmtvV3Lep5oVwj1wQ2bqbsWtG8JNFej0yzKi8NB16_yfL9NSMw3be2HF6-zr6aBswTAY31_SxBFGzN-sQq0-x49kqZuWOw2_CGz8Z7ZThlB4GAhfqcztFFps_j1z5kOTrzZSX0yIWY-HSv_gCps1bVKJ-d8HJR_AHGtyAOuGZJjJxwJYyWWQmLEHz4YK-GXz4GRO6oMXMDiZTBJCNTUI1g4XRKezZhEA6MHLtbeuIjeiLo1ZG571nfVbPjidHZPPREnR8LxePYYw3WTTddxtCanCo1G9e3ENW4TKHX-wx1YvkQQ","use": "sig"}]}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.jwt_authentication.enabled = true;
+    ~~~
 
-### `server.jwt_authentication.issuers`
+1.  Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers.
 
-	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers.
+    
+    This must match your cluster's configured  value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings).
 
-	This field takes a single JWT or JSON array of JWTS. This list must include a given IdP, or the cluster will reject JWTs issued by it.
+        - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
+        The `issuer` is `https://cockroachlabs.cloud`.
 
-	The default value is CockroachDB {{ site.data.products.cloud }}. When modifying this cluster setting, you must include CockroachDB {{ site.data.products.cloud }} in the new value. Failing to do so can prevent maintenance access by the CockroachDB {{ site.data.products.cloud }} managed service, leading to unintended consequences. It can also break the cluster SSO for human users to this cluster.
+        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
 
-	{{site.data.alerts.callout_danger}}
-	Any IdP that is configured on your cluster can grant SQL access to your cluster, and therefore any data that is stored within. This configuration is therefore critical for security.
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.jwt_authentication.issuers = 'https://accounts.google.com';
+    ~~~
 
-	Changes to this configuration should be made with utmost care, and access to updating this configuration (granted by the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the [`MODIFYCLUSTERSETTING` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges)) should be carefully restricted.
-	{{site.data.alerts.end}}
+1. `server.jwt_authentication.audience`
 
-	{{site.data.alerts.callout_success}}
-	CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-	The `issuer` is `https://cockroachlabs.cloud`.
-	{{site.data.alerts.end}}
+    The ID of your cluster as specified by the IdP, or a JSON array of such names. This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 
-### `server.jwt_authentication.audience`
+    {{site.data.alerts.callout_danger}}
+    Many third-party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
 
-	The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
+    By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible, while still allowing for the functions intended for the service account or user.
+    {{site.data.alerts.end}}
 
-	{{site.data.alerts.callout_danger}}
-	Many third-party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.jwt_authentication.audience = '984901724939-njig7lkv7k724rbv2hllvr4of8ul7th7.apps.googleusercontent.com';
+    ~~~
 
-	By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible, while still allowing for the functions intended for the service account or user.
-	{{site.data.alerts.end}}
+1. `server.jwt_authentication.claim`
+    This setting determines which field in the JWT your cluster will use to the identity to a SQL user. The value of `email` indicates the email field in the JWT.
 
-## Configure your cluster's identity mapping
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.jwt_authentication.claim = 'email';
+    ~~~
 
-### `server.identity_map.configuration`
+1. `server.jwt_authentication.jwks`
 
-Format: `<external issuer> <external user ID> <SQL username>`
+    Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster. This list must include a given IdP, or the cluster will reject JWTs issued by it. IdPs serve their public certificates and other required information at `https://{ domain }/.well-known/openid-configuration`.
+    
+    IdPs such as Google rotate their signing keys periodically. You must update your cluster with a new signing key before the previous one expires, or your SQL clients will be unable to connect with cluster SSO. **We recommend updating this cluster setting with the current key daily to avoid this scenario.**
 
-Specifies mapping of subject names to SQL usernames, for each allowed IdP. For example, a configuration of:
+    <b>{{ site.data.products.db }} {{ site.data.products.dedicated }} customers:</b> 
 
-`https://accounts.google.com   /^([9-0]*)$   gcp_\1`
+    By default, your cluster's configuration will contain the CockroachDB {{ site.data.products.cloud }}'s own public key, allowing CockroachDB {{ site.data.products.cloud }} to serve as an IdP. This is required for [SSO with `ccloud`](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). When modifying this cluster setting, you must include the CockroachDB {{ site.data.products.cloud }} public key in the key set, or SSO with `ccloud` will no longer work.
 
-would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
+    The public key for {{ site.data.products.db }} can be found at `https://cockroachlabs.cloud/.well-known/openid-configuration`.
+    
+    For example:
 
-## Authenticate to your cluster with your JWT token
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --silent https://accounts.google.com/.well-known/openid-configuration | jq .jwks_uri | xargs curl
+    ~~~
+    
+    ~~~txt
+    {
+      "keys": [
+        {
+          "alg": "RS256",
+          "use": "sig",
+          "e": "AQAB",
+          "kty": "RSA",
+          "kid": "7c0b6913fe13820a333399ace426e70535a9a0bf",
+          "n": "lWXY0XOj_ikSIDIvGOhfuRhQJAAj6BWsbbZ6P-PXRclzV32-QLB4GZHPPcH37Lou5pQsTQPvTETAfCLnglIRSbP8x1zA5tUakRlm5RiGF4kcWh5k60x8u0Uslx-d6EueKuY-KLHUVDuMULlHkYAScIdYnXz-Cnr6PFZj8RQezzdPVPH53Q8a_Z9b-vpGzsMS5gszITb-72OQNokojXdPVctl5WzSx-JnWbJxPiwHx_dSWgmTnyiYrZLqrqfampGdroaamtIXy0W8CAe0uCqcD1LunpfX-Q-RD1IycxnEaXSuUKhNhCcxtHWrozEyeD23Zja2WlcvHdYuTzyrvrvS9Q"
+        },
+        {
+          "kid": "6f7254101f56e41cf35c9926de84a2d552b4c6f1",
+          "e": "AQAB",
+          "alg": "RS256",
+          "use": "sig",
+          "n": "oUriU8GqbRw-avcMn95DGW1cpZR1IoM6L7krfrWvLSSCcSX6Ig117o25Yk7QWBiJpaPV0FbP7Y5-DmThZ3SaF0AXW-3BsKPEXfFfeKVc6vBqk3t5mKlNEowjdvNTSzoOXO5UIHwsXaxiJlbMRalaFEUm-2CKgmXl1ss_yGh1OHkfnBiGsfQUndKoHiZuDzBMGw8Sf67am_Ok-4FShK0NuR3-q33aB_3Z7obC71dejSLWFOEcKUVCaw6DGVuLog3x506h1QQ1r0FXKOQxnmqrRgpoHqGSouuG35oZve1vgCU4vLZ6EAgBAbC0KL35I7_0wUDSMpiAvf7iZxzJVbspkQ",
+          "kty": "RSA"
+        }
+      ]
+    }
+    ~~~
 
-To provision SQL cluster access for application users or service accounts, you must provision JWT tokens. There are many ways to do this, which are beyond the scope of this tutorial.
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.jwt_authentication.jwks = '{
+      "keys": [
+        {
+          "alg": "RS256",
+          "use": "sig",
+          "e": "AQAB",
+          "kty": "RSA",
+          "kid": "7c0b6913fe13820a333399ace426e70535a9a0bf",
+          "n": "lWXY0XOj_ikSIDIvGOhfuRhQJAAj6BWsbbZ6P-PXRclzV32-QLB4GZHPPcH37Lou5pQsTQPvTETAfCLnglIRSbP8x1zA5tUakRlm5RiGF4kcWh5k60x8u0Uslx-d6EueKuY-KLHUVDuMULlHkYAScIdYnXz-Cnr6PFZj8RQezzdPVPH53Q8a_Z9b-vpGzsMS5gszITb-72OQNokojXdPVctl5WzSx-JnWbJxPiwHx_dSWgmTnyiYrZLqrqfampGdroaamtIXy0W8CAe0uCqcD1LunpfX-Q-RD1IycxnEaXSuUKhNhCcxtHWrozEyeD23Zja2WlcvHdYuTzyrvrvS9Q"
+        },
+        {
+          "kid": "6f7254101f56e41cf35c9926de84a2d552b4c6f1",
+          "e": "AQAB",
+          "alg": "RS256",
+          "use": "sig",
+          "n": "oUriU8GqbRw-avcMn95DGW1cpZR1IoM6L7krfrWvLSSCcSX6Ig117o25Yk7QWBiJpaPV0FbP7Y5-DmThZ3SaF0AXW-3BsKPEXfFfeKVc6vBqk3t5mKlNEowjdvNTSzoOXO5UIHwsXaxiJlbMRalaFEUm-2CKgmXl1ss_yGh1OHkfnBiGsfQUndKoHiZuDzBMGw8Sf67am_Ok-4FShK0NuR3-q33aB_3Z7obC71dejSLWFOEcKUVCaw6DGVuLog3x506h1QQ1r0FXKOQxnmqrRgpoHqGSouuG35oZve1vgCU4vLZ6EAgBAbC0KL35I7_0wUDSMpiAvf7iZxzJVbspkQ",
+          "kty": "RSA"
+        }
+      ]
+    }';
+    ~~~
 
-For example, your Google Cloud Platform organization can serve as token issuer, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP to authenticate issue tokens.
+1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
-Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider)) from your IdP, you may use it to connect to your cluster's SQL interface.
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.identity_map.configuration = 'https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1'  ;
+    ~~~
+
+1. Enable token generation.
+
+    This will also cause the token generation button to appear in the UI.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.enabled = true;
+    ~~~
+
+1. Set `use_token`, which determines how the user's identity will be displayed.
+
+    It can be set to either `id_token` or `access_token`, depending on the structure of the your JWT as determined in your IDP configuration.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING server.oidc_authentication.generate_cluster_sso_token.use_token = id_token;
+    ~~~
+
+## How CockroachDB determines the SQL username from a JWT
+
+1. `server.jwt_authentication.claim` determines which field to use to identify the external user. This must match a SQL user via the identity map.
+1. `server.identity_map.configuration` maps that claim (along with the token’s issuer) to a SQL username.
+
+## Identity Map configuration
+
+Th cluster setting `server.identity_map.configuration` holds your cluster's identity map configuration, which tells your cluster how to map external identities to SQL users. This is functionally similar to PostgreSQL's [User Name Map](https://www.postgresql.org/docs/current/auth-username-maps.html).
+
+{{site.data.alerts.callout_info}}
+Each line potentially maps many external identities to one SQL user, and a configuration can contain multiple lines, so the mapping can be many-to-many. The cluster checks to see if the SQL username given in the connection request matches the identity in the token by any of the lines in the Identity Map.
+{{site.data.alerts.end}}
+
+The format of an identity map configuration is a space-separated triple consisting of:
+
+`<external issuer> <external user ID> <SQL username>`
+
+Examples:
+
+- `https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1`
+
+    Maps every `cockroachlabs` email to a SQL user with the same username. That is, the part of the email address to the left of the `@`). For example, `docs@cockroachlabs.com` becomes `docs`.
+
+- `https://accounts.google.com 1232316645658094244789 roach`
+
+    Maps a single external identity with the hard-coded ID to the SQL user `roach`.  
+
+- `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
+
+    Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
+
+## Authenticate to your cluster
+
+Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
-~~~
+1. Obtain a token.
 
-~~~txt
-Welcome to the cockroach SQL interface...
-~~~
+    Go to your cluster's DB Console and click the **Generate JWT auth token for cluster SSO** button
+
+1. Use the token in place of a password in your database connection string.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
+    ~~~
+
+    ~~~txt
+    Welcome to the cockroach SQL interface...
+    ~~~
 
 ## What's Next?
 
-- Read about [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
 - Learn more about [Authentication]({% link {{ page.version.version }}/authentication.md %}) in CockroachDB.
+- This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.

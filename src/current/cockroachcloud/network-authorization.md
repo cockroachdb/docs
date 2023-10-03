@@ -32,7 +32,7 @@ Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clu
 
 {{site.data.alerts.callout_info}}
 
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), neither Azure Private Link nor private clusters are available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Cluster default network configuration

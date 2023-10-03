@@ -1,5 +1,5 @@
-{% if page.cloud == true %}
-  {% capture link_prefix %}../{{site.versions["stable"]}}/{% endcapture %}
+{% if page.path contains "cockroachcloud/" or site.baseurl contains "/cockroachcloud" %}
+  {% capture link_prefix %}../{{site.current_cloud_version}}/{% endcapture %}
 {% elsif page.security == true %}
   {% capture link_prefix %}../{% endcapture %}
 {% else %}
