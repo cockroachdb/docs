@@ -56,7 +56,7 @@ To add custom expiration logic using `ttl_expiration_expression`, issue the foll
 CREATE TABLE ttl_test_per_row (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
-  expired_at TIMESTAMPTZ
+  expired_at TIMESTAMPTZ NOT NULL default NOW() + INTERVAL '30 days'
 ) WITH (ttl_expiration_expression = 'expired_at');
 ~~~
 
@@ -80,7 +80,7 @@ SHOW CREATE TABLE ttl_test_per_row;
   ttl_test_per_row | CREATE TABLE public.ttl_test_per_row (
                    |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                    |     description STRING NULL,
-                   |     expired_at TIMESTAMPTZ NULL,
+                   |     expired_at TIMESTAMPTZ NOT NULL DEFAULT now():::TIMESTAMPTZ + '30 days':::INTERVAL,
                    |     CONSTRAINT ttl_test_per_row_pkey PRIMARY KEY (id ASC)
                    | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@hourly')
 (1 row)
