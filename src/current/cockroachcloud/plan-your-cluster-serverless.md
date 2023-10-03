@@ -68,6 +68,6 @@ Keep in mind the following key points when planning your multi-region CockroachD
 
 - Write-heavy applications may experience a significant increase in RU consumption because replicating writes across all regions consumes more resources.
 - Read-heavy applications may experience a smaller increase in RU consumption because the resources required to read from a single region of a multi-region cluster are comparable with a single-region cluster.
-- Cross-region reads are an anti-pattern and may significantly increase RU consumption. Features such as [global tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/global-tables.md), [regional by row tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/regional-tables.md), and [follower reads](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/follower-reads.md) help avoid most cross-region reads.
+- Cross-region reads are an anti-pattern and may significantly increase RU consumption. Features such as [global tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/global-tables), [regional by row tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/regional-tables), and [follower reads](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/follower-reads) help avoid most cross-region reads.
 - Cross-region writes will also consume additional RUs, but should not significantly increase consumption.
 
