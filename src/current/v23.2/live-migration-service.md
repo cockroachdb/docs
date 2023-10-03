@@ -24,7 +24,7 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 - A *live migration* keeps two production databases online (a source and a target database) and uses either replication or dual writing to keep data equal between them until a final cutover.
 - The *source of truth* is the database that serves reads and writes to the application during a live migration. A cutover switches the source of truth.
-- *Shadowing* is the replication of traffic on the target database. The LMS supports multiple [shadowing modes](#shadowing-modes).
+- *Shadowing* is the replaying of traffic on the target database. The LMS supports multiple [shadowing modes](#shadowing-modes).
 
 ## Requirements
 
@@ -39,35 +39,50 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Installation
 
-To install the LMS, add the [Helm chart](https://molt.cockroachdb.com/lms/charts).
+1. Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) using [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/):
 
-When you install the `molt-lms` chart, the LMS proxy instances and orchestrator are initialized as Kubernetes pods:
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	helm repo add https://molt.cockroachdb.com/lms/charts
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-kubectl get pods
-~~~
+1. Install the `molt-lms` chart:
 
-~~~
-NAME                                          READY   STATUS      RESTARTS      AGE
-lms-molt-lms-5cbd7c748-bzbgn                  1/1     Running     0             2m30s
-lms-molt-lms-5cbd7c748-g5zqf                  1/1     Running     0             2m34s
-lms-molt-lms-5cbd7c748-lbjjz                  1/1     Running     0             2m3
-lms-molt-lms-orchestrator-596d4b54d8-c4v97    1/1     Running     0             21m
-...
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	helm install molt-lms
+	~~~
 
-You will see `lms-molt-lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `lms-molt-lms-orchestrator` pod.
+1. [Install the CLI](#molt-lms-cli) and run the initial command to set up the LMS:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	molt-lms-cli initialize
+	~~~
+
+1. The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	kubectl get pods
+	~~~
+
+	~~~
+	NAME                                          READY   STATUS      RESTARTS      AGE
+	lms-molt-lms-5cbd7c748-bzbgn                  1/1     Running     0             2m30s
+	lms-molt-lms-5cbd7c748-g5zqf                  1/1     Running     0             2m34s
+	lms-molt-lms-5cbd7c748-lbjjz                  1/1     Running     0             2m3
+	lms-molt-lms-orchestrator-596d4b54d8-c4v97    1/1     Running     0             21m
+	...
+	~~~
+
+	You will see `molt-lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `molt-lms-orchestrator` pod. The pod names are prefixed with the release name, `lms` by default.
 
 ## Configuration
 
-To configure the LMS, override the values defined in the [Helm chart](#installation). For information on setting Helm chart values, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
+To configure the LMS, override the [Helm chart values](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml). For information on setting Helm chart values, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
 
-{{site.data.alerts.callout_info}}
-Values that are specified in both `lms` and `orchestrator` must have the identical setting.
-{{site.data.alerts.end}}
-
-This section describes the most important and commonly used values.
+This section describes the most important and commonly used values. For details on all configurable values, refer to the [`values.yaml`](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml) file.
 
 #### Source dialect
 
@@ -101,70 +116,20 @@ lms:
   replicaCount: 3
 ~~~
 
-`lms.replicaCount` determines the number of LMS instances created as `lms-molt-lms` pods on the Kubernetes cluster, across which application traffic is distributed. This defaults to `3`.
+`lms.replicaCount` determines the number of LMS instances created as `molt-lms` pods on the Kubernetes cluster, across which application traffic is distributed. This defaults to `3`.
 
-#### Source and target connections
+#### Connection strings
 
-The connections to the source database and CockroachDB are defined with the configuration keys:
+The following connection strings are specific to your configuration:
 
-- `INIT_SOURCE`: Connection string for the source database.
-- `INIT_TARGET`: Connection string for a CockroachDB database.
+- External connection string for the source database.
+- External connection string for the CockroachDB database.
+- Internal connection string for the LMS.
 
-Include client authentication details in the connection strings. For more details, see [Configure source and target certificates](#configure-source-and-target-certificates).
-
-{{site.data.alerts.callout_success}}
-For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
-{{site.data.alerts.end}}
-
-You should specify the config keys in an external Kubernetes secret and inside a JSON object. The JSON **must** be named `config.json`.
-
-For example:
-
-~~~ json
-config.json: |
-  {
-    "INIT_SOURCE": "mysql://{username}:{password}@{protocol}({host}:{port})/{database}?sslmode=verify-full?sslrootcert=path/to/mysql.ca&sslcert=path/to/mysql.crt&sslkey=path/to/mysql.key",
-    "INIT_TARGET": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
-  }
-~~~
+You should specify these in external Kubernetes secrets. For details, see [Manage external secret](#manage-external-secret).
 
 {{site.data.alerts.callout_danger}}
-Storing the LMS configuration in an external secret is **strongly** recommended. For details, see [Manage external secret](#manage-external-secret).
-{{site.data.alerts.end}}
-
-#### Certificates
-
-~~~ yaml
-lms:
-  sslVolumes: {}
-  sslVolumeMounts: {}
-...
-orchestrator:
-  sslVolumes: {}
-  sslVolumeMounts: {}
-~~~
-
-`sslVolumes` and `sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the LMS instances and orchestrator. 
-
-{{site.data.alerts.callout_danger}}
-Setting up TLS certificates for the LMS, source and target databases, and orchestrator and client is **strongly** recommended. For details, see [Security](#security).
-{{site.data.alerts.end}}
-
-<a name="cert-var"></a>
-
-When you specify a volume in `sslVolumes` and `sslVolumeMounts`, you must also [set its corresponding config key](#manage-external-secret) to the path specified in `sslVolumeMounts.mountPath`.
-
-|      Key      |                                                          Description                                                           |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------|
-| `SSL_CA`      | Mount path to the CA certificate for the LMS.                                                                                  |
-| `SSL_CERT`    | Mount path to the certificate for the LMS.                                                                                     |
-| `SSL_KEY`     | Mount path to the key for the LMS.                                                                                             |
-| `CA_TLS_CERT` | Mount path to the CA certificate for the orchestrator. This is optional and is mainly used if you self-sign your certificates. |
-| `TLS_CERT`    | Mount path to the certificate for the orchestrator.                                                                            |
-| `TLS_KEY`     | Mount path to the key for the orchestrator.                                                                                    |
-
-{{site.data.alerts.callout_success}}
-Cockroach Labs recommends mounting certificates to `/app/certs`.
+Storing sensitive keys in external secrets is **strongly** recommended.
 {{site.data.alerts.end}}
 
 #### Service type
@@ -203,25 +168,25 @@ serviceMonitor:
 {{site.data.alerts.callout_danger}}
 Cockroach Labs **strongly** recommends the following:
 
-- Manage your LMS configuration in an [external Kubernetes secret](#manage-external-secret).
-- To establish secure connections between the LMS pods and with your client, set up TLS certificates for the [LMS](#configure-lms-certificate), [source database and CockroachDB](#configure-source-and-target-certificates), and [orchestrator and client](#configure-orchestrator-and-client-certificates).
+- Manage your LMS and orchestrator configurations in [external Kubernetes secrets](#manage-external-secrets).
+- To establish secure connections between the LMS pods and with your client, set up TLS certificates for the [LMS](#configure-lms-certificates), [source database and CockroachDB](#configure-lms-secret), and [orchestrator](#configure-orchestrator-and-client-certificates).
 {{site.data.alerts.end}}
 
-#### Manage external secret
+#### Manage external secrets
 
-Use an external secrets manager such as [External Secrets Operator](https://external-secrets.io/latest/) to create and manage a Kubernetes secret containing your LMS configuration. For information on Kubernetes secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
+Use an external secrets manager such as [External Secrets Operator](https://external-secrets.io/latest/) to [create and manage Kubernetes secrets](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-externalsecret) that contain:
 
-In the [LMS configuration](#configuration), specify the name of your external secret with `configSecretName`:
+- [Your LMS configuration](#configure-lms-secret), which includes the source and target database connection strings.
+- [Your orchestrator configuration](#configure-orchestrator-secret), which includes the LMS and target database connection strings.
+- Your [LMS](#configure-lms-certificates) and [orchestrator](#configure-orchestrator-certificates) certificates.
 
-~~~ yaml
-lms:
-  configSecretName: "secret-name"
-...
-orchestrator:
-  configSecretName: "secret-name"
-~~~
+For information on Kubernetes secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
 
-WIthin the secret, set LMS config keys inside a JSON object named `config.json`. For example, in an `ExternalSecret` named `lms-config` created with External Secrets Operator:
+#### Configure LMS secret
+
+Create an external secret that specifies the connection strings for the source and target CockroachDB database.
+
+For example, the following `ExternalSecret` called `lms-config` uses AWS Secrets Manager as the [`SecretStore`](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-secretstore), and references a remote [AWS secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) called `lms-secret`:
 
 ~~~ yaml
 apiVersion: external-secrets.io/v1beta1
@@ -229,169 +194,243 @@ kind: ExternalSecret
 metadata:
   name: lms-config
 spec:
-  ...
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secret-store
+    kind: SecretStore
   target:
     name: lms-config
-    ...
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
       data:
         config.json: |
           {
-            "INIT_SOURCE": "mysql://{username}:{password}@{protocol}({host}:{port})/{database}?sslmode=verify-full?sslrootcert=path/to/mysql.ca&sslcert=path/to/mysql.crt&sslkey=path/to/mysql.key",
-            "INIT_TARGET": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key",
-            "SSL_CA": "/app/certs",
-            "SSL_CERT": "/app/certs",
-            "SSL_KEY": "/app/certs",
-            "CA_TLS_CERT": "/app/certs",
-            "TLS_CERT": "/app/certs",
-            "TLS_KEY": "/app/certs",
-            ...
+            "INIT_SOURCE": "{% raw %}{{ .source }}{% endraw %}",
+            "INIT_TARGET": "{% raw %}{{ .target }}{% endraw %}"
           }
-...
+  data:
+  - secretKey: source
+    remoteRef:
+      key: lms-secret
+      property: INIT_SOURCE
+  - secretKey: target
+    remoteRef:
+      key: lms-secret
+      property: INIT_TARGET
 ~~~
 
-The preceding example defines config keys for the [source and target database connections](#source-and-target-connections) and mount paths for various [certificates](#certificates).
+The connection strings are specified with the following configuration keys inside `config.json`:
 
-#### Configure LMS certificate
+- `INIT_SOURCE`: External connection string for the source database, including the paths to your client certificate and keys.
+- `INIT_TARGET`: External connection string for the CockroachDB database, including the paths to your client certificate and keys.
 
-Mount the LMS certificate, key, and (optional) CA certificate to separate volumes. Cockroach Labs recommends mounting certificates to `/app/certs`.
+	{{site.data.alerts.callout_success}}
+	For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
+	{{site.data.alerts.end}}
 
-For example:
-
-~~~ yaml
-lms:
-  sslVolumes:
-    - name: lms-ca
-      secret:
-        secretName: lms-ca
-    - name: lms-cert
-      secret:
-        secretName: lms-cert
-    - name: lms-key
-      secret:
-        secretName: lms-key
-  sslVolumeMounts:
-    - mountPath: "/app/certs"
-      name: lms-ca
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: lms-cert
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: lms-key
-      readOnly: true
-~~~
-
-Set the [corresponding config keys](#cert-var) to the same mount path. For example, within `config.json` in the [external secret](#manage-external-secret):
-
-~~~ yaml
-config.json: |
-  {
-    "SSL_CA": "/app/certs",
-    "SSL_CERT": "/app/certs",
-    "SSL_KEY": "/app/certs",
-  }
-~~~
-
-#### Configure source and target certificates
-
-Mount the source and target certificate, key, and (optional) CA certificate to separate volumes. Cockroach Labs recommends mounting certificates to `/app/certs`.
-
-For example:
-
-~~~ yaml
-lms:
-  sslVolumes:
-    - name: source-ca
-      secret:
-        secretName: source-ca
-    - name: source-cert
-      secret:
-        secretName: source-cert
-    - name: source-key
-      secret:
-        secretName: source-key
-    - name: cockroach-ca
-      secret:
-        secretName: cockroach-ca
-    - name: cockroach-cert
-      secret:
-        secretName: cockroach-cert
-    - name: cockroach-key
-      secret:
-        secretName: cockroach-key
-  sslVolumeMounts:
-    - mountPath: "/app/certs"
-      name: source-ca
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: source-cert
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: source-key
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: cockroach-ca
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: cockroach-cert
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: cockroach-key
-      readOnly: true
-~~~
-
-Specify the corresponding client certificates and keys in the [database connection strings](#source-and-target-connections). For example, within `config.json` in the [external secret](#manage-external-secret):
+The remote secret `lms-secret` would contain the full connection strings. For example:
 
 ~~~ json
-config.json: |
-  {
-    "INIT_SOURCE": "mysql://{username}:{password}@{protocol}({host}:{port})/{database}?sslmode=verify-full?sslrootcert=path/to/mysql.ca&sslcert=path/to/mysql.crt&sslkey=path/to/mysql.key",
-    "INIT_TARGET": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
-  }
+"INIT_SOURCE": "mysql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/mysql.ca&sslcert=path/to/mysql.crt&sslkey=path/to/mysql.key",
+"INIT_TARGET": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
+~~~
+
+In the [Helm configuration](#configuration), `lms.configSecretName` specifies the external secret name:
+
+~~~ yaml
+lms:
+  configSecretName: "lms-config"
+~~~
+
+#### Configure orchestrator secret
+
+Create an external secret that specifies the connection strings for the LMS and target CockroachDB database.
+
+For example, the following `ExternalSecret` called `orch-config` uses AWS Secrets Manager as the [`SecretStore`](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-secretstore), and references a remote [AWS secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) called `orch-secret`:
+
+~~~ yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: orch-config
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secret-store
+    kind: SecretStore
+  target:
+    name: orch-config
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        config.json: |
+          {
+            "LMS_URL": "{% raw %}{{ .lmsUrl }}{% endraw %}",
+            "CRDB_URL": "{% raw %}{{ .crdbUrl }}{% endraw %}"
+          }
+  data:
+  - secretKey: lmsUrl
+    remoteRef:
+      key: orch-secret
+      property: LMS_URL
+  - secretKey: crdbUrl
+    remoteRef:
+      key: orch-secret
+      property: CRDB_URL
+~~~
+
+The connection strings are specified with the following configuration keys inside `config.json`:
+
+- `LMS_URL`: Internal connection string for the LMS.
+- `CRDB_URL`: External connection string for the CockroachDB database, including the paths to your client certificate and keys.
+
+	{{site.data.alerts.callout_success}}
+	For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
+	{{site.data.alerts.end}}
+
+The remote secret `orch-secret` would contain the full connection strings. For example:
+
+~~~ json
+"LMS_URL": "{username}:{password}@({releasename}-molt-lms.{namespace}.svc.cluster.local:{port})/{database}",
+"CRDB_URL": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
+~~~ 
+
+In the [Helm configuration](#configuration), `orchestrator.configSecretName` specifies the external secret name:
+
+~~~ yaml
+orchestrator:
+  configSecretName: "orch-config"
+~~~
+
+#### Configure LMS certificates
+
+Create an external secret that specifies the LMS certificate, key, and (optional) CA certificate.
+
+For example, the following `ExternalSecret` called `lms-tls` uses AWS Secrets Manager as the [`SecretStore`](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-secretstore), and references a remote [AWS secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) called `lms-certs`:
+
+~~~ yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: lms-tls
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secret-store
+    kind: SecretStore
+  target:
+    name: lms-tls
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        lms-ca.crt: '{% raw %}{{ .caCert }}{% endraw %}'
+        lms-tls.crt: '{% raw %}{{ .serverCert }}{% endraw %}'
+        lms-tls.key: '{% raw %}{{ .serverKey }}{% endraw %}'
+  data:
+  - secretKey: caCert
+    remoteRef:
+      key: lms-certs
+      property: caCert
+  - secretKey: serverCert
+    remoteRef:
+      key: lms-certs
+      property: serverCert
+  - secretKey: serverKey
+    remoteRef:
+      key: lms-certs
+      property: serverKey
+~~~
+
+Each `.crt` and `.key` file is associated with its corresponding property in the remote secret `lms-certs`.
+
+In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the LMS. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
+
+~~~ yaml
+lms:
+  sslVolumes:
+    - name: lms-tls
+      secret:
+        secretName: lms-tls
+  sslVolumeMounts:
+    - mountPath: "/app/certs"
+      name: lms-tls
+      readOnly: true
+  env:
+    - name: LMS_SSL_CA
+      value: /app/certs/lms-ca.crt
+    - name: LMS_SSL_CERT
+      value: /app/certs/lms-tls.crt
+    - name: LMS_SSL_KEY
+      value: /app/certs/lms-tls.key
 ~~~
 
 #### Configure orchestrator and client certificates
 
-Mount the orchestrator certificate, key, and (optional) CA certificate to separate volumes. Cockroach Labs recommends mounting certificates to `/app/certs`.
+Create an external secret that specifies the orchestrator certificate, key, and (optional) CA certificate.
 
-For example:
+For example, the following `ExternalSecret` called `orch-tls` uses AWS Secrets Manager as the [`SecretStore`](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-secretstore), and references a remote [AWS secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) called `orch-certs`:
+
+~~~ yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: orch-tls
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secret-store
+    kind: SecretStore
+  target:
+    name: orch-tls
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        orch-ca.crt: '{% raw %}{{ .caCert }}{% endraw %}'
+        orch-tls.crt: '{% raw %}{{ .serverCert }}{% endraw %}'
+        orch-tls.key: '{% raw %}{{ .serverKey }}{% endraw %}'
+  data:
+  - secretKey: caCert
+    remoteRef:
+      key: orch-certs
+      property: caCert
+  - secretKey: serverCert
+    remoteRef:
+      key: orch-certs
+      property: serverCert
+  - secretKey: serverKey
+    remoteRef:
+      key: orch-certs
+      property: serverKey
+~~~
+
+Each `.crt` and `.key` file is associated with its corresponding property in the remote secret `orch-certs`.
+
+In the [Helm configuration](#configuration), `orchestrator.sslVolumes` and `orchestrator.sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the orchestrator. The path to each file is specified as an environment variable in `orchestrator.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
 
 ~~~ yaml
 orchestrator:
   sslVolumes:
-    - name: orch-ca
+    - name: orch-tls
       secret:
-        secretName: orch-ca
-    - name: orch-cert
-      secret:
-        secretName: orch-cert
-    - name: orch-key
-      secret:
-        secretName: orch-key
+        secretName: orch-tls
   sslVolumeMounts:
     - mountPath: "/app/certs"
-      name: orch-ca
+      name: orch-tls
       readOnly: true
-    - mountPath: "/app/certs"
-      name: orch-cert
-      readOnly: true
-    - mountPath: "/app/certs"
-      name: orch-key
-      readOnly: true
+  env:
+    - name: ORCH_CA_TLS_CERT
+      value: /app/certs/orch-ca.crt
+    - name: ORCH_TLS_CERT
+      value: /app/certs/orch-tls.crt
+    - name: ORCH_TLS_KEY
+      value: /app/certs/orch-tls.key
 ~~~
 
-Set the [corresponding config keys](#cert-var) to the same mount path. For example, within `config.json` in the [external secret](#manage-external-secret):
-
-~~~ yaml
-config.json: |
-  {
-    "CA_TLS_CERT": "/app/certs",
-    "TLS_CERT": "/app/certs",
-    "TLS_KEY": "/app/certs",
-  }
-~~~
-
-This also requires that you create and specify a CLI client certificate, key, and (optional) CA certificate. It's easiest to specify these as environment variables in the shell that is running `molt-lms-cli`:
+You will also need to create and specify a CLI client certificate, key, and (optional) CA certificate. It's easiest to specify these as environment variables in the shell that is running `molt-lms-cli`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -412,7 +451,10 @@ export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"
 
 The `molt-lms-cli` command-line interface is used to inspect the LMS instances and [perform cutover](#perform-a-cutover).
 
-To install `molt-lms-cli`, [download the binary](https://molt.cockroachdb.com/lms/cli/).
+To install `molt-lms-cli`, download the binary that matches your system:
+
+- [Intel](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.darwin-arm64.tgz)
+- [ARM](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.darwin-amd64.tgz)
 
 ### Commands
 
@@ -466,6 +508,10 @@ You can use this mode to perform a [consistent cutover](#consistent-cutover), al
 - If an asynchronous request has not yet completed, subsequent asynchronous requests will be dropped.
 
 You can use this mode to confirm that your queries succeed on CockroachDB without verifying performance or correctness.
+
+{{site.data.alerts.callout_info}}
+`async` mode is intended for testing purposes.
+{{site.data.alerts.end}}
 
 ### `sync`
 
