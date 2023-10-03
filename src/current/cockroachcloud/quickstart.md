@@ -28,22 +28,85 @@ You can connect to your cluster directly from the {{ site.data.products.cloud }}
     
 <section class="filter-content" markdown="1" data-scope="console">
 
+{{site.data.alerts.callout_info}}
+The SQL Shell is available only to team members with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
+{{site.data.alerts.end}}
+
+1. Close the **Connect to cluster** dialog that displays once you create a SQL user.
+1. From the cluster's **Overview** page, navigate to the **SQL Shell**.
+    
 </section>
 <section class="filter-content" markdown="1" data-scope="cli">
 
 Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
 
-1. Select **General connection string** from the **Select option** dropdown.
-1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+1. Select **CockroachDB Client** from the **Select option** dropdown.
+1. In a terminal, run the command provided in the **Download the latest CockroachDB Client** section of the dialog to install CockroachDB.
+1. Expand the **Connect to the database** section, then copy the `cockroach sql` command provided and save it in a secure location.
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    cockroach sql --url "postgresql://{user}@{host}:{port}/defaultdb?sslmode=verify-full"
+    ~~~
 
-    This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
-    {{site.data.alerts.callout_info}} 
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
-    {{site.data.alerts.end}}
+1. Enter the SQL user's password and hit enter.
+
+    {% include cockroachcloud/postgresql-special-characters.md %}
+
+    A welcome message displays:
+
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ~~~
 
 </section>
 
+## Run SQL statements
+
+1. You can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE bank;
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO bank.accounts VALUES (1, 1000.50);
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM bank.accounts;
+    ~~~
+
+    ~~~
+      id | balance
+    -----+----------
+       1 | 1000.50
+    (1 row)
+    ~~~
+    
+<section class="filter-content" markdown="1" data-scope="cli">
+1. To exit the SQL shell:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+</section>
+    
 ## Learn more
 
 Now that you have a free CockroachDB {{ site.data.products.serverless }} cluster running, try out the following:
