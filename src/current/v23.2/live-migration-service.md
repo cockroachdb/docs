@@ -11,7 +11,7 @@ docs_area: migrate
 
 MOLT LMS (Live Migration Service) is used to perform a [live migration]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime) to CockroachDB.
 
-The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You can use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you can use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
+The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
 MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured using Helm](#configuration). At a high level, the LMS consists of the following:
 
@@ -39,44 +39,32 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Installation
 
-1. Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) using [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/):
+Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	helm repo add https://molt.cockroachdb.com/lms/charts
-	~~~
+To set up the LMS resources, [install `molt-lms-cli`](#molt-lms-cli) and run the following command:
 
-1. Install the `molt-lms` chart:
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt-lms-cli initialize
+~~~
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	helm install molt-lms
-	~~~
+The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
-1. [Install the CLI](#molt-lms-cli) and run the initial command to set up the LMS:
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl get pods
+~~~
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli initialize
-	~~~
+~~~
+NAME                                          READY   STATUS      RESTARTS      AGE
+lms-molt-lms-5cbd7c748-bzbgn                  1/1     Running     0             2m30s
+lms-molt-lms-5cbd7c748-g5zqf                  1/1     Running     0             2m34s
+lms-molt-lms-5cbd7c748-lbjjz                  1/1     Running     0             2m3
+lms-molt-lms-orchestrator-596d4b54d8-c4v97    1/1     Running     0             21m
+...
+~~~
 
-1. The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	kubectl get pods
-	~~~
-
-	~~~
-	NAME                                          READY   STATUS      RESTARTS      AGE
-	lms-molt-lms-5cbd7c748-bzbgn                  1/1     Running     0             2m30s
-	lms-molt-lms-5cbd7c748-g5zqf                  1/1     Running     0             2m34s
-	lms-molt-lms-5cbd7c748-lbjjz                  1/1     Running     0             2m3
-	lms-molt-lms-orchestrator-596d4b54d8-c4v97    1/1     Running     0             21m
-	...
-	~~~
-
-	You will see `molt-lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `molt-lms-orchestrator` pod. The pod names are prefixed with the release name, `lms` by default.
+You will see `molt-lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `molt-lms-orchestrator` pod. The pod names are prefixed with the release name, `lms` by default.
 
 ## Configuration
 
@@ -123,10 +111,10 @@ lms:
 The following connection strings are specific to your configuration:
 
 - External connection string for the source database.
-- External connection string for the CockroachDB database.
+- External connection string for the target CockroachDB database.
 - Internal connection string for the LMS.
 
-You should specify these in external Kubernetes secrets. For details, see [Manage external secret](#manage-external-secret).
+You should specify these in external Kubernetes secrets. For details, see [Manage external secret](#manage-external-secrets).
 
 {{site.data.alerts.callout_danger}}
 Storing sensitive keys in external secrets is **strongly** recommended.
@@ -174,11 +162,11 @@ Cockroach Labs **strongly** recommends the following:
 
 #### Manage external secrets
 
-Use an external secrets manager such as [External Secrets Operator](https://external-secrets.io/latest/) to [create and manage Kubernetes secrets](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-externalsecret) that contain:
+Cockroach Labs recommends using [External Secrets Operator](https://external-secrets.io/latest/) to [create and manage Kubernetes secrets](https://external-secrets.io/latest/introduction/getting-started/#create-your-first-externalsecret) that contain:
 
 - [Your LMS configuration](#configure-lms-secret), which includes the source and target database connection strings.
 - [Your orchestrator configuration](#configure-orchestrator-secret), which includes the LMS and target database connection strings.
-- Your [LMS](#configure-lms-certificates) and [orchestrator](#configure-orchestrator-certificates) certificates.
+- Your [LMS](#configure-lms-certificates) and [orchestrator](#configure-orchestrator-and-client-certificates) certificates.
 
 For information on Kubernetes secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
 
@@ -220,7 +208,7 @@ spec:
       property: INIT_TARGET
 ~~~
 
-The connection strings are specified with the following configuration keys inside `config.json`:
+The connection strings are specified with the following keys inside `config.json`:
 
 - `INIT_SOURCE`: External connection string for the source database, including the paths to your client certificate and keys.
 - `INIT_TARGET`: External connection string for the CockroachDB database, including the paths to your client certificate and keys.
@@ -229,14 +217,14 @@ The connection strings are specified with the following configuration keys insid
 	For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
 	{{site.data.alerts.end}}
 
-The remote secret `lms-secret` would contain the full connection strings. For example:
+The remote secret `lms-secret` will contain the full connection strings and paths. For example:
 
 ~~~ json
 "INIT_SOURCE": "mysql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/mysql.ca&sslcert=path/to/mysql.crt&sslkey=path/to/mysql.key",
 "INIT_TARGET": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
 ~~~
 
-In the [Helm configuration](#configuration), `lms.configSecretName` specifies the external secret name:
+In the [Helm configuration](#configuration), `lms.configSecretName` must specify the external secret `name`:
 
 ~~~ yaml
 lms:
@@ -281,7 +269,7 @@ spec:
       property: CRDB_URL
 ~~~
 
-The connection strings are specified with the following configuration keys inside `config.json`:
+The connection strings are specified with the following keys inside `config.json`:
 
 - `LMS_URL`: Internal connection string for the LMS.
 - `CRDB_URL`: External connection string for the CockroachDB database, including the paths to your client certificate and keys.
@@ -290,14 +278,14 @@ The connection strings are specified with the following configuration keys insid
 	For details about writing a CockroachDB connection string, see [Connect using a URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
 	{{site.data.alerts.end}}
 
-The remote secret `orch-secret` would contain the full connection strings. For example:
+The remote secret `orch-secret` will contain the full connection strings. For example:
 
 ~~~ json
 "LMS_URL": "{username}:{password}@({releasename}-molt-lms.{namespace}.svc.cluster.local:{port})/{database}",
 "CRDB_URL": "postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full?sslrootcert=path/to/ca.crt&sslcert=path/to/client.username.crt&sslkey=path/to/client.username.key"
 ~~~ 
 
-In the [Helm configuration](#configuration), `orchestrator.configSecretName` specifies the external secret name:
+In the [Helm configuration](#configuration), `orchestrator.configSecretName` must specify the external secret `name`:
 
 ~~~ yaml
 orchestrator:
@@ -346,7 +334,7 @@ spec:
 
 Each `.crt` and `.key` file is associated with its corresponding property in the remote secret `lms-certs`.
 
-In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the LMS. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
+In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
 
 ~~~ yaml
 lms:
@@ -409,7 +397,7 @@ spec:
 
 Each `.crt` and `.key` file is associated with its corresponding property in the remote secret `orch-certs`.
 
-In the [Helm configuration](#configuration), `orchestrator.sslVolumes` and `orchestrator.sslVolumeMounts` specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain server-side certificates for the orchestrator. The path to each file is specified as an environment variable in `orchestrator.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
+In the [Helm configuration](#configuration), `orchestrator.sslVolumes` and `orchestrator.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `orchestrator.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
 
 ~~~ yaml
 orchestrator:
