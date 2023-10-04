@@ -20,39 +20,27 @@ If you need a single tenant cluster with no shared resources, we recommend Cockr
 
 ### Hardware
 
-We use the Kubernetes offerings in AWS, GCP, and Azure (limited access) (EKS, GKE, and AKS respectively) to run CockroachDB {{ site.data.products.cloud }} offerings.
+We use the Kubernetes offerings in AWS, GCP, and Azure (EKS, GKE, and AKS respectively) to run CockroachDB {{ site.data.products.cloud }} offerings.
 
 - GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs).
 - AWS clusters use [M6 instance types](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
-- Azure clusters use [Dasv5-series VMs](https://learn.microsoft.com/azure/virtual-machines/dasv5-dadsv5-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds).
+- Azure clusters use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds).
 
 Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
-
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), multi-region CockroachDB {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 ### Security and Connection
 
 CockroachDB {{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a CockroachDB {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
 {{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), Azure Private Link is not available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 CockroachDB {{ site.data.products.cloud }} clusters also use digital certificates for inter-node authentication, [SSL modes]({% link cockroachcloud/authentication.md %}#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates]({% link cockroachcloud/client-certs-dedicated.md %}) can be used for client identity verification. Refer to [Authentication]({% link cockroachcloud/authentication.md %}) for more details.
 
 [Backups]({% link cockroachcloud/use-managed-service-backups.md %}) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), managed-service backups are not available on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}). Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2). Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
-
 ### Multi-region architecture
-
-{{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), multi-region CockroachDB {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 The diagram below shows a high-level representation of a CockroachDB {{ site.data.products.dedicated }} multi-region cluster:
 
