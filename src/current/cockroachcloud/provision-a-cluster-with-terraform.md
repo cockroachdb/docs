@@ -103,7 +103,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
        - `{cluster name}` is the name of the cluster you want to create.
        - `{SQL user name}` is the name of the SQL user you want to create.
        - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`.
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
