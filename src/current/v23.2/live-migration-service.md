@@ -41,43 +41,43 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 1. Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
 
-1. Port-forward from your local machine to the orchestrator:
+1. Port-forward from your local machine to the orchestrator, using the release name that you specified with `helm install`. The orchestrator port is configurable and is [`4200` by default](#service-type).
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	kubectl port-forward svc/lms-molt-lms-orchestrator 4200:4200 
-	~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl port-forward svc/{releasename}-lms-orchestrator 4200:4200 
+    ~~~
 
-	The orchestrator port is configurable and is [`4200` by default](#service-type).
+    {{site.data.alerts.callout_success}}
+    If you named the release `lms`, exclude `{releasename}-` from the command.
+    {{site.data.alerts.end}}
 
 1. To set up the LMS resources, [install `molt-lms-cli`](#molt-lms-cli) and run the following command, specifying the orchestrator URL:
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli initialize --orchestrator-url localhost:4200
-	~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli initialize --orchestrator-url localhost:4200
+    ~~~
 
 1. The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	kubectl get pods
-	~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods
+    ~~~
 
-	~~~
-	NAME                                READY   STATUS    RESTARTS   AGE
-	lms-orchestrator-86779b87f7-qrk9q   1/1     Running   0          52s
-	lms-576bffdd8c-pmh6g                1/1     Running   0          52s
-	lms-576bffdd8c-pbdvl                1/1     Running   0          52s
-	lms-576bffdd8c-s7kx4                1/1     Running   0          52s
-	...
-	~~~
+    ~~~
+    NAME                                READY   STATUS    RESTARTS   AGE
+    lms-orchestrator-86779b87f7-qrk9q   1/1     Running   0          52s
+    lms-576bffdd8c-pmh6g                1/1     Running   0          52s
+    lms-576bffdd8c-pbdvl                1/1     Running   0          52s
+    lms-576bffdd8c-s7kx4                1/1     Running   0          52s
+    ...
+    ~~~
 
-	You will see `lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `lms-orchestrator` pod. 
+    You will see `lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `lms-orchestrator` pod. 
 
-	{{site.data.alerts.callout_info}}
-	The pod names are prefixed with the release name you specified when running `helm install`. However, if you name the release `lms`, a duplicate prefix is not generated.
-	{{site.data.alerts.end}}
+    The pod names are prefixed with the release name you specified when running `helm install`, unless you named the release `lms`.
 
 ## Configuration
 
@@ -170,7 +170,7 @@ serviceMonitor:
 Cockroach Labs **strongly** recommends the following:
 
 - Manage your LMS and orchestrator configurations in [external Kubernetes secrets](#manage-external-secrets).
-- To establish secure connections between the LMS pods and with your client, set up TLS certificates for the [LMS](#configure-lms-certificates), [source database and CockroachDB](#configure-an-lms-secret), and [orchestrator](#configure-orchestrator-and-client-certificates).
+- To establish secure connections between the LMS pods and with your client, generate and set up TLS certificates for the [source database and CockroachDB](#configure-an-lms-secret), [LMS](#configure-the-lms-certificates), and [orchestrator](#configure-the-orchestrator-and-client-certificates).
 {{site.data.alerts.end}}
 
 #### Manage external secrets
@@ -179,7 +179,7 @@ Cockroach Labs recommends using [External Secrets Operator](https://external-sec
 
 - [Your LMS configuration](#configure-an-lms-secret), which includes the source and target database connection strings.
 - [Your orchestrator configuration](#configure-an-orchestrator-secret), which includes the LMS and target database connection strings.
-- Your [LMS](#configure-lms-certificates) and [orchestrator](#configure-orchestrator-and-client-certificates) certificates.
+- Your [LMS](#configure-the-lms-certificates) and [orchestrator](#configure-the-orchestrator-and-client-certificates) certificates, which you should have generated separately.
 
 For information on Kubernetes secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
 
@@ -282,12 +282,12 @@ The connection strings are specified with the following keys inside `config.json
 
 - `LMS_URL`: Internal connection string for the LMS, specifying the username and password of the source database. The format depends on your source dialect:
 
-	- MySQL: `{username}:{password}@({releasename}-lms.{namespace}.svc.cluster.local:{port})/{database}`
-	- PostgreSQL: `postgresql://{username}:{password}@{releasename}-lms.{namespace}.svc.cluster.local:{port}/{database}`
+  - MySQL: `{username}:{password}@({releasename}-lms.{namespace}.svc.cluster.local:{port})/{database}`
+  - PostgreSQL: `postgresql://{username}:{password}@{releasename}-lms.{namespace}.svc.cluster.local:{port}/{database}`
 
-		{{site.data.alerts.callout_success}}
-		If you named the release `lms` during [installation](#installation), exclude `{releasename}-` from the LMS connection string.
-		{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    If you named the release `lms` during [installation](#installation), exclude `{releasename}-` from the LMS connection string.
+    {{site.data.alerts.end}}
 
 - `CRDB_URL`: External [connection string for the CockroachDB database]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url), including the paths to your client certificate and keys.
 
@@ -305,7 +305,7 @@ orchestrator:
   configSecretName: "orch-config"
 ~~~
 
-#### Configure LMS certificates
+#### Configure the LMS certificates
 
 Create an external secret that specifies the LMS certificate, key, and (optional) CA certificate.
 
@@ -368,7 +368,7 @@ lms:
       value: /app/certs/lms-tls.key
 ~~~
 
-#### Configure orchestrator and client certificates
+#### Configure the orchestrator and client certificates
 
 Create an external secret that specifies the orchestrator certificate, key, and (optional) CA certificate.
 
@@ -481,9 +481,9 @@ To install `molt-lms-cli`, download the binary that matches your system:
 |         Flag         |                                                                                                                                              Description                                                                                                                                              |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is required unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
-| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
-| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                                                                                                               |
-| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                                                                                                        |
+| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
+| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                                                                                                               |
+| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                                                                                                        |
 
 ## Shadowing modes
 
@@ -568,11 +568,11 @@ To perform a consistent cutover with the LMS:
 
 1. Set the shadowing mode to [`none`](#none).
 
-	{% comment %}
-	{{site.data.alerts.callout_danger}}
-	Do not use the [`sync`](#sync) or [`strict-sync`](#strict-sync) shadowing modes when performing a consistent cutover. Data correctness and consistency cannot be guaranteed in these configurations.
-	{{site.data.alerts.end}}
-	{% endcomment %}
+  {% comment %}
+  {{site.data.alerts.callout_danger}}
+  Do not use the [`sync`](#sync) or [`strict-sync`](#strict-sync) shadowing modes when performing a consistent cutover. Data correctness and consistency cannot be guaranteed in these configurations.
+  {{site.data.alerts.end}}
+  {% endcomment %}
 
 1. Set up ongoing replication between the source database and CockroachDB, using a tool that replicates writes to the target database.
 
@@ -582,27 +582,27 @@ To perform a consistent cutover with the LMS:
 
 1. Begin the consistent cutover. **Requests are now queued in the LMS**, including queries from existing connections and new connection requests to the LMS:
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli cutover consistent begin {flags}
-	~~~
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  molt-lms-cli cutover consistent begin {flags}
+  ~~~
 
-	This command tells the LMS to pause all application traffic to the source of truth. The LMS then waits for transactions to complete and prepared statements to close.
+  This command tells the LMS to pause all application traffic to the source of truth. The LMS then waits for transactions to complete and prepared statements to close.
 
 1. Verify that replication on CockroachDB has caught up with the source of truth. For example, insert a row on the source database and check that the row exists on CockroachDB.
 
-	If you have an implementation that replicates back to the source database, this should be enabled before committing the cutover.
+  If you have an implementation that replicates back to the source database, this should be enabled before committing the cutover.
 
 1. Once all writes have been replicated to the target database, commit the consistent cutover:
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli cutover consistent commit {flags}
-	~~~
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  molt-lms-cli cutover consistent commit {flags}
+  ~~~
 
-	This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
+  This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
 
-	To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
+  To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
 
 1. Again, use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the data on the source database and CockroachDB are consistent.
 
@@ -610,16 +610,16 @@ If any problems arise during a consistent cutover:
 
 - After running `cutover consistent begin`: 
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli cutover consistent abort {flags}
-	~~~
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  molt-lms-cli cutover consistent abort {flags}
+  ~~~
 
-	This command tells the LMS to resume application traffic to the source of truth, which has not yet been switched. Cutover **cannot** be aborted after running `cutover consistent commit`.
+  This command tells the LMS to resume application traffic to the source of truth, which has not yet been switched. Cutover **cannot** be aborted after running `cutover consistent commit`.
 
 - After running `cutover consistent commit`: 
 
-	Reissue the `cutover consistent begin` and `cutover consistent commit` commands to revert the source of truth to the source database.
+  Reissue the `cutover consistent begin` and `cutover consistent commit` commands to revert the source of truth to the source database.
 
 {% comment %}
 ### Immediate cutover
@@ -642,16 +642,16 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 1. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
 
-	To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
+  To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
 
 1. Once nearly all data from the source database is replicated to CockroachDB (for example, with a <1 second delay or <1000 rows), initiate the cutover:
 
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	molt-lms-cli cutover immediate {flags}
-	~~~
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  molt-lms-cli cutover immediate {flags}
+  ~~~
 
-	This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediatedly directed to CockroachDB.
+  This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediatedly directed to CockroachDB.
 
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}

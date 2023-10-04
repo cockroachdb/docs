@@ -41,43 +41,43 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 1. Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
 
-1. Port-forward from your local machine to the orchestrator:
+1. Port-forward from your local machine to the orchestrator, using the release name that you specified with `helm install`. The orchestrator port is configurable and is [`4200` by default](#service-type).
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  kubectl port-forward svc/lms-molt-lms-orchestrator 4200:4200 
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl port-forward svc/{releasename}-lms-orchestrator 4200:4200 
+    ~~~
 
-  The orchestrator port is configurable and is [`4200` by default](#service-type).
+    {{site.data.alerts.callout_success}}
+    If you named the release `lms`, exclude `{releasename}-` from the command.
+    {{site.data.alerts.end}}
 
 1. To set up the LMS resources, [install `molt-lms-cli`](#molt-lms-cli) and run the following command, specifying the orchestrator URL:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  molt-lms-cli initialize --orchestrator-url localhost:4200
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli initialize --orchestrator-url localhost:4200
+    ~~~
 
 1. The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  kubectl get pods
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods
+    ~~~
 
-  ~~~
-  NAME                                READY   STATUS    RESTARTS   AGE
-  lms-orchestrator-86779b87f7-qrk9q   1/1     Running   0          52s
-  lms-576bffdd8c-pmh6g                1/1     Running   0          52s
-  lms-576bffdd8c-pbdvl                1/1     Running   0          52s
-  lms-576bffdd8c-s7kx4                1/1     Running   0          52s
-  ...
-  ~~~
+    ~~~
+    NAME                                READY   STATUS    RESTARTS   AGE
+    lms-orchestrator-86779b87f7-qrk9q   1/1     Running   0          52s
+    lms-576bffdd8c-pmh6g                1/1     Running   0          52s
+    lms-576bffdd8c-pbdvl                1/1     Running   0          52s
+    lms-576bffdd8c-s7kx4                1/1     Running   0          52s
+    ...
+    ~~~
 
-  You will see `lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `lms-orchestrator` pod. 
+    You will see `lms` pods that match the configured [number of LMS instances](#lms-instances), along with one `lms-orchestrator` pod. 
 
-  {{site.data.alerts.callout_info}}
-  The pod names are prefixed with the release name you specified when running `helm install`. However, if you name the release `lms`, a duplicate prefix is not generated.
-  {{site.data.alerts.end}}
+    The pod names are prefixed with the release name you specified when running `helm install`, unless you named the release `lms`.
 
 ## Configuration
 
@@ -170,7 +170,7 @@ serviceMonitor:
 Cockroach Labs **strongly** recommends the following:
 
 - Manage your LMS and orchestrator configurations in [external Kubernetes secrets](#manage-external-secrets).
-- To establish secure connections between the LMS pods and with your client, set up TLS certificates for the [LMS](#configure-lms-certificates), [source database and CockroachDB](#configure-an-lms-secret), and [orchestrator](#configure-orchestrator-and-client-certificates).
+- To establish secure connections between the LMS pods and with your client, generate and set up TLS certificates for the [source database and CockroachDB](#configure-an-lms-secret), [LMS](#configure-the-lms-certificates), and [orchestrator](#configure-the-orchestrator-and-client-certificates).
 {{site.data.alerts.end}}
 
 #### Manage external secrets
@@ -179,7 +179,7 @@ Cockroach Labs recommends using [External Secrets Operator](https://external-sec
 
 - [Your LMS configuration](#configure-an-lms-secret), which includes the source and target database connection strings.
 - [Your orchestrator configuration](#configure-an-orchestrator-secret), which includes the LMS and target database connection strings.
-- Your [LMS](#configure-lms-certificates) and [orchestrator](#configure-orchestrator-and-client-certificates) certificates.
+- Your [LMS](#configure-the-lms-certificates) and [orchestrator](#configure-the-orchestrator-and-client-certificates) certificates, which you should have generated separately.
 
 For information on Kubernetes secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
 
@@ -305,7 +305,7 @@ orchestrator:
   configSecretName: "orch-config"
 ~~~
 
-#### Configure LMS certificates
+#### Configure the LMS certificates
 
 Create an external secret that specifies the LMS certificate, key, and (optional) CA certificate.
 
@@ -368,7 +368,7 @@ lms:
       value: /app/certs/lms-tls.key
 ~~~
 
-#### Configure orchestrator and client certificates
+#### Configure the orchestrator and client certificates
 
 Create an external secret that specifies the orchestrator certificate, key, and (optional) CA certificate.
 
@@ -481,9 +481,9 @@ To install `molt-lms-cli`, download the binary that matches your system:
 |         Flag         |                                                                                                                                              Description                                                                                                                                              |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is required unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
-| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
-| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                                                                                                               |
-| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                                                                                                        |
+| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
+| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-cert}"`.                                                                                                               |
+| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export "{path-to-cli-client-key}"`.                                                                                                                        |
 
 ## Shadowing modes
 
