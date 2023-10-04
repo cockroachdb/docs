@@ -1,7 +1,7 @@
 require 'csv'
 require 'yaml'
 
-module Jekyll
+module JekyllVersions
   class ReleaseInfoGenerator < Jekyll::Generator
     safe true
     priority -100 # Making sure it runs first
@@ -13,10 +13,15 @@ module Jekyll
       # Step 2: Construct the paths to versions.csv and releases.yml
       versions_path = File.join(parent_dir, "current/_data/versions.csv")
       releases_path = File.join(parent_dir, "current/_data/releases.yml")
+      tags_path = File.join(parent_dir, "current/_config_cockroachdb.yml")
 
       # Load versions and releases data
-      versions_data = CSV.read(versions_path, headers: true)
+      versions_data = CSV.read(versions_path, headers: true).sort_by { |row| row['release_date'] }.reverse
       releases_data = YAML.load_file(releases_path)
+      tags_data = YAML.load_file(tags_path)
+
+      stable_version = tags_data['versions']['stable']
+      dev_version = tags_data['versions']['dev']
 
       # Process the data
       release_info = {}
@@ -30,6 +35,8 @@ module Jekyll
           "version" => latest_release['release_name'],
           "release_name" => latest_release['release_name'],
           "major_version" => major_version,
+          "stable" => major_version == stable_version,
+          "tag" => major_version == stable_version ? "stable" : major_version == dev_version ? "dev" : nil,
           "build_time" => "#{latest_release['release_date']} 00:00:00",
           "go_version" => latest_release['go_version'],
           "docker_image" => latest_release['docker']['docker_image'],
@@ -41,6 +48,8 @@ module Jekyll
       
       # Add the data to site object
       site.config['release_info'] = release_info
+      site.config['stable_version'] = stable_version
+      site.config['dev_version'] = dev_version
     end
   end
 end
