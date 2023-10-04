@@ -26,7 +26,6 @@ We recommend the following additional [cluster settings]({% link {{ page.version
 
 | Setting                                                      | Value     | Description                                                                                                                                                                                                               |
 |--------------------------------------------------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `kv.raft_log.disable_synchronization_unsafe`                 | `true`    | Improves performance by not syncing data to disk. Data is lost if a node crashes.                                                                                                                                         |
 | `kv.range_merge.queue_interval`                              | `50ms`    | Frequent [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) or [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) creates extra ranges, which we want to merge more quickly. In real usage, range merges are rate limited because they require rebalancing. |
 | `jobs.registry.interval.gc`                                  | `30s`     | CockroachDB executes internal queries that scan the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) table. More schema changes create more jobs, which we can delete faster to make internal job queries faster.                                   |
 | `jobs.registry.interval.cancel`                              | `180s`    | Timing of an internal task that queries the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) table. For testing, the default is too fast.                                                                                                           |
@@ -39,7 +38,6 @@ To change all of the settings described above at once, run the following SQL sta
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true;
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 SET CLUSTER SETTING jobs.registry.interval.gc = '30s';
 SET CLUSTER SETTING jobs.registry.interval.cancel = '180s';
