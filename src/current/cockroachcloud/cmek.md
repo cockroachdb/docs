@@ -168,7 +168,7 @@ Not yet. To restore a failed CMEK-enabled cluster, please create a support ticke
 
 The CMEK feature has the following limitations:
 
-- During [CockroachDB {{ site.data.products.dedicated }} on Azure limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), CMEK is not yet available for CockroachDB {{ site.data.products.dedicated }} clusters on Azure. To express interest, contact your Cockroach Labs account team. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+- CMEK is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}). To express interest, contact your Cockroach Labs account team.
 - To enable or revoke a CMEK on a cluster, you must use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable a CMEK using the CockroachDB {{ site.data.products.cloud }} Console.
 - If you add a new region to a cluster with CMEK enabled, you must configure a CMEK for the new region to protect its data.
 - If the CMEK is not available due to a misconfiguration or a KMS outage, a cluster's managed backups will begin to fail, but no customer notification is sent from CockroachDB {{ site.data.products.cloud }} via email. However, Cockroach Labs support is notified if such a failure occurs.

@@ -76,10 +76,6 @@ To add or remove nodes from your cluster:
 
 ### Increase storage for a cluster
 
-{{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), storage on {{ site.data.products.dedicated }} clusters on Azure cannot be scaled. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_danger}}
 AWS disks can only be scaled once every six hours.
 {{site.data.alerts.end}}

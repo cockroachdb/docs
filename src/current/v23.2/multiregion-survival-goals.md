@@ -1,5 +1,5 @@
 ---
-title: Mulit-Region Survival Goals
+title: Multi-Region Survival Goals
 summary: Learn how to set survival goals in a CockroachDB multi-region cluster.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes

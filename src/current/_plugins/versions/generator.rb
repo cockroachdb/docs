@@ -6,10 +6,11 @@ module JekyllVersions
     priority :lowest
 
     def initialize(config)
-      @config = Config.new(config)
+      @jekyll_config = config
     end
 
     def generate(site)
+      @config = Config.new(@jekyll_config, site)
       Generator.new(@config, site).generate
     end
   end
@@ -30,7 +31,15 @@ module JekyllVersions
         page.data['canonical'] ||= canonical.sub('/index.html', '').sub('.html', '').downcase
 
         page.data['versions'] = versions.map do |v|
-          { 'version' => v, 'url' => vps_with_key(vp.key)[v]&.url }
+          { 
+            'version' => {
+              'name' => v.name,
+              'version' => v.version,
+              'tag' => v.tag,
+              'stable' => v.stable?
+            },
+             'url' => vps_with_key(vp.key)[v]&.url 
+          }
         end
       end
 

@@ -36,6 +36,12 @@
           ]
         },
         {
+          "title": "Live Migration Service",
+          "urls": [
+            "/${VERSION}/live-migration-service.html"
+          ]
+        },
+        {
           "title": "AWS DMS",
           "urls": [
             "/${VERSION}/aws-dms.html"
@@ -51,6 +57,12 @@
           "title": "Striim",
           "urls": [
             "/${VERSION}/striim.html"
+          ]
+        },
+        {
+          "title": "Oracle GoldenGate",
+          "urls": [
+            "/${VERSION}/goldengate.html"
           ]
         }
       ]

@@ -44,7 +44,7 @@
                 {
                   "title": "Optimize Your CockroachDB Serverless Workload",
                   "urls": [
-                    "/cockroachcloud/optimize-serverless-workload.html"
+                    "/cockroachcloud/serverless-resource-usage.html"
                   ]
                 }
               ]

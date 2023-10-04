@@ -296,7 +296,7 @@ Refer to [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({% link {{ pa
 
 ##### JSON Web Tokens (JWTs)
 
-**Algorithms**: Specified by the [`server.jwt_authentication.jwks` cluster setting]({% link {{ page.version.version }}/sso-sql.md %}#configure-your-cluster-to-accept-your-external-identity-provider).
+**Algorithms**: Specified by the [`server.jwt_authentication.jwks` cluster setting]({% link {{ page.version.version }}/sso-sql.md %}#cluster-settings).
 
 Refer to [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({% link {{ page.version.version }}/sso-sql.md %}).
 

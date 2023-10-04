@@ -7,7 +7,7 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
+{% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 The **SQL Shell** page on the {{ site.data.products.db }} Console enables you to run queries on your cluster directly from your browser.

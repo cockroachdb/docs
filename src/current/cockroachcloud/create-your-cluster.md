@@ -28,13 +28,14 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to 
 
 ## Step 2. Select the cloud provider
 
-In the **Cloud provider** section, select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure** (Limited Access).
-
-You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+In the **Cloud provider** section, select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure**.
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/azure-limited-access.md %}
+CockroachDB {{ site.data.products.dedicated }} advanced clusters cannot currently be deployed on Azure.
 {{site.data.alerts.end}}
+
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
 CockroachDB {{ site.data.products.cloud }} clusters use the following machine and storage types:
 
@@ -42,7 +43,7 @@ Cloud | Compute type                                                            
 ------|---------------------------------------------------------------------------------------|-------------
 GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
 AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
-Azure | [Dasv5](https://learn.microsoft.com/azure/virtual-machines/dasv5-dadsv5-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
+Azure | [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -51,10 +52,6 @@ Azure | [Dasv5](https://learn.microsoft.com/azure/virtual-machines/dasv5-dadsv5-
 In the **Regions & nodes** section, select at minimum one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.dedicated }} clusters can be deployed. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.dedicated }} cluster.
 
 A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} clusters.
-
-{{site.data.alerts.callout_info}}
-Creating a multi-region cluster on Azure is not supported. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 ## Step 4. Select the number of nodes
 
@@ -68,10 +65,6 @@ In the **Regions & nodes** section, select the number of nodes.
 {% include cockroachcloud/nodes-limitation.md %}
 
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/requests/new).
-
-{{site.data.alerts.callout_danger}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), a CockroachDB {{ site.data.products.dedicated }} cluster deployed on Azure cannot be edited or scaled after it is created. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
 
 ## Step 5. Select the hardware per node
 
@@ -95,7 +88,9 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
-    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
+    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. IOPS for Azure disks are determined by the disk size, regardless of the VM configuration. To learn more, refer to [Premium SSD size](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd-size) in the Azure documentation.
+
+    When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
@@ -108,15 +103,11 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 To change the hardware configuration after the cluster is created, see [Manage a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/cluster-management.md %}).
 
-{{site.data.alerts.callout_danger}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), a CockroachDB {{ site.data.products.dedicated }} cluster deployed on Azure cannot be edited or scaled after it is created. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
-{{site.data.alerts.end}}
-
 See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
 ## Step 6. Name the cluster
 
-The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
 Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on GCP. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster.
 
@@ -124,7 +115,7 @@ Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
-VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. For clusters deployed on Azure during [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 To continue without enabling VPC peering, click **Next** to [enter billing details](#step-8-enter-billing-details).
 CockroachDB {{ site.data.products.cloud }}
