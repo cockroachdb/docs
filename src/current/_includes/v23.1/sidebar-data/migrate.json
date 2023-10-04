@@ -24,6 +24,12 @@
           ]
         },
         {
+          "title": "Live Migration Service",
+          "urls": [
+            "/${VERSION}/live-migration-service.html"
+          ]
+        },
+        {
           "title": "AWS DMS",
           "urls": [
             "/${VERSION}/aws-dms.html"
