@@ -5,6 +5,12 @@ toc: true
 docs_area: reference.security
 ---
 
+{{ page.path }}
+
+{{ page.url }}
+
+{{ page.name }}
+
 This page give an overview of CockroachDB's security features for authenticating the identity of SQL users attempting to connect to the cluster.
 
 Instead, you might be looking for:

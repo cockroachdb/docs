@@ -6,6 +6,8 @@ docs_area: stream_data
 key: stream-data-out-of-cockroachdb-using-changefeeds.html
 ---
 
+{{ page.versions }}
+
 Change data capture (CDC) detects row-level data changes in CockroachDB and sends the change as a message to a configurable sink for downstream processing purposes. While CockroachDB is an excellent system of record, it also needs to coexist with other systems.
 
 For example, you might want to:
