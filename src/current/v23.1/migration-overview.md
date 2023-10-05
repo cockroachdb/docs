@@ -255,7 +255,7 @@ After you [load the test data](#load-test-data), validate your queries on Cockro
 
 ##### Shadowing
 
-You can "shadow" your production workload by replicating all writes from the source database to CockroachDB. To do this, use a [change data capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) service. {% comment %}The CockroachDB Live Migration Service (MOLT LMS) can also write queries to both databases simultaneously.{% endcomment %} You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. [MOLT LMS (Live Migration Service)]({% link {{ page.version.version }}/live-migration-service.md %}) can perform shadowing. You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
 
 Shadowing may not be necessary or practical for your workload. For example, because transactions are serialized on CockroachDB, this will limit your ability to validate the performance of high-throughput workloads.
 
