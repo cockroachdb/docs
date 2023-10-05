@@ -82,6 +82,7 @@ CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the follo
 Geographic Area | Region Name          | Location
 ----------------|----------------------|---------
 Asia Pacific    | `australiaeast`      | New South Wales
+                | `centralindia`       | Pune
                 | `eastasia`           | Hong Kong
                 | `southeastasia`      | Singapore
 North America   | `centralcanada`      | Toronto
