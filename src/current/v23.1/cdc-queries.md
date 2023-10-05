@@ -192,9 +192,33 @@ If you do not need to select specific columns in a table or filter rows from a c
 
 ### Reference TTL in a CDC query
 
-In CockroachDB, table row deletes occur as a result of regular SQL transactions or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits [delete event messages]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages), you may need to distinguish between these two types of deletion. For example, only emitting messages for row-level TTL deletes from your changefeed.
+In CockroachDB, table row deletes occur as a result of [regular SQL transactions]({% link {{ page.version.version }}/delete-data.md %}) or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits [delete event messages]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages), you may need to distinguish between these two types of deletion. For example, only emitting messages for row-level TTL deletes from your changefeed.
 
-If you have TTL logic defined with [`ttl_expiration_expression` or `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#syntax-overview), you can leverage CDC queries to determine whether or not a given row was expired at the time of the changefeed event, including a delete event.
+If you have TTL logic defined with [`ttl_expiration_expression`](#ttl_expiration_expression) or [`ttl_expire_after`](#ttl_expire_after), you can leverage CDC queries to determine whether or not a given row was expired at the time of the changefeed event, including a delete event.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+
+For more detail, refer to the [Batch Delete Expire Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) page.
+{{site.data.alerts.end}}
+
+#### `ttl_expiration_expression`
+
+In some cases, you may have custom expiration logic on rows in a table. You can also write a CDC query to emit rows that have deleted through row-level TTL using a custom TTL expression.
+
+In the following example, the table uses the [`ttl_expiration_expression`]({% link {{ page.version.version }}/row-level-ttl.md %}#syntax-overview) storage parameter to reference the `expired_at` column. To create a changefeed on this table to explicitly emit the previous state of the row for TTL deletions:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED INTO 'external://sink'
+AS SELECT cdc_prev FROM ttl_test_per_row
+WHERE event_op() = 'delete'
+AND (cdc_prev).expired_at < statement_timestamp();
+~~~
+
+For the `CREATE TABLE` statement and further details on `ttl_expiration_expression`, refer to [Using `ttl_expiration_expression`]({% link {{ page.version.version }}/row-level-ttl.md %}#using-ttl_expiration_expression).
+
+#### `ttl_expire_after`
 
 When the table uses the `ttl_expire_after` storage parameter, you can emit rows that were deleted after expiring from the changefeed with syntax similar to:
 
@@ -212,25 +236,11 @@ This changefeed statement:
 - Searches for `delete` events in that previous state.
 - Finds the TTL expiration timestamp of the deleted rows where it is earlier than the current statement timestamp.
 
-Refer to [Using `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#using-ttl_expire_after) for the `CREATE TABLE` statement and further details on `ttl_expire_after`.
+For the `CREATE TABLE` statement and further details on `ttl_expire_after`, refer to [Using `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#using-ttl_expire_after).
 
 {{site.data.alerts.callout_info}}
-This will only emit rows that were deleted **after** expiring. Furthermore, consider that a transactional SQL delete during the window between the row expiring and the TTL job running will also cause this message to emit from the changefeed.
+This will only emit rows that were deleted **after** expiring. Furthermore, consider that a [transactional SQL delete]({% link {{ page.version.version }}/delete-data.md %}) during the window between the row expiring and the TTL job running will also cause this message to emit from the changefeed.
 {{site.data.alerts.end}}
-
-In some cases, you may have custom expiration logic on rows in a table. You can also write a CDC query to emit rows that have deleted through row-level TTL using a custom TTL expression.
-
-In the following example, the table uses the [`ttl_expiration_expression`]({% link {{ page.version.version }}/row-level-ttl.md %}#syntax-overview) storage parameter to reference the `expired_at` column. To create a changefeed on this table to explicitly emit the previous state of the row for TTL deletions:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED INTO 'external://sink'
-AS SELECT cdc_prev FROM ttl_test_per_row
-WHERE event_op() = 'delete'
-AND (cdc_prev).expired_at < statement_timestamp();
-~~~
-
-Refer to [Using `ttl_expiration_expression`]({% link {{ page.version.version }}/row-level-ttl.md %}#using-ttl_expiration_expression) for the `CREATE TABLE` statement and further details on `ttl_expiration_expression`.
 
 Equally, you can remove the delete messages for expired rows so that they do not emit from your changefeed:
 
