@@ -13,195 +13,244 @@ docs_area: deploy
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-<p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
-
-{% comment %}v22.2.0+{% endcomment %}
-{{site.data.alerts.callout_danger}}
-<p>On macOS ARM systems, <a href="spatial-data.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
-{{site.data.alerts.end}}
+To find out what's new in the latest release, {{ page.release_info.version }}, refer to [Release Notes](../releases/{{page.version.version}}.html). To upgrade to this release from an earlier version, refer to [Cluster Upgrade](upgrade-cockroach-version.html).
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
+Use one of the following options to install CockroachDB.
 
-{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
+<a id="use-homebrew"></a>
 
-{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p><p>CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
+## Install using Homebrew
 
-Use one of the options below to install CockroachDB.
+Homebrew installs binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)).
 
-<div id="use-homebrew" class="install-option">
-
-  <h2 id="install-homebrew">Use Homebrew</h2>
-  {{ arch_note_homebrew }}
-  <ol>
-    <li>
-      <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
-    </li>
-    <li>
-      <p>Instruct Homebrew to install CockroachDB:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-homebrew-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-homebrew-step2"><span class="nv language-shell mac-homebrew-step2" id="mac-homebrew-step2-{{ page.version.version }}" data-eventcategory="mac-homebrew-step2">$ </span>brew install cockroachdb/tap/cockroach</code></pre></div>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-        {% include marketo-install.html uid="1" %}
-    </li>
-  </ol>
 {{site.data.alerts.callout_info}}
-If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
+CockroachDB's [spatial features](spatial-features.html) are not available on ARM systems when CockroachDB is installed using Homebrew. To use these features, install CockroachDB using the [Docker image](#use-docker). The GEOS libraries are automatically included and configured within the Docker image. On macOS, Docker images run in a lightweight Linux virtual machine. CockroachDB Docker images are multi-platform images which support both Intel and ARM architectures.
 {{site.data.alerts.end}}
-</div>
 
-{% capture binary_arm_geos_unquarantine %}
-{% include_cached copy-clipboard.html %}
-~~~ shell
-xattr -d com.apple.quarantine lib/libgeos*
-~~~
-{% endcapture %}
+1. [Install Homebrew](http://brew.sh/).
+1. If you previously installed CockroachDB using Homebrew, use Homebrew to uninstall it before installing a new version:
 
-{% capture st_invalid_output %}
-~~~ shell
-st_isvalid
---------------
-true
-(1 row)
-~~~
-{% endcapture %}
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    brew uninstall cockroach
+    ~~~
 
-<div id="download-the-binary" class="install-option">
-  <h2 id="install-binary">Download the binary</h2>
-  {{ arch_note_binaries }}
-  <ol>
-    <li>
-      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>.</p>
-      <p>You can download the binary using a web browser or you can copy the link and use a utility like <code>curl</code> to download it. If you download the ARM binary using a web browser and you plan to use CockroachDB&apos;s spatial features, an additional step is required before you can install the library, as outlined in the next step.</p>
-      <p>Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
-      <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
-        <p>If you plan to use CockroachDB&apos;s <a href="spatial-features.html">spatial features</a>, you must complete all of the following steps. Otherwise, your installation is now complete.</p>
-      </div>
-    </li>
-    <li>
-      <p>CockroachDB uses custom-built versions of the <a href="spatial-glossary.html#geos">GEOS</a> libraries. To install those libraries:</p>
-      <ol>
-        <li><p>Note that <a href="known-limitations.html#spatial-features-disabled-for-arm-macs">spatial features are currently disabled for Mac ARM users</a>, for whom these steps do not apply. For an upcoming patch release where this functionality is reenabled, if you downloaded the CockroachDB ARM binary archive using a web browser, macOS flags the GEOS libraries in the extracted archive as quarantined. This flag must be removed before CockroachDB can use the libraries. To remove the quarantine flag from the libraries:</p>
-        {{ binary_arm_geos_unquarantine }}
-        <p>This step is not required for Intel systems.</p></li>
-        <li>Copy these libraries to one of the locations where CockroachDB expects to find them. By default, CockroachDB looks for external libraries in <code>/usr/local/lib/cockroach</code> or a <code>lib</code> subdirectory of the CockroachDB binary&#39;s current directory. If you place these libraries in another location, you must pass the location in the <a href="cockroach-start.html#flags-spatial-libs"><code>--spatial-libs</code> flag to <code>cockroach start</code></a>. The instructions below assume the <code>/usr/local/lib/cockroach</code> location.
-        <ol>
-          <li><p>Create the directory where the external libraries will be stored:</p>
-            <div class="copy-clipboard">
-              <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-              <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-            </div>
-            <div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> /usr/local/lib/cockroach</code></pre></div>
-          </li>
-          <li><p>Copy the library files to the directory:</p>
-              <div class="copy-clipboard">
-                <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-                <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-              </div>
-              <div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cp </span>-i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/lib/libgeos.dylib /usr/local/lib/cockroach/</code></pre></div>
-              <div class="copy-clipboard">
-                <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-                <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-              </div>
-              <div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cp </span>-i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/lib/libgeos_c.dylib /usr/local/lib/cockroach/</code></pre></div>
-              <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
-          </li>
-        </ol>
-      </li>
-    </ol>
-    </li>
-    <li><p>Verify that CockroachDB can execute spatial queries.</p>
-      <ol>
-        <li><p>Make sure the <code>cockroach</code> binary you just installed is the one that runs when you type <code>cockroach</code> in your shell:</p>
-          <div class="copy-clipboard">
-            <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-            <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-          </div>
-          <div class="highlight"><pre><code class="language-shell" data-lang="shell">which cockroach</code></pre></div>
-          <div class="highlight"><pre><code class="language-" data-lang="">/usr/local/bin/cockroach</code></pre></div>
-        </li>
-        <li><p>Start a temporary, in-memory cluster using <a href="cockroach-demo.html"><code>cockroach demo</code></a>:</p>
-          <div class="copy-clipboard">
-            <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-            <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-          </div>
-          <div class="highlight"><pre><code class="language-shell" data-lang="shell">cockroach demo</code></pre></div>
-        </li>
-        <li><p>In the demo cluster&apos;s interactive SQL shell, run the following command to test that the spatial libraries have loaded properly:</p>
-          <div class="copy-clipboard">
-            <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-            <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-          </div>
-          <div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">ST_IsValid</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span></code></pre></div>
-          <p>You should see the following output:</p>
-          {{ st_invalid_output }}
-          <p>If your <code>cockroach</code> binary is not properly accessing the dynamically linked C libraries in <code>/usr/local/lib/cockroach</code>, it will output an error message like the one below.</p>
-          <div class="highlight"><pre><code class="language-" data-lang="">ERROR: st_isvalid(): geos: error during GEOS init: geos: cannot load GEOS from dir "/usr/local/lib/cockroach": failed to execute dlopen
-          Failed running "sql"</code></pre></div>
-        </li>
-      </ol>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="2" %}
-    </li>
-  </ol>
-</div>
+    If you installed CockroachDB using a different method, you may need to remove the binary before installing using Homebrew.
 
-<div id="use-kubernetes" class="install-option">
-  <h2 id="install-kubernetes">Use Kubernetes</h2>
+1. Use Homebrew to install CockroachDB:
 
-  <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
-</div>
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    brew install cockroachdb/tap/cockroach
+    ~~~
 
-<div id="use-docker" class="install-option">
-  <h2 id="install-docker">Use Docker</h2>
+1. Make sure the `cockroach` binary you just installed is the one that runs when you type `cockroach` in your shell.
 
-  {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+    1. Verify that the `cockroach` binary is in your shell's `$PATH`:
 
-  {{ arch_note_docker }}
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        which cockroach
+        ~~~
 
-  <ol>
-    <li>
-      <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
-    </li>
-    <li>
-      <p>Confirm that the Docker daemon is running in the background:</p>
+        ~~~
+        /opt/homebrew/bin/cockroach
+        ~~~
 
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step2"><span class="nv language-shell mac-docker-step2" id="mac-docker-step2-{{ page.version.version }}" data-eventcategory="mac-docker-step2">$ </span>docker version</code></pre></div>
-      <p>If you do not see the server listed, start the <strong>Docker</strong> daemon.</p>
-    </li>
-    <li>
-      <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" class="mac-docker-step3" id="mac-docker-step3-{{page.version.version}}" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
+        If the `cockroach` binary is not found, or if the result does not point to your Homebrew installation, adjust your shell's `$PATH` variable. If a `cockroach` binary is found at another location, first ensure that it is not being used by a running `cockroach` process on your system, then move or remove that binary.
 
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="nv language-shell mac-docker-step3" id="mac-docker-step3-{{ page.version.version }}" data-eventcategory="mac-docker-step3">$ </span>docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}</code></pre>
-      </div>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="3" %}
-    </li>
-  </ol>
-</div>
+        After making adjustments, run the `which` command again to verify your configuration.
 
-<div id="build-from-source" class="install-option">
-  <h2 id="install-source">Build from source</h2>
-  <p>See the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">public wiki</a> for guidance. When building on the ARM architecture, refer to <a href="#limitations">Limitations</a>.</p>
-</div>
+    1. Use the `cockroach version` command to verify that the `cockroach` binary in your `$PATH` is the version that you expect. Replace `{path_to_cockroach}` with the full path returned by `which`:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        {path_to_cockroach}/cockroach version
+        ~~~
+
+        If the version is not what you expect, review your Homebrew installation and configuration options.
+
+1. If you plan to use CockroachDB's [spatial features](spatial-features.html), refer to [Install GEOS libraries](#install-geos-libraries). Otherwise, your installation is complete.
+
+1. Keep up-to-date with CockroachDB releases and best practices:
+
+    {% include marketo-install.html uid="1" %}
+
+<a id="download-the-binary"></a>
+<a id="install-binary"></a>
+
+## Install the binary
+
+{{site.data.alerts.callout_info}}
+CockroachDB's [spatial features](spatial-features.html) are disabled in the binary for ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)) systems. To use these features, do not install the ARM binary. Instead, you can run CockroachDB using the [Docker image](#use-docker). On macOS, Docker images run in a lightweight Linux virtual machine. The GEOS libraries are automatically included and configured within the Docker image.
+{{site.data.alerts.end}}
+
+1. To ensure that you install the correct binary for your system architecture, use `uname`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    uname -m
+    ~~~
+
+    If the result is `x86_64`, your system runs on the Intel architecture. If the result is `arm64`, your system runs on the ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)) architecture.
+
+1. Visit [Releases](/docs/releases/index.html) to download the CockroachDB archive your system architecture. The archive contains the `cockroach` binary and the supporting libraries that are used to provide [spatial features](spatial-features.html).
+
+    You can download the binary using a web browser or you can copy the link and use a utility like `curl` to download it.
+
+1. Extract the archive and optionally copy the `cockroach` into a directory in your `PATH` so you can execute [`cockroach` commands](cockroach-commands.html) from any shell. If you get a permission error, use `sudo` to copy the `cockroach` binary to a system directory.
+
+1. Make sure the `cockroach` binary you just installed is the one that runs when you type `cockroach` in your shell.
+
+    1. Verify that the `cockroach` binary is in your shell's `$PATH`:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        which cockroach
+        ~~~
+
+        ~~~
+        /usr/local/bin/cockroach
+        ~~~
+
+        If the `cockroach` binary is not found, or if the result does not point to your installation, adjust your shell's `$PATH` variable. If a `cockroach` binary is found at another location, first ensure that it is not being used by a running `cockroach` process on your system, then move or remove that binary.
+
+        After making adjustments, run the `which` command again to verify your configuration.
+
+    1. Use the `cockroach version` command to verify that the `cockroach` binary in your `$PATH` is the version that you expect. Replace `{path_to_cockroach}` with the full path returned by `which`:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        {path_to_cockroach}/cockroach version
+        ~~~
+
+        If the version is not what you expect, verify the location where you copied the binary.
+
+1. If your system architecture is Intel and you plan to use CockroachDB's [spatial features](spatial-features.html), refer to [Install GEOS libraries](#install-geos-libraries). Otherwise, your installation is complete.
+1. Keep up-to-date with CockroachDB releases and best practices:
+
+    {% include marketo-install.html uid="2" %}
+
+<a id="install-kubernetes"></a>
+
+## Deploy using Kubernetes
+
+To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), refer to [Orchestrate CockroachDB Locally with Minikube](orchestrate-a-local-cluster-with-kubernetes.html).CockroachDB can be deployed using the [Helm](https://helm.sh/), package manager or a manual StatefulSet.
+
+
+<a id="install-docker"></a>
+<a id="use-docker"></a>
+
+## Deploy using Docker
+
+{{site.data.alerts.callout_danger}}
+Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, CockroachLabs recommends that you start with a different installation and deployment method.
+{{site.data.alerts.end}}
+
+CockroachDB Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform/) that contains binaries for both Intel and ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)). Multi-platform images do not take up additional space on your Docker host.
+
+1. Install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).">Docker for Mac</a>. For installation requirements and detailed instructions, refer to the Docker documentation.
+1. Confirm that Docker is running in the background:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker version
+    ~~~
+
+    If an error occurs, confirm that Docker is running and try the command again.
+
+1. Download the Docker image:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}
+    ~~~
+
+1. To start CockroachDB from Docker, refer to [Start a Cluster in Docker](start-a-local-cluster-in-docker-mac.html).
+
+1. Keep up-to-date with CockroachDB releases and best practices:
+
+    {% include marketo-install.html uid="3" %}
+
+
+<a id="install-source"></a>
+
+## Build from source
+
+For guidance on building CockroachDB from source, refer [Getting and Building CockroachDB from Source](https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source) in the CockroachDB Wiki. When building on the ARM architecture, refer to <a href="#limitations">Limitations</a>.
+
+<a id="install-geos-libraries"></a>
+
+## Install the GEOS libraries (optional)
+
+CockroachDB uses custom-built versions of the [GEOS libraries](spatial-glossary.html#geos). After you [install the CockroachDB binary](#download-the-binary), follow these steps to install the GEOS libraries.
+
+{{site.data.alerts.callout_info}}
+CockroachDB's [spatial features](spatial-features.html) are disabled in the binary for ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)) systems. To use these features, run CockroachDB using the [Docker image](#use-docker). On macOS, Docker images run in a lightweight Linux virtual machine. The GEOS libraries are automatically included and configured within the Docker image.
+{{site.data.alerts.end}}
+
+1. Make sure the `cockroach` binary is in your shell's `PATH`, and make a note of its location.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    which cockroach
+    ~~~
+
+    ~~~
+    /usr/local/bin/cockroach
+    ~~~
+
+    In the following instructions, replace `{cockroach_directory}` with this location.
+
+1. Go to the directory where you extracted the CockroachDB binary archive before you installed it. The GEOS libraries are located in the `lib/` subdirectory.
+1. Copy the GEOS libraries to one of the following locations: <ul><li><code>/usr/local/lib/cockroach</code></li><li><code>{cockroach_directory}/lib</code></li><li>A directory of your choice</li></ul>
+
+    If the GEOS libraries are installed in a different location, you must provide the location using the `--spatial-libs` flag to `cockroach start`.
+
+    In the following instructions, replace `{geos_library_directory}` with the target directory for the GEOS libraries:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cp lib/libgeos.dylib {geos_library_directory} && cp libgeos_c.dylib {geos_library_directory}
+    ~~~
+
+    If you get a permissions error, use `sudo` to copy each GEOS library to a system directory.
+
+1. Verify that CockroachDB can execute spatial queries.
+
+   1. Start a temporary, in-memory cluster using the [`cockroach demo`](cockroach-demo.html) command:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        cockroach demo
+        ~~~
+
+        The cluster starts and the interactive SQL runs, just like when you run the `cockroach sql` command.
+
+   1. In interactive SQL shell, run the following query to test that CockroachDB supports spatial features:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT ST_IsValid(ST_MakePoint(1,2));
+        ~~~
+
+        If CockroachDB successfully found the GEOS libraries, the query returns the following output:
+
+        ~~~ sql
+        st_isvalid
+        --------------
+        true
+        (1 row)
+        ~~~
+
+        If CockroachDB cannot find the GEOS libraries, the query returns an error:
+
+        ~~~ sql
+        ERROR: st_isvalid(): geos: error during GEOS init: geos: cannot load GEOS from dir "/usr/local/lib/cockroach": failed to execute dlopen
+          Failed running "sql"
+        ~~~
 
 <h2 id="limitations">Limitations</h2>
 
@@ -210,9 +259,10 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 - CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.
 - Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
+- When [installing using Homebrew](#install-using-homebrew) on the ARM architecture, GEOS libraries are not installed. Instead, you can [deploy using Docker](#deploy-using-docker). CockroachDB Docker images are multi-platform images which support both Intel and ARM architectures.
 - When [building from source](#install-source), it is not possible to disable FMA intrinsics. For more details, refer to [Issue #36971](https://github.com/golang/go/issues/36971) in the Go project's issue tracker.
 
-<h2 id="whats-next">What&#39;s next?</h2>
+## What's Next?
 
 {% include {{ page.version.version }}/misc/install-next-steps.html %}
 
