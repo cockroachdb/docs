@@ -1,0 +1,75 @@
+1. Ensure that all the PostgreSQL libraries are installed and referenced in `LD_LIBRARY_PATH`. 
+
+    The path should at least include `/usr/pgsql-13/lib` and `/u01/ggs-pg/lib`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    # The path is a concatenation of your PostgreSQL libraries and GoldenGate installation directory
+    export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
+    ~~~
+
+1. Set up the `ODBC.ini` file for the Oracle GoldenGate host:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    # This is needed so that OGG knows where to look for connection details for the database
+    export ODBCINI=/etc/odbc.ini
+
+    vi /etc/odbc.ini
+    ~~~
+
+1. Edit the following parameters in the `ODBC.ini` file.
+
+    Set up the ODBC data sources and configuration:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    # No changes should be needed for CRDBLOCAL
+    [ODBC Data Sources]
+    PG_src=DataDirect 7.1 PostgreSQL Wire Protocol
+    PG_tgt=DataDirect 7.1 PostgreSQL Wire Protocol
+    CRDB=DataDirect 7.1 PostgreSQL Wire Protocol
+
+    [ODBC]
+    IANAAppCodePage=4
+    # The following path is your Oracle GoldenGate for PostgreSQL installation directory
+    InstallDir=/u01/ggs-pg
+    ~~~
+
+1. Set up the CockroachDB {{ site.data.products.serverless }} parameters:
+
+    - Replace the login details with your own. Be sure to prefix the database name with `{hostname}`.
+    - Make sure your {{ site.data.products.serverless }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster#connect-to-your-cluster) is in the `TrustStore` path.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    [CRDBSERVERLESS]
+    # The following driver will always point to your Oracle GoldenGate for PostgreSQL installation
+    Driver=/u01/ggs-pg/lib/GGpsql25.so
+    Description=DataDirect 7.1 PostgreSQL Wire Protocol
+    Database={hostname}.defaultdb
+    HostName={host}
+    PortNumber=26257
+    LogonID={your sql user}
+    Password={your sql user's pass}
+    EncryptionMethod=1 
+    ValidateServerCertificate=1 
+    TrustStore=/root/.postgresql/root.crt
+    ~~~
+
+1. Log in to the database:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd /u01/ggs-pg
+    export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
+    export ODBCINI=/etc/odbc.ini
+
+    ./ggsci
+
+    # To log into the local database
+    DBLOGIN SOURCEDB CRDBLOCAL
+
+    # To log into the serverless database and then enter your password
+    DBLOGIN SOURCEDB CRDBSERVERLESS
+    ~~~

@@ -24,7 +24,7 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 - A *live migration* keeps two production databases online (a source and a target database) and uses either replication or dual writing to keep data identical between them until a final cutover.
 - The *source of truth* is the database that serves reads and writes to the application during a live migration. A cutover switches the source of truth.
-- *Shadowing* is the replaying of source traffic on the target database. The LMS supports multiple [shadowing modes](#shadowing-modes).
+- *Shadowing* is the execution of source SQL traffic on the target database in parallel. The LMS supports multiple [shadowing modes](#shadowing-modes).
 
 ## Requirements
 
