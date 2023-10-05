@@ -348,13 +348,13 @@ module Jekyll
         index.save_synonym('writetooolderror', {
           objectID: 'writetooolderror',
           type: 'synonym',
-          synonyms: ['RETRY_WRITE_TOO_OLD', 'write too old', 'writetooold']
+          synonyms: ['writetooolderror', 'RETRY_WRITE_TOO_OLD', 'write too old', 'writetooold']
         }, false)
 
         index.save_synonym('material view', {
           objectID: 'material view',
           type: 'synonym',
-          synonyms: ['materialized view']
+          synonyms: ['materialized view', 'material view']
         }, false)
 
         return
