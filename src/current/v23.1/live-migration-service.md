@@ -24,7 +24,7 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 - A *live migration* keeps two production databases online (a source and a target database) and uses either replication or dual writing to keep data identical between them until a final cutover.
 - The *source of truth* is the database that serves reads and writes to the application during a live migration. A cutover switches the source of truth.
-- *Shadowing* is the execution of source SQL traffic on the target database in parallel. The LMS supports multiple [shadowing modes](#shadowing-modes).
+- *Shadowing* is the execution of source SQL statements on the target database in parallel. The LMS supports multiple [shadowing modes](#shadowing-modes).
 
 ## Requirements
 
@@ -39,7 +39,7 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Installation
 
-1. Add the [Helm chart repository](https://molt.cockroachdb.com/lms/charts/) with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
+1. Add the Helm chart repository at `https://molt.cockroachdb.com/lms/charts/` with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
 
 1. Port-forward from your local machine to the orchestrator, using the release name that you specified with `helm install`. The orchestrator port is configurable and is [`4200` by default](#service-type).
 
@@ -651,7 +651,7 @@ These steps assume you have already followed the overall steps to [prepare for m
   molt-lms-cli cutover immediate {flags}
   ~~~
 
-  This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediatedly directed to CockroachDB.
+  This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediately directed to CockroachDB.
 
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}
