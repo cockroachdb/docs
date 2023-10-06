@@ -11,6 +11,8 @@ This page explains how reads and writes are affected by the replicated and distr
 For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer](transaction-layer.html) documentation.
 {{site.data.alerts.end}}
 
+## CockroachDB architecture terms
+
 {% include {{ page.version.version }}/misc/basic-terms.md %}
 
 ## Query execution

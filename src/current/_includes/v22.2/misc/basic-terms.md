@@ -1,5 +1,3 @@
-## CockroachDB architecture terms
-
 Term | Definition
 -----|------------
 **cluster** | A group of interconnected storage nodes that collaboratively organize transactions, fault tolerance, and data rebalancing.
