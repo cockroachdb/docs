@@ -161,37 +161,39 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             {% include_cached copy-clipboard.html %}
             ~~~json
             {
-             type: AWS_CLOUDWATCH,
-             log_name: "default",
-             auth_principal: "{role_arn}",
-             redact: true,
-             region: "",
-             groups: [
+             "type": "AWS_CLOUDWATCH",
+             "log_name": "default",
+             "auth_principal": "{role_arn}",
+             "redact": true,
+             "region": "",
+             "omitted_channels": [ "SESSIONS", "SQL_PERF"],
+             "groups": [
                      {
-                         log_name: "sql",
-                         channels: ["SQL_SCHEMA", "SQL_EXEC"],
-                         redact: false,
+                         "log_name": "sql",
+                         "channels": ["SQL_SCHEMA", "SQL_EXEC"],
+                         "redact": false
                      },
                      {
-                         log_name: "devops",
-                         channels: ["OPS", "HEALTH", "STORAGE"]
-                         min_level: "WARNING"
-                     },
+                         "log_name": "devops",
+                         "channels": ["OPS", "HEALTH", "STORAGE"],
+                         "min_level": "WARNING"
+                     }
              ]
             }
             ~~~
 
             This configuration:
             - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to AWS CloudWatch.
+            - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
             - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other logging channels to the `default` AWS CloudWatch log group.
+            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` AWS CloudWatch log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
-            {type: AWS_CLOUDWATCH, log_name: default, auth_principal: {role_arn}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}
+            {"type":"AWS_CLOUDWATCH","log_name":"default","auth_principal":"{role_arn}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
             ~~~
 
         1. Then, to enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with the above example custom logging configuration, issue the following Cloud API command:
@@ -201,7 +203,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data '{type: AWS_CLOUDWATCH, log_name: default, auth_principal: {role_arn}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}'
+              --data '{"type":"AWS_CLOUDWATCH","log_name":"default","auth_principal":"{role_arn}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
             ~~~
 
             Where:
@@ -301,37 +303,39 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             {% include_cached copy-clipboard.html %}
             ~~~json
             {
-             type: GCP_CLOUD_LOGGING,
-             log_name: "default",
-             auth_principal: "{gcp_project_id}",
-             redact: true,
-             region: "",
-             groups: [
+             "type": "GCP_CLOUD_LOGGING",
+             "log_name": "default",
+             "auth_principal": "{gcp_project_id}",
+             "redact": true,
+             "region": "",
+             "omitted_channels": [ "SESSIONS", "SQL_PERF"],
+             "groups": [
                      {
-                         log_name: "sql",
-                         channels: ["SQL_SCHEMA", "SQL_EXEC"],
-                         redact: false,
+                         "log_name": "sql",
+                         "channels": ["SQL_SCHEMA", "SQL_EXEC"],
+                         "redact": false
                      },
                      {
-                         log_name: "devops",
-                         channels: ["OPS", "HEALTH", "STORAGE"]
-                         min_level: "WARNING"
-                     },
+                         "log_name": "devops",
+                         "channels": ["OPS", "HEALTH", "STORAGE"],
+                         "min_level": "WARNING"
+                     }
              ]
             }
             ~~~
 
             This configuration:
             - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
+            - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
             - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other logging channels to the `default` GCP Cloud Logging log group.
+            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` GCP Cloud Logging log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
-            {type: GCP_CLOUD_LOGGING, log_name: default, auth_principal: {gcp_project_id}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}
+            {"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{gcp_project_id}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
             ~~~
 
         1. Then, to enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with the above example custom logging configuration, issue the following Cloud API command:
@@ -341,7 +345,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data '{type: GCP_CLOUD_LOGGING, log_name: default, auth_principal: {gcp_project_id}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}'
+              --data '{"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{gcp_project_id}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
             ~~~
 
             Where:
