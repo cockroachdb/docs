@@ -582,27 +582,27 @@ To perform a consistent cutover with the LMS:
 
 1. Begin the consistent cutover. **Requests are now queued in the LMS**, including queries from existing connections and new connection requests to the LMS:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  molt-lms-cli cutover consistent begin {flags}
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli cutover consistent begin {flags}
+    ~~~
 
-  This command tells the LMS to pause all application traffic to the source of truth. The LMS then waits for transactions to complete and prepared statements to close.
+    This command tells the LMS to pause all application traffic to the source of truth. The LMS then waits for transactions to complete and prepared statements to close.
 
 1. Verify that replication on CockroachDB has caught up with the source of truth. For example, insert a row on the source database and check that the row exists on CockroachDB.
 
-  If you have an implementation that replicates back to the source database, this should be enabled before committing the cutover.
+    If you have an implementation that replicates back to the source database, this should be enabled before committing the cutover.
 
 1. Once all writes have been replicated to the target database, commit the consistent cutover:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  molt-lms-cli cutover consistent commit {flags}
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli cutover consistent commit {flags}
+    ~~~
 
-  This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
+    This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
 
-  To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
+    To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
 
 1. Again, use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the data on the source database and CockroachDB are consistent.
 
@@ -610,16 +610,16 @@ If any problems arise during a consistent cutover:
 
 - After running `cutover consistent begin`: 
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  molt-lms-cli cutover consistent abort {flags}
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli cutover consistent abort {flags}
+    ~~~
 
-  This command tells the LMS to resume application traffic to the source of truth, which has not yet been switched. Cutover **cannot** be aborted after running `cutover consistent commit`.
+    This command tells the LMS to resume application traffic to the source of truth, which has not yet been switched. Cutover **cannot** be aborted after running `cutover consistent commit`.
 
 - After running `cutover consistent commit`: 
 
-  Reissue the `cutover consistent begin` and `cutover consistent commit` commands to revert the source of truth to the source database.
+    Reissue the `cutover consistent begin` and `cutover consistent commit` commands to revert the source of truth to the source database.
 
 {% comment %}
 ### Immediate cutover
@@ -642,16 +642,16 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 1. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
 
-  To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
+    To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
 
 1. Once nearly all data from the source database is replicated to CockroachDB (for example, with a <1 second delay or <1000 rows), initiate the cutover:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  molt-lms-cli cutover immediate {flags}
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt-lms-cli cutover immediate {flags}
+    ~~~
 
-  This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediately directed to CockroachDB.
+    This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediately directed to CockroachDB.
 
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}
