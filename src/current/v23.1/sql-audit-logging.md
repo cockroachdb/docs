@@ -1,11 +1,11 @@
 ---
-title: SQL Audit Logging
+title: Table-based SQL Audit Logging
 summary: Use the EXPERIMENTAL_AUDIT setting to turn SQL audit logging on or off for a table.
 toc: true
 docs_area: manage
 ---
 
-SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
+Table-based SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 
 It consists of using the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit) command to enable the [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) logging channel per table.
 
@@ -223,6 +223,7 @@ For descriptions of all SQL audit event types and their fields, see [Notable Eve
 
 ## See also
 
+- [Role-based SQL Audit Logging]({% link {{ page.version.version }}/role-based-audit-logging.md %})
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit)
 - [`cockroach start` logging flags]({% link {{ page.version.version }}/cockroach-start.md %}#logging)
 - [Logging Use Cases]({% link {{ page.version.version }}/logging-use-cases.md %})
