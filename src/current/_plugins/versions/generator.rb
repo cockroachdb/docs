@@ -96,7 +96,7 @@ module JekyllVersions
     end
 
     def versions
-      @versions ||= Set.new(vps.map { |vp| vp.version }).to_a.compact.sort.reverse
+      @versions ||= Set.new(vps.map { |vp| vp.version }).to_a.coddmpact.sort.reverse
     end
 
     def vps_with_key(key)
