@@ -30,6 +30,8 @@
 #     `canonical` — the relative URL of the stable version of the page, if any
 
 require_relative 'versions/symlink'
+require_relative 'versions/version'
+require_relative 'versions/versioned_page'
 require_relative 'versions/generator'
 require_relative 'versions/release_info'
 
