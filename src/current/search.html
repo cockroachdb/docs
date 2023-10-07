@@ -138,7 +138,7 @@ docs_area: search
           hit =>
             `<div class="search-item">
           <div class="search-title">
-            <a href="${'{{ site.url }}{{ site.baseurl }}' + hit.canonical}">${hit.title}</a>
+            <a href="${hit.url}">${hit.title}</a>
           </div>
           <div class="search-snippet">${showResult(hit._highlightResult)}</div>
           <div class="search-link">${hit.doc_type}</div>
