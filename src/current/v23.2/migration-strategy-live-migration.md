@@ -23,7 +23,7 @@ With the immediate cutover approach, the application begins writing to the targe
 
 Cockroach Labs recommends using the consistent cutover approach when using the live migration strategy. Your data remains more consistent and downtime is minimized. [MOLT LMS]({% link {{ page.version.version }}/live-migration-service.md %}#consistent-cutover) only supports consistent cutover.
 
-However, if zero downtime is truly required, the immediate cutover approach may be used at the risk of some data inconsistencies. Third-party migration tools like [AWS DMS]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik]({% link {{ page.version.version }}/qlik.md %}), and [Striim]({% link {{ page.version.version }}/striim.md %}) perform the initial migration into CockroachDB, and replicate ongoing changes. CockroachDB [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) allow for replication to the source database after cutover, simplifying the service architecture.
+However, if zero downtime is truly required, the immediate cutover approach may be used at the risk of some data inconsistencies. [Third-party migration tools]({% link {{ page.version.version }}/third-party-database-tools.md %}#data-migration-tools) perform the initial migration into CockroachDB, and replicate ongoing changes. CockroachDB [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) allow for replication to the source database after cutover, simplifying the service architecture.
 
 ## Advantages and disadvantages of the live migration strategy
 
@@ -67,12 +67,7 @@ Before performing a live migration, consider the following:
 
 Live migration requires tooling to copy the data from the source database to the target database, and synchronize the data back to the source database after cutover. If you need to import an initial dataset, you can choose to perform the import before the migration, or concurrent with the live migration.
 
-The initial data migration and synchronization can be handled by tools such as:
-
-- [MOLT LMS (Live Migration Service)]({% link {{ page.version.version }}/live-migration-service.md %})
-- [AWS Database Migration Service]({% link {{ page.version.version }}/aws-dms.md %}) (DMS)
-- [Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
-- [Striim({% link {{ page.version.version }}/striim.md %})]
+The initial data migration and synchronization can be handled by [third-party migration tools]({% link {{ page.version.version }}/third-party-database-tools.md %}#data-migration-tools).
 
 Many other database systems have built-in change data capture (CDC) services that could be used to stream data to CockroachDB while the source database is the source of truth.
 

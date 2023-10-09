@@ -1,0 +1,46 @@
+
+ Using MOLT LMS
+ 
+                     .--------------.
+                     |              |
+                     | CockroachDB  |
+                     | {t}          |
+                     '--------------'
+                            ^
+                            |
+
+                           ____
++--------------+         .'    `.
+|              |        /        \
+| Application  | <-->  (   LMS    )
+|{a}           |        \ {lms}  /
++--------------+         `.____.'
+
+                            |
+                            V
+                     .--------------.
+                     |              |
+                     |  Source DB.  |
+                     | {s}          |
+                     '--------------'
+
+# Legend:
+t = {
+    stroke: #6933ff;
+    fill: #b59cf9;
+}
+s = {
+    stroke: green;
+    fill: lightgreen;
+}
+a = {
+    fill: lightblue;
+}
+lms = {
+    fill: #afc8fb;
+    stroke: #05f;
+}
+crdb = {
+    fill: #6933ff;
+    color: white;
+}
