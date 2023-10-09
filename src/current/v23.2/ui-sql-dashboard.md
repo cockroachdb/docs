@@ -9,6 +9,8 @@ The **SQL** dashboard in the DB Console lets you monitor the performance of your
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and then select **Dashboard** > **SQL**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Statements**](#sql-statements), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
@@ -28,7 +30,7 @@ The **SQL** dashboard displays the following time series graphs:
 The **SQL Connection Rate** is an average of the number of connection attempts per second over an aggregation window.
 
 - In the node view, the graph shows the rate of SQL connection attempts between clients and the selected node.
-  
+
 - In the cluster view, the graph shows the rate of SQL connection attempts to all nodes, with lines for each node.
 
 ## Open SQL Transactions

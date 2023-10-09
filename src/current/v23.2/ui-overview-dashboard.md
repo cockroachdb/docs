@@ -11,6 +11,8 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see this [How Can I Reduce or Disable the Storage of Time-series Data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Overview** dashboard displays the following time series graphs. All timestamps in the DB Console are shown in 24-hour Coordinated Universal Time (UTC).

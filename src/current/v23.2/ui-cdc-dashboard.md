@@ -9,6 +9,8 @@ The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeed
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Changefeeds** dashboard displays the following time series graphs:
