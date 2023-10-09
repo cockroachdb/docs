@@ -47,6 +47,8 @@ fi;
 if [ "$CONTEXT" == "production" ]; then
 	echo "Building Algolia index..."
 	ALGOLIA_API_KEY=${PROD_ALGOLIA_API_KEY} bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml
+else
+	ALGOLIA_API_KEY=${PROD_ALGOLIA_API_KEY} bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml --dry-run
 fi;
 
 # Run htmltest, but skip checking external links to speed things up
