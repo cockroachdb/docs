@@ -1,0 +1,40 @@
+
+ Initial phase                                 
+                                             
+                    .--------------.
+                    |              |
+        .-------->  |  Source DB   |
+       |            | {s}          |
+       |            '--------------'
+       |                   !
+       |                   !
+       |                   V
++--------------+      .----------.
+|              |     /            \           
+| Application  |    ( replication  )
+|{a}           |     \            / 
++--------------+      '----------'  
+                           |
+                           V
+                    .--------------.
+                    |              |
+                    | CockroachDB  |
+                    | {t}          | 
+                    '--------------'
+
+# Legend:
+t = {
+    stroke: #6933ff;
+    fill: #b59cf9;
+}
+s = {
+    stroke: green;
+    fill: lightgreen;
+}
+a = {
+    fill: lightblue;
+}
+crdb = {
+    fill: #6933ff;
+    color: white;
+}

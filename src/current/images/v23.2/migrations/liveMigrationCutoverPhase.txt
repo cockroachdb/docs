@@ -1,0 +1,40 @@
+
+ Cutover phase
+
+                    .--------------.
+                    |              |
+        .-------->  | CockroachDB  |
+       |            | {t}          |
+       |            '--------------'
+       |                   !
+       |                   !
+       |                   V
++--------------+      .----------.
+|              |     /            \
+| Application  |    ( replication  )
+|{a}           |     \            /
++--------------+      '----------' 
+                           |
+                           V
+                    .--------------.
+                    |              |
+                    |  Source DB   |
+                    | {s}          |
+                    '--------------'
+
+# Legend:
+t = {
+    stroke: #6933ff;
+    fill: #b59cf9;
+}
+s = {
+    stroke: green;
+    fill: lightgreen;
+}
+a = {
+    fill: lightblue;
+}
+crdb = {
+    fill: #6933ff;
+    color: white;
+}

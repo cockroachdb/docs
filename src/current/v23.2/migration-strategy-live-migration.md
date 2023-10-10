@@ -12,8 +12,16 @@ During a live migration you maintain two production databases (the *source* and 
 A live migration consists of the following distinct phases:
 
 - The initial phase where the source database is the *source of truth*: the database used by the application to read and write data, and the source for replicating the data to CockroachDB, the target database.
+
+    <img src="{{ 'images/v23.2/migrations/liveMigrationInitialPhase.svg' | relative_url }}" alt="Diagram showing the initial phase of the migration."  />
+
 - The cutover phase where CockroachDB is made the source of truth and the source database is the secondary database used for failover.
+
+    <img src="{{ 'images/v23.2/migrations/liveMigrationCutoverPhase.svg' | relative_url }}" alt="Diagram showing the cutover phase of the migration."  />
+
 - The final phase where the source database is removed. The source database is no longer available as a replication target, or a failover database.
+
+    <img src="{{ 'images/v23.2/migrations/liveMigrationFinalPhase.svg' | relative_url }}" alt="Diagram showing the final phase of the migration."  />
 
 There are many possible approaches to performing a live migration. In this topic, we describe two example approaches that have been successful with CockroachDB: consistent cutover, and immediate cutover.
 
