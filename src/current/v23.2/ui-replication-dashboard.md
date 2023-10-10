@@ -19,6 +19,8 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/).
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Replication** dashboard displays the following time series graphs:
@@ -124,7 +126,7 @@ Metric | Description
 
 <img src="{{ 'images/v23.2/ui_replica_circuitbreaker_replicas.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Replicas" style="border:1px solid #eee;max-width:100%" />
 
-When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely. 
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely.
 
 - In the node view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for the selected node.
 
