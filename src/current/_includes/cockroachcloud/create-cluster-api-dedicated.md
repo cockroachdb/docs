@@ -19,7 +19,7 @@ To create a **Dedicated** cluster, send a `POST` request to the `/v1/clusters` e
 ~~~ shell
 curl --request POST \
 --url 'https://management-staging.crdb.io/api/v1/clusters' \
---header 'Authorization: Bearer { api key }' \
+--header "Authorization: Bearer $COCKROACH_API_KEY" \
 --data @create-dedicated-cluster.json
 ~~~
 
@@ -56,15 +56,15 @@ Save your cluster's UUID, in the `id` field, so you can use the API to [Get info
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "id": "b453f920-8e9a-488a-8ef5-23f2e86fcc0e",
-  "name": "docstestcluster2",
-  "cockroach_version": "v23.1.1",
+  "id": "d93ab550-f90c-44f1-88d3-92b5e0ac9994",
+  "name": "docstestcluster",
+  "cockroach_version": "v23.1.7",
   "upgrade_status": "FINALIZED",
   "plan": "DEDICATED",
   "cloud_provider": "GCP",
-  "account_id": "crl-staging-7765",
+  "account_id": "crl-staging-7k6q",
   "state": "CREATING",
-  "creator_id": "b9ad8253-8c60-46fd-afc2-62fd39e7d2ed",
+  "creator_id": "43788110-8ecc-4643-b173-82ea03b24172",
   "operation_status": "UNSPECIFIED",
   "config": {
     "dedicated": {
@@ -78,18 +78,19 @@ Save your cluster's UUID, in the `id` field, so you can use the API to [Get info
   "regions": [
     {
       "name": "us-west2",
-      "sql_dns": "docstestcluster2-7765.gcp-us-west2.crdb.io",
-      "ui_dns": "admin-docstestcluster2-7765.gcp-us-west2.crdb.io",
+      "sql_dns": "docstestcluster-7k6q.gcp-us-west2.crdb.io",
+      "ui_dns": "admin-docstestcluster-7k6q.gcp-us-west2.crdb.io",
       "internal_dns": "",
       "node_count": 1,
       "primary": false
     }
   ],
-  "created_at": "2023-07-06T01:22:00.916592Z",
-  "updated_at": "2023-07-06T01:22:02.304708Z",
+  "created_at": "2023-10-10T03:29:03.115101Z",
+  "updated_at": "2023-10-10T03:29:04.534443Z",
   "deleted_at": null,
-  "sql_dns": "docstestcluster2-7765.crdb.io",
+  "sql_dns": "docstestcluster-7k6q.crdb.io",
   "network_visibility": "PRIVATE",
-  "egress_traffic_policy": "UNSPECIFIED"
+  "egress_traffic_policy": "DEFAULT_DENY",
+  "parent_id": ""
 }
 ~~~

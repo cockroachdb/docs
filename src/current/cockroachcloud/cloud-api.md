@@ -80,17 +80,15 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-**Required Permissions**
-
-The service account associated with the secret key must have one of the following [organization roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) , in order to create a cluster in that organization:
-
-- the [Cluster Creator role]({% link cockroachcloud/authorization.md %}#cluster-creator).
-- The [Cluster Administrator role]({% link cockroachcloud/authorization.md %}#cluster-administrator)  scoped to the entire organization (Cluster creator can be assigned to a signle cluster, which does not allow the user to create new clusters).
-- The [Org Administrator (legacy) role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) .
-- The `ADMIN` or `CREATE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+{% include cockroachcloud/cluster-create-console-required-role.md %}
 
 Serverless and Dedicated clusters have different configuration options. Refer to [CockroachDB Cloud FAQs
 ]({% link cockroachcloud/frequently-asked-questions.md %}) for an overview of the differences between the two.
+It is also possible to use the [Terraform provider for CockroachDB Cloud
+](https://github.com/cockroachdb/terraform-provider-cockroach) to manage your cluster configuration with an [Infrastructure as code
+](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach. Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
+
+
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>Serverless</strong></button>
