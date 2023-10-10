@@ -52,6 +52,12 @@
           "urls": [
             "/${VERSION}/goldengate.html"
           ]
+        },
+        {
+          "title": "Debezium",
+          "urls": [
+            "/${VERSION}/debezium.html"
+          ]
         }
       ]
     },

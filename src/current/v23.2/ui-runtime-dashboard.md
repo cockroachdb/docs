@@ -9,6 +9,8 @@ The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** on the left-hand navigation bar, and select **Dashboard** > **Runtime**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Runtime** dashboard displays the following time series graphs:
