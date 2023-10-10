@@ -18,6 +18,7 @@ function build {
 }
 
 # Handle Rust dependencies
+rustup default stable
 cargo build
 
 gem install bundler --silent
