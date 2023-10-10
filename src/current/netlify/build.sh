@@ -20,7 +20,7 @@ function build {
 # Handle Rust dependencies
 rustup default stable
 cargo install svgbob_cli
-ln -s /opt/buildhome/.cargo/bin/svgbob /opt/buildhome/.cargo/bin/svgbob_cli
+ln -s /opt/buildhome/.cargo/bin/svgbob_cli /opt/buildhome/.cargo/bin/svgbob
 
 gem install bundler --silent
 bundle install --quiet
