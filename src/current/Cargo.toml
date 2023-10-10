@@ -1,6 +1,6 @@
 [package]
-name = "CockroachDB docs"
-version = "1.0"
+name = "cockroachdb-docs"
+version = "1.0.0"
 edition = "2023"
 
 [dependencies]
