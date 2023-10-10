@@ -1,5 +1,3 @@
-## Database terms
-
 Term | Definition
 -----|-----------
 **consistency** | The requirement that a transaction must change affected data only in allowed ways. CockroachDB uses "consistency" in both the sense of [ACID semantics](https://en.wikipedia.org/wiki/ACID) and the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem), albeit less formally than either definition.
