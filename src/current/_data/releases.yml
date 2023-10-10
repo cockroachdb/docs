@@ -4932,7 +4932,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -4959,7 +4959,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
