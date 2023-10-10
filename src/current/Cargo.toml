@@ -1,0 +1,7 @@
+[package]
+name = "CockroachDB docs"
+version = "1.0"
+edition = "2023"
+
+[dependencies]
+svgbob_cli = "0.7.2"
