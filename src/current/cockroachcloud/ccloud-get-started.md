@@ -48,14 +48,14 @@ If you are a member of more than one [CockroachDB Cloud organization](https://ww
 ccloud auth login --org {organization label}
 ~~~
 
+The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
+
 If your organization has a custom URL, use the `--vanity-name` flag to log in:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud auth login --vanity-name {custom organization URL}
 ~~~
-
-The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
 
 ### Log in to CockroachDB Cloud on a headless server
 
