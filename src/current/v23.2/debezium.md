@@ -35,7 +35,7 @@ Complete the following items before using Debezium:
 
 Once all of the [prerequisite steps](#before-you-begin) are completed, you can use Debezium to migrate data to CockroachDB.
 
-1. To write data from Kafka to CockroachDB, use the Confluent JDBC Sink Connector. First use the following `dockerfile` to create a custom image with the JDBC driver:
+1. To write data from Kafka to CockroachDB, use the Confluent JDBC Sink Connector. First use the following `dockerfile` to create a custom image with the [JDBC driver](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc):
 
     {% include_cached copy-clipboard.html %}
     ~~~
