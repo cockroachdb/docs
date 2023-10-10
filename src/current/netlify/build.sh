@@ -17,6 +17,9 @@ function build {
 	fi;
 }
 
+# Handle Rust dependencies
+cargo build
+
 gem install bundler --silent
 bundle install --quiet
 build _config_cockroachdb.yml,_config_url.yml
