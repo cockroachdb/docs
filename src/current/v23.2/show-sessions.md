@@ -42,8 +42,8 @@ Field | Description
 `application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
-`session_start` | The timestamp at which the session started.
-`oldest_query_start` | The timestamp at which the oldest currently active SQL query in the session started.
+`session_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) at which the session started.
+`oldest_query_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) at which the oldest currently active SQL query in the session started.
 `kv_txn` | The ID of the current key-value transaction for the session.
 
 ## Examples
