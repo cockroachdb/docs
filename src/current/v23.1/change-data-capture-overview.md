@@ -99,7 +99,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Message format</b>
     </td>
     <td>Emits every change to a "watched" row as a record to the current SQL session.</td>
-    <td>Emits every change to a "watched" row as a record in a configurable format (JSON, CSV, Avro).</td>
+    <td>Emits every change to a "watched" row as a record in a <a href="{% link {{ page.version.version }}/changefeed-messages.md %}#message-formats">configurable format</a>: JSON, CSV, Avro, Parquet (in Preview).</td>
   </tr>
 
   <tr>

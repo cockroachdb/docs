@@ -54,9 +54,13 @@ CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq
 
 CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
-### Keep SQL audit logs
+### Role-based SQL audit logging
 
-Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit).
+[Role-based SQL audit logging]({% link {{ page.version.version }}/role-based-audit-logging.md %}) gives you detailed information about queries being executed against your system by specific users or roles. An event of type [`role_based_audit_event`]({% link {{ page.version.version }}/eventlog.md %}#role_based_audit_event) is recorded when an executed query belongs to a user whose role membership corresponds to a role that is enabled to emit an audit log via the [`sql.log.user_audit` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-log-user-audit). The event is logged in the [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) logging channel.
+
+### Table-based SQL audit logging
+
+With [table-based SQL audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}) you can log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

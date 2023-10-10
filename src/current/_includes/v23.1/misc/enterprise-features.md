@@ -22,3 +22,4 @@ Feature | Description
 [GSSAPI with Kerberos Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}) | Authenticate to your cluster using identities stored in an external enterprise directory system that supports Kerberos, such as Active Directory.
 [Cluster Single Sign-on (SSO)]({% link {{ page.version.version }}/sso-sql.md %}) | Grant SQL access to a cluster using JSON Web Tokens (JWTs) issued by an external identity provider (IdP) or custom JWT issuer.
 [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) | Grant access to a cluster's DB Console interface using SSO through an IdP that supports OIDC.
+[Role-based SQL Audit Logs]({% link {{ page.version.version }}/role-based-audit-logging.md %}) | Enable logging of queries being executed against your system by specific users or roles.
