@@ -1,11 +1,11 @@
 ---
-title: Migrate and Replicate Data with Debezium
+title: Migrate Data with Debezium
 summary: Use Debezium to migrate data to a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
 
-[Debezium](https://debezium.io/) is a self-hosted, distributed platform that can be used to read data from a variety of sources and push that data into Kafka. You can use Debezium to [migrate data to CockroachDB](#migrate-data-to-cockroachdb) from an existing, publicly hosted database containing application data.
+[Debezium](https://debezium.io/) is a self-hosted distributed platform that can read data from a variety of sources and import it into Kafka. You can use Debezium to [migrate data to CockroachDB](#migrate-data-to-cockroachdb) from another database that is accessible over the public internet.
 
 As of this writing, Debezium supports the following database [sources](https://debezium.io/documentation/reference/stable/connectors/index.html):
 
@@ -21,15 +21,15 @@ As of this writing, Debezium supports the following database [sources](https://d
 - JDBC (incubating)
 
 {{site.data.alerts.callout_info}}
-Migrating with Debezium is only recommended for users already familiar with Kafka. Refer to the [Debezium documentation](https://debezium.io/documentation/reference/stable/architecture.html) for information on how Debezium is deployed with Kafka Connect.
+Migrating with Debezium requires familiarity with Kafka. Refer to the [Debezium documentation](https://debezium.io/documentation/reference/stable/architecture.html) for information on how Debezium is deployed with Kafka Connect.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
 Complete the following items before using Debezium:
 
-- Ensure you have a secure, [publicly available]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
-- Have [Debezium](https://debezium.io/), [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html), and [Kafka](https://kafka.apache.org/) already set up. This documentation assumes you have already added data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic.
+- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
+- Install and configure [Debezium](https://debezium.io/), [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html), and [Kafka](https://kafka.apache.org/). This documentation assumes you have already added data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic.
 
 ## Migrate data to CockroachDB
 
@@ -38,7 +38,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 1. To write data from Kafka to CockroachDB, use the Confluent JDBC Sink Connector. First use the following `dockerfile` to create a custom image with the JDBC driver:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
+    ~~~
     FROM quay.io/debezium/connect:latest
     ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc \
 
@@ -56,7 +56,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
        curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
     ~~~
 
-1. Create the JSON configuration file needed to create the sink:
+1. Create the JSON configuration file that you will use to create the sink:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -82,6 +82,8 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
     ~~~
     
     Specify the **Connection URL** in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster). For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+
+1. To create the sink, `POST` the JSON configuration file to the Kafka Connect `/connectors` endpoint. Refer to the [Kafka Connect API documentation](https://kafka.apache.org/documentation/#connect_rest) for more information.
 
 ## See also
 
