@@ -19,7 +19,7 @@ function build {
 
 # Handle Rust dependencies
 rustup default stable
-cargo run
+cargo install svgbob_cli
 
 gem install bundler --silent
 bundle install --quiet
