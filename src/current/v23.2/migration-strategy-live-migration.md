@@ -41,14 +41,14 @@ The information on this page assumes you have already reviewed the [migration ov
 
 When choosing a migration strategy, the fundamental consideration is: Do you want to fix problems related to the migration during the migration, or afterward? The risks of migrating data are very similar between migration strategies, but the strategy you choose will determine when you will have to take the risk.
 
-Choosing the lift-and-shift strategy typically means fixing application and data consistency problems **after** the migration. Choosing live migration typically means fixing application problems **during** the migration, before the cutover, and potentially resolving data inconsistencies after the cutover.
+Choosing the lift-and-shift strategy typically means fixing application and data problems **after** the cutover. Choosing live migration typically means fixing application problems **during** the migration, before the cutover, and potentially resolving data inconsistencies after the cutover.
 
 On the spectrum of different data migration strategies, live migration has the following advantages and disadvantages. The terms "lower" and "higher" are not absolute, but relative to other approaches.
 
 Advantages:
 
 - There's greater service availability with live migrations. You can failback to the source database at any point in the migration process, or if there are significant errors after cutover.
-- The impact of a migration on users is minimized by having very little downtime.
+- The impact of a migration on users is minimized by having little to no downtime.
 - There's less internal coordination cost. For example, if other teams use the database, they can update their systems during the initial phase of the migration with no extended outage or maintenance window.
 - If you use dual-writes, you can test the viability and scalability of your architecture on live production data. For example, you can tune the performance of CockroachDB before the cutover without affecting the performance of the production application.
 
@@ -65,7 +65,7 @@ Disadvantages:
 Before performing a live migration, consider the following:
 
 - It is better to over-provision your cluster during the migration and then scale it back after the migration is complete than to discover you need more cluster resources during the migration.
-- The more testing you do before the migration to properly size your cluster and model the performance of your production workload, the more likely it is that your migration will succeed with minimal problems.
+- Testing against the live production workload by shadowing traffic from the source database to CockroachDB allows you to properly size your cluster and increases the likelihood that your migration will succeed with minimal problems
 - Writes are typically where performance problems arise during live migration. Testing your workload beforehand can help identify areas with slow write performance so they can be fixed before starting the migration.
 - After the migration completes, you should factor in time for performance tuning.
 - A common way of testing the performance of your workload on CockroachDB is to do gradual testing while the source database is the source of truth, and the CockroachDB cluster's data is replicated from the source database.
