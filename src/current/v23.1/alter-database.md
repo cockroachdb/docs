@@ -719,6 +719,8 @@ The following examples show:
 - How something like the [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) multi-region abstraction could have been implemented using Zone Config Extensions. For this example, we will call it ["Failover regions"](#failover-regions).
 - How to [reset a region's Zone Config Extensions](#reset-a-regions-zone-config-extensions).
 - How to [discard a region's Zone Config Extensions](#discard-a-regions-zone-config-extensions).
+- How you could [implement super regions](#implement-super-regions).
+- How to [minimize cross-region write latency](#minimize-cross-region-write-latency).
 
 {{site.data.alerts.callout_info}}
 We strongly recommend using the multi-region abstractions over "rolling your own" using Zone Config Extensions. These examples are provided to show the flexibility of Zone Config Extensions.
@@ -726,7 +728,7 @@ We strongly recommend using the multi-region abstractions over "rolling your own
 
 #### Setup
 
-The setup described in this section will be used in the examples below.
+The setup described in this section will be used in the following examples.
 
 ##### Start a cluster
 
@@ -833,6 +835,120 @@ SHOW ZONE CONFIGURATION FROM DATABASE movr;
 The `lease_preferences` field is now updated to include `us-west1`.
 
 To remove the changes made in this example, [reset the Zone Config Extensions](#reset-a-regions-zone-config-extensions).
+
+#### Implement super regions
+
+In this example, [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) are used to provide an alternative implementation of [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions), which are useful for [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
+
+For this example, you need to start a [`cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) using the following command, which [defines the available cluster localities using the `--demo-locality` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#demo-locality):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --nodes=9 --demo-locality=region=us-east1:region=us-east1:region=us-central1:region=us-west1:region=europe-west1:region=europe-west1:region=europe-central1:region=europe-east1:region=europe-east1
+~~~
+
+Next, enter the following statements at the SQL prompt. These statements will:
+
+- Make the [`movr` database]({% link {{ page.version.version }}/movr.md %}) into a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) by [setting the primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region).
+- Set the `movr` database to [survive region failures]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#survive-region-failures).
+- Add the remaining regions defined at cluster start time to the multi-region `movr` database (for a total of 6).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ALTER DATABASE movr ADD REGION "us-central1";
+ALTER DATABASE movr ADD REGION "us-west1";
+ALTER DATABASE movr ADD REGION "europe-west1";
+ALTER DATABASE movr ADD REGION "europe-central1";
+ALTER DATABASE movr ADD REGION "europe-east1";
+ALTER DATABASE movr SURVIVE REGION FAILURE;
+~~~
+
+Now that the multi-region cluster is configured, we will use the following [`ALTER LOCALITY`](#alter-locality) statements to [configure replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) such that:
+
+- [Replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) in the `us-east1` region are only stored on nodes in the US.
+- Replicas in the `europe-central1` region are only stored on nodes in the EU.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING
+    num_replicas = 7,
+    constraints = '{+region=us-east1: 3,
+                    +region=us-central1: 3,
+                    +region=us-west1: 1}',
+    lease_preferences = '[[+region=us-east1], [+region=us-central1]]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "europe-central1" CONFIGURE ZONE USING
+    num_replicas = 7,
+    constraints = '{+region=europe-central1: 3,
+                    +region=europe-west1: 3,
+                    +region=europe-east1: 1}',
+    lease_preferences = '[[+region=europe-central1], [+region=europe-west1]]';
+~~~
+
+#### Minimize cross-region write latency
+
+In this example, [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) are used to minimize cross-region write latency in a cluster with the following characteristics:
+
+- Three main US regions (`us-west1`,`us-east1`,`us-central1`).
+- Two additional distant regions (`europe-west1`, `asia-northeast1`). Only [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) will be made from these regions.
+
+To minimize the cross-region write latency, [configure replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) such that the 3 US regions have voting replicas (that is, replicas that participate in [Raft quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)). This will leave the 2 additional non-US regions with only [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas).
+
+For this example, you need to start a [`cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) using the following command, which [defines the available cluster localities using the `--demo-locality` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#demo-locality):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --nodes=5 --demo-locality=region=us-east1:region=us-west1:region=us-central1:region=europe-west1:region=asia-northeast1
+~~~
+
+Next, enter the following statements at the SQL prompt. These statements will:
+
+- Make the [`movr` database]({% link {{ page.version.version }}/movr.md %}) into a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) by [setting the primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region).
+- Set the `movr` database to [survive region failures]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#survive-region-failures).
+- Add the remaining regions defined at cluster start time to the multi-region `movr` database (for a total of 5).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr SET PRIMARY REGION "us-west1";
+ALTER DATABASE movr ADD REGION "us-central1";
+ALTER DATABASE movr ADD REGION "us-east1";
+ALTER DATABASE movr ADD REGION "europe-west1";
+ALTER DATABASE movr ADD REGION "asia-northeast1";
+ALTER DATABASE movr SURVIVE REGION FAILURE;
+~~~
+
+By default, all tables in the `movr` database are [`REGIONAL` tables]({% link {{ page.version.version }}/regional-tables.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW TABLES;
+~~~
+
+~~~
+  schema_name |         table_name         | type  | owner | estimated_row_count |              locality
+--------------+----------------------------+-------+-------+---------------------+--------------------------------------
+  public      | promo_codes                | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | rides                      | table | demo  |                 500 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | user_promo_codes           | table | demo  |                   5 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | users                      | table | demo  |                  50 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | vehicle_location_histories | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | vehicles                   | table | demo  |                  15 | REGIONAL BY TABLE IN PRIMARY REGION
+(6 rows)
+~~~
+
+Now that the multi-region cluster is configured, we will use the following [`ALTER LOCALITY`](#alter-locality) statements to [configure replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) such that:
+
+- The 3 US regions have voting replicas (that is, replicas that participate in [Raft quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
+- The 2 additional regions (Europe and Japan) are left with only [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that can be used to serve [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL CONFIGURE ZONE USING voter_constraints = '{+region=us-west1: 2, +region=us-central1: 2, +region=us-east1: 1}';
+~~~
 
 #### Failover regions
 

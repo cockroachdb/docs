@@ -262,9 +262,15 @@
                     ]
                   },
                   {
-                    "title": "SQL Audit Logging",
+                    "title": "Table-based SQL Audit Logging",
                     "urls": [
                       "/${VERSION}/sql-audit-logging.html"
+                    ]
+                  },
+                  {
+                    "title": "Role-based SQL Audit Logging",
+                    "urls": [
+                      "/${VERSION}/role-based-audit-logging.html"
                     ]
                   },
                   {
