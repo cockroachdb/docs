@@ -352,7 +352,7 @@ To create a SSO SQL user:
    
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster --sso blue-dog
+    ccloud cluster sql --sso blue-dog
     ~~~
 
 1. Log in to your organization when prompted by `ccloud`.
@@ -403,7 +403,7 @@ By default, the `ccloud cluster sql` command will allow connections only from IP
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql dim-dog --skip-ip-check
+ccloud cluster sql blue-dog --skip-ip-check
 ~~~
 
 ## Get the connection information for your cluster using `ccloud cluster sql`
