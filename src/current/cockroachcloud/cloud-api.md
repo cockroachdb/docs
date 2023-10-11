@@ -83,7 +83,7 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 {% include cockroachcloud/cluster-create-console-required-role.md %}
 
 Serverless and Dedicated clusters have different configuration options. Refer to [CockroachDB Cloud FAQs
-]({% link cockroachcloud/frequently-asked-questions.md %}) for an overview of the differences between the two.
+]({% link cockroachcloud/frequently-asked-questions.md %}) for an overview of the differences.
 
 It is also possible to use the [Terraform provider for CockroachDB Cloud
 ](https://github.com/cockroachdb/terraform-provider-cockroach) to manage your cluster configuration with an [Infrastructure as code

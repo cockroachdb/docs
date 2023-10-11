@@ -9,10 +9,12 @@ docs_area: deploy
 
 This page guides you through the process of creating a {{ site.data.products.dedicated }} cluster using the [Cloud Console](https://cockroachlabs.cloud).
 
-To use the Cloud API instead, refer to [Use the Cloud API: Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
-It is also possible to use the [Terraform provider for CockroachDB Cloud
-](https://github.com/cockroachdb/terraform-provider-cockroach) to manage your cluster configuration with an [Infrastructure as code
+You can also use the following to create a {{ site.data.products.dedicated }} cluster instead:
+
+- The Cloud API, refer to [Use the Cloud API: Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+- The [Terraform provider for CockroachDB Cloud
+](https://github.com/cockroachdb/terraform-provider-cockroach). Use the Terraform provider to manage your cluster configuration with an [Infrastructure as code
 ](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach. Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
 
 {{site.data.alerts.callout_info}}

@@ -2,14 +2,14 @@
 
 To create a **Serverless** cluster, send a `POST` request to the `/v1/clusters` endpoint, specifying the following parameters:
 
-- `name`: your cluster's name, a short string with no whitespace.
+- `name`: Your cluster's name, a short string with no whitespace.
 - `provider`: "GCP" or "AWS".
 - `primary_region`: (optional) Specify which region should be made the primary region. This is only applicable to multi-region Serverless clusters. This field is required if you create the cluster in more than one region.
 - `regions`: An array of strings specifying the cloud provider's zone codes. For example, for Oregon, set region_name to "us-west2" for GCP and "us-west-2" for AWS.
 - `usage_limits`:
-  - `request_unit_limit`: (int64) the maximum number of request units that the cluster can consume during the month. If this limit is exceeded, then the cluster is disabled until the limit is increased, or until the beginning of the next month when more free request units are granted. It is an error for this to be zero.
-  - `storage_mib_limit`: (int64) the maximum number of Mebibytes of storage that the cluster can have at any time during the month. If this limit is exceeded, then the cluster is throttled; only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this to be zero.
-- `spend_limit`: (integer) the maximum monthly charge for a cluster, in US cents. We recommend using `usage_limits` instead, since `spend_limit` will be deprecated in the future.
+  - `request_unit_limit`: (int64) The maximum number of request units that the cluster can consume during the month. If this limit is exceeded, then the cluster is disabled until the limit is increased, or until the beginning of the next month when more free request units are granted. It is an error for this to be zero.
+  - `storage_mib_limit`: (int64) The maximum number of Mebibytes of storage that the cluster can have at any time during the month. If this limit is exceeded, then the cluster is throttled; only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this to be zero.
+- `spend_limit`: (integer) The maximum monthly charge for a cluster, in US cents. We recommend using `usage_limits` instead, since `spend_limit` will be deprecated in the future.
 
 [API reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters)
 
@@ -48,10 +48,11 @@ Refer to the [API reference](https://www.cockroachlabs.com/docs/api/cloud/v1.htm
   - `account_id`: <!-- ??? why is this null when I do it?  -->
   - `creator_id`: The UUID of the service account that created the cluster.
 
-  - `account_id` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `region_name` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `routing_id` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `exemplary-cockroach-6622`.
+  - `account_id`:  The ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
+  - `region_name`: The zone code of the cloud infrastructure provider where the cluster is located.
+  - `routing_id`: The cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `exemplary-cockroach-6622`.
   - `sql_dns`: DNS name of the host on which the cluster is located.
+  
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
