@@ -54,7 +54,10 @@ If your organization has a custom URL, use the `--vanity-name` flag to log in:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud auth login --vanity-name {custom organization URL}
+ccloud auth login --vanity-name {custom-organization-name}
+~~~
+
+Replace `{custom-organization-name}` with the final portion of the custom sign-in URL, after `/login/`. Do not pass the full custom sign-in URL.
 
 ### Log in to CockroachDB Cloud on a headless server
 
