@@ -86,7 +86,7 @@ See [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensin
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
 - An **Enterprise license** enables you to use CockroachDB Enterprise features for longer periods (one year or more). To upgrade to an Enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
-- A **Trial license** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a Trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
+- A **Trial license** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a Trial license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 
 {{site.data.alerts.callout_success}}
 For quick local testing of Enterprise features, you can use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
