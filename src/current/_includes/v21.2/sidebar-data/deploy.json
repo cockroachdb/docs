@@ -43,7 +43,7 @@
                 {
                   "title": "Quickstart with CockroachDB Dedicated",
                   "urls": [
-                    "/cockroachcloud/quickstart-trial-cluster.html"
+                    "/cockroachcloud/quickstart-dedicated.html"
                   ]
                 },
                 {

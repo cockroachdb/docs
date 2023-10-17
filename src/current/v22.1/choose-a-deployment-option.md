@@ -40,7 +40,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><a id="dedicated"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><a id="dedicated"></a><b><a href="../cockroachcloud/quickstart-dedicated.html">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully-managed single-tenant CockroachDB deployment in a single region or multiple regions.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>

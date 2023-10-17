@@ -11,7 +11,7 @@
     "is_top_level": true,
     "urls": [
       "/cockroachcloud/quickstart.html",
-      "/cockroachcloud/quickstart-trial-cluster.html"
+      "/cockroachcloud/quickstart-dedicated.html"
     ]
   },
   {% include_cached sidebar-data-cockroachcloud.json %},

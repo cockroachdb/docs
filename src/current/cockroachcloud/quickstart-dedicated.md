@@ -5,44 +5,29 @@ toc: true
 docs_area: get_started
 ---
 
-This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.dedicated }}, connect to it using a sample workload, and run your first query.
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](quickstart.html?filters=local).
+To run CockroachDB on your local machine instead, refer to [Start a Local Cluster](quickstart.html?filters=local).
 
-## Step 1. Create a free trial cluster
+## Step 1. Create a cluster
 
 For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region.
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_dedicated" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create Cluster** page, select **Dedicated standard**.
-
-    {{site.data.alerts.callout_info}}
-    Free trials do not apply to **Dedicated advanced** clusters.
-    {{site.data.alerts.end}}
-
 1. For **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
 
     {{site.data.alerts.callout_info}}
-    You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) trial cluster.
+    To create a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster instead of a single-region cluster, select three regions and specify three nodes per region.
     {{site.data.alerts.end}}
 
 1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
-
-    {{site.data.alerts.callout_info}}
-    You can select up to 9 nodes, 4 vCPUs of compute, and 150 GiB of storage. The trial code will not apply to larger clusters.
-    {{site.data.alerts.end}}
-
 1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 1. Click **Next**.
 1. On the **Summary** page, enter your credit card details.
-
-    {{site.data.alerts.callout_info}}
-    You will not be charged until after your free trial expires in 30 days.
-    {{site.data.alerts.end}}
-
 1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes. Watch [this video](https://www.youtube.com/watch?v=XJZD1rorEQE) while you wait to get a preview of how you'll connect to your cluster.

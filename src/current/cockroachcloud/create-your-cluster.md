@@ -12,7 +12,7 @@ This page walks you through the process of creating a CockroachDB {{ site.data.p
 Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 {{site.data.alerts.callout_success}}
-To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
+To create and connect to CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, refer to the [Quickstart]({% link cockroachcloud/quickstart-dedicated.md %}).
 {{site.data.alerts.end}}
 
 ## Step 1. Start the cluster creation process
@@ -146,10 +146,6 @@ Otherwise, to enable VPC peering:
     You will be billed monthly.
 
 1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
-1. [If applicable]({% link cockroachcloud/frequently-asked-questions.md %}#how-do-cockroachdb-dedicated-free-trials-work), the 30-day trial code is pre-applied to your cluster.
-      {{site.data.alerts.callout_info}}
-      Make sure that you [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
-      {{site.data.alerts.end}}
 1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.

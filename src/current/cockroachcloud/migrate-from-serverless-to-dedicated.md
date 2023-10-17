@@ -14,7 +14,7 @@ The steps below use sample data from the [`tpcc` workload](https://www.cockroach
 These instructions assume you already have the following:
 
 - A [CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
-- A [paid CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
+- A [paid CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-dedicated.md %}).
 - [Cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
 ## Step 1. Export data to cloud storage

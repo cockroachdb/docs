@@ -23,21 +23,9 @@ CockroachDB {{ site.data.products.dedicated }} provides fully-managed, single-te
 
 CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
-### How do CockroachDB {{ site.data.products.dedicated }} free trials work?
-
-CockroachDB {{ site.data.products.dedicated }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
-
-- Create the first cluster in your organization
-- Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
-- Select up to 4 vCPUs of compute and 150 GiB of storage (the trial code will not apply to larger clusters)
-- Select a single region or 3 regions
-- Don't remove the pre-applied trial code at check out
-
-Once the 30-day period is over, your cluster can be scaled beyond the trial period hardware limitations. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
-
 ### How do I connect to my cluster?
 
-To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a PostgreSQL-compatible driver or ORM. For more details, see [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. To connect to your cluster through the CockroachDB SQL client or a PostgreSQL-compatible driver or ORM using this information, refer to [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
 ## Security
 
