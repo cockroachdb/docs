@@ -66,6 +66,7 @@ Asia Pacific    | `ap-northeast-1` | Tokyo
                 | `ap-southeast-1` | Singapore
                 | `ap-southeast-2` | Sydney
 North America   | `ca-central-1`   | Central Canada
+                | `us-east-1`      | Virginia
                 | `us-east-2`      | Ohio
                 | `us-west-2`      | Oregon
 South America   | `sa-east-1`      | Sao Paolo
