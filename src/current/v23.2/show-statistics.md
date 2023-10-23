@@ -37,7 +37,7 @@ Parameter      | Description
 |-----------|-------------|
 | `statistics_name` | The name of the statistics. If `__auto__`, the statistics were created automatically. If `__forecast__`, the statistics are [forecasted](#display-forecasted-statistics). |
 | `column_names` | The name of the columns on which the statistics were created. |
-| `created` | The timestamp when the statistics were created. |
+| `created` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the statistics were created. |
 | `row_count` | The number of rows for which the statistics were computed. |
 | `distinct_count` |  The number of distinct values for which the statistics were computed. |
 | `null_count` |  The number of null values for which the statistics were computed.  |
