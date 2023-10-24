@@ -9,7 +9,7 @@ docs_area: reference.db_console
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/ui/admin-access.md %}
+{% include {{ page.version.version }}/ui/admin-access-only.md %}
 
 The **Key Visualizer** page of the DB Console provides access to the Key Visualizer tool, which enables the visualization of current and historical [key-value (KV)]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data-kv-structure) traffic serviced by your cluster.
 
