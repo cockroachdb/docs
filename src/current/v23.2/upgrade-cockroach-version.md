@@ -135,8 +135,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) statement allows you to create scheduled changefeeds.
-- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+TODO
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
 
