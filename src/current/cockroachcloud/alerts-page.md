@@ -14,6 +14,11 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicate
 
 If alerts are enabled, CockroachDB {{ site.data.products.cloud }} sends alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
 
+**Cluster Maintenance:**
+
+- When a cluster is scheduled for [maintenance or a patch upgrade]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- When a cluster's CockroachDB version is nearing [end of life](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-cycle) and must be upgraded to maintain support.
+
 **Storage Utilization:**
 
 - Cluster-wide available disk capacity is **20% or less**.
