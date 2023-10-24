@@ -645,6 +645,8 @@ sinks:
         WARNING: all except [DEV, OPS]
     health:
       channels: [HEALTH]
+    kv-distribution:
+      channels: [KV_DISTRIBUTION]
     pebble:
       channels: [STORAGE]
     security:
