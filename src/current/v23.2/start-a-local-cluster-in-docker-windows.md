@@ -171,11 +171,11 @@ When SQL and inter-node traffic are separated, some client commands need to be m
     Cluster successfully initialized
     ~~~
 
-    Each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command runs the `grep` command from within the `roach1` container to display lines in its `/cockroach-data/logs/cockroach.log` log file that contain the string `node starting` and the next 11 lines.
+    Each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command runs the `grep` command from within the `roach1` container to display lines in its `/cockroach/cockroach-data/logs/cockroach.log` log file that contain the string `node starting` and the next 11 lines.
 
     {% include_cached copy-clipboard.html %}
     ~~~ powershell
-    docker exec -it roach1 grep 'node starting' /cockroach-data/logs/cockroach.log -A 11
+    docker exec -it roach1 grep 'node starting' /cockroach/cockroach-data/logs/cockroach.log -A 11
     ~~~
 
     The output will look something like this:
