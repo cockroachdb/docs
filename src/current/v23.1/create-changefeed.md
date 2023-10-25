@@ -80,6 +80,10 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 ~~~
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
+{{site.data.alerts.end}}
+
 #### Google Cloud Pub/Sub
 
 {{site.data.alerts.callout_info}}
