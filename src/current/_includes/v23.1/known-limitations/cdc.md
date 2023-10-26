@@ -1,4 +1,5 @@
 - Changefeed target options are limited to tables and [column families]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73435)
+- {% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
 - Using a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73432)
 - Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73431)
 - [Webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) only support emitting `JSON`. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73432)
