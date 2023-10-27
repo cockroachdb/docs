@@ -23,7 +23,7 @@ Some of a CockroachDB {{ site.data.products.dedicated }} cluster's provisioned R
 CockroachDB {{ site.data.products.dedicated }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 #### CockroachDB {{ site.data.products.dedicated }} advanced
