@@ -17,7 +17,6 @@ docs_area: manage
 
 {% comment %}Add data verification on standby here?{% endcomment %}
 
-
 {% comment %}This page describes the available monitoring for physical cluster replication, for information on how replication works, refer to:{% endcomment %}
 
 {% include {{ page.version.version }}/physical-replication/reference-links-replication.md %}
@@ -49,7 +48,7 @@ Field    | Response
 `id` | The ID of the virtual cluster.
 `name` | The name of the standby (destination) virtual cluster.
 `data_state` | The state of the data on the virtual cluster. This can show one of the following: `initializing replication`, `ready`, `replicating`, `replication paused`, `replication pending cutover`, `replication cutting over`, `replication error`. Refer to [Data state](#data-state) for more detail on each response.
-`service_mode` | The service mode shows whether the virtual cluster is ready to accept SQL requests. This can show one of the following: `none`, `shared`.
+`service_mode` | The service mode shows whether the virtual cluster is ready to accept SQL requests. This can show one of the following: <br>`none`<br>`shared`: The virtual cluster's SQL connections will be served by the same nodes that are serving the system interface.
 `source_tenant_name` | The name of the primary (source) virtual cluster.
 `source_cluster_uri` | The URI of the primary (source) cluster. This is the URI that connects to the primary cluster to [start a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication).
 `replication_job_id` | The ID of the replication job.
@@ -122,8 +121,9 @@ You can use Prometheus and Alertmanager to track and alert on physical cluster r
 
 We recommend tracking the following metrics:
 
-- `replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
-- `replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
+- `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
+- `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
+- `physical_replication.frontier_lag_nanos`: The time between the actual time (now) and `replicated_time`` of the replication stream. That is, this metric tracks how far behind the replication stream is relative to now.
 
 ## See also
 

@@ -137,7 +137,7 @@ The standby cluster requires a user profile on the primary cluster to connect to
 
 ### Connect to the primary virtual cluster (optional)
 
-1. If you would like to add a workload to the primary's application virtual cluster, open a new terminal window, and connect with:
+1. If you would like to connect to the primary's application virtual cluster, open a new terminal window, and use the `ccluster=application` parameter:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -273,6 +273,8 @@ The system interface in the standby cluster initiates and controls the replicati
     FROM REPLICATION OF application
     ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
+
+    You can also include the `LIKE {template}` syntax to ensure that the standby virtual cluster is created with the correct capabilities. {% comment %}link to alter virtual cluster, find out if we're documenting capabilities{% endcomment %}
 
     Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
 

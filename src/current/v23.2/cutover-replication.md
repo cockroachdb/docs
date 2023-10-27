@@ -16,9 +16,11 @@ The cutover is a two-step process on the standby cluster:
 1. [Initiating the cutover](#step-1-initiating-the-cutover).
 1. [Completing the cutover](#step-2-completing-the-cutover).
 
-{{site.data.alerts.callout_info}}
-Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. Once the cutover is complete, you will need to ensure that a load balancer {% comment %}or other infra{% endcomment %} redirects application traffic to the standby cluster.
+{{site.data.alerts.callout_danger}}
+Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. However, the cutover process does **not** automatically redirect traffic to the standby cluster. Once the cutover is complete, you must redirect application traffic to the standby (new) cluster. If you do not manually redirect traffic, writes to the primary (original) cluster may be lost.
 {{site.data.alerts.end}}
+
+After a cutover, you may want to _cut back_ to the original primary cluster. That is, set up the original primary cluster to once again accept application traffic. This requires you to undertake another a full replication stream in the opposite direction from standby to primary. For more detail, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 {% comment %}This page describes how to cut over from the primary to the standby cluster, for information on how replication works, refer to:{% endcomment %}
 
@@ -26,7 +28,7 @@ Initiating a cutover is a manual process that makes the standby cluster ready to
 
 ## Step 1. Initiating the cutover
 
-You can initiate a cutover to the standby cluster in a couple of different ways. Refer to the following sections for steps:
+To initiate a cutover to the standby cluster, there are different ways of specifying the point in time for the standby's promotion. Refer to the following sections for steps:
 
 - [`LATEST`](#cut-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
 - [Point-in-time](#cut-over-to-a-point-in-time):
@@ -35,7 +37,23 @@ You can initiate a cutover to the standby cluster in a couple of different ways.
 
 ### Cut over to the most recent replicated time
 
-To initiate a cutover to the most recent replicated timestamp, use `LATEST`. Run the following from the standby cluster's SQL shell:
+To initiate a cutover to the most recent replicated timestamp, you can specify `LATEST`. It is important to note that the latest replicated time may be behind the actual time if there is _replication lag_ in the stream. That is, the time between the most up-to-date replicated time and the actual time.{% comment %}Link lag to technical overview{% endcomment %}
+
+To view the current replication timestamp, use:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~
+  id |     name           | data_state  | service_mode | source_tenant_name |                                                  source_cluster_uri                                                   | replication_job_id |       replicated_time        |         retained_time         | cutover_time
+-----+--------------------+-------------+--------------+--------------------+-----------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------
+   5 | standbyapplication | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
+~~~
+
+Run the following from the standby cluster's SQL shell to start the cutover:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -92,37 +110,43 @@ A future cutover will proceed once the replicated data has reached the specified
 
 ## Step 2. Completing the cutover
 
-The completion of the replication is asynchronous; to monitor its progress use:
+1. The completion of the replication is asynchronous; to monitor its progress use:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    ~~~
+    ~~~
+      id |        name         |         data_state          | service_mode | source_tenant_name |                                                source_cluster_uri                                                 | replication_job_id |       replicated_time        |         retained_time         |          cutover_time
+    -----+---------------------+-----------------------------+--------------+--------------------+-------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------------------------
+      4  | standbyapplication  | replication pending cutover | none         | application        | postgresql://user:redacted@3ip:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted         | 903895265809498113 | 2023-09-28 17:41:18.03092+00 | 2023-09-28 16:09:04.327473+00 | 1695922878030920020.0000000000
+    (1 row)
+    ~~~
 
-~~~
-  id |        name         |         data_state          | service_mode | source_tenant_name |                                                source_cluster_uri                                                 | replication_job_id |       replicated_time        |         retained_time         |          cutover_time
------+---------------------+-----------------------------+--------------+--------------------+-------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------------------------
-   4 | standbyapplication  | replication pending cutover | none         | application        | postgresql://user:redacted@3ip:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted         | 903895265809498113 | 2023-09-28 17:41:18.03092+00 | 2023-09-28 16:09:04.327473+00 | 1695922878030920020.0000000000
-(1 row)
-~~~
+    Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more  detail.
 
-Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more  detail.
+1. Once complete, start the standby's virtual cluster with:
 
-Once complete, start the standby's virtual cluster with:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER VIRTUAL CLUSTER standbyapplication START SERVICE SHARED;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication START SERVICE SHARED;
-~~~
+    ~~~
+      id |        name         |     data_state     | service_mode
+    -----+---------------------+--------------------+---------------
+      1  | system              | ready              | shared
+      2  | template            | ready              | none
+      3  | standbyapplication  | ready              | shared
+    (3 rows)
+    ~~~
 
-~~~
-  id |        name         |     data_state     | service_mode
------+---------------------+--------------------+---------------
-   1 | system              | ready              | shared
-   2 | template            | ready              | none
-   3 | standbyapplication  | ready              | shared
-(3 rows)
-~~~
+1. To make the standby's virtual cluster the default for connection strings. Set the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.controller.default_target_cluster='standbyapplication'
+    ~~~
 
 At this point, the primary and standby clusters are entirely independent. You will need to use your own orchestration to direct traffic to the standby.
 
