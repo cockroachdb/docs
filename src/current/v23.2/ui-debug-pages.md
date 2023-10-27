@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
-{% include {{ page.version.version }}/ui/admin-access.md %}
+{% include {{ page.version.version }}/ui/admin-access-only.md %}
 
 The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Advanced Debug** in the left-hand navigation.
 

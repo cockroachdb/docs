@@ -80,7 +80,7 @@ Once a backup schedule is successfully created, you can [view the schedule](#vie
 
 {% include_cached copy-clipboard.html %}
 ~~~~
-> SHOW SCHEDULES;
+> SHOW SCHEDULES FOR BACKUP;
 ~~~~
 
 For more information, see [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
