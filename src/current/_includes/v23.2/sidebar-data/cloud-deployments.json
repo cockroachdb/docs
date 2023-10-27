@@ -52,12 +52,6 @@
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
-            },
-            {
-                "title": "Serverless Performance Benchmarking",
-                "urls": [
-                    "/cockroachcloud/serverless-benchmarking.html"
-                ]
             }
         ]
     },
