@@ -676,6 +676,9 @@
     - :version/hello-world-node-postgres.md
     - :version/hello-world-python-sqlalchemy.md
 
+- destination: cockroachcloud/serverless-resource-usage.md
+  sources: ['cockroachcloud/serverless-benchmarking.md']
+
 - destination: community-tooling.md
   sources:
     - build-a-c++-app-with-cockroachdb.md
