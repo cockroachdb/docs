@@ -58,7 +58,7 @@ These sections show how to scale a {{ site.data.products.dedicated }} cluster ho
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
