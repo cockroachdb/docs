@@ -222,6 +222,8 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
     (2 rows)
     ~~~
 
+    The [configuration profile](#start-the-standby-cluster) included at startup creates the `template` virtual cluster with the same set of _capabilities_ per CockroachDB version. When you start a replication stream, you can specify the `template` VC with `LIKE` to ensure other virtual clusters on the standby cluster will work in the same way. Refer to [Step 4: Start replication](#step-4-start-replication) for syntax details.
+
 ### Create a user for the standby cluster
 
 If you would like to access the DB Console to observe your replication, you will need to create a user:
@@ -269,12 +271,12 @@ The system interface in the standby cluster initiates and controls the replicati
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE VIRTUAL CLUSTER standbyapplication
+    CREATE VIRTUAL CLUSTER standbyapplication LIKE template
     FROM REPLICATION OF application
     ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
 
-    You can also include the `LIKE {template}` syntax to ensure that the standby virtual cluster is created with the correct capabilities. {% comment %}link to alter virtual cluster, find out if we're documenting capabilities{% endcomment %}
+    Including the `LIKE template` parameter ensures that the virtual cluster on the standby is created with the correct capabilities, which manage what the virtual cluster can do. `LIKE` will refer to a virtual cluster on the CockroachDB cluster you're running the statement from. {% comment %}link to alter virtual cluster or create{% endcomment %}
 
     Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
 
