@@ -189,13 +189,7 @@
           	  "urls": [
           	    "/{{site.current_cloud_version}}/performance-best-practices-overview.html"
           	  ]
-          	},
-            {
-              "title": "Serverless Performance Benchmarking",
-              "urls": [
-                "/cockroachcloud/serverless-benchmarking.html"
-              ]
-            }
+          	}
           ]
         },
       	{
