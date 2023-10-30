@@ -5,7 +5,7 @@ The CockroachDB Helm chart is currently not under active development, and no new
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use cert-manager for certificate management. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-cert-manager).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use cert-manager for certificate management. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#deploy-cert-manager-for-mtls).
 {{site.data.alerts.end}}
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
