@@ -20,7 +20,7 @@ This page explains how to:
 - [Secure the webhooks](#secure-the-webhooks) (Operator)
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Migration to self-signer](#migration-to-self-signer).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, see [Deploy cert-manager for mTLS](#deploy-cert-manager-for-mtls).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -528,6 +528,48 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
 
     The certificates will be rotated during the specified expiry windows.
 
+## Deploy cert-manager for mTLS
+
+The recommended approach for cluster authentication is to use cert-manger to sign certificates. cert-manager adds certificates and certificate issuers as resource types in Kubernetes clusters, and simplifies the process of obtaining, renewing and using those certificates.
+
+1. Make sure you have the latest version of cert-manger installed you will find it here.
+
+2. The first thing you will need to do is to create an `Issuer` these are the resources that represent certificate authorities and are able to sign certificates. Using cert-manger create an `Issuer` for signing self-signed CA certificate.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~yaml
+    apiVersion: cert-manager.io/v1
+    kind: Issuer
+    metadata:
+    name: cockroachdb
+    spec:
+    selfSigned: {}
+
+3. Apply this to your Kubernetes cluster using `kubectl`
+
+4. To enable `cert-manager` you will need to have the following settings in the values.yaml file.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~yaml
+    tls.certs.selfSigner.enabled: false
+    tls.certs.certManager: true
+    tls.certs.certManagerIssuer.kind: Issuer
+    tls.certs.certManagerIssuer.name: cockroachdb
+    ~~~
+
+- Setting `tls.certs.selfSigner.enabled` to `false` will disable the self signing certificates for cockroachdb.
+- By enabling the`tls.certs.certManager:` setting to true this will enable cert-manager for certificate signing.
+- Specify the ‘Issuer` kind here either `Issuer` or `ClusterIssuer` under the setting `certManagerIssuer.kind`.
+- `certManagerIssuer.name` Provide the Issuer you have created in previous step. In this example it was `cockroachdb`.
+
+5. Once the values.yaml file has been updated you can then deploy CockroachDB via the Helm Chart with the following command.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb
+    ~~~
+
+
 ## Migration to self-signer
 
 Previous versions of the Helm chart used the Kubernetes CA to sign certificates. However, the Kubernetes CA is deprecated from Kubernetes 1.22 and later. The Helm chart now uses a self-signer for cluster authentication.
@@ -585,7 +627,8 @@ To migrate your Helm deployment to use the self-signer:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-## Secure the webhooks
+
+##  Secure the webhooks
 
 The Operator ships with both [mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and [validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook) webhooks. Communication between the Kubernetes API server and the webhook service must be secured with TLS.
 
