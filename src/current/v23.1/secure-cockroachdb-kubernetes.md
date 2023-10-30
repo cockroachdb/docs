@@ -532,7 +532,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
 
 The recommended approach for cluster authentication is to use cert-manger to sign certificates. cert-manager adds certificates and certificate issuers as resource types in Kubernetes clusters, and simplifies the process of obtaining, renewing and using those certificates.
 
-1. Make sure you have the latest version of cert-manger installed you will find it here.
+1. Make sure you have the latest version of cert-manger installed you will find it [here](https://cert-manager.io/docs/installation/).
 
 2. The first thing you will need to do is to create an `Issuer` these are the resources that represent certificate authorities and are able to sign certificates. Using cert-manger create an `Issuer` for signing self-signed CA certificate.
 
