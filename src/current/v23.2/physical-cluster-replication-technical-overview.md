@@ -17,20 +17,20 @@ This separation of concerns means that the replication stream can operate withou
 
 ### Start the replication stream
 
-When you initiate physical cluster replication, it will replicate the application virtual cluster from the primary to the standby cluster. The replication stream sets up a series of jobs that complete the following work:
+Starting a physical replication stream consists of two jobs: one on the primary and one on the standby. The job on the standby cluster communicates with the primary cluster via an ordinary SQL connection and is responsible for initiating the replication stream. The stream initialization proceeds as follows:
 
-1. The standby's system interface communicates to the primary cluster that a stream should start.
-1. The primary cluster chooses a timestamp at which to start the stream and lays down a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps), which will protect the entirety of the cluster's data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until an initial scan is complete.
-1. The initial scan runs on the primary and backfills all data from the primary virtual cluster up to the starting timestamp of the replication stream.
+1. The standby's system interface connects to the primary cluster and starts the primary cluster's physical stream producer job.
+1. The primary cluster chooses a timestamp at which to start the physical replication stream. Data on the primary is protected from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until it is replicated to the standby using a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
 1. The primary cluster returns the timestamp and a [job ID]({% link {{ page.version.version }}/show-jobs.md %}#response) for the replication job.
-1. The standby cluster uses a PG connection to retrieve all of the primary cluster's node addresses. This generates a topology of the primary cluster. If there is a mismatch in nodes between the primary and standby, the replication job will share out the work between the standby's nodes.
-1. The stream from the primary virtual cluster begins with the standby's system interface ingesting the data into its own virtual cluster.
+1. The standby cluster retrieves a list of all nodes in the primary cluster. It uses this list to distribute work across all nodes in the standby cluster.
+1. The initial scan runs on the primary and backfills all data from the primary virtual cluster as of the starting timestamp of the replication stream.
+1. Once the initial scan is complete, the primary then begins streaming all changes from the point of the starting timestamp.
 
 <img src="{{ 'images/v23.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system and application tenants showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 ### During the replication stream
 
-The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [cutover](#cutover-and-promotion-process) to the standby cluster is initiated, the replication job ensures that the cluster is in a transactionally consistent state as of a certain point in time.
+The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [cutover](#cutover-and-promotion-process) to the standby cluster is initiated, the replication job ensures that the cluster is in a transactionally consistent state as of a certain point in time. Beyond the application data, the job will also replicate users, privileges, basic zone configuration, and schema changes.
 
 {% comment %} Add:  no need to coordinate with any schema changes. Don't know anything about zone configurations will be stored using the default zone config.-->{% endcomment %}
 
