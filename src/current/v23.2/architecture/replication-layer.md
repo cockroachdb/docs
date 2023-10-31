@@ -206,7 +206,7 @@ When checking for leaseholder rebalancing opportunities, the current leaseholder
 
 ##### Controlling leaseholder rebalancing
 
-You can control leaseholder rebalancing through the `kv.allocator.load_based_lease_rebalancing.enabled` and `kv.allocator.lease_rebalancing_aggressiveness` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+You can control leaseholder rebalancing through the `kv.allocator.load_based_lease_rebalancing.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 ### Membership changes: rebalance/repair
 
