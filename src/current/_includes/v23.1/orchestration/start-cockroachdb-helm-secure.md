@@ -1,4 +1,4 @@
-The CockroachDB Helm chart is compatible with all Kubernetes versions when cert-manager is used for mTLS.
+The CockroachDB Helm chart is compatible with all Kubernetes versions that are [supported by the Kubernetes project](https://kubernetes.io/releases/) when cert-manager is used for mTLS.
 
 The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
 
