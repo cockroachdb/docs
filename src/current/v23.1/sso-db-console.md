@@ -53,8 +53,8 @@ These steps demonstrate how to create an OIDC auth client in Google Cloud Platfo
 1. Note the *client ID* and *client secret* of the OAuth 2.0 client—you will need to configure your cluster to use these values.
 
 1. Add your cluster's callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://{ your cluster's domain }:8080/oidc/v1/callback`. Subsequently, when configuring your cluster, you will need to ensure that the cluster setting `server.oidc_authentication.redirect_url` has the same value.
-	- For a {{ site.data.products.core }} cluster, The domain is `localhost`. 
-	- For a {{ site.data.products.dedicated }} cluster, find the domain by opening the DB Console from your cluster's **Tools** tab in DB Console.
+    - For a {{ site.data.products.core }} cluster, the domain is `localhost`.
+    - For a {{ site.data.products.dedicated }} cluster, find the domain by opening the DB Console from your cluster's **Tools** tab in DB Console.
 
 ## Configure your cluster to use an OIDC client and provider
 
@@ -66,12 +66,12 @@ You must have the ability to update your cluster settings, which you can achieve
 
 You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) in the following table to enable SSO authentication to the DB Console. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
-| Cluster Setting | Description 
+| Cluster Setting | Description
 |-----------------|------
 | `server.oidc_authentication.enabled` | A Boolean that enables or disables SSO.
 | `server.oidc_authentication.client_id` | Your auth client's ID.<br>**Example:** `32789079457-g3hdfw8cbw85obi5cb525hsceaqf69unn.apps.googleusercontent.com`.
 | `server.oidc_authentication.client_secret` | Your auth client's secret.
-| `server.oidc_authentication.redirect_url` | Specifies the callback URL that redirects the user to CockroachDB after a successful authentication. This can be the address of a node in the cluster or the address of a load balancer that routes traffic to the nodes. You must append the path with `/oidc/v1/callback`.<br>**Example:** `https://{ your cluster's domain } :8080/oidc/v1/callback`.
+| `server.oidc_authentication.redirect_url` | Specifies the callback URL that redirects the user to CockroachDB after a successful authentication. This can be the address of a node in the cluster or the address of a load balancer that routes traffic to the nodes. You must append the path with <code>/oidc/v1/callback</code>. Accepts either a single URL string (for example, <code>https://{your_cluster's_domain }:8080/oidc/v1/callback</code>) or a JSON object with the following format, which supports region-based OIDC authentication with a callback URL configured per region:<br />**Example:** `{"redirect_urls": {"us-east-1": "https://{cluster_ip_address}:8080/oidc/v1/callback","eu-west-1": "example.com"{% raw %}}}{% endraw %}`
 | `server.oidc_authentication.provider_url` | Specifies the OAuth issuer identifier. Ensure that the URL does not have a terminating `/`. For more information, refer to the [OIDC specification](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig). Note that CockroachDB appends the required `/.well-known/openid-configuration` by default. You do not need to include it.<br>**Example:** `https://accounts.google.com`.
 | `server.oidc_authentication.scopes` | A space-delimited list of the [OAuth scopes](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims) being requested for an Access Token. The `openid` and `email` scopes must be included.<br>**Example:** `openid profile email`.
 | `server.oidc_authentication.claim_json_key` | The field/key used to identify the user from the external identity provider's [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
