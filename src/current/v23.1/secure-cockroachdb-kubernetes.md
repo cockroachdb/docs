@@ -545,7 +545,13 @@ Cockroach Labs recommends using `cert-manager` to sign certificates for cluster 
     spec:
     selfSigned: {}
 
-3. Apply this to your Kubernetes cluster using `kubectl`
+3. Use `kubectl apply` to create the issuer from the YAML file:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    kubectl apply -f issuer.yaml
+    ~~~
+
 
 4. Enable and configure `cert-manager` in the Helm chart's `values.yaml` file. The following options are required. For more options, refer to [`cert-manager`](https://github.com/cockroachdb/helm-charts/tree/master/cockroachdb#cert-manager) in the CockroachDB Helm chart documentation.
 
