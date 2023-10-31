@@ -571,7 +571,7 @@ Cockroach Labs recommends using `cert-manager` to sign certificates for cluster 
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb
+    helm install my-release --values values.yaml cockroachdb/cockroachdb
     ~~~
 
 
