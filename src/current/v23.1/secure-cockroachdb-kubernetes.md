@@ -567,7 +567,7 @@ Cockroach Labs recommends using `cert-manager` to sign certificates for cluster 
     - Set `tls.certs.certManagerIssuer.kind` to either `Issuer` or `ClusterIssuer`. To get started, `Issuer` is recommended. `ClusterIssuer` is cluster-scoped; when referencing a secret via the `secretName` field, only secrets in the `cluster-resource` namespace (`cert-manager` by default) are searched. To learn more, refer to [Cluster Resource Namespace](https://cert-manager.io/v1.6-docs/faq/cluster-resource/) in the `cert-manager` project's documentation.
     - Set `certManagerIssuer.name` to the name of the issuer you created in the previous step. 
 
-5. Once the values.yaml file has been updated you can then deploy CockroachDB via the Helm Chart with the following command.
+5. Apply the updated Helm chart:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
