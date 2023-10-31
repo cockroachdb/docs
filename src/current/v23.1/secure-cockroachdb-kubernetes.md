@@ -20,7 +20,7 @@ This page explains how to:
 - [Secure the webhooks](#secure-the-webhooks) (Operator)
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, see [Deploy cert-manager for mTLS](#deploy-cert-manager-for-mtls).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS].
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
