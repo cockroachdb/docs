@@ -528,13 +528,13 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
 
     The certificates will be rotated during the specified expiry windows.
 
-## Deploy cert-manager for mTLS
+## Deploy `cert-manager` for mTLS
 
-The recommended approach for cluster authentication is to use cert-manger to sign certificates. cert-manager adds certificates and certificate issuers as resource types in Kubernetes clusters, and simplifies the process of obtaining, renewing and using those certificates.
+Cockroach Labs recommends using `cert-manager` to sign certificates for cluster authentication. `cert-manager` manages certificates and certificate issuers as resource types in Kubernetes clusters, to simplify the process of obtaining, renewing and using those certificates.
 
-1. Make sure you have the latest version of cert-manger installed you will find it [here](https://cert-manager.io/docs/installation/).
+1. Install a [supported version of `cert-manger`](https://cert-manager.io/docs/releases/). For a new cluster, Cockroach Labs recommends using the latest supported version. Refer to installed you will find it [`cert-manager` Installation](https://cert-manager.io/docs/installation/) in the `cert-manager` project's documentation.
 
-2. The first thing you will need to do is to create an `Issuer` these are the resources that represent certificate authorities and are able to sign certificates. Using cert-manger create an `Issuer` for signing self-signed CA certificate.
+2. Create a file named `issuer.yaml` that configures an `Issuer`, which represents a certificate authority that can sign certificates. This example creates an issuer that can sign self-signed CA certificates. To customize your issuer, refer to [Issuer Configuration](https://cert-manager.io/docs/configuration/) in the `cert-manager` project's documentation.
 
     {% include_cached copy-clipboard.html %}
     ~~~yaml
