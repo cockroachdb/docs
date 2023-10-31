@@ -48,7 +48,7 @@ The solution demonstrated here uses HashiCorp Vault to manage these credentials 
 If credentials are obtained by malicious actors, they can be used to impersonate (spoof) a client or server. Any PKI implementation must prevent this type of impersonation:
 
 - By using a revocation mechanism, so that existing certificates can be invalidated. Two standard solutions are Certificate Revocation Lists (CRLS) and the Online Certificate Status Protocol (OCSP).
-- By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
+- By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable.
 
 CockroachDB does support OCSP, but not CRLs. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB]({% link {{ page.version.version }}/manage-certs-revoke-ocsp.md %}).
 
@@ -68,7 +68,7 @@ persona | tasks | Vault permissions | GCP Permissions
 `node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>|   |<ul><li>Node SSH access</li></ul>
 `client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 
-### Resources 
+### Resources
 
 Our cluster will contain three classes of compute instance:
 
@@ -111,12 +111,12 @@ Additionally, our project's firewall rules must be configured to allow communica
       --target-tags roach-node \
       --rules TCP:26257,TCP:8080
     ```
-     
+
     ```txt
     Creating firewall...done.
     NAME        NETWORK  DIRECTION  PRIORITY  ALLOW               DENY  DISABLED
-    roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False 
-    ``` 
+    roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False
+    ```
 
 1. Create node instances
 
@@ -189,7 +189,7 @@ Additionally, our project's firewall rules must be configured to allow communica
     ~~~shell
     gcloud compute instances list
     ~~~
-    
+
     ~~~txt
     NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
     ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.2   34.70.101.145   RUNNING
@@ -233,7 +233,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    gcloud compute ssh ca-admin-jumpbox 
+    gcloud compute ssh ca-admin-jumpbox
     ~~~
 
 1. Initialize your shell inside the jumpbox with your cluster information by running the contents of your `cockroach-cluster.env` file.
@@ -258,7 +258,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
 1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on the jumpbox, following the [instructions for **Ubuntu/Debian** Linux](https://www.vaultproject.io/downloads).
 
 1. Obtain the required parameters to target and authenticate to Vault.
-    
+
     1. Option 1: If using HashiCorp Cloud Platform (HCP):
 
         1. Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
@@ -280,7 +280,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
     export VAULT_NAMESPACE="admin"
     ~~~
 
-1. Authenticate with the admin token 
+1. Authenticate with the admin token
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -301,7 +301,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
     Success! Enabled the pki secrets engine at: cockroach_cluster_ca/
     Success! Enabled the pki secrets engine at: cockroach_client_ca/
     ~~~
-    
+
 1. Set a maximum validity duration for certificates signed by your CAs. In this example this maximum duration is 48 hours, appropriate for a scenario where the certificates are provisioned each day, with another 24 hours grace period.
 
     {% include_cached copy-clipboard.html %}
@@ -315,12 +315,12 @@ The operations in this section are performed by the`ca-admin` persona, and there
     Success! Tuned the secrets engine at: cockroach_client_ca/
     ~~~
 
-1. Generate a root credential pair for each CA. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
+1. Generate a root credential pair for each CA. Certificates created with this CA/secrets engine will be signed with the private key generated here.
 
     {{site.data.alerts.callout_info}}
     The CA private key cannot be exported from Vault. This safeguards it from being leaked and used to issue fraudulent certificates.
 
-    The CA public certificate is downloaded in the resulting JSON payload. 
+    The CA public certificate is downloaded in the resulting JSON payload.
 
     In a following step, we'll add both CA public certificate to each node's trust store (`cert` directory) so it can be used by the nodes to authenticate the client. The client will also need the cluster CA public certificate in order to authenticate the cluster.
     {{site.data.alerts.end}}
@@ -388,7 +388,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
                     Public-Key: (2048 bit)
           ...
     ~~~
-    
+
 ### Create PKI roles and issue certificates for the nodes
 
 In Vault, a PKI role is a template for a certificate.
@@ -396,7 +396,7 @@ In Vault, a PKI role is a template for a certificate.
 1.  Create a node role. The role will be used to generate certificates for the all cluster nodes.
 
     {{site.data.alerts.callout_info}}
-    Note that certificate attributes must be provided with Vault's specific parameter syntax, which is documented here: 
+    Note that certificate attributes must be provided with Vault's specific parameter syntax, which is documented here:
     {{site.data.alerts.end}}
 
 
@@ -495,7 +495,7 @@ chown $USER ${secrets_dir}/*/node.key
 Generate a private key/public certificate pair for the root SQL user.
 
 1.  Generate the client role:
-    
+
     ~~~txt
     vault write cockroach_client_ca/roles/client \
     allow_any_name=true \
@@ -506,7 +506,7 @@ Generate a private key/public certificate pair for the root SQL user.
     max_ttl=48h
     ~~~
 
-1. Use the client role to create credentials (a private key and public certificate) for a root client. 
+1. Use the client role to create credentials (a private key and public certificate) for a root client.
 
     {{site.data.alerts.callout_info}}
     CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
@@ -611,8 +611,7 @@ cockroach start \
 --advertise-addr="${node1addr}" \
 --join="${node1addr},${node2addr},${node3addr}" \
 --cache=.25 \
---max-sql-memory=.25 \
---background
+--max-sql-memory=.25
 ~script~
 
 chmod +x start_roach.sh
@@ -625,8 +624,7 @@ cockroach start \
 --advertise-addr="${node2addr}" \
 --join="${node1addr},${node2addr},${node3addr}" \
 --cache=.25 \
---max-sql-memory=.25 \
---background
+--max-sql-memory=.25
 ~script~
 
 chmod +x start_roach.sh
@@ -639,8 +637,7 @@ cockroach start \
 --advertise-addr="${node3addr}" \
 --join="${node1addr},${node2addr},${node3addr}" \
 --cache=.25 \
---max-sql-memory=.25 \
---background
+--max-sql-memory=.25
 ~script~
 
 chmod +x start_roach.sh
