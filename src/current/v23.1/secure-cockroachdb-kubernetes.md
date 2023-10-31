@@ -574,6 +574,7 @@ Cockroach Labs recommends using `cert-manager` to sign certificates for cluster 
     helm install my-release --values values.yaml cockroachdb/cockroachdb
     ~~~
 
+Replace `values.yaml` with the name of your Helm chart's values file.
 
 ## Migration to self-signer
 
