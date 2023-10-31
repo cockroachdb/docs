@@ -8,6 +8,12 @@ docs_area: get_started
 
 ## Why is my process hanging when I try to start nodes with the `--background` flag?
 
+{{site.data.alerts.callout_info}}
+Cockroach Labs recommends against using the `--background` flag when starting a cluster. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd). When testing locally, starting nodes in the foreground is recommended so you can monitor the runtime closely.
+
+If you do use `--background`, you should also set `--pid-file`. To stop or restart a cluster, send `SIGTERM` or `SIGHUP` signal to the process ID in the PID file.
+{{site.data.alerts.end}}
+
 Check whether you have previously run a multi-node cluster using the same data directory. If you have not, refer to [Troubleshoot Cluster Setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}).
 
 If you have previously started and stopped a multi-node cluster, and are now trying to bring it back up, note the following:
@@ -18,7 +24,7 @@ As a result, starting nodes with the `--background` flag will cause `cockroach s
 
 To restart your cluster, you should either:
 
-- Use multiple terminals to start multiple nodes at once.
+- Use multiple terminal windows to start multiple nodes in the foreground.
 - Start each node in the background using your shell's functionality (e.g., `cockroach start &`) instead of using the `--background` flag.
 
 ## Why is memory usage increasing despite lack of traffic?
