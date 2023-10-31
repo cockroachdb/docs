@@ -563,10 +563,9 @@ Cockroach Labs recommends using `cert-manager` to sign certificates for cluster 
     tls.certs.certManagerIssuer.name: cockroachdb
     ~~~
 
-- Setting `tls.certs.selfSigner.enabled` to `false` will disable the self signing certificates for cockroachdb.
-- By enabling the`tls.certs.certManager:` setting to true this will enable cert-manager for certificate signing.
-- Specify the ‘Issuer` kind here either `Issuer` or `ClusterIssuer` under the setting `certManagerIssuer.kind`.
-- `certManagerIssuer.name` Provide the Issuer you have created in previous step. In this example it was `cockroachdb`.
+    - To disable signing self-signed certificates, set `tls.certs.selfSigner.enabled` to `false`.
+    - Set `tls.certs.certManagerIssuer.kind` to either `Issuer` or `ClusterIssuer`. To get started, `Issuer` is recommended. `ClusterIssuer` is cluster-scoped; when referencing a secret via the `secretName` field, only secrets in the `cluster-resource` namespace (`cert-manager` by default) are searched. To learn more, refer to [Cluster Resource Namespace](https://cert-manager.io/v1.6-docs/faq/cluster-resource/) in the `cert-manager` project's documentation.
+    - Set `certManagerIssuer.name` to the name of the issuer you created in the previous step. 
 
 5. Once the values.yaml file has been updated you can then deploy CockroachDB via the Helm Chart with the following command.
 
