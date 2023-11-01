@@ -130,7 +130,7 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
     The output from `ALTER CHANGEFEED` will show the `CREATE CHANGEFEED` statement with the options you've defined. After modifying a changefeed with `ALTER CHANGEFEED`, the `CREATE` description will show the fully qualified table name.
 
-    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options]({% link {{ page.version.version }}/create-changefeed.md %}#options).  
+    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options]({% link {{ page.version.version }}/create-changefeed.md %}#options).
 
 1. Resume the changefeed job with `RESUME JOB`:
 
@@ -233,6 +233,7 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 ## Known limitations
 
 - It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
+- {% include {{page.version.version}}/cdc/alter-cdc-query-limitation.md %}
 - `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
 - CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 

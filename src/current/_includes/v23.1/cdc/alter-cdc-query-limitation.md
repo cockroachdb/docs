@@ -1,0 +1,1 @@
+You cannot [alter]({% link {{ page.version.version }}/alter-changefeed.md %}) a changefeed that uses {% if page.name == "cdc-queries.md" %} CDC queries. {% else %} [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}). {% endif %}[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
