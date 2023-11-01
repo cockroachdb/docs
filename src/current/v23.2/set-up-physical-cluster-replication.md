@@ -44,7 +44,7 @@ The high-level steps in this tutorial are:
 
 ### Start the primary cluster
 
-To enable physical cluster replication, it is necessary to start each node with the `--config-profile` flag and a replication value. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream. {% comment %}Add in links to Matt's overview and descriptions here{% endcomment %}
+To enable physical cluster replication, it is necessary to start each node with the appropriate _configuration profile_ set with the `--config-profile` flag. A configuration profile applies a custom configuration to the server at initialization time. When using physical cluster replication, the `replication-source` and `replication-target` configuration profiles are used to create a virtualized cluster with a system interface and an application virtual cluster.
 
 The primary cluster requires the following value:
 
@@ -156,7 +156,7 @@ The standby cluster requires a user profile on the primary cluster to connect to
 
 ### Start the standby cluster
 
-Like the primary cluster, it is necessary to start each node with the `--config-profile` flag and a replication value. This creates a _virtualized cluster_ with a system interface, and sets up all the required configuration for starting a replication stream.
+Similarly to the primary cluster, it is necessary to start each node with the `--config-profile` flag and a `replication-target` for the standby cluster. This creates a _virtualized cluster_ with a system interface, and sets up all the required configuration for starting a replication stream.
 
 To start the standby cluster, run:
 
