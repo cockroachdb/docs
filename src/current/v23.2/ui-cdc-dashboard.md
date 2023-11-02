@@ -74,7 +74,7 @@ This graph displays the most any changefeed's persisted [checkpoint]({% link {{ 
 <img src="{{ 'images/v23.2/ui-max-checkpoint-latency.png' | relative_url }}" alt="DB Console Max Checkpoint Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-The maximum checkpoint latency is distinct from, and slower than, the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
+The maximum checkpoint latency is distinct from, and slower than, the commit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
 {{site.data.alerts.end}}
 
 ## Changefeed Restarts
