@@ -1,7 +1,3 @@
-{{site.data.alerts.callout_danger}}
-The CockroachDB Helm chart is undergoing maintenance for compatibility with Kubernetes versions 1.17 through 1.21 (the latest version as of this writing). No new feature development is currently planned. For new production and local deployments, we currently recommend using a manual configuration (**Configs** option). If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
-{{site.data.alerts.end}}
-
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
     {% include_cached copy-clipboard.html %}
@@ -60,7 +56,7 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
       enabled: false
     ~~~
 
-    1. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
+    1. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions]({% link {{ page.version.version }}/kubernetes-performance.md %}#disk-type).
 
         {{site.data.alerts.callout_info}}
         If necessary, you can [expand disk size](/docs/{{ page.version.version }}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.

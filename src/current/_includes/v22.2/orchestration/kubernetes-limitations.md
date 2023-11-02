@@ -17,8 +17,6 @@ The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an
 Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
 ~~~
 
-The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier.
-
 The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
 
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
@@ -32,7 +30,7 @@ Due to its order of operations, the PostgreSQL wire protocol's implementation of
 
 #### Resources
 
-When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management](configure-cockroachdb-kubernetes.html#memory-and-cpu).
+When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}#memory-and-cpu).
 
 #### Storage
 
