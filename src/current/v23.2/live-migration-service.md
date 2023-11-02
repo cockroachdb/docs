@@ -39,7 +39,13 @@ This page describes how to [install](#installation), [configure](#configuration)
 
 ## Installation
 
-1. Add the Helm chart repository at `https://molt.cockroachdb.com/lms/charts/` with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/).
+1. Add the Helm chart repository at `https://molt.cockroachdb.com/lms/charts/` with [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add/). Then install the chart with [`helm install`](https://helm.sh/docs/helm/helm_install/). For example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm repo add lms https://molt.cockroachdb.com/lms/charts/
+    helm install lms lms/lms
+    ~~~
 
 1. Port-forward from your local machine to the orchestrator, using the release name that you specified with `helm install`. The orchestrator port is configurable and is [`4200` by default](#service-type).
 
