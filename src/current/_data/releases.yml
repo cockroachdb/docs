@@ -5028,7 +5028,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.14
-  
+
 - release_name: v23.2.0-alpha.5
   major_version: v23.2
   release_date: '2023-10-30'
