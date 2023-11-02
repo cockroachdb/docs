@@ -11,9 +11,7 @@ The `DROP ROLE` [statement]({% link {{ page.version.version }}/sql-statements.md
 
 ## Considerations
 
-- The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
-- A role cannot be dropped if it has privileges. Use [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) to remove privileges.
-- Roles that [own objects]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role]({% link {{ page.version.version }}/alter-database.md %}#change-a-databases-owner).
+{% include {{ page.version.version }}/sql/drop-role-considerations.md %}
 
 ## Required privileges
 
