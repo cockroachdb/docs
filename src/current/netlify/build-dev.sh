@@ -5,7 +5,7 @@ site_url="${DEPLOY_PRIME_URL}" # this is set by Netlify for the site
 echo "site_url defaulted to Netlify DEPLOY_PRIME_URL: ${site_url}"
 JEKYLL_ENV="preview"
 if [[ "$CONTEXT" = "production" ]]; then
-	site_url="https://dev.cockroachlabs.com" # temporary placeholder to differentiate from production URL
+	site_url="https://crdbdocsdev.netlify.app" # dev site production env url
     echo "site_url updated to: ${site_url}"
 	JEKYLL_ENV="production" # even in the dev repo/site, we'll maintain production vs preview builds; these are Netlify designations
 fi;
