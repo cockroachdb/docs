@@ -54,4 +54,4 @@ fi;
 
 # Run tests defined in __tests__ # excluding for dev
 # ./node_modules/.bin/jest
-# exit $?
+exit $?
