@@ -108,7 +108,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
     To stop monitoring the logs, press Ctrl+C to exit the `docker logs` command.
 
-1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. To run `cockroach sql` on the `roach-single` cluster:
+1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. Connect to the `roach-single` cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -119,7 +119,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. When you started the node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, so go to http://localhost:8080. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
+When you started the node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, and you published port 8080 so that it can be accessed from outside the Docker host. To connect to DB Console, go to `http://localhost:8080`. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
 
 ### Step 5. Stop the cluster
 
