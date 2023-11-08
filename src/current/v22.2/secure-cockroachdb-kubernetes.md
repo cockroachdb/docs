@@ -496,14 +496,8 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
     cockroach cert list --certs-dir=certs
     ~~~
 
-    ~~~
-    Certificate directory: certs
-        Usage  | Certificate File |  Key File   |  Expires   |                                                                  Notes                                                                  | Error
-    ---------+------------------+-----------------+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------
-        CA   | ca.crt       |         | 2031/09/07 | num certs: 1                                                                                                                              |
-        Node   | node.crt     | node.key    | 2026/09/03 | addresses: localhost,my-release-cockroachdb-public,my-release-cockroachdb-public.default,my-release-cockroachdb-public.default.svc.cluster.local,*.my-release-cockroachdb,*.my-release-cockroachdb.default,*.my-release-cockroachdb.default.svc.cluster.local,127.0.0.1 |
-        Client | client.root.crt  | client.root.key | 2026/09/03 | user: root                                                                                                                                |
-    ~~~
+    For each certificate, the output includes its certificate file and expiration, the key file for node and client certificates, a **Notes** column with additional details, and an **Errors** column that is empty unless there is an error.
+
 
 1. Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
 
