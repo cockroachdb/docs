@@ -268,10 +268,10 @@ Complete the following steps **before** [initializing the cluster]({% link {{ pa
     ~~~
 
     ~~~
-    NAME            TYPE                  DATA   AGE
-    cockroachdb.client.root   Opaque                3    41m
-    cockroachdb.node      Opaque                5    14s
-    default-token-6qjdb     kubernetes.io/service-account-token   3    4m
+    NAME                      TYPE                               DATA   AGE
+    cockroachdb.client.root   Opaque                                3   41m
+    cockroachdb.node          Opaque                                5   14s
+    default-token-6qjdb       kubernetes.io/service-account-token   3    4m
     ~~~
 
 1. Specify the following in the custom values file you created when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}?filters=helm#step-2-start-cockroachdb), using the generated secret names:
