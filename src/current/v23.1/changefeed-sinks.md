@@ -41,6 +41,8 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 
 ## Kafka
 
+### Kafka sink connection
+
 Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
 
 ~~~
@@ -56,6 +58,10 @@ Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
 
 To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed Kafka sink with OAuth Using Okta]({% link {{ page.version.version }}/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.md %}) tutorial.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
+{{site.data.alerts.end}}
 
 <a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
 

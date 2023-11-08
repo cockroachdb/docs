@@ -5,6 +5,10 @@ toc: true
 docs_area: stream_data
 ---
 
+{{site.data.alerts.callout_info}}
+Monitoring is only available for [{{ site.data.products.enterprise }} changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}#stream-row-level-changes-with-changefeeds).
+{{site.data.alerts.end}}
+
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) page and [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) SQL statements using the job ID.
 
 <a name="changefeed-retry-errors"></a>
@@ -23,10 +27,6 @@ The following define the categories of non-retryable errors:
 We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
 
 ## Monitor a changefeed
-
-{{site.data.alerts.callout_info}}
-Monitoring is only available for {{ site.data.products.enterprise }} changefeeds.
-{{site.data.alerts.end}}
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 

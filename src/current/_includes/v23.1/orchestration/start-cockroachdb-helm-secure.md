@@ -1,15 +1,11 @@
-The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier.
+The CockroachDB Helm chart is compatible with all Kubernetes versions that are [supported by the Kubernetes project](https://kubernetes.io/releases/) when cert-manager is used for mTLS.
 
 The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
 
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](https://github.com/cockroachdb/cockroach/issues/38847).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](secure-cockroachdb-kubernetes.html?filters=helm#deploy-cert-manager-for-mtls).
 {{site.data.alerts.end}}
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:

@@ -483,6 +483,31 @@ sinks:
       channels: {INFO: DEV, ERROR: OPS}
 ~~~
 
+### Set timezone
+
+The log output formats [`crdb-v1`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v1) and [`crdb-v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) support the format option `timezone`. When specified, the corresponding timezone is used to produce the timestamp column. The value can be any [timezone name recognized by the Go standard library](https://github.com/arp242/tz/blob/bf333631bec4/list.go).
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+file-defaults:
+  format: crdb-v2
+  format-options: {timezone: america/new_york}
+~~~
+
+The timezone offset is included with the timestamp to ensure that the times can be read back precisely.
+
+Example logging output:
+
+~~~
+I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1  using explicit logging configuration:
+I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1 +‹file-defaults:›
+I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1 +‹   format: crdb-v2›
+I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1 +‹   format-options: {timezone: america/new_york}›
+                       ^^^^^^^ indicates GMT-4 timezone offset was used.
+~~~
+
 ### Redact logs
 
 CockroachDB can redact personally identifiable information (PII) from log messages. The logging system includes two parameters that handle this differently:
