@@ -83,7 +83,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
     }
     ~~~
 
-1. Create the JSON configuration file that you will use to create the sink:
+1. Create the JSON configuration file that you will use to create the sink. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -96,7 +96,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
         "connection.url": "jdbc:postgresql://{host}:{port}/{username}?sslmode=require",
         "connection.user": "{username}",
         "connection.password": "{password}",
-        "insert.mode": "{insertion mode}",
+        "insert.mode": "upsert",
         "pk.mode": "record_value",
         "pk.fields": "id",
         "database.time_zone": "UTC",
@@ -108,8 +108,9 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
     }
     ~~~
     
-    - Specify `connection.url` in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster). For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-    - If you set `insert.mode` to `upsert`, you must set `pk.mode` and `pk.fields`. Set `pk.fields` to your primary key.
+    Specify `connection.url` in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster). For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+    
+    The preceding snippet is an example configuration. For details on the configurable fields, see the [Confluent JDBC Sink Connector documentation](https://docs.confluent.io/kafka-connectors/jdbc/current/sink-connector/sink_config_options.html).
 
 1. To create the sink, `POST` the JSON configuration file to the Kafka Connect `/connectors` endpoint. Refer to the [Kafka Connect API documentation](https://kafka.apache.org/documentation/#connect_rest) for more information.
 
