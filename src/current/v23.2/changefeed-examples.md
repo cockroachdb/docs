@@ -325,6 +325,52 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ./bin/confluent local services stop
     ~~~
 
+## Create a changefeed connected to a Confluent Cloud sink
+
+{% include_cached new-in.html version="v23.2" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a Confluent Cloud managed Kafka cluster. The changefeed will watch a table and send messages to the sink.
+
+{% include {{ page.version.version }}/cdc/examples-license-workload.md %}
+
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
+
+1. To prepare the Confluent Cloud Kafka sink, sign up on the [Confluent Cloud trial page](https://www.confluent.io/confluent-cloud/tryfree/).
+
+1. On the **Create cluster** page, select the necessary cluster type. The **Basic** cluster type is sufficient to run this example. Select the configuration and regions. After you have confirmed payment and set a cluster name, **Launch** the cluster.
+
+1. From the **Overview** page, click on **API Keys** in the navigation menu. Click **Create key** and select the scope for this API key. **Global access** is sufficient for this example. **Granular access** is more suitable for production. Copy or download the key and secret.
+
+1. Create a topic in Confluent Cloud. Under **Topics** select **Add topic**. Add a topic name and define the number of partitions and then **Create**. CockroachDB defaults to using the table name as the topic name. If you would like to send messages to an alternate topic, you can specify the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter.
+
+    {{site.data.alerts.callout_info}}
+    You can enable [auto topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html) for Confluent Cloud Dedicated clusters under **Cluster Settings** in the console.
+    {{site.data.alerts.end}}
+
+1. Construct the URI to connect your changefeed to the Confluent Cloud cluster. You will need:
+    - The prefix scheme `confluent-cloud://`.
+    - The address and port of the bootstrap server. Click on **Cluster settings** in your Confluent Cloud console. Under **Endpoints**, you will find the **Bootstrap server**. It will be something like: `pkc-lzvrd.us-west4.gcp.confluent.cloud:9092`.
+    - Ensure that you follow the cluster address with `?` before the remaining parameters, and also connect the following parameters with `&`.
+    - Your API key and secret from the previous step passed with the `api_key` and `api_secret` parameters. You must [URL encode](https://www.urlencoder.org/) the secret before adding to the connection string.
+    - (Optional) Any further parameters. Refer to [Query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters).
+
+        ~~~
+        'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}'
+        ~~~
+
+1. Back in the SQL shell, create a changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE movr.users, movr.vehicles INTO 'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}&topic_name=users_and_vehicles' WITH resolved;
+    ~~~
+    ~~~
+            job_id
+    ----------------------
+    913248812656525313
+    (1 row)
+
+    NOTICE: changefeed will emit to topic users_and_vehicles
+    ~~~
+
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
 {{site.data.alerts.callout_info}}
@@ -335,30 +381,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-
-1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
-    ~~~
-
-1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
-
-     First create the schema for the workload:
-
-     {% include_cached copy-clipboard.html %}
-     ~~~shell
-     cockroach workload init movr "postgresql://root@127.0.0.1:26257?sslmode=disable"
-     ~~~
-
-     Then run the workload:
-
-     {% include_cached copy-clipboard.html %}
-     ~~~shell
-     cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
-     ~~~
+{% include {{ page.version.version }}/cdc/examples-license-workload.md %}
 
 {% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
