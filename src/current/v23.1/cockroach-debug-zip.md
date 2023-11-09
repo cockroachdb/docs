@@ -18,15 +18,21 @@ The files produced by `cockroach debug zip` can contain highly [sensitive, perso
 
 ### Use cases
 
+{{site.data.alerts.callout_danger}}
+ `cockroach debug zip` is an expensive operation and impacts cluster performance.
+
+Only use this command as an emergency measure under the guidance of Cockroach Labs.
+{{site.data.alerts.end}}
+
 There are two scenarios in which `debug zip` is useful:
+
+- If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`. We recommend reducing the `*.zip` file size by only [retrieving debugging information for the relevant time range](#generate-a-debug-zip-file-for-a-time-range) of the issue by using the `--files-from`, and/or `--files-until` [flags](#flags).
 
 - To collect all of your nodes' logs, which you can then parse to locate issues. You can optionally use the [flags](#flags) to [retrieve only the log files](#generate-a-debug-zip-file-with-logs-only). For more information about logs, see [Logging]({% link {{ page.version.version }}/logging-overview.md %}). Also note:
 
     - Nodes that are currently [down]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) cannot deliver their logs over the network. For these nodes, you must log on to the machine where the `cockroach` process would otherwise be running, and gather the files manually.
 
     - Nodes that are currently up but disconnected from other nodes (e.g., because of a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition)) may not be able to respond to `debug zip` requests forwarded by other nodes, but can still respond to requests for data when asked directly. In such situations, we recommend using the [`--host` flag](#client-connection) to point `debug zip` at each of the disconnected nodes until data has been gathered for the entire cluster.
-
-- If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
 
 ### Files
 
@@ -105,6 +111,7 @@ Flag | Description
 `--files-from` | Start timestamp for log file, goroutine dump, and heap profile collection. This can be used to limit the size of the generated `.zip`, which is increased by these files. The timestamp uses the format `YYYY-MM-DD`, followed optionally by `HH:MM:SS` or `HH:MM`. For example:<br /><br />`--files-from='2021-07-01 15:00'`<br /><br />When specifying a narrow time window, we recommend adding extra seconds/minutes to account for uncertainties such as clock drift.<br /><br />**Default:** 48 hours before now
 `--files-until` | End timestamp for log file, goroutine dump, and heap profile collection. This can be used to limit the size of the generated `.zip`, which is increased by these files. The timestamp uses the format `YYYY-MM-DD`, followed optionally by `HH:MM:SS` or `HH:MM`. For example:<br /><br />`--files-until='2021-07-01 16:00'`<br /><br />When specifying a narrow time window, we recommend adding extra seconds/minutes to account for uncertainties such as clock drift.<br /><br />**Default:** 24 hours beyond now (to include files created during `.zip` creation)
 `--include-files` | [Files](#files) to include in the generated `.zip`. This can be used to limit the size of the generated `.zip`, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of [glob patterns](https://wikipedia.org/wiki/Glob_(programming)). For example:<br /><br />`--include-files=*.pprof`<br /><br />Note that this flag is applied _before_ `--exclude-files`. Use [`cockroach debug list-files`]({% link {{ page.version.version }}/cockroach-debug-list-files.md %}) with this flag to see a list of files that will be contained in the `.zip`.
+`--include-range-info` | Include one file per node with information about the KV ranges stored on that node, in `nodes/{node ID}/ranges.json`.<br /><br />This information can be vital when debugging issues that involve the [KV storage layer]({% link {{ page.version.version }}/architecture/overview.md %}#layers), such as data placement, load balancing, performance or other behaviors. In certain situations, on large clusters with large numbers of ranges, these files can be omitted if and only if the issue being investigated is already known to be in another layer of the system (for example, an error message about an unsupported feature or incompatible value in a SQL schema change or statement). Note however many higher-level issues are ultimately related to the underlying KV storage layer described by these files so only set this to `false` if directed to do so by Cockroach Labs support.<br /><br />**Default:** true
 `--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br /><br />`--nodes=1,10,13-15`
 `--redact` | Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated `--redact-logs` flag, which only applied to log messages contained within `.zip`. See [Redact sensitive information](#redact-sensitive-information) for an example.
 `--redact-logs` | **Deprecated** Redact sensitive data from collected log files only. Use the `--redact` flag instead, which redacts sensitive data across the entire generated `.zip` as well as the collected log files. Passing the `--redact-logs` flag will be interpreted as the `--redact` flag.
@@ -147,6 +154,15 @@ $ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 {{site.data.alerts.callout_info}}
 Secure examples assume you have the appropriate certificates in the default certificate directory, `${HOME}/.cockroach-certs/`.
 {{site.data.alerts.end}}
+
+### Generate a debug zip file for a time range
+
+Generate a debug zip file containing only debugging information for a specified time range:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --files-from='2023-10-03 13:30' --files-until='2023-10-03 14:30'
+~~~
 
 ### Generate a debug zip file with logs only
 

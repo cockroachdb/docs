@@ -4932,7 +4932,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -4947,3 +4947,165 @@
     docker_arm_limited_access: true
   source: true
   previous_release: v23.2.0-alpha.1
+
+- release_name: v23.2.0-alpha.3
+  major_version: v23.2
+  release_date: '2023-10-10'
+  release_type: Testing
+  go_version: go1.20
+  sha: baae04437f0e3a8cbbdbefd5811b8b98297784e4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: true
+  source: true
+  previous_release: v23.2.0-alpha.2
+
+- release_name: v23.2.0-alpha.4
+  major_version: v23.2
+  release_date: '2023-10-23'
+  release_type: Testing
+  go_version: go1.20
+  sha: 3744e5655559d3350aedaf1fbbaecbf1e69c98d6
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: true
+  source: true
+  previous_release: v23.2.0-alpha.3
+
+- release_name: v22.2.15
+  major_version: v22.2
+  release_date: '2023-10-23'
+  release_type: Production
+  go_version: go1.20
+  sha: baf71aef118d54cfa4c0005762acc9a83b1b9ab6
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: false
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v22.2.14
+
+- release_name: v23.2.0-alpha.5
+  major_version: v23.2
+  release_date: '2023-10-30'
+  release_type: Testing
+  go_version: go1.21
+  sha: af2cdcea915f024eae56aee7b3dee8794cbc44e1
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: true
+  source: true
+  previous_release: v23.2.0-alpha.4
+
+- release_name: v22.2.16
+  major_version: v22.2
+  release_date: '2023-11-06'
+  release_type: Production
+  go_version: go1.21
+  sha: 89df73b7e738a6dd87bf83d891726bb9a317d18f
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: false
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v22.2.15
+
+- release_name: v23.2.0-alpha.6
+  major_version: v23.2
+  release_date: '2023-11-07'
+  release_type: Testing
+  go_version: go1.21
+  sha: 45bfb4bf0c88330c273363039b8063d6ed516da4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: true
+  source: true
+  previous_release: v23.2.0-alpha.5

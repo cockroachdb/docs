@@ -9,6 +9,8 @@ The **Hardware** dashboard lets you monitor the hardware utilization of your clu
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Hardware** dashboard displays the following time series graphs:

@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include {{ page.version.version }}/ui/admin-access.md %}
+{% include {{ page.version.version }}/ui/admin-access-only.md %}
 
 The **Node Map** is useful for:
 

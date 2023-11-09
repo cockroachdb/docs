@@ -66,6 +66,25 @@ CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-table.html#alter-column) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 
+## Supported casting and conversion
+
+`TIMESTAMP` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
+
+Type | Details
+-----|--------
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
+`TIME` | Converts to the time portion (`HH:MM:SS`) of the timestamp.
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
+`DATE` | Converts to the date (`YYYY-MM-DD`) of the timestamp and omits the other information.
+`STRING` |  Converts to the date and time portion (`YYYY-MM-DD HH:MM:SS`) of the timestamp and omits the time zone offset.
+
+### Infinity `TIMESTAMP` casts
+
+CockroachDB does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
+
+Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+
 ## Examples
 
 ### Create a table with a `TIMESTAMPTZ`-typed column
@@ -208,26 +227,78 @@ ERROR: unimplemented: type conversion from TIMESTAMPTZ(5) to TIMESTAMPTZ(3) requ
 SQLSTATE: 0A000
 ~~~
 
-## Supported casting and conversion
+### Convert a `TIMESTAMP` to seconds since epoch
 
-`TIMESTAMP` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT now()::int;
+~~~
 
-Type | Details
------|--------
-`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
-`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
-`TIME` | Converts to the time portion (HH:MM:SS) of the timestamp.
-`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
-`DATE` | --
-`STRING` |  Converts to the date and time portion (YYYY-MM-DD HH:MM:SS) of the timestamp and omits the time zone offset.
+### Convert a `TIMESTAMP` to milliseconds since epoch 
 
-### Infinity `TIMESTAMP` casts
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT (now()::float*1000)::int;
+~~~
 
-CockroachDB currently does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
+### Convert a `TIMESTAMP` to microseconds since epoch 
 
-Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT (now()::float*1000000)::int;
+~~~
 
-For more details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/41564).
+### Convert an `INT` (seconds since epoch) to timestamp
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT 1597868006::timestamp;
+~~~
+
+### Convert a `STRING` (seconds since epoch) to timestamp
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT '1597868006'::int::timestamp;
+~~~
+
+### Convert an `INT` (milliseconds since epoch) to timestamp
+
+Note that `TIMESTAMP epoch'` is the equivalent of `0::timestamp`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT TIMESTAMP 'epoch' + (1597868048960::float/1000)::interval;
+~~~
+
+### Convert a `STRING` (milliseconds since epoch) to timestamp
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT TIMESTAMP 'epoch' + ('1597868048960'::float/1000)::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868048960'::INT8) * '1 ms'::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868048960'::INT8) * '1 millisecond'::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868048960' || 'ms')::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868048960' || 'milliseconds')::interval;
+~~~
+
+### Convert an `INT` (microseconds since epoch) to timestamp
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT TIMESTAMP 'epoch' + (1597868402212060::float/1000000)::interval;
+~~~
+
+### Convert a `STRING` (microseconds since epoch) to timestamp
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT TIMESTAMP 'epoch' + ('1597868402212060'::INT8) * '1 μs'::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868402212060'::INT8) * '1 microsecond'::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868402212060' || ' μs')::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868402212060' || ' microseconds')::interval;
+SELECT TIMESTAMP 'epoch' + ('1597868402212060'::float/1000000)::interval;
+~~~
 
 ## See also
 

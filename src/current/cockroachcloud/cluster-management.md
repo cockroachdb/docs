@@ -58,7 +58,7 @@ These sections show how to scale a {{ site.data.products.dedicated }} cluster ho
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
@@ -163,15 +163,17 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
 
 ## Set a maintenance window
 
-From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
+ [Org Administrators]({% link cockroachcloud/authorization.md%}#org-administrator) automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about scheduled upgrades and cluster maintenance, and can subscribe other members to the email alerts.
 
 {{site.data.alerts.callout_info}}
-Maintenance operations that are critical for cluster security or stability may be applied outside of the upgrade window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
+Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
-To set an upgrade window:
+To set a maintenance window:
 
-1. Click the pencil icon next to **Cluster maintenance** to edit the upgrade window.
+1. Click the pencil icon next to **Cluster maintenance** to edit the maintenance window.
 1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
 1. From the **Start of window** dropdown, select a start time for your maintenance window in UTC.
 

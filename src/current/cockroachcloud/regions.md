@@ -82,12 +82,14 @@ CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the follo
 Geographic Area | Region Name          | Location
 ----------------|----------------------|---------
 Asia Pacific    | `australiaeast`      | New South Wales
+                | `centralindia`       | Pune
                 | `eastasia`           | Hong Kong
+                | `southeastasia`      | Singapore
 North America   | `centralcanada`      | Toronto
                 | `centralus`          | Iowa
-                | `westus2`            | Washington
                 | `eastus`             | Virginia
                 | `eastus2`            | Virginia
+                | `westus2`            | Washington
 Western Europe  | `germanywestcentral` | Frankfurt
                 | `uksouth`            | London
                 | `westeurope`         | Netherlands

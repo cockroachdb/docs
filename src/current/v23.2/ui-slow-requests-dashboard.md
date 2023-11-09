@@ -9,6 +9,8 @@ The **Slow Requests** dashboard lets you monitor important cluster tasks that ta
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Slow Requests**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 {{site.data.alerts.callout_info}}

@@ -45,10 +45,19 @@ If you are a member of more than one [CockroachDB Cloud organization](https://ww
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud auth login --org <organization label>
+ccloud auth login --org {organization-label}
 ~~~
 
 The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
+
+If your organization has a custom URL, use the `--vanity-name` flag to log in:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --vanity-name {custom-organization-name}
+~~~
+
+Replace `{custom-organization-name}` with the portion of the custom sign-in URL that follows `/login/`. Do not pass the full custom sign-in URL.
 
 ### Log in to CockroachDB Cloud on a headless server
 
@@ -352,7 +361,7 @@ To create a SSO SQL user:
    
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster --sso blue-dog
+    ccloud cluster sql --sso blue-dog
     ~~~
 
 1. Log in to your organization when prompted by `ccloud`.
@@ -403,7 +412,7 @@ By default, the `ccloud cluster sql` command will allow connections only from IP
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql dim-dog --skip-ip-check
+ccloud cluster sql blue-dog --skip-ip-check
 ~~~
 
 ## Get the connection information for your cluster using `ccloud cluster sql`

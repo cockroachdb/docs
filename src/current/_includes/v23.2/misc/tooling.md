@@ -93,6 +93,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
 | [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim]({% link {{ page.version.version }}/striim.md %})
 | [Oracle GoldenGate](https://www.oracle.com/integration/goldengate/) | 21.3 | Partial | [Migrate and Replicate Data with Oracle GoldenGate]({% link {{ page.version.version }}/goldengate.md %})
+| [Debezium](https://debezium.io/) | 2.4 | Full | [Migrate Data with Debezium]({% link {{ page.version.version }}/debezium.md %})
 
 ## Provisioning tools
 | Tool | Latest tested version | Support level | Documentation |

@@ -1854,12 +1854,6 @@
               "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
               "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
             ]
-          },
-          {
-            "title": "Serverless Performance Benchmarking",
-            "urls": [
-              "/cockroachcloud/serverless-benchmarking.html"
-            ]
           }
         ]
       },

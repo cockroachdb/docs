@@ -18,9 +18,12 @@ You can authorize network access to your cluster by:
 
     For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
 
+{{site.data.alerts.callout_info}}
+{% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
+{{site.data.alerts.end}}
+
 **Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
-{{site.data.alerts.callout_success}}
 Use GCP VPC Peering or AWS PrivateLink if:
 
 - You need to allowlist more defined IP address ranges than the [default maximum](#ip-allowlisting).
@@ -28,10 +31,8 @@ Use GCP VPC Peering or AWS PrivateLink if:
 - You want to avoid exposing your cluster to the public internet.
 
 Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
-{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-
 Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 

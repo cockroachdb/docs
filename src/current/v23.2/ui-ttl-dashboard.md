@@ -9,6 +9,8 @@ The **TTL** dashboard lets you monitor the progress and performance of [batch de
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **TTL**.
 
+## Dashboard navigation
+
 {% include {{page.version.version}}/ui/ui-metrics-navigation.md %}
 
 The **TTL** dashboard displays the following time series graphs:

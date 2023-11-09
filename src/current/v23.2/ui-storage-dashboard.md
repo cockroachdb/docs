@@ -9,6 +9,8 @@ The **Storage** dashboard lets you monitor the storage utilization of your clust
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
+## Dashboard navigation
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Storage** dashboard displays the following time series graphs:

@@ -9,10 +9,9 @@ The `DROP USER` [statement]({% link {{ page.version.version }}/sql-statements.md
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+## Considerations
 
-## Consideration
-
-Users that [own objects]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user]({% link {{ page.version.version }}/alter-database.md %}#change-a-databases-owner).
+{% include {{ page.version.version }}/sql/drop-role-considerations.md %}
 
 ## Required privileges
 
