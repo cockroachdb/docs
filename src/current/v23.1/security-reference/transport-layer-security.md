@@ -30,7 +30,7 @@ Modern communication systems pose a general problem: How can you safely send dat
 
 ### Key pairs
 
-How can you send a message that only a specific intended party can receive? 
+How can you send a message that only a specific intended party can receive?
 
 The fundamental mechanism of TLS is a pair of cryptographic keys (usually referred to as a 'key pair' for short):
 
@@ -43,7 +43,7 @@ The fundamental mechanism of TLS is a pair of cryptographic keys (usually referr
 The useful implication is that if you hold such a key pair, you can distribute the public key (frequently distributed inside of a certificate) to anyone with whom you want to communicate securely. As long as you retain sole possession of the private key, two things are guaranteed:
 
 - Anyone who has the public key can use it to encrypt a message and send it to you, knowing that you alone can decrypt it with the private key.
-- Anyone who receives a message or file that was cryptographically signed with your private key (verified with the corresponding public key) knows it *must* have come from you. 
+- Anyone who receives a message or file that was cryptographically signed with your private key (verified with the corresponding public key) knows it *must* have come from you.
 
 TLS therefore provides two critical security features:
 
@@ -138,7 +138,7 @@ The main solutions to this problem are:
 - **Certificate Revocation Lists (CRLs)** allow relying parties to check if a subscriber's certificate has been revoked.
 - The **Online Certificate Revocation Protocol (OCSP)** allows relying parties to check the status of certificates in real time.
 
-Each strategy has pros and cons in terms of security and operational overhead. CockroachDB does not support CRLs. 
+Each strategy has pros and cons in terms of security and operational overhead. CockroachDB does not support CRLs.
 
 See [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb).
 
@@ -162,13 +162,9 @@ Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Va
 PKI for internode communication within CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
 {{site.data.alerts.end}}
 
-Certificate authentication for SQL clients is available against CockroachDB {{ site.data.products.dedicated }} clusters.
+Certificate authentication for SQL clients is available for CockroachDB {{ site.data.products.dedicated }} clusters.
 
-Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedural information on administering and using client certificate authentication.
-
-{{site.data.alerts.callout_info}}
-This feature is in [**limited access**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
-{{site.data.alerts.end}}
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedural information on administering and using client certificate authentication.
 
 ## CockroachDB's TLS support and operating modes
 
@@ -178,7 +174,7 @@ Currently, mutual TLS authentication, in which the client as well as the server 
 
 CockroachDB {{ site.data.products.core }} does supports TLS authentication for clients.
 
-### Default mode 
+### Default mode
 
 By default, CockroachDB clusters require TLS. Client connection requests must be made with `sslmode=on`.
 The CockroachDB CLI `cockroach sql` command, by default, is made with `sslmode=on`.
@@ -287,11 +283,11 @@ Customers of CockroachDB {{ site.data.products.cloud }} delegate responsibility 
 
 CockroachDB {{ site.data.products.cloud }} clusters do not support certificate based client authentication, but rely instead on username/password combination.
 
-### CockroachDB Self-Hosted 
+### CockroachDB Self-Hosted
 
 CockroachDB does not support certificate revocation lists (CRLs). The remaining options are the Online Certificate Status Protocol (OCSP), and reliance on a rapid cycle of generating and propagating short-lived certificates.
 
-#### OCSP 
+#### OCSP
 
 Securely operating an OCSP responder is a significant task, and it would not be recommended to undertake this solely for the purposes of securing a CockroachDB cluster.
 
