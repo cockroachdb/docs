@@ -388,6 +388,10 @@ For CockroachDB instances that are running within a Google Cloud Environment, [e
 
 For CockroachDB clusters running in other environments, `implicit` authentication access can still be set up manually with the following steps:
 
+### Use implicit authentication with your own service account
+
+For self-hosted deployments, follow these instructions. For CockroachDB {{ site.data.products.dedicated }} deployments, you can either follow these instructions or you can [use implicit authentication together with the service account which CockroachDB {{ site.data.products.cloud }} automatically creates](#use-implicit-authentication-dedicated).
+
   1. [Create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket.
 
   1. Download the [JSON credentials file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) from the **Service Accounts** page in the Google Cloud Console to the machines that CockroachDB is running on. (Since this file will be passed as an environment variable, it does **not** need to be base64-encoded.) Ensure that the file is located in a path that CockroachDB can access.
@@ -411,6 +415,20 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
     ~~~
 
 {% include {{ page.version.version }}/backups/external-io-implicit-flag.md %}
+
+<a id="use-implicit-authentication-dedicated">
+### Use implicit authentication with CockroachDB {{ site.data.products.dedicated }}
+
+For a CockroachDB {{ site.data.products.dedicated }} cluster, you can either [use implicit authentication with your own service account](#use-implicit-authentication-with-your-own-service-account) or you can follow these instructions to use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster. This service account is named according to the pattern `crl-dr-store-user-{CLUSTER_ID}`, where `{CLUSTER_ID}` is the ID of the cluster, and is automatically granted the permission to write to the cluster's storage. One benefit of this approach is that no additional credentials needs to be added to the cluster.
+
+For example, to initiate a manual backup on a CockroachDB {{ site.data.products.dedicated }} cluster using implicit auth with the `crl-dr-store-user-{CLUSTER_ID}` service account:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID}'
+~~~
+
+Replace `{CLUSTER_ID}` with the cluster's ID.
 
 ## Google Cloud Storage assume role
 
