@@ -165,7 +165,7 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
 
 From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-[Org Administrators]({% link cockroachcloud/authorization.md%}#org-administrator) automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about cluster upgrades. If a maintenance window is set, they will also receive email alerts for scheduled maintenance. Additionally, Org Administrators can subscribe other members to receive any of these email alerts.
+[Org Administrators]({% link cockroachcloud/authorization.md%}#org-administrator) automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about scheduled upgrades, and can subscribe other members to the email alerts.
 
 {{site.data.alerts.callout_info}}
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
