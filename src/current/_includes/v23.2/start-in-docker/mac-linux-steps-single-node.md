@@ -119,7 +119,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-When you started the node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, and you published port 8080 so that it can be accessed from outside the Docker host. To connect to DB Console, go to `http://localhost:8080`. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
+When you started the node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, and you published port 8080 so that it can be accessed from outside the Docker host. To connect to the DB Console, go to `http://localhost:8080`. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
 
 ### Step 5. Stop the cluster
 
