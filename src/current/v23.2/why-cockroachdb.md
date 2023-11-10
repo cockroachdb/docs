@@ -15,7 +15,7 @@ There are many reasons to use CockroachDB, including:
 - [Resiliency](#resiliency)
 - [Scalability](#scalability)
 - [Strong consistency](#strong-consistency)
-- [Geo-partioning and multi-region features](#geo-partitioning-and-multi-region-features)
+- [Geo-partitioning and multi-region features](#geo-partitioning-and-multi-region-features)
 - [PostgreSQL-compatibility](#postgresql-compatibility)
 
 ### Resiliency
