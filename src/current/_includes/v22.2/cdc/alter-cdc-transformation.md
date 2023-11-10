@@ -1,1 +1,0 @@
-You cannot {% if page.name == "alter-changefeed.md" %} alter {% else %} [alter](alter-changefeed.html) {% endif %} a changefeed that uses {% if page.name == "cdc-transformations.md" %} CDC transformations. {% else %} [CDC transformations](cdc-transformations.html). {% endif %}[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)

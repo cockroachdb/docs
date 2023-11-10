@@ -233,7 +233,7 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 ## Known limitations
 
 - It is necessary to [`PAUSE`](pause-job.html) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
-- {% include {{page.version.version}}/cdc/alter-cdc-transformation.md %}
+- You cannot alter  a changefeed that uses [CDC transformations]({% link {{ page.version.version }}/cdc-transformations.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
 - `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
 - CockroachDB does not keep track of the [`initial_scan`](create-changefeed.html#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
