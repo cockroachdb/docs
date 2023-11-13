@@ -112,7 +112,7 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Parquet types
 
-CockroachDB types map to [Parquet types](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) as per the following:
+CockroachDB types map to [Parquet types](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) listed in the following table. All columns witten to Parquet files will be nullable, therefore the Parquet repetition level is `optional`.
 
 | CockroachDB Type    | Parquet Type | Parquet Logical Type |
 --------------------|--------------|----------------------
