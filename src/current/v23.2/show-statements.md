@@ -49,7 +49,7 @@ Field | Description
 `node_id` | The ID of the node.
 `session_id` | The ID of the session.
 `user_name` | The username of the connected user.
-`start` | The timestamp at which the query started.
+`start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
 `application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For queries from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `$ cockroach sql`.

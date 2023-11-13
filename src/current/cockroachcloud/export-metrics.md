@@ -312,3 +312,7 @@ Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM p
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
 Your CockroachDB {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP or Azure) to make use of metrics export to AWS CloudWatch. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP or Azure, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+
+## See Also
+
+- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{site.current_cloud_version}}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})
