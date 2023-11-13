@@ -398,7 +398,7 @@ For example, the encrypted backup created in the previous example can be restore
 RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 ## See also
 
