@@ -62,7 +62,8 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
       -p 26257:26257 \
       -p 8080:8080 \
       -v "roach-single:/cockroach/cockroach-data"  \
-      {{page.release_info.docker_image}}:{{page.release_info.version}} start-single-node
+      {{page.release_info.docker_image}}:{{page.release_info.version}} start-single-node \
+      --http-addr=roach-single:8080
     ~~~
 
     By default, a `certs` directory is created and CockroachDB starts in secure mode.
