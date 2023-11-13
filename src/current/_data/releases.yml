@@ -5058,10 +5058,10 @@
   
 # - release_name: v23.1.12
 #  major_version: v23.1
-#  release_date: '2023-10-31'
+#  release_date: '2023-11-13'
 #  release_type: Production
 #  go_version: go1.21
-#  sha: 80415cb31dc76624cec68419626331aaa09c7adc
+#  sha: d7e9824b4cd6ebf7a8548156f2a772ae6648257d
 #  has_sql_only: true
 #  has_sha256sum: true
 #  mac:
