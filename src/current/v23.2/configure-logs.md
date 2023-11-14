@@ -109,6 +109,7 @@ All supported sink types use the following common sink parameters:
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `filter`        | Minimum severity level at which logs enter the channels selected for the sink. Accepts one of the valid [severity levels]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                   |
 | `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). For details, see [file logging format](#file-logging-format), [Fluentd logging format](#fluentd-logging-format), and [HTTP logging format](#http-logging-format).                                                                                                                                             |
+|<span class="version-tag">New in v23.2:</span> `format-options` | Customization options for specified `format`. For available options for each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}). For an example use case, see [Set timezone](#set-timezone).  |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or over a network. For details, see [Redact logs](#redact-logs).                                                                                                                                                                 |
 | `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}).             |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
@@ -485,6 +486,10 @@ sinks:
 
 ### Set timezone
 
+{% include_cached new-in.html version="v23.2" %} Using the `format-options` sink parameter, you may set the timezone for a specified log format. 
+
+#### `timezone` for text formats
+
 The log output formats [`crdb-v1`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v1) and [`crdb-v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) support the format option `timezone`. When specified, the corresponding timezone is used to produce the timestamp column. The value can be any [timezone name recognized by the Go standard library](https://github.com/arp242/tz/blob/bf333631bec4/list.go).
 
 For example:
@@ -507,6 +512,43 @@ I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1 +‹   format
 I231030 14:17:23.674909-040000 1 1@cli/log_flags.go:200 ⋮ [n?] 1 +‹   format-options: {timezone: america/new_york}›
                        ^^^^^^^ indicates GMT-4 timezone offset was used.
 ~~~
+
+#### `datetime` field for JSON format
+
+The log output format [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) supports the format options `datetime-format` and `datetime-timezone`.
+
+`datetime-format` controls whether a `datetime` field with human-readable timestamp values is included in the logs. Valid values for this option are:
+
+- `none`: Disable the creation of the `datetime` field. This is the default value.
+- `iso8601` or `rfc3339`: Format the timestamp like "2006-01-02T15:04:05.999999999Z".
+- `rfc1123`: Format the timestamp like "Mon, 02 Jan 2006 15:04:05 +0000".
+
+The existing `timestamp` field with epoch values remains unchanged for backward-compatibility.
+
+`datetime-timezone` selects which timezone to use when formatting the `datetime` field. The value can be any [timezone name recognized by the Go standard library](https://github.com/arp242/tz/blob/bf333631bec4/list.go). The default value is `UTC`. `datetime-timezone` must be combined with `datetime-format` set to a valid format since the default value for the `datetime-format` option is `none` and therefore the `datetime` field is not included by default.
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+file-defaults:
+  format: json
+  format-options: { datetime-format: rfc3339, datetime-timezone: America/New_York }
+~~~
+
+Example logging output:
+
+~~~
+{"channel_numeric":1,"channel":"OPS","timestamp":"1699305954.983614000","datetime":"2023-11-06T16:25:54.983614-05:00","version":"v23.2.0","severity_numeric":1,"severity":"INFO","goroutine":1,"file":"cli/log_flags.go","line":200,"entry_counter":1,"redactable":1,"tags":{"n":"?"},"message":"using explicit logging configuration:\n‹file-defaults:›\n‹  format: json›\n‹  format-options: { datetime-format: rfc3339, datetime-timezone: America/New_York }›"}
+~~~
+
+{{site.data.alerts.callout_info}}
+Enabling the `datetime` field introduces CPU overhead and is nearly always unnecessary.
+
+When sending output to a log collector (for example, via [Fluent](#output-to-fluentd-compatible-network-collectors) or [Datadog](#output-to-http-network-collectors)), the log collector can be configured to transform the epoch values in the `timestamp` field into a human-readable format.
+
+When inspecting a [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) formatted log file produced by CockroachDB, you can use the command [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) to convert the log into [`crdb-v1`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v1) format which includes timestamps in the `rfc3339` format.
+{{site.data.alerts.end}}
 
 ### Redact logs
 
