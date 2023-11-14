@@ -39,6 +39,8 @@ You must have:
 
 ### Syntax of audit settings
 
+`sql.log.user_audit`
+
 With the [`sql.log.user_audit` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-log-user-audit), you can set an audit logging configuration using a table-like syntax, as shown in the [Examples](#examples). Each row in the configuration represents an audit setting and must be separated by a new line. An audit setting is comprised of two columns separated by a space:
 
 - `USER/ROLE`: the name of the user or role you want to audit.
@@ -48,6 +50,10 @@ With the [`sql.log.user_audit` cluster setting]({% link {{ page.version.version 
     - `NONE` will exclude audit logging for all SQL statements for the given audit setting.
 
 Once `sql.log.user_audit` is set, the default behavior is for role-based SQL audit logging to take effect immediately within user sessions.
+
+`sql.log.user_audit.reduced_config.enabled`
+
+When enabled, the [`sql.log.user_audit.reduced_config.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-log-user-audit-reduced-config-enabled) computes a "reduced" audit configuration based on the user's current [role memberships]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) and the current value for the `sql.log.user_audit` cluster setting. The "reduced" audit configuration is computed at the **first SQL event emitted by the user, after the setting is enabled**. When the cluster setting is enabled, CockroachDB computes the audit configuration once at [session]({% link {{ page.version.version }}/show-sessions.md %}) start, instead of at each SQL event. However with the setting enabled, changes to the audit configuration (user role memberships or cluster setting configuration) are not reflected within a user session. To reflect the configuration changes in auditing behavior, users need to start a new session.
 
 ### Matching order
 
