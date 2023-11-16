@@ -72,11 +72,15 @@ State      | Description
 
 ## DB Console
 
-You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) for your standby cluster at `https://{your IP or hostname}:8080/`. The **Physical Replication** dashboard under **Metrics** on the left-hand navigation bar.
+You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) for your standby cluster at `https://{your IP or hostname}:8080/`. Select the **Metrics** page from the left-hand navigation bar, and then **Physical Cluster Replication** from the **Dashboard** dropdown. The user that accesses the DB Console must have `admin` privileges to view this dashboard.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-The **Physical Replication** dashboard contains two graphs for monitoring:
+{{site.data.alerts.callout_info}}
+The **Physical Cluster Replication** dashboard only tracks metrics related to physical cluster replication jobs. This is different to the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
+{{site.data.alerts.end}}
+
+The **Physical Cluster Replication** dashboard contains three graphs for monitoring:
 
 ### Replication lag
 

@@ -13,8 +13,8 @@ docs_area: manage
 
 The cutover is a two-step process on the standby cluster:
 
-1. [Initiating the cutover](#step-1-initiating-the-cutover).
-1. [Completing the cutover](#step-2-completing-the-cutover).
+1. [Initiating the cutover](#step-1-initiate-the-cutover).
+1. [Completing the cutover](#step-2-complete-the-cutover).
 
 {{site.data.alerts.callout_danger}}
 Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. However, the cutover process does **not** automatically redirect traffic to the standby cluster. Once the cutover is complete, you must redirect application traffic to the standby (new) cluster. If you do not manually redirect traffic, writes to the primary (original) cluster may be lost.
@@ -26,7 +26,7 @@ After a cutover, you may want to _cut back_ to the original primary cluster. Tha
 
 {% include {{ page.version.version }}/physical-replication/reference-links-replication.md %}
 
-## Step 1. Initiating the cutover
+## Step 1. Initiate the cutover
 
 To initiate a cutover to the standby cluster, there are different ways of specifying the point in time for the standby's promotion. Refer to the following sections for steps:
 
@@ -108,7 +108,7 @@ ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO SYSTEM TIME '+5
 
 A future cutover will proceed once the replicated data has reached the specified time.
 
-## Step 2. Completing the cutover
+## Step 2. Complete the cutover
 
 1. The completion of the replication is asynchronous; to monitor its progress use:
 
@@ -125,7 +125,7 @@ A future cutover will proceed once the replicated data has reached the specified
 
     Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more  detail.
 
-1. Once complete, start the standby's virtual cluster with:
+1. Once complete, bring the standby's virtual cluster online with:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -141,14 +141,14 @@ A future cutover will proceed once the replicated data has reached the specified
     (3 rows)
     ~~~
 
-1. To make the standby's virtual cluster the default for connection strings. Set the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+1. To make the standby's virtual cluster the default for connection strings, set the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING server.controller.default_target_cluster='standbyapplication'
     ~~~
 
-At this point, the primary and standby clusters are entirely independent. You will need to use your own orchestration to direct traffic to the standby.
+At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers to direct application traffic to the standby (now primary). To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Cut back to the primary cluster
 
