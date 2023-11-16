@@ -12,15 +12,16 @@ Under the Shared Responsibility Model, Cockroach Labs is responsible for the fol
 
 - Cluster and cloud service availability and reliability
 - Maintenance and security of hardware and operating systems
-- Database upgrades and security patches 
-- Daily and hourly cluster backups 
+- Database and security patches 
+- Cluster backups 
 
 The customer is responsible for the following tasks:
 
-- Sizing the workload correctly
+- Estimating workload and sizing the cluster 
 - Scaling clusters based on workload
 - Ensuring sufficient disk, compute, and memory capacity for each cluster
 - Monitoring cluster health and application performance
+- Ensuring that the workload is distributed appropriately across the nodes of the cluster
 - Performance tuning of SQL queries and schema
 - Initiating major version upgrades and selecting maintenance windows for patch releases 
 - Taking customer-owned backups (optional)
@@ -29,7 +30,7 @@ This page provides important recommendations for CockroachDB {{ site.data.produc
 
 ## Deployment options
 
-When planning your deployment, it is important to carefully review and choose the [deployment options](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/choose-a-deployment-option) that best meet your scale, cost, and security requirements. 
+When planning your deployment, it is important to carefully review and choose the [deployment options](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/choose-a-deployment-option) that best meet your scale, cost, security, and resiliency requirements. 
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
  
@@ -47,7 +48,7 @@ You can create and manage CockroachDB {{ site.data.products.cloud }} clusters us
 
 ## Network authorization
 
-CockroachDB {{ site.data.products.cloud }} requires you to authorize the networks that can access the cluster in order to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
+CockroachDB {{ site.data.products.cloud }} requires you to authorize the networks that can access the cluster in order to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application servers' networks.
 
 To verify that you have authorized the application server's network, navigate to the [Networking page]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) on the  CockroachDB {{ site.data.products.cloud }} Console and check if the application server network is listed under authorized networks. If the application server network is not on the list, authorize the network. 
 
@@ -82,7 +83,7 @@ Make sure connection validation and retry logic is used by your application. Val
 CockroachDB {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
-- [SClusterQL audit log export]({% link cockroachcloud/export-logs.md %})
+- [Cluster SQL audit log export]({% link cockroachcloud/export-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
 - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
@@ -118,7 +119,7 @@ CockroachDB {{ site.data.products.cloud }} supports the latest major version of 
 
 Major version upgrades are automatic for CockroachDB {{ site.data.products.serverless }} clusters and opt-in for CockroachDB {{ site.data.products.dedicated }} clusters. [Cluster Operators]({% link cockroachcloud/authorization.md %}#cluster-operator) must initiate major version upgrades for CockroachDB {{ site.data.products.dedicated }} clusters. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well. 
 
-Since upgrading a cluster can have a significant impact on your workload, make sure you review the release notes for the latest version for backward compatibility, cluster setting changes, deprecations, and known limitations. Cockroach Labs recommends initiating the upgrade during off-peak periods and monitor cluster and application health post-upgrade. If you notice functional or performance regression, you can roll back the upgrade approximately 72 hours before the upgrade is automatically finalized. Note that some new features might be unavailable until the upgrade is finalized. For more information, see [Major version upgrades]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades).
+Since upgrading a cluster can have a significant impact on your workload, make sure you review the release notes for the latest version for backward compatibility, cluster setting changes, deprecations, and known limitations. Cockroach Labs recommends initiating the upgrade during off-peak periods and monitor cluster and application health post-upgrade. If you notice functional or performance regression, you will have 72 hours to roll back the changes before the upgrade is automatically finalized. Note that some new features might be unavailable until the upgrade is finalized. For more information, see [Major version upgrades]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades).
 
 ### Patch upgrades
 
