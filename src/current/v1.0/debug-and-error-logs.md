@@ -63,7 +63,7 @@ Default File Destination | `[first `[`store`](start-a-node.html#store)` dir]/log
 Change File Destination | `--log-dir=[destination]` | `--log-dir=[destination]`
 Default Severity Level Threshold | `INFO` | *N/A*
 Change Severity Threshold | `--log-file-verbosity=[severity level]` | `--log-file-verbosity=[severity level]`
-Disabled by | `--log-dir=""`<sup>1</sup> | Default
+Disabled by | `--log-dir=`<sup>1</sup> | Default
 
 {{site.data.alerts.callout_info}}<sup>1</sup> If the <code>cockroach</code> process does not have access to on-disk storage, <code>cockroach start</code> does not write messages to log files; instead it prints all messages to <code>stderr</code>.{{site.data.alerts.end}}
 
