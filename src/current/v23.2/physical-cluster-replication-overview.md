@@ -21,7 +21,7 @@ You can use physical cluster replication in a disaster recovery plan to:
 
 - Meet your RTO (Recovery Time Objective) and RPO (Recovery Point Objective) requirements. Physical cluster replication provides lower RTO and RPO than [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}). {% comment %}link here to upcoming DR tool comparative table{% endcomment %}
 - Automatically replicate everything in your primary cluster to recover quickly from a control plane or full cluster failure.
-- Protect against region failure when you cannot use individual [multi-region clusters]({% link {{ page.version.version }}/multi-region-overview.md %}). For example, if you have a two-datacenter architecture and do not have access to three regions. Or, you need low-write latency in a single region. Physical cluster replication allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in a different region.
+- Protect against region failure when you cannot use individual [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}). For example, if you have a two-datacenter architecture and do not have access to three regions. Or, you need low-write latency in a single region. Physical cluster replication allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in a different region.
 - Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state as of a certain point in time.
 
 ## Features
@@ -110,7 +110,7 @@ To connect to the SQL shell:
 Physical cluster replication requires an {{ site.data.products.enterprise }} license on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system interface.
 {{site.data.alerts.end}}
 
-To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview-page.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).
+To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).
 
 ### Managing replication in the SQL shell
 
