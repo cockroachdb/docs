@@ -24,7 +24,7 @@ The customer is responsible for the following tasks:
 - Ensuring that the workload is distributed appropriately across the nodes of the cluster
 - Performance tuning of SQL queries and schema
 - Initiating major version upgrades and selecting maintenance windows for patch releases 
-- Taking customer-owned backups (optional)
+- (Optional) Taking customer-owned backups
 
 This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which  the customer is responsible.
 
@@ -76,20 +76,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
 
-Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
-
-## PCI ready features (Dedicated advanced)
-
-CockroachDB {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
-
-- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
-- [Cluster SQL audit log export]({% link cockroachcloud/export-logs.md %})
-- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
-- [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
-- [Network security]({% link cockroachcloud/network-authorization.md %})
-
-You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
+Set the maximum lifetime of a connection to 5 minutes, and make sure connection validation and [retry logic](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transaction-retry-error-reference) is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
 
 ## Monitoring and alerting
 
@@ -123,4 +110,19 @@ Since upgrading a cluster can have a significant impact on your workload, make s
 
 ### Patch upgrades
 
-Although patch upgrades are applied automatically, you can configure the upgrade window and defer patch upgrades for 60 days. For more information, see [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
+For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window).
+
+For more information, see [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades). 
+
+## PCI ready features (Dedicated advanced)
+
+CockroachDB {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
+
+- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
+- [Cluster SQL audit log export]({% link cockroachcloud/export-logs.md %})
+- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
+- [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
+- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
+- [Network security]({% link cockroachcloud/network-authorization.md %})
+
+You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
