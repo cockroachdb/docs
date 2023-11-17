@@ -141,6 +141,10 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. 
 
+{{site.data.alerts.callout_info}}
+If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) are set to pin range replicas to a specific region, you cannot remove that region.
+{{site.data.alerts.end}}
+
 To remove a region from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
@@ -149,6 +153,9 @@ To remove a region from your cluster:
     The **Edit cluster** page displays.
 
 1. Click the **X** button next to each region you want to remove.
+    {{site.data.alerts.callout_info}}
+    If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
+    {{site.data.alerts.end}}
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
 1. Click **Update**.
 
