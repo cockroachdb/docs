@@ -110,12 +110,6 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 {% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
 See our [support policy for restoring backups across versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
-### Review breaking changes
-
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
-
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
@@ -292,7 +286,11 @@ Once you are satisfied with the new version:
     > SHOW CLUSTER SETTING version;
     ~~~
 
-After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
 
 ## Troubleshooting
 
