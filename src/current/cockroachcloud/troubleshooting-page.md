@@ -164,7 +164,7 @@ Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonat
 
 ### Delayed cluster access
 
-To enhance security, CockroachDB {{ site.data.products.serverless }} uses authentication throttling tracked per proxy and per (client IP, serverless cluster) pair. This means if multiple login attempts fail, access is temporarily delayed, with the wait time increasing after each attempt (up to an hour). Wrong passwords, brute force attacks, or SQL proxy rollouts may activate the throttling mechanism.
+To enhance security, CockroachDB {{ site.data.products.serverless }} uses authentication throttling tracked per proxy and per (client IP, serverless cluster) pair. This means if multiple login attempts fail (due to wrong passwords or brute force attacks), access is temporarily delayed, with the wait time increasing after each attempt (up to an hour).
 
 <h4>Solution</h4>
 
