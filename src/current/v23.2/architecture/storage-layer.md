@@ -90,6 +90,10 @@ SST files are never modified during the compaction process. Instead, new SSTs ar
 
 The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
+
 ##### Inverted LSMs
 
 If the compaction process falls behind the amount of data being added, and there is more data stored at a higher level of the tree than the level below, the LSM shape can become inverted.

@@ -25,10 +25,6 @@ Both CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.dat
 
 You cannot currently edit an existing CockroachDB {{ site.data.products.serverless }} to add or remove regions after it has been created. Instead you can [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your data into a new CockroachDB {{ site.data.products.serverless }} cluster with the desired region configuration.
 
-## Follower reads
-
-[Follower reads](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/follower-reads) are not supported in CockroachDB {{ site.data.products.serverless }} clusters.
-
 ## Range management
 
 The [`ALTER TABLE ... SPLIT AT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#split-at) and [`ALTER RANGE ... RELOCATE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-range#relocate) statements are not supported in CockroachDB {{ site.data.products.serverless }}.
