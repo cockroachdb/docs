@@ -13,6 +13,10 @@ docs_area: reference.sql
 
 {% include_cached new-in.html version="v23.2" %} The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are only used as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
+{{site.data.alerts.callout_danger}}
+The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specified virtual cluster.
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
 ## Required privileges

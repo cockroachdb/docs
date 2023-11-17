@@ -1,6 +1,6 @@
 ---
 title: ALTER VIRTUAL CLUSTER
-summary: The ALTER VIRTUAL CLUSTER statement manages a physical replication stream.
+summary: The ALTER VIRTUAL CLUSTER statement manages a virtual cluster, including any related physical replication stream.
 toc: true
 docs_area: reference.sql
 ---
@@ -60,7 +60,7 @@ To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO LATEST;
+ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO {cutover time specification};
 ~~~
 
 You can use either:

@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v23.2" %} The `CREATE VIRTUAL CLUSTER` statement starts a [physical cluster replication job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}). `CREATE VIRTUAL CLUSTER` only supports starting a replication stream as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+{% include_cached new-in.html version="v23.2" %} The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only for use in [physical cluster replication jobs]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -21,7 +21,6 @@ docs_area: reference.sql
 
 - The `admin` role.
 - The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for physical cluster replication.
-- The `REPLICATION` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows a user to connect to stream data out of a virtual cluster for physical cluster replication.
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
@@ -41,7 +40,7 @@ GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 Parameter | Description
 ----------+------------
 `virtual_cluster_name` | The name for the new virtual cluster.
-`LIKE virtual_cluster_spec` | Ensures the virtual cluster on the standby is created with the correct [capabilities](#capabilities).
+`LIKE virtual_cluster_spec` | Creates a virtual cluster with the same [capabilities](#capabilities) and settings as another virtual cluster.
 `primary_virtual_cluster` | The name of the primary's virtual cluster to replicate.
 `primary_connection_string` | The PostgreSQL connection string to the primary cluster. Refer to [Connection string](#connection-string) for more detail.
 `replication_options_list`| Options to modify the replication streams. Refer to [Options](#options).
@@ -54,22 +53,23 @@ Option | Description
 
 ## Connection string
 
-When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the primary cluster:
+When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system interface on the primary cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
 ~~~
 
-To form the connection string to the primary cluster, use the following query parameters:
+To form the connection string like the example, use the following values and query parameters. Replace the placeholder values with the appropriate values:
 
-Query parameter | Description
+Value | Description
 ----------------+------------
-`replication user` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to the [Create a replication user and password]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-replication-user-and-password) for more detail.
-`password` | The replication user's password.
-`node ID or hostname` | The node IP address or hostname of any node from the primary cluster.
-`ccluster=system` | The parameter to connect to the system interface on the primary cluster.
-`primary cert` | The path to the primary cluster's certificate on the standby cluster.
+`{replication user}` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to the [Create a replication user and password]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-replication-user-and-password) for more detail.
+`{password}` | The replication user's password.
+`{node ID or hostname}` | The node IP address or hostname of any node from the primary cluster.
+`options=ccluster=system` | The parameter to connect to the system interface on the primary cluster.
+`sslmode=verify-full` | The `verify-full` secure connection type.
+`sslrootcert={primary cert}` | The path to the primary cluster's CA certificate on the standby cluster.
 
 ## Capabilities
 
