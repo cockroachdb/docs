@@ -1,6 +1,6 @@
 ---
 title: Physical Cluster Replication
-summary: Follow a tutorial to set up physical replication between a primary and standby cluster.
+summary: An overview of CockroachDB's physical cluster replication.
 toc: true
 docs_area: manage
 ---
@@ -19,18 +19,18 @@ In a disaster recovery scenario, you can [_cut over_]({% link {{ page.version.ve
 
 You can use physical cluster replication in a disaster recovery plan to:
 
-- Meet your RTO (Recovery Time Objective) and RPO (Recovery Point Objective) needs. Physical cluster replication provides lower RTO and RPO than [backup and restore](backup-and-restore-overview.html). {% comment %}link here to upcoming DR tool comparative table{% endcomment %}
+- Meet your RTO (Recovery Time Objective) and RPO (Recovery Point Objective) requirements. Physical cluster replication provides lower RTO and RPO than [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}). {% comment %}link here to upcoming DR tool comparative table{% endcomment %}
 - Automatically replicate everything in your primary cluster to recover quickly from a control plane or full cluster failure.
-- Cover different regions when you cannot use individual [multi-region clusters](multiregion-overview.html). Primary and standby clusters can exist in different regions.
-- Avoid conflicts in data after recovery because the replication completes to a transactionally consistent state as of a certain point in time.
+- Protect against region failure when you cannot use individual [multi-region clusters]({% link {{ page.version.version }}/multi-region-overview.md %}). For example, if you have a two-datacenter architecture and do not have access to three regions. Or, you need low-write latency in a single region. Physical cluster replication allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in a different region.
+- Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state as of a certain point in time.
 
 ## Features
 
-- **Asynchronous byte-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all existing user data and associated metadata (e.g., zone configurations) in the primary cluster to the standby cluster asynchronously. From then on, it will continuously replicate user data and metadata in the primary to the standby. Physical cluster replication will automatically replicate changes related to operations such as, schema changes, user and privilege modifications, and zone configuration updates without any manual work.
-- **Transactional consistency**: When you cut over to the standby, you can specify `LATEST`, a certain point of time in the past, or future. The standby cluster will be in a transactionally consistent state as of a certain point in time after the cutover process.
-- **Maintained/improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens of seconds range. The cutover process from the primary cluster to the standby should typically take 5 minutes or under when completing a cutover to the latest replicated time using `LATEST`.
-- **Cutover to a timestamp in the past**: In the case of logical disasters or mistakes, you can cut over from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the `WITH RETENTION` option to control how far in the past you can cut over to. {% comment %}link retention option here{% endcomment %}
-- **Monitoring**: To monitor the replication progress, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+- **Asynchronous byte-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all existing user data and associated metadata (e.g., zone configurations) in the primary cluster to the standby cluster asynchronously. From then on, it will continuously replicate user data and metadata in the primary to the standby. Physical cluster replication will automatically replicate changes related to operations such as schema changes, user and privilege modifications, and zone configuration updates without any manual work.
+- **Transactional consistency**: When you cut over to the standby, you can specify `LATEST`, a certain point of time in the past, or future. The standby cluster will be in a transactionally consistent state as of the point in time you specify after the cutover process completes.
+- **Maintained/improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The cutover process from the primary cluster to the standby should typically happen within five minutes when completing a cutover to the latest replicated time using `LATEST`.
+- **Cutover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the `WITH RETENTION` option to control how far in the past you can cut over to. Furthermore, you can plan a cutover by specifying a timestamp in the future. {% comment %}link retention option here{% endcomment %}
+- **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
 {% comment %}-**Data verification on standby**: You can verify that the data on the standby cluster matches that on the primary by checking the fingerprint of the data on the primary to compare to the standby. We recommend running data verification checks regularly as part of your monitoring processes. Refer to the [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) page for a guide and considerations on data verification.{% endcomment %}
 
@@ -40,10 +40,10 @@ You can use physical cluster replication in a disaster recovery plan to:
 
 ## Limitations
 
-- Physical cluster replication is only supported on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
+- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
 - Read queries are not supported on the standby cluster before cutover. {% comment %}To verify the data, use new fingerprint feature{% endcomment %}
-- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, a single-region primary cluster to a multi-region standby cluster. Or, mismatching regions between a multi-region primary and standby cluster.
-- Cutting back to the primary cluster after a cutover is a manual process. Refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster).
+- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a single-region primary cluster to a multi-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
+- Cutting back to the primary cluster after a cutover is a manual process. Refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster). In addition, after cutover, to continue using physical cluster replication, you must configure it again.
 - Before cutover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 - After a cutover, there is no mechanism to stop applications from connecting to the original primary. It is necessary to move over application traffic manually.
 
@@ -75,7 +75,10 @@ The passive standby cluster that will ingest the replicated data:
 cockroach start ... --config-profile replication-target
 ~~~
 
-The node topology of the two clusters does not need to be the same. For example, you can provision the standby cluster with fewer nodes. Though it is important to consider that during a failover scenario the standby will need to handle the full production load. {% comment %}this should be in an include file and also added to the main tutorial{% endcomment %} However, the clusters cannot have different region topologies (refer to  [Limitations](#limitations)).
+The node topology of the two clusters does not need to be the same. For example, you can provision the standby cluster with fewer nodes. However, keep the following in mind:
+
+- The standby cluster requires enough storage to contain the primary cluster's data.
+- During a failover scenario, the standby will need to handle the full production load. {% comment %}this should be in an include file and also added to the main tutorial{% endcomment %} However, the clusters cannot have different region topologies (refer to  [Limitations](#limitations)).
 
 {{site.data.alerts.callout_info}}
 Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully.
@@ -83,7 +86,7 @@ Every node in the standby cluster must be able to make a network connection to e
 
 ### Connecting to the system interface and virtual cluster
 
-For physical cluster replication each cluster is enabled as a virtualized cluster, the primary and standby both contain:
+For physical cluster replication each cluster is enabled as a virtualized cluster, the primary and standby each contain:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
@@ -106,6 +109,8 @@ To connect to the SQL shell:
 {{site.data.alerts.callout_info}}
 Physical cluster replication requires an {{ site.data.products.enterprise }} license on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system interface.
 {{site.data.alerts.end}}
+
+To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview-page.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).
 
 ### Managing replication in the SQL shell
 
