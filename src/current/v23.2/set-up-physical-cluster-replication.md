@@ -28,7 +28,7 @@ The high-level steps in this tutorial are:
 1. Configure and create a user on the primary cluster.
 1. Create and start the standby cluster.
 1. Configure and create a user on the standby cluster.
-1. Verify certificates.
+1. Securely copy certificates.
 1. Start the replication stream from the standby cluster.
 
 ## Before you begin
