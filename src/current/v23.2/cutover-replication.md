@@ -145,10 +145,10 @@ A future cutover will proceed once the replicated data has reached the specified
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING server.controller.default_target_cluster='standbyapplication'
+    SET CLUSTER SETTING server.controller.default_target_cluster='standbyapplication';
     ~~~
 
-At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers to direct application traffic to the standby (now primary). To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Cut back to the primary cluster
 
