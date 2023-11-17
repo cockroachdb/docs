@@ -133,7 +133,7 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
     If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
 
-1. In the Regions & Nodes section, select the desired new region and specify the number of nodes for it.
+1. In the **Regions & Nodes** section, select the desired new region and specify the number of nodes for it.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
 1. Click **Update**.
 
