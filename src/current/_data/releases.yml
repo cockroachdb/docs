@@ -4936,15 +4936,15 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.1
 
@@ -4963,15 +4963,15 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.2
 
@@ -4990,15 +4990,15 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.3
 
@@ -5044,18 +5044,18 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.4
-  
+
 - release_name: v23.1.12
   major_version: v23.1
   release_date: '2023-11-13'
@@ -5125,15 +5125,15 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.5
 
@@ -5179,14 +5179,14 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: false
+    linux_arm_experimental: true
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: true
+    docker_arm_experimental: true
+    docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.6
