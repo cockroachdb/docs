@@ -24,7 +24,7 @@ The following define the categories of non-retryable errors:
 - The changefeed cannot convert the data to the specified [output format]({% link {{ page.version.version }}/changefeed-messages.md %}). For example, there are [Avro]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) types that changefeeds do not support, or a [CDC query]({% link {{ page.version.version }}/cdc-queries.md %}) is using an unsupported or malformed expression.
 - The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option]({% link {{ page.version.version }}/create-changefeed.md %}#schema-policy) and a schema change happens.
 
-We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
+We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on how changefeeds interact with [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
 
 ## Monitor a changefeed
 
@@ -63,7 +63,7 @@ If you are running more than 10 changefeeds, we recommend monitoring the CPU usa
 
 #### Protected timestamp and garbage collection monitoring
 
-[Protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for detail on when changefeed data is protected from garbage collection.
+[Protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. Refer to [Protect Changefeed Data from Garbage Collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for detail on when changefeed data is protected from garbage collection.
 
 {% include {{ page.version.version }}/cdc/pts-gc-monitoring.md %}
 

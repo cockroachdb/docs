@@ -380,7 +380,7 @@ The changefeed will return messages for the specified rows:
 {"city": "washington dc", "lat": 83, "long": 84, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:38.026542"}
 ~~~
 
-The output will only include the row's history that has been changed within the [garbage collection window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). If the change occurred outside of the garbage collection window, it will not be returned as part of this output. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for more detail on how the garbage collection window interacts with changefeeds.
+The output will only include the row's history that has been changed within the [garbage collection window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). If the change occurred outside of the garbage collection window, it will not be returned as part of this output. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on how the garbage collection window interacts with changefeeds.
 
 ### Customize changefeed messages
 
