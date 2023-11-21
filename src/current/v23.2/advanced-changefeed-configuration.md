@@ -78,7 +78,7 @@ When designing a system that relies on high durability message delivery—that i
 - [Choosing changefeed sinks](#choosing-changefeed-sinks)
 - [Defining schema change behavior](#defining-schema-change-behavior)
 
-Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
+Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees).
 
 ### Pausing changefeeds and garbage collection
 
@@ -104,7 +104,7 @@ To balance protecting change data and prevent the over-accumulation of garbage, 
 
 ### Defining Kafka message acknowledgment
 
-To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
+To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
 
 For high durability delivery, Cockroach Labs recommends setting:
 
