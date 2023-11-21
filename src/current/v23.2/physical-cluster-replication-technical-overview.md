@@ -17,7 +17,12 @@ This separation of concerns means that the replication stream can operate withou
 
 ### Replication stream start-up sequence
 
-Starting a physical replication stream consists of two jobs: one on the primary and one on the standby. The job on the standby cluster communicates with the primary cluster via an ordinary SQL connection and is responsible for initiating the replication stream. The stream initialization proceeds as follows:
+Starting a physical replication stream consists of two jobs: one on the primary and one on the standby.
+
+- Standby consumer job: Communicates with the primary cluster via an ordinary SQL connection and is responsible for initiating the replication stream. The consumer job ingests updates from the primary cluster producer job.
+- Primary producer job: Protects data on the primary cluster and sends updates to the standby cluster.
+
+The stream initialization proceeds as follows:
 
 1. The standby's consumer job connects via its system interface to the primary cluster and starts the primary cluster's physical stream producer job.
 1. The primary cluster chooses a timestamp at which to start the physical replication stream. Data on the primary is protected from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until it is replicated to the standby using a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
