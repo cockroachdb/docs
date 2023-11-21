@@ -61,7 +61,7 @@ Follow these additional recommendations optimize the performance of your connect
 
 ### Avoid spikes in new connections
 
-If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection lifetime "jitter," where the wait time between new connections is randomized. Using a connection jitter of 10% of the maximum connection lifetime smooths out the rate of new connections to a cluster. For example, for a maximum connection lifetime of 300 seconds, set the connection jitter to 30 seconds.
+If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection lifetime "jitter," where the wait time between new connections is randomized. Using a connection jitter of 10% of the maximum connection lifetime smooths out the rate of new connections to a cluster. For example, for a maximum connection lifetime of 1800 seconds (30 minutes), set the connection jitter to 500 seconds (3 minutes).
 
 ### Validate connections in a pool
 
@@ -114,8 +114,6 @@ Use the following formula to size the connection pool:
 **connections = (number of cores * 4)**
 
 If you have a large number of services connecting to the same cluster, make sure the number of concurrent active connections across all the services does not exceed this recommendation. If each service has its own connection pool, then you should make sure the sum of all the pool sizes is close to our maximum connections recommendation.
-
-Set the maximum connection lifetime value to 300 seconds, or 5 minutes. Do not set the connection pool lifetime values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the new connections on your cluster](#monitor-new-connections) to make sure the connection pool is configured correctly.
 
 For multi-region clusters, create a connection pool per region, and size the maximum connection pool for each region in your cluster using the same formula as a single-region cluster.
 
