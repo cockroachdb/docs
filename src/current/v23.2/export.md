@@ -71,7 +71,7 @@ You can specify the base directory where you want to store the exported files. C
 
 The `EXPORT` command [returns](#success-responses) the list of files to which the data was exported. You may wish to record these for use in subsequent imports.
 
-If an export encounters some kind of failure or [cancelation](#cancel-a-running-export), it will leave any written files behind in the destination. To run a new export and avoid collision with previously written export files, consider doing the following:
+If an export encounters some kind of failure or [cancellation](#cancel-a-running-export), it will leave any written files behind in the destination. To run a new export and avoid collision with previously written export files, consider doing the following:
 
 - Change the destination (or destination prefix) that you are exporting to.
 - Remove the partial results at the destination from any previously attempted exports.
