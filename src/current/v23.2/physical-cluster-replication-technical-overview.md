@@ -9,13 +9,13 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} Physical cluster replication uses two clusters with _cluster virtualization_ enabled to stream data from an active primary cluster to a passive standby cluster. Each cluster contains: a _system interface_ and an application _virtual cluster_: {% comment %}Link to Matt's work here on general cluster virtualization reference{% endcomment %}
+{% include_cached new-in.html version="v23.2" %} Physical cluster replication automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system interface_ and an application _virtual cluster_:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
 This separation of concerns means that the replication stream can operate without affecting work happening in the virtual cluster.
 
-### Start the replication stream
+### Replication stream start-up sequence
 
 Starting a physical replication stream consists of two jobs: one on the primary and one on the standby. The job on the standby cluster communicates with the primary cluster via an ordinary SQL connection and is responsible for initiating the replication stream. The stream initialization proceeds as follows:
 
