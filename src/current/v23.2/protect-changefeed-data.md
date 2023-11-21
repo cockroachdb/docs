@@ -18,7 +18,7 @@ However, if the changefeed lags too far behind, the protected changes could lead
 
 To prevent an accumulation of protected changes that could impact performance, consider defining an expiration duration:
 
-- [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age): a [cluster setting](versionedlink) to define a protected timestamp expiration for all changefeeds on a cluster.
+- [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age): a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to define a protected timestamp expiration for all changefeeds on a cluster.
 - [`gc_protect_expires_after`](#gc_protect_expires_after): a [changefeed option]({% link {{ page.version.version }}/create-changefeed.md %}#options) to define a protected timestamp expiration for a changefeed.
 
 In general, a few hours to a few days are appropriate values for these settings. A lower protected timestamp expiration should not have adverse effects on your changefeed as long as the changefeed is running. However, if the changefeed pauses, you will need to [resume]({% link {{ page.version.version }}/resume-job.md %}) it before the defined expiration time. The value of this setting should reflect how much time the changefeed may remain paused before it is canceled.
