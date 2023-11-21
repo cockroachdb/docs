@@ -21,7 +21,7 @@ To prevent an accumulation of protected changes that could impact performance, c
 - [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age): a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to define a protected timestamp expiration for all changefeeds on a cluster.
 - [`gc_protect_expires_after`](#gc_protect_expires_after): a [changefeed option]({% link {{ page.version.version }}/create-changefeed.md %}#options) to define a protected timestamp expiration for a changefeed.
 
-In general, a few hours to a few days are appropriate values for these settings. A lower protected timestamp expiration should not have adverse effects on your changefeed as long as the changefeed is running. However, if the changefeed pauses, you will need to [resume]({% link {{ page.version.version }}/resume-job.md %}) it before the defined expiration time. The value of this setting should reflect how much time the changefeed may remain paused before it is canceled.
+In general, a few hours to a few days are appropriate values for these settings. A lower protected timestamp expiration should not have adverse effects on your changefeed as long as the changefeed is running. However, if the changefeed pauses, you will need to [resume]({% link {{ page.version.version }}/resume-job.md %}) it before the defined expiration time. The value of either `changefeed.protect_timestamp.max_age` or `gc_protect_expires_after` should reflect how much time the changefeed may remain paused before it is canceled.
 
 ### `changefeed.protect_timestamp.max_age`
 
@@ -39,7 +39,7 @@ SET CLUSTER SETTING changefeed.protect_timestamp.max_age = '120h';
 {{site.data.alerts.callout_info}}
 `changefeed.protect_timestamp.max_age` applies only to **newly created changefeeds in v23.2**.
 
-If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), we recommend setting `protect_data_from_gc_on_pause` on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
+If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), we recommend setting [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
 {{site.data.alerts.end}}
 
 ### `gc_protect_expires_after`
