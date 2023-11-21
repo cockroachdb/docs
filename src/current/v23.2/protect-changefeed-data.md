@@ -16,16 +16,18 @@ However, if the changefeed lags too far behind, the protected changes could lead
 
 ## Prevent garbage accumulation
 
-To prevent an accumulation of protected changes that could impact performance, consider the following:
+To prevent an accumulation of protected changes that could impact performance, consider defining an expiration duration:
 
-- [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age)
-- [`gc_protect_expires_after`](#gc_protect_expires_after)
+- [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age): a [cluster setting](versionedlink) to define a protected timestamp expiration for all changefeeds on a cluster.
+- [`gc_protect_expires_after`](#gc_protect_expires_after): a [changefeed option]({% link {{ page.version.version }}/create-changefeed.md %}#options) to define a protected timestamp expiration for a changefeed.
+
+In general, a few hours to a few days are appropriate values for these settings. A lower protected timestamp expiration should not have adverse effects on your changefeed as long as the changefeed is running. However, if the changefeed pauses, you will need to [resume]({% link {{ page.version.version }}/resume-job.md %}) it before the defined expiration time. The value of this setting should reflect how much time the changefeed may remain paused before it is canceled.
 
 ### `changefeed.protect_timestamp.max_age`
 
 {% include_cached new-in.html version="v23.2" %} By default, the `changefeed.protect_timestamp.max_age` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) sets the maximum time that changefeeds making no forward progress will hold protected timestamp records. Once the `changefeed.protect_timestamp.max_age` duration is reached, the changefeed will fail with a permanent error. As a result, it is **critical to monitor for changefeed failures** because changefeeds will eventually fail with an unrecoverable error if they cannot progress before the duration is reached.
 
-This cluster setting is enabled by default to 4 days.
+This cluster setting is enabled by default to 4 days. To disable expiration of protected timestamp records, you can set `changefeed.protect_timestamp.max_age` to `0`; however, Cockroach Labs recommends implementing an expiration.
 
 `changefeed.protect_timestamp.max_age` is a cluster-wide setting affecting all changefeeds.
 
@@ -37,7 +39,7 @@ SET CLUSTER SETTING changefeed.protect_timestamp.max_age = '120h';
 {{site.data.alerts.callout_info}}
 `changefeed.protect_timestamp.max_age` applies only to **newly created changefeeds in v23.2**.
 
-If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), it is necessary to set `protect_data_from_gc_on_pause` on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
+If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), we recommend setting `protect_data_from_gc_on_pause` on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
 {{site.data.alerts.end}}
 
 ### `gc_protect_expires_after`
@@ -51,7 +53,7 @@ For example:
 CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', gc_protect_expires_after='24h';
 ~~~
 
-If this changefeed runs into a retryable error, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed has not resumed, the protected timestamp records will expire and the changefeed job will be canceled to prevent accumulation of garbage.
+If this changefeed runs into a retryable error, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed has not made any progress in the past 24 hours, the protected timestamp records will expire and the changefeed job will be canceled to prevent accumulation of garbage.
 
 `gc_protect_expires_after` is an option applied to a single changefeed. To enable an expiration for protected timestamp records across changefeeds on the cluster, use the [`changefeed.protect_timestamp.max_age`](#changefeed-protect_timestamp-max_age) cluster setting.
 
