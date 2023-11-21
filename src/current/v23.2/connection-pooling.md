@@ -69,16 +69,6 @@ After a connection pool initializes connections to CockroachDB clusters, those c
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the [`keepaliveTime` property](https://github.com/brettwooldridge/HikariCP#frequently-used) allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
 
-#### Implement connection retry logic in your application
-
-To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. For details, see [Connection retry loop]({% link {{ page.version.version }}/node-shutdown.md %}#connection-retry-loop).
-
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
-
-If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#server-shutdown-connection_wait).
-
-</section>
-
 ## Size connection pools
 
 <div class="filters clearfix">
