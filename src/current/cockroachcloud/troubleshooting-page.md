@@ -168,7 +168,7 @@ To enhance security, CockroachDB {{ site.data.products.serverless }} uses authen
 
 <h4>Solution</h4>
 
-If you are experiencing persistent access issues, ensure password configurations are correct or [contact support](https://support.cockroachlabs.com/).
+If you are experiencing access issues, ensure that the password is correct. If the problem persists, [contact support](https://support.cockroachlabs.com/).
 
 ### Hanging or stuck queries
 
