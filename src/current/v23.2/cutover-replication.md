@@ -159,12 +159,8 @@ For example, if you had [set up physical cluster replication]({% link {{ page.ve
 1. Drop the application virtual cluster from the cluster A with `DROP VIRTUAL CLUSTER`. {% comment %}link here{% endcomment %}
 1. Start a replication stream that sends updates from cluster B to cluster A. Refer to [Start replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication).
 
-
-{% comment %}
-
 ## See also
 
-- [Physical Cluster Replication Overview](physical-replication-overview)
-- Technical overview
+- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-replication-overview.md %})
+- [Physical Cluster Replication Technical overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %})
 
-{% endcomment %}
