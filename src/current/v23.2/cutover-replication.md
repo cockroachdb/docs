@@ -104,6 +104,10 @@ ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO SYSTEM TIME '+5
 
 A future cutover will proceed once the replicated data has reached the specified time.
 
+{{site.data.alerts.callout_info}}
+To monitor for when the replication stream completes, run [`SHOW JOB WHEN COMPLETE job_id`]({% link {{ page.version.version }}/show-jobs.md %}#parameters). Use `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` to find the replication stream's `replication_job_id`, which you can pass to `SHOW JOBS` as the `job_id`.
+{{site.data.alerts.end}}
+
 ## Step 2. Complete the cutover
 
 1. The completion of the replication is asynchronous; to monitor its progress use:
@@ -161,6 +165,6 @@ For example, if you had [set up physical cluster replication]({% link {{ page.ve
 
 ## See also
 
-- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-replication-overview.md %})
+- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
 - [Physical Cluster Replication Technical overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %})
 
