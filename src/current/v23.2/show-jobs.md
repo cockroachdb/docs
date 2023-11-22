@@ -103,7 +103,7 @@ Status | Description
 `revert-failed` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 
 {{site.data.alerts.callout_info}}
-We recommend monitoring paused jobs to protect historical data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection), or potential data accumulation in the case of [changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds). See [Monitoring paused jobs]({% link {{ page.version.version }}/pause-job.md %}#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
+We recommend monitoring paused jobs to protect historical data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection), or potential data accumulation in the case of [changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}). See [Monitoring paused jobs]({% link {{ page.version.version }}/pause-job.md %}#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
 {{site.data.alerts.end}}
 
 ## Examples

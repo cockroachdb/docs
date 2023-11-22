@@ -17,7 +17,6 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
 - [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
-- [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Message formats](#message-formats): The limitations and type mapping when creating a changefeed with different message formats.
 
 {{site.data.alerts.callout_info}}
@@ -407,37 +406,6 @@ Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 {{site.data.alerts.end}}
-
-## Garbage collection and changefeeds
-
-By default, [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) up to the time of the [_checkpoint_]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
-
-Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
-
-- The downstream [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) is unavailable. Protected timestamps will protect changes until you either [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed or the sink becomes available once again.
-- You [pause]({% link {{ page.version.version }}/pause-job.md %}) a changefeed with the [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors). Protected timestamps will protect changes until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
-
-However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
-
-- [Cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed job.
-- [Resume]({% link {{ page.version.version }}/resume-job.md %}) a paused changefeed job.
-- Set the [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
-
-    For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', protect_data_from_gc_on_pause, gc_protect_expires_after='24h';
-    ~~~
-
-We recommend [monitoring]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
-
-When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record. As a result, you could lose the changes if the changefeed remains paused longer than the [garbage collection]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) window.
-
-The only ways for changefeeds to **not** protect data are:
-
-- You pause the changefeed without `protect_data_from_gc_on_pause` set.
-- You cancel the changefeed.
-- The changefeed fails without [`on_error=pause`]({% link {{ page.version.version }}/create-changefeed.md %}#on-error) set.
 
 ## Message formats
 

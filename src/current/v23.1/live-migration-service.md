@@ -458,13 +458,17 @@ export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"
 
 The `molt-lms-cli` command-line interface is used to inspect the LMS instances and [perform cutover](#perform-a-cutover).
 
-To install `molt-lms-cli`, download the binary that matches your system:
+To install `molt-lms-cli`, download the binary that matches your system. To download the latest binary:
 
-| Operating System |                                       AMD 64-bit                                      |                                       ARM 64-bit                                      |
-|------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| Windows          | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.windows-amd64.tgz) | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.windows-arm64.tgz) |
-| Linux            | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.linux-arm64.tgz)   |
-| Mac              | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-0.1.0.darwin-arm64.tgz)  |
+| Operating System |                                       AMD 64-bit                                       |                                       ARM 64-bit                                       |
+|------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| Windows          | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.windows-amd64.tgz) | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.windows-arm64.tgz) |
+| Linux            | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.linux-arm64.tgz)   |
+| Mac              | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.darwin-arm64.tgz)  |
+
+{{site.data.alerts.callout_success}}
+For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/lms/cli/versions.html).
+{{site.data.alerts.end}}
 
 ### Commands
 

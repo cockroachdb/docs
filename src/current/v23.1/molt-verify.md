@@ -31,12 +31,21 @@ The following databases are currently supported:
 
 ## Install and run MOLT Verify
 
-1. [Download the binary](https://github.com/cockroachdb/molt/releases/) that matches your system:
-  - For Mac: `molt.darwin.amd64` for Intel or `molt.darwin.arm64` for ARM
-  - For Windows: `molt.amd64.exe`
-  - For Linux: `molt.linux.amd64`
+To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 
-    Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
+| Operating System |                                    AMD 64-bit                                   |                                    ARM 64-bit                                   |
+|------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Windows          | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz) | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz) |
+| Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
+| Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
+
+{{site.data.alerts.callout_success}}
+For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
+{{site.data.alerts.end}}
+
+To set up MOLT Verify:
+
+1. Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
 1. Get the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
 1. Run MOLT Verify: 
