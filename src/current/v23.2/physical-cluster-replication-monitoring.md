@@ -25,7 +25,7 @@ In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH
  SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
 ~~~
 
-Refer to the [Responses](#responses) for a description of each field.
+Refer to [Responses](#responses) for a description of each field.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -119,7 +119,7 @@ We recommend tracking the following metrics:
 
 - `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
 - `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
-- `physical_replication.frontier_lag_nanos`: The time between the actual time (now) and `replicated_time`` of the replication stream. That is, this metric tracks how far behind the replication stream is relative to now.
+- `physical_replication.frontier_lag_nanos`: The time between the actual time (now) and `replicated_time` of the replication stream. That is, this metric tracks how far behind the replication stream is relative to now.
 
 ## See also
 

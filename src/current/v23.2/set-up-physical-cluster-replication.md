@@ -11,12 +11,12 @@ docs_area: manage
 
 {% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up physical cluster replication between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
-The unit of replication is a _virtual cluster_, {% comment %}link to Matt's CV docs{% endcomment %} which is part of the underlying infrastructure in the primary and standby clusters.
+The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters.
 
 In this tutorial, you will connect to:
 
 - The _system interface_ for administration tasks in both clusters, and starting the replication stream from the standby cluster.
-- The application _virtual cluster_ on the primary to work with databases, tables, workloads, and so on.
+- The application _virtual cluster_ on the primary cluster to work with databases, tables, workloads, and so on.
 
 ## Overview
 
@@ -37,7 +37,7 @@ The high-level steps in this tutorial are:
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary cluster](#start-the-primary-cluster) and for the [standby cluster](#start-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
-- An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby to enable your {{ site.data.products.enterprise }} license.
+- An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
 
 ## Step 1. Create the primary cluster
 
