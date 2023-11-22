@@ -37,7 +37,7 @@ These are Cockroach Labs recommendations for settings common to most connection 
 
 ### Set the maximum lifetime of connections
 
-The maximum lifetime of a connection should be set to between 5 and 30 minutes. 30 minutes is the maximum supported connection lifetime supported by {{ site.data.products.dedicated }} and {{ site.data.products.serverless }}, and client connections are likely to be reset after 30 minutes, causing a disruption to applications.
+The maximum lifetime of a connection should be set to between 5 and 30 minutes. 30 minutes is the maximum supported connection lifetime supported by {{ site.data.products.dedicated }} and {{ site.data.products.serverless }}. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
 Cockroach Labs recommends starting with a 5 minute maximum connection lifetime and increasing the connection lifetime if there is an impact on tail latency, normally seen when there are large numbers of connections to a cluster. Setting the connection lifetime below 5 minutes is possible, but there is little benefit, and comes at a cost of increased CPU usage for clients and servers. The maximum connection lifetime changes the [rate of new connections per second](#monitor-new-connections) (i.e., average new connections per second = total connections / maximum connection age).
 
