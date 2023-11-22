@@ -530,66 +530,94 @@
                ]
           },
           {
-            "title": "Backups and Restores",
+            "title": "Disaster Recovery",
             "items": [
               {
-                "title": "Overview",
-                "urls": [
+                "title": "Backups and Restores",
+                "items": [
+                  {
+                    "titles": "Overview",
+                    "urls": [
                       "/${VERSION}/backup-and-restore-overview.html"
                     ]
-              },
-              {
-                "title": "Full and Incremental Backups",
-                "urls": [
-                  "/${VERSION}/take-full-and-incremental-backups.html"
+                  },
+                  {
+                    "title": "Full and Incremental Backups",
+                    "urls": [
+                      "/${VERSION}/take-full-and-incremental-backups.html"
+                    ]
+                  },
+                  {
+                    "title": "Backups with Revision History and Point-in-time Restore",
+                    "urls": [
+                      "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+                    ]
+                  },
+                  {
+                    "title": "Encrypted Backup and Restore",
+                    "urls": [
+                      "/${VERSION}/take-and-restore-encrypted-backups.html"
+                    ]
+                  },
+                  {
+                    "title": "Locality-restricted Backup Execution",
+                    "urls": [
+                      "/${VERSION}/take-locality-restricted-backups.html"
+                    ]
+                  },
+                  {
+                    "title": "Locality-aware Backup and Restore",
+                    "urls": [
+                      "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                    ]
+                  },
+                  {
+                    "title": "Scheduled Backups",
+                    "urls": [
+                      "/${VERSION}/manage-a-backup-schedule.html"
+                    ]
+                  },
+                  {
+                    "title": "Backup Validation",
+                    "urls": [
+                      "/${VERSION}/backup-validation.html"
+                    ]
+                  },
+                  {
+                    "title": "Expire Past Backups",
+                    "urls": [
+                      "/${VERSION}/expire-past-backups.html"
+                    ]
+                  },
+                  {
+                    "title": "Backup and Restore Monitoring",
+                    "urls": [
+                      "/${VERSION}/backup-and-restore-monitoring.html"
+                    ]
+                  }
                 ]
               },
               {
-                "title": "Backups with Revision History and Point-in-time Restore",
-                "urls": [
-                  "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
-                ]
-              },
-              {
-                "title": "Encrypted Backup and Restore",
-                "urls": [
-                  "/${VERSION}/take-and-restore-encrypted-backups.html"
-                ]
-              },
-              {
-                "title": "Locality-restricted Backup Execution",
-                "urls": [
-                  "/${VERSION}/take-locality-restricted-backups.html"
-                ]
-              },
-              {
-                "title": "Locality-aware Backup and Restore",
-                "urls": [
-                  "/${VERSION}/take-and-restore-locality-aware-backups.html"
-                ]
-              },
-              {
-                "title": "Scheduled Backups",
-                "urls": [
-                  "/${VERSION}/manage-a-backup-schedule.html"
-                ]
-              },
-              {
-                "title": "Backup Validation",
-                "urls": [
-                  "/${VERSION}/backup-validation.html"
-                ]
-              },
-              {
-                "title": "Expire Past Backups",
-                "urls": [
-                  "/${VERSION}/expire-past-backups.html"
-                ]
-              },
-              {
-                "title": "Backup and Restore Monitoring",
-                "urls": [
-                  "/${VERSION}/backup-and-restore-monitoring.html"
+                "title": "Physical Cluster Replication",
+                "items": [
+                  {
+                    "title": "Set Up Physical Cluster Replication",
+                    "urls": [
+                      "/${VERSION}/set-up-physical-cluster-replication.html"
+                    ]
+                  },
+                  {
+                    "title": "Cut Over from a Primary to a Standby Cluster",
+                    "urls": [
+                      "/${VERSION}/cutover-replication.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor a Replication Stream",
+                    "urls": [
+                      "/${VERSION}/physical-cluster-replication-monitoring.html"
+                    ]
+                  }
                 ]
               }
             ]
