@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up physical cluster replication between a primary cluster and standby cluster. The primary is _active_, serving application traffic. The standby is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up physical cluster replication between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a _virtual cluster_, {% comment %}link to Matt's CV docs{% endcomment %} which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -17,8 +17,6 @@ In this tutorial, you will connect to:
 
 - The _system interface_ for administration tasks in both clusters, and starting the replication stream from the standby cluster.
 - The application _virtual cluster_ on the primary to work with databases, tables, workloads, and so on.
-
-{% include {{ page.version.version }}/physical-replication/reference-links-replication.md %}
 
 ## Overview
 
@@ -35,10 +33,10 @@ The high-level steps in this tutorial are:
 
 {% include enterprise-feature.md %}
 
-- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each using the same CockroachDB {{page.version.version}} version.
-    - To set up each cluster, you can follow the [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary](#start-the-primary-cluster) and for the [standby](#start-the-standby-cluster) cluster to do this.
+- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version.
+    - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary cluster](#start-the-primary-cluster) and for the [standby cluster](#start-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
-- All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Verify certificates](#step-3-copy-certificates).
+- All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
 - An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby to enable your {{ site.data.products.enterprise }} license.
 
 ## Step 1. Create the primary cluster
@@ -83,10 +81,10 @@ Connect to your primary cluster's system interface using [`cockroach sql`]({% li
     --certs-dir "certs"
     ~~~
 
-    You will find that the prompt will include `system` when you have successfully connected.
+    The prompt will include `system` when you are connected to the system interface.
 
     {{site.data.alerts.callout_info}}
-    You should only use the system interface for administration. To work with databases, tables, or workloads, use the application virtual cluster{% comment %}({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}){% endcomment %}.
+    You should only connect to the system interface for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
     {{site.data.alerts.end}}
 
 1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
@@ -148,8 +146,10 @@ The standby cluster connects to the primary cluster's system interface using an 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload init movr "postgresql://root@{node IP or hostname}:{26257}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
+
+    Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-address`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
 
     {% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:
     - `options=-ccluster=application`
@@ -167,7 +167,7 @@ The standby cluster connects to the primary cluster's system interface using an 
     cockroach workload run movr --duration=5m "postgresql://root@{node IP or hostname}:{26257}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
-1. To connect to the primary's application virtual cluster, use the `ccluster=application` parameter:
+1. To connect to the primary cluster's application virtual cluster, use the `ccluster=application` parameter:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -176,9 +176,9 @@ The standby cluster connects to the primary cluster's system interface using an 
     --certs-dir "certs"
     ~~~
 
-    Your prompt will include `application` when you have successfully connected.
+    The prompt will include `application` when you are connected to the application virtual cluster.
 
-1. Create a user for your primary's application cluster:
+1. Create a user for your primary cluster's application virtual cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -191,7 +191,7 @@ The standby cluster connects to the primary cluster's system interface using an 
 
 ### Start the standby cluster
 
-Similarly to the primary cluster, it is necessary to start each node with the `--config-profile` flag and a `replication-target` for the standby cluster. This creates a _virtualized cluster_ with a system interface, and sets up all the required configuration for starting a replication stream.
+Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
 
 To start the standby cluster, run:
 
@@ -229,7 +229,7 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
     --certs-dir "certs"
     ~~~
 
-    You will find that the prompt will include `system` when you have successfully connected.
+    The prompt will include `system` when you are connected to the system interface.
 
 1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
 
@@ -283,7 +283,7 @@ If you would like to access the DB Console to observe your replication, you will
 
 ## Step 3. Copy certificates
 
-At this point, you have a primary and a standby cluster running. The next step is to verify that the clusters can communicate. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
+At this point, the primary and standby clusters are both running. The next step allows the standby cluster to connect to the primary cluster and begin ingesting its data. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
 
 {{site.data.alerts.callout_danger}}
 It is important to carefully manage the exchange of CA certificates between clusters if you have generated self-signed certificates with `cockroach cert` as part of the [prerequisite deployment tutorial]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}).
@@ -372,7 +372,7 @@ The system interface in the standby cluster initiates and controls the replicati
 
 ## Connection reference
 
-The following table outlines the connection strings you will need for this setup tutorial.
+This table outlines the connection strings you will need for this setup tutorial.
 
 For additional detail on the standard CockroachDB connection parameters, refer to [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
 

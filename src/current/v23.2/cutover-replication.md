@@ -20,15 +20,11 @@ The cutover is a two-step process on the standby cluster:
 Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. However, the cutover process does **not** automatically redirect traffic to the standby cluster. Once the cutover is complete, you must redirect application traffic to the standby (new) cluster. If you do not manually redirect traffic, writes to the primary (original) cluster may be lost.
 {{site.data.alerts.end}}
 
-After a cutover, you may want to _cut back_ to the original primary cluster. That is, set up the original primary cluster to once again accept application traffic. This requires you to undertake another a full replication stream in the opposite direction from standby to primary. For more detail, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
-
-{% comment %}This page describes how to cut over from the primary to the standby cluster, for information on how replication works, refer to:{% endcomment %}
-
-{% include {{ page.version.version }}/physical-replication/reference-links-replication.md %}
+After a cutover, you may want to _cut back_ to the original primary cluster. That is, set up the original primary cluster to once again accept application traffic. This requires you to configure another full replication stream in the opposite direction from the original standby (now primary) to the original primary. For more detail, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Step 1. Initiate the cutover
 
-To initiate a cutover to the standby cluster, there are different ways of specifying the point in time for the standby's promotion. Refer to the following sections for steps:
+To initiate a cutover to the standby cluster, there are different ways of specifying the point in time for the standby's promotion. That is, the standby cluster's live data at the point of cutover. Refer to the following sections for steps:
 
 - [`LATEST`](#cut-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
 - [Point-in-time](#cut-over-to-a-point-in-time):
@@ -123,7 +119,7 @@ A future cutover will proceed once the replicated data has reached the specified
     (1 row)
     ~~~
 
-    Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more  detail.
+    Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for the [Responses]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}#responses) and [Data state]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}#data-state) of `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` fields.
 
 1. Once complete, bring the standby's virtual cluster online with:
 

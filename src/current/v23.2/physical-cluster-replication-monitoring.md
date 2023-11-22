@@ -15,12 +15,6 @@ docs_area: manage
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
 
-{% comment %}Add data verification on standby here?{% endcomment %}
-
-{% comment %}This page describes the available monitoring for physical cluster replication, for information on how replication works, refer to:{% endcomment %}
-
-{% include {{ page.version.version }}/physical-replication/reference-links-replication.md %}
-
 ## SQL Shell
 
 In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` for detail on status and timestamps for planning [cutover]({% link {{ page.version.version }}/cutover-replication.md %}):
@@ -56,8 +50,6 @@ Field    | Response
 `retained_time` | The earliest timestamp at which the standby cluster has consistent data — that is, the earliest time you can cut over to.
 `cutover_time` | The time at which the cutover will begin.
 
-{% comment %}Add responses to include for SQL statement page{% endcomment %}
-
 #### Data state
 
 State      | Description
@@ -66,7 +58,7 @@ State      | Description
 `ready` | The virtual cluster's data is ready for use.
 `replicating` | The replication job has started and is replicating data.
 `replication paused` | The replication job is paused due to an error or a manual request with `ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION`.
-`replication pending cutover` | The replication job is running and a cutover time has been set. Once the the replication reaches the cutover time, the will begin automatically.
+`replication pending cutover` | The replication job is running and a cutover time has been set. Once the the replication reaches the cutover time, the cutover will begin automatically.
 `replication cutting over` | The job has started cutting over. The cutover time can no longer be changed. Once complete, the virtual cluster will be available for use with `ALTER VIRTUAL CLUSTER ... START SHARED SERVICE`.
 `replication error` | An error has occurred. You can find more detail in the error message and the logs.
 
