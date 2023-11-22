@@ -17,7 +17,7 @@ This separation of concerns means that the replication stream can operate withou
 
 ### Replication stream start-up sequence
 
-Starting a physical replication stream consists of two jobs: one on the primary and one on the standby.
+Starting a physical replication stream consists of two jobs: one each on the standby and primary cluster:
 
 - Standby consumer job: Communicates with the primary cluster via an ordinary SQL connection and is responsible for initiating the replication stream. The consumer job ingests updates from the primary cluster producer job.
 - Primary producer job: Protects data on the primary cluster and sends updates to the standby cluster.
@@ -37,9 +37,7 @@ The stream initialization proceeds as follows:
 
 The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [cutover](#cutover-and-promotion-process) to the standby cluster is initiated, the replication job ensures that the cluster is in a transactionally consistent state as of a certain point in time. Beyond the application data, the job will also replicate users, privileges, basic zone configuration, and schema changes.
 
-{% comment %} Add:  no need to coordinate with any schema changes. Don't know anything about zone configurations will be stored using the default zone config.-->{% endcomment %}
-
-During the job, [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) are periodically emitting resolved timestamps (the time where the ingested data is known to be consistent). That is, a guarantee that there are no new writes from before that timestamp. This allows the standby cluster to move the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) forward as the replicated timestamp advances. This information is sent to the primary cluster, which allows for [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) to continue as the replication stream on the standby cluster advances.
+During the job, [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) are periodically emitting resolved timestamps, which is the time where the ingested data is known to be consistent. Resolved timestamps provide a guarantee that there are no new writes from before that timestamp. This allows the standby cluster to move the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) forward as the replicated timestamp advances. This information is sent to the primary cluster, which allows for [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) to continue as the replication stream on the standby cluster advances.
 
 {{site.data.alerts.callout_info}}
 If the primary cluster does not receive replicated time information from the standby after 3 days, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection. The time at which the job is removed is configurable via the `stream_replication.job_liveness_timeout` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
