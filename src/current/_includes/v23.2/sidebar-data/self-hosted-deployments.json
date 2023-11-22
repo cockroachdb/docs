@@ -601,6 +601,12 @@
                 "title": "Physical Cluster Replication",
                 "items": [
                   {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/physical-cluster-replication-overview.html"
+                    ]
+                  },
+                  {
                     "title": "Set Up Physical Cluster Replication",
                     "urls": [
                       "/${VERSION}/set-up-physical-cluster-replication.html"
@@ -616,6 +622,12 @@
                     "title": "Monitor a Replication Stream",
                     "urls": [
                       "/${VERSION}/physical-cluster-replication-monitoring.html"
+                    ]
+                  },
+                  {
+                    "title": "Technical Overview",
+                    "urls": [
+                      "/${VERSION}/physical-cluster-replication-technical-overview.html"
                     ]
                   }
                 ]
