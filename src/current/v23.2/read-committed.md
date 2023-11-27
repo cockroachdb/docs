@@ -50,6 +50,13 @@ Using the `default_transaction_isolation` [session variable]({% link {{ page.ver
 SET default_transaction_isolation = 'read committed';
 ~~~
 
+Using the `default_transaction_isolation` session variable as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+cockroach sql -–url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read%20committed'
+~~~
+
 To view the isolation level of a session:
 
 {% include_cached copy-clipboard.html %}
