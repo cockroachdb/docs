@@ -1,6 +1,6 @@
 ---
 title: Read Committed Transactions
-summary: Follow a demonstration of READ COMMITTED isolation
+summary: How to enable and use the READ COMMITTED isolation level for transactions
 toc: true
 docs_area: deploy
 ---
@@ -18,7 +18,7 @@ docs_area: deploy
 Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts and [retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). Unlike `SERIALIZABLE` transactions, `READ COMMITTED` transactions do not usually return any serialization errors that require client-side handling. For more details, see [Differences from `SERIALIZABLE` in CockroachDB](#differences-from-serializable-in-cockroachdb).
 
 {{site.data.alerts.callout_info}}
-`READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` internally [retries individual statements that encounter write conflicts]((#per-statement-retries)). This prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md).
+`READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` internally [retries individual statements that encounter write conflicts](#per-statement-retries). This prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md).
 {{site.data.alerts.end}}
 
 ## Enable `READ COMMITTED` isolation
@@ -147,7 +147,7 @@ Because each subsequent statement uses a new read snapshot, this means that read
 
 `READ COMMITTED` transactions can still abort in some scenarios, including:
 
-- Transactions at all isolation levels are subject to [*lock contention*]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), where a transaction attempts to lock a row that is already locked by a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read](#locking-reads). In such cases, the later transaction is blocked until the earlier transaction commits or rolls back, thus releasing its lock on the row. Locking contention that produces a *deadlock* between two transactions will result in a transaction abort and a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#ABORT_REASON_PUSHER_ABORTED)) returned to the client. For an example, see [Reserve row values using shared locks](#reserve-row-values-using-shared-locks).
+- Transactions at all isolation levels are subject to [*lock contention*]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), where a transaction attempts to lock a row that is already locked by a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read](#locking-reads). In such cases, the later transaction is blocked until the earlier transaction commits or rolls back, thus releasing its lock on the row. Locking contention that produces a *deadlock* between two transactions will result in a transaction abort and a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted)) returned to the client. For an example, see [Reserve row values using shared locks](#reserve-row-values-using-shared-locks).
 
 - [Constraint]({% link {{ page.version.version }}/constraints.md %}) violations will abort transactions at all isolation levels.
 
@@ -876,7 +876,7 @@ UPDATE schedules SET on_call = false
 
 However, because Session 1 has also acquired a shared lock on these rows, the current transaction is blocked until Session 1 releases its lock.
 
-Because each concurrent transaction is waiting on the other to release its lock, they will deadlock. Session 2 aborts first with a [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#ABORT_REASON_PUSHER_ABORTED) error:
+Because each concurrent transaction is waiting on the other to release its lock, they will deadlock. Session 2 aborts first with a [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted) error:
 
 ~~~
 ERROR: restart transaction: TransactionRetryWithProtoRefreshError: TransactionAbortedError(ABORT_REASON_PUSHER_ABORTED): "sql txn" meta={id=85394586 key=/Tenant/2/Table/115/1/19696/1/0 iso=ReadCommitted pri=0.01582601 epo=0 ts=1700690868.143651000,0 min=1700690819.160354000,0 seq=0} lock=true stat=ABORTED rts=1700690868.143651000,0 wto=false gul=1700690819.660354000,0
