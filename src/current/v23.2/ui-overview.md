@@ -21,8 +21,8 @@ The DB Console sing-on page can also be used to provision authentication tokens 
 
 Refer to:
 
--  Single Sign-on (SSO) for DB Console
-- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]
+- [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{ page.version.version }}/sso-sql.md %})
 
 ## DB Console areas
 
