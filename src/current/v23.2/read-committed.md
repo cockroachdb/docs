@@ -169,9 +169,9 @@ Because a `READ COMMITTED` transaction's [read timestamp can skew from its write
 1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
 1. Transaction `A` writes to table `T` and commits at timestamp `3`.
 
-Under `SERIALIZABLE` isolation, transaction `A` would have [refreshed the read]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) from timestamp `1` and found it to be incorrect at timestamp `3`. The transaction would have aborted with a [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable) error, prompting the client to retry the transaction.
+Under `SERIALIZABLE` isolation, instead of writing to table `T`, transaction `A` would have [refreshed the read]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) from timestamp `1` and found it to be incorrect at timestamp `3`. The transaction would have aborted with a [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable) error, prompting the client to retry the transaction.
 
-Under `READ COMMITTED` isolation, transaction `A` does not refresh the read from timestamp `1`. Transaction `A` can commit at timestamp `3` even though the read results are already different at timestamp `2`. This does not inherently create an anomaly, but is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
+Under `READ COMMITTED` isolation, transaction `A` does not refresh the read from timestamp `1`. Transaction `A` can write and commit at timestamp `3` even though the read results are already different at timestamp `2`. This does not inherently create an anomaly, but is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
 
 ##### Example: Write skew anomaly
 
@@ -185,9 +185,9 @@ The `READ COMMITTED` conditions that permit [write skew anomalies](#write-skew-a
 1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
 1. Transaction `A` writes to row `R` in table `T` and commits at timestamp `3`.
 
-Under `SERIALIZABLE` isolation, transaction `A` would have [refreshed the read]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) from timestamp `1` and found that its write at timestamp `3` was targeting values that had already changed at timestamp `2`. The transaction would have aborted with a [`WriteTooOld`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) error, prompting the client to retry the transaction.
+Under `SERIALIZABLE` isolation, instead of writing to table `T`, transaction `A` would have [refreshed the read]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) from timestamp `1` and found that its write at timestamp `3` was targeting values that had already changed at timestamp `2`. The transaction would have aborted with a [`WriteTooOld`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) error, prompting the client to retry the transaction.
 
-Under `READ COMMITTED` isolation, transaction `A` does not refresh the read from timestamp `1`. Transaction `A` can commit at timestamp `3` without detecting a conflicting write at timestamp `2`. Transaction `A` effectively overwrites the update from transaction `B` with its own update.
+Under `READ COMMITTED` isolation, transaction `A` does not refresh the read from timestamp `1`. Transaction `A` can write and commit at timestamp `3` without detecting a conflicting write at timestamp `2`. Transaction `A` effectively overwrites the update from transaction `B` with its own update.
 
 ##### Example: Lost update
 
@@ -294,6 +294,10 @@ Since `READ COMMITTED` transactions use [per-statement read snapshots](#per-stat
 1. Transaction `A` reads the set of rows `S` in table `T` at timestamp `1`.
 1. Transaction `B` inserts, deletes, or updates rows in `S` in table `T` and commits at timestamp `2`.
 1. Transaction `A` reads the set of rows `S` in table `T` and gets a different result at timestamp `3`.
+
+Under `SERIALIZABLE` isolation, transaction `A` would return the same read results at timestamps `1` and `3`, indicating that `A` is isolated from `B`.
+
+Under `READ COMMITTED` isolation, transaction `A` returns read results that change with the timestamp of the read snapshot, indicating that the statements in `A` and `B` are interleaved.
 
 ##### Example: Non-repeatable reads and phantom reads
 
