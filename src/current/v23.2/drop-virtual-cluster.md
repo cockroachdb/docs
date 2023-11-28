@@ -11,13 +11,13 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v23.2" %} The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are only used as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+{% include_cached new-in.html version="v23.2" %} The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+
+{% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
 {{site.data.alerts.callout_danger}}
 The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specified virtual cluster.
 {{site.data.alerts.end}}
-
-{% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
 ## Required privileges
 
@@ -45,7 +45,7 @@ Parameter | Description
 ----------+------------
 `IF EXISTS` | Drop the virtual cluster if it exists. If it does not exist, do not return an error.
 `virtual_cluster_spec` | The name of the virtual cluster.
-`IMMEDIATE` | Drop the virtual cluster immediately instead of waiting for GC TTL.
+`IMMEDIATE` | Drop the virtual cluster immediately instead of waiting for garbage collection ([GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
 
 ## Examples
 
@@ -58,7 +58,7 @@ To remove a virtual cluster from a CockroachDB cluster:
 DROP VIRTUAL CLUSTER IF EXISTS standbyapplication;
 ~~~
 
-### Remove a virtual cluster without waiting for GC
+### Remove a virtual cluster without waiting for garbage collection
 
 Use `IMMEDIATE` to drop a virtual cluster instead of waiting for data to be garbage collected:
 

@@ -56,7 +56,7 @@ Parameter | Description
 
 ### Start the cutover process
 
-To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) process, use `COMPLETE REPLICATION` with the necessary timestamp:
+To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -70,7 +70,7 @@ You can use either:
 
 ### Set a retention window
 
-You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). That is, the maximum cutover time in the past:
+You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls the oldest possible cutover time you can restore to:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -79,14 +79,14 @@ ALTER VIRTUAL CLUSTER standbyapplication SET REPLICATION RETENTION = '24h';
 
 ### Start the virtual cluster
 
-When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, run the following so that the virtual cluster is ready to accept SQL connections:
+When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER standbyapplication START SHARED SERVICE;
 ~~~
 
-To stop the `shared` service for a virtual cluster:
+To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
