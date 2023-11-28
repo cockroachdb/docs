@@ -60,7 +60,7 @@ When you [initiate a replication stream]({% link {{ page.version.version }}/set-
 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
 ~~~
 
-To form a connection string similar to the example, replace the following values and query parameter with the appropriate values for your configuration:
+To form a connection string similar to the example, include the following values and query parameters. Replace values in `{...}` with the appropriate values for your configuration:
 
 Value | Description
 ----------------+------------
@@ -94,7 +94,7 @@ This will create a virtual cluster in the standby cluster that is based on the `
 
 ### Specify a retention window for a replication stream
 
-When you initiate a replication stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls the oldest possible [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) time you can restore to:
+When you initiate a replication stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

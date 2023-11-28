@@ -70,7 +70,7 @@ You can use either:
 
 ### Set a retention window
 
-You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls the oldest possible cutover time you can restore to:
+You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
