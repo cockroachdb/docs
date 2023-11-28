@@ -369,6 +369,8 @@ The system interface in the standby cluster initiates and controls the replicati
     (1 row)s
     ~~~
 
+    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data up to a point in time is correct on the standby cluster. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+
 ## Connection reference
 
 This table outlines the connection strings you will need for this setup tutorial.

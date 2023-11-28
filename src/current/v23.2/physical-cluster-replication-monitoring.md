@@ -14,6 +14,7 @@ docs_area: manage
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
+- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data up to a point in time is correct on the standby cluster.
 
 When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 
@@ -93,6 +94,72 @@ We recommend tracking the following metrics:
 - `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
 - `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
 - `physical_replication.replicated_time_seconds`: The [replicated time]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) of the physical replication stream in seconds since the Unix epoch.
+
+## Data verification
+
+{{site.data.alerts.callout_info}}
+**This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).** It is in active development and subject to change.
+
+`SHOW EXPERIMENTAL_FINGERPRINT` allows you to verify that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
+
+To verify that the data up to a certain point in time is correct on the standby cluster, you can use the current replicated time from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, up to that point in time, is correct.
+
+1. Retrieve the current replicated time of the replication job on the standby cluster with [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    ~~~
+    ~~~
+    id |        name        | data_state  | service_mode | source_tenant_name |                                                source_cluster_uri                                                 | replication_job_id |        replicated_time        |         retained_time         | cutover_time
+    ---+--------------------+-------------+--------------+--------------------+-------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
+    3  | standbyapplication | replicating | none         | application        | postgresql://{user}:redacted@{node IP}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 925475002117849089 | 2023-12-15 19:39:18.321455+00 | 2023-12-14 19:16:07.321456+00 |         NULL
+    (1 row)
+    ~~~
+
+    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-interface).
+
+1. From the **primary cluster's system interface**, specify a timestamp at or lower than the current `replicated_time` to verify the data:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '1702669158089558000.0000000000';
+    ~~~
+    ~~~
+    tenant_name |             end_ts             |     fingerprint
+    ------------+--------------------------------+----------------------
+    application | 1702669158089558000.0000000000 | 2646132238164576487
+    (1 row)
+    ~~~
+
+    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-interface).
+
+1. From the **standby cluster's system interface**, specify a timestamp at or lower than the current `replicated_time` to verify the data:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '1702669158089558000.0000000000';
+    ~~~
+    ~~~
+        tenant_name     |             end_ts             |     fingerprint
+    --------------------+--------------------------------+----------------------
+    standbyapplication  | 1702669158089558000.0000000000 | 2646132238164576487
+    (1 row)
+    ~~~
+
+You can also use `SHOW EXPERIMENTAL_FINGERPRINTS` without defining a timestamp to view the fingerprint for the latest replicated timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication;
+~~~
+~~~
+     tenant_name     |             end_ts             |     fingerprint
+---------------------+--------------------------------+----------------------
+  standbyapplication | 1702572059741065000.0000000000 | 5089527880146530165
+(1 row)
+~~~
 
 ## See also
 
