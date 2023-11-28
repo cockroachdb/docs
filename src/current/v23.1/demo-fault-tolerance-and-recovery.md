@@ -13,7 +13,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 ## Step 1. Start a 6-node cluster
 
-1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start 6 nodes:
+1. In separate terminal windows, use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start six nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -22,8 +22,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -33,8 +32,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -44,8 +42,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -55,8 +52,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node4 \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -66,8 +62,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -77,8 +72,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --store=fault-node6 \
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
@@ -270,7 +264,7 @@ At this point, the cluster has recovered and is ready to handle another failure.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
-1. Restart the node stored in `fault-node5`, using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
+1. In the terminal window where you started `fault-node5` initially, start it again using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -279,8 +273,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --store=fault-node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Use the [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) command to change the cluster's `default` replication factor to 5:
@@ -374,7 +367,7 @@ kill -TERM {process IDs}
 
 1. To restart the cluster at a later time, run the same `cockroach start` commands as in [Step 1. Start a 6-node cluster](#step-1-start-a-6-node-cluster) from the directory containing the nodes' data stores.
 
-    If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config files:
+1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config files:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
