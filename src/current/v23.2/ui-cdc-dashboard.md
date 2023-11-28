@@ -21,7 +21,7 @@ The **Changefeeds** dashboard displays the following time series graphs:
 
 ## Changefeed Status
 
-This graph displays the status of all running changefeeds.
+{% include_cached new-in.html version="v23.2" %} This graph displays the status of all running changefeeds.
 
 <img src="{{ 'images/v23.2/ui-changefeed-status.png' | relative_url }}" alt="DB Console Changefeed Status graph showing running, paused, and failed changefeeds." style="border:1px solid #eee;max-width:100%" />
 
@@ -37,7 +37,7 @@ In the case of a failed changefeed, you may want to use the [`cursor`]({% link {
 
 ## Commit Latency
 
-This graph displays the 99th, 90th, and 50th percentile of commit latency for running changefeeds. This is the difference between an event's MVCC timestamp and the time it was acknowledged as received by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+{% include_cached new-in.html version="v23.2" %} This graph displays the 99th, 90th, and 50th percentile of commit latency for running changefeeds. This is the difference between an event's MVCC timestamp and the time it was acknowledged as received by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
 
 <img src="{{ 'images/v23.2/ui-commit-latency.png' | relative_url }}" alt="DB Console Commit Latency graph showing the 99th, 90th, and 50th percentile of commit latency." style="border:1px solid #eee;max-width:100%" />
 
@@ -46,6 +46,10 @@ If the sink batches events, then the difference between the oldest event in the 
 ## Emitted Bytes
 
 This graph shows the number of bytes emitted by CockroachDB into the changefeed's [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+
+{{site.data.alerts.callout_info}}
+In v23.1 and earlier, the **Emitted Bytes** graph was named **Sink Byte Traffic**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
+{{site.data.alerts.end}}
 
 <img src="{{ 'images/v23.2/ui-emitted-bytes.png' | relative_url }}" alt="DB Console Emitted Bytes Graph showing the time and emitted bites" style="border:1px solid #eee;max-width:100%" />
 
@@ -71,6 +75,10 @@ Metric | Description
 
 This graph displays the most any changefeed's persisted [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused]({% link {{ page.version.version }}/pause-job.md %}) and unpaused, emitted data up to the last checkpoint may be re-emitted.
 
+{{site.data.alerts.callout_info}}
+In v23.1 and earlier, the **Max Checkpoint Latency** graph was named **Max Changefeed Latency**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
+{{site.data.alerts.end}}
+
 <img src="{{ 'images/v23.2/ui-max-checkpoint-latency.png' | relative_url }}" alt="DB Console Max Checkpoint Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
@@ -89,7 +97,7 @@ Metric | Description
 
 ## Oldest Protected Timestamp
 
-This graph displays the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) of any running changefeed on the cluster.
+{% include_cached new-in.html version="v23.2" %} This graph displays the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) of any running changefeed on the cluster.
 
 <img src="{{ 'images/v23.2/ui-oldest-protected-timestamp.png' | relative_url }}" alt="DB Console Oldest Protected Timestamp graph" style="border:1px solid #eee;max-width:100%" />
 
@@ -99,7 +107,7 @@ Metric | Description
 
 ## Backfill Pending Ranges
 
-This graph displays the number of ranges being backfilled that are yet to enter the changefeed pipeline. An [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) or [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) can cause a backfill.
+{% include_cached new-in.html version="v23.2" %} This graph displays the number of ranges being backfilled that are yet to enter the changefeed pipeline. An [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) or [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) can cause a backfill.
 
 <img src="{{ 'images/v23.2/ui-backfill-pending-ranges.png' | relative_url }}" alt="DB Console Backfill Pending Ranges graph" style="border:1px solid #eee;max-width:100%" />
 
@@ -109,7 +117,7 @@ Metric | Description
 
 ## Schema Registry Registrations
 
-This graph displays the rate of schema registration requests made by CockroachDB nodes to a configured schema registry endpoint. For example, a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) pointing to a [Confluent Schema Registry]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}).
+{% include_cached new-in.html version="v23.2" %} This graph displays the rate of schema registration requests made by CockroachDB nodes to a configured schema registry endpoint. For example, a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) pointing to a [Confluent Schema Registry]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}).
 
 <img src="{{ 'images/v23.2/ui-schema-registry-registrations.png' | relative_url }}" alt="DB Console Schema Registry Registrations graph" style="border:1px solid #eee;max-width:100%" />
 

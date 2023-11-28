@@ -16,7 +16,7 @@ By default, CockroachDB [automatically generates statistics]({% link {{ page.ver
 
 ## Required Privileges
 
-No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list table statistics.
+To list table statistics, the user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table being inspected.
 
 ## Parameters
 

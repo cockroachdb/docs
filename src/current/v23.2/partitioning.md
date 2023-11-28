@@ -147,7 +147,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 #### Step 2. Start each node with its availability zone location specified in the `--locality` flag
 
-1. Start 3 nodes in the US availability zone:
+1. In separate terminal windows, start three nodes in the US availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -158,7 +158,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
     --store=node1 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -171,7 +170,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
     --store=node2 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -184,11 +182,10 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
     --store=node3 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Initialize the cluster:
+1. In a new terminal window, initialize the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -197,7 +194,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --host=localhost:26257
     ~~~
 
-1. Add 3 nodes in the German availability zone:
+1. In new terminal windows, start three more nodes in the German availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -208,7 +205,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
     --store=node4 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -221,7 +217,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
     --store=node5 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -234,11 +229,10 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26262 \
     --http-addr=localhost:8085 \
     --store=node6 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Add 3 nodes in the Australian availability zone:
+1. In separate terminal windows, start three nodes in the Australian availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -249,7 +243,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26263 \
     --http-addr=localhost:8086 \
     --store=node7 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -262,7 +255,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26264 \
     --http-addr=localhost:8087 \
     --store=node8 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
@@ -275,7 +267,6 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --listen-addr=localhost:26265 \
     --http-addr=localhost:8088 \
     --store=node9 \
-    --background \
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 

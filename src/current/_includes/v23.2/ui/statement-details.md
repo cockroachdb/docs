@@ -70,6 +70,11 @@ Average Execution Time | The average execution time for all the executions of th
 Execution Count | The number of times the plan was executed.
 Average Rows Read | The average number of rows read when the plan was executed.
 Full Scan | Whether the execution performed a full scan of the table.
+Min Latency | The lowest latency value for all statement executions with this Explain Plan.
+Max Latency | The highest latency value for all statement executions with this Explain Plan.
+P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.
+P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.
+P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.
 Distributed | Whether the execution was distributed.
 Vectorized | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 
