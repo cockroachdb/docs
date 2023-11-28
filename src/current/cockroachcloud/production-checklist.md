@@ -10,21 +10,21 @@ Before deploying CockroachDB {{ site.data.products.cloud }} in production, it is
 
 Under the Shared Responsibility Model, Cockroach Labs is responsible for the following tasks: 
 
-- Cluster and cloud service availability and reliability
-- Maintenance and security of hardware and operating systems
-- Database and security patches 
-- Cluster backups 
+- Cluster and cloud service availability and reliability.
+- Maintenance and security of hardware and operating systems.
+- Database and security patches.
+- Cluster backups. 
 
 The customer is responsible for the following tasks:
 
-- Estimating workload and sizing the cluster 
-- Scaling clusters based on workload
-- Ensuring sufficient disk, compute, and memory capacity for each cluster
-- Monitoring cluster health and application performance
-- Ensuring that the workload is distributed appropriately across the nodes of the cluster
-- Performance tuning of SQL queries and schema
-- Initiating major version upgrades and selecting maintenance windows for patch releases 
-- (Optional) Taking customer-owned backups
+- Estimating workload and sizing the cluster.
+- Scaling clusters based on workload.
+- Ensuring sufficient disk, compute, and memory capacity for each cluster.
+- Monitoring cluster health and application performance.
+- Ensuring that the workload is distributed appropriately across the nodes of the cluster.
+- Performance tuning of SQL queries and schema.
+- Initiating major version upgrades and selecting maintenance windows for patch releases. 
+- (Optional) Taking customer-owned backups.
 
 This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which  the customer is responsible.
 
@@ -36,7 +36,7 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
  
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
-For an example, see [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
+For an example, refer to [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
 
 ## Topology patterns
 
@@ -70,7 +70,7 @@ To ensure optimal SQL performance for your CockroachDB {{ site.data.products.clo
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
+For guidance on sizing, validating, and using connection pools with CockroachDB, refer [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
 
 ## Keeping connections current
 
@@ -78,13 +78,13 @@ After an application establishes a connection to CockroachDB {{ site.data.produc
 
 Set the maximum lifetime of a connection to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
-Ensure that your application can handle disruptions by implementing connection validation and [retry logic](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transaction-retry-error-reference) appropriately. Cockroach Labs recommends using connection pools to manage the lifecycle of client connections to application servers. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
+Ensure that your application can handle disruptions by implementing connection validation and [retry logic](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transaction-retry-error-reference) appropriately. Cockroach Labs recommends using connection pools to manage the lifecycle of client connections to application servers. For guidance on connection pool sizing, connection validation, and connection retry logic, refer to [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
 
 ## Monitoring and alerting
 
 Even with CockroachDB's various [built-in safeguards](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, see [Monitoring and Alerting]({% link cockroachcloud/cluster-overview-page.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
+To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, refer to [Monitoring and Alerting]({% link cockroachcloud/cluster-overview-page.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 ## Backup and restore
 
@@ -114,9 +114,9 @@ Since upgrading a cluster can have a significant impact on your workload, make s
 
 ### Patch upgrades
 
-For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window).
+For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available. 
 
-For more information, see [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades). 
+For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades). 
 
 ## PCI ready features (Dedicated advanced)
 
