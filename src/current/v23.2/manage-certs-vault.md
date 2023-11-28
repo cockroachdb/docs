@@ -280,7 +280,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
     export VAULT_NAMESPACE="admin"
     ~~~
 
-1. Authenticate with the admin token
+1. Authenticate with the admin token:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell

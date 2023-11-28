@@ -20,7 +20,7 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
 
 ## Step 1. Start the cluster
 
-This sections shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the `node1` in the foreground:
 
@@ -35,7 +35,7 @@ This sections shows how to start a cluster interactively. In production, operato
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The `--background` flag is not recommended. If you decide to start nodes in the background, you must also pass the `--pid-file` argument. To stop a `cockroach` process running in the background, extract the process ID from the PID file pass it to the command to [stop the node](#step-7-stop-the-cluster).
+    The `--background` flag is not recommended. If you decide to start nodes in the background, you must also pass the `--pid-file` argument. To stop a `cockroach` process running in the background, extract the process ID from the PID file and pass it to the command to [stop the node](#step-7-stop-the-cluster).
 
     In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
     {{site.data.alerts.end}}
@@ -69,7 +69,7 @@ This sections shows how to start a cluster interactively. In production, operato
 
         {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
 
-1. In new terminal windows, start `node2` and `node3`.
+1. In new terminal windows, start `node2` and `node3`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -106,7 +106,7 @@ This sections shows how to start a cluster interactively. In production, operato
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. and to `STDOUT` in the terminal window where the node was started. For example, the following command retrieves `node1`'s startup details:
+    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log, and to `STDOUT` in the terminal window where the node was started. For example, the following command retrieves `node1`'s startup details:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

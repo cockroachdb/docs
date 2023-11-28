@@ -33,7 +33,7 @@ This page guides you through a simple demonstration of how CockroachDB can store
 
 ## Step 2. Start a single-node cluster
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command in the foreground.
+For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command in the foreground:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

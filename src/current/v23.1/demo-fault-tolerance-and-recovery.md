@@ -264,7 +264,7 @@ At this point, the cluster has recovered and is ready to handle another failure.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
-1. In the terminal window where you started `fault-node5` initially, start it again using using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
+1. In the terminal window where you started `fault-node5` initially, start it again using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
