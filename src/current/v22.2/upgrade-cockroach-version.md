@@ -283,6 +283,8 @@ Once you are satisfied with the new version:
     > SHOW CLUSTER SETTING version;
     ~~~
 
+    When the upgrade has been finalized, the cluster will report that it is on the new version. If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](https://www.cockroachlabs.com/docs/v22.2/node-shutdown?filters=decommission#status-change) where decommission has not finished.
+
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 ## Troubleshooting
