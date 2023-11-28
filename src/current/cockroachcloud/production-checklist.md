@@ -13,7 +13,7 @@ Under the Shared Responsibility Model, Cockroach Labs is responsible for the fol
 - Cluster and cloud service availability and reliability.
 - Maintenance and security of hardware and operating systems.
 - Database and security patches.
-- Cluster backups. 
+- Automated cluster backups. 
 
 The customer is responsible for the following tasks:
 
