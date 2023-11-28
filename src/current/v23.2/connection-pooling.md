@@ -135,7 +135,9 @@ A misconfigured connection pool will result in most database operations requirin
 
 <section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
 
-The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections per second on your cluster or node.
+The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Open SQL Sessions graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
+
+The [`sql.statements.active` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections on your cluster or node. A connection is "active" when it is actively executing a query.
 
 Using the following formula:
 
@@ -149,11 +151,11 @@ Reducing the number of active connections may increase overall throughput, possi
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of active connections per second on your cluster.
+The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of open connections on your cluster.
 
 </section>
 
-If your connection pool is properly configured, the total number of active connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
+If your connection pool is properly configured, the total number of open connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
 
 ## Serverless functions
 
