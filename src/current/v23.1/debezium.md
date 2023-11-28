@@ -56,7 +56,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
        curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
     ~~~
 
-1. Creat the JSON configuration file that you will use to add data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic. For example:
+1. Create the JSON configuration file that you will use to add data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
