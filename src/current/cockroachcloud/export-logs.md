@@ -368,6 +368,10 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 </section>
 
+{{site.data.alerts.callout_info}}
+Once log export has been enabled, logs generated going forward are sent to the specified cloud sink. Logs are not back-filled to the specified cloud sink.
+{{site.data.alerts.end}}
+
 ## Monitor the status of a log export configuration
 
 To check the status of an existing CockroachDB {{ site.data.products.dedicated }} log export configuration, use the following Cloud API command:
