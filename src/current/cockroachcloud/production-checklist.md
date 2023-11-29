@@ -90,7 +90,7 @@ To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set
 
 For CockroachDB {{ site.data.products.serverless }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
 
-For CockroachDB {{ site.data.products.dedicated }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. Full backups for a deleted cluster are retained for 30 days, and incremental backups for 7 days.
+For CockroachDB {{ site.data.products.dedicated }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
 
 Backups are stored in a single-region cluster's region or a multi-region cluster's primary region.
 
