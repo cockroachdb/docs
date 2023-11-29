@@ -130,11 +130,9 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 
 Once you've installed Jekyll and have a local clone of the docs repository, you can build and test the docs as follows:
 
-1. From the root directory of your clone, :
+1. From the `/src/current` directory of your clone, run `make cockroachdb`.
 
-    - To build the CockroachDB docs, run `make cockroachdb`.
-
-2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
+2. Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
 
     - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
 
