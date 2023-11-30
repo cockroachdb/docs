@@ -24,7 +24,7 @@ We recommend using IAM roles for users to authenticate to cloud storage resource
 You can use the following authentication options for Amazon S3 storage buckets:
 
 - [Specified](#amazon-s3-specified): You specify the AWS access key ID and secret access key in the URI when connecting.
-- [Implicit](#amazon-s3-implicit): You store the needed AWS credentials as environment variables, and may omit them when connecting.
+- [Implicit](#amazon-s3-implicit): You store the needed AWS credentials as environment variables, and may omit them when connecting. As an alternative, you can use implicit authentication with the IAM role that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster to avoid storing any credentials in your cluster.
 
 To have users assume IAM roles to complete operations on an S3 bucket, you can also configure [assume role](#amazon-s3-assume-role) authentication in addition to specified or implicit. If your CockroachDB cluster is deployed on Kubernetes, you can use [workload identities](#amazon-s3-workload-identity) with assume role authentication.
 
@@ -56,6 +56,10 @@ Assume role authentication allows you to use temporary short-lived credentials t
 To use `implicit` authentication on a CockroachDB {{ site.data.products.cloud }} cluster, it is necessary to authenticate using assume role authentication. See [Amazon S3 assume role](#amazon-s3-assume-role) for more details.
 {{site.data.alerts.end}}
 
+### Use implicit authentication with your own IAM role
+
+For self-hosted deployments, follow these instructions. For CockroachDB Dedicated deployments, you can either follow these instructions or you can [use implicit authentication together with the service account which CockroachDB Cloud automatically creates](/docs/v23.2/cloud-storage-authentication.html?filters=aws#use-implicit-authentication-dedicated).
+
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
 {% include_cached copy-clipboard.html %}
@@ -74,11 +78,36 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example prof
 
 {% include {{ page.version.version }}/backups/external-io-implicit-flag.md %}
 
+<a id="use-implicit-authentication-dedicated">
+### Use implicit authentication with CockroachDB {{ site.data.products.dedicated }}
+
+For a CockroachDB {{ site.data.products.dedicated }} cluster, you can either [use implicit authentication with your own IAM role](#use-implicit-authentication-with-your-own-iam-role) or you can follow these instructions to use implicit authentication with the IAM role that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster. This IAM role is named according to the pattern `arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`, where `{CLUSTER_ID_SUFFIX}` is the last 12 digits of the cluster's ID. This IAM role is automatically granted the permission to write to the cluster's storage. One benefit of this approach is that no additional credentials needs to be added to the cluster.
+
+For example, to initiate a manual backup on a CockroachDB {{ site.data.products.dedicated }} cluster using implicit auth with the `crl-dr-store-user-{CLUSTER_ID_SUFFIX}` IAM role:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}'
+~~~
+
 ## Amazon S3 assume role
 
 {{site.data.alerts.callout_info}}
-CockroachDB supports assume role authentication on clusters running v22.2+. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
+CockroachDB supports assume role authentication on clusters running CockroachDB v22.2 and above. On earlier versions, an attempt to authenticate to cloud storage with `ASSUME_ROLE` will result in failed bulk operations.
 {{site.data.alerts.end}}
+
+For a CockroachDB {{ site.data.products.dedicated }} cluster, you can either [use implicit authentication with your own service account](#use-implicit-authentication-with-your-own-service-account) or you can follow these instructions to use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster. This service account is named according to the pattern `crl-dr-store-user-{CLUSTER_ID_SUFFIX}`, where `{CLUSTER_ID}` is the last 12 digits of the cluster's. This service account is automatically granted the permission to write to the cluster's storage. One benefit of this approach is that no additional credentials needs to be added to the cluster.
+
+For example, to initiate a manual backup on a CockroachDB {{ site.data.products.dedicated }} cluster using implicit auth with the `crl-dr-store-user-{CLUSTER_ID}` service account:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}'
+~~~
+
+Replace `{CLUSTER_ID_SUFFIX}` with the last 12 digits of the cluster's ID.
+
+### Use implicit authentication with your own service account
 
 To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket.
 
@@ -354,7 +383,7 @@ In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to
 You can use the following authentication options for Google Cloud Storage buckets:
 
 - [Specified](#google-cloud-storage-specified): You specify the Google Cloud credentials key in the URI when connecting.
-- [Implicit](#google-cloud-storage-implicit): You store the needed Google Cloud credentials as environment variables, and may omit them when connecting.
+- [Implicit](#google-cloud-storage-implicit): You store the needed Google Cloud credentials as environment variables, and may omit them when connecting. As an alternative, you can use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster to avoid storing any credentials in your cluster.
 
 To have users assume IAM roles to complete operations on a Google Cloud Storage bucket, you can also configure [assume role](#google-cloud-storage-assume-role) authentication in addition to specified or implicit. If your CockroachDB cluster is deployed on Kubernetes, you can use [workload identities](#google-cloud-storage-workload-identity) with assume role authentication.
 
@@ -416,24 +445,24 @@ For self-hosted deployments, follow these instructions. For CockroachDB {{ site.
 
 {% include {{ page.version.version }}/backups/external-io-implicit-flag.md %}
 
-<a id="use-implicit-authentication-dedicated">
+<a id="use-implicit-authentication-dedicated-gcp">
 ### Use implicit authentication with CockroachDB {{ site.data.products.dedicated }}
 
-For a CockroachDB {{ site.data.products.dedicated }} cluster, you can either [use implicit authentication with your own service account](#use-implicit-authentication-with-your-own-service-account) or you can follow these instructions to use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster. This service account is named according to the pattern `crl-dr-store-user-{CLUSTER_ID}`, where `{CLUSTER_ID}` is the ID of the cluster, and is automatically granted the permission to write to the cluster's storage. One benefit of this approach is that no additional credentials needs to be added to the cluster.
+For a CockroachDB {{ site.data.products.dedicated }} cluster, you can either [use implicit authentication with your own service account](#use-implicit-authentication-with-your-own-service-account) or you can follow these instructions to use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster. This service account is named according to the pattern `crl-dr-store-user-{CLUSTER_ID_SUFFIX}`, where `{CLUSTER_ID}` is the last 12 digits of the cluster's. This service account is automatically granted the permission to write to the cluster's storage. One benefit of this approach is that no additional credentials needs to be added to the cluster.
 
 For example, to initiate a manual backup on a CockroachDB {{ site.data.products.dedicated }} cluster using implicit auth with the `crl-dr-store-user-{CLUSTER_ID}` service account:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID}'
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}'
 ~~~
 
-Replace `{CLUSTER_ID}` with the cluster's ID.
+Replace `{CLUSTER_ID_SUFFIX}` with the last 12 digits of the cluster's ID.
 
 ## Google Cloud Storage assume role
 
 {{site.data.alerts.callout_info}}
-CockroachDB supports assume role authentication on clusters running v22.2. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
+CockroachDB supports assume role authentication on clusters running CockroachDB v22.2 and above. On earlier versions, an attempt to authenticate to cloud storage with `ASSUME_ROLE` will result in failed bulk operations.
 {{site.data.alerts.end}}
 
 To limit the control access to your Google Cloud Storage buckets, you can create [service accounts](https://cloud.google.com/iam/docs/understanding-service-accounts) for another service account to assume. Service accounts do not necessarily have an association to a particular user. The service account contains permissions that define the operations a user, who has access to the service account, can complete. A service account can then assume another service account to undertake a CockroachDB backup, restore, import, etc. As a result, a service account with limited privileges only has access to the roles of the assumed service account, rather than having unlimited access to a GCS bucket.
