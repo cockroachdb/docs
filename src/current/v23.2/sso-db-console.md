@@ -150,3 +150,8 @@ You must configure the [cluster settings]({% link {{ page.version.version }}/clu
 {{site.data.alerts.callout_info}}
 You can optionally enable the [`server.oidc_authentication.autologin` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to automatically log in an authenticated user who visits the DB Console.
 {{site.data.alerts.end}}
+
+## See also
+
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{ page.version.version }}/sso-sql.md %})
