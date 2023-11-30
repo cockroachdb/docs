@@ -206,6 +206,12 @@ To enable metrics export for your CockroachDB {{ site.data.products.dedicated }}
 
 1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in Datadog's [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/), or via Datadog's [notebook](https://docs.datadoghq.com/notebooks/) or [dashboard](https://docs.datadoghq.com/dashboards/) features.
 
+1. Review [enable percentiles for selected metrics]({% link cockroachcloud/tools-page.md %}#enable-percentiles-for-selected-metrics). Configure metrics as necessary.
+
+{{site.data.alerts.callout_info}}
+A subset of CockroachDB metrics require that you explicitly [enable percentiles]({% link cockroachcloud/tools-page.md %}#enable-percentiles-for-selected-metrics) for them in the Datadog interface. Graphs that display data for these metrics will fail to render properly otherwise.
+{{site.data.alerts.end}}
+
 </section>
 
 ## Monitor the status of a metrics export configuration
