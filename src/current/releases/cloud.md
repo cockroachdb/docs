@@ -18,5 +18,5 @@ Get future release notes emailed to you:
 {% assign crs = site.data.cloud_releases | sort: "date" | reverse %}
 
 {% for rel in crs %}
-{% include releases/cloud/{{ rel.date }}.md %}
+{% include releases/cloud/{{ rel.date }}.md %}<br />
 {% endfor %}

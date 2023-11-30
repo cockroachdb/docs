@@ -86,7 +86,7 @@ By default, [protected timestamps]({% link {{ page.version.version }}/architectu
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads.
 
-For more detail on changefeeds and protected timestamps, refer to [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds).
+For more detail on changefeeds and protected timestamps, refer to [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}).
 
 To balance protecting change data and prevent the over-accumulation of garbage, Cockroach Labs recommends creating a changefeed with [options to define your protection duration](#protecting-change-data-on-pause) and [monitoring your changefeed](#monitoring-protected-timestamp-records) for protected timestamp record collection.
 

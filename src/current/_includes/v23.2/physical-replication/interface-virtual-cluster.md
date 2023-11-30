@@ -1,0 +1,2 @@
+- The system interface manages the cluster's control plane and the replication of the virtual cluster.
+- The virtual cluster manages its own data plane. Users connect to the virtual cluster that contains the application user data.

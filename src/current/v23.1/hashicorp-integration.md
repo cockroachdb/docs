@@ -41,7 +41,7 @@ By using Vault to manage certificates, you can use only certificates with short 
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for an overview.
 
-Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedures in involved in administering PKI for a CockroachDB {{ site.data.products.dedicated }} cluster.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedures involved in administering PKI for a CockroachDB {{ site.data.products.dedicated }} cluster.
 
 ## Use Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.core }} cluster's certificate authority (CA), server, and client certificates
 
