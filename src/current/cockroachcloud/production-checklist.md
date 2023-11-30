@@ -78,8 +78,6 @@ After an application establishes a connection to CockroachDB {{ site.data.produc
 
 Set the maximum lifetime of a connection to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
-Ensure that your application can handle disruptions by implementing connection validation and [retry logic](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transaction-retry-error-reference) appropriately. Cockroach Labs recommends using connection pools to manage the lifecycle of client connections to application servers. For guidance on connection pool sizing, connection validation, and connection retry logic, refer to [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
-
 ## Monitoring and alerting
 
 Even with CockroachDB's various [built-in safeguards](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
