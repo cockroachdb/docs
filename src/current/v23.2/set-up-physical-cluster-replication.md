@@ -360,8 +360,6 @@ The system interface in the standby cluster initiates and controls the replicati
     SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
     ~~~
 
-    {% comment %}update output here{% endcomment %}
-
     {% include_cached copy-clipboard.html %}
     ~~~
     id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
@@ -386,3 +384,7 @@ Standby | System | Manage the replication stream. Connect with [`cockroach sql`]
 
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %})
 - [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %})
+- [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %})
+- [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %})
+- [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %})
+- [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %})
