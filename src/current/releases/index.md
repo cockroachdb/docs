@@ -269,7 +269,7 @@ The following binaries are not suitable for production environments:
                 <span class="badge badge-gray">Withdrawn</span>
             {% else %}
                 {% if r.source == true %}
-                <b>{% if r.docker.docker_arm == false %}Intel{% else %}Multi-platform{% endif %}</b>: <code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
+                <b>{% if r.docker.docker_arm == false %}Intel{% else %}Multi-platform{% endif %}</b>:<br><code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
                 {% else %}
                 N/A
                 {% endif %}
@@ -277,11 +277,11 @@ The following binaries are not suitable for production environments:
             </td>
             <td>
             {% if r.docker.docker_arm_limited_access == true %}
-              **Intel**: Generally available<br />**ARM**: Limited Access
+              **Intel**: GA<br />**ARM**: Limited Access
             {% elsif r.docker.docker_arm_experimental == true %}
-              **Intel**: Generally available<br />**ARM**: Experimental
+              **Intel**: GA<br />**ARM**: Experimental
             {% else %}
-              Generally available
+              GA
             {% endif %}
             </td>
         </tr>
