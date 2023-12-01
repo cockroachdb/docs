@@ -34,7 +34,7 @@ Table name | Description| Use in production
 `cluster_execution_insights` | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing]({% link {{ page.version.version }}/show-trace.md %}) in your cluster.| ✗
-[`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
+[`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✓
 [`cluster_sessions`](#cluster_sessions) | Contains information about cluster sessions, including current and past queries.| ✓
 `cluster_settings` | Contains information about [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).| ✗
 [`cluster_transactions`](#cluster_transactions) | Contains information about transactions running on your cluster.| ✓
@@ -65,10 +65,10 @@ Table name | Description| Use in production
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
-`node_queries` | Contains information about queries running on nodes in your cluster.| ✗
+`node_queries` | Contains information about queries running on nodes in your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✗
 `node_runtime_info` | Contains runtime information about nodes in your cluster.| ✗
 `node_sessions` | Contains information about sessions to nodes in your cluster.| ✗
-`node_statement_statistics` | Contains statement statistics for nodes in your cluster.| ✗
+`node_statement_statistics` | Contains statement statistics for nodes in your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive statistics are redacted.| ✗
 `node_transaction_statistics` | Contains transaction statistics for nodes in your cluster.| ✗
 `node_transactions` | Contains information about transactions for nodes in your cluster.| ✗
 `node_txn_stats` | Contains transaction statistics for nodes in your cluster.| ✗
@@ -694,6 +694,8 @@ LIMIT
 
 ### `cluster_queries`
 
+Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIITYREDACTED`, the latter takes precedence and sensitive queries are redacted.
+
 Column | Type | Description
 ------------|-----|------------
 `query_id` | `STRING` | Unique query identifier.
@@ -1165,7 +1167,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
 
-Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted.
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
