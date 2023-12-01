@@ -9,7 +9,7 @@ Name | Description
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
 `changefeed.failures` | Total number of changefeed jobs which have failed
-`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the changefeed options: <ul><li>[`lagging_ranges_threshold`](create-changefeed.html#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`](create-changefeed.html#lagging-ranges-polling), which is the polling rate at which a rangefeed will poll for lagging ranges and update the metric.</li></ul>
+`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the changefeed options: <ul><li>[`lagging_ranges_threshold`](create-changefeed.html#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`](create-changefeed.html#lagging-ranges-polling), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>
 `changefeed.running` | Number of currently running changefeeds, including sinkless
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
