@@ -59,16 +59,18 @@ To display this view, click **SQL Activity** in the left-hand navigation of the 
 The **Statements** tab is selected. Click the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
 
 {{site.data.alerts.callout_info}}
-Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
+When Auto [Refresh](#refresh) is On, active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
+The following screenshot shows the active statement execution for `INSERT INTO users VALUES ($1, $2, $3, $4, $5)` while running the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload):
 
 <img src="{{ 'images/v23.2/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#statement-execution-details-page) displays.
 
 <img src="{{ 'images/v23.2/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+
+{% include {{ page.version.version }}/ui/refresh.md %}
 
 {% include {{ page.version.version }}/ui/statements-filter.md %}
 
