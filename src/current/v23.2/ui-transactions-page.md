@@ -70,7 +70,7 @@ If you click the execution ID in the **Transaction Execution ID** column, the [*
 
 <img src="{{ 'images/v23.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
-{% include {{ page.version.version }}/ui/refresh.md %}
+{% include_cached {{ page.version.version }}/ui/refresh.md %}
 
 {% include {{ page.version.version }}/ui/transactions-filter.md %}
 
