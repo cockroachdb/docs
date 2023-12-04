@@ -1,4 +1,4 @@
-These essential CockroachDB metrics enable you to build custom dashboards with the following tools: 
+These essential CockroachDB metrics enable you to build custom dashboards with the following tools:
 {% if include.deployment == 'self-hosted' %}
 * [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
 * [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics) column lists the corresponding Datadog metric which requires the `cockroachdb.` prefix.
@@ -6,7 +6,7 @@ These essential CockroachDB metrics enable you to build custom dashboards with t
 * [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics) column lists the corresponding Datadog metric which requires the `crdb_dedicated.` prefix.
 * [Metrics export]({% link cockroachcloud/export-metrics.md %})
 {% endif %}
-  
+
 The **Usage** column explains why each metric is important to visualize in a custom dashboard and how to make both practical and actionable use of the metric in a production deployment.
 
 ## Platform
@@ -139,7 +139,7 @@ The **Usage** column explains why each metric is important to visualize in a cus
 
 ## Changefeeds
 
-If [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) are created in a CockroachDB cluster, monitor these additional metrics in your custom dashboards: 
+If [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) are created in a CockroachDB cluster, monitor these additional metrics in your custom dashboards:
 
 | <div style="width:225px">CockroachDB Metric Name</div> | {% if include.deployment == 'self-hosted' %}<div style="width:225px">[Datadog Integration Metric Name](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics)<br>(add `cockroachdb.` prefix)</div> |{% elsif include.deployment == 'dedicated' %}<div style="width:225px">[Datadog Integration Metric Name](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics)<br>(add `crdb_dedicated.` prefix)</div> |{% endif %}<div style="width:150px">Description</div>| Usage |
 | ----------------------------------------------------- | {% if include.deployment == 'self-hosted' %}------ |{% elsif include.deployment == 'dedicated' %}---- |{% endif %} ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -154,7 +154,7 @@ If [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview
 
 ## Row-Level TTL
 
-If [Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) is configured for any table in a CockroachDB cluster, monitor these additional metrics in your custom dashboards: 
+If [Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) is configured for any table in a CockroachDB cluster, monitor these additional metrics in your custom dashboards:
 
 | <div style="width:225px">CockroachDB Metric Name</div> | {% if include.deployment == 'self-hosted' %}<div style="width:225px">[Datadog Integration Metric Name](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics)<br>(add `cockroachdb.` prefix)</div> |{% elsif include.deployment == 'dedicated' %}<div style="width:225px">[Datadog Integration Metric Name](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics)<br>(add `crdb_dedicated.` prefix)</div> |{% endif %}<div style="width:150px">Description</div>| Usage |
 | ----------------------------------------------------- | {% if include.deployment == 'self-hosted' %}------ |{% elsif include.deployment == 'dedicated' %}---- |{% endif %} ------------------------------------------------------------ | ------------------------------------------------------------ |
