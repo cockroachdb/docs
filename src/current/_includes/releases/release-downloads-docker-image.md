@@ -9,6 +9,10 @@
 
 {% if release.withdrawn == true %}
 {% include releases/withdrawn.md %}
+{% elsif release.cloud_only == true %} {% comment %}Show the Cloud-first info instead of download links {% endcomment %}
+{{site.data.alerts.callout_info}}
+{{ r.cloud_only_message }}
+{{site.data.alerts.end}}
 {% else %}
 
 {{site.data.alerts.callout_info}}
