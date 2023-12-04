@@ -651,11 +651,26 @@ You can authenticate to Azure with explicit credentials in the following ways:
 Implicit authentication to Azure is only available for CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from a file with  the path specified in the environment variable `COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE`. You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
+{% include_cached new-in.html version="v23.2" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
+
+- A credentials file with the path specified in the environment variable `COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE`. Refer to [Set up a credentials file](#set-up-a-credentials-file).
+- Each credential set as an environment variable.
+    - `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
+    - `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
+    - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+- An Azure [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview).
+
+You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
+
+{{site.data.alerts.callout_info}}
+You must export the environment variable on each CockroachDB node.
+{{site.data.alerts.end}}
+
+### Set up a credentials file
 
 To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), you will need to:
 
-1. Create the `credentials.yaml` file on a path that CockroachDB can access. The credentials file in YAML format must contain:
+1. Create a `credentials.yaml` file on a path that CockroachDB can access. The credentials file in YAML format must contain:
 
     ~~~yaml
     azure_tenant_id: {tenant ID}
@@ -664,9 +679,9 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     ~~~
 
     Replace the values in `{...}` with your credentials:
-    - `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
-    - `AZURE_CLIENT_SECRET`: Client credentials secret value generated for your App Registration.
-    - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+    - `azure_client_id`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
+    - `azure_client_secret`: Client credentials secret value generated for your App Registration.
+    - `azure_tenant_id`: Directory (tenant) ID for your App Registration.
 
     When you implement role-based access control through an [Azure App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. Refer to Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
 
