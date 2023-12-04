@@ -637,6 +637,12 @@
                     ]
                   }
                 ]
+              },
+              {
+                "title": "Strategy comparison",
+                "urls": [
+                  "/${VERSION}/disaster-recovery-comparison.html"
+                ]
               }
             ]
           },
