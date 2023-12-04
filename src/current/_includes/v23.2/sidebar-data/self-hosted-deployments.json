@@ -400,6 +400,12 @@
                       ]
                     },
                     {
+                      "title": "Networking Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-networking-dashboard.html"
+                      ]
+                    },
+                    {
                       "title": "SQL Dashboard",
                       "urls": [
                         "/${VERSION}/ui-sql-dashboard.html"

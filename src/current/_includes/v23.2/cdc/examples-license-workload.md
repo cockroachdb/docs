@@ -4,12 +4,12 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
 
-     First create the schema for the workload:
+     In a new terminal, first create the schema for the workload:
 
      {% include_cached copy-clipboard.html %}
      ~~~shell

@@ -104,7 +104,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
@@ -311,7 +311,7 @@ In this example, you'll set up Core changefeeds on two tables that have [column 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):

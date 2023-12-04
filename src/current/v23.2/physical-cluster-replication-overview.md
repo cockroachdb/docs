@@ -27,9 +27,9 @@ You can use physical cluster replication in a disaster recovery plan to:
 ## Features
 
 - **Asynchronous byte-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all of the primary cluster's existing user data and associated metadata to the standby cluster asynchronously. From then on, it will continuously replicate the primary cluster's data and metadata to the standby cluster. Physical cluster replication will automatically replicate changes related to operations such as schema changes, user and privilege modifications, and zone configuration updates without any manual work.
-- **Transactional consistency**: You can cut over to the standby cluster at the `LATEST` timestamp or a point of time in the past or the future. When the cutover process completes, the standby cluster will be in a transactionally consistent state as of the point in time you specified.
+- **Transactional consistency**: You can cut over to the standby cluster at the [`LATEST` timestamp]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time) or a [point of time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) in the past or the future. When the cutover process completes, the standby cluster will be in a transactionally consistent state as of the point in time you specified.
 - **Maintained/improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The cutover process from the primary cluster to the standby should typically happen within five minutes when completing a cutover to the latest replicated time using `LATEST`.
-- **Cutover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the `WITH RETENTION` option to control how far in the past you can cut over to. Furthermore, you can plan a cutover by specifying a timestamp in the future. {% comment %}link retention option here{% endcomment %}
+- **Cutover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the [`WITH RETENTION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#set-a-retention-window) option to control how far in the past you can cut over to. Furthermore, you can plan a cutover by specifying a timestamp in the future.
 - **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
 {{site.data.alerts.callout_info}}
@@ -40,7 +40,7 @@ You can use physical cluster replication in a disaster recovery plan to:
 
 - Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
 - Read queries are not supported on the standby cluster before cutover.
-- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a single-region primary cluster to a multi-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
+- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 - Cutting back to the primary cluster after a cutover is a manual process. Refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster). In addition, after cutover, to continue using physical cluster replication, you must configure it again.
 - Before cutover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 - After a cutover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.
@@ -115,12 +115,12 @@ To start, manage, and observe physical cluster replication, you can use the foll
 
 Statement | Action
 ----------+------
-`CREATE VIRTUAL CLUSTER ... FROM REPLICATION OF ...` | Start a replication stream.
-`ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION` | Pause a running replication stream.
-`ALTER VIRTUAL CLUSTER ... RESUME REPLICATION` | Resume a paused replication stream.
-`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED` | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
-`SHOW VIRTUAL CLUSTER` | Show the virtual clusters.
-`DROP VIRTUAL CLUSTER` | Remove a virtual cluster.
+[`CREATE VIRTUAL CLUSTER ... FROM REPLICATION OF ...`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) | Start a replication stream.
+[`ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Pause a running replication stream.
+[`ALTER VIRTUAL CLUSTER ... RESUME REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Resume a paused replication stream.
+[`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-the-virtual-cluster) | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
+[`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show the virtual clusters.
+[`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
 
 ### Cluster versions and upgrades
 

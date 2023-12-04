@@ -30,7 +30,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 
 #### Write skew
 
-When write skew happens, a transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only `SERIALIZABLE` and some implementations of `REPEATABLE READ` isolation prevent this anomaly.  
+When write skew happens, a transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only `SERIALIZABLE` and some implementations of `REPEATABLE READ` isolation prevent this anomaly.
 
 ### Schema
 
@@ -225,7 +225,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 ## Step 3. Check data correctness on PostgreSQL
 
-So what just happened? Each transaction started by reading a value that, before the end of the transaction, became incorrect. Despite that fact, each transaction was allowed to commit. This is known as write skew, and the result is that 0 doctors are scheduled to be on call on 10/5/18.  
+So what just happened? Each transaction started by reading a value that, before the end of the transaction, became incorrect. Despite that fact, each transaction was allowed to commit. This is known as write skew, and the result is that 0 doctors are scheduled to be on call on 10/5/18.
 
 To check this, in either terminal, run:
 
@@ -276,11 +276,10 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     $ cockroach start-single-node \
     --insecure \
     --store=serializable-demo \
-    --listen-addr=localhost \
-    --background
+    --listen-addr=localhost
     ~~~
 
-1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. In a new terminal window, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) and connect to `localhost`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -346,7 +345,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     > SELECT day, count(*) AS on_call FROM schedules
       WHERE on_call = true
       GROUP BY day
-      ORDER BY day;  
+      ORDER BY day;
     ~~~
 
     ~~~
