@@ -11,9 +11,9 @@ docs_area: reference.sql
 
 The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), or a [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink)). You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
-We recommend reading the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page for detail on understanding how changefeeds emit messages and [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for important usage considerations.
+To get started with changefeeds, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) page for important usage considerations. For detail on how changefeeds emit messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
 
-The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
+The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds, refer to the following pages:
 
 - [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %})
 - [Changefeeds on Tables with Column Families]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %})
@@ -247,6 +247,10 @@ Before running any of the examples in this section it is necessary to [enable th
 The following examples show the syntax for managing changefeeds and starting changefeeds with different use cases and features. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
 
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/changefeed-number-limit.md %}
+{{site.data.alerts.end}}
 
 ### Create a changefeed connected to a sink
 
