@@ -116,18 +116,13 @@ AWS disks can only be scaled once every six hours.
 1. On the **Summary** page, verify your new cluster configuration.
 1. Click **Update**.
 
-{% comment %}
 ## Add or remove regions from a cluster
 
-You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding. -->
+You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding. 
 
-## Add a region to your cluster
+### Add a region to your cluster
 
 You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
-
-{{site.data.alerts.callout_info}}
-The ability to remove a region from a cluster through the Console is temporarily disabled. If you need to remove a region, [contact support](https://support.cockroachlabs.com).
-{{site.data.alerts.end}}
 
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
@@ -138,16 +133,19 @@ The ability to remove a region from a cluster through the Console is temporarily
 
     If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
 
-1. From the **Choose a region** dropdown, select the region you want to use.
-1. From the **Nodes** dropdown, select the number of nodes in the new region.
+1. In the **Regions & Nodes** section, select the desired new region and specify the number of nodes for it.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
+1. Click **Update**.
 
 ### Remove a region from your cluster
 
-When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. To remove a region from your cluster:
+When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. 
+
+{{site.data.alerts.callout_info}}
+If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) are set to pin range replicas to a specific region, you cannot remove that region.
+{{site.data.alerts.end}}
+
+To remove a region from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
@@ -155,17 +153,15 @@ When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-
     The **Edit cluster** page displays.
 
 1. Click the **X** button next to each region you want to remove.
+    {{site.data.alerts.callout_info}}
+    If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
+    {{site.data.alerts.end}}
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
-{% endcomment %}
+1. Click **Update**.
 
 ## Set a maintenance window
 
 From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
- [Org Administrators]({% link cockroachcloud/authorization.md%}#org-administrator) automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about scheduled upgrades and cluster maintenance, and can subscribe other members to the email alerts.
 
 {{site.data.alerts.callout_info}}
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.

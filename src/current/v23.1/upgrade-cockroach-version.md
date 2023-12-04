@@ -110,11 +110,14 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 {% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
 See our [support policy for restoring backups across versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
-### Review breaking changes
+### Reset SQL statistics
 
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+Before upgrading to CockroachDB v23.1, it is recommended to reset the cluster's SQL statistics. Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
 
-Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.reset_sql_stats();
+~~~
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -291,6 +294,8 @@ Once you are satisfied with the new version:
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
+
+    When the upgrade has been finalized, the cluster will report that it is on the new version. If the cluster continues to report that it is on the previous version, finalization has not completed. When finalization is in progress but has not yet finished, the output still shows the previous major version, but may include additional details about the finalization progress. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](https://www.cockroachlabs.com/docs/v23.1/node-shutdown?filters=decommission#status-change) where decommission has not finished. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 

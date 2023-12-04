@@ -90,6 +90,10 @@ SST files are never modified during the compaction process. Instead, new SSTs ar
 
 The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
+
 ##### Inverted LSMs
 
 If the compaction process falls behind the amount of data being added, and there is more data stored at a higher level of the tree than the level below, the LSM shape can become inverted.
@@ -155,7 +159,7 @@ CockroachDB regularly garbage collects MVCC values to reduce the size of data st
 Garbage collection can only run on MVCC values which are not covered by a *protected timestamp*. The protected timestamp subsystem exists to ensure the safety of operations that rely on historical data, such as:
 
 - [Backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups)
-- [Changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds)
+- [Changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %})
 
 Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) has to scan over previous MVCC values to find the current value of a row.
 

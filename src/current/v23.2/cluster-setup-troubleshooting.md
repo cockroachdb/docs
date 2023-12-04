@@ -174,11 +174,11 @@ The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluste
 
 However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values]({% link {{ page.version.version }}/cluster-settings.md %}) without explicit approval from Cockroach Labs.
 
-**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than compactions can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
+**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
 
 **Solution:** [Check LSM health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
-After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
+After [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
 
 Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}).
 
@@ -468,7 +468,11 @@ Finally, note that although the replica allocator does not rebalance based on di
 
 Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#service-latency). This is the most common symptom of CPU starvation.
 
-Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+Because [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
 
 If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
 
