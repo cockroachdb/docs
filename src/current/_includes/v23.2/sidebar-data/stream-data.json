@@ -38,6 +38,23 @@
       ]
     },
     {
+      "title": "Monitor Changefeeds",
+      "items": [
+        {
+          "title": "Monitor and Debug Changefeeds",
+          "urls": [
+            "/${VERSION}/monitor-and-debug-changefeeds.html"
+          ]
+        },
+        {
+          "title": "Protect Changefeed Data",
+          "urls": [
+            "/${VERSION}/protect-changefeed-data.html"
+          ]
+        }
+      ]
+    },
+    {
       "title": "Optimize Changefeeds",
       "items": [
         {
@@ -64,12 +81,6 @@
             "/${VERSION}/changefeeds-in-multi-region-deployments.html"
           ]
         }
-      ]
-    },
-    {
-      "title": "Monitor and Debug Changefeeds",
-      "urls": [
-        "/${VERSION}/monitor-and-debug-changefeeds.html"
       ]
     },
     {

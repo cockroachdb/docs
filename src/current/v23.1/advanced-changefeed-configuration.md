@@ -49,7 +49,7 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html).
 {{site.data.alerts.end}}
 
-#### `kv.closed_timestamp_target_duration`
+#### `kv.closed_timestamp.target_duration`
 
 **Default:** `3s`
 
@@ -67,7 +67,7 @@ Thoroughly test any adjustment in cluster settings before deploying the change i
 
 This setting provides a mechanism to pace the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) notifications to follower replicas. At the default, the closed timestamp smear interval makes rangefeed closed timestamp delivery less spiky, which can reduce its impact on foreground SQL query latency.
 
-For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every `kv.closed_timestamp_target_duration` (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
+For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every `kv.closed_timestamp.target_duration` (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
 
 ## Tuning for high durability delivery
 

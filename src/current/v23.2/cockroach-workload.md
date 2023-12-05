@@ -76,7 +76,7 @@ Workload | Description
 ## Flags
 
 {{site.data.alerts.callout_info}}
-The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}). Instead, you must use a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) at the end of the command.
+{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %}
 {{site.data.alerts.end}}
 
 ### `bank` workload

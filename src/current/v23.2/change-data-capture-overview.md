@@ -144,13 +144,17 @@ Google Cloud Pub/Sub | Refer to:<ul><li>[Query parameters]({% link {{ page.versi
 
 ## Monitor your changefeed job
 
-It is a best practice to monitor your changefeed jobs. You can use the following tools for monitoring:
+It is a best practice to monitor your changefeed jobs for behavior such as failures and retries.
+
+You can use the following tools for monitoring:
 
 - The [Changefeed Dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) on the DB Console
 - The [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) statement
 - [Changefeed metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels)
 
 Refer to the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) page for recommendations on metrics to track.
+
+For detail on how protected timestamps and garbage collection interact with changefeeds, refer to [Protect Changefeed Data from Garbage Collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}).
 
 ## Optimize a changefeed for your workload
 

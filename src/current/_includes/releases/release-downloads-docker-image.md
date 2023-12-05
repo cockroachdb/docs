@@ -25,7 +25,7 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
   {% if release.linux.linux_arm == true %}
     {% capture linux_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.linux.linux_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
-<a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
+<a {% if release.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
 
   {% endif %}
 
@@ -49,7 +49,7 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
 <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-amd64.tgz"><button id="linux-intel" class="filter-button" data-scope="linux-intel" data-eventcategory="linux-binary-release-notes">Linux Intel</button></a>
     {% if release.linux.linux_arm == true %}
 
-<a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
+<a {% if release.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.linux-arm64.tgz"><button id="linux-arm" class="filter-button" data-scope="linux-arm" data-eventcategory="linux-binary-release-notes">Linux ARM{{linux_arm_button_text_addendum}}</button></a>
 
     {% endif %}
 
@@ -74,14 +74,15 @@ This patch release has been withdrawn{% if include.advisory_key %} due to [this 
   {% if release.docker.docker_arm == true %}
 [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
 
-    {% if r.docker.docker_arm_experimental == true %}
-Support for ARM is **Experimental** and not yet qualified for production use.
-    {% endif %}
-    {% if r.docker.docker_arm_limited_access == true %}
-Support for ARM is in **Limited Access**.
+    {% if release.docker.docker_arm_limited_access == true %}
+Within the multi-platform image:<ul><li>The ARM image is in **Limited Access**.</li><li>The Intel image is **Generally Available** for production use.</li></ul>
+    {% elsif release.docker.docker_arm_experimental == true %}
+Within the multi-platform image:<ul><li>The ARM image is **Experimental** and not yet qualified for production use.</li><li>The Intel image is **Generally Available** for production use.</li></ul>
+    {% else %}
+Within the multi-platform image, both Intel and ARM images are **generally available** for production use.
     {% endif %}
 
-To download the Docker image (multi-platform):
+To download the Docker image:
   {% else %}
 To download the Docker image (Intel-only):
   {% endif %}

@@ -10,6 +10,7 @@ docs_area: stream_data
 CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
+- {% include_cached new-in.html version="v23.2" %} [Confluent Cloud](#confluent-cloud)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
@@ -191,6 +192,35 @@ The following shows the [Avro]({% link {{ page.version.version }}/changefeed-mes
 See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}) tutorial for examples to set up a Kafka sink.
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
+
+## Confluent Cloud
+
+{% include_cached new-in.html version="v23.2" %} Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
+
+A Confluent Cloud sink connection URI must include the following:
+
+~~~
+'confluent-cloud://{bootstrap server}:9092?api_key={key}&api_secret={secret}'
+~~~
+
+The `api_key` and `api_secret` are the required parameters for the Confluent Cloud sink connection URI.
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`bootstrap server` | The bootstrap server listed for your Kafka cluster in the Confluent Cloud console.
+`api_key` | The API key created for the cluster in Confluent Cloud.
+`api_secret` | The API key's secret generated in Confluent Cloud. **Note:** This must be [URL-encoded](https://www.urlencoder.org/) before passing into the connection string.
+
+Changefeeds emitting to a Confluent Cloud Kafka cluster support the standard [Kafka parameters](#kafka-parameters), such as `topic_name` and `topic_prefix`. Confluent Cloud sinks also support the standard Kafka [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For a Confluent Cloud setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-confluent-cloud-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
 
 ## Google Cloud Pub/Sub
 

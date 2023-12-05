@@ -78,8 +78,6 @@ After all users have been migrated and signing in using SSO, you can [disable pa
 
 Rather than using [invitations]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) or self-service [autoprovisioning](#autoprovisioning), SCIM provisioning tasks are performed centrally by a team of IAM admins, who manage the assignment of your organization's users to your organization's applications. To learn more or configure SCIM provisioning, refer to [Configure SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
-To learn more, refer to [configuring SCIM provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
-
 ## Frequently Asked Questions (FAQ)
 
 #### If a user already has an email address associated with an SSO provider such as Gmail, can they sign in with Basic SSO?
