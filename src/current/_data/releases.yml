@@ -5220,10 +5220,10 @@
 
 - release_name: v23.2.0-beta.2
   major_version: v23.2
-  release_date: '2023-12-04'
+  release_date: '2023-12-05'
   release_type: Testing
   go_version: go1.21
-  sha: 48d5dc3efefacae5cebd23ac81c46f4248eb39f0
+  sha: b5953f20bd644d508d2560387b679f22c9e24f67
   has_sql_only: true
   has_sha256sum: true
   mac:
