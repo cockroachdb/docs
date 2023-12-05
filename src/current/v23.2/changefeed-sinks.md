@@ -350,7 +350,7 @@ URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
 `AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
-`ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
+`ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>AWS S3 only: Use `external_id` with `ASSUME_ROLE` to specify a third-party assigned external ID as part of the role. Refer to [Amazon S3 assume role]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-assume-role) for setup details.
 `AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure Blob Storage | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure Blob Storage | The URL-encoded account key for your Azure account.
