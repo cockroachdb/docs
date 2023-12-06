@@ -329,7 +329,7 @@ SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
 (3 rows)
 ~~~
 
-When you want to [restore a specific backup](#restore-a-specific-full-or-incremental-backup), add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`]({% link {{ page.version.version }}/show-backup.md %}#show-the-most-recent-backup).
+When you want to [restore a specific backup](#restore-a-specific-full-or-incremental-backup), add the backup's subdirectory path (e.g., `/2023/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`]({% link {{ page.version.version }}/show-backup.md %}#show-the-most-recent-backup).
 
 ### Restore the most recent full or incremental backup
 
