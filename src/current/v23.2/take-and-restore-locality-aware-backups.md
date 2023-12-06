@@ -55,7 +55,7 @@ RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup)
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup)
 
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
@@ -123,7 +123,7 @@ Restore a locality-aware backup with:
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 {{site.data.alerts.callout_info}}
 [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) was not of a [full cluster]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
@@ -186,7 +186,7 @@ can be restored by running:
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 {{site.data.alerts.callout_info}}
 When [restoring from an incremental locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
