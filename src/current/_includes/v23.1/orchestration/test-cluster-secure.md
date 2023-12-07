@@ -1,16 +1,16 @@
-To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
-
 <section class="filter-content" markdown="1" data-scope="operator">
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ kubectl create \
--f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
-~~~
+1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
+    ~~~
+
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -39,17 +39,19 @@ $ kubectl create \
 
 <section class="filter-content" markdown="1" data-scope="manual">
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ kubectl create \
--f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
-~~~
+1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-~~~
-pod/cockroachdb-client-secure created
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
+    ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+    ~~~
+    pod/cockroachdb-client-secure created
+    ~~~
+
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -75,7 +77,7 @@ pod/cockroachdb-client-secure created
     ~~~
 
     {{site.data.alerts.callout_success}}
-    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({% link {{ page.version.version }}/cockroach-commands.md %}) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
+    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands](cockroach-commands.html) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
@@ -110,7 +112,7 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
     pod "cockroachdb-client-secure" created
     ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -136,7 +138,7 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
     ~~~
 
     {{site.data.alerts.callout_success}}
-    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({% link {{ page.version.version }}/cockroach-commands.md %}) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
+    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands](cockroach-commands.html) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
