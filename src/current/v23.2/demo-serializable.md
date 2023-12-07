@@ -6,12 +6,11 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In contrast to most databases, CockroachDB offers `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
+In contrast to most databases, CockroachDB offers `SERIALIZABLE` isolation by default, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
-1. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB offers `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
 1. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}

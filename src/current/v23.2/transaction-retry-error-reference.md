@@ -9,7 +9,12 @@ When a [transaction]({% link {{ page.version.version }}/transactions.md %}) is u
 
 Transaction retry errors fall into two categories:
 
-- **Serialization Errors** indicate that a transaction failed because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. These errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
+- **Serialization Errors** indicate that a transaction failed because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions, as required under the default `SERIALIZABLE` isolation level. These errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
+
+      {{site.data.alerts.callout_info}}
+      <a name="per-statement-retries"></a> Under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, serializable errors will usually **not** be returned to the client. If a `READ COMMITTED` transaction conflicts with another transaction such that a serialization error ([`RETRY_WRITE_TOO_OLD`](#retry_write_too_old) or [`ReadWithinUncertaintyInterval`](#readwithinuncertaintyintervalerror)) is generated, the transaction attempts to resolve the error by internally retrying the latest conflicting statement at a new [read timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#per-statement-read-snapshots).
+      {{site.data.alerts.end}}
+
 - **Internal State Errors** indicate that the cluster itself is experiencing an issue, such as being [overloaded]({% link {{ page.version.version }}/ui-overload-dashboard.md %}), which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
 
 All transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string [`restart transaction`]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction). Further, each error includes a [specific error code](#transaction-retry-error-reference) to assist with targeted troubleshooting.
@@ -18,7 +23,7 @@ When experiencing transaction retry errors, you should follow the guidance under
 
 ## Overview
 
-CockroachDB always attempts to find a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions.
+At the default `SERIALIZABLE` isolation level, CockroachDB always attempts to find a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions.
 
 Whenever possible, CockroachDB will [auto-retry a transaction internally]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without notifying the client. CockroachDB will only send a serialization error to the client when it cannot resolve the error automatically without client-side intervention.
 
@@ -61,7 +66,7 @@ For a conceptual example of application-defined retry logic, and testing that lo
 
 ### Minimize transaction retry errors
 
-In addition to the steps described in [Client-side retry handling](#client-side-retry-handling), which detail how to configure your application to restart a failed transaction, there are also a number of changes you can make to your application logic to reduce the number of transaction retry errors that reach the client application in the first place.
+In addition to the steps described in [Client-side retry handling](#client-side-retry-handling), which detail how to configure your application to restart a failed transaction, there are also a number of changes you can make to your application logic to reduce the number of transaction retry errors that reach the client application under `SERIALIZABLE` isolation.
 
 Reduce failed transactions caused by [timestamp pushes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) or [read invalidation]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing):
 
@@ -75,17 +80,17 @@ Increase the chance that CockroachDB can [automatically retry]({% link {{ page.v
 
 Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during [advanced troubleshooting]({% link {{ page.version.version }}/performance-recipes.md %}#transaction-contention).
 
-- [RETRY_WRITE_TOO_OLD](#retry_write_too_old)
-- [RETRY_SERIALIZABLE](#retry_serializable)
-- [RETRY_ASYNC_WRITE_FAILURE](#retry_async_write_failure)
-- [ReadWithinUncertaintyIntervalError](#readwithinuncertaintyintervalerror)
-- [RETRY_COMMIT_DEADLINE_EXCEEDED](#retry_commit_deadline_exceeded)
-- [ABORT_REASON_ABORTED_RECORD_FOUND](#abort_reason_aborted_record_found)
-- [ABORT_REASON_CLIENT_REJECT](#abort_reason_client_reject)
-- [ABORT_REASON_PUSHER_ABORTED](#abort_reason_pusher_aborted)
-- [ABORT_REASON_ABORT_SPAN](#abort_reason_abort_span)
-- [ABORT_REASON_NEW_LEASE_PREVENTS_TXN](#abort_reason_new_lease_prevents_txn)
-- [ABORT_REASON_TIMESTAMP_CACHE_REJECTED](#abort_reason_timestamp_cache_rejected)
+- [`RETRY_WRITE_TOO_OLD`](#retry_write_too_old)
+- [`RETRY_SERIALIZABLE`](#retry_serializable)
+- [`RETRY_ASYNC_WRITE_FAILURE`](#retry_async_write_failure)
+- [`ReadWithinUncertaintyIntervalError`](#readwithinuncertaintyintervalerror)
+- [`RETRY_COMMIT_DEADLINE_EXCEEDED`](#retry_commit_deadline_exceeded)
+- [`ABORT_REASON_ABORTED_RECORD_FOUND`](#abort_reason_aborted_record_found)
+- [`ABORT_REASON_CLIENT_REJECT`](#abort_reason_client_reject)
+- [`ABORT_REASON_PUSHER_ABORTED`](#abort_reason_pusher_aborted)
+- [`ABORT_REASON_ABORT_SPAN`](#abort_reason_abort_span)
+- [`ABORT_REASON_NEW_LEASE_PREVENTS_TXN`](#abort_reason_new_lease_prevents_txn)
+- [`ABORT_REASON_TIMESTAMP_CACHE_REJECTED`](#abort_reason_timestamp_cache_rejected)
 - [injected by `inject_retry_errors_enabled` session variable](#injected-by-inject_retry_errors_enabled-session-variable)
 
 Each transaction retry error listed includes an example error as it would appear from the context of the client, a description of the circumstances that cause that error, and specific guidance for addressing the error.
@@ -132,7 +137,7 @@ HINT: See: https://www.cockroachlabs.com/docs/v23.2/transaction-retry-error-refe
 
 At a high level, the `RETRY_SERIALIZABLE` error occurs when a transaction's timestamp is moved forward, but the transaction performed reads at the old timestamp that are no longer valid at its new timestamp. More specifically, the `RETRY_SERIALIZABLE` error occurs in the following three cases:
 
-1. When a transaction _A_ has its timestamp moved forward (also known as _A_ being "pushed") as CockroachDB attempts to find a serializable transaction ordering. Specifically, transaction _A_ tried to write a key that transaction _B_ had already read, and _B_ was supposed to be serialized after _A_ (i.e., _B_ had a higher timestamp than _A_). CockroachDB will try to serialize _A_ after _B_ by changing _A_'s timestamp, but it cannot do that when another transaction has subsequently written to some of the keys that _A_ has read and returned to the client. When that happens, the `RETRY_SERIALIZATION` error is signalled. For more information about how timestamp pushes work in our transaction model, see the [architecture docs on the transaction layer's timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+1. When a transaction _A_ has its timestamp moved forward (also known as _A_ being "pushed") as CockroachDB attempts to find a serializable transaction ordering. Specifically, transaction _A_ tried to write a key that transaction _B_ had already read, and _B_ was supposed to be serialized after _A_ (i.e., _B_ had a higher timestamp than _A_). CockroachDB will try to serialize _A_ after _B_ by changing _A_'s timestamp, but it cannot do that when another transaction has subsequently written to some of the keys that _A_ has read and returned to the client. When that happens, the `RETRY_SERIALIZATION` error is signalled. For more information about how timestamp pushes work in our transaction model, see the [architecture docs on the transaction layer's timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache).
 
 1. When a [high-priority transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
 
@@ -217,7 +222,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 TransactionRetryWithProtoRefreshError: TransactionPushError: transaction deadline exceeded ...
 ```
 
-**Error type:** Serialization error
+**Error type:** Internal state error
 
 **Description:**
 
@@ -252,7 +257,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_ABORTED_RECORD_FOUND) ...
 ```
 
-**Error type:** Serialization error
+**Error type:** Internal state error
 
 **Description:**
 
@@ -285,7 +290,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_CLIENT_REJECT) ...
 ```
 
-**Error type:** Serialization error
+**Error type:** Internal state error
 
 **Description:**
 
@@ -299,7 +304,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_PUSHER_ABORTED) ...
 ```
 
-**Error type:** Serialization error
+**Error type:** Internal state error
 
 **Description:**
 
@@ -313,7 +318,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_ABORT_SPAN) ...
 ```
 
-**Error type:** Serialization error
+**Error type:** Internal state error
 
 **Description:**
 
