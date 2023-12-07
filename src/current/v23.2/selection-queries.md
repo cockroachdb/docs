@@ -30,7 +30,7 @@ Parameter | Description
 `sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
 `limit_clause` | An optional `LIMIT` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for details.
 `offset_clause` | An optional `OFFSET` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for details.
-`for_locking_clause` |  The `FOR UPDATE` locking clause is used to order transactions by controlling concurrent access to one or more rows of a table.  For more information, see [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}).
+`for_locking_clause` |  The `FOR UPDATE` and `FOR SHARE` clauses are used to lock `SELECT` statements. For more information, see [`FOR UPDATE` and `FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}).
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
 

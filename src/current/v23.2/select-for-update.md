@@ -1,12 +1,12 @@
 ---
-title: SELECT FOR UPDATE
-summary: The SELECT FOR UPDATE statement is used to order transactions under contention.
+title: FOR UPDATE and FOR SHARE
+summary: The FOR UPDATE and FOR SHARE clauses are used to lock SELECT statements.
 keywords: concurrency control, locking, transactions, update locking, update, contention
 toc: true
 docs_area: reference.sql
 ---
 
-{% include {{page.version.version}}/sql/select-for-update-overview.md %}
+`SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` are used to issue [locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) at different [lock strengths](#lock-strengths).
 
 ## Syntax
 
@@ -16,22 +16,46 @@ The following diagram shows the supported syntax for the optional `FOR` locking 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/for_locking.html %}
 </div>
 
+{{site.data.alerts.callout_success}}
 For the full `SELECT` statement syntax documentation, see [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %}).
+{{site.data.alerts.end}}
 
 ## Parameters
 
-### Locking strengths
+### Lock strengths
+
+Lock "strength" determines how restrictive the lock is to concurrent transactions attempting to access the same row.
+
+{% include {{ page.version.version }}/sql/select-lock-strengths.md %}
 
 Locking strength dictates the row-level locking behavior on rows retrieved by a `SELECT` statement.
 
-Parameter | Description
-----------|------------
-`FOR SHARE`/`FOR KEY SHARE` | This syntax is a no-op, allowed for PostgreSQL compatibility. Specifying `FOR SHARE`/`FOR KEY SHARE` does not cause CockroachDB to use shared locks over the rows retrieved by a statement.<br><br>Note that CockroachDB always [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}), regardless of the specified locking strength.
-`FOR UPDATE`/`FOR NO KEY UPDATE` | Lock the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement, such that other transactions trying to access the rows must wait for the transaction to finish.<br><br>Note that in CockroachDB, the `FOR NO KEY UPDATE` locking strength is identical to the `FOR UPDATE` locking strength.
+Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) regardless of the specified lock strength.
+
+|            Parameter             |                                                                                                                                                      Description                                                                                                                                                      |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `FOR SHARE`/`FOR KEY SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
+| `FOR UPDATE`/`FOR NO KEY UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).                      
+
+### `FOR UPDATE` usage
+
+{% include {{page.version.version}}/sql/select-for-update-overview.md %}
+
+### `FOR SHARE` usage
+
+{% include_cached new-in.html version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+
+If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
+
+Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT ... FOR SHARE` locking mechanism to perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks.
+
+{{site.data.alerts.callout_info}}
+Shared locks are not enabled by default for `SERIALIZABLE` transactions. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). To perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). This matches the default `READ COMMITTED` behavior.
+{{site.data.alerts.end}}
 
 ### Wait policies
 
-Wait policies determine how a `SELECT FOR UPDATE` statement handles conflicts with locks held by other active transactions. By default, `SELECT FOR UPDATE` queries on rows that are already locked by an active transaction must wait for the transaction to finish.
+Wait policies determine how a `SELECT ... FOR UPDATE` or `SELECT ... FOR SHARE` statement handles conflicts with locks held by other active transactions. By default, locking reads that are blocked by an active transaction must wait for the transaction to finish.
 
 Parameter | Description
 ----------|------------
@@ -52,7 +76,7 @@ The user must have the `SELECT` and `UPDATE` [privileges]({% link {{ page.versio
 
 ### Enforce transaction order when updating the same rows
 
-This example uses `SELECT FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
+This example uses `SELECT ... FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
 
 {% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
 
@@ -107,11 +131,20 @@ COMMIT;
 COMMIT
 ~~~
 
+### Reserve rows for updates using exclusive locks
+
+See [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}#reserve-rows-for-updates-using-exclusive-locks).
+
+### Reserve row values using shared locks
+
+See [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}#reserve-row-values-using-shared-locks).
+
 ## See also
 
 - [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
 - [Transaction Contention][transaction_contention]
+- [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %})
 
 {% comment %} Reference links {% endcomment %}
 
