@@ -120,6 +120,19 @@ If you have a table with 10,000 or more [ranges](architecture/overview.html#arch
 - Increase the [`changefeed.backfill.concurrent_scan_requests` setting](cluster-settings.html), which controls the number of concurrent scan requests per node issued during a [backfill event](changefeed-messages.html#schema-changes-with-column-backfill). The default behavior, when this setting is at `0`, is that the number of scan requests will be 3 times the number of nodes in the cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase the cluster load overall**, including CPU and IO usage.
 - The [`kv.rangefeed.catchup_scan_iterator_optimization.enabled` setting](cluster-settings.html) is `on` by default. This causes [rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds) to use time-bound iterators for catch-up scans when possible. Catch-up scans are run for each rangefeed request. This setting improves the performance of changefeeds during some [range-split operations](architecture/distribution-layer.html#range-splits).
 
+## Lagging ranges
+
+{% include_cached new-in.html version="v22.2.15" %} Use the `changefeed.lagging_ranges` metric to track the number of ranges that are behind in a changefeed. This is calculated based on the [cluster settings](cluster-settings.html):
+
+- `changefeed.lagging_ranges_threshold` sets a duration from the present that determines the length of time a range is considered to be lagging behind, which will then track in the [`lagging_ranges`](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels) metric. Note that ranges undergoing an [initial scan](create-changefeed.html#initial-scan) for longer than the threshold duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease.
+    - **Default:** `3m`
+- `changefeed.lagging_ranges_polling_interval` sets the interval rate for when lagging ranges are checked and the `lagging_ranges` metric is updated. Polling adds latency to the `lagging_ranges` metric being updated. For example, if a range falls behind by 3 minutes, the metric may not update until an additional minute afterward.
+    - **Default:** `1m`
+
+{{site.data.alerts.callout_success}}
+You can use the [`metrics_label`](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels) option to track the `lagging_ranges` metric per changefeed.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Cluster Settings](cluster-settings.html)
