@@ -156,7 +156,9 @@ Every transaction in CockroachDB is assigned an initial **priority**. By default
 
 ### Set transaction priority
 
-For transactions that should be given higher or lower preference in [high-contention scenarios]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can set the priority in the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement:
+{% include {{ page.version.version }}/sql/use-the-default-transaction-priority.md %}
+
+For transactions that you are absolutely sure should be given higher or lower priority, you can set the priority in the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
@@ -171,12 +173,8 @@ You can also set the priority immediately after a transaction is started:
 To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable]({% link {{ page.version.version }}/set-vars.md %}). For example:
 
 ~~~ sql
-> SET default_transaction_priority = 'high';
+> SET default_transaction_priority = 'low';
 ~~~
-
-{{site.data.alerts.callout_info}}
-When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
-{{site.data.alerts.end}}
 
 ### View transaction priority
 
@@ -191,7 +189,7 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 ~~~
   transaction_priority
 ------------------------
-  high
+  low
 ~~~
 
 ~~~ sql
@@ -201,7 +199,7 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 ~~~
   transaction_priority
 ------------------------
-  high
+  low
 ~~~
 
 ## Isolation levels
