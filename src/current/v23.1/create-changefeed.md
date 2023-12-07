@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a [configurable sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). `CREATE CHANGEFEED` also supports [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that allow you to filter and transform change data before emitting changefeed messages. You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
-We recommend reading the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page for detail on understanding how changefeeds emit messages and [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for important usage considerations.
+To get started with changefeeds, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) page for important usage considerations. For detail on how changefeeds emit messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
 
 The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
 
@@ -133,6 +133,7 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
+`assume_role` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | {% include {{ page.version.version }}/misc/assume-role-description.md %}
 `ca_cert`          | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`]({% link {{ page.version.version }}/string.md %})            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `client_cert`      | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
@@ -246,6 +247,10 @@ Before running any of the examples in this section it is necessary to [enable th
 The following examples show the syntax for managing changefeeds and starting changefeeds with different use cases and features. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
 
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/changefeed-number-limit.md %}
+{{site.data.alerts.end}}
 
 ### Create a changefeed connected to a sink
 
