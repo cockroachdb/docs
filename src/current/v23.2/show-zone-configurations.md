@@ -51,7 +51,7 @@ You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-c
 
 ### View the replication zone for an index
 
-To control replication for a specific table,  use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+To control replication for a specific index,  use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
