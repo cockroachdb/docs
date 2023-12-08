@@ -329,7 +329,7 @@ LIMIT 5;
 
 {% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
-For an example showing how to use it, see  [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}).
+For an example, see  [`FOR UPDATE` and `FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}).
 
 ## Composability
 

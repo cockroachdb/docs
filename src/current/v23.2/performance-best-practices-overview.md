@@ -308,18 +308,20 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Transaction contention
 
-Transactions that operate on the *same index key values* (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) to prevent hazardous interactions with concurrent transactions.
-
 *Transaction contention* occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on table rows with the _same index key values_ (either on [primary keys]({% link {{ page.version.version }}/primary-key.md %}) or secondary [indexes]({% link {{ page.version.version }}/indexes.md %})).
-- At least one of the transactions modifies the data.
+- They operate on table rows with the same index key values (either on [primary keys]({% link {{ page.version.version }}/primary-key.md %}) or secondary [indexes]({% link {{ page.version.version }}/indexes.md %})).
+- At least one of the transactions holds a [write intent]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or exclusive [locking read]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on the data.
+
+By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, transactions that operate on the same index key values (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) to prevent interactions with concurrent transactions. 
+
+Locking reads issued with [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) perform a similar function by placing an [*exclusive lock*]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on rows, which can cause contention for both `SERIALIZABLE` and [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
 [When transactions are experiencing contention]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
 - [Delays in query completion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
-- [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions.
+- [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. This is also called a *serializability conflict*.
 - [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 - [Cluster hot spots](#hot-spots).
 

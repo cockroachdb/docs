@@ -1,4 +1,4 @@
-{% if page.name != "select-for-update.md" %}`SELECT FOR UPDATE` exclusively locks the rows returned by a [selection query][selection], such that other transactions trying to access those rows must wait for the transaction that locked the rows to commit or rollback.{% endif %}
+{% if page.name != "select-for-update.md" %}`SELECT ... FOR UPDATE` exclusively locks the rows returned by a [selection query][selection], such that other transactions trying to access those rows must wait for the transaction that locked the rows to commit or rollback.{% endif %}
 
 `SELECT ... FOR UPDATE` can be used to:
 
