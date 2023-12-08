@@ -19,7 +19,6 @@ docs_area: manage
 
 In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` for detail on status and timestamps for planning [cutover]({% link {{ page.version.version }}/cutover-replication.md %}):
 
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
  SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;

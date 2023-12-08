@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up physical cluster replication between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -87,7 +87,7 @@ Connect to your primary cluster's system interface using [`cockroach sql`]({% li
     You should only connect to the system interface for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
     {{site.data.alerts.end}}
 
-1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -231,7 +231,7 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
 
     The prompt will include `system` when you are connected to the system interface.
 
-1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -263,7 +263,7 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
 
 ### Create a user for the standby cluster
 
-If you would like to access the DB Console to observe your replication, you will need to create a user:
+If you would like to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe your replication, you will need to create a user:
 
 1. Create a user:
 
@@ -343,7 +343,7 @@ The system interface in the standby cluster initiates and controls the replicati
 
     The standby cluster's virtual cluster is offline while the replication stream is running. The virtual cluster will be online once you explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
 
-1. To manage the replication stream, you can pause and resume the replication stream as well as show the current details for the job:
+1. To manage the replication stream, you can [pause and resume]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) the replication stream as well as [show]({% link {{ page.version.version }}/show-virtual-cluster.md %}) the current details for the job:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
