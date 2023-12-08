@@ -332,7 +332,7 @@ To ensure that the Avro schemas that CockroachDB publishes will work with the sc
 The original CockroachDB column definition is also included within a doc field `__crdb__` in the schema. This allows CockroachDB to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
 
 {{site.data.alerts.callout_danger}}
-Schema validation tools should ignore the `__crdb__` field. This is an internal CockroachDB schema type description that may change between versions of CockroachDB versions.
+Schema validation tools should ignore the `__crdb__` field. This is an internal CockroachDB schema type description that may change between CockroachDB versions.
 {{site.data.alerts.end}}
 
 ### Schema changes with column backfill
