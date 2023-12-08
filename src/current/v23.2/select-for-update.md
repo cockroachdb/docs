@@ -22,6 +22,17 @@ For the full `SELECT` statement syntax documentation, see [Selection Queries]({%
 
 ## Parameters
 
+|            Parameter             |                                                                                                                                                      Description                                                                                                                                                      |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `FOR SHARE`/`FOR KEY SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
+| `FOR UPDATE`/`FOR NO KEY UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).  
+
+Under `SERIALIZABLE` isolation:
+
+- Shared locks are not enabled by default. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). To perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). This matches the default [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) behavior.
+
+- If the [`optimizer_use_lock_op_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}) is enabled, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) uses a `Lock` operator to construct query plans for `SELECT` statements using the `FOR UPDATE` and `FOR SHARE` clauses. This more closely matches the PostgreSQL behavior, but will create more round trips from [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) to [replica leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
+
 ### Lock strengths
 
 Lock "strength" determines how restrictive the lock is to concurrent transactions attempting to access the same row.
@@ -30,12 +41,7 @@ Lock "strength" determines how restrictive the lock is to concurrent transaction
 
 Locking strength dictates the row-level locking behavior on rows retrieved by a `SELECT` statement.
 
-Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) regardless of the specified lock strength.
-
-|            Parameter             |                                                                                                                                                      Description                                                                                                                                                      |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `FOR SHARE`/`FOR KEY SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
-| `FOR UPDATE`/`FOR NO KEY UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).                      
+Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) regardless of the specified lock strength.                    
 
 ### `FOR UPDATE` usage
 

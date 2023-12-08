@@ -93,7 +93,7 @@ This section provides solutions for common performance issues in your applicatio
 
 ##### Waiting transaction
 
-These are indicators that a transaction is trying to access a row that has been ["locked"]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) by another, concurrent write transaction.
+These are indicators that a transaction is trying to access a row that has been ["locked"]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) by another, concurrent transaction issuing a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
 
 - The **Active Executions** table on the **Transactions** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page) or [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %}#active-executions-table)) shows transactions with `Waiting` in the **Status** column. You can sort the table by **Time Spent Waiting**.
 - Querying the [`crdb_internal.cluster_locks`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) table shows transactions where [`granted`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster-locks-columns) is `false`.

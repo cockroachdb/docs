@@ -30,13 +30,15 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
-### Limitations for `SELECT FOR UPDATE`
+### Limitations for `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE`
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. They are fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) place locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
 
@@ -165,7 +167,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
-### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+### `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks are dropped on lease transfers and range splits/merges
 
 {% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
