@@ -13,10 +13,7 @@ If you are an application developer who needs to implement an application-level 
 
 ## Overview
 
-To improve the performance of transactions that fail due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the following benefits:
-
-1. When you use savepoints, you "hold your place in line" between attempts. Without savepoints, you're starting from scratch every time.
-1. Transactions increase their priority each time they're retried, increasing the likelihood they will succeed. This has a lesser effect than #1.
+To improve the performance of transactions that fail due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the benefit that when you use savepoints, you "hold your place in line" between attempts. Without savepoints, you're starting from scratch every time.
 
 ## How transaction retries work
 
@@ -37,7 +34,7 @@ A retryable transaction goes through the process described below, which maps to 
 
 1. The statements in the transaction are executed.
 
-1. If a statement returns a retry error (identified via the `40001` error code or `"restart transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) statement to restart the transaction and increase the transaction's priority. Alternately, the original [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}) statement can be reissued to restart the transaction.
+1. If a statement returns a retry error (identified via the `40001` error code or `"restart transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) statement to restart the transaction. Alternately, the original [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}) statement can be reissued to restart the transaction.
 
     You must now issue the statements in the transaction again.
 
