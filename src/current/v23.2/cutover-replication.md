@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} Physical cluster replication allows you to cut over from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication, it will stop the stream of new data, reset the standby virtual cluster to a point in time where all ingested data is consistent, and then mark the standby virtual cluster as ready to accept traffic.
+{% include_cached new-in.html version="v23.2" %} [Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to cut over from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication, it will stop the stream of new data, reset the standby virtual cluster to a point in time where all ingested data is consistent, and then mark the standby virtual cluster as ready to accept traffic.
 
 The cutover is a two-step process on the standby cluster:
 
@@ -33,7 +33,7 @@ To initiate a cutover to the standby cluster, there are different ways of specif
 
 ### Cut over to the most recent replicated time
 
-To initiate a cutover to the most recent replicated timestamp, you can specify `LATEST`. It is important to note that the latest replicated time may be behind the actual time if there is _replication lag_ in the stream. That is, the time between the most up-to-date replicated time and the actual time.{% comment %}Link lag to technical overview{% endcomment %}
+To initiate a cutover to the most recent replicated timestamp, you can specify `LATEST`. It is important to note that the latest replicated time may be behind the actual time if there is [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) in the stream. That is, the time between the most up-to-date replicated time and the actual time.
 
 To view the current replication timestamp, use:
 
@@ -105,7 +105,7 @@ ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO SYSTEM TIME '+5
 A future cutover will proceed once the replicated data has reached the specified time.
 
 {{site.data.alerts.callout_info}}
-To monitor for when the replication stream completes, use `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` to find the replication stream's `replication_job_id`, which you can pass to `SHOW JOB WHEN COMPLETE job_id` as the `job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
+To monitor for when the replication stream completes, use [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) to find the replication stream's `replication_job_id`, which you can pass to `SHOW JOB WHEN COMPLETE job_id` as the `job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
 {{site.data.alerts.end}}
 
 ## Step 2. Complete the cutover
