@@ -660,7 +660,7 @@ Implicit authentication to Azure is only available for CockroachDB {{ site.data.
     - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 - An Azure [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview).
 
-You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
+You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#azure-key-vault-uri-format).
 
 {{site.data.alerts.callout_info}}
 You must export the environment variable on each CockroachDB node.
