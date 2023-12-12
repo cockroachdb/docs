@@ -707,23 +707,82 @@ You can authenticate to Azure with explicit credentials in the following ways:
 Implicit authentication to Azure is only available for CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.1" %} If the `AUTH` parameter is set to `implicit`, credentials will be loaded from the environment (i.e., the machines running the backup) or with a managed identity. You need to set the following environment variables for `implicit` authentication:
+{% include_cached new-in.html version="v23.1.9" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
 
-- `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
-- `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
-- `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+- A credentials file with the path specified in the environment variable `COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE`. Refer to [Set up a credentials file](#set-up-a-credentials-file).
+- Each credential set as an environment variable.
+    - `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
+    - `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
+    - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+- An Azure [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview).
 
-See Microsoft's [Azure Authentication](https://learn.microsoft.com/azure/developer/go/azure-sdk-authentication) documentation to set this up.
+You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#azure-key-vault-uri-format).
 
-You must include the container name and Azure account name in your URI, as follows:
+{{site.data.alerts.callout_info}}
+You must export the environment variable on each CockroachDB node.
+{{site.data.alerts.end}}
 
-~~~
-azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}
-~~~
+### Set up a credentials file
 
-When using role-based access control through an [Azure App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. See Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
+To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), you will need to:
 
-For details on using `implicit` authentication for an Azure encrypted backup, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
+1. Create a `credentials.yaml` file on a path that CockroachDB can access. The credentials file in YAML format must contain:
+
+    ~~~yaml
+    azure_tenant_id: {tenant ID}
+    azure_client_id: {client ID}
+    azure_client_secret: {client secret}
+    ~~~
+
+    Replace the values in `{...}` with your credentials:
+    - `azure_client_id`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
+    - `azure_client_secret`: Client credentials secret value generated for your App Registration.
+    - `azure_tenant_id`: Directory (tenant) ID for your App Registration.
+
+    When you implement role-based access control through an [Azure App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. Refer to Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
+
+    Refer to Microsoft's [Azure Authentication](https://learn.microsoft.com/azure/developer/go/azure-sdk-authentication) documentation to set this up.
+
+1. You can pass the credentials by exporting as an environment variable or pass the credentials with `systemd`:
+    - Create an environment variable instructing CockroachDB where the credentials file is located. The environment variable must be exported on each CockroachDB node:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~shell
+        export COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE="/{path}/credentials.yaml"
+        ~~~
+    - Alternatively, to pass the credentials using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), edit the `cockroach` unit file:
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        systemctl edit cockroach.service
+        ~~~
+
+        Add the environment variable under `[Service]`:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~
+        Environment="COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE=/{path}/credentials.yaml"
+        ~~~
+
+        Reload the `cockroach.service` unit file with the updated configuration:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
+
+        Restart the `cockroach` process on each of the cluster's nodes with, which will reload the configuration files:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        systemctl restart cockroach
+        ~~~
+
+1. Form the URI to run a [job]({% link {{ page.version.version }}/show-jobs.md %}). You must include the container name and Azure account name in your URI along with the `AUTH=implicit` parameter:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    BACKUP DATABASE {database} INTO 'azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
+    ~~~
 
 </section>
 
