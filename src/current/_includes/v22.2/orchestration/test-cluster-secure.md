@@ -1,14 +1,14 @@
-To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
-
 <section class="filter-content" markdown="1" data-scope="operator">
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ kubectl create \
--f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
-~~~
+1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
+    ~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
@@ -39,15 +39,17 @@ $ kubectl create \
 
 <section class="filter-content" markdown="1" data-scope="manual">
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ kubectl create \
--f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
-~~~
+1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-~~~
-pod/cockroachdb-client-secure created
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
+    ~~~
+
+    ~~~
+    pod/cockroachdb-client-secure created
+    ~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
