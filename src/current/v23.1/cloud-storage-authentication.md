@@ -384,6 +384,7 @@ BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDEN
 
 ## Google Cloud Storage implicit
 
+{{site.data.alerts.callout_info}}
 CockroachDB supports assume role authentication on clusters running CockroachDB v22.2 and above. On earlier versions, an attempt to authenticate to cloud storage with `ASSUME_ROLE` will result in failed bulk operations.
 {{site.data.alerts.end}}
 
