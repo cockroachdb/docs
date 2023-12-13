@@ -98,7 +98,7 @@ An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administra
 
 ## Grant the `FOLDER_ADMIN` or `FOLDER_MOVER` role
 
-Folders inherit roles granted at the organization scope, and descendant folders inherit roles granted higher in the hierarchy. To create a folder, a member must have the `FOLDER_ADMIN` role on its parent folder. To create a folder at the root level, a member must have the role at the level of the organization.
+Folders inherit roles granted higher in the hierarchy, and folders at the root level inherit roles granted at the organization scope. To create a folder, a team member must have the `FOLDER_ADMIN` role on its parent folder. To create a folder at the root level, a team member must have the `FOLDER_ADMIN` role at the level of the organization.
 
 {{site.data.alerts.callout_success}}
 To create clusters in a folder, the member must also have the `CLUSTER_ADMIN` or `CLUSTER_CREATOR` role on that folder or by inheritance.
@@ -113,7 +113,7 @@ To grant the `FOLDER_ADMIN` role:
 1. Click **Confirm**.
 
 {{site.data.alerts.callout_success}}
-After your desired folder structure is in place, you could revoke the `FOLDER_ADMIN` role from the organization and grant it on individual folders instead. A recommended security practice is to limit the users or service accounts with `FOLDER_ADMIN` at the level of the organization. When you [create a folder](#create-a-folder), you can grant the `FOLDER_ADMIN` role at the level of the folder.
+A recommended security practice is to limit the users or service accounts with `FOLDER_ADMIN` at the level of the organization. After your desired folder structure is in place, you could revoke the `FOLDER_ADMIN` role from the organization and grant it on individual folders instead. When you [create a folder](#create-a-folder), you can grant the `FOLDER_ADMIN` role at the level of the folder.
 {{site.data.alerts.end}}
 
 ## Create a folder
@@ -123,7 +123,7 @@ Your service account must have the following roles on the organization, the fold
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. If you have permission to create folders at the root of the organization, the **Create folder** displays. Click it to create a folder.
+1. If you have permission to create folders at the root of the organization, the **Create folder** option is displayed. Click it to create a folder.
 1. In **Folder name**, provide a name for the folder.
 1. In **Folder location**, choose the folder's location. Only locations where you have permission to create folders are shown.
   - To create the folder at the level of the organization, select the organization name.
@@ -152,8 +152,8 @@ Your service account must have one of the following roles to read a folder's con
 {{site.data.alerts.callout_success}}
 Keep the following in mind:
 
-- When your organization enables the use of folders, the **Clusters** list contains less detailed information about a given cluster. To see all of the details about a cluster, view its **Details** page.
-- To discover the entire folder structure, you must list each folder's contents separately.
+- When your organization enables the use of folders, the **Clusters** list contains less-detailed information about a given cluster. To see all of the details about a cluster, view its **Details** page.
+- To discover the entire folder structure, you must view each folder's contents separately.
 {{site.data.alerts.end}}
 
 1. To list the clusters and folders at the level of the organization, go to **Clusters**.
@@ -201,7 +201,7 @@ To move a cluster from the organization level into a folder, or to move it from 
 1. Click **Move**.
 
 {{site.data.alerts.callout_info}}
-You can also move a cluster to a new folder by browsing to the folder that currently contains the folder, then clicking the the three-dots **Action** button and selecting **Move**.
+You can also move a cluster to a new folder by browsing to the location of the destination folder, then clicking the the three-dots **Action** button and selecting **Move**.
 {{site.data.alerts.end}}
 
 ## Move a folder into another folder
@@ -217,7 +217,7 @@ When you move a folder, users or service accounts who had access to the previous
 To move a folder and its contents into another folder:
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder that contains the folder you want to move.
+1. Browse to the location of the folder that you want to move.
 1. Next to the folder you want to move, click the three-dots **Action** button and select **Move folder**.
 1. In the dialog, set **Destination** to the new location for the folder, then click **Next**.
 1. Click **Move**.
@@ -236,7 +236,7 @@ To delete a folder:
 
 1. Move or delete all descendant folders and clusters.
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder that contains the folder you want to delete.
+1. Browse to the location of the folder that you want to delete.
 1. Next to the folder you want to delete, click the three-dots **Action** button and select **Delete folder**.
 1. Type the name of the folder to confirm, then click **Delete**.
 
