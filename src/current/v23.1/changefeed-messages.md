@@ -209,9 +209,9 @@ Changefeeds do not support total message ordering or transactional ordering of m
 
 Changefeeds provide a _per-key ordering guarantee_ for messages emitted to the sink. Once the changefeed has emitted a row with a timestamp, the changefeed will not emit any previously unseen versions of that row with a lower timestamp. Therefore, you will never receive a **new** change for that row at an earlier timestamp.
 
-For example, a changefeed can emit updates to rows A at timestamp T1, B at T2, and C at T3 in any order.
+For example, a changefeed can emit updates to rows `A` at timestamp `T1`, `B` at `T2`, and `C` at `T3` in any order.
 
-When there are updates to rows A at T1, B at T2, and A at T3, the changefeed will always emit A at T3 **after** A at T1. However, A at T3 could precede B at T2. This is because there is no timestamp ordering between keys.
+When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` **after** `A` at `T1`. However, `A` at `T3` could precede or follow `B` at `T2`. This is because there is no timestamp ordering between keys.
 
 As an example, you run the following sequence of SQL statements to create a changefeed:
 
@@ -264,7 +264,7 @@ As an example, you run the following sequence of SQL statements to create a chan
     {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
     ~~~
 
-    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` has emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. If you order messages by key, they will always be in the correct timestamp order.
+    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will always be in the correct timestamp order.
 
     The `updated` option adds an `updated` timestamp to each emitted row. You can also use the [`resolved` option](#resolved-messages) to emit a `resolved` timestamp message to each Kafka partition, or to a separate file at a cloud storage sink. A `resolved` timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
@@ -274,7 +274,7 @@ As an example, you run the following sequence of SQL statements to create a chan
 
 #### Define a key column
 
-Typically, changefeeds that emit to Kafka sinks shard rows between Kafka partition using the row's primary key. The primary key is computed into a hash, which remains the same and ensures a row will always emit to the same Kafka partition.
+Typically, changefeeds that emit to Kafka sinks shard rows between Kafka partitions using the row's primary key. The primary key is hashed, which remains the same and ensures a row will always emit to the same Kafka partition.
 
 In some cases, you may want to specify another column in a table as the key by using the [`key_column`]({% link {{ page.version.version }}/create-changefeed.md %}#key-column) option, which will determine the partition your messages will emit to. However, if you implement `key_column` with a changefeed, consider that other columns may have arbitrary values that change. As a result, the same row (i.e., by primary key) may emit to any partition at the sink based upon the column value. A changefeed with a `key_column` specified will still maintain per-key and at-least-once delivery guarantees.
 
@@ -288,7 +288,7 @@ CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
 
 ### At-least-once delivery
 
-Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit all messages starting from the previous checkpoint to ensure every message is delivered at least once.
+Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit all messages starting from the previous checkpoint to ensure every message is delivered at least once, but could be emitted more than once.
 
 Refer to [Duplicate messages](#duplicate-messages) for causes of messages repeating at the sink.
 
@@ -306,11 +306,14 @@ For example, the checkpoints and changefeed pauses marked in this output show ho
 
 [changefeed pauses before the next checkpoint was reached]
 
-[changefeed resumes and re-emits to ensure the sink received the messages]
+[changefeed resumes and re-emits the messages after the previous checkpoint to ensure the sink received the messages]
 
 {"after": {"id": 3, "name": "Ash", "office": "london"}, "key": [3], "updated": "1701102316388801052.0000000000"}
 {"after": {"id": 1, "name": "Terrence", "office": "new york city"}, "key": [1], "updated": "1701102320607990564.0000000000"}
 {"after": {"id": 2, "name": "Alex", "office": "new york city"}, "key": [2], "updated": "1701102325724272373.0000000000"}
+
+[changefeed continues to emit new events]
+
 {"after": {"id": 5, "name": "Robbie", "office": "london"}, "key": [5], "updated": "1701102330377135318.0000000000"}
 {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
 
