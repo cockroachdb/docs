@@ -189,7 +189,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - An AWS DMS migration can fail if the target schema has hidden columns. This includes databases with [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}) and [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) with [regional by row tables]({% link {{ page.version.version }}/table-localities.md %}). This is because the `COPY` statement used by DMS is unable to process hidden columns.
 
-    To prevent this error, set the `expect_and_ignore_not_visible_columns_in_copy` [session variable]({% link {{ page.version.version }}/session-variables.md %}) in the DMS [target endpoint configuration](#step-1-create-a-target-endpoint-pointing-to-cockroachdb). Under **Endpoint settings**, add an **AfterConnectScript** setting with the value `SET expect_and_ignore_not_visible_columns_in_copy=on`.
+    To prevent this error, set the [`expect_and_ignore_not_visible_columns_in_copy` session variable]({% link {{ page.version.version }}/session-variables.md %}#expect-and-ignore-not-visible-columns-in-copy) in the DMS [target endpoint configuration](#step-1-create-a-target-endpoint-pointing-to-cockroachdb). Under **Endpoint settings**, add an **AfterConnectScript** setting with the value `SET expect_and_ignore_not_visible_columns_in_copy=on`.
 
     <img src="{{ 'images/v23.1/aws-dms-endpoint-settings.png' | relative_url }}" alt="AWS-DMS-Endpoint-Settings" style="max-width:100%" />
 
