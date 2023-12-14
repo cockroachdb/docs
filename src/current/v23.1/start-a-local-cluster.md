@@ -16,7 +16,11 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
 
 - Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 - For quick SQL testing or app development, consider [running a single-node cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+- Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, refer to [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+
+{{site.data.alerts.callout_danger}}
+A node's store directory contains cluster data, metadata, and logs. If the store is incompatible with the CockroachDB binary version, this can lead to panics or other problems when starting a node. If you previously started a cluster with a different major version of CockroachDB on a node, do not attempt to reuse the store location when starting a new cluster with a new CockroachDB version. Instead, either [upgrade the existing cluster]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to the new version to update the store directory's contents, or move or delete the previous store directory before starting the `cockroach` process. The store directory is the `cockroach-data/` directory in the same directory as the `cockroach` command by default, or the location passed to the `--store` flag otherwise. For details about the store location, refer to [cockroach start]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+{{site.data.alerts.end}}
 
 ## Step 1. Start the cluster
 
