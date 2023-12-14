@@ -10,7 +10,13 @@ pre_production_preview_version: v23.2.0-beta.3
 ---
 
 {% if page.pre_production_preview == true %}
-[CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation. This [testing release]({% link releases/index.md %}#release-naming) is not qualified for production environments. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
+[CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation.
+
+{{site.data.alerts.callout_danger}}
+This [testing release]({% link releases/index.md %}#release-naming) is not qualified for production environments.
+{{site.data.alerts.end}}
+
+An [Org Administrator]({% linkcockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
 
 {{site.data.alerts.callout_success}}
 Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [upgrade policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview).
