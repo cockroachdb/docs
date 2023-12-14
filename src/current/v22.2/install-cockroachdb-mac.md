@@ -52,9 +52,22 @@ Use one of the options below to install CockroachDB.
         {% include marketo-install.html uid="1" %}
     </li>
   </ol>
-{{site.data.alerts.callout_info}}
-If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
-{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+If you previously installed CockroachDB via Homebrew, you can [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the CockroachDB binary to {{ page.version.version }} using HomeBrew. Before starting the upgrade, review the [release notes]({% link releases/{{ page.version.version }}.md %}), including temporary limitations during the upgrade.
+
+To upgrade CockroachDB via HomeBrew:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+brew update
+~~~
+~~~ shell
+brew update
+brew upgrade cockroach
+~~~
+
+After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade.
+{site.data.alerts.end}}
 </div>
 
 {% capture binary_arm_geos_unquarantine %}
