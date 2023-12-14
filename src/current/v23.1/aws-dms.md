@@ -187,9 +187,11 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation]({% link {{ page.version.version }}/collate.md %}) such as `COLLATE "en_US"` in CockroachDB.
 
-- A migration to a [multi-region cluster](multiregion-overview.html) using AWS DMS will fail if the target database has [regional by row tables](table-localities.html#regional-by-row-tables). This is because the `COPY` statement used by DMS is unable to process the `crdb_region` column in regional by row tables.
+- An AWS DMS migration can fail if the target schema has hidden columns. This includes databases with [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}) and [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) with [regional by row tables]({% link {{ page.version.version }}/table-localities.md %}). This is because the `COPY` statement used by DMS is unable to process hidden columns.
 
-    To prevent this error, [set the regional by row table localities to `REGIONAL BY TABLE`](alter-table.html#set-the-table-locality-to-regional-by-row) and perform the migration. After the DMS operation is complete, [set the table localities to `REGIONAL BY ROW`](alter-table.html#set-the-table-locality-to-regional-by-row).
+    To prevent this error, set the `expect_and_ignore_not_visible_columns_in_copy` [session variable]({% link {{ page.version.version }}/session-variables.md %}) in the DMS [target endpoint configuration](#step-1-create-a-target-endpoint-pointing-to-cockroachdb). Under **Endpoint settings**, add an **AfterConnectScript** setting with the value `SET expect_and_ignore_not_visible_columns_in_copy=on`.
+
+    <img src="{{ 'images/v23.1/aws-dms-endpoint-settings.png' | relative_url }}" alt="AWS-DMS-Endpoint-Settings" style="max-width:100%" />
 
 ## Troubleshooting common issues
 
