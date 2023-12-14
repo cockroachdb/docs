@@ -271,11 +271,11 @@ As an example, you run the following sequence of SQL statements to create a chan
 
 #### Define a key column
 
-Typically, changefeeds that emit to Kafka sinks shard rows between Kafka partitions using the row's primary key. The primary key is hashed, which remains the same and ensures a row will always emit to the same Kafka partition.
+Typically, changefeeds that emit to Kafka sinks shard rows between Kafka partitions using the row's primary key, which is hashed. The resulting hash remains the same and ensures a row will always emit to the same Kafka partition.
 
 In some cases, you may want to specify another column in a table as the key by using the [`key_column`]({% link {{ page.version.version }}/create-changefeed.md %}#key-column) option, which will determine the partition your messages will emit to. However, if you implement `key_column` with a changefeed, consider that other columns may have arbitrary values that change. As a result, the same row (i.e., by primary key) may emit to any partition at the sink based upon the column value. A changefeed with a `key_column` specified will still maintain per-key and at-least-once delivery guarantees.
 
-To confirm that messages may emit the same row to different partitions when an arbitrary column is used, you must include the `unordered` option:
+To confirm that messages may emit the same row to different partitions when an arbitrary column is used, you must include the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
