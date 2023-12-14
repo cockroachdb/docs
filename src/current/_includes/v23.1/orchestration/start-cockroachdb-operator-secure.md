@@ -1,6 +1,32 @@
 ### Install the Operator
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+{% capture apply_default_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
+    ~~~
+    ~~~
+    clusterrole.rbac.authorization.k8s.io/cockroach-database-role created
+    serviceaccount/cockroach-database-sa created
+    clusterrolebinding.rbac.authorization.k8s.io/cockroach-database-rolebinding created
+    role.rbac.authorization.k8s.io/cockroach-operator-role created
+    clusterrolebinding.rbac.authorization.k8s.io/cockroach-operator-rolebinding created
+    clusterrole.rbac.authorization.k8s.io/cockroach-operator-role created
+    serviceaccount/cockroach-operator-sa created
+    rolebinding.rbac.authorization.k8s.io/cockroach-operator-default created
+    deployment.apps/cockroach-operator created
+    ~~~
+{% endcapture %}
+{% capture download_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
+    ~~~
+{% endcapture %}
+{% capture apply_local_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f operator.yaml
+    ~~~
+{% endcapture %}
 
 1. Apply the [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
@@ -13,46 +39,7 @@
     customresourcedefinition.apiextensions.k8s.io/crdbclusters.crdb.cockroachlabs.com created
     ~~~
 
-1. By default, the Operator is configured to install in the `cockroach-operator-system` namespace and to manage CockroachDB instances for all namespaces on the cluster.
-
-    If you'd like to change either of these defaults:
-
-    1. Download the Operator manifest:
-
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
-        ~~~
-
-    1. To use a custom namespace, edit all instances of `namespace: cockroach-operator-system` with your desired namespace.
-
-    1. To limit the namespaces that will be monitored, set the `WATCH_NAMESPACE` environment variable in the `Deployment` pod spec. This can be set to a single namespace, or a comma-delimited set of namespaces. When set, only those `CrdbCluster` resources in the supplied namespace(s) will be reconciled.
-
-    1. Instead of using the command below, apply your local version of the Operator manifest to the cluster:
-
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl apply -f operator.yaml
-        ~~~
-
-    If you want to use the default namespace settings:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
-    ~~~
-
-    ~~~
-    clusterrole.rbac.authorization.k8s.io/cockroach-database-role created
-    serviceaccount/cockroach-database-sa created
-    clusterrolebinding.rbac.authorization.k8s.io/cockroach-database-rolebinding created
-    role.rbac.authorization.k8s.io/cockroach-operator-role created
-    clusterrolebinding.rbac.authorization.k8s.io/cockroach-operator-rolebinding created
-    clusterrole.rbac.authorization.k8s.io/cockroach-operator-role created
-    serviceaccount/cockroach-operator-sa created
-    rolebinding.rbac.authorization.k8s.io/cockroach-operator-default created
-    deployment.apps/cockroach-operator created
-    ~~~
+1. By default, the Operator is configured to install in the `cockroach-operator-system` namespace and to manage CockroachDB instances for all namespaces on the cluster.<ul><li>To use these defaults, apply the Operator manifest without modifying it: {{ apply_default_operator_manifest_command }}</li><li>To change these defaults:<ol><li>Download the Operator manifest: {{ download_operator_manifest_command }}</li><li>To use a custom namespace, edit all instances of <code>namespace: cockroach-operator-system</code> with your desired namespace.</code></li><li>To limit the namespaces that will be monitored, set the <code>WATCH_NAMESPACE</code> environment variable in the <code>Deployment</code> pod spec. This can be set to a single namespace or a comma-delimited set of namespaces. When set, only those <code>CrdbCluster</code> resources in the supplied namespace(s) will be reconciled.</li><li>Apply your local version of the Operator manifest to the cluster: {{ apply_local_operator_manifest_command }}</li></ol></li></ul>
 
 1. Set your current namespace to the one used by the Operator. For example, to use the Operator's default namespace:
 
@@ -86,12 +73,10 @@ After a cluster managed by the Kubernetes operator is initialized, its Kubernete
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    By default, this custom resource specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}).
-    {{site.data.alerts.end}}
+    By default, this custom resource specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster](configure-cockroachdb-kubernetes.html).
 
     {{site.data.alerts.callout_info}}
-    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. This means that if you do not provide a CA, a `cockroach`-generated CA is used. If you want to authenticate using your own CA, [specify the generated secrets in the custom resource]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes.md %}#use-a-custom-ca) **before** proceeding to the next step.
+    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. This means that if you do not provide a CA, a `cockroach`-generated CA is used. If you want to authenticate using your own CA, [specify the generated secrets in the custom resource](secure-cockroachdb-kubernetes.html#use-a-custom-ca) **before** proceeding to the next step.
     {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:

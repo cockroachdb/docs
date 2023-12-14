@@ -591,7 +591,7 @@ To link to a page outside of the current folder (e.g., a link from `v23.1` to `c
 
 #### Links to a specific location on a page that is not a heading
 
-To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `name` parameter:
+To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
 
 **Example:**
 

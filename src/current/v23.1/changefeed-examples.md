@@ -57,12 +57,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
 
-1. Move into the extracted `confluent-<version>` directory and start Confluent:
+1. In a new terminal window, go to the extracted `confluent-<version>` directory and start Confluent:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -202,7 +202,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -353,7 +353,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
@@ -495,7 +495,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 {% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
@@ -563,7 +563,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.
@@ -648,7 +648,7 @@ For different use case examples and syntax detail, refer to the [Change Data Cap
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. In this example, you'll run CockroachDB's [MovR]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.

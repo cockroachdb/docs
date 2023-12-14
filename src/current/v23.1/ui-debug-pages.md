@@ -31,9 +31,9 @@ The following debug reports are useful for monitoring and troubleshooting Cockro
 Report | Description | Access level
 --------|-----|--------
 [Custom Time Series Chart]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) | Create a custom chart of time series data. | All users.
-Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, paused, or have other problems. | [`admin` users only on secure clusters]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
-Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
-Statement Diagnostics History  | Diagnostic bundles for all statements executed on the cluster.  | [`admin` users only on secure clusters]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
+Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, paused, or have other problems. | On secure clusters, [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | On secure clusters, [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+Statement Diagnostics History  | Diagnostic bundles for all statements executed on the cluster.  | On secure clusters, [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) only.
 
 ## Configuration
 
@@ -42,7 +42,7 @@ The following configuration settings are useful for monitoring and troubleshooti
 Configuration | Description | Access level
 --------|-----|--------
 Cluster Settings | View cluster settings and their configured values. | All users can view data according to their privileges.
-Localities | Check node localities for your cluster. | [`admin` users only on secure clusters]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
+Localities | Check node localities for your cluster. | All users.
 
 ## Even More Advanced Debugging
 
