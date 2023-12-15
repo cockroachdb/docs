@@ -80,7 +80,7 @@ GKE users should note that we recommend deploying your application to a VPC-nati
 
 Setting up a VPC peering connection between your CockroachDB {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
-1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enable-vpc-peering-optional)
+1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}#step-7-enable-vpc-peering-optional)
 1. [Establish a VPC Peering connection after creating the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
