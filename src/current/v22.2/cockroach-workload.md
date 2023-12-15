@@ -97,7 +97,7 @@ Flag | Description
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--ranges` | The initial number of ranges in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10`
 `--rows` | The initial number of accounts in the `bank` table.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1000`
-`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** A random seed is used each time the command is run. Reusing a seed is recommended only for reproducing a specific pattern or behavior. Workloads that have a random element should use the default random seed.
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 
 ### `intro` and `startrek` workloads
@@ -130,7 +130,7 @@ Flag | Description
 `--min-block-bytes` | The minimum amount of raw data written with each insertion.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--read-percent` | The percent (0-100) of operations that are reads of existing keys.<br><br>**Applicable commands:** `init` or `run`
-`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--seed` | The key hash seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** A random seed is used each time the command is run. Reusing a seed is recommended only for reproducing a specific pattern or behavior. Workloads that have a random element should use the default random seed.
 `--sequential` | Pick keys sequentially instead of randomly.<br><br>**Applicable commands:** `init` or `run`
 `--splits` | The number of splits to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
@@ -158,7 +158,7 @@ Flag | Description
 `--num-users` | Initial number of users.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `50`
 `--num-vehicles` | Initial number of vehicles.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `15`
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
-`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** A random seed is used each time the command is run. Reusing a seed is recommended only for reproducing a specific pattern or behavior. Workloads that have a random element should use the default random seed.
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 
 ### `tpcc` workload
@@ -184,7 +184,7 @@ Flag | Description
 `--partitions` | Partition tables. This flag must be used in conjunction with `--split`.<br><br>**Applicable commands:** `init` or `run`
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--scatter` | Scatter ranges.<br><br>**Applicable commands:** `init` or `run`
-`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** A random seed is used each time the command is run. Reusing a seed is recommended only for reproducing a specific pattern or behavior. Workloads that have a random element should use the default random seed.
 `--serializable` | Force serializable mode. CockroachDB only supports `SERIALIZABLE` isolation, so this flag is not necessary.<br><br>**Applicable command:** `init`
 `--split` | [Split tables](alter-table.html#split-at).<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
@@ -214,7 +214,7 @@ Flag | Description
 `--method` | The SQL issue method (`prepare`, `noprepare`, `simple`).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `prepare`
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--request-distribution` | Distribution for the random number generator (`zipfian`, `uniform`).<br><br>**Applicable commands:** `init` or `run`.<br>**Default:** `zipfian`
-`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
+`--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** A random seed is used each time the command is run. Reusing a seed is recommended only for reproducing a specific pattern or behavior. Workloads that have a random element should use the default random seed.
 `--splits` | Number of [splits](alter-table.html#split-at) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--workload` | The type of workload to run (`A`, `B`, `C`, `D`, or `F`). For details about these workloads, see [YCSB Workloads](https://github.com/brianfrankcooper/YCSB/wiki/Core-Workloads).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `B`
