@@ -4,6 +4,8 @@ summary: Release notes for older versions of CockroachDB.
 toc: true
 docs_area: releases
 toc_not_nested: true
+pre_production_preview: true
+pre_production_preview_version: v23.2.0-beta.3
 ---
 
 {% comment %}
@@ -14,17 +16,16 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
 
-**Limited Access** binaries allow you to validate CockroachDB on on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled customers. To enroll your organization, contact your account representative.
+- **Generally Available (GA)** releases are qualified for production environments.
+- **Limited Access** binaries allow you to validate CockroachDB on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled customers. To enroll your organization, contact your account representative.
+- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
-The following binaries are not suitable for production environments:
+For more details, refer to [Release Naming](#release-naming).
 
-- **Testing** binaries allow you to validate the next major or minor version of CockroachDB while it is in development. A testing release is categorized by its level of maturity, moving from Alpha to Beta to Release Candidate (RC).
-
-  {{site.data.alerts.callout_danger}}
-  In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
-  {{site.data.alerts.end}}
-
-- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use.
+{{site.data.alerts.callout_danger}}
+In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
+{{site.data.alerts.end}}
 
 {{ experimental_js_warning }}
 
@@ -91,8 +92,6 @@ The following binaries are not suitable for production environments:
 
 <section class="filter-content" markdown="1" data-scope="linux">
 
-**Experimental** downloads are not yet qualified for production use.
-
     <table class="release-table">
     <thead>
         <tr>
@@ -114,8 +113,8 @@ The following binaries are not suitable for production environments:
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-            <td><span class="badge badge-gray">Withdrawn</span></td>
+                {% if r.withdrawn == true %} {% comment %} Suppress download links for withdrawn releases. {% endcomment %}
+            <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -124,9 +123,10 @@ The following binaries are not suitable for production environments:
                     {% endif %}
                 {% endif %}
                 {% if r.linux.linux_arm == true %}
-                    {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
-                <td><span class="badge badge-gray">Withdrawn</span></td>
-                    {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+                {% comment %}Don't print column because of previous colspan=2{% endcomment %}
+                    {% if r.withdrawn == true %}
+                        {% break %}
+                    {% else %}
                 <td>
                         {% if r.linux.linux_arm_experimental == true %}<b>Experimental:</b>{% endif %}
                     <div><a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-arm64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -144,7 +144,7 @@ The following binaries are not suitable for production environments:
 
 <section class="filter-content" markdown="1" data-scope="mac">
 
-**Experimental** downloads are not yet qualified for production use.
+**Experimental** downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
     <table class="release-table">
     <thead>
@@ -168,7 +168,7 @@ The following binaries are not suitable for production environments:
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-            <td><span class="badge badge-gray">Withdrawn</span></td>
+            <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -177,9 +177,10 @@ The following binaries are not suitable for production environments:
                     {% endif %}
             {% endif %}
             {% if r.mac.mac_arm == true %}
-                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
-            <td><span class="badge badge-gray">Withdrawn</span></td>
-                {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+                {% comment %}Don't print column because of previous colspan=2{% endcomment %}
+                    {% if r.withdrawn == true %}
+                        {% break %}
+                    {% else %}
             <td>
                     {% if r.mac.mac_arm_limited_access == true %}<b>Limited Access:</b>{% elsif r.mac.mac_arm_experimental == true %}<b>Experimental:</b>{% endif %}
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz">Full Binary</a>(<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
@@ -197,7 +198,7 @@ The following binaries are not suitable for production environments:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-    Windows 8 or higher is required. Windows downloads are **experimental** and not yet qualified for production use.
+    Windows 8 or higher is required. Windows downloads are **experimental** and not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
     <table class="release-table">
     <thead>
@@ -218,7 +219,7 @@ The following binaries are not suitable for production environments:
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-            <td><span class="badge badge-gray">Withdrawn</span></td>
+            <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                     {% if r.windows == true %}
@@ -334,12 +335,16 @@ The following binaries are not suitable for production environments:
 
 ## Release naming
 
-Cockroach Labs uses a three-component calendar versioning scheme to name [production releases](#production-releases) of CockroachDB. The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates release with “1” for Spring and “2” for Fall, and `PP` indicates the patch release version. Example: Version 20.1.1 (abbreviated v20.1.1).
+Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (“1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
 
-{{site.data.alerts.callout_info}}
-This calendar versioning scheme began with v19.1. Prior releases use a different versioning scheme.
-{{site.data.alerts.end}}
+A major release is typically produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
 
-- A major release is produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
+Patch releases are produced during the [support period]({% link releases/release-support-policy.md %}) for a major version to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
 
-- A patch (or maintenance) release is produced to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
+During development of a major version of CockroachDB, releases are produced according to the following patterns. Alpha, Beta, and Release Candidate releases are testing releases intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+
+- Alpha releases are the earliest testing releases leading up to a major version's initial GA (generally available) release, and have `alpha` in the version name. Example: `v23.1.0-alpha.1`.
+- Beta releases are produced after the series of alpha releases leading up to a major version's initial GA release, and tend to be more stable and introduce fewer changes than alpha releases. They have `beta` in the version name. Example: `v23.1.0-beta.1`.
+- Release candidates are produced after the series of beta releases and are nearly identical to what will become the initial generally available (GA) release. Release candidates have `rc` in the version name. Example: `v23.1.0-rc.1`.
+- A major version's GA release is produced after the series of release candidates for a major version, and ends with `0`. Example: `v23.1.0`. GA releases are validated and suitable for production environments.
+- Patch (maintenance) releases are produced after a major version's GA release, and are numbered sequentially. Example: `v23.1.13`.
