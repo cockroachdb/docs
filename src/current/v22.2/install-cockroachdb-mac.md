@@ -53,7 +53,9 @@ Use one of the options below to install CockroachDB.
     </li>
   </ol>
 {{site.data.alerts.callout_success}}
-If you previously installed CockroachDB via Homebrew, you can [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the CockroachDB binary to {{ page.version.version }} using HomeBrew. Before starting the upgrade, review the [release notes]({% link releases/{{ page.version.version }}.md %}), including temporary limitations during the upgrade.
+If you previously installed CockroachDB via Homebrew, you can [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the CockroachDB binary to the next major version or to a patch version using HomeBrew. After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade. If you need to upgrade through multiple major versions, you must complete each major-version upgrade separately, including finalizing the upgrade, before beginning the next one.
+
+Before starting the upgrade, review the [release notes]({% link releases/{{ page.version.version }}.md %}), including temporary limitations during the upgrade.
 
 To upgrade CockroachDB via HomeBrew:
 
@@ -65,8 +67,6 @@ brew update
 brew update
 brew upgrade cockroach
 ~~~
-
-After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade.
 {site.data.alerts.end}}
 </div>
 
