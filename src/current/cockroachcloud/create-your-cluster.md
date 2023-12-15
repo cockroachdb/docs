@@ -110,7 +110,7 @@ See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) fo
 When you create a new cluster, by default it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud). During the development cycle of the next major version of CockroachDB, a beta testing release release is made available for CockroachDB {{ site.data.products.dedicated }} as a [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) release.
 
 {{site.data.alerts.callout_danger}}
-Testing releases, including pre-production preview releases, are provided for testing and experimentation only, and are not qualified for production environments.
+Testing releases, including pre-production preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
 When a pre-production preview release is available, you can select it instead of the latest production release in the **Cluster Version** section alongside the latest production release. After you create a cluster using a pre-production preview build, each subsequent release within the same major version, including the GA release, is treated as a patch version upgrade. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).

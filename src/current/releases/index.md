@@ -18,8 +18,8 @@ After downloading your desired release, learn how to [install CockroachDB](https
 
 - **Generally Available (GA)** releases are qualified for production environments.
 - **Limited Access** binaries allow you to validate CockroachDB on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled customers. To enroll your organization, contact your account representative.
-- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments.
-- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use.
+- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
 For more details, refer to [Release Naming](#release-naming).
 
@@ -144,7 +144,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 
 <section class="filter-content" markdown="1" data-scope="mac">
 
-**Experimental** downloads are not yet qualified for production use.
+**Experimental** downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
     <table class="release-table">
     <thead>
@@ -198,7 +198,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-    Windows 8 or higher is required. Windows downloads are **experimental** and not yet qualified for production use.
+    Windows 8 or higher is required. Windows downloads are **experimental** and not yet qualified for production use and not eligible for support or uptime SLA commitments.
 
     <table class="release-table">
     <thead>
@@ -335,13 +335,13 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 
 ## Release naming
 
-Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (“1” or “2”, representing a biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
+Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (“1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
 
-A major release is produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
+A major release is typically produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
 
 Patch releases are produced during the [support period]({% link releases/release-support-policy.md %}) for a major version to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
 
-During development of a major version of CockroachDB, releases are produced according to the following patterns. Alpha, Beta, and Release Candidate releases are testing releases intended for testing and experimentation only, and are not qualified for production environments.
+During development of a major version of CockroachDB, releases are produced according to the following patterns. Alpha, Beta, and Release Candidate releases are testing releases intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
 
 - Alpha releases are the earliest testing releases leading up to a major version's initial GA (generally available) release, and have `alpha` in the version name. Example: `v23.1.0-alpha.1`.
 - Beta releases are produced after the series of alpha releases leading up to a major version's initial GA release, and tend to be more stable and introduce fewer changes than alpha releases. They have `beta` in the version name. Example: `v23.1.0-beta.1`.

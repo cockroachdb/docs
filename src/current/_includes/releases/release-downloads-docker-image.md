@@ -12,7 +12,7 @@
 {% else %}
 
 {{site.data.alerts.callout_info}}
-Binaries marked Experimental are not qualified for production use, whether they are for testing releases or production releases.
+Binaries marked Experimental are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 {{site.data.alerts.end}}
 
 <h4>Full CockroachDB executable</h4>
@@ -79,7 +79,7 @@ Binaries marked Experimental are not qualified for production use, whether they 
     {% if release.docker.docker_arm_limited_access == true %}
 Within the multi-platform image:<ul><li>The ARM image is in **Limited Access**.</li><li>The Intel image is **Generally Available** for production use.</li></ul>
     {% elsif release.docker.docker_arm_experimental == true %}
-Within the multi-platform image:<ul><li>The ARM image is **Experimental** and not yet qualified for production use.</li><li>The Intel image is **Generally Available** for production use.</li></ul>
+Within the multi-platform image:<ul><li>The ARM image is **Experimental** and not yet qualified for production use and not eligible for support or uptime SLA commitments.</li><li>The Intel image is **Generally Available** for production use.</li></ul>
     {% else %}
 Within the multi-platform image, both Intel and ARM images are **generally available** for production use.
     {% endif %}
