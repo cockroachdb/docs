@@ -19,7 +19,7 @@ This [testing release]({% link releases/index.md %}#release-naming) is not quali
 An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
 
 {{site.data.alerts.callout_success}}
-Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [upgrade policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview).
+Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [upgrade policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview build, subsequent patch releases are applied automatically, including additional v{{ page.page_version }} Beta and Release Candidate (RC) releases, the GA release, and patch releases after GA.
 {{site.data.alerts.end}}
 {% else %}
 {{site.data.alerts.callout_success}}
@@ -97,9 +97,9 @@ To start the upgrade process:
 
 1. In the **Clusters** list, select the cluster you want to upgrade.
 
-1. Select **Actions > Upgrade {% if page.pre_production_preview == true %}to pre-production preview{% else %}major version{% endif %}**.
+1. Select **Actions > Upgrade {% if page.pre_production_preview == true %}to Pre-Production Preview{% else %}major version{% endif %}**.
 
-1. In the **Upgrade your cluster** dialog, review the pre-upgrade message and then click {% if page.pre_production_preview == true %}to pre-production preview{% else %}major version{% endif %}.
+1. In the **Upgrade your cluster** dialog, review the pre-upgrade message and then click {% if page.pre_production_preview == true %}to Pre-Production Preview{% else %}major version{% endif %}.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 Your cluster will be upgraded one node at a time without interrupting the cluster's overall health and availability. This "rolling upgrade" will take approximately 4-5 minutes per node.

@@ -12,7 +12,7 @@ Cockroach Labs uses a three-component calendar versioning scheme to name Cockroa
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the major version immediately preceding it. Support for these versions includes patch version upgrades and security patches.
 
 {{site.data.alerts.callout_success}}
-CockroachDB {{ site.data.products.dedicated }} clusters can optionally be upgraded to a beta release for testing and validation of the next major version of CockroachDB. To learn more, refer to [Upgrade to v23.2.0 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}).
+CockroachDB {{ site.data.products.dedicated }} clusters can optionally be upgraded to a a [Pre-Production Preview](#pre-production-preview) release, which is beta or release candidate (RC) testing release for testing and validation of the next major version of CockroachDB. To learn more, refer to [Upgrade to v23.2.0 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
@@ -40,7 +40,7 @@ Major version [releases](https://www.cockroachlabs.com/docs/releases) (for examp
 Major version upgrades are automatic for CockroachDB {{ site.data.products.serverless }} clusters and opt-in for CockroachDB {{ site.data.products.dedicated }} clusters. [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) must initiate major version upgrades for CockroachDB {{ site.data.products.dedicated }} clusters. When a new major version is available, Admins will be able to [start an upgrade]({% link cockroachcloud/upgrade-to-v23.1.md %}) from the CockroachDB {{ site.data.products.cloud }} Console for clusters using the paid version of CockroachDB {{ site.data.products.dedicated }}. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well.
 
 ### Pre-production preview upgrades
-CockroachDB {{ site.data.products.cloud }} organizations can create new clusters or upgrade existing clusters to a pre-production preview release to test and experiment using a beta release of the next major version of CockroachDB. Upgrading to a pre-production preview is a major-version upgrade. After the upgrade to a pre-production preview, each subsequent release within the same major version, including the GA release, is treated as a [patch version upgrade](#patch-version-upgrades). To learn more, refer to [Upgrade to v23.2 Pre-Production Preview](https://cockroachlabs.com/docs/cockroachcloud/upgrade-to-v23.2)
+CockroachDB {{ site.data.products.cloud }} organizations can create new clusters or upgrade existing clusters to a Pre-Production Preview release to test and experiment using a beta release of the next major version of CockroachDB. Upgrading to a Pre-Production Preview is a major-version upgrade. After a cluster is upgraded to a Pre-Production Preview release, subsequent patch releases, including additional beta and RC releases for the new major version, the GA release, and patch releases after GA, are treated as [patch version upgrades](#patch-version-upgrades). To learn more, refer to [Upgrade to v23.2 Pre-Production Preview](https://cockroachlabs.com/docs/cockroachcloud/upgrade-to-v23.2)
 
 ### Rollback support
 

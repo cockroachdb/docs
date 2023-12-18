@@ -1,3 +1,3 @@
 - For **CockroachDB {{ site.data.products.core }}**: All {{ include.major_version.major_version }} testing binaries and Docker images are available for download.
-- For **CockroachDB {{ site.data.products.dedicated }}**: A {{ include.major_version.major_version }} beta testing release is available as a [Pre-Production Preview](http://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview).
+- For **CockroachDB {{ site.data.products.dedicated }}**: A {{ include.major_version.major_version }} beta or release candidate (RC) testing release is available as [Pre-Production Preview](http://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview) releases until {{ include.major_version.major_version }}.0 GA release.
 - For **CockroachDB {{ site.data.products.serverless }}**: {{ include.major_version.major_version }} testing releases are not available.
