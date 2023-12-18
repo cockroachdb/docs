@@ -222,7 +222,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 ### RETRY_COMMIT_DEADLINE_EXCEEDED
 
 ```
-TransactionRetryWithProtoRefreshError: TransactionPushError: transaction deadline exceeded ...
+TransactionRetryWithProtoRefreshError: TransactionRetryError: transaction deadline exceeded ...
 ```
 
 **Error type:** Internal state error
