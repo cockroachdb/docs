@@ -27,24 +27,30 @@ Because CockroachDB enables transactions that can span your entire cluster (incl
 
 When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates several things that help it mediate a distributed transaction:
 
-  - **Write intents** are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), and act as a combination of a provisional value and an [exclusive lock]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths). They are essentially the same as standard [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster. For more details, see [Write intents](#write-intents).
+- **Write intents** are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), and act as a combination of a provisional value and an [exclusive lock](#reading). They are essentially the same as standard [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster. For more details, see [Write intents](#write-intents).
 
-  - **Unreplicated locks** for a transaction's writes, which represent a provisional, uncommitted state. These locks are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery.
+- **Unreplicated locks** for a transaction's writes, which represent a provisional, uncommitted state. These locks are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery.
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
-As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents for the same keys exist, it is resolved as a [transaction conflict](#transaction-conflicts).
+As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents or [locks](#reading) exist on the same keys, it is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 
 #### Reading
 
-If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if it encounters any write intents, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
+If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if a [locking read]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) encounters any existing locks, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
 
 CockroachDB provides the following types of reads:
 
 - Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and see all writes performed by writers that committed before the reading transaction (under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation) or statement (under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation) started. They always return data that is correct and up-to-date.
 - Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}).
+
+Reads can optionally [acquire the following locks]({% link {{ page.version.version }}/read-committed.md %}#locking-reads):
+
+- **Exclusive locks** block concurrent [writes](#writing) and [locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) on a row. Only one transaction can hold an exclusive lock on a row at a time, and only the transaction holding the exclusive lock can write to the row. By default under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, exclusive locks are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
+
+- **Shared locks** block concurrent [writes](#writing) and **exclusive** [locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) on a row. Multiple transactions can hold a shared lock on a row at the same time. When multiple transactions hold a shared lock on a row, none can write to the row. A shared lock grants transactions mutual read-only access to a row, and ensures that they read the latest value of the row. By default under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, exclusive locks are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 
 ### Commits (phase 2)
 
@@ -107,7 +113,7 @@ All transactions operate on a *read snapshot*, which defines which committed dat
 
 `SERIALIZABLE` transactions maintain per-transaction read snapshots via [read refreshing](#read-refreshing), while `READ COMMITTED` transactions use per-statement read snapshots that advance with each statement in the transaction.
 
-When each statement in a `READ COMMITTED` transaction begins, it establishes a new read snapshot from the [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp, capturing the writes previously committed by transactions. This means that a `READ COMMITTED` transaction can operate across multiple read snapshots, and guarantees that when a `READ COMMITTED` transaction begins, it will only read the latest value of each row it retrieves. Because each subsequent statement uses a new read snapshot, reads in a `READ COMMITTED` transaction can [return different results]({% link {{ page.version.version }}/read-committed.md %}#non-repeatable-reads-and-phantom-reads).
+When each statement in a `READ COMMITTED` transaction begins, it establishes a new read snapshot by selecting a new [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp from the [hybrid-logical clock](#time-and-hybrid-logical-clocks), capturing the writes previously committed by transactions. This means that a `READ COMMITTED` transaction can operate across multiple read snapshots, and guarantees that when each statement in `READ COMMITTED` transaction begins, it will only read the latest value of each row it retrieves. Because each subsequent statement uses a new read snapshot, reads in a `READ COMMITTED` transaction can [return different results]({% link {{ page.version.version }}/read-committed.md %}#non-repeatable-reads-and-phantom-reads).
 
 {{site.data.alerts.callout_info}}
 Per-statement read snapshots enable `READ COMMITTED` transactions to resolve [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) by retrying individual statements rather than entire transactions. Statement-level retries are automatically performed without involving the client, whereas transaction-level retries (as required with `SERIALIZABLE` isolation) usually require [client-side logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For more details on how transactions handle conflicts, see [Transaction conflicts](#transaction-conflicts).
@@ -240,7 +246,7 @@ Fairness is ensured between requests. In general, if any two requests conflict t
 
 #### Lock table
 
- The lock table is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. Each lock in the table has a possibly-empty lock wait-queue associated with it, where conflicting transactions can queue while waiting for the lock to be released.  Items in the locally stored lock wait-queue are propagated as necessary (via RPC) to the existing [`TxnWaitQueue`](#txnwaitqueue), which is stored on the leader of the range's Raft group that contains the [transaction record](#transaction-records).
+The lock table is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. Each lock in the table has a possibly-empty lock wait-queue associated with it, where conflicting transactions can queue while waiting for the lock to be released.  Items in the locally stored lock wait-queue are propagated as necessary (via RPC) to the existing [`TxnWaitQueue`](#txnwaitqueue), which is stored on the leader of the range's Raft group that contains the [transaction record](#transaction-records).
 
 The database is read and written using "requests". Transactions are composed of one or more requests. Isolation is needed across requests. Additionally, since transactions represent a group of requests, isolation is needed across such groups. Part of this isolation is accomplished by maintaining multiple versions and part by allowing requests to acquire locks. Even the isolation based on multiple versions requires some form of mutual exclusion to ensure that a read and a conflicting lock acquisition do not happen concurrently. The lock table provides both locking and sequencing of requests (in concert with the use of latches).
 
@@ -278,7 +284,7 @@ Another way to think of a latch is like a [mutex](https://wikipedia.org/wiki/Loc
 
 CockroachDB's transactions allow the following types of conflicts that involve running into a [write intent](#write-intents):
 
-- **Write-write**, where two `PENDING` transactions create write intents for the same key.
+- **Write-write**, where two transactions create write intents or acquire a lock on the same key.
 - **Write-read**, when a read encounters an existing write intent with a timestamp less than its own. 
     {{site.data.alerts.callout_info}}
     Writes can only block reads under the default [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level.
@@ -327,7 +333,7 @@ Whenever a `SERIALIZABLE` transaction's timestamp has been pushed, additional ch
 The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
 
 {{site.data.alerts.callout_info}}
-<a name="write-skew-tolerance"></a> `READ COMMITTED` transactions do **not** perform read refreshing. Instead, they permit their [read timestamps](#read-snapshots) and write timestamps to skew at commit time. This makes it possible for statements in concurrent `READ COMMITTED` transactions to interleave with one another without blocking or aborting transactions, and enables potential [concurrency anomalies]({% link {{ page.version.version }}/read-committed.md %}#concurrency-anomalies).
+<a name="write-skew-tolerance"></a> `READ COMMITTED` transactions do **not** perform read refreshing before commit. Instead, they permit their [read timestamps](#read-snapshots) and write timestamps to skew at commit time. This makes it possible for statements in concurrent `READ COMMITTED` transactions to interleave with one another without blocking or aborting transactions, and enables potential [concurrency anomalies]({% link {{ page.version.version }}/read-committed.md %}#concurrency-anomalies).
 {{site.data.alerts.end}}
 
 ### Transaction pipelining

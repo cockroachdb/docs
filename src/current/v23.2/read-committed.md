@@ -45,7 +45,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 	SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED;
 	~~~
 
-- The `default_transaction_isolation` [session variable]({% link {{ page.version.version }}/session-variables.md %}):
+- The [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) session variable:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -91,7 +91,7 @@ To begin a transaction as a `READ COMMITTED` transaction, use one of the followi
 	  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 	~~~
 
-- The `transaction_isolation` [session variable]({% link {{ page.version.version }}/session-variables.md %}), at the beginning of the transaction: 
+- The [`transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#transaction-isolation) session variable, at the beginning of the transaction: 
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -120,9 +120,9 @@ Starting a transaction as `READ COMMITTED` does not affect the [session-level is
 
 `READ COMMITTED` and `SERIALIZABLE` transactions both serve globally consistent ("non-stale") reads and [commit atomically]({% link {{ page.version.version }}/developer-basics.md %}#how-transactions-work-in-cockroachdb). `READ COMMITTED` transactions have the following differences:
 
-- Writes in concurrent `READ COMMITTED` transactions can interleave without blocking or aborting transactions, and a write can never block a read of the same row. This is because `READ COMMITTED` transactions are not required to be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}). 
+- Writes in concurrent `READ COMMITTED` transactions can interleave without aborting transactions, and a write can never block a non-locking read of the same row. This is because `READ COMMITTED` transactions are not required to be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}). 
 
-- Whereas statements in `SERIALIZABLE` transactions see data that committed before the transaction began, statements in `READ COMMITTED` transactions see data that committed before each **statement** began. If rows are being updated by concurrent writes, reads in a `READ COMMITTED` transaction can return different results.
+- Whereas statements in `SERIALIZABLE` transactions see data that committed before the transaction began, statements in `READ COMMITTED` transactions see data that committed before each **statement** began. If rows are being updated by concurrent writes, reads in a `READ COMMITTED` transaction can [return different results](#non-repeatable-reads-and-phantom-reads).
 
 	{{site.data.alerts.callout_info}}
 	For details on how this is implemented, see [Read snapshots]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-snapshots).
@@ -140,7 +140,7 @@ Starting a transaction as `READ COMMITTED` does not affect the [session-level is
 
 - [Constraint]({% link {{ page.version.version }}/constraints.md %}) violations will abort transactions at all isolation levels.
 
-- In rare cases under `READ COMMITTED` isolation, a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) error will be returned to the client if a statement has already begun streaming a partial result set back to the client and cannot retry transparently. By default, the result set is buffered up to 16 KiB before overflowing and being streamed to the client. You can configure the result buffer size using the [`sql.defaults.results_buffer.size`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size) cluster setting or the [`results_buffer_size`]({% link {{ page.version.version }}/session-variables.md %}) session variable.
+- In rare cases under `READ COMMITTED` isolation, a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) error will be returned to the client if a statement has already begun streaming a partial result set back to the client and cannot retry transparently. By default, the result set is buffered up to 16 KiB before overflowing and being streamed to the client. You can configure the result buffer size using the [`sql.defaults.results_buffer.size`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size) cluster setting or the [`results_buffer_size`]({% link {{ page.version.version }}/session-variables.md %}#results-buffer-size) session variable.
 
 ### Concurrency anomalies
 
@@ -148,128 +148,6 @@ Statements in concurrent `READ COMMITTED` transactions can interleave with each 
 
 {{site.data.alerts.callout_success}}
 The behaviors described in this section assume the use of non-locking reads. You can prevent concurrency anomalies through the selective use of [locking reads](#locking-reads), which can also increase latency due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-{{site.data.alerts.end}}
-
-#### Write skew anomaly
-
-The following sequence of operations is possible under `READ COMMITTED` isolation: 
-
-1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
-1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
-1. Transaction `A` writes to another row in table `T` and commits at timestamp `3`.
-
-The value of `R` has changed while transaction `A` is open. However, `A` can still write and commit instead of aborting, since `READ COMMITTED` transactions do not require serializability. This does not inherently create an anomaly, but is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
-
-{{site.data.alerts.callout_info}}
-For details on why this is allowed, see [Read refreshing]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-skew-tolerance).
-{{site.data.alerts.end}}
-
-##### Example: Write skew anomaly
-
-For an example of how a write skew anomaly can occur, see [Demonstrate interleaved statements in `READ COMMITTED` transactions](#demonstrate-interleaved-statements-in-read-committed-transactions).
-
-#### Lost updates
-
-The `READ COMMITTED` conditions that permit [write skew anomalies](#write-skew-anomaly) also permit *lost updates*, where an update from a transaction appears to be "lost" because it is overwritten by a concurrent transaction:
-
-1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
-1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
-1. Transaction `A` writes to row `R` in table `T` and commits at timestamp `3`.
-
-The value of `R` has changed while transaction `A` is open. However, `A` can still write to `R` and commit, effectively overwriting the update from transaction `B`.
-
-{{site.data.alerts.callout_info}}
-Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) error, prompting the client to retry the transaction.
-{{site.data.alerts.end}}
-
-##### Example: Lost update
-
-  <div class="grid-container">
-  <h5 style="text-align:center">Session 1</h5><h5 style="text-align:center">Session 2</h5>
-  <div class="grid-item">
-  In a terminal window (Session 1), create a table and insert some values:
-
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  CREATE TABLE kv (k INT PRIMARY KEY, v INT);
-  ~~~
-
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  INSERT INTO kv VALUES (1, 2);
-  ~~~
-  
-  Begin a `READ COMMITTED` transaction and read a table row:
-
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    SELECT * FROM kv WHERE k = 1;
-  ~~~
-  
-  ~~~
-    k | v
-  ----+----
-    1 | 2
-  ~~~
-  </div>
-
-  <div class="grid-item">
-  In a new terminal window (Session 2), begin another `READ COMMITTED` transaction:
-
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-  ~~~
-  
-  Update the table row and commit the transaction:
-  
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  UPDATE kv SET v = 3 WHERE k = 1;
-    COMMIT;
-  ~~~
-  </div>
-
-  <div class="grid-item">
-  In Session 1, update the table row again and commit the transaction:
-
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  UPDATE kv SET v = 4 WHERE k = 1;
-    COMMIT;
-  ~~~
-  
-  Read the table row and see that it reflects the update from Session 1:
-  
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  SELECT * FROM kv WHERE k = 1;
-  ~~~
-  
-  ~~~
-    k | v
-  ----+----
-    1 | 4
-  ~~~
-  </div>
-  </div>
-
-The update in Session 2 appears to be "lost" because its result is overwritten by a concurrent transaction. It is **not** lost at the database level, and can be found using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) and a timestamp earlier than the commit in Session 1:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM kv AS OF SYSTEM TIME '2023-11-09 21:22:10' WHERE k = 1;
-~~~
-
-~~~
-  k | v
-----+----
-  1 | 3
-~~~
-
-{{site.data.alerts.callout_info}}
-While concurrent `READ COMMITTED` transactions can have their writes overwritten, **uncommitted** writes in `READ COMMITTED` transactions cannot be overwritten.
 {{site.data.alerts.end}}
 
 #### Non-repeatable reads and phantom reads
@@ -361,9 +239,131 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   </div>
   </div>
 
+#### Lost update anomaly
+
+The `READ COMMITTED` conditions that permit [non-repeatable reads and phantom reads](#non-repeatable-reads-and-phantom-reads) also permit *lost update anomalies*, where an update from a transaction appears to be "lost" because it is overwritten by a concurrent transaction:
+
+1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
+1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
+1. Transaction `A` writes to row `R` in table `T` and commits at timestamp `3`.
+
+The value of `R` has changed while transaction `A` is open. However, `A` can still write to `R` and commit, effectively overwriting the update from transaction `B`.
+
+{{site.data.alerts.callout_info}}
+Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) error, prompting the client to retry the transaction.
+{{site.data.alerts.end}}
+
+##### Example: Lost update anomaly
+
+  <div class="grid-container">
+  <h5 style="text-align:center">Session 1</h5><h5 style="text-align:center">Session 2</h5>
+  <div class="grid-item">
+  In a terminal window (Session 1), create a table and insert some values:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  CREATE TABLE kv (k INT PRIMARY KEY, v INT);
+  ~~~
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  INSERT INTO kv VALUES (1, 2);
+  ~~~
+  
+  Begin a `READ COMMITTED` transaction and read a table row:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    SELECT * FROM kv WHERE k = 1;
+  ~~~
+  
+  ~~~
+    k | v
+  ----+----
+    1 | 2
+  ~~~
+  </div>
+
+  <div class="grid-item">
+  In a new terminal window (Session 2), begin another `READ COMMITTED` transaction:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
+  ~~~
+  
+  Update the table row and commit the transaction:
+  
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  UPDATE kv SET v = 3 WHERE k = 1;
+    COMMIT;
+  ~~~
+  </div>
+
+  <div class="grid-item">
+  In Session 1, update the table row again and commit the transaction:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  UPDATE kv SET v = 4 WHERE k = 1;
+    COMMIT;
+  ~~~
+  
+  Read the table row and see that it reflects the update from Session 1:
+  
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  SELECT * FROM kv WHERE k = 1;
+  ~~~
+  
+  ~~~
+    k | v
+  ----+----
+    1 | 4
+  ~~~
+  </div>
+  </div>
+
+The update in Session 2 appears to be "lost" because its result is overwritten by a concurrent transaction. It is **not** lost at the database level, and can be found using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) and a timestamp earlier than the commit in Session 1:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM kv AS OF SYSTEM TIME '2023-11-09 21:22:10' WHERE k = 1;
+~~~
+
+~~~
+  k | v
+----+----
+  1 | 3
+~~~
+
+{{site.data.alerts.callout_info}}
+While concurrent `READ COMMITTED` transactions can have their writes overwritten, **uncommitted** writes in `READ COMMITTED` transactions cannot be overwritten.
+{{site.data.alerts.end}}
+
+#### Write skew anomaly
+
+The following sequence of operations is possible under `READ COMMITTED` isolation: 
+
+1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
+1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
+1. Transaction `A` writes to another row in table `T` and commits at timestamp `3`.
+
+The value of `R` has changed while transaction `A` is open. However, `A` can still write and commit instead of aborting, since `READ COMMITTED` transactions do not require serializability. This does not inherently create an anomaly, but is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
+
+{{site.data.alerts.callout_info}}
+For details on why this is allowed, see [Read refreshing]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-skew-tolerance).
+{{site.data.alerts.end}}
+
+##### Example: Write skew anomaly
+
+For an example of how a write skew anomaly can occur, see [Demonstrate interleaved statements in `READ COMMITTED` transactions](#demonstrate-interleaved-statements-in-read-committed-transactions).
+
 ## Locking reads
 
-To reduce the occurrence of [concurrency anomalies](#concurrency-anomalies) in `READ COMMITTED` isolation, you can strengthen the isolation of individual transactions by using [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) or [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) to issue *locking reads* on specific rows. Locking reads behave similarly to [writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents): they lock qualifying rows to prevent concurrent writes from modifying them until the transaction commits. Conversely, if a locking read finds that a row is exclusively locked by a concurrent transaction, it waits for the other transaction to commit or rollback before proceeding. A locking read in a transaction will always have the latest value of a row when the transaction commits.
+To reduce the occurrence of [concurrency anomalies](#concurrency-anomalies) in `READ COMMITTED` isolation, you can strengthen the isolation of individual reads by using [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) or [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) to issue *locking reads* on specific rows. Locking reads behave similarly to [writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents): they lock qualifying rows to prevent concurrent writes from modifying them until the transaction commits. Conversely, if a locking read finds that a row is exclusively locked by a concurrent transaction, it waits for the other transaction to commit or rollback before proceeding. A locking read in a transaction will always have the latest value of a row when the transaction commits.
 
 The clause used with the `SELECT` statement determines the *lock strength* of a locking read:
 
@@ -384,6 +384,10 @@ To use locking reads:
 - If you need to read and later update a row within a transaction, use `SELECT ... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations.
 
 - If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads.
+
+	{{site.data.alerts.callout_success}}
+	This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed.
+	{{site.data.alerts.end}}
 
 ## Examples
 

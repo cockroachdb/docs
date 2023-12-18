@@ -38,7 +38,7 @@ The following limitations reflect the default behavior under [`SERIALIZABLE`]({%
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
-- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
 

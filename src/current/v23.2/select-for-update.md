@@ -31,15 +31,13 @@ Under `SERIALIZABLE` isolation:
 
 - Shared locks are not enabled by default. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). To perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). This matches the default [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) behavior.
 
-- If the [`optimizer_use_lock_op_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}) is enabled, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) uses a `Lock` operator to construct query plans for `SELECT` statements using the `FOR UPDATE` and `FOR SHARE` clauses. This more closely matches the PostgreSQL behavior, but will create more round trips from [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) to [replica leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
+- If the [`optimizer_use_lock_op_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}) is enabled, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) uses a `Lock` operator to construct query plans for `SELECT` statements using the `FOR UPDATE` and `FOR SHARE` clauses. This more closely matches the PostgreSQL behavior, but will create more round trips from [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) to [replica leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) in some cases.
 
 ### Lock strengths
 
 Lock "strength" determines how restrictive the lock is to concurrent transactions attempting to access the same row.
 
 {% include {{ page.version.version }}/sql/select-lock-strengths.md %}
-
-Locking strength dictates the row-level locking behavior on rows retrieved by a `SELECT` statement.
 
 Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) regardless of the specified lock strength.                    
 
@@ -51,7 +49,7 @@ Note that CockroachDB [ensures serializability]({% link {{ page.version.version 
 
 {% include_cached new-in.html version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
-If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
+If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
 
 Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT ... FOR SHARE` locking mechanism to perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks.
 
