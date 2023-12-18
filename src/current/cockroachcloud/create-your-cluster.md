@@ -107,13 +107,15 @@ See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) fo
 
 ## Step 6. Select the CockroachDB version
 
-When you create a new cluster, by default it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud). During the development cycle of the next major version of CockroachDB, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.dedicated }} as a [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) release.
+When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
+Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.dedicated }} as  [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. If available, the laterst Pre-Production Preview release is listed alongside the latest production release.
 
 {{site.data.alerts.callout_danger}}
 Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
-When a Pre-Production Preview release is available, you can select it instead of the latest production release in the **Cluster Version** section alongside the latest production release. Upgrading to a Pre-Production Preview is a major-version upgrade. After a cluster is upgraded to a Pre-Production Preview release, subsequent patch releases, including additional beta and RC releases for the new major version, the GA release, and patch releases after GA, are treated as patch version upgrades. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
 
 ## Step 7. Name the cluster
 
