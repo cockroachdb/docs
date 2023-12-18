@@ -12,7 +12,7 @@ Cockroach Labs uses a three-component calendar versioning scheme to name Cockroa
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the major version immediately preceding it. Support for these versions includes patch version upgrades and security patches.
 
 {{site.data.alerts.callout_success}}
-Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.dedicated }} clusters can optionally be upgraded to a [Pre-Production Preview](#pre-production-preview-upgrades) release—a beta or release candidate (RC) testing release—for testing and validation of that next major version. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}).
+Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.dedicated }} clusters can optionally be upgraded to a [Pre-Production Preview](#pre-production-preview-upgrades) release—a beta or release candidate (RC) testing release for testing and validation of that next major version. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
