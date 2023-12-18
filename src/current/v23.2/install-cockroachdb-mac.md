@@ -30,7 +30,7 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
-<div id="use-homebrew" class="install-option">
+<div id="use-homebrew" markdown="1" class="install-option">
 
   <h2 id="install-homebrew">Use Homebrew</h2>
   {{ arch_note_homebrew }}
@@ -67,7 +67,7 @@ brew update
 brew update
 brew upgrade cockroach
 ~~~
-{site.data.alerts.end}}
+{{site.data.alerts.end}}
 </div>
 
 {% capture binary_arm_geos_unquarantine %}
