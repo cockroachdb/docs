@@ -87,7 +87,7 @@ This section provides solutions for common performance issues in your applicatio
 [Transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is a state of conflict that occurs when:
 
 - A [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
-- A transaction is [automatically retried]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is emitted to the client, requiring the client application to [retry the transaction]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+- A transaction is [automatically retried]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) because it could not be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is emitted to the client, requiring the client application to [retry the transaction]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). This is also called a *serialization conflict*, or an *isolation conflict*.
 
 #### Indicators that your application is experiencing transaction contention
 
@@ -100,9 +100,9 @@ These are indicators that a transaction is trying to access a row that has been 
 
 These are indicators that lock contention occurred in the past:
 
-- Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table indicates that your transactions have experienced lock contention.
+- Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table `WHERE contention_type='LOCK_WAIT'` indicates that your transactions have experienced lock contention.
 
-  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/insights-page#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the **High Contention** insight. 
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/insights-page#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**High Contention** insight]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention). 
     {{site.data.alerts.callout_info}}
     {%- include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md -%}
     {{site.data.alerts.end}}
@@ -123,7 +123,8 @@ If lock contention occurred in the past, you can [identify the transactions and 
 These are indicators that a transaction has failed due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
 - A [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) with `SQLSTATE: 40001`, the string [`restart transaction`]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction), and an error code such as [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable), is emitted to the client.
-- An event with `TransactionRetryWithProtoRefreshError` is emitted to the CockroachDB [logs]({% link {{ page.version.version }}/logging-use-cases.md %}#example-slow-sql-query).
+- Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table `WHERE contention_type='SERIALIZATION_CONFLICT'` indicates that your transactions have experienced serialization conflicts.
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/insights-page#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**Failed Execution** insight due to a serialization conflict]({% link {{ page.version.version }}/ui-insights-page.md %}#serialization-conflict-due-to-transaction-contention). 
 
 These are indicators that transaction retries occurred in the past:
 
