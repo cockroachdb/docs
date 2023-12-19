@@ -251,6 +251,8 @@ Name | Description
 `sql.mem.distsql.current` | Current sql statement memory usage for distsql
 `sql.mem.distsql.max` | Memory usage per sql statement for distsql
 `sql.mem.max` | Memory usage per sql statement
+`sql.mem.root.current` | Current sql statement memory usage for root
+`sql.mem.root.max` | Memory usage per sql statement for root
 `sql.mem.session.current` | Current sql session memory usage
 `sql.mem.session.max` | Memory usage per sql session
 `sql.mem.txn.current` | Current sql transaction memory usage
