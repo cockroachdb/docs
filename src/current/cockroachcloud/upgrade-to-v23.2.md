@@ -85,7 +85,7 @@ The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-us
 Review the backward-incompatible changes and deprecated features announced in each {{ page.page_version }} testing release. If any affect your applications, make the necessary changes before proceeding.
 {% else %}
 Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
-{% fi %}
+{% endif %}
 
 ### Reset SQL statistics
 
