@@ -23,7 +23,7 @@ You do **not** need an [{{ site.data.products.enterprise }} license]({% link {{ 
 
 Cockroach Labs recommends implementing the following validation plan to test your backups:
 
-1. Very frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatability.
+1. Very frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatibility.
 1. Frequent [`verify_backup_table_data`](#validate-backup-table-data-is-restorable) restores: Tests that all data files are present and uncorrupted.
 1. Somewhat frequent ["full"]({% link {{ page.version.version }}/restore.md %}) restores: Validates a backup completely.
 
