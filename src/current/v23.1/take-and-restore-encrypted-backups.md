@@ -161,7 +161,7 @@ To take a [locality-aware backup with kms encryption](#locality-aware-backup-wit
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
       'aws:///{key}?AUTH=implicit&REGION=us-east-1',
-      'aws:///{key}?AUTH=implict&REGION=us-west-1'
+      'aws:///{key}?AUTH=implicit&REGION=us-west-1'
     );
 ~~~
 

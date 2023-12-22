@@ -1,6 +1,6 @@
 ---
 title: MULTIPOINT
-summary: The spatial MULTIPOINT object is a collection of POINTs.
+summary: The spatial MULTIPOINT object is a collection of POINTTs.
 toc: true
 docs_area: reference.sql
 ---

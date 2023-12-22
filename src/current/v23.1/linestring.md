@@ -1,6 +1,6 @@
 ---
 title: LINESTRING
-summary: A LINESTRING is a collection of POINTs joined into a line.
+summary: A LINESTRING is a collection of POINTTs joined into a line.
 toc: true
 docs_area: reference.sql
 ---
