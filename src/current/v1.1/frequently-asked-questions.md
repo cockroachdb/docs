@@ -156,7 +156,7 @@ Yes, although CockroachDB is unlikely to be a drop-in replacement at this time. 
 
 As a first step, check our [SQL Feature Support](sql-feature-support.html) page against your application's high-level SQL requirements. If essential SQL features are missing, consider workarounds and/or reach out to us via [our forum](https://forum.cockroachlabs.com/)  or <sales@cockroachlabs.com>.
 
-Once you're ready to migrate, we recommend [importing your data via CSV](import.html). The process may expose places where you need to make changes for compatability. When migrating from PostgreSQL, for example, be sure to check this list of [known differences for identical input](porting-postgres.html).
+Once you're ready to migrate, we recommend [importing your data via CSV](import.html). The process may expose places where you need to make changes for compatibility. When migrating from PostgreSQL, for example, be sure to check this list of [known differences for identical input](porting-postgres.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 

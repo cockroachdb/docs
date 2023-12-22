@@ -31,7 +31,7 @@ CockroachDB recognizes the following table expressions:
 - an [aliased table expression](#aliased-table-expressions), using an `AS` clause;
 - an explicit [`JOIN` expression](#join-expressions);
 - a CockroachDB statement that returns values, between square brackets '[...]';
-- another table expression [annoted with `WITH ORDINALITY`](#ordinality-annotation); or
+- another table expression [annotated with `WITH ORDINALITY`](#ordinality-annotation); or
 - another table expression between parentheses.
 
 The following sections provide details on each of these options.

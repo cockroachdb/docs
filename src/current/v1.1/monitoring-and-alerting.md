@@ -52,7 +52,7 @@ CockroachDB provides two HTTP endpoints for checking the health of individual no
 
 #### /health
 
-If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connnection refused` error:
+If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
 {% include copy-clipboard.html %}
 ~~~ shell

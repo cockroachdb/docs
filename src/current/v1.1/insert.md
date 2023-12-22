@@ -119,7 +119,7 @@ The experimental [`IMPORT`](import.html) statement performs better than `INSERT`
 ### Insert from a `SELECT` Statement
 
 ~~~ sql
-> SHOW COLUMS FROM other_accounts;
+> SHOW COLUMNS FROM other_accounts;
 ~~~
 ~~~
 +--------+---------+-------+---------+

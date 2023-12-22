@@ -158,7 +158,7 @@ Column | Description
 -------|-----------
 `GRANTEE` | Username of user with grant.
 `TABLE_CATALOG` | Always equal to `def` (CockroachDB does not support the notion of catalogs).
-`PRIVELEGE_TYPE` | Type of [privilege](privileges.html).
+`PRIVILEGE_TYPE` | Type of [privilege](privileges.html).
 `IS_GRANTABLE` | Always *NULL* (unsupported by CockroachDB).
 
 ### views

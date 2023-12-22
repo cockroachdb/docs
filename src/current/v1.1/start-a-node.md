@@ -43,7 +43,7 @@ was destroyed.
 Flag | Description
 -----|-----------
 `--advertise-host` | The hostname or IP address to advertise to other CockroachDB nodes. If it is a hostname, it must be resolvable from all nodes; if it is an IP address, it must be routable from all nodes.<br><br>When this flag is not set, the node advertises the address in the `--host` flag.
-`--attrs` | Arbitray strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
+`--attrs` | Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--background` | Set this to start the node in the background. This is better than appending `&` to the command because control is returned to the shell only once the node is ready to accept requests. <br /><br /> **Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal.  Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage or any bytes-based unit, for example: <br><br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you enter the cache size as a percentage, you might need to escape the `%` sign, for instance, while configuring CockroachDB through systemd service files.<br><br><span class="version-tag">Changed in v1.1: </span>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size-changed-in-v1-1) for more details.
 `--certs-dir` | The path to the [certificate directory](create-security-certificates.html). The directory must contain valid certificates if running in secure mode.<br><br>**Default:** `${HOME}/.cockroach-certs/`
@@ -160,7 +160,7 @@ $ cockroach start \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addressess of 3-5 of the initial nodes:
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~
@@ -245,7 +245,7 @@ $ cockroach init \
   <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
 </div>
 
-To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addressess of 3-5 of the nodes already in the cluster:
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addresses of 3-5 of the nodes already in the cluster:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 ~~~

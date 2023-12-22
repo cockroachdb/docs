@@ -32,7 +32,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **col_qualification ::=**
 
-<div clas="horizontal-scroll">
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 </div>
 
@@ -46,7 +46,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **table_constraint ::=**
 
-<div clas="horizontal-scroll">
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 

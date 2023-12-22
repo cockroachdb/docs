@@ -107,7 +107,7 @@ $ cockroach zone get <database.table> <flags>
 $ cockroach zone set .default --file=<zone-content.yaml> <flags>
 
 # Create/edit the replication zone for a database:
-$ cockroach zone set <database> --file=<zone-conent.yaml> <flags>
+$ cockroach zone set <database> --file=<zone-content.yaml> <flags>
 
 # Create/edit the replication zone for a table:
 $ cockroach zone set <database.table> --file=<zone-content.yaml> <flags>
