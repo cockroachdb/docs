@@ -24,7 +24,7 @@ CockroachDB recognizes the following table expressions:
 - a `SELECT` or `VALUES` clause, as [a sub-query](#subqueries-as-table-expressions);
 - an [aliased table expression](#aliased-table-expressions), using an `AS` clause;
 - an explicit [`JOIN` expression](#join-expressions);
-- another table expression [annoted with `WITH ORDINALITY`](#ordinality-annotation); or
+- another table expression [annotated with `WITH ORDINALITY`](#ordinality-annotation); or
 - another table expression between parentheses.
 
 The following sections provide details on each of these options.

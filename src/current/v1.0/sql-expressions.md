@@ -65,7 +65,7 @@ CockroachDB supports the following operators:
 | `~` (unary) | 64-bit binary complement |
 | `NOT` (unary) | boolean/logical negation |
 | `+` | addition |
-| `-` | substraction |
+| `-` | subtraction |
 | `*` | multiplication |
 | `/` | numeric division |
 | `//` | division with rounding ("integer division") |
@@ -529,7 +529,7 @@ specified type. An error is reported if the conversion is invalid.
 
 For example: `CAST(now() AS DATE)`
 
-Note that in many cases a type annotation is preferrable to a type
+Note that in many cases a type annotation is preferable to a type
 coercion. See the section on
 [type annotations](#explicitly-typed-expressions) below for more
 details.

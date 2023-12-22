@@ -19,7 +19,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 - Locally, you must have [CockroachDB installed](install-cockroachdb.html), which you’ll use to generate and manage your deployment’s certificates.
 
-- In Digitial Ocean, you must have [SSH access](https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh) to each Droplet with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+- In Digital Ocean, you must have [SSH access](https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh) to each Droplet with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 

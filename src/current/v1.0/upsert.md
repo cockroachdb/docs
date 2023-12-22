@@ -112,7 +112,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 ### Upsert that Fails (Conflict on Non-Primary Key)
 
-`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
+`UPSERT` will not update rows when the uniqueness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [Unique constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
 ~~~ sql
 > SELECT * FROM unique_test;

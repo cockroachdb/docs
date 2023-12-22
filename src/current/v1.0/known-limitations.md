@@ -4,7 +4,7 @@ summary: Known limitations is CockroachDB v1.0.
 toc: true
 ---
 
-This page describes limitations we identified in the [CockroachDB v1.0](../releases/v1.0.html) release. For limitations that have been subsequently resolved, this page also calls out the release incuding the change.
+This page describes limitations we identified in the [CockroachDB v1.0](../releases/v1.0.html) release. For limitations that have been subsequently resolved, this page also calls out the release including the change.
 
 
 ## Removing all rows from large tables

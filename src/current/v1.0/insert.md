@@ -96,7 +96,7 @@ If you do not list column names, the statement will use the columns of the table
 ### Insert from a `SELECT` Statement
 
 ~~~ sql
-> SHOW COLUMS FROM other_accounts;
+> SHOW COLUMNS FROM other_accounts;
 ~~~
 ~~~
 +--------+---------+-------+---------+
