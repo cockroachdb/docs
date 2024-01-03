@@ -314,7 +314,7 @@ The system interface in the standby cluster initiates and controls the replicati
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE VIRTUAL CLUSTER standbyapplication LIKE template
+    CREATE VIRTUAL CLUSTER application LIKE template
     FROM REPLICATION OF application
     ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
@@ -330,14 +330,14 @@ The system interface in the standby cluster initiates and controls the replicati
     SHOW VIRTUAL CLUSTERS;
     ~~~
 
-    The standby cluster will show the `standbyapplication` virtual cluster is in a `replicating` state.
+    The standby cluster will show the `application` virtual cluster is in a `replicating` state.
 
     ~~~
     id |        name        |     data_state     | service_mode
     ---+--------------------+--------------------+---------------
      1 | system             | ready              | shared
      2 | template           | ready              | none
-     3 | standbyapplication | replicating        | none
+     3 | application        | replicating        | none
     (3 rows)
     ~~~
 
@@ -347,24 +347,24 @@ The system interface in the standby cluster initiates and controls the replicati
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication PAUSE REPLICATION;
+    ALTER VIRTUAL CLUSTER application PAUSE REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication RESUME REPLICATION;
+    ALTER VIRTUAL CLUSTER application RESUME REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~
     id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
     ---+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-    3  | standbyapplication | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+    3  | application | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
     (1 row)s
     ~~~
 

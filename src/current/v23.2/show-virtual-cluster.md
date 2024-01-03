@@ -66,18 +66,18 @@ SHOW VIRTUAL CLUSTERS;
 
 ### Show a virtual cluster
 
-To show more details about a particular virtual cluster:
+To show more details about the `application` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER {standbyapplication};
+SHOW VIRTUAL CLUSTER application;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~
   id |     name           | data_state  | service_mode | source_tenant_name |                                                  source_cluster_uri                                                   | replication_job_id |       replicated_time        |         retained_time         | cutover_time
 -----+--------------------+-------------+--------------+--------------------+-----------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------
-   5 | standbyapplication | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
+   5 | application | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
 ~~~
 
 ### Show replication status
@@ -90,11 +90,11 @@ To show the replication status of all virtual clusters:
 SHOW VIRTUAL CLUSTERS WITH REPLICATION STATUS;
 ~~~
 
-To show the replication status of a particular virtual cluster:
+To show the replication status of the `application` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER {standbyapplication} WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
 ~~~
 
 ## See also

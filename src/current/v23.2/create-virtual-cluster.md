@@ -87,7 +87,7 @@ To start a replication stream to the standby of the primary's application virtua
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE VIRTUAL CLUSTER standbyapplication LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
+CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
 ~~~
 
 This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-primary-cluster). The standby's system interface will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
@@ -98,10 +98,10 @@ When you initiate a replication stream, you can specify a retention window to pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE VIRTUAL CLUSTER standbyapplication LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
+CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
 ~~~
 
-This will initiate a replication stream from the primary cluster into the standby cluster's new `standbyapplication` virtual cluster. The `RETENTION` option allows you to specify a timestamp up to 36 hours in the past for cutover to the standby cluster. After cutover, the `standbyapplication` will be transactionally consistent to any timestamp within that retention window.
+This will initiate a replication stream from the primary cluster into the standby cluster's new `application` virtual cluster. The `RETENTION` option allows you to specify a timestamp up to 36 hours in the past for cutover to the standby cluster. After cutover, the new `application` virtual cluster will be transactionally consistent to any timestamp within that retention window.
 
 ## See also
 
