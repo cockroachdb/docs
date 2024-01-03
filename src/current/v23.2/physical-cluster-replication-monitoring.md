@@ -15,7 +15,7 @@ docs_area: manage
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
 
-When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) to the primary cluster, there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
+When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 
 The standby cluster will also require separate monitoring to ensure observability during the cutover period. You can use the DB console to track the relevant metrics, or you can use a tool like [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana) to create two separate dashboards, one for each cluster, or a single dashboard with data from both clusters.
 
