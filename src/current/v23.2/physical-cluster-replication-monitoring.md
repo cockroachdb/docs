@@ -109,12 +109,12 @@ To verify that the data up to a certain point in time is correct on the standby 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS];
     ~~~
     ~~~
-    id |        name        | data_state  | service_mode | source_tenant_name |                                                source_cluster_uri                                                 | replication_job_id |        replicated_time        |         retained_time         | cutover_time
-    ---+--------------------+-------------+--------------+--------------------+-------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-    3  | standbyapplication | replicating | none         | application        | postgresql://{user}:redacted@{node IP}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 925475002117849089 | 2023-12-15 19:39:18.321455+00 | 2023-12-14 19:16:07.321456+00 |         NULL
+         replicated_time
+    ----------------------------
+    2023-12-15 19:39:18.321455+00
     (1 row)
     ~~~
 
@@ -124,7 +124,7 @@ To verify that the data up to a certain point in time is correct on the standby 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '1702669158089558000.0000000000';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2023-12-15 19:39:18.321455+00';
     ~~~
     ~~~
     tenant_name |             end_ts             |     fingerprint
@@ -139,7 +139,7 @@ To verify that the data up to a certain point in time is correct on the standby 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '1702669158089558000.0000000000';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2023-12-15 19:39:18.321455+00';
     ~~~
     ~~~
         tenant_name     |             end_ts             |     fingerprint
@@ -147,19 +147,6 @@ To verify that the data up to a certain point in time is correct on the standby 
     standbyapplication  | 1702669158089558000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
-
-You can also use `SHOW EXPERIMENTAL_FINGERPRINTS` without defining a timestamp to view the fingerprint for the latest replicated timestamp:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication;
-~~~
-~~~
-     tenant_name     |             end_ts             |     fingerprint
----------------------+--------------------------------+----------------------
-  standbyapplication | 1702572059741065000.0000000000 | 5089527880146530165
-(1 row)
-~~~
 
 ## See also
 
