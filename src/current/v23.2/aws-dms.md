@@ -17,7 +17,7 @@ Using CockroachDB as a source database within AWS DMS is unsupported.
 
 ## Before you begin
 
-Complete the following items before starting this tutorial:
+Complete the following items before starting the DMS migration:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
@@ -200,7 +200,11 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 - For visibility into migration problems:
 
     - Check the [Amazon CloudWatch logs that you enabled](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
-    - Check the CockroachDB logs, especially the `SQL_EXEC` and `DEV` [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.dedicated }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#before-you-begin).
+    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.dedicated }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#before-you-begin).
+
+        {{site.data.alerts.callout_danger}}
+        Personally identifiable information (PII) may be exported to CloudWatch unless you [redact the logs]({% link {{ page.version.version }}/configure-logs.md %}#redact-logs). Redacting logs may hide the data that is causing the issue, making it more difficult to troubleshoot.
+        {{site.data.alerts.end}}
 
 - If you encounter errors like the following:
 
