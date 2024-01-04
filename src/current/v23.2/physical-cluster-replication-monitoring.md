@@ -56,18 +56,7 @@ You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.m
 The **Physical Cluster Replication** dashboard tracks metrics related to physical cluster replication jobs. This is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 {{site.data.alerts.end}}
 
-The **Physical Cluster Replication** dashboard contains three graphs for monitoring:
-
-### Replication lag
-
-<img src="{{ 'images/v23.2/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **Replication Lag** graph shows you the amount of time the replication is behind the current time.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The amount of time in seconds the replication is behind the current date and time.
+The **Physical Cluster Replication** dashboard contains graphs for monitoring:
 
 ### Logical bytes
 
