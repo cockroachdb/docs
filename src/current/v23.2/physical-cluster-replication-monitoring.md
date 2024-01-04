@@ -15,13 +15,17 @@ docs_area: manage
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
 
+When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
+
+The standby cluster will also require separate monitoring to ensure observability during the cutover period. You can use the DB console to track the relevant metrics, or you can use a tool like [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana) to create two separate dashboards, one for each cluster, or a single dashboard with data from both clusters.
+
 ## SQL Shell
 
 In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` for detail on status and timestamps for planning [cutover]({% link {{ page.version.version }}/cutover-replication.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
- SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
 ~~~
 
 Refer to [Responses](#responses) for a description of each field.
@@ -52,18 +56,7 @@ You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.m
 The **Physical Cluster Replication** dashboard tracks metrics related to physical cluster replication jobs. This is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 {{site.data.alerts.end}}
 
-The **Physical Cluster Replication** dashboard contains three graphs for monitoring:
-
-### Replication lag
-
-<img src="{{ 'images/v23.2/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **Replication Lag** graph shows you the amount of time the replication is behind the current time.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The amount of time in seconds the replication is behind the current date and time.
+The **Physical Cluster Replication** dashboard contains graphs for monitoring:
 
 ### Logical bytes
 
