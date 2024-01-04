@@ -105,6 +105,14 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
 
+### Physical cluster replication
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)

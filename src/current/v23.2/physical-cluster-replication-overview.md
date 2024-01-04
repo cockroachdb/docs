@@ -7,6 +7,8 @@ docs_area: manage
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Refer to the [Known Limitations](#known-limitations) section for further detail.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v23.2" %} CockroachDB physical cluster replication continuously sends all data at the byte level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
@@ -37,14 +39,9 @@ You can use physical cluster replication in a disaster recovery plan to:
 [Cutting over to a timestamp in the past]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) involves reverting data on the standby cluster. As a result, this type of cutover takes longer to complete than cutover to the [latest replicated time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time). The increase in cutover time will correlate to how much data you are reverting from the standby. For more detail, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) page for physical cluster replication.
 {{site.data.alerts.end}}
 
-## Limitations
+## Known limitations
 
-- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
-- Read queries are not supported on the standby cluster before cutover.
-- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
-- Cutting back to the primary cluster after a cutover is a manual process. Refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster). In addition, after cutover, to continue using physical cluster replication, you must configure it again.
-- Before cutover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
-- After a cutover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.
+{% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 
 ## Get started
 
@@ -76,7 +73,7 @@ cockroach start ... --config-profile replication-target
 The node topology of the two clusters does not need to be the same. For example, you can provision the standby cluster with fewer nodes. However, consider that:
 
 - The standby cluster requires enough storage to contain the primary cluster's data.
-- During a failover scenario, the standby will need to handle the full production load. However, the clusters cannot have different region topologies (refer to [Limitations](#limitations)).
+- During a failover scenario, the standby will need to handle the full production load. However, the clusters cannot have different region topologies (refer to [Limitations](#known-limitations)).
 
 {{site.data.alerts.callout_info}}
 Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for detail.
