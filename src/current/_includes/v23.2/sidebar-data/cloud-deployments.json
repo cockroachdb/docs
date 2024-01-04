@@ -420,7 +420,7 @@
                 "title": "Upgrade",
                 "items": [
                     {
-                        "title": "Upgrade Policy",
+                        "title": "CockroachDB Cloud Upgrade Policy",
                         "urls": [
                             "/cockroachcloud/upgrade-policy.html"
                         ]
