@@ -21,7 +21,14 @@ jobs:
           pr_num=${{ github.event.pull_request.number }}
 
           files=`gh pr view ${pr_num} --json files -q '.files[].path'`
-              
+          
+          escaped_files=()
+          for file in "${files[@]}"; do
+            safe_file=$(printf '%q' "$file")
+            escaped_files+=("$safe_file")
+          done
+          printf "%s\n" "${escaped_files[@]}" > $GITHUB_ENV          
+          
           SAVEIFS=$IFS
           IFS=$'\n'
           files=($files)
@@ -74,7 +81,8 @@ jobs:
             output+="</ul>"
           }
 
-          for file in ${files[@]}; do
+          env_files=($(cat $GITHUB_ENV))
+          for file in "${env_files[@]}"; do
             # only create links for Markdown files that are not includes
             if [[ $file == src/**/*.md ]] && [[ $file != src/*/_* ]]
             then
