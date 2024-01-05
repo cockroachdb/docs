@@ -1,6 +1,6 @@
 ---
-title: Upgrade Policy
-summary: Learn about the CockroachDB Cloud upgrade policy.
+title: CockroachDB Cloud Upgrade Policy
+summary: Learn about the upgrade policy for clusters deployed in CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---

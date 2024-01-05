@@ -166,7 +166,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 
-Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v21.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v21.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
