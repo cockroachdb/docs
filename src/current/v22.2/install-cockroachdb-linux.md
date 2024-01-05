@@ -164,8 +164,9 @@ true
 
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
-- CockroachDB on ARM is in [Limited Access](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in CockroachDB v22.2.13, and is **experimental** in all other versions. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
+- CockroachDB on ARM is **experimental** in CockroachDB v22.2 versions prior to v22.2.13, is in [Limited Access](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in CockroachDB v22.2.13, and is Generally Available (GA) in v22.2.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
 - Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
+- Because of the recommendation to avoid a mix of Intel and ARM nodes, Cockroach Labs recommends against migrating an Intel cluster to ARM in place. Instead, consider using CockroachDB's migration tooling, such as [Changefeed sinks]({% link v23.2/changefeed-sinks.md %}), to move the workload to a new ARM cluster.
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
 - When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
 
