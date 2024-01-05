@@ -61,4 +61,6 @@ Under the **Spend over time** section, you can see a table of each of your organ
 
 ## View invoices
 
-You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
+You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period. 
+
+If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters within it.
