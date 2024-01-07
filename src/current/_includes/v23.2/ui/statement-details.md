@@ -2,7 +2,7 @@
 
 ## Statement Fingerprint page
 
-The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page.
+The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page and the application name and database specified in the selected row of the [Statements table](#statements-table).
 
 ### Overview
 

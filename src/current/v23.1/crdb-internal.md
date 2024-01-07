@@ -914,30 +914,30 @@ The `NumericStat` type tracks two running values: the running mean `mean` and th
 Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
-<code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
+<code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) the statement spent contending for resources before being executed.
 <code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
-<code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage (in bytes) that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage (in bytes) that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
 <code>statistics -> bytesRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes read from disk.
 `statistics -> cnt` | `INT8` | The total number of times this statement was executed since the begin of the aggregation period.
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
-<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
 `statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
 `statistics -> lastErrorCode` | `String` | The [PostgreSQL Error Code](https://www.postgresql.org/docs/current/errcodes-appendix.html) from the last failed execution of the statement fingerprint.
 `statistics -> lastExecAt` | `TIMESTAMP` | The last timestamp the statement was executed.
 `statistics -> maxRetries` | `INT8` | The maximum observed number of automatic retries in the aggregation period.
 `statistics -> nodes` | Array of `INT64` | An ordered list of nodes IDs on which the statement was executed.
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
-<code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
-<code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference (in seconds) between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
+<code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to transform the SQL string into an abstract syntax tree (AST).
 <code>statistics -> planGists | `String` | A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
-<code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
+<code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
-<code>statistics -> runLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to run the query and fetch or compute the result rows.
-<code>statistics -> svcLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to service the query, from start of parse to end of execute.
+<code>statistics -> runLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to run the query and fetch or compute the result rows.
+<code>statistics -> svcLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to service the query, from start of parse to end of execute.
 
 #### View historical statement statistics and the sampled logical plan per fingerprint
 

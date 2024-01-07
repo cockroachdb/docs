@@ -68,6 +68,8 @@ Azure Blob Storage | `azure://acme-co/employees?AUTH=specified&AZURE_ACCOUNT_NAM
 Google Cloud Storage | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local | `nodelocal://1/path/employees`
 
+For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page.
+
 Example URLs for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) and given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example

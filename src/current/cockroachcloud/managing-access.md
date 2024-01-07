@@ -39,7 +39,7 @@ It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-or
 ### Change a team member's role
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
-1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
+1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     {{site.data.alerts.callout_info}}

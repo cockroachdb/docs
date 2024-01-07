@@ -60,7 +60,7 @@ To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication COMPLETE REPLICATION TO {cutover time specification};
+ALTER VIRTUAL CLUSTER application COMPLETE REPLICATION TO {cutover time specification};
 ~~~
 
 You can use either:
@@ -74,7 +74,7 @@ You can change the retention window to protect data from [garbage collection]({%
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication SET REPLICATION RETENTION = '24h';
+ALTER VIRTUAL CLUSTER application SET REPLICATION RETENTION = '24h';
 ~~~
 
 ### Start the virtual cluster
@@ -83,14 +83,14 @@ When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virt
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication START SHARED SERVICE;
+ALTER VIRTUAL CLUSTER application START SHARED SERVICE;
 ~~~
 
 To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER standbyapplication STOP SERVICE;
+ALTER VIRTUAL CLUSTER application STOP SERVICE;
 ~~~
 
 ## See also
