@@ -73,10 +73,6 @@ For example, if you have a large table, and one of the nodes in the cluster is h
 
 {% include {{ page.version.version }}/cdc/lagging-ranges.md %}
 
-{{site.data.alerts.callout_success}}
-You can use the [`metrics_label`]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) option to track the `lagging_ranges` metric per changefeed.
-{{site.data.alerts.end}}
-
 ## Tuning for high durability delivery
 
 When designing a system that relies on high durability message delivery—that is, not missing any message acknowledgement at the downstream sink—consider the following settings and configuration in this section:

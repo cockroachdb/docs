@@ -4,3 +4,7 @@
     - **Default:** `3m`
 - `lagging_ranges_polling_interval` sets the interval rate for when lagging ranges are checked and the `lagging_ranges` metric is updated. Polling adds latency to the `lagging_ranges` metric being updated. For example, if a range falls behind by 3 minutes, the metric may not update until an additional minute afterward.
     - **Default:** `1m`
+
+{{site.data.alerts.callout_success}}
+You can use the [`metrics_label`]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) option to track the `lagging_ranges` metric per changefeed.
+{{site.data.alerts.end}}

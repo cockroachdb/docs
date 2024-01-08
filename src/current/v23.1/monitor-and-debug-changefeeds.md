@@ -157,7 +157,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
 `message_size_hist` | Distribution in the size of emitted messages. | Bytes
 
-### Monitoing and measuring changefeed latency
+### Monitoring and measuring changefeed latency
 
 Changefeeds can encounter latency in events processing. This latency is the total time CockroachDB takes to:
 
