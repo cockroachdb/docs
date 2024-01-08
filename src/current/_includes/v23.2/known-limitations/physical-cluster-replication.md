@@ -1,11 +1,9 @@
 - Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
-- Cockroach Labs has tested physical cluster replication at the following scale:
+- Cockroach Labs supports physical cluster replication up to the following scale:
     - Initial data load: 2TB
     - Read maximum: 1000 reads per second
     - Write maximum: 850 writes per second
     - Read/write ratio: 50/50
-
-    In [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), we do not support running physical cluster replication on larger workloads. Should you need assistance contact [Support](https://support.cockroachlabs.com/hc/en-us).
 - Read queries are not supported on the standby cluster before [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
 - The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 - Cutting back to the primary cluster after a cutover is a manual process. Refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster). In addition, after cutover, to continue using physical cluster replication, you must configure it again.
