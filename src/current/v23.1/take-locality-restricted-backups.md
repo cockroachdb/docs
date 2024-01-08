@@ -7,7 +7,7 @@ docs_area: manage
 
 {% include_cached new-in.html version="v23.1" %} The `EXECUTION LOCALITY` option allows you to restrict the nodes that can execute a [backup]({% link {{ page.version.version }}/backup.md %}) job by using a [locality filter]({% link {{ page.version.version }}/cockroach-start.md %}#locality) when you create the backup. This will pin the [coordination of the backup job]({% link {{ page.version.version }}/backup-architecture.md %}#job-creation-phase) and the nodes that [process the row data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase) to the defined locality filter.
 
-Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities. 
+{% include_cached new-in.html version="v23.1.12" %} Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities.
 
 Defining an execution locality for a backup job is useful in the following cases:
 
@@ -35,6 +35,7 @@ BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCAL
 
 When you run a backup or restore that uses `EXECUTION LOCALITY`, consider the following:
 
+- `RESTORE` with the `EXECUTION LOCALITY` option is available from v23.1.12.
 - The backup or restore job will fail if no nodes match the locality filter.
 - The backup or restore job may take slightly more time to start, because it must select the node that coordinates the backup or restore (the _coordinating node_). Refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
 - Even after a backup or restore job has been pinned to a locality filter, it may still read data from another locality if no replicas of the data are available in the locality specified by the backup job's locality filter.
@@ -63,7 +64,7 @@ For example, you can pin the execution of the backup job to `us-west-1`:
 BACKUP DATABASE {database} INTO 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
 ~~~
 
-To restore the most recent locality-restricted backup:
+{% include_cached new-in.html version="v23.1.12" %} To restore the most recent locality-restricted backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
