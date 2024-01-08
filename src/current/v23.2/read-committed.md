@@ -17,7 +17,7 @@ docs_area: deploy
 
 - You are [migrating an application to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
 
-Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Unlike `SERIALIZABLE` transactions, `READ COMMITTED` transactions do not usually return any [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
+Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
 {{site.data.alerts.callout_info}}
 `READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md).
@@ -34,9 +34,13 @@ SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 
 After you enable the cluster setting, you can configure `READ COMMITTED` isolation at the [session](#set-the-current-session-to-read-committed) or [transaction](#set-the-current-transaction-to-read-committed) level.
 
+{{site.data.alerts.callout_info}}
+If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
+{{site.data.alerts.end}}
+
 ### Set the current session to `READ COMMITTED`
 
-To set all future transactions in a session to run at `READ COMMITTED` isolation, use one of the following options, which can be set per database or [per role]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
+To set all future transactions in a session to run at `READ COMMITTED` isolation, use one of the following options:
 
 - The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement:
 
@@ -47,9 +51,18 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 
 - The [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) session variable:
 
+	At the database level:
+
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SET default_transaction_isolation = 'read committed';
+	~~~
+
+	At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER ROLE foo SET default_transaction_isolation = 'read committed';
 	~~~
 
 - The `default_transaction_isolation` session variable as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}):
@@ -132,7 +145,9 @@ Starting a transaction as `READ COMMITTED` does not affect the [session-level is
 
 - You can mitigate concurrency anomalies by issuing [locking reads](#locking-reads) in `READ COMMITTED` transactions. These statements can block concurrent transactions that are issuing writes or other locking reads on the same rows.
 
+{% comment %}
 - When using `READ COMMITTED` isolation, you do not need to implement [client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) to handle `40001` errors. This is because under [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), `READ COMMITTED` transactions will **not** return [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to applications.
+{% endcomment %}
 
 `READ COMMITTED` transactions can abort in the following scenarios:
 
@@ -340,7 +355,7 @@ SELECT * FROM kv AS OF SYSTEM TIME '2023-11-09 21:22:10' WHERE k = 1;
 ~~~
 
 {{site.data.alerts.callout_info}}
-While concurrent `READ COMMITTED` transactions can have their writes overwritten, **uncommitted** writes in `READ COMMITTED` transactions cannot be overwritten.
+While concurrent `READ COMMITTED` transactions can have their committed writes overwritten, **uncommitted** writes in `READ COMMITTED` transactions cannot be overwritten.
 {{site.data.alerts.end}}
 
 #### Write skew anomaly
@@ -363,7 +378,7 @@ For an example of how a write skew anomaly can occur, see [Demonstrate interleav
 
 ## Locking reads
 
-To reduce the occurrence of [concurrency anomalies](#concurrency-anomalies) in `READ COMMITTED` isolation, you can strengthen the isolation of individual reads by using [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) or [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) to issue *locking reads* on specific rows. Locking reads behave similarly to [writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents): they lock qualifying rows to prevent concurrent writes from modifying them until the transaction commits. Conversely, if a locking read finds that a row is exclusively locked by a concurrent transaction, it waits for the other transaction to commit or rollback before proceeding. A locking read in a transaction will always have the latest value of a row when the transaction commits.
+To reduce the occurrence of [concurrency anomalies](#concurrency-anomalies) in `READ COMMITTED` isolation, you can strengthen the isolation of individual reads by using [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) or [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) to issue *locking reads* on specific rows. Locking reads behave similarly to [writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents): they lock qualifying rows to prevent concurrent writes from modifying them until the transaction commits. Conversely, if a locking read finds that a row is exclusively locked by a concurrent transaction, it waits for the other transaction to commit or rollback before proceeding. A locking read in a transaction will always have the latest version of a row when the transaction commits.
 
 The clause used with the `SELECT` statement determines the *lock strength* of a locking read:
 
@@ -371,19 +386,19 @@ The clause used with the `SELECT` statement determines the *lock strength* of a 
 
 ### When to use locking reads
 
-Use locking reads in your application if certain `READ COMMITTED` transactions must guarantee data correctness in [high-contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) scenarios.
+Use locking reads in your application if certain `READ COMMITTED` transactions must guarantee that the data they access will not be changed by intermediate writes.
 
-Non-locking reads can allow intermediate writes to update rows before `READ COMMITTED` transactions commit, potentially creating [concurrency anomalies](#concurrency-anomalies). Locking reads prevent such anomalies, but increase the amount of lock contention that [may require intervention]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction) if latency becomes too high.
+Non-locking reads can allow intermediate writes to update rows before `READ COMMITTED` transactions commit, potentially creating [concurrency anomalies](#concurrency-anomalies). Locking reads prevent such anomalies, but increase the amount of lock contention that [may require intervention]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction) if latency becomes too high. Note that locking reads do **not** prevent [phantom reads](#non-repeatable-reads-and-phantom-reads) that are caused by the insertion of new rows, since only existing rows can be locked.
 
 {{site.data.alerts.callout_info}}
-Locking reads are not effective for emulating `SERIALIZABLE` transactions, which can avoid locking reads because they always [abort if reads are not current]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing). As a result, `READ COMMITTED` transactions that use locking reads will perform differently than `SERIALIZABLE` transactions at various levels of concurrency.
+Locking reads are not effective for emulating `SERIALIZABLE` transactions, which can avoid locking reads because they always [retry or abort if reads are not current]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing). As a result, `READ COMMITTED` transactions that use locking reads will perform differently than `SERIALIZABLE` transactions at various levels of concurrency.
 {{site.data.alerts.end}}
 
 To use locking reads:
 
 - If you need to read and later update a row within a transaction, use `SELECT ... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations.
 
-- If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads.
+- If you need to read the latest version of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads.
 
 	{{site.data.alerts.callout_success}}
 	This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed.
@@ -921,10 +936,12 @@ SELECT * FROM schedules
 
 The following are not yet supported with `READ COMMITTED`:
 
-- Schema changes cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level](#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`.
-- `READ COMMITTED` isolation cannot be set at the cluster level. As a workaround, run `ALTER ROLE ALL SET default_transaction_isolation = 'read committed'`.
-- `READ COMMITTED` transactions cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables.
+- Schema changes (e.g., [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}), [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level](#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`.
+- `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access tables with [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints in the following cases:
+	- The table is using [`PARTITION ALL BY`]({% link {{ page.version.version }}/partitioning.md %}).
+	- The table is using [`LOCALITY REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables), the region is not included in the constraint, and the region cannot be computed from the constraint columns.
 - [Shared locks](#locking-reads) cannot yet be promoted to exclusive locks.
+- [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by `READ COMMITTED` transactions.
 
 ## See also
 

@@ -24,8 +24,8 @@ For the full `SELECT` statement syntax documentation, see [Selection Queries]({%
 
 |            Parameter             |                                                                                                                                                      Description                                                                                                                                                      |
 |----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `FOR SHARE`/`FOR KEY SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
-| `FOR UPDATE`/`FOR NO KEY UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).  
+| `FOR SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
+| `FOR UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).  
 
 Under `SERIALIZABLE` isolation:
 
@@ -49,7 +49,7 @@ Note that CockroachDB [ensures serializability]({% link {{ page.version.version 
 
 {% include_cached new-in.html version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
-If you need to read the latest value of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
+If you need to read the latest version of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
 
 Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT ... FOR SHARE` locking mechanism to perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks.
 
@@ -71,6 +71,11 @@ For documentation on all other parameters of a `SELECT` statement, see [Selectio
 ## Required privileges
 
 The user must have the `SELECT` and `UPDATE` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the tables used as operands.
+
+## Aliases
+
+- `FOR KEY SHARE` is an alias for `FOR SHARE`.
+- `FOR NO KEY UPDATE` is an alias for `FOR UPDATE`.
 
 ## Known limitations
 

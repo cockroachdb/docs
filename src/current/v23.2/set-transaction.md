@@ -35,7 +35,9 @@ Parameter | Description
 
 ### Set isolation level
 
-You can set the transaction isolation level to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) or [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}). If not specified, transactions use `SERIALIZABLE`.
+You can set the transaction isolation level to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) or [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+
+If not specified, transactions use the value of the current session's [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) variable.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

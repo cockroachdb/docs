@@ -32,13 +32,17 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Limitations for `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE`
 
-The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. They are fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
 - [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) place locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    This is fixed by setting the `optimizer_use_lock_op_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-optimizer-use-lock-op-for-serializable) to `true`. 
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
 - [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes.
+
+    This is fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-optimizer-enable-durable-locking-for-serializable) to `true`. 
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
 
