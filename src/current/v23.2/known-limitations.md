@@ -10,100 +10,61 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### Limitations for `EXPLAIN ANALYZE`
+### PostgreSQL compatibility
 
-- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
+  - Updating subfields of composite types using dot syntax results in a syntax error. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102984)
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
+### PL/pgSQL Limitations
 
-- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-as-of-a-given-time) instead.
+#### Support for PL/pgSQL features
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
+  - Nested blocks within functions are not supported, and will lead to errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114775)
+  - Cursors opened in PL/pgSQL do not execute their queries lazily, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
+  - PL/pgSQL exception blocks cannot catch transaction retry errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111446)
+  - PL/pgSQL does not support referring to arguments by ordinals (e.g., `$1`, `$2`), limiting flexibility in function definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114701)
+  - The language does not currently support `FOR` and `WHILE` loop statements, limiting control flow capabilities in routines. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105246)
+  - The `INTO` statement in PL/pgSQL does not support the `STRICT` option. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/107854)
 
-### Limitations for index recommendations
+#### Type Handling and Variable Declarations
 
-- [Index]({% link {{ page.version.version }}/indexes.md %}) recommendations are not aware of [hash sharding]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
+- There are several known limitations regarding type handling and variable declarations in the current implementation of PL/pgSQL:
+  - The language does not support `RECORD` input arguments in UDFs. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+  - Type coercion does not behave consistently with PostgreSQL, particularly when values are too wide for the target type. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115385)
+  - PL/pgSQL lacks support for `RECORD`-type variables, which are dynamically typed in PostgreSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114874)
+  - Syntax for accessing members of composite types without parentheses is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114687)
+  - There is no support for adding context to errors with `RAISE` and for declaring variable collation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/106237)
+  - PL/pgSQL does not yet support `NOT NULL` variable declarations or set-returning functions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
+#### Limitations in User-Defined Functions (UDFs)
 
-- CockroachDB does not support [index]({% link {{ page.version.version }}/indexes.md %}) recommendations on [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
+  - The `PERFORM` keyword is not supported in UDFs. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108416)
+  - UDFs cannot call other UDFs or stored procedures from within their bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88198)
+  - The `setval` function cannot be resolved when used inside UDF bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110860)
+  - DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
+  - The language does not support `OUT` and `INOUT` argument modes in UDF definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
+### SQL Optimizer and Read Committed Isolation
 
-### Limitations for `SELECT FOR UPDATE`
+#### Optimizer and Locking Behavior
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+- The SQL optimizer has limitations under certain isolation levels:
+  - The new implementation of `SELECT FOR UPDATE` under serializable isolation is not yet the default setting. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
+  - `SELECT FOR UPDATE` does not lock completely-NULL column families in multi-column-family tables. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/116836)
+  - `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks are dropped on lease transfers and range splits/merges. Unreplicated locks, used by default under SERIALIZABLE isolation, can be dropped during such events, affecting the desired ordering of concurrent accesses and potentially leading to transaction retry errors. [More information on SELECT FOR UPDATE](https://www.cockroachlabs.com/docs/v23.2/select-for-update)
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+#### Read Committed Isolation Limitations
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- Several capabilities are not yet supported with Read Committed isolation:
+  - DDL statements cannot be performed within explicit Read Committed transactions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
+  - Specific unique checks are not supported under Read Committed isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110873)
+  - `SKIP LOCKED` requests do not reliably skip over replicated locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
+  - Promoting a lock from `shared` to `exclusive` is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
+  - Schema changes are not allowed within explicit transactions, and certain unique constraints are not supported. Shared locks cannot be promoted to exclusive locks, and `SKIP LOCKED` requests do not reliably skip over replicated locks. [More information on READ COMMITTED](https://www.cockroachlabs.com/docs/v23.2/read-committed)
+  - Multi-column-family checks during updates may not function correctly. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/112488)
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+### `CAST` expressions containing a subquery with an `ENUM` target are not supported
 
-### Limitations for composite types
-
-- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
-    - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
-    - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
-
-### Common table expressions are not supported in user-defined functions
-
-[Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
-
-### Low estimated Request Units are rounded to zero
-
-The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
-
-### Statistics for deleted tables in `system.table_statistics` do not get removed
-
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
-
-### Collection of statistics for virtual computed columns
-
-CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
-
-### `AS OF SYSTEM TIME` does not support placeholders
-
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
-
-### Declarative schema changer does not track rows in `system.privileges`
-
-The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
-### `null_ordered_last` does not produce correct results with tuples
-
-By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
-
-### Inverted join for `tsvector` and `tsquery` types is not supported
-
-CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102731)
-
-### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
-
-There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) is interrupted in one of the following ways:
-
-- The `cockroach node decommission --wait-all` command was run and then interrupted
-- The `cockroach node decommission --wait=none` command was run
-
-This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
+- Casting subqueries to ENUMs in views and UDFs is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108184)
 
 ## Unresolved limitations
 
@@ -141,11 +102,23 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
+#### Common table expressions are not supported in user-defined functions
+
+[Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
 ### Incorrect query plans for partitions with `NULL` values
 
 In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/82774)
+
+### `null_ordered_last` does not produce correct results with tuples
+
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
 
 ### Limitations for `DROP OWNED BY`
 
@@ -165,7 +138,17 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
-### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+### Limitations for `SELECT FOR UPDATE`
+
+- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+
+- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+
+### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
 
 {% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
@@ -211,6 +194,36 @@ The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.
 CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{ page.version.version }}/create-index.md %}#store-columns).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
+
+### `AS OF SYSTEM TIME` does not support placeholders
+
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
+
+### Limitations for `EXPLAIN ANALYZE`
+
+- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
+
+- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-as-of-a-given-time) instead.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
+
+- The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
+
+### Limitations for index recommendations
+
+- [Index]({% link {{ page.version.version }}/indexes.md %}) recommendations are not aware of [hash sharding]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
+
+- CockroachDB does not support [index]({% link {{ page.version.version }}/indexes.md %}) recommendations on [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
@@ -363,6 +376,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
 
+### Inverted join for `tsvector` and `tsquery` types is not supported
+
+CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102731)
+
 ### Using `RESTORE` with multi-region table localities
 
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
@@ -404,6 +423,18 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 ### Automatic statistics refresher may not refresh after upgrade
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+
+### Statistics for deleted tables in `system.table_statistics` do not get removed
+
+When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+
+### Collection of statistics for virtual computed columns
+
+CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -458,6 +489,12 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
     Note that, in [`IMPORT PGDUMP`]({% link {{ page.version.version }}/migrate-from-postgres.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
+
+### Limitations for composite types
+
+- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
+    - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
+    - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
@@ -565,6 +602,12 @@ SQLSTATE: 0A000
 ### Schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
+
+### Declarative schema changer does not track rows in `system.privileges`
+
+The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
 ### Size limits on statement input from SQL clients
 
@@ -694,6 +737,17 @@ To reduce the chance that a column drop will roll back incorrectly:
 - Drop any [default values]({% link {{ page.version.version }}/default-value.md %}) or [computed expressions]({% link {{ page.version.version }}/computed-columns.md %}) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
 
 If you think a rollback of a column-dropping schema change has occurred, check the [jobs table]({% link {{ page.version.version }}/show-jobs.md %}). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
+
+### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
+
+There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) is interrupted in one of the following ways:
+
+- The `cockroach node decommission --wait-all` command was run and then interrupted
+- The `cockroach node decommission --wait=none` command was run
+
+This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
 
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
