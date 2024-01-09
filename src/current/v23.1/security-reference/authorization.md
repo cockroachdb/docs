@@ -172,7 +172,7 @@ For more examples of default privileges, see the examples on the [`SHOW DEFAULT 
 
 ## Role options
 
-Users' authorization to perform certain actions are governed not by grants but by [`role options`]({% link {{ page.version.version }}/create-user.md %}#role-options). These options govern whether users can perform actions such as:
+A user's authorization to perform certain actions is governed by [`role options`]({% link {{ page.version.version }}/create-user.md %}#role-options) rather than grants. For example:
 
 - Viewing or canceling ongoing queries and sessions owned by other roles.
 - Pausing, resuming, and canceling jobs.
