@@ -63,6 +63,8 @@ Select the number of nodes:
 
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/requests/new).
 
+Click **Next: Capacity**.
+
 ## Step 4. Enable VPC Peering (optional)
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
@@ -87,7 +89,7 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
 
-## Step 5. Select the hardware per node
+## Step 5. Configure cluster capacity
 
 {% capture cap_per_vcpu %}{% include_cached v23.1/prod-deployment/provision-storage.md %}{% endcapture %}
 
@@ -126,7 +128,7 @@ To change the hardware configuration after the cluster is created, see [Manage a
 
 See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
-Click **Finalize**.
+Click **Next: Finalize**.
 
 ## Step 6. Enter billing details
 

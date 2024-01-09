@@ -68,11 +68,28 @@ To add or remove nodes from your cluster:
 
     The **Edit cluster** page displays.
 
-1. From the **Nodes** dropdown, select the number of nodes you want in each region.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+1. On the **Regions** page, select the number of nodes you want in each region from the **Nodes** dropdown.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Next Finalize**.
+1. On the **Finalize** page, click **Update**.
+
+### Change compute for a cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Select **Actions > Edit cluster**.
+
+    The **Edit cluster** page displays.
+
+1. Navigate to the **Capacity** page.
+1. In the **Compute per node** section, select the new amount of vCPUs per node.
+
+    {{site.data.alerts.callout_info}}
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
+    {{site.data.alerts.end}}
+
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Finalize**.
+1. On the **Finalize** page, click **Update**.
 
 ### Increase storage for a cluster
 
@@ -85,36 +102,16 @@ AWS disks can only be scaled once every six hours.
 
     The **Edit cluster** page displays.
 
-1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
-1. Select the new amount of storage per node.
+1. Navigate to the **Capacity** page.
+1. In the **Compute per node** section, select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
     Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
-
-### Change compute for a cluster
-
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
-
-    The **Edit cluster** page displays.
-
-1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
-1. Select the new amount of vCPUs per node.
-
-    {{site.data.alerts.callout_info}}
-    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
-    {{site.data.alerts.end}}
-
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Finalize**.
+1. On the **Finalize** page, click **Update**.
 
 ## Add or remove regions from a cluster
 
@@ -129,13 +126,14 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
     The **Edit cluster** page displays.
 
-1. Click **Add a region**.
+1. On the **Regions** page, click **Add a region**.
 
     If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
 
-1. In the **Regions & Nodes** section, select the desired new region and specify the number of nodes for it.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. Select the desired new region and specify the number of nodes for it.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then click **Finalize**.
+1. Click **Update cluster**.
 
 ### Remove a region from your cluster
 
@@ -152,12 +150,13 @@ To remove a region from your cluster:
 
     The **Edit cluster** page displays.
 
-1. Click the **X** button next to each region you want to remove.
+1. On the **Regions** page, click the **X** button next to each region you want to remove.
     {{site.data.alerts.callout_info}}
     If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
     {{site.data.alerts.end}}
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Next: Finalize**.
+1. Click **Update cluster**.
 
 ## Set a maintenance window
 
