@@ -265,14 +265,16 @@ For details on cloud storage URLs, see [Use Cloud Storage]({% link {{ page.versi
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
-### Automated full backups
+### Scheduled backups
 
-Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
+You can use [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to set a recurring schedule for full and incremental backups. To create a schedule that includes incremental backups, you must have an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+
+Include the `FULL BACKUP ALWAYS` clause for a schedule to take only full backups. For example, to create a schedule for taking full cluster backups:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+CREATE SCHEDULE core_schedule_label
+    FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     RECURRING '@daily'
     FULL BACKUP ALWAYS
     WITH SCHEDULE OPTIONS first_run = 'now';
@@ -284,7 +286,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 (1 row)
 ~~~
 
-For more examples on how to schedule backups that take full and incremental backups, see [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
+For more examples on how to schedule backups that take full and incremental backups, refer to [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
 
 ### Exclude a table's data from backups
 
