@@ -7,7 +7,7 @@ docs_area: manage
 
 This page summarizes the security features available in the two database cluster types offered by CockroachDB {{ site.data.products.cloud }}, **serverless** and **dedicated**.
 
-A CockroachDB {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
+A CockroachDB {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastructure.
 
 A CockroachDB {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance]({% link cockroachcloud/pci-dss.md %}).
 

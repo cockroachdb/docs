@@ -53,7 +53,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     ~~~
 
     ~~~
-    NAME                                                   AGE       REQUESTOR                               CONDITION
+    NAME                                                   AGE       REQUESTER                               CONDITION
     default.node.cockroachdb-0                             1m        system:serviceaccount:default:default   Pending
     node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   4m        kubelet                                 Approved,Issued
     node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   4m        kubelet                                 Approved,Issued
@@ -267,7 +267,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     ~~~
 
     ~~~
-    NAME                                                   AGE       REQUESTOR                               CONDITION
+    NAME                                                   AGE       REQUESTER                               CONDITION
     default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
     default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
     default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
@@ -402,7 +402,7 @@ To shut down the CockroachDB cluster:
     ~~~
 
     ~~~
-    NAME                                                   AGE       REQUESTOR                               CONDITION
+    NAME                                                   AGE       REQUESTER                               CONDITION
     default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
     default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
     default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued

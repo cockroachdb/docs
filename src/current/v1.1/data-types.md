@@ -43,5 +43,5 @@ CockroachDB supports explicit type conversions using the following methods:
 - Other [built-in conversion functions](functions-and-operators.html) when the type is not a SQL type, for example `from_ip()`, `to_ip()` to convert IP addresses between `STRING` and `BYTES` values.
 
 
-You can find each data type's supported converstion and casting on its
+You can find each data type's supported conversion and casting on its
 respective page in its section **Supported Casting & Conversion**.

@@ -478,8 +478,8 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
                  day            | doctor_id | on_call
     +---------------------------+-----------+---------+
-      2018-10-05 00:00:00+00:00 |         1 |  true
-      2018-10-05 00:00:00+00:00 |         2 |  false
+      2018-10-05 00:00:00+00:00 |         1 |  t
+      2018-10-05 00:00:00+00:00 |         2 |  f
     (2 rows)
     ~~~
 

@@ -73,7 +73,7 @@ When we insert rows without values in column `a` and display the new rows, we se
 
 ### Auto-Incrementing Is Not Always Sequential
 
-It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not commited. This means that auto-incrementing types may leave gaps in a sequence.
+It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. In fact, each insert increases the sequence by one, even when the insert is not committed. This means that auto-incrementing types may leave gaps in a sequence.
 
 To experience this for yourself, run through the following example in PostgreSQL:
 
@@ -106,7 +106,7 @@ To experience this for yourself, run through the following example in PostgreSQL
     +---+
     ~~~
 
-    Since each insert increased the sequence in column `a` by one, the first commited insert got the value `2`, and the second commited insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
+    Since each insert increased the sequence in column `a` by one, the first committed insert got the value `2`, and the second committed insert got the value `4`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
 In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster.
 

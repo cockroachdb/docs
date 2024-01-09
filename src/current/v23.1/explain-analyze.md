@@ -85,7 +85,7 @@ Statement plan tree properties | Description
 `estimated max memory allocated` | The estimated maximum allocated memory for a statement.
 `estimated max sql temp disk usage` | The estimated maximum temporary disk usage for a statement.
 `MVCC step count (ext/int)` | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) that could not be used in the scan.
-`MVCC seek count (ext/int)` | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
+`MVCC seek count (ext/int)` | The number of times that the underlying storage iterator jumped (sought) to a different data location.
 `sql cpu time` | The total time this phase of the statement was in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `estimated row count` | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 `table` | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.

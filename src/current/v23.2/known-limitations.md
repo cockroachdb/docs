@@ -36,7 +36,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
 

@@ -12,7 +12,7 @@ For example, you might want to:
 
 - Stream messages to Kafka to trigger notifications in an application.
 - Keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
-- Export a snaphot of tables to backfill new applications.
+- Export a snapshot of tables to backfill new applications.
 - Send updates to data stores for machine learning models.
 
 The main feature of CockroachDB CDC is the _changefeed_, which targets an allowlist of tables, or "watched rows".

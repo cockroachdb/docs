@@ -4,7 +4,7 @@ summary: The Storage dashboard lets you monitor the storage utilization for your
 toc: true
 ---
 
-The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then selecte **Dashboard** > **Storage**.
+The **Storage** dashboard in the CockroachDB Admin UI lets you monitor the storage utilization for your cluster. To view this dashboard, [access the Admin UI](admin-ui-access-and-navigate.html#access-the-admin-ui) and then select **Dashboard** > **Storage**.
 
 
 The **Storage** dashboard displays the following time series graphs:
