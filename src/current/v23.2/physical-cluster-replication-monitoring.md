@@ -14,7 +14,7 @@ docs_area: manage
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
-- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data up to a point in time is correct on the standby cluster.
+- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
 
 When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 
@@ -103,7 +103,7 @@ We recommend tracking the following metrics:
 `SHOW EXPERIMENTAL_FINGERPRINT` allows you to verify that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
-To verify that the data up to a certain point in time is correct on the standby cluster, you can use the current replicated time from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, up to that point in time, is correct.
+To verify that the data at a certain point in time is correct on the standby cluster, you can use the current replicated time from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, at that point in time, is correct.
 
 1. Retrieve the current replicated time of the replication job on the standby cluster with [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}):
 
@@ -114,7 +114,7 @@ To verify that the data up to a certain point in time is correct on the standby 
     ~~~
          replicated_time
     ----------------------------
-    2023-12-15 19:39:18.321455+00
+    2024-01-09 16:15:45.291575+00
     (1 row)
     ~~~
 
@@ -124,12 +124,12 @@ To verify that the data up to a certain point in time is correct on the standby 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2023-12-15 19:39:18.321455+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
     tenant_name |             end_ts             |     fingerprint
     ------------+--------------------------------+----------------------
-    application | 1702669158089558000.0000000000 | 2646132238164576487
+    application | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
@@ -139,12 +139,12 @@ To verify that the data up to a certain point in time is correct on the standby 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2023-12-15 19:39:18.321455+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
         tenant_name     |             end_ts             |     fingerprint
     --------------------+--------------------------------+----------------------
-    standbyapplication  | 1702669158089558000.0000000000 | 2646132238164576487
+    standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
