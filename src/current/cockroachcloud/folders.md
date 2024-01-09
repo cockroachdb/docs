@@ -200,7 +200,10 @@ To move a cluster from the organization level into a folder, or to move it from 
 1. In the dialog, select the destination to move the cluster to, then click **Next**.
 1. Click **Move**.
 
-Alternatively, you can move a cluster to a new folder by browsing to the location of the destination folder, then clicking the the three-dots **Action** button and selecting **Move**.
+To move a cluster to a new folder from the **Clusters** page:
+
+1. Browse to the location of the destination folder.
+1. Click the the three-dots **Action** button, then select **Move**.
 
 {{site.data.alerts.callout_info}}
 Clusters are [billed]({% link cockroachcloud/billing-management.md %}#view-invoices) to the folder they reside in at the end of the billing period, even if they were moved between folders during that time.
