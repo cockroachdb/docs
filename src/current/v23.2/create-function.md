@@ -30,10 +30,10 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 
 Parameter | Description
 ----------|------------
-`func_create_name` | The name of the function.
-`func_param` | A function argument.
-`func_return_type` | The type returned by the function. 
-`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
+`routine_create_name` | The name of the function.
+`routine_param` | A comma-separated list of function parameters.
+`routine_return_type` | The type returned by the function. 
+`routine_body_stmt` | The body of the function. For allowed contents, see [User-Defined Functions: Overview]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
 
@@ -157,6 +157,10 @@ SELECT last_rider();
   (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
 (1 row)
 ~~~
+
+### Create a function that uses a loop
+
+{% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
 ## See also
 
