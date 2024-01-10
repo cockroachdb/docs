@@ -937,9 +937,7 @@ SELECT * FROM schedules
 The following are not yet supported with `READ COMMITTED`:
 
 - Schema changes (e.g., [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}), [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level](#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`.
-- `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access tables with [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints in the following cases:
-	- The table is using [`PARTITION ALL BY`]({% link {{ page.version.version }}/partitioning.md %}).
-	- The table is using [`LOCALITY REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables), the region is not included in the constraint, and the region cannot be computed from the constraint columns.
+- `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
 - [Shared locks](#locking-reads) cannot yet be promoted to exclusive locks.
 - [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by `READ COMMITTED` transactions.
 

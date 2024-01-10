@@ -39,7 +39,7 @@ Lock "strength" determines how restrictive the lock is to concurrent transaction
 
 {% include {{ page.version.version }}/sql/select-lock-strengths.md %}
 
-Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) regardless of the specified lock strength.                    
+Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) when using `SERIALIZABLE` isolation, regardless of the specified lock strength.                    
 
 ### `FOR UPDATE` usage
 
