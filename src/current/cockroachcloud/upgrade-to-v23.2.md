@@ -6,7 +6,7 @@ docs_area: manage
 page_version: v23.2
 prev_version: v23.1
 pre_production_preview: True
-pre_production_preview_version: v23.2.0-rc.1
+pre_production_preview_version: v23.2.0-rc.2
 ---
 
 {% if page.pre_production_preview == true %}
