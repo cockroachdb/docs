@@ -100,10 +100,10 @@ We recommend tracking the following metrics:
 {{site.data.alerts.callout_info}}
 **This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).** It is in active development and subject to change.
 
-`SHOW EXPERIMENTAL_FINGERPRINT` allows you to verify that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+The `SHOW EXPERIMENTAL_FINGERPRINT` statement verifies that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
-To verify that the data at a certain point in time is correct on the standby cluster, you can use the current replicated time from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, at that point in time, is correct.
+To verify that the data at a certain point in time is correct on the standby cluster, you can use the [current replicated time]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, at that point in time, is correct.
 
 1. Retrieve the current replicated time of the replication job on the standby cluster with [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}):
 
@@ -120,7 +120,7 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-interface).
 
-1. From the **primary cluster's system interface**, specify a timestamp at or lower than the current `replicated_time` to verify the data:
+1. From the **primary cluster's system interface**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -135,7 +135,7 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-interface).
 
-1. From the **standby cluster's system interface**, specify a timestamp at or lower than the current `replicated_time` to verify the data:
+1. From the **standby cluster's system interface**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -147,6 +147,8 @@ To verify that the data at a certain point in time is correct on the standby clu
     standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
+
+1. Compare the fingerprints of the primary and standby clusters to verify the data. The same value for the fingerprints indicates the data is correct.
 
 ## See also
 

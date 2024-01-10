@@ -194,13 +194,6 @@ The standby cluster connects to the primary cluster's system interface using an 
 
 Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
 
-To start the standby cluster, run:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
---config-profile replication-target
-~~~
-
 For example, a `cockroach start` command according to the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-3-start-nodes):
 
 {% include_cached copy-clipboard.html %}
@@ -369,7 +362,7 @@ The system interface in the standby cluster initiates and controls the replicati
     (1 row)s
     ~~~
 
-    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data up to a point in time is correct on the standby cluster. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
 ## Connection reference
 
