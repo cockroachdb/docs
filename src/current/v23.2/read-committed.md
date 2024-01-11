@@ -151,7 +151,7 @@ Starting a transaction as `READ COMMITTED` does not affect the [session-level is
 
 `READ COMMITTED` transactions can abort in the following scenarios:
 
-- Transactions at all isolation levels are subject to [*lock contention*]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), where a transaction attempts to lock a row that is already locked by a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read](#locking-reads). In such cases, the later transaction is blocked until the earlier transaction commits or rolls back, thus releasing its lock on the row. Locking contention that produces a *deadlock* between two transactions will result in a transaction abort and a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted)) returned to the client. For an example, see [Reserve row values using shared locks](#reserve-row-values-using-shared-locks).
+- Transactions at all isolation levels are subject to [*lock contention*]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), where a transaction attempts to lock a row that is already locked by a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read](#locking-reads). In such cases, the later transaction is blocked until the earlier transaction commits or rolls back, thus releasing its lock on the row. Lock contention that produces a *deadlock* between two transactions will result in a transaction abort and a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted)) returned to the client.
 
 - [Constraint]({% link {{ page.version.version }}/constraints.md %}) violations will abort transactions at all isolation levels.
 
@@ -171,15 +171,15 @@ The behaviors described in this section assume the use of non-locking reads. You
 
 *Non-repeatable reads* return different row values because a concurrent transaction updated the values in between reads:
 
-1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
-1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
-1. Transaction `A` reads row `R` in table `T` and gets a different result at timestamp `3`.
+1. Transaction `A` reads row `R` at timestamp `1`.
+1. Transaction `B` writes to row `R` and commits at timestamp `2`.
+1. Transaction `A` reads row `R` and gets a different result at timestamp `3`.
 
 *Phantom reads* return different rows because a concurrent transaction changed the set of rows that satisfy the row search:
 
-1. Transaction `A` reads the set of rows `S` in table `T` at timestamp `1`.
-1. Transaction `B` inserts, deletes, or updates rows in `S` in table `T` and commits at timestamp `2`.
-1. Transaction `A` reads the set of rows `S` in table `T` and gets a different result at timestamp `3`.
+1. Transaction `A` reads the set of rows `S` at timestamp `1`.
+1. Transaction `B` inserts, deletes, or updates rows in `S` and commits at timestamp `2`.
+1. Transaction `A` reads the set of rows `S` and gets a different result at timestamp `3`.
 
 Whereas statements in `SERIALIZABLE` transactions see data that committed before the transaction began, statements in `READ COMMITTED` transactions see data that committed before each **statement** began.
 
@@ -258,9 +258,9 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
 
 The `READ COMMITTED` conditions that permit [non-repeatable reads and phantom reads](#non-repeatable-reads-and-phantom-reads) also permit *lost update anomalies*, where an update from a transaction appears to be "lost" because it is overwritten by a concurrent transaction:
 
-1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
-1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
-1. Transaction `A` writes to row `R` in table `T` and commits at timestamp `3`.
+1. Transaction `A` reads row `R` at timestamp `1`.
+1. Transaction `B` writes to row `R` and commits at timestamp `2`.
+1. Transaction `A` writes to row `R` and commits at timestamp `3`.
 
 The value of `R` has changed while transaction `A` is open. However, `A` can still write to `R` and commit, effectively overwriting the update from transaction `B`.
 
@@ -360,13 +360,14 @@ While concurrent `READ COMMITTED` transactions can have their committed writes o
 
 #### Write skew anomaly
 
-The following sequence of operations is possible under `READ COMMITTED` isolation: 
+The following sequence of operations on a table is possible under `READ COMMITTED` isolation: 
 
-1. Transaction `A` reads row `R` in table `T` at timestamp `1`.
-1. Transaction `B` writes to row `R` in table `T` and commits at timestamp `2`.
-1. Transaction `A` writes to another row in table `T` and commits at timestamp `3`.
+1. Transaction `A` reads row `R` at timestamp `1`.
+1. Transaction `B` reads row `S` at timestamp `2`.
+1. Transaction `A` writes to row `S` and commits at timestamp `3`.
+1. Transaction `B` writes to row `R` and commits at timestamp `4`.
 
-The value of `R` has changed while transaction `A` is open. However, `A` can still write and commit instead of aborting, since `READ COMMITTED` transactions do not require serializability. This does not inherently create an anomaly, but is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
+Transaction `A` updates the value of `S` based on the `R` value it reads at timestamp `1`. Transaction `B` updates the value of `R` based on the `S` value it reads at timestamp `2`. The value of `S` has changed while transaction `B` is open, but `B` can still write and commit instead of aborting, since `READ COMMITTED` transactions do not require serializability. This is the basis of potential *write skew anomalies* where two concurrent transactions each read values that the other subsequently updates.
 
 {{site.data.alerts.callout_info}}
 For details on why this is allowed, see [Read refreshing]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-skew-tolerance).
@@ -704,10 +705,15 @@ BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 Check to make sure that another doctor is on call for `2023-12-05`. Use [`FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) to lock the rows so that only the current transaction can update them:
 
+  {{site.data.alerts.callout_success}}
+  Include an `ORDER BY` clause to force locking to occur in a specific order. This prevents potential deadlock with another locking read on the same rows, which can cause the transaction to abort.
+  {{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
+  ORDER BY doctor_id
   FOR UPDATE;
 ~~~
 
@@ -735,6 +741,7 @@ Check to make sure that another doctor is on call for `2023-12-05`. Use `FOR UPD
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
+  ORDER BY doctor_id
   FOR UPDATE;
 ~~~
 
@@ -865,8 +872,9 @@ SELECT * FROM schedules
 ~~~
   </div>
 
-  <div class="grid-item">
-In Session 1, the previous read confirmed that another doctor is available on `2023-12-05`. Update the schedule to put Abe on leave:
+</div>
+
+Shared locks are [typically used](#when-to-use-locking-reads) when a transaction needs to read the latest version of a row, but does not need to update the row. With the rows locked by both Sessions 1 and 2, a third Session 3 is blocked from updating the rows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -875,47 +883,16 @@ UPDATE schedules SET on_call = false
   AND doctor_id = 1;
 ~~~
 
-However, because Session 2 has also acquired a shared lock on these rows, the current transaction is blocked until Session 2 releases its lock.
-
-{{site.data.alerts.callout_success}}
-`FOR SHARE` is not typically used by transactions that intend to update rows, as shown by the following steps. For more information, see [When to use locking reads](#when-to-use-locking-reads).
-{{site.data.alerts.end}}
-  </div>
-
-  <div class="grid-item">
-In Session 2, the previous read confirmed that another doctor is available on `2023-12-05`. Update the schedule to put Betty on leave:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-UPDATE schedules SET on_call = false
-  WHERE day = '2023-12-05'
-  AND doctor_id = 2;
-~~~
-
-However, because Session 1 has also acquired a shared lock on these rows, the current transaction is blocked until Session 1 releases its lock.
-
-Because each concurrent transaction is waiting on the other to release its lock, they will deadlock. Session 2 aborts first with a [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted) error:
-
-~~~
-ERROR: restart transaction: TransactionRetryWithProtoRefreshError: TransactionAbortedError(ABORT_REASON_PUSHER_ABORTED): "sql txn" meta={id=85394586 key=/Tenant/2/Table/115/1/19696/1/0 iso=ReadCommitted pri=0.01582601 epo=0 ts=1700690868.143651000,0 min=1700690819.160354000,0 seq=0} lock=true stat=ABORTED rts=1700690868.143651000,0 wto=false gul=1700690819.660354000,0
-~~~
-</div>
-
-  <div class="grid-item">
-With the transaction in Session 2 aborted, Session 1 completes its update to place Abe on leave:
+Once both Sessions 1 and 2 commit or rollback their transactions, Session 3 can complete the update to place Abe on leave:
 
 ~~~
 UPDATE 1
 ~~~
 
-Commit the transaction:
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
-  </div>
-</div>
 
 Read the rows for `2023-12-05` and confirm that Betty is still on call:
 
