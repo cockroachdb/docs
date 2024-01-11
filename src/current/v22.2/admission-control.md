@@ -73,6 +73,18 @@ To reset the priority to the default session setting (in between background and 
 SET default_transaction_quality_of_service=regular;
 ~~~
 
+### Set quality of service level for a transaction
+
+To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service` session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block as shown below. The valid values are `critical`, `background`, and `regular`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit to desired level
+-- Statements to run in this transaction go here
+COMMIT;
+~~~
+
 ## Limitations
 
 Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`](set-vars.html#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.

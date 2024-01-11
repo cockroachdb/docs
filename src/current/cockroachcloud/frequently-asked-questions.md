@@ -95,9 +95,14 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery).
 
-CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
+CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. By default, full backups are retained for 30 days and incremental backups for 7 days. However, there are some cases where you will no longer be able to restore the managed backups even within the retainment window:
+
+- Manually deleting the managed backup schedule.
+- Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster. Refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
 
 Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+
+In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -166,7 +171,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 
-Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v21.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v21.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 

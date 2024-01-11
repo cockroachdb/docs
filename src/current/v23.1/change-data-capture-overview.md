@@ -43,7 +43,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.dedicated }} or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.serverless }}.</td>
+    <td>CockroachDB {{ site.data.products.dedicated }}, CockroachDB {{ site.data.products.serverless }}, or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
   </tr>
 
   <tr>
