@@ -1,6 +1,6 @@
 ---
 title: CALL
-summary: The CALL statement calls a stored procedure.
+summary: The CALL statement calls a stored procedure, executing the statements in the procedure body.
 toc: true
 keywords:
 docs_area: reference.sql
