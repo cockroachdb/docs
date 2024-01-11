@@ -20,7 +20,7 @@ The basic components of a user-defined function are a name, list of arguments, r
     - `VOID` indicates that there is no return type and `NULL` will always be returned. {% comment %}If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.{% endcomment %}
 - The [volatility]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from pre-evaluating the function.
-  - A `STABLE` or `IMMUTABLE` function does not mutate data.
+  - A `STABLE` or `IMMUTABLE` function does not mutate data. You cannot create a `STABLE` or `IMMUTABLE` function that executes a mutation (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) statement.
   - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`, and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
   - Non-`VOLATILE` functions can be optimized through inlining. For more information, see [Create an inlined UDF](#create-an-inlined-udf).
 - `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages `SQL` and [`PLpgSQL` (PL/pgSQL)]({% link {{ page.version.version }}/plpgsql.md %}).

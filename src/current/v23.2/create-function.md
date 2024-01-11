@@ -83,6 +83,42 @@ SELECT num_users();
 (1 row)
 ~~~
 
+### Create a function that modifies a table
+
+The following statement defines a function that updates the `rules` value for a specified row in `promo_codes`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION update_code(
+  code_name VARCHAR,
+  new_rules JSONB
+  ) 
+  RETURNS promo_codes AS $$
+    UPDATE promo_codes SET rules = new_rules
+    WHERE code = code_name
+    RETURNING *;
+  $$ LANGUAGE SQL;
+~~~
+
+Given the `promo_codes` row:
+
+~~~
+            code           |                          description                           |    creation_time    |   expiration_time   |                    rules
+---------------------------+----------------------------------------------------------------+---------------------+---------------------+-----------------------------------------------
+  0_building_it_remember   | Door let Mrs manager buy model. Course rock training together. | 2019-01-09 03:04:05 | 2019-01-14 03:04:05 | {"type": "percent_discount", "value": "10%"}
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "value": "50%"}');
+~~~
+
+~~~
+                                                                                          update_code
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  (0_building_it_remember,"Door let Mrs manager buy model. Course rock training together.","2019-01-09 03:04:05","2019-01-14 03:04:05","{""type"": ""percent_discount"", ""value"": ""50%""}")
+~~~
+
 ### Create a function that uses a `WHERE` clause
 
 The following statement defines a function that returns the total revenue for rides taken in European cities.
