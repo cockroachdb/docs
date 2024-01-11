@@ -24,9 +24,9 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 Creating {{ site.data.products.enterprise }} changefeeds is available on:
 
-- CockroachDB {{ site.data.products.dedicated }}
-- CockroachDB {{ site.data.products.serverless }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-- CockroachDB {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- CockroachDB {{ site.data.products.dedicated }} clusters
+- CockroachDB {{ site.data.products.serverless }} clusters
+- CockroachDB {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})
 
 You can connect to the following sinks:
 
