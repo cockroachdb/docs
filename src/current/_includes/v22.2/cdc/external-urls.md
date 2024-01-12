@@ -4,7 +4,7 @@
 
 Location                                                    | Scheme      | Host                                             | Parameters                                                                 |
 |-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`&nbsp;[<sup>1</sup>](#considerations) (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`                               
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`&nbsp;[<sup>1</sup>](#considerations) (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`
 Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
 Google Cloud&nbsp;[<sup>2</sup>](#considerations)           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS`
 HTTP&nbsp;[<sup>3</sup>](#considerations)                   | `http`      | Remote host                                      | N/A
@@ -39,10 +39,10 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 
 #### Example file URLs
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
-Google Cloud | `gs://acme-co`                                                     
-HTTP         | `http://localhost:8080/employees`                                            
+Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`
+Google Cloud | `gs://acme-co`
+HTTP         | `http://localhost:8080/employees`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)

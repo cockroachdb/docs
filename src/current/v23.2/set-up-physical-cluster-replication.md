@@ -38,6 +38,7 @@ The high-level steps in this tutorial are:
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
 - An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
+- The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 
 ## Step 1. Create the primary cluster
 
@@ -192,13 +193,6 @@ The standby cluster connects to the primary cluster's system interface using an 
 ### Start the standby cluster
 
 Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
-
-To start the standby cluster, run:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
---config-profile replication-target
-~~~
 
 For example, a `cockroach start` command according to the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-3-start-nodes):
 
@@ -367,6 +361,8 @@ The system interface in the standby cluster initiates and controls the replicati
     3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
     (1 row)s
     ~~~
+
+    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
 ## Connection reference
 

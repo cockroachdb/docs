@@ -49,7 +49,7 @@ Parameter | Description
 
 Option | Description
 -------+-------------
-`RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.
+`RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## Connection string
 
@@ -101,7 +101,9 @@ When you initiate a replication stream, you can specify a retention window to pr
 CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
 ~~~
 
-This will initiate a replication stream from the primary cluster into the standby cluster's new `application` virtual cluster. The `RETENTION` option allows you to specify a timestamp up to 36 hours in the past for cutover to the standby cluster. After cutover, the new `application` virtual cluster will be transactionally consistent to any timestamp within that retention window.
+This will initiate a replication stream from the primary cluster into the standby cluster's new `standbyapplication` virtual cluster. The `RETENTION` option allows you to specify a timestamp in the past for cutover to the standby cluster. After cutover, the `standbyapplication` will be transactionally consistent to any timestamp within that retention window.
+
+{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## See also
 

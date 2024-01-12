@@ -44,7 +44,7 @@ For requirements and limitations, see [Exact staleness reads and long-running wr
 Use exact staleness follower reads when you:
 
 - Need multi-statement reads inside [transactions]({% link {{ page.version.version }}/transactions.md %}).
-- Can tolerate reading older data (at least 4.8 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
+- Can tolerate reading older data (at least 4.2 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
 - Do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of [network partitions]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) or other failures.
 - Need a read that is slightly cheaper to perform than a [bounded staleness read](#bounded-staleness-reads), because exact staleness reads don't need to dynamically compute the query timestamp.
 
@@ -57,6 +57,14 @@ Use this function in an `AS OF SYSTEM TIME` statement as follows:
 ``` sql
 SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
 ```
+
+To see the current value of the follower read timestamp, execute the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT now() - follower_read_timestamp();
+~~~
+
 #### Exact staleness follower reads demo
 
 The following video describes and demonstrates [exact staleness](#exact-staleness-reads) follower reads.
@@ -144,7 +152,7 @@ This example performs a bounded staleness follower read against a [demo cluster]
     ERROR: unimplemented: cannot use bounded staleness for queries that may touch more than one row or require an index join
     SQLSTATE: 0A000
     HINT: You have attempted to use a feature that is not yet implemented.
-    See: https://go.crdb.dev/issue-v/67562/v21.2
+    See: https://go.crdb.dev/issue-v/67562/v23.2
     ~~~
 
     You can verify using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) that the reason this query was able to perform a bounded staleness read is that it performed a point lookup from a single row:
@@ -225,7 +233,7 @@ SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') LIMIT 1
 ERROR: unimplemented: cannot use bounded staleness for queries that may touch more than one row or require an index join
 SQLSTATE: 0A000
 HINT: You have attempted to use a feature that is not yet implemented.
-See: https://go.crdb.dev/issue-v/67562/v21.2
+See: https://go.crdb.dev/issue-v/67562/v23.2
 ~~~
 
 As noted by the error message, this query cannot be served as a bounded staleness read because in this case it would touch more than one row. Even though we used a [`LIMIT 1` clause]({% link {{ page.version.version }}/limit-offset.md %}), the query would still have to touch more than one row in order to filter out the additional results.

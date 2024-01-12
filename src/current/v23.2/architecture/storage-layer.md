@@ -118,7 +118,7 @@ Read amplification and write amplification are key metrics for LSM performance. 
 
 Inverted LSMs also have excessive compaction debt. In this state, the storage engine has a large backlog of [compactions](#compaction) to do to return the inverted LSM to a normal, non-inverted state.
 
-For instructions showing how to monitor your cluster's LSM health, see [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). To monitor your cluster's LSM L0 health, see [LSM L0 Health]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#lsm-l0-health).
+For instructions showing how to monitor your cluster's LSM health, see [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). To monitor your cluster's LSM L0 health, see [IO Overload]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#io-overload).
 
 ##### Memtable and write-ahead log
 

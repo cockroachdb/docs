@@ -208,7 +208,7 @@ The `system.zones` table stores your cluster's [zone configurations]({% link {{ 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE TABLE system.zones FROM '2021/03/23-213101.37' IN
-	'azure://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+	'azure-blob://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 	WITH into_db = 'newdb';
 ~~~
 
