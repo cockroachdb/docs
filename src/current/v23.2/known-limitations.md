@@ -30,15 +30,25 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
-### Limitations for `SELECT FOR UPDATE`
+### Limitations for `FOR UPDATE` and `FOR SHARE` locks under `SERIALIZABLE`
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) place locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    This is fixed by setting the `optimizer_use_lock_op_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes. For more information, see [Lock behavior under `SERIALIZABLE` isolation]({% link {{ page.version.version }}/select-for-update.md %}#lock-behavior-under-serializable-isolation).
+
+    This is fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+
+- [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions by default, and by `SERIALIZABLE` transactions when the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is set to `true`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
 
 ### Limitations for composite types
 
@@ -164,10 +174,6 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 ### Limited SQL cursor support
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
-
-### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
-
-{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
 ### Unsupported trigram syntax
 

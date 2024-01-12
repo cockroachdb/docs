@@ -43,7 +43,7 @@ strong {
   font-weight: 700;
 }
 
-p {
+p, .grid-item {
   @include paragraph-type;
   // color: $cl_blue;
 
@@ -282,6 +282,13 @@ caption {
   padding-bottom: 8px;
   color: #777;
   text-align: left;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 10px;
+  margin-bottom: -12px;
 }
 
 thead,
