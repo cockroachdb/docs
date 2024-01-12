@@ -160,7 +160,7 @@ Review the [best practices for creating secondary indexes]({% link {{ page.versi
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You will likely encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) related to CockroachDB's [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
+Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You will likely encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) related to CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
 
 #### Unimplemented features and syntax incompatibilities
 

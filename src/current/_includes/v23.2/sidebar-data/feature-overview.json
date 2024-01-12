@@ -30,12 +30,6 @@
             ]
           },
           {
-            "title": "Read Committed Transactions",
-            "urls": [
-              "/${VERSION}/read-committed.html"
-            ]
-          },
-          {
             "title": "Multi-Active Availability",
             "urls": [
               "/${VERSION}/multi-active-availability.html"

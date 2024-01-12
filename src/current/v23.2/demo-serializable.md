@@ -8,7 +8,7 @@ docs_area: deploy
 
 In contrast to most databases, CockroachDB offers `SERIALIZABLE` isolation by default, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
-In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
+In this tutorial, you'll work through a hypothetical scenario that demonstrates the effectiveness of `SERIALIZABLE` isolation for maintaining data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
 1. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
@@ -24,7 +24,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
-- In PostgreSQL, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
+- In PostgreSQL, with the default [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
 - In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
@@ -241,7 +241,7 @@ To check this, in either terminal, run:
 (2 rows)
 ~~~
 
-Again, this anomaly is the result of PostgreSQL's default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
+Again, this anomaly is the result of PostgreSQL's default isolation level of [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}), but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
