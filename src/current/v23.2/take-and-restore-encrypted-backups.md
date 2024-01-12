@@ -224,7 +224,7 @@ To take an encrypted backup with Azure KMS, use the `kms` [option]({% link {{ pa
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~
 
@@ -234,7 +234,7 @@ To take a [locality-aware backup with kms encryption](#locality-aware-backup-wit
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -247,7 +247,7 @@ To view a [kms encrypted locality-aware backup](#use-key-management-service), us
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -286,7 +286,7 @@ To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+RESTORE FROM LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~
 

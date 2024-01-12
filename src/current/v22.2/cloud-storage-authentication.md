@@ -659,9 +659,7 @@ For example:
 BACKUP DATABASE <database> INTO 'azure-blob://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD';
 ~~~
 
-{{site.data.alerts.callout_info}}
-For backward compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/misc/azure-blob.md %}
 
 </section>
 

@@ -702,6 +702,8 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
+    {% include {{ page.version.version }}/misc/azure-blob.md %}
+
 ## Azure Blob Storage implicit authentication
 
 {{site.data.alerts.callout_info}}
@@ -782,12 +784,10 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE {database} INTO 'azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
+    BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
 
-{{site.data.alerts.callout_info}}
-For backward compatibility, schemes `azure://` and `azure-storage://` are also supported here, though `azure-blob://` is recommended.
-{{site.data.alerts.end}}
+    {% include {{ page.version.version }}/misc/azure-blob.md %}
 
 </section>
 

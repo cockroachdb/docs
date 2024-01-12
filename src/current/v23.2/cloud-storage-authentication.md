@@ -702,7 +702,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 
     ~~~
-    azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
+    azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
     ~~~
 
     You can authenticate to Azure Storage and Azure Key Vault with this URI format.
@@ -715,8 +715,10 @@ You can authenticate to Azure with explicit credentials in the following ways:
     It is necessary to [URL encode](https://wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters.
 
     ~~~
-    azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
+    azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
+
+    {% include {{ page.version.version }}/misc/azure-blob.md %}
 
 ## Azure Blob Storage implicit authentication
 
@@ -798,8 +800,10 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE {database} INTO 'azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
+    BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
+
+    {% include {{ page.version.version }}/misc/azure-blob.md %}
 
 </section>
 
