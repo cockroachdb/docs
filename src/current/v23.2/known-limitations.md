@@ -18,30 +18,30 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 #### Support for PL/pgSQL features
 
-  - Nested blocks within functions are not supported, and will lead to errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114775)
+  - Nested blocks within PL/pgSQL blocks are not supported, and will lead to errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114775)
   - Cursors opened in PL/pgSQL do not execute their queries lazily, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
   - PL/pgSQL exception blocks cannot catch transaction retry errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111446)
-  - PL/pgSQL does not support referring to arguments by ordinals (e.g., `$1`, `$2`), limiting flexibility in function definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114701)
-  - The language does not currently support `FOR` and `WHILE` loop statements, limiting control flow capabilities in routines. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105246)
+  - PL/pgSQL does not support referring to arguments by ordinals (e.g., `$1`, `$2`), limiting flexibility in function and procedure definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114701)
+  - PL/pgSQL does not support `FOR` loop statements, limiting control flow capabilities in routines. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105246)
   - The `INTO` statement in PL/pgSQL does not support the `STRICT` option. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/107854)
 
 #### Type Handling and Variable Declarations
 
 - There are several known limitations regarding type handling and variable declarations in the current implementation of PL/pgSQL:
-  - The language does not support `RECORD` input arguments in UDFs. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+  - PL/pgSQL does not support `RECORD` input arguments for UDFs and stored procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
   - Type coercion does not behave consistently with PostgreSQL, particularly when values are too wide for the target type. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115385)
   - PL/pgSQL lacks support for `RECORD`-type variables, which are dynamically typed in PostgreSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114874)
   - Syntax for accessing members of composite types without parentheses is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114687)
-  - There is no support for adding context to errors with `RAISE` and for declaring variable collation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/106237)
-  - PL/pgSQL does not yet support `NOT NULL` variable declarations or set-returning functions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
+  - `RAISE` statements cannot be annotated with names of schema objects related to the error (i.e., using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, or `SCHEMA`). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/106237)
+  - PL/pgSQL does not support `NOT NULL` variable declarations. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
 
-#### Limitations in User-Defined Functions (UDFs)
+#### Limitations in User-Defined Functions (UDFs) and Stored Procedures
 
-  - The `PERFORM` keyword is not supported in UDFs. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108416)
-  - UDFs cannot call other UDFs or stored procedures from within their bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88198)
+  - PL/pgSQL does not support the `PERFORM` keyword. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108416)
+  - UDFs and stored procedures cannot call other UDFs or stored procedures from within their bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88198)
   - The `setval` function cannot be resolved when used inside UDF bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110860)
   - DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
-  - The language does not support `OUT` and `INOUT` argument modes in UDF definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
+  - UDF and stored procedure definitions do not support `OUT` and `INOUT` argument modes. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
 
 ### SQL Optimizer and Read Committed Isolation
 
