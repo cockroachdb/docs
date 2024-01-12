@@ -48,9 +48,9 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 #### Optimizer and Locking Behavior
 
 - The SQL optimizer has limitations under certain isolation levels:
-  - The new implementation of `SELECT FOR UPDATE` under serializable isolation is not yet the default setting. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
-  - `SELECT FOR UPDATE` does not lock completely-NULL column families in multi-column-family tables. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/116836)
-  - `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks are dropped on lease transfers and range splits/merges. Unreplicated locks, used by default under SERIALIZABLE isolation, can be dropped during such events, affecting the desired ordering of concurrent accesses and potentially leading to transaction retry errors. [More information on SELECT FOR UPDATE](https://www.cockroachlabs.com/docs/v23.2/select-for-update)
+  - The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
+  - `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/116836)
+  - `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks are dropped on lease transfers and range splits/merges. Unreplicated locks, used by default under SERIALIZABLE isolation, can be dropped during such events, affecting the desired ordering of concurrent accesses and potentially leading to transaction retry errors. [More information on `SELECT ... FOR UPDATE`](https://www.cockroachlabs.com/docs/v23.2/select-for-update)
 
 #### Read Committed Isolation Limitations
 
