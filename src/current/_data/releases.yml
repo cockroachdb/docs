@@ -5359,12 +5359,9 @@
   release_date: '2024-01-11'
   release_type: Production
   cloud_only: true
-  cloud_only_message_short: 'Available only to select CockroachDB Dedicated clusters'
+  cloud_only_message_short: 'Available in CockroachDB Dedicated. Self-hosted binaries available soon.'
   cloud_only_message: >
-    This version is currently available only to select
-    CockroachDB Dedicated clusters. To request to upgrade
-    your cluster to this version,
-    [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+    CockroachDB v23.2 is now generally available for CockroachDB Dedicated, and will be made available here for CockroachDB Self-Hosted in the coming weeks.
   go_version: go1.21
   sha: c8ffbdc4eeb3f656085edc33d6965b8f30cd7514
   has_sql_only: true
