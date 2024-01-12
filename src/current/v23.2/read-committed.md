@@ -51,12 +51,19 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 
 - The [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) session variable:
 
-	At the database level:
+	At the cluster level:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SET default_transaction_isolation = 'read committed';
 	~~~
+
+  At the [database level]({% link {{ page.version.version }}/alter-database.md %}#set-session-variable):
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  ALTER DATABASE db SET default_transaction_isolation = 'read committed';
+  ~~~
 
 	At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
@@ -65,7 +72,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 	ALTER ROLE foo SET default_transaction_isolation = 'read committed';
 	~~~
 
-- The `default_transaction_isolation` session variable as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}):
+- The `default_transaction_isolation` session variable as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters) with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql

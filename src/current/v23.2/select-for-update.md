@@ -57,6 +57,10 @@ Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT ... FOR SHARE` lo
 Shared locks are not enabled by default for `SERIALIZABLE` transactions. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). To perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). This matches the default `READ COMMITTED` behavior.
 {{site.data.alerts.end}}
 
+#### Lock behavior under `SERIALIZABLE` isolation
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+
 ### Wait policies
 
 Wait policies determine how a `SELECT ... FOR UPDATE` or `SELECT ... FOR SHARE` statement handles conflicts with locks held by other active transactions. By default, locking reads that are blocked by an active transaction must wait for the transaction to finish.
@@ -76,10 +80,6 @@ The user must have the `SELECT` and `UPDATE` [privileges]({% link {{ page.versio
 
 - `FOR KEY SHARE` is an alias for `FOR SHARE`.
 - `FOR NO KEY UPDATE` is an alias for `FOR UPDATE`.
-
-## Known limitations
-
-{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
 ## Examples
 
