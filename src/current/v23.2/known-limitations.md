@@ -54,12 +54,12 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 #### Read Committed Isolation Limitations
 
-- Several capabilities are not yet supported with Read Committed isolation:
+- Several capabilities are not yet supported with [Read Committed isolation](https://www.cockroachlabs.com/docs/v23.2/read-committed):
   - DDL statements cannot be performed within explicit Read Committed transactions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
   - Specific unique checks are not supported under Read Committed isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110873)
   - `SKIP LOCKED` requests do not reliably skip over replicated locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
   - Promoting a lock from `shared` to `exclusive` is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
-  - Schema changes are not allowed within explicit transactions, and certain unique constraints are not supported. Shared locks cannot be promoted to exclusive locks, and `SKIP LOCKED` requests do not reliably skip over replicated locks. [More information on READ COMMITTED](https://www.cockroachlabs.com/docs/v23.2/read-committed)
+  - Schema changes are not allowed within explicit transactions, and certain unique constraints are not supported. Shared locks cannot be promoted to exclusive locks, and `SKIP LOCKED` requests do not reliably skip over replicated locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115057)
   - Multi-column-family checks during updates may not function correctly. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/112488)
 
 ### `CAST` expressions containing a subquery with an `ENUM` target are not supported
