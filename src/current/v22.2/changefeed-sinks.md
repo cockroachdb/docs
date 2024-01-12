@@ -275,7 +275,7 @@ Examples of supported cloud storage sink URIs:
 ### Azure Storage
 
 ~~~
-'azure-blob://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
 ~~~
 
 ### Google Cloud Storage
