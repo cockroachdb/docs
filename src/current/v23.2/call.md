@@ -8,10 +8,6 @@ docs_area: reference.sql
 
 The `CALL` [statement]({% link {{ page.version.version }}/sql-statements.md %}) invokes a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 
-{{site.data.alerts.callout_info}}
-You cannot call a stored procedure from another stored procedure.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 To call a procedure, a user must have [`EXECUTE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the procedure.

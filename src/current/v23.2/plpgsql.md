@@ -28,6 +28,7 @@ PL/pgSQL is block-structured. A block contains the following:
 
 - An optional `DECLARE` section that contains [variable declarations](#declare-a-variable) for all variables that are used within the block and are not defined as [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) or [`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %}) parameters.
 - A [function]({% link {{ page.version.version }}/user-defined-functions.md %}) or [procedure]({% link {{ page.version.version }}/stored-procedures.md %}) body, consisting of statements enclosed by `BEGIN` and `END`.
+- An optional `EXCEPTION` section for [catching and handling `SQLSTATE` errors](#write-exception-logic).
 
 At the highest level, a PL/pgSQL block looks like the following:
 
@@ -77,7 +78,7 @@ For example:
 ~~~ sql
 DECLARE
 	a VARCHAR;
-	b INT :=0;
+	b INT := 0;
 ~~~
 
 #### Declare cursor variables
@@ -198,7 +199,7 @@ IF condition THEN
   END IF;
 ~~~
 
-`IF ... THEN ... ELSEIF` executes statements if a boolean condition is true. If the condition is false, each `ELSIF` condition is evaluated until one is true. The corresponding `ELSIF` statements are executed. If no `ELSIF` conditions are true, no statements are executed unless an `ELSE` clause is included, in which case the `ELSE` statements are executed.
+`IF ... THEN ... ELSIF` executes statements if a boolean condition is true. If the condition is false, each `ELSIF` condition is evaluated until one is true. The corresponding `ELSIF` statements are executed. If no `ELSIF` conditions are true, no statements are executed unless an `ELSE` clause is included, in which case the `ELSE` statements are executed.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -272,22 +273,31 @@ The cursor must first be opened within a PL/pgSQL block. If the cursor was decla
 ~~~ sql
 BEGIN
 	OPEN cursor_name [ FOR query ];
-	...
 ~~~
 
-You can then use the `FETCH` statement to retrieve query results for a specified number of rows:
+After opening the cursor, you can issue a PL/pgSQL `FETCH` statement to assign the result to one or more variables. 
 
 ~~~ sql
-FETCH FORWARD rows FROM cursor_name;
+BEGIN
+	...
+	FETCH cursor_name INTO target;
 ~~~
+
+{{site.data.alerts.callout_info}}
+In PL/pgSQL, `FETCH` returns a single row. For example, `FETCH 10` returns the 10th row.
+{{site.data.alerts.end}}
 
 You can free up a cursor variable by closing the cursor:
 
 ~~~ sql
-CLOSE cursor_name;
+BEGIN
+	...
+	CLOSE cursor_name;
 ~~~
 
-Cursors that are specified as parameters, rather than declared as variables, can be passed externally to and from PL/pgSQL blocks. For example, using the [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}):
+Cursors that are specified as parameters, rather than declared as variables, can be passed externally to and from PL/pgSQL blocks. 
+
+For example, using the [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -298,7 +308,13 @@ CREATE OR REPLACE PROCEDURE get_rides(rides_cursor REFCURSOR) AS $$
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-The [`CALL`]({% link {{ page.version.version }}/call.md %}) and `FETCH` statement have to be issued within the same transaction, or the cursor will not be found:
+Within the same transaction that opened the cursor, use the SQL `FETCH` statement to retrieve query results for a specified number of rows:
+
+~~~ sql
+FETCH rows FROM cursor_name;
+~~~
+
+The [`CALL`]({% link {{ page.version.version }}/call.md %}) and `FETCH` statements have to be issued within the same transaction, or the cursor will not be found:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -324,6 +340,10 @@ RAISE level 'message' [, expressions ]
   [ USING option = 'expression' [, ... ] ];
 ~~~
 
+{{site.data.alerts.callout_info}}
+`RAISE` messages the client directly, and does not currently produce log output.
+{{site.data.alerts.end}}
+
 - `level` is the message severity. Possible values are `DEBUG`, `LOG`, `NOTICE`, `INFO`, `WARNING`, and `EXCEPTION`. Specify `EXCEPTION` to raise an error that aborts the current transaction.
 - `message` is a message string to display.
 - `expressions` is an optional, comma-separated list of [expressions](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provide values to replace any `%` placed within the message string. The number of expressions must match the number of `%` placeholders.
@@ -333,7 +353,7 @@ RAISE level 'message' [, expressions ]
 	RAISE level USING MESSAGE = 'message';
 	~~~
 
-- `expression` is an expression to display that corresponds to the specified `option`. If `ERRCODE` is the specified option, this must be a valid [SQLSTATE error code or name](https://www.postgresql.org/docs/16/errcodes-appendix.html).
+- `expression` is an expression to display that corresponds to the specified `option`. If `ERRCODE` is the specified option, this must be a valid [`SQLSTATE` error code or name](https://www.postgresql.org/docs/16/errcodes-appendix.html).
 
 For example:
 
@@ -360,7 +380,11 @@ CALL
 
 #### Write exception logic
 
-Use an `EXCEPTION` statement to catch and handle specified errors. Any valid [SQLSTATE error code or name](https://www.postgresql.org/docs/16/errcodes-appendix.html) can be specified, other than `query_canceled`, `assert_failure`, or Class 40 (transaction rollback) errors. If a specified error is caught, the exception handling statements are executed. Any unspecified errors are caught by `WHEN OTHERS`, if included.
+Use an `EXCEPTION` statement to catch and handle specified errors. 
+
+Any valid [`SQLSTATE` error code or name](https://www.postgresql.org/docs/16/errcodes-appendix.html) can be specified, except for Class 40 (transaction rollback) errors. Arbitrary user-defined `SQLSTATE` codes can also be specified.
+
+If a specified error is caught, the exception handling statements are executed. Any unspecified errors are caught by `WHEN OTHERS`, except for `query_canceled` and `assert_failure`.
 
 ~~~ sql
 EXCEPTION
@@ -381,7 +405,7 @@ BEGIN
     WHEN not_null_violation THEN
       RETURN 'not_null_violation';
     WHEN OTHERS THEN
-      RETURN 'others';
+      RETURN others;
   END
 ~~~
 
@@ -400,15 +424,20 @@ BEGIN
 ## Known limitations
 
 - PL/pgSQL blocks cannot be nested.
-- `FOR` loops (including `FOR` cursor loops) are not supported.
 - Cursors used in PL/pgSQL always materialize their contents eagerly on opening. This can affect performance and resource usage.
-- PL/pgSQL `EXCEPTION` blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
-- PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`).
+- Cursors cannot be declared with parameters.
 - `RECORD` and `ROW`-type variables cannot be declared in PL/pgSQL.
 - `NOT NULL` variables cannot be declared in PL/pgSQL.
+- PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`).
+- PL/pgSQL `EXCEPTION` blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
+- `FOR` loops (including `FOR` cursor loops and `FOR` query loops) and `FOREACH` loops are not supported.
+- `RETURN NEXT` and `RETURN QUERY` statements are not supported.
+- `CASE` statements are not supported.
+- `EXIT` and `CONTINUE` labels and conditions are not supported.
+- Variable shadowing (e.g., declaring a variable with the same name in an inner block) is not supported in PL/pgSQL.
 - When using the `RAISE` statement, schema objects related to the error cannot be named using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, and `SCHEMA`.
 - The `INTO` statement in PL/pgSQL does not support the `STRICT` option.
-- The `PERFORM` keyword is not supported for PL/pgSQL.
+- `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `NULL` statements are not supported for PL/pgSQL.
 
 ## See also
 

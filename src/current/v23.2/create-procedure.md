@@ -30,7 +30,7 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | `routine_create_name` | The name of the procedure.                                                                                                                      |
 | `routine_param`       | A comma-separated list of procedure parameters.                                                                                                                          |
-| `routine_body_stmt`   | The body of the procedure. For allowed contents, see [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %}#structure). |
+| `opt_routine_body`   | The body of the procedure. For allowed contents, see [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %}#structure). |
 
 ## Examples
 

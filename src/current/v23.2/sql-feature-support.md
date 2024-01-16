@@ -192,7 +192,7 @@ XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XM
  Window functions | ✓ | Standard | [Window Functions documentation]({% link {{ page.version.version }}/window-functions.md %})
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation]({% link {{ page.version.version }}/common-table-expressions.md %})
  Stored procedures | ✓ | Common Extension | [Stored procedures documentation]({% link {{ page.version.version }}/stored-procedures.md %})
- Cursors | ✓ | Standard | [Cursors documentation]({% link {{ page.version.version }}/cursors.md %})
+ Cursors | Partial | Standard | [Cursors documentation]({% link {{ page.version.version }}/cursors.md %})
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation]({% link {{ page.version.version }}/user-defined-functions.md %})
