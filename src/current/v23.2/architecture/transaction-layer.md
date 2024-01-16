@@ -109,7 +109,7 @@ Whenever a write occurs, its timestamp is checked against the timestamp cache. I
 
 #### Read snapshots
 
-All transactions operate on a *read snapshot*, which defines which committed data they observe. Under both `SERIALIZABLE` and `READ COMMITTED` isolation levels, transactions use globally consistent read snapshots.
+All transactions operate on a *read snapshot*, which defines which committed data they observe. Under both [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) and [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation levels, transactions use globally consistent read snapshots.
 
 `SERIALIZABLE` transactions maintain per-transaction read snapshots via [read refreshing](#read-refreshing), while `READ COMMITTED` transactions use per-statement read snapshots that advance with each statement in the transaction.
 
@@ -333,7 +333,7 @@ Whenever a `SERIALIZABLE` transaction's timestamp has been pushed, additional ch
 The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
 
 {{site.data.alerts.callout_info}}
-<a name="write-skew-tolerance"></a> `READ COMMITTED` transactions do **not** perform read refreshing before commit. Instead, they permit their [read timestamps](#read-snapshots) and write timestamps to skew at commit time. This makes it possible for statements in concurrent `READ COMMITTED` transactions to interleave with one another without blocking or aborting transactions, and enables potential [concurrency anomalies]({% link {{ page.version.version }}/read-committed.md %}#concurrency-anomalies).
+<a name="write-skew-tolerance"></a> [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions do **not** perform read refreshing before commit. Instead, they permit their [read timestamps](#read-snapshots) and write timestamps to skew at commit time. This makes it possible for statements in concurrent `READ COMMITTED` transactions to interleave without aborting transactions, and enables potential [concurrency anomalies]({% link {{ page.version.version }}/read-committed.md %}#concurrency-anomalies).
 {{site.data.alerts.end}}
 
 ### Transaction pipelining
