@@ -5379,7 +5379,9 @@
     docker_arm_limited_access: false
   cloud_only: true
   cloud_only_message_short: 'Available only for CockroachDB Dedicated clusters'
-  cloud_only_message:  >
-      This version is currently available only for CockroachDB Dedicated clusters. To request to upgrade your cluster to this version, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+  cloud_only_message: >
+      This version is currently available only for CockroachDB Dedicated clusters.
+
+      To request to upgrade your cluster to this version, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
   source: true
   previous_release: v23.1.13
