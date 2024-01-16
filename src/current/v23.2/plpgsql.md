@@ -396,7 +396,7 @@ EXCEPTION
 		handle_other_exceptions; ]
 ~~~
 
-`EXCEPTION` logic is typically included after the main body of a PL/pgSQL block. For example:
+`EXCEPTION` logic is included after the main body of a PL/pgSQL block. For example:
 
 ~~~ sql
 BEGIN
@@ -424,7 +424,7 @@ BEGIN
 ## Known limitations
 
 - PL/pgSQL blocks cannot be nested.
-- Cursors used in PL/pgSQL always materialize their contents eagerly on opening. This can affect performance and resource usage.
+- Cursors used in PL/pgSQL execute their queries on opening. This can affect performance and resource usage.
 - Cursors cannot be declared with parameters.
 - `RECORD` and `ROW`-type variables cannot be declared in PL/pgSQL.
 - `NOT NULL` variables cannot be declared in PL/pgSQL.
