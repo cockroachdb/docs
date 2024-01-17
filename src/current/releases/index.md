@@ -17,9 +17,9 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
 
 - **Generally Available (GA)** releases are qualified for production environments.
-- **Limited Access** binaries allow you to validate CockroachDB on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled customers. To enroll your organization, contact your account representative.
-- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use and not eligible for support or uptime SLA commitments.
+- **Limited Access** binaries allow you to validate CockroachDB on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled organizations. To enroll your organization, contact your account representative.
+- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments. Testing releases allow you to begin testing and validating the next major version of CockroachDB early. Testing releases are not eligible for support or uptime SLA commitments.
+- **Experimental** binaries allow you to deploy and develop with CockroachDB on architectures that are not yet qualified for production use. Experimental binaries are not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
 For more details, refer to [Release Naming](#release-naming).
 
@@ -146,16 +146,16 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 
 <section class="filter-content" markdown="1" data-scope="mac">
 
-**Experimental** downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments.
+macOS downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
     <table class="release-table">
     <thead>
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Intel 64-bit Downloads</td>
+            <td>Intel 64-bit (Experimental) Downloads</td>
         {% if v_mac_arm == true %}
-            <td>ARM 64-bit Downloads</td>
+            <td>ARM 64-bit (Experimental) Downloads</td>
         {% endif %}
         </tr>
     </thead>
@@ -186,7 +186,6 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
                     {% break %}
                 {% else %}
             <td>
-                    {% if r.mac.mac_arm_limited_access == true %}<b>Limited Access:</b>{% elsif r.mac.mac_arm_experimental == true %}<b>Experimental:</b>{% endif %}
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz">Full Binary</a>(<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
                     {% if r.has_sql_only == true %}
                 <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz">SQL shell Binary</a>(<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
@@ -202,7 +201,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-    Windows 8 or higher is required. Windows downloads are **experimental** and not yet qualified for production use and not eligible for support or uptime SLA commitments.
+    Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
     <table class="release-table">
     <thead>
