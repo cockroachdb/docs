@@ -16,7 +16,7 @@
 {% else %}
 
 {{site.data.alerts.callout_info}}
-Binaries marked Experimental are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+Experimental downloads are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 {{site.data.alerts.end}}
 
 <h4>Full CockroachDB executable</h4>
@@ -35,14 +35,9 @@ Binaries marked Experimental are not qualified for production use and not eligib
 
   {% endif %}
 
-<a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-10.9-amd64.tgz"><button id="mac-intel" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
+<a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-10.9-amd64.tgz"><button id="mac-intel" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel<br />(Experimental)</button></a>
 
-  {% if release.mac.mac_arm == true %}
-    {% capture mac_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.mac.mac_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
-
-<a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
-
-  {% endif %}
+<a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br />(Experimental)</button></a>
 
 <a {{ onclick_string }} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows<br />(Experimental)</b></button></a>
 <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
@@ -59,16 +54,17 @@ Binaries marked Experimental are not qualified for production use and not eligib
 
     {% endif %}
 
-<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
+<a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel<br />(Experimental)</button></a>
     {% if release.mac.mac_arm == true %}
 
-<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM{{mac_arm_button_text_addendum}}</button></a>
+<a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br />(Experimental)</button></a>
 
     {% endif %}
 
 <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows<br />(Experimental)</button></a>
 <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
 </div></div>
+
   {% endif %}
 
 <section class="filter-content" markdown="1" data-scope="windows">

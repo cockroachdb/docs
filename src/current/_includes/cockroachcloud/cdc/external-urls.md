@@ -42,7 +42,7 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
 Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
+Azure        | `azure-blob://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co`                                                     
 HTTP         | `http://localhost:8080/employees`                                            
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
