@@ -10,57 +10,62 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### PostgreSQL compatibility
-
-  - Updating subfields of composite types using dot syntax results in a syntax error. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102984)
-
 ### PL/pgSQL Limitations
 
 #### Support for PL/pgSQL features
 
-  - Nested blocks within PL/pgSQL blocks are not supported, and will lead to errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114775)
-  - Cursors opened in PL/pgSQL do not execute their queries lazily, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
-  - PL/pgSQL exception blocks cannot catch transaction retry errors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111446)
-  - PL/pgSQL does not support referring to arguments by ordinals (e.g., `$1`, `$2`), limiting flexibility in function and procedure definitions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114701)
-  - PL/pgSQL does not support `FOR` loop statements, limiting control flow capabilities in routines. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105246)
-  - The `INTO` statement in PL/pgSQL does not support the `STRICT` option. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/107854)
+- PL/pgSQL blocks cannot be nested. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114775)
+- PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114701)
+- `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops, are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105246)
+- `RETURN NEXT` and `RETURN QUERY` statements are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)
+- `EXIT` and `CONTINUE` labels and conditions are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115271)
+- `CASE` statements are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)
+- `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `NULL` statements are not supported for PL/pgSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)
 
 #### Type Handling and Variable Declarations
 
-- There are several known limitations regarding type handling and variable declarations in the current implementation of PL/pgSQL:
-  - PL/pgSQL does not support `RECORD` input arguments for UDFs and stored procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
-  - Type coercion does not behave consistently with PostgreSQL, particularly when values are too wide for the target type. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115385)
-  - PL/pgSQL lacks support for `RECORD`-type variables, which are dynamically typed in PostgreSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114874)
-  - Syntax for accessing members of composite types without parentheses is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114687)
-  - `RAISE` statements cannot be annotated with names of schema objects related to the error (i.e., using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, or `SCHEMA`). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/106237)
-  - PL/pgSQL does not support `NOT NULL` variable declarations. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
+- `RECORD` parameters and variables are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+- Variable shadowing (e.g., declaring a variable with the same name in an inner block) is not supported in PL/pgSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117508)
+- Syntax for accessing members of composite types without parentheses is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114687)
+- The `STRICT` option for the PL/pgSQL `INTO` statement is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/107854)
+- `NOT NULL` variable declarations are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
 
-#### Limitations in User-Defined Functions (UDFs) and Stored Procedures
+#### Cursor Functionality
 
-  - PL/pgSQL does not support the `PERFORM` keyword. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108416)
-  - UDFs and stored procedures cannot call other UDFs or stored procedures from within their bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88198)
-  - The `setval` function cannot be resolved when used inside UDF bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110860)
-  - DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
-  - UDF and stored procedure definitions do not support `OUT` and `INOUT` argument modes. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
+- Cursors opened in PL/pgSQL execute their queries on opening, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
+- `OPEN FOR EXECUTE` is not supported for opening cursors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744) 
+
+#### Exception Handling
+
+- PL/pgSQL exception blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111446)
+- `RAISE` statements cannot be annotated with names of schema objects related to the error (i.e., using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, or `SCHEMA`). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/106237)
+- `RAISE` statements message the client directly, and do not produce log output. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117750)
+- `ASSERT` debugging checks are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)
+
+### Limitations in User-Defined Functions (UDFs) and Stored Procedures
+
+- Transactions cannot be run within stored procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115294)
+- UDFs and stored procedures cannot call other UDFs or stored procedures from within their bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88198)
+- DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or procedures. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
+- UDF and stored procedure definitions do not support `OUT` and `INOUT` argument modes. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
+- The `setval` function cannot be resolved when used inside UDF bodies. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110860)
 
 ### SQL Optimizer and Read Committed Isolation
 
 #### Optimizer and Locking Behavior
 
 - The SQL optimizer has limitations under certain isolation levels:
-  - The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
+  - The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}) to `true`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
   - `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/116836)
-  - `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks are dropped on lease transfers and range splits/merges. Unreplicated locks, used by default under SERIALIZABLE isolation, can be dropped during such events, affecting the desired ordering of concurrent accesses and potentially leading to transaction retry errors. [More information on `SELECT ... FOR UPDATE`](https://www.cockroachlabs.com/docs/v23.2/select-for-update)
 
 #### Read Committed Isolation Limitations
 
 - Several capabilities are not yet supported with [Read Committed isolation](https://www.cockroachlabs.com/docs/v23.2/read-committed):
-  - DDL statements cannot be performed within explicit Read Committed transactions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
-  - Specific unique checks are not supported under Read Committed isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110873)
-  - `SKIP LOCKED` requests do not reliably skip over replicated locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
-  - Promoting a lock from `shared` to `exclusive` is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
-  - Schema changes are not allowed within explicit transactions, and certain unique constraints are not supported. Shared locks cannot be promoted to exclusive locks, and `SKIP LOCKED` requests do not reliably skip over replicated locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/115057)
-  - Multi-column-family checks during updates may not function correctly. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/112488)
+  - Schema changes (e.g., [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}), [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level](#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
+  - `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
+  - [Shared locks](#locking-reads) cannot yet be promoted to exclusive locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
+  - [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by `READ COMMITTED` transactions. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
+  - Multi-column-family checks during updates are not supported under `READ COMMITTED` isolation. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/112488)
 
 ### `CAST` expressions containing a subquery with an `ENUM` target are not supported
 
@@ -94,19 +99,13 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
 
-- Common table expressions (CTEs).
+- [Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
 - References to other user-defined functions.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
-
-#### Common table expressions are not supported in user-defined functions
-
-[Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
 ### Incorrect query plans for partitions with `NULL` values
 
@@ -138,15 +137,25 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
-### Limitations for `SELECT FOR UPDATE`
+### Limitations for `FOR UPDATE` and `FOR SHARE` locks under `SERIALIZABLE`
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) place locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
 
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+    This is fixed by setting the `optimizer_use_lock_op_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
+
+- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes. For more information, see [Lock behavior under `SERIALIZABLE` isolation]({% link {{ page.version.version }}/select-for-update.md %}#lock-behavior-under-serializable-isolation).
+
+    This is fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
+
+- [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions by default, and by `SERIALIZABLE` transactions when the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is set to `true`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
 
 ### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
 
@@ -495,6 +504,8 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 - {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
     - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
     - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
+
+- Updating subfields of composite types using dot syntax results in a syntax error. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102984)
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
