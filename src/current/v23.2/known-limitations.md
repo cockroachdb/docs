@@ -33,7 +33,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 #### Cursor Functionality
 
 - Cursors opened in PL/pgSQL execute their queries on opening, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
-- `OPEN FOR EXECUTE` is not supported for opening cursors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744) 
+- `OPEN FOR EXECUTE` is not supported for opening cursors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)
 
 #### Exception Handling
 
@@ -137,26 +137,6 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
-### Limitations for `FOR UPDATE` and `FOR SHARE` locks under `SERIALIZABLE`
-
-The following limitations reflect the default behavior under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. These limitations do **not** apply to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
-
-- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) place locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
-
-    This is fixed by setting the `optimizer_use_lock_op_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
-
-- [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT ... FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) only place an [unreplicated lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks) on the index being scanned by the query. This diverges from PostgreSQL, which acquires a lock on all indexes. For more information, see [Lock behavior under `SERIALIZABLE` isolation]({% link {{ page.version.version }}/select-for-update.md %}#lock-behavior-under-serializable-isolation).
-
-    This is fixed by setting the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. 
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114737)
-
-- [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions by default, and by `SERIALIZABLE` transactions when the `enable_durable_locking_for_serializable` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is set to `true`.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110743)
-
 ### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
 
 {% include {{page.version.version}}/sql/select-for-update-limitations.md %}
@@ -209,30 +189,6 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
-
-### Limitations for `EXPLAIN ANALYZE`
-
-- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
-
-- [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-as-of-a-given-time) instead.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
-
-- The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
-
-### Limitations for index recommendations
-
-- [Index]({% link {{ page.version.version }}/indexes.md %}) recommendations are not aware of [hash sharding]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
-
-- CockroachDB does not support [index]({% link {{ page.version.version }}/indexes.md %}) recommendations on [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
