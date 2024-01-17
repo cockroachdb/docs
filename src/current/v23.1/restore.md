@@ -120,9 +120,9 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 <a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. The target database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | [Rename a database during a restore](#rename-a-database-on-restore). The existing backed-up database can remain active while the same database is restored with a different name. <br><br>Example: `RESTORE DATABASE movr ... WITH new_db_name = 'new_movr'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the missing [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
-<a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence]({% link {{ page.version.version }}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
+<a name="skip-missing-sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence]({% link {{ page.version.version }}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner]({% link {{ page.version.version }}/create-sequence.md %}#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
-`skip_missing_views`                                                | N/A                                         | Use to skip restoring [views]({% link {{ page.version.version }}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
+<a name="skip-missing-views"></a>`skip_missing_views`                                                | N/A                                         | Use to skip restoring [views]({% link {{ page.version.version }}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 <a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
 <span class="version-tag">New in v23.1:</span><a name="skip_missing_udfs"></a>`skip_missing_udfs` | N/A | Must be used when restoring a table with referenced [UDF]({% link {{ page.version.version }}/user-defined-functions.md %}) dependencies. Any column's `DEFAULT` expression using UDFs is dropped. <br><br>Example: `WITH skip_missing_udfs`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) statement.
@@ -233,7 +233,11 @@ Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) c
 Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence.
 [Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
 
+{{site.data.alerts.callout_info}}
 Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option.
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 ### Users and privileges
 
