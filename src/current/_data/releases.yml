@@ -5353,7 +5353,6 @@
   source: true
   previous_release: v23.2.0-rc.1
 
-<<<<<<< HEAD
 - release_name: v23.1.14
   major_version: v23.1
   release_date: '2024-01-17'
