@@ -33,7 +33,7 @@ Parameter | Description
 `routine_create_name` | The name of the function.
 `routine_param` | A comma-separated list of function parameters.
 `routine_return_type` | The type returned by the function. 
-`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
+`routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
 
