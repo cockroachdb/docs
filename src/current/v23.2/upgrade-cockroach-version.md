@@ -16,6 +16,10 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
+{{site.data.alerts.callout_info}}
+CockroachDB v23.2 is now generally available and production-ready for CockroachDB Dedicated, and is scheduled to be made available for CockroachDB Self-Hosted on February 5, 2024. 
+{{site.data.alerts.end}}
+
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
@@ -135,8 +139,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) statement allows you to create scheduled changefeeds.
-- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+TODO
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
 

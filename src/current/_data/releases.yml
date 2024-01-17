@@ -5385,3 +5385,38 @@
       To request to upgrade a CockroachDB self-hosted cluster to this version, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
   source: true
   previous_release: v23.1.13
+
+- release_name: v23.2.0
+  major_version: v23.2
+  release_date: '2024-01-17'
+  release_type: Production
+  cloud_only: true
+  cloud_only_message_short: 'Available in CockroachDB Dedicated. Self-hosted binaries <a href="https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0">available February 5</a>.'
+  cloud_only_message: >
+    CockroachDB v23.2 is now generally available for CockroachDB Dedicated,
+    and is scheduled to be made available for CockroachDB Self-Hosted on February 5, 2024.
+    For more information, refer to
+    <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB Dedicated Cluster</a> or
+    <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-to-v23.2">Upgrade to CockroachDB v23.2</a>.
+  go_version: go1.21
+  sha: c8ffbdc4eeb3f656085edc33d6965b8f30cd7514
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v23.2.0-rc.2
