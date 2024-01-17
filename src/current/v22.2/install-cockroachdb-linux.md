@@ -23,7 +23,7 @@ Use one of the options below to install CockroachDB.
   <h2 id="install-binary">Download the binary</h2>
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
 
-  CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental binaries are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
+  CockroachDB on ARM is **experimental** in CockroachDB v22.2 versions prior to v22.2.13, is in [Limited Access](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in CockroachDB v22.2.13, and is [Generally Available (GA)](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in v22.2.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
 
   <ol>
     <li>

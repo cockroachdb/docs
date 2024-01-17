@@ -23,7 +23,7 @@ Use one of the options below to install CockroachDB.
 To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}).
 {{site.data.alerts.end}}
 
-CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental binaries are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
+CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Generally Available (GA)</a></b> in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
 
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
