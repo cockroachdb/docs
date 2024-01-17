@@ -5382,6 +5382,6 @@
   cloud_only_message: >
       This version is currently available only for CockroachDB Cloud clusters.
 
-      To request to upgrade your cluster to this version, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+      To request to upgrade a CockroachDB self-hosted cluster to this version, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
   source: true
   previous_release: v23.1.13
