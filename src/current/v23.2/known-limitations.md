@@ -95,10 +95,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 The following are not currently allowed within the body of a [UDF]({% link {{ page.version.version }}/user-defined-functions.md %}):
 
-- Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
-
 - [Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
@@ -148,12 +144,6 @@ The following PostgreSQL syntax and features are currently unsupported for [trig
 {% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41285)
-
-### A multi-region table cannot be restored into a non-multi-region table
-
-You cannot [restore]({% link {{ page.version.version }}/restore.md %}) a multi-region table into a non-multi-region table.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
 
 ### Statements containing multiple modification subqueries of the same table are disallowed
 
@@ -389,12 +379,6 @@ CockroachDB cannot index-accelerate queries with `@@` predicates when both sides
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
-### Statistics for deleted tables in `system.table_statistics` do not get removed
-
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
-
 ### Collection of statistics for virtual computed columns
 
 CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
@@ -437,14 +421,6 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support Triangle or [`TIN`](https://wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
-
-- CockroachDB does not yet support Curve, MultiCurve, or CircularString spatial shapes.
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
-
 - CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
@@ -474,14 +450,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 ### DB Console may become inaccessible for secure clusters
 
 Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
-
-### Large index keys can impair performance
-
-The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for [storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine) SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
-
-To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
 
 ### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
 
