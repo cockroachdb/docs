@@ -14,6 +14,11 @@ docs_area: manage
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
+- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
+
+When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
+
+The standby cluster will also require separate monitoring to ensure observability during the cutover period. You can use the DB console to track the relevant metrics, or you can use a tool like [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana) to create two separate dashboards, one for each cluster, or a single dashboard with data from both clusters.
 
 ## SQL Shell
 
@@ -21,7 +26,7 @@ In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
- SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
 ~~~
 
 Refer to [Responses](#responses) for a description of each field.
@@ -30,7 +35,7 @@ Refer to [Responses](#responses) for a description of each field.
 ~~~
 id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
 ---+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-3  | standbyapplication | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
 (1 row)
 ~~~
 
@@ -52,18 +57,7 @@ You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.m
 The **Physical Cluster Replication** dashboard tracks metrics related to physical cluster replication jobs. This is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 {{site.data.alerts.end}}
 
-The **Physical Cluster Replication** dashboard contains three graphs for monitoring:
-
-### Replication lag
-
-<img src="{{ 'images/v23.2/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **Replication Lag** graph shows you the amount of time the replication is behind the current time.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The amount of time in seconds the replication is behind the current date and time.
+The **Physical Cluster Replication** dashboard contains graphs for monitoring:
 
 ### Logical bytes
 
@@ -100,6 +94,61 @@ We recommend tracking the following metrics:
 - `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
 - `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
 - `physical_replication.replicated_time_seconds`: The [replicated time]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) of the physical replication stream in seconds since the Unix epoch.
+
+## Data verification
+
+{{site.data.alerts.callout_info}}
+**This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).** It is in active development and subject to change.
+
+The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
+
+To verify that the data at a certain point in time is correct on the standby cluster, you can use the [current replicated time]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, at that point in time, is correct.
+
+1. Retrieve the current replicated time of the replication job on the standby cluster with [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS];
+    ~~~
+    ~~~
+         replicated_time
+    ----------------------------
+    2024-01-09 16:15:45.291575+00
+    (1 row)
+    ~~~
+
+    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-interface).
+
+1. From the **primary cluster's system interface**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    ~~~
+    ~~~
+    tenant_name |             end_ts             |     fingerprint
+    ------------+--------------------------------+----------------------
+    application | 1704816945291575000.0000000000 | 2646132238164576487
+    (1 row)
+    ~~~
+
+    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-interface).
+
+1. From the **standby cluster's system interface**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    ~~~
+    ~~~
+        tenant_name     |             end_ts             |     fingerprint
+    --------------------+--------------------------------+----------------------
+    standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
+    (1 row)
+    ~~~
+
+1. Compare the fingerprints of the primary and standby clusters to verify the data. The same value for the fingerprints indicates the data is correct.
 
 ## See also
 

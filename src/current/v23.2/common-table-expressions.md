@@ -211,8 +211,8 @@ To write a recursive CTE:
 
 CockroachDB evaluates recursive CTEs as follows:
 
-1. The initial query is evaluated. Its results are stored to rows in the CTE and copied to a temporary, working table. This working table is updated across iterations of the recursive subquery.
-1. The recursive subquery is evaluated iteratively on the contents of the working table. The results of each iteration replace the contents of the working table. The results are also stored to rows of the CTE. The recursive subquery iterates until no results are returned.
+1. The initial query is evaluated. Its results are stored as the result rows of the CTE and copied to a temporary, working table.
+1. If the working table is not empty, the recursive subquery is evaluated iteratively, using the contents of the working table for the self-reference. The results of each iteration replace the contents of the working table, and are also added to the result rows of the CTE. When the recursive subquery returns no rows, the working table is empty and iteration stops.
 
 {{site.data.alerts.callout_info}}
 Recursive subqueries must eventually return no results, or the query will run indefinitely.

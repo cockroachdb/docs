@@ -527,7 +527,7 @@
               ]
             },
             {
-              "title": "<code>SELECT FOR UPDATE</code>",
+              "title": "<code>FOR UPDATE</code> and <code>FOR SHARE</code>",
               "urls": [
                 "/${VERSION}/select-for-update.html"
               ]
