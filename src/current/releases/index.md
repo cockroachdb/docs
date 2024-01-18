@@ -117,6 +117,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
+                  {% continue %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -173,6 +174,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
+              {% continue %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -225,6 +227,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
+                  {% continue %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                     {% if r.windows == true %}
@@ -275,6 +278,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
                 <span class="badge badge-gray">Withdrawn</span>
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
                 <span>{{ r.cloud_only_message_short }}</span>
+                {% continue %}
             {% else %}
                 {% if r.source == true %}
                 <b>{% if r.docker.docker_arm == false %}Intel{% else %}Multi-platform{% endif %}</b>:<br><code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
@@ -320,6 +324,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
+              {% continue %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td><span>{{ r.cloud_only_message_short }}</span></td>
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
