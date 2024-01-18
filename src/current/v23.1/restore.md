@@ -225,19 +225,11 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 
 ### Object dependencies
 
-Dependent objects must be restored at the same time as the objects they depend on.
-
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence.
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 {{site.data.alerts.callout_info}}
 Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option.
 {{site.data.alerts.end}}
-
-{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 ### Users and privileges
 
