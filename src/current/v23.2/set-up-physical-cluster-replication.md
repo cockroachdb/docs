@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up physical cluster replication between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -38,6 +38,7 @@ The high-level steps in this tutorial are:
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
 - An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
+- The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 
 ## Step 1. Create the primary cluster
 
@@ -87,7 +88,7 @@ Connect to your primary cluster's system interface using [`cockroach sql`]({% li
     You should only connect to the system interface for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
     {{site.data.alerts.end}}
 
-1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -193,13 +194,6 @@ The standby cluster connects to the primary cluster's system interface using an 
 
 Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
 
-To start the standby cluster, run:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
---config-profile replication-target
-~~~
-
 For example, a `cockroach start` command according to the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-3-start-nodes):
 
 {% include_cached copy-clipboard.html %}
@@ -231,7 +225,7 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
 
     The prompt will include `system` when you are connected to the system interface.
 
-1. Add your cluster organization and {{ site.data.products.enterprise }} license to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -263,7 +257,7 @@ Connect to your standby cluster's system interface using [`cockroach sql`]({% li
 
 ### Create a user for the standby cluster
 
-If you would like to access the DB Console to observe your replication, you will need to create a user:
+If you would like to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe your replication, you will need to create a user:
 
 1. Create a user:
 
@@ -314,7 +308,7 @@ The system interface in the standby cluster initiates and controls the replicati
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE VIRTUAL CLUSTER standbyapplication LIKE template
+    CREATE VIRTUAL CLUSTER application LIKE template
     FROM REPLICATION OF application
     ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
@@ -330,45 +324,45 @@ The system interface in the standby cluster initiates and controls the replicati
     SHOW VIRTUAL CLUSTERS;
     ~~~
 
-    The standby cluster will show the `standbyapplication` virtual cluster is in a `replicating` state.
+    The standby cluster will show the `application` virtual cluster is in a `replicating` state.
 
     ~~~
     id |        name        |     data_state     | service_mode
     ---+--------------------+--------------------+---------------
      1 | system             | ready              | shared
      2 | template           | ready              | none
-     3 | standbyapplication | replicating        | none
+     3 | application        | replicating        | none
     (3 rows)
     ~~~
 
     The standby cluster's virtual cluster is offline while the replication stream is running. The virtual cluster will be online once you explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
 
-1. To manage the replication stream, you can pause and resume the replication stream as well as show the current details for the job:
+1. To manage the replication stream, you can [pause and resume]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) the replication stream as well as [show]({% link {{ page.version.version }}/show-virtual-cluster.md %}) the current details for the job:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication PAUSE REPLICATION;
+    ALTER VIRTUAL CLUSTER application PAUSE REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication RESUME REPLICATION;
+    ALTER VIRTUAL CLUSTER application RESUME REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
     ~~~
-
-    {% comment %}update output here{% endcomment %}
 
     {% include_cached copy-clipboard.html %}
     ~~~
     id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
     ---+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-    3  | standbyapplication | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+    3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
     (1 row)s
     ~~~
+
+    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
 ## Connection reference
 
@@ -386,3 +380,7 @@ Standby | System | Manage the replication stream. Connect with [`cockroach sql`]
 
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %})
 - [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %})
+- [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %})
+- [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %})
+- [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %})
+- [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %})

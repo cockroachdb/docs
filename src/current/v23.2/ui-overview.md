@@ -5,6 +5,7 @@ toc: true
 key: explore-the-admin-ui.html
 docs_area: reference.db_console
 ---
+
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
 {{site.data.alerts.callout_info}}
@@ -17,12 +18,12 @@ Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console
 
 The DB Console supports username/password login, as well single sign-on (SSO) ({{ site.data.products.dedicated }} and {{ site.data.products.core }} {{ site.data.products.enterprise }} clusters only).
 
-The DB Console sing-on page can also be used to provision authentication tokens for SQL client access.
+The DB Console sign-on page can also be used to provision authentication tokens for SQL client access.
 
 Refer to:
 
--  Single Sign-on (SSO) for DB Console
-- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]
+- [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{ page.version.version }}/sso-sql.md %})
 
 ## DB Console areas
 
@@ -100,27 +101,33 @@ You can accomplish this using one of these methods:
 
 ## DB Console security considerations
 
-Access to DB Console is a function of cluster security and the role of the accessing user.
+Access to DB Console is a function of cluster security and the privileges of the accessing user.
 
 ### Cluster security
 
 On insecure clusters, all areas of the DB Console are accessible to all users.
 
-On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password) and optionally [`GRANT`]({% link {{ page.version.version }}/grant.md %}#grant-role-membership) the user membership to the `admin` role.
+On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password) and optionally [`GRANT`]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) the user [system-level privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or membership to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 ### Role-based security
 
 All users have access to data over which they have privileges (e.g., [jobs]({% link {{ page.version.version }}/ui-jobs-page.md %}) and [list of sessions]({% link {{ page.version.version }}/ui-sessions-page.md %})), and data that does not require privileges (e.g., [cluster health, node status]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), [metrics]({% link {{ page.version.version }}/ui-overview-dashboard.md %})).
 
-[`admin` users]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
+The following areas display information from privileged HTTP endpoints that require the user to have the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the specified [system-level privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
 
-DB Console area | Privileged information
------|-----
-[Node Map]({% link {{ page.version.version }}/enable-node-map.md %}) | Database and table names
-[Databases]({% link {{ page.version.version }}/ui-databases-page.md %}) | Stored table data
-[Statements]({% link {{ page.version.version }}/ui-statements-page.md %}) | SQL statements
-[Transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}) | Transactions
-[Advanced Debug]({% link {{ page.version.version }}/ui-debug-pages.md %}) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
+DB Console area | System-level privilege | Privileged information
+----------------|------------------------|------------------------
+[Databases]({% link {{ page.version.version }}/ui-databases-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Stored table data
+[Statements]({% link {{ page.version.version }}/ui-statements-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | SQL statements
+[Transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Transactions
+[Sessions]({% link {{ page.version.version }}/ui-sessions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Sessions
+[Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Insights
+[Hot Ranges]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges
+[Jobs]({% link {{ page.version.version }}/ui-jobs-page.md %}) | [`VIEWJOB`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewjob) | Jobs
+[Advanced Debug]({% link {{ page.version.version }}/ui-debug-pages.md %}) | [`VIEWDEBUG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewdebug) | Debugging and profiling endpoints
+[Advanced Debug > Problem Ranges]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges
+[Advanced Debug > Data Distribution and Zone Configs]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges
+[Advanced Debug > Cluster Settings]({% link {{ page.version.version }}/ui-debug-pages.md %}#configuration) | [`VIEWCLUSTERSETTING`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustersetting) or [`MODIFYCLUSTERSETTING`]({% link {{ page.version.version }}/security-reference/authorization.md %}#modifyclustersetting) | Cluster Settings
 
 ## DB Console timezone configuration
 

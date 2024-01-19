@@ -259,3 +259,8 @@ This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach
 
 - Learn more about [Authentication]({% link {{ page.version.version }}/authentication.md %}) in CockroachDB.
 - This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+
+## See also
+
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})

@@ -8,7 +8,10 @@ Name | Description
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
+`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress.
+`changefeed.checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted).
 `changefeed.failures` | Total number of [changefeed jobs]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) which have failed.
+`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the cluster settings: <ul><li>[`changefeed.lagging_ranges_threshold`]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#lagging-ranges), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`changefeed.lagging_ranges_polling_interval`]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#lagging-ranges), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>
 `changefeed.running` | Number of currently running changefeeds, including sinkless.
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
@@ -248,6 +251,8 @@ Name | Description
 `sql.mem.distsql.current` | Current sql statement memory usage for distsql
 `sql.mem.distsql.max` | Memory usage per sql statement for distsql
 `sql.mem.max` | Memory usage per sql statement
+`sql.mem.root.current` | Current sql statement memory usage for root
+`sql.mem.root.max` | Memory usage per sql statement for root
 `sql.mem.session.current` | Current sql session memory usage
 `sql.mem.session.max` | Memory usage per sql session
 `sql.mem.txn.current` | Current sql transaction memory usage

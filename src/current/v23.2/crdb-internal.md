@@ -34,7 +34,7 @@ Table name | Description| Use in production
 `cluster_execution_insights` | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing]({% link {{ page.version.version }}/show-trace.md %}) in your cluster.| ✗
-[`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
+[`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✓
 [`cluster_sessions`](#cluster_sessions) | Contains information about cluster sessions, including current and past queries.| ✓
 `cluster_settings` | Contains information about [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).| ✗
 [`cluster_transactions`](#cluster_transactions) | Contains information about transactions running on your cluster.| ✓
@@ -65,10 +65,10 @@ Table name | Description| Use in production
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
-`node_queries` | Contains information about queries running on nodes in your cluster.| ✗
+`node_queries` | Contains information about queries running on nodes in your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✗
 `node_runtime_info` | Contains runtime information about nodes in your cluster.| ✗
 `node_sessions` | Contains information about sessions to nodes in your cluster.| ✗
-`node_statement_statistics` | Contains statement statistics for nodes in your cluster.| ✗
+`node_statement_statistics` | Contains statement statistics for nodes in your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive statistics are redacted.| ✗
 `node_transaction_statistics` | Contains transaction statistics for nodes in your cluster.| ✗
 `node_transactions` | Contains information about transactions for nodes in your cluster.| ✗
 `node_txn_stats` | Contains transaction statistics for nodes in your cluster.| ✗
@@ -694,6 +694,8 @@ LIMIT
 
 ### `cluster_queries`
 
+Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive queries are redacted.
+
 Column | Type | Description
 ------------|-----|------------
 `query_id` | `STRING` | Unique query identifier.
@@ -914,30 +916,30 @@ The `NumericStat` type tracks two running values: the running mean `mean` and th
 Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
-<code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
+<code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) the statement spent contending for resources before being executed.
 <code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
-<code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage (in bytes) that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage (in bytes) that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
 <code>statistics -> bytesRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes read from disk.
 `statistics -> cnt` | `INT8` | The total number of times this statement was executed since the begin of the aggregation period.
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
-<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
 `statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
 `statistics -> lastErrorCode` | `String` | The [PostgreSQL Error Code](https://www.postgresql.org/docs/current/errcodes-appendix.html) from the last failed execution of the statement fingerprint.
 `statistics -> lastExecAt` | `TIMESTAMP` | The last timestamp the statement was executed.
 `statistics -> maxRetries` | `INT8` | The maximum observed number of automatic retries in the aggregation period.
 `statistics -> nodes` | Array of `INT64` | An ordered list of nodes IDs on which the statement was executed.
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
-<code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
-<code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference (in seconds) between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
+<code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to transform the SQL string into an abstract syntax tree (AST).
 <code>statistics -> planGists | `String` | A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
-<code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
+<code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
-<code>statistics -> runLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to run the query and fetch or compute the result rows.
-<code>statistics -> svcLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to service the query, from start of parse to end of execute.
+<code>statistics -> runLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to run the query and fetch or compute the result rows.
+<code>statistics -> svcLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) to service the query, from start of parse to end of execute.
 
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
@@ -1165,7 +1167,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
 
-Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted.
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 

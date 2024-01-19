@@ -6,7 +6,7 @@ The Transactions table gives details for each transaction fingerprint in the tra
 
 Column | Description
 -----|------------
-Transactions | The [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) that make up the transaction. To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
+Transactions | The [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) that make up the transaction. To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).<br><br>Transaction fingerprints are displayed per application rather than grouped into a single fingerprint. This may result in multiple rows for the same transaction fingerprint, one per application name.
 Execution Count | Cumulative number of executions of this transaction within the [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the transaction.
 Application Name | The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 Rows Processed | Average number of rows read and written while executing statements with this fingerprint within the time interval.
