@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} Physical cluster replication automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system interface_ and an application _virtual cluster_:
+{% include_cached new-in.html version="v23.2" %} Physical cluster replication automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system interface_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
