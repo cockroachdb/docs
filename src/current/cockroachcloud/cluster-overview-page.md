@@ -30,7 +30,7 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Resource limits   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
+| Resource limits   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-configure-cluster-capacity). Click the **edit** icon to change the resource limits.                                                                                                         |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#performance). |
 | [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).              |
 
@@ -75,9 +75,9 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 | Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-your-cluster.md %}#step-2-select-the-cloud-provider). |
 | Plan type | The [plan type]({% link cockroachcloud/create-your-cluster.md %}#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
 | Region(s) | The cluster's [region(s)]({% link cockroachcloud/create-your-cluster.md %}#step-3-select-the-region-s).         |
-| Nodes     | The [number of nodes]({% link cockroachcloud/create-your-cluster.md %}#step-4-select-the-number-of-nodes) the cluster has and how many are live. |
-| Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-select-the-hardware-per-node).         |
-| Storage   | The cluster's [storage per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-select-the-hardware-per-node).         |
+| Nodes     | The [number of nodes]({% link cockroachcloud/create-your-cluster.md %}#step-5-configure-cluster-capacity) the cluster has and how many are live. |
+| Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-configure-cluster-capacity).         |
+| Storage   | The cluster's [storage per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-configure-cluster-capacity).         |
 
 ## PCI ready (Dedicated advanced)
 

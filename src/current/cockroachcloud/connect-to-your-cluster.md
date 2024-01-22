@@ -76,7 +76,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
       For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-gcp-vpc-peering-or-aws-privatelink).
 
       For GCP clusters, you can select **VPC Peering** if you have already:
-    - [Enabled VPC peering while creating your cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enable-vpc-peering-optional)
+    - [Enabled VPC peering while creating your cluster]({% link cockroachcloud/create-your-cluster.md %}#step-4-enable-vpc-peering-optional)
     - [Established a VPC Peering connection](#establish-gcp-vpc-peering-or-aws-privatelink)
 
 1. From the **User** dropdown, select the SQL user you created.
