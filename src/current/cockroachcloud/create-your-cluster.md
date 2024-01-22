@@ -22,7 +22,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicat
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
-1. On the **Select a tier** page, select the **Dedicated standard** or **Dedicated advanced** plan.
+1. On the **Select a plan** page, select the **Dedicated standard** or **Dedicated advanced** plan.
 
 CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
