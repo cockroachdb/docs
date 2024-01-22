@@ -100,7 +100,7 @@ To set the primary region:
 
 ### Move cluster to a new region
 
-You currently cannot move a CockroachDB {{ site.data.products.serverless }} cluster from one region to another directly. Instead, you will need to back up your data and restore it into a new CockroachDB {{ site.data.products.serverless }} cluster with the desired region configuration: 
+A CockroachDB {{ site.data.products.serverless }} cluster cannot be moved from one region to another directly. Instead, you must restore the cluster's data from a backup to a new CockroachDB {{ site.data.products.serverless }} cluster with the desired region configuration: 
 
 1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
 1. [Create a new CockroachDB Serverless cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) in the desired region. 
