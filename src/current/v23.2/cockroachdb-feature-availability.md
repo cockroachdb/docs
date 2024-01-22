@@ -27,6 +27,10 @@ General availability (GA)                     | Feature is production-ready and 
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
+### `READ COMMITTED` isolation level
+
+{% include_cached new-in.html version="v23.2" %} [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) is a weaker transaction isolation level than `SERIALIZABLE` and is the default isolation level in databases such as PostgreSQL, Oracle, and SQL Server. `READ COMMITTED` isolation allows writes to interleave without aborting transactions and prevents writes from blocking reads, thus minimizing query latency and retries caused by read/write contention.
+
 ### `cockroach` commands
 
 The table below lists the [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) available in preview in CockroachDB.
