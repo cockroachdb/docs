@@ -576,12 +576,14 @@ http-defaults:
 In addition, the `DEV` channel should be output to a separate logging directory, since it is likely to contain sensitive data. See [`DEV` channel](#dev-channel).
 {{site.data.alerts.end}}
 
-External log collectors can misinterpret the `cockroach debug` redaction markers, since they are specific to CockroachDB. To prevent this issue when using network sinks, disable `redactable`:
+External log collectors can misinterpret the `cockroach debug` redaction markers (`< >`), since they are specific to CockroachDB. To prevent this issue when using network sinks, disable `redactable`:
 
 ~~~ yaml
 fluent-defaults:
   redactable: false
 ~~~
+
+If the default redaction behavior and policies do not meet redaction requirements, we recommend using the external log collectors with the redaction markers (`< >`) to redact. In this case, enable `redactable`.
 
 ### DEV channel
 

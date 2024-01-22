@@ -55,11 +55,11 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ echo "DATABASE_URL=postgresql://root@localhost:26257?sslmode=disable" >> .env
+    $ echo "DATABASE_URL=postgresql://root@localhost:26257/defaultdb?sslmode=disable" >> .env
     ~~~
 
     {{site.data.alerts.callout_info}}
-    `postgresql://root@localhost:26257?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
+    `postgresql://root@localhost:26257/defaultdb?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
     {{site.data.alerts.end}}
 
     </div>

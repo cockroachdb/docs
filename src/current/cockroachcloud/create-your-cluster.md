@@ -11,6 +11,12 @@ This page walks you through the process of creating a CockroachDB {{ site.data.p
 
 Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
+{{site.data.alerts.callout_info}}
+CockroachDB v23.2 is now generally available and production-ready for CockroachDB Dedicated, and is scheduled to be made available for CockroachDB Self-Hosted on February 5, 2024. 
+
+Through February 5, customers who create a new cluster or upgrade to v23.2 may be notified about their cluster receiving cloud-only patch releases, including the public 23.2.0 GA binary as a patch release. Descriptions of any substantive fixes in such patches will be added to the [CockroachDB v23.2.0 Release Notes]({% link releases/v23.2.md %}).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 {{site.data.alerts.end}}
@@ -128,11 +134,15 @@ To change the hardware configuration after the cluster is created, see [Manage a
 
 See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
+
 Click **Next: Finalize**.
 
 ## Step 6. Enter billing details
 
 1. On the **Finalize** page, verify your selections for the cloud provider, region(s), number of nodes, and the capacity.
+
+        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
+
 1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
 
     You will be billed monthly.

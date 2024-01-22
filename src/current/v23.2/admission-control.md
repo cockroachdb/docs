@@ -34,7 +34,7 @@ This is particularly important for CockroachDB {{ site.data.products.serverless 
 Admission control can help if your cluster has degraded performance due to the following types of node overload scenarios:
 
 - The node has more than 32 runnable goroutines per CPU, visible in the **Runnable goroutines per CPU** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#runnable-goroutines-per-cpu).
-- The node has a high number of files in level 0 of the Pebble LSM tree, visible in the **LSM L0 Health** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#lsm-l0-health).
+- The node has a high amount of overload in the Pebble LSM tree, visible in the **IO Overload** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#io-overload).
 - The node has high CPU usage, visible in the **CPU percent** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#cpu-percent).
 - The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
 
@@ -80,7 +80,7 @@ The transaction start time is used within the priority queue and gives preferenc
 
 ### Set quality of service level for a session
 
-In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase the priority of subsequent SQL requests, run:
 
@@ -101,6 +101,18 @@ To reset the priority to the default session setting (in between background and 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=regular;
+~~~
+
+### Set quality of service level for a transaction
+
+To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service` session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block as shown below. The valid values are `critical`, `background`, and `regular`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit to desired level
+-- Statements to run in this transaction go here
+COMMIT;
 ~~~
 
 ## Limitations

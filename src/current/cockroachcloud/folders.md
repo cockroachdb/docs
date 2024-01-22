@@ -9,7 +9,7 @@ docs_area: manage
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters using folders. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
+This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
 
 ## How folders work
 
@@ -46,7 +46,7 @@ Folders give you the flexibility to organize and manage access to your clusters 
               -- Subfolder B3
     ~~~
 
-- Each folder, including the root of the organization, can contain a maximum of 200 direct descendants, including folders or clusters.
+- An organization can have a maximum of 65 folders, regardless of how they are organized.
 
 Operations that violate these limitations result in an error.
 
@@ -88,139 +88,58 @@ The remainder of this page shows how to create folders, manage access to them, a
 
 ## Initial setup
 
-During Limited Access:
+Your user account must have the following roles to manage access to folders:
 
-- Using folders requires the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above.
-- The folder structure is not visible in the {{ site.data.products.cloud }} console.
-- In the {{ site.data.products.cloud }} Console, all clusters that a user has permission to access are shown in a flat list. All other clusters are hidden.
+- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
 
-### Gather required information
+{{site.data.alerts.callout_success}}
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant themselves, another user, or a service account the Folder Admin role.
+{{site.data.alerts.end}}
 
-Your user account must have the following roles to create a service account and grant roles at the organization scope:
+## Grant the `FOLDER_ADMIN` or `FOLDER_MOVER` role
 
-- [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator)
+Folders inherit roles granted higher in the hierarchy, and folders at the root level inherit roles granted at the organization scope. To create a folder, a team member must have the `FOLDER_ADMIN` role on its parent folder. To create a folder at the root level, a team member must have the `FOLDER_ADMIN` role at the level of the organization.
 
-1. Sign in to the {{ site.data.products.db }} Console.
+{{site.data.alerts.callout_success}}
+To create clusters in a folder, the member must also have the `CLUSTER_ADMIN` or `CLUSTER_CREATOR` role on that folder or by inheritance.
+{{site.data.alerts.end}}
 
-1. From the **Organization** **Information** page, make a note of your organization's ID.
+To grant the `FOLDER_ADMIN` role:
 
-1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) and grant it the Organization Admin role. When prompted, create an API key for the service account and copy it to a secure location. In the service account's **Details** page, make a note of the service account's ID, which is the portion of the URL after the last `/` character.
+1. On the **Access Management** page, locate the team member's details whose role you want to change.
+1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
+1. Set **Scope** to **Organization** or to a folder in the hierarchy. The role is granted on all of the folder's descendants.
+1. Set **Role** to **Folder Admin** or **Folder Mover**.
+1. Click **Confirm**.
 
-    This service account will be referred to as the _provisioning service account_ in the remainder of this page.
+{{site.data.alerts.callout_success}}
+A recommended security practice is to limit the users or service accounts with `FOLDER_ADMIN` at the level of the organization. After your desired folder structure is in place, you could revoke the `FOLDER_ADMIN` role from the organization and grant it on individual folders instead. When you [create a folder](#create-a-folder), you can grant the `FOLDER_ADMIN` role at the level of the folder.
+{{site.data.alerts.end}}
 
-1. Create a second service account and grant it the Cluster Admin role. This service account will be referred to as the folder-management service account. When prompted, create an API key for the service account and copy it to a secure location. In the service account's **Details** page, make a note of the service account's ID, which is the portion of the URL after the last `/` character.
-
-    This service account will be referred to as the _folder-management service account_ in the remainder of this page.
-
-### Grant the `FOLDER_ADMIN` role to the service account
-
-Folders inherit roles granted at the organization scope, and descendant folders inherit roles granted higher in the hierarchy.
-
-During Limited Access, it is not possible to use the {{ site.data.products.db }} Console to grant the Folder Admin or Folder Mover roles.
-Instead, use the CockroachDB {{ site.data.products.db }} API and the provisioning service account you created in [Gather required information](#gather-required-information) to grant the folder-management service account the `FOLDER_ADMIN` role at the level of the organization.
-
-1. To grant the role at the level of the organization:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request POST \
-           --url 'https://cockroachlabs.cloud/api/v1/roles/<folder-management-service-account-id>/ORGANIZATION/<organization_id>/FOLDER_ADMIN' \
-           --header 'Authorization: Bearer <provisioning_service_account_api-key>'
-    ~~~
-
-    Replace:
-    - `<service-account-id>`: the ID of the service account that is _being granted_ the role.
-    - `<organization-id>` the ID you gathered in [Gather Required Information](#gather-required-information).
-    - `<api-key>`: the API key of the service account that is _granting_ the role.
-
-    After your desired folder structure is in place, you could revoke the role from the organization and grant it on individual folders instead. A recommended security practice is to limit the users or service accounts with `FOLDER_ADMIN` at the level of the organization. When you [create a folder](#create-a-folder-and-grant-access-to-it), you can grant the `FOLDER_ADMIN` role at the level of the folder.
-
-1. To revoke the role at the level of the organization:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request DELETE \
-           --url 'https://cockroachlabs.cloud/api/v1/roles/<user-id>/ORGANIZATION/<organization_id>/FOLDER_ADMIN' \
-           --header 'Authorization: <api-key>'
-    ~~~
-
-    Replace:
-    - `<service-account-id>`: the ID of the service account that is _being granted_ the role.
-    - `<organization-id>` the ID you gathered in [Gather Required Information](#gather-required-information).
-    - `<api-key>`: the API key of the service account that is _granting_ the role.
-
-1. Optionally, you can now delete the provisioning service account. In the remainder of this page, replace `<api-key>` with the API key for the folder-management service account.
-
-## Create a folder and grant access to it
+## Create a folder
 
 Your service account must have the following roles on the organization, the folder, or by inheritance:
 
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
 
-1. To create a folder at the organization level, you can omit the `parent_id` field or set it `parent_id` to `root`:
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. If you have permission to create folders at the root of the organization, the **Create folder** option is displayed. Click it to create a folder.
+1. In **Folder name**, provide a name for the folder.
+1. In **Folder location**, choose the folder's location. Only locations where you have permission to create folders are shown.
+  - To create the folder at the level of the organization, select the organization name.
+  - To create the folder within another folder, select the parent folder.
+1. Click **Create**.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request POST \
-           --url 'https://cockroachlabs.cloud/api/v1/folders' \
-           --header 'Authorization: Bearer <api-key>' \
-           --data '{"name" : "<folder_name>", "parent_id": "root"}'
-    ~~~
+## Manage access to a folder
 
-    Replace:
-    - `<folder_name>`: a name for the folder.
-    - `<api-key>`: your service account's API key.
+1. To manage access to a folder, go to **Organization** > **Access Management**.
+1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
+1. Set **Scope** to the folder you just created. The role is granted on all of the folder's descendants.
+1. Set **Role** to **Folder Admin** or **Folder Mover**.
 
-    The response includes the new folder's ID.
+    To access a folder's clusters, a user or service account must also have the **Cluster Administrator**, **Cluster Creator**, or **Cluster Operator** role on the folder. The role may be granted by inheritance or directly on a cluster.
 
-1. To create a descendant folder within a folder, set `parent_id` to the folder's ID:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request POST \
-           --url 'https://cockroachlabs.cloud/api/v1/folders' \
-           --header 'Authorization: Bearer <api-key>' \
-           --data '{"name" : "<folder_name>", "parent_id": "<parent_id>"}'
-    ~~~
-
-    Replace:
-    - `<folder_name>`: a name for the folder.
-    - `<api-key>`: your service account's API key.
-    - `<parent-id>`: the ID of the folder that will contain the new folder.
-
-1. To grant your service account the `FOLDER_ADMIN` role on a folder and its descendant folders:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request POST \
-           --url 'https://cockroachlabs.cloud/api/v1/roles/<service-account-id>/FOLDER/<folder-id>/FOLDER_ADMIN' \
-           --header 'Authorization: Bearer <api-key>'
-    ~~~
-
-    Replace:
-    - `<service-account-id>`: the ID of the service account that is _being granted_ the role.
-    - `<organization-id>` the ID you gathered in [Gather Required Information](#gather-required-information).
-    - `<api-key>`: the API key of the service account that is _granting_ the role.
-
-    {{site.data.alerts.callout_info}}
-    You can also grant the role to a human user. However, during Limited Access, only a service account using the {{ site.data.products.db }} API or Terraform provider can manage folders.
-    {{site.data.alerts.end}}
-
-1. If you grant the role at the level of the organization, it is inherited on all folders. To give your service account the `FOLDER_MOVER` role at the organization level:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request POST \
-           --url 'https://cockroachlabs.cloud/api/v1/roles/<service-account-id>/ORGANIZATION/<organization-id>/FOLDER_ADMIN' \
-           --header 'Authorization: Bearer <api-key>'
-    ~~~
-
-    Replace:
-    - `<service-account-id>`: the ID of the service account that is _being granted_ the role.
-    - `<organization-id>` with the ID you gathered in [Gather Required Information](#gather-required-information).
-    - `<api-key>`: the API key of the service account that is _granting_ the role.
-
-To access a folder's clusters, a user or service account must also have the Cluster Administrator, Cluster Creator, or Cluster Operator role on the folder. The role may be granted by inheritance or directly on a cluster.
+1. Click **Confirm**.
 
 ## List folder contents
 
@@ -231,36 +150,15 @@ Your service account must have one of the following roles to read a folder's con
 - [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Developer]({%link cockroachcloud/authorization.md %}#cluster-developer), [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator).
 
 {{site.data.alerts.callout_success}}
-To discover the entire folder structure, you must list each folder's contents separately.
+Keep the following in mind:
+
+- When your organization enables the use of folders, the **Clusters** list contains less-detailed information about a given cluster. To see all of the details about a cluster, view its **Details** page.
+- To discover the entire folder structure, you must view each folder's contents separately.
 {{site.data.alerts.end}}
 
-1. To list the clusters and folders at the level of the organization:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request GET \
-           --url 'https://cockroachlabs.cloud/api/v1/folders/root/contents' \
-           --header 'Authorization: Bearer <api-key>'
-    ~~~
-
-    Replace `<api-key>` with your service account's API key.
-
-1. To list the clusters and folders contained within another folder, specify its ID instead of `root`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request GET \
-           --url 'https://cockroachlabs.cloud/api/v1/folders/<folder_id>/contents' \
-           --header 'Authorization: Bearer <api-key>'
-    ~~~
-
-    Replace:
-    - `<folder-id>`: The ID of a folder.
-    - `<api-key>`: Your service account's API key.
-
-{{site.data.alerts.callout_info}}
-In the API, each folder is referred to by its ID, regardless of where it is located in the hierarchy.
-{{site.data.alerts.end}}
+1. To list the clusters and folders at the level of the organization, go to **Clusters**.
+1. To list the clusters and folders in a folder, click the folder name.
+1. To view details about a cluster, click the cluster name.
 
 ## Create a cluster in a folder
 
@@ -268,28 +166,19 @@ Your service account must have the following roles on the organization or the fo
 
 - [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
 
-To create a cluster in a folder, set the `parent_id` field to the ID of the folder.
-
-{{site.data.alerts.callout_info}}
-If you do not specify a `parent_id`, or if you set `parent_id` to `root`, the cluster is created at the level of the organization.
-{{site.data.alerts.end}}
-
-For example, to create a {{ site.data.products.serverless }} deployed on GCP in a folder:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --request POST \
-       --url 'https://cockroachlabs.cloud/api/v1/clusters' \
-       --header 'Authorization: Bearer <api-key>' \
-       --header 'content-type: application/json' \
-       --data '{"name":"<cluster_name>","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spend_limit":0}, "parent_id":"<parent_id>"}}'
-~~~
-
-Replace:
-
-- `<cluster_name>`: A name for the cluster. Replace `<parent_id>` with the ID of the folder.
-- `<api-key>`: Your service account's API key.
-- `<parent-id>`: The ID of a folder.
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. Browse to the folder where you want to create the cluster.
+1. Click **Create**, then click **Create cluster**.
+    {{site.data.alerts.callout_info}}
+    If you do not have permission to create folders at this location, you will see only **Create cluster**.
+    {{site.data.alerts.end}}
+1. Configure the cluster as desired, then click **Create Cluster**.
+1. To grant others roles directly on the newly-created cluster:
+    1. Go to **Organization** > **Access Management**.
+    1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
+    1. Set **Scope** to the folder you just created.
+    1. Set **Role** to the role you want to grant.
+    1. Click **Confirm**.
 
 ## Move a cluster into or out of a folder
 
@@ -297,43 +186,22 @@ Your service account must have permission to move clusters at both the source an
 
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover)
 
-{{site.data.alerts.callout_info}}
 Folder Movers can move clusters within the folder hierarchy even if they do not have a role that allows them to connect to the cluster, such as Cluster Creator or Cluster Operator.
-{{site.data.alerts.end}}
-
-1. To move a cluster from the organization level into a folder, or to move it from one folder to another:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request PATCH \
-           --url 'https://cockroachlabs.cloud/api/v1/clusters/<cluster-id>' \
-           --header 'Authorization: Bearer <api-key>' \
-           --header 'content-type: application/json' \
-           --data '{"parent_id":"<parent_id>"}'
-    ~~~
-
-    Replace:
-    - `<cluster-id>`: The ID of a cluster.
-    - `<api-key>`: Your service account's API key.
-    - `<parent-id>`: The ID of a folder.
-
-1. To move a cluster out of a folder to the organization level:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request PATCH \
-           --url 'https://cockroachlabs.cloud/api/v1/clusters/<cluster-id>' \
-           --header 'Authorization: Bearer <api-key>' \
-           --header 'content-type: application/json' \
-           --data '{"parent_id":"root"}'
-    ~~~
-
-    Replace:
-    - `<cluster-id>`: The ID of a cluster.
-    - `<api-key>`: Your service account's API key.
 
 {{site.data.alerts.callout_info}}
 When you move a cluster into or out of a folder, users or service accounts who had access to the previous location through inheritance may lose access. Roles granted directly on a cluster do not change when the cluster is moved.
+{{site.data.alerts.end}}
+
+To move a cluster from the organization level into a folder, or to move it from one folder to another:
+
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. Browse to the folder that contains the cluster, then click the cluster name to open its details.
+1. Click **Actions** > **Move Cluster**.
+1. In the dialog, select the destination to move the cluster to, then click **Next**.
+1. Click **Move**.
+
+{{site.data.alerts.callout_info}}
+You can also move a cluster to a new folder by browsing to the location of the destination folder, then clicking the the three-dots **Action** button and selecting **Move**.
 {{site.data.alerts.end}}
 
 ## Move a folder into another folder
@@ -346,21 +214,13 @@ Your service account must have permission to move folders at both the source and
 When you move a folder, users or service accounts who had access to the previous location through inheritance may lose access to its descendant folders and clusters. Roles granted directly on a folder or a cluster do not change when the folder or cluster is moved.
 {{site.data.alerts.end}}
 
-1. To move a folder and its contents into another folder:
+To move a folder and its contents into another folder:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request PATCH \
-           --url 'https://cockroachlabs.cloud/api/v1/folders/<folder-id>' \
-           --header 'Authorization: Bearer <api-key>' \
-           --header 'content-type: application/json' \
-           --data '{"parent_id":"<parent_id>"}'
-    ~~~
-
-    Replace:
-    - `<folder-id>`: The ID of the folder.
-    - `<api-key>`: Your service account's API key.
-    - `<parent-id>`: The ID of the new parent folder.
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. Browse to the location of the folder that you want to move.
+1. Next to the folder you want to move, click the three-dots **Action** button and select **Move folder**.
+1. In the dialog, set **Destination** to the new location for the folder, then click **Next**.
+1. Click **Move**.
 
 ## Delete a folder
 
@@ -375,28 +235,16 @@ Only an empty folder can be deleted.
 To delete a folder:
 
 1. Move or delete all descendant folders and clusters.
-
-1. Delete the folder:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request DELETE \
-        --url 'https://cockroachlabs.cloud/api/v1/folders/<folder-id>' \
-        --header 'Authorization: Bearer <api-key>' \
-        --header 'content-type: application/json'
-    ~~~
-
-    Replace:
-
-    - `<folder-id>`: The ID of the folder.
-    - `<api-key>`: Your service account's API key.
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. Browse to the location of the folder that you want to delete.
+1. Next to the folder you want to delete, click the three-dots **Action** button and select **Delete folder**.
+1. Type the name of the folder to confirm, then click **Delete**.
 
 ## Limitations
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
-- Each level of the hierarchy can contain a maximum of 200 direct descendant objects (folders or clusters).
-- Using folders requires the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. It is not yet possible to view the folder structure, move resources, or assign the `FOLDER_ADMIN` or `FOLDER_MOVER` roles from the {{ site.data.products.db }} Console or by using the `ccloud` command.
-- In the {{ site.data.products.cloud }} Console, all clusters that a user has permission to access are shown in a flat list. All other clusters are hidden.
+- An organization can have a maximum of 65 folders, regardless of how they are organized.
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. It is not yet possible to view the folder structure, move resources, or assign the `FOLDER_ADMIN` or `FOLDER_MOVER` roles by using the `ccloud` command.
 
 ## See also
 

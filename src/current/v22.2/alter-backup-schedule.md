@@ -6,7 +6,7 @@ docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](create-schedule-for-backup.html#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
+Core users can only use backup scheduling for [full backups](create-schedule-for-backup.html#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
 
 To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
@@ -56,13 +56,17 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 
 You can use the schedule options in this table to control the behavior of your backup schedule. See [Apply different options to scheduled backups](#apply-different-options-to-scheduled-backups) for an example.
 
-{% include {{ page.version.version }}/backups/schedule-options.md %}
+Option                     | Value                                   | Description
+----------------------------+-----------------------------------------+------------------------------
+`on_execution_failure`      | `retry` / `reschedule` / `pause`        | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>**Default**: `reschedule`
+<a name="on-previous-running-option"></a>`on_previous_running`       | `start` / `skip` / `wait`               | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one is still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expression.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>**Default**: `wait`
+`updates_cluster_last_backup_time_metric` | N/A | ([`admin` privileges](security-reference/authorization.html#admin-role) required) When set during backup schedule creation, this option updates the [`schedules_backup_last_completed_time`](backup-and-restore-monitoring.html#available-metrics) metric for the scheduled backup.
 
 ## Examples
 
 The examples in this section start with the following created backup schedule. Each section follows on from the previous example's schedule state.
 
-First, create a schedule that will take daily full backups of the cluster: 
+First, create a schedule that will take daily full backups of the cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -90,7 +94,7 @@ The command returns the following output. Note that the [`detached` option](#det
 
 ### Change the storage location for scheduled backups
 
-You can change the storage location to which your backup schedule is taking backups with the `SET INTO` command. Use the schedule ID to specify the schedule to modify and the new storage location URI. This statement also changes the schedule's label to match the change in backup location:  
+You can change the storage location to which your backup schedule is taking backups with the `SET INTO` command. Use the schedule ID to specify the schedule to modify and the new storage location URI. This statement also changes the schedule's label to match the change in backup location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -149,7 +153,7 @@ For the incremental backup:
 SHOW SCHEDULE 814168045421199361;
 ~~~
 
-The following includes the `backup_type` as `1`. This signifies that this schedule is for an incremental backup: 
+The following includes the `backup_type` as `1`. This signifies that this schedule is for an incremental backup:
 
 ~~~
           id         |    label    | schedule_status |        next_run        | state | recurrence | jobsrunning | owner |            created            |                                                                       command
@@ -162,7 +166,7 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
-You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options. 
+You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
 
 This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
 

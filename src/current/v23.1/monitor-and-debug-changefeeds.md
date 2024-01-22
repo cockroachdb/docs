@@ -157,6 +157,43 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
 `message_size_hist` | Distribution in the size of emitted messages. | Bytes
 
+### Monitoring and measuring changefeed latency
+
+Changefeeds can encounter latency in events processing. This latency is the total time CockroachDB takes to:
+
+- Commit writes to the database.
+- Encode [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
+- Deliver the message to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+
+There are a couple of ways to measure if changefeeds are encountering latency or falling behind:
+
+- [Event latency](#event-latency): Measure the difference between an event's MVCC timestamp and when it is put into the memory buffer or acknowledged at the sink.
+- [Lagging ranges](#lagging-ranges): Track the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) that are behind in a changefeed.
+
+#### Event latency
+
+To monitor for changefeeds encountering latency in how events are emitting, track the following metrics:
+
+- `admit_latency`: The difference between the event's MVCC timestamp and the time the event is put into the memory buffer.
+- `commit_latency`: The difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, the difference is between the oldest event and when the acknowledgment is recorded.
+
+{{site.data.alerts.callout_info}}
+The `admit_latency` and `commit_latency` metrics do **not** update for backfills during [initial scans]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) or [backfills for schema changes]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill). This is because a full table scan may contain rows that were written far in the past, which would lead to inaccurate changefeed latency measurements if the events from these scans were included in the metrics.
+{{site.data.alerts.end}}
+
+Both of these metrics support [metrics labels](#using-changefeed-metrics-labels). You can set the `metrics_label` option when starting a changefeed to differentiate metrics per changefeed.
+
+We recommend using the p99 `commit_latency` aggregation for alerting and to set SLAs for your changefeeds. You can add these metrics (e.g., `changefeed.admit_latency-p90`) to a custom chart through the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), refer to the [Customer Chart debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}). Or, you can track with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint).
+
+If your changefeed is experiencing elevated latency, you can use these metrics to:
+
+- Review `admit_latency` versus `commit_latency` to calculate the time events are moving from the memory buffer to the downstream sink.
+- Compare the `commit_latency` P99, P90, P50 latency percentiles to investigate performance over time.
+
+#### Lagging ranges
+
+{% include {{ page.version.version }}/cdc/lagging-ranges.md %}
+
 ## Debug a changefeed
 
 ### Using logs

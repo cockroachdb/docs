@@ -17,7 +17,7 @@ Using CockroachDB as a source database within AWS DMS is unsupported.
 
 ## Before you begin
 
-Complete the following items before starting this tutorial:
+Complete the following items before starting the DMS migration:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
@@ -35,6 +35,8 @@ Complete the following items before starting this tutorial:
         ~~~
 
         This prevents a potential issue when migrating especially large tables with millions of rows.
+
+- If you are migrating to CockroachDB {{ site.data.products.dedicated }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}). This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
 
 - If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) for the migration to succeed.
     {{site.data.alerts.callout_danger}}
@@ -187,16 +189,22 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation]({% link {{ page.version.version }}/collate.md %}) such as `COLLATE "en_US"` in CockroachDB.
 
-- A migration to a [multi-region cluster](multiregion-overview.html) using AWS DMS will fail if the target database has [regional by row tables](table-localities.html#regional-by-row-tables). This is because the `COPY` statement used by DMS is unable to process the `crdb_region` column in regional by row tables.
+- An AWS DMS migration can fail if the target schema has hidden columns. This includes databases with [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}) and [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) with [regional by row tables]({% link {{ page.version.version }}/table-localities.md %}). This is because the `COPY` statement used by DMS is unable to process hidden columns.
 
-    To prevent this error, [set the regional by row table localities to `REGIONAL BY TABLE`](alter-table.html#set-the-table-locality-to-regional-by-row) and perform the migration. After the DMS operation is complete, [set the table localities to `REGIONAL BY ROW`](alter-table.html#set-the-table-locality-to-regional-by-row).
+    To prevent this error, set the [`expect_and_ignore_not_visible_columns_in_copy` session variable]({% link {{ page.version.version }}/session-variables.md %}#expect-and-ignore-not-visible-columns-in-copy) in the DMS [target endpoint configuration](#step-1-create-a-target-endpoint-pointing-to-cockroachdb). Under **Endpoint settings**, add an **AfterConnectScript** setting with the value `SET expect_and_ignore_not_visible_columns_in_copy=on`.
+
+    <img src="{{ 'images/v23.1/aws-dms-endpoint-settings.png' | relative_url }}" alt="AWS-DMS-Endpoint-Settings" style="max-width:100%" />
 
 ## Troubleshooting common issues
 
 - For visibility into migration problems:
 
-    - Check the `SQL_EXEC` [logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
-    - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+    - Check the [Amazon CloudWatch logs that you enabled](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.dedicated }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#before-you-begin).
+
+        {{site.data.alerts.callout_danger}}
+        Personally identifiable information (PII) may be exported to CloudWatch unless you [redact the logs]({% link {{ page.version.version }}/configure-logs.md %}#redact-logs). Redacting logs may hide the data that is causing the issue, making it more difficult to troubleshoot.
+        {{site.data.alerts.end}}
 
 - If you encounter errors like the following:
 
