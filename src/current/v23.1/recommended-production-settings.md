@@ -146,6 +146,10 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+{{site.data.alerts.end}}
+
 ##### Disk I/O
 
 Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.
