@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+{% include_cached new-in.html version="v23.2" %} The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 
 ## Required privileges
 
