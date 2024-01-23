@@ -141,6 +141,10 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
+### Table-level restore will not restore user-defined functions
+
+{% include {{ page.version.version }}/known-limitations/restore-udf.md %}
+
 ### Incorrect query plans for partitions with `NULL` values
 
 In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments.
