@@ -64,23 +64,20 @@ You cannot scale a multi-node cluster down to a single-node cluster. If you need
 To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
 1. On the **Regions** page, select the number of nodes you want in each region from the **Nodes** dropdown.
 1. In the sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Capacity** and then **Next Finalize**.
-1. On the **Finalize** page, click **Update**.
+1. Click **Next: Capacity** and then **Update cluster**.
 
 ### Change compute for a cluster
 
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. Navigate to the cluster's **Overview** page and click **Update capacity**.
 
     The **Edit cluster** page displays.
 
-1. Navigate to the **Capacity** page.
 1. In the **Compute per node** section, select the new amount of vCPUs per node.
 
     {{site.data.alerts.callout_info}}
@@ -88,8 +85,7 @@ To add or remove nodes from your cluster:
     {{site.data.alerts.end}}
 
 1. In the sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Finalize**.
-1. On the **Finalize** page, click **Update**.
+1. Click **Next: Update cluster**.
 
 ### Increase storage for a cluster
 
@@ -102,16 +98,14 @@ AWS disks can only be scaled once every six hours.
 
     The **Edit cluster** page displays.
 
-1. Navigate to the **Capacity** page.
-1. In the **Compute per node** section, select the new amount of storage per node.
+1. In the **Storage per node** section, select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
     Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
 1. In the sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Finalize**.
-1. On the **Finalize** page, click **Update**.
+1. Click **Next: Update cluster**.
 
 ## Add or remove regions from a cluster
 
@@ -122,7 +116,7 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -132,8 +126,7 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 1. Select the desired new region and specify the number of nodes for it.
 1. In the sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Capacity** and then click **Finalize**.
-1. Click **Update cluster**.
+1. Click **Next: Capacity** and then **Update cluster**.
 
 ### Remove a region from your cluster
 
@@ -146,7 +139,7 @@ If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_
 To remove a region from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -155,8 +148,7 @@ To remove a region from your cluster:
     If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
     {{site.data.alerts.end}}
 1. In the sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Capacity** and then **Next: Finalize**.
-1. Click **Update cluster**.
+1. Click **Next: Capacity** and then **Update cluster**.
 
 ## Set a maintenance window
 

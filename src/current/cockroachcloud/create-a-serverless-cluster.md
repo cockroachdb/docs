@@ -22,7 +22,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 {% include cockroachcloud/prefer-sso.md %}
 1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
-1. On the **Select a tier** page, select **Serverless**.
+1. On the **Select a plan** page, select **Serverless**.
 
 ## Step 2. Select the cloud provider
 
@@ -52,7 +52,7 @@ Click **Next: Capacity**.
 
 ## Step 4. Configure cluster capacity
 
-Your cluster's [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's capacity dictates its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits), which are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
 All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.serverless }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
@@ -77,9 +77,9 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
-1. On the **Capacity** page, if the option to **Start for free** is still available to you, select **Upgrade your resources** instead.
+1. On the **Capacity** page, if the option to **Start for free** is still available to you, select **Upgrade your capacity** instead.
 
-1. Enter your **Resource limits**.
+1. Configure **On-Demand capacity**.
     - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
     - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
 
@@ -89,10 +89,10 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 ## Step 5. Enter billing details
 
-1. On the **Finalize** page, verify your cluster configuration and [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration. 
 
     {{site.data.alerts.callout_info}}
-    The cost displayed does not include taxes.
+    The cost displayed does not include taxes and provides a maximum cost estimate. Your final bill will reflect your actual usage.
     {{site.data.alerts.end}}
 
 1. If you haven't already, add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
