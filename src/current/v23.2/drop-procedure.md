@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `DROP PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) drops a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+{% include_cached new-in.html version="v23.2" %} The `DROP PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) drops a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 
 ## Required privileges
 
