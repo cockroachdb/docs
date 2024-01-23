@@ -11,6 +11,12 @@ This page walks you through the process of creating a CockroachDB {{ site.data.p
 
 Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
+{{site.data.alerts.callout_info}}
+CockroachDB v23.2 is now generally available and production-ready for CockroachDB Dedicated, and is scheduled to be made available for CockroachDB Self-Hosted on February 5, 2024. 
+
+Through February 5, customers who create a new cluster or upgrade to v23.2 may be notified about their cluster receiving cloud-only patch releases, including the public 23.2.0 GA binary as a patch release. Descriptions of any substantive fixes in such patches will be added to the [CockroachDB v23.2.0 Release Notes]({% link releases/v23.2.md %}).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 {{site.data.alerts.end}}
@@ -105,19 +111,31 @@ To change the hardware configuration after the cluster is created, see [Manage a
 
 See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
-## Step 6. Name the cluster
+## Step 6. Select the CockroachDB version
+
+When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
+Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.dedicated }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. If available, the latest Pre-Production Preview release is listed as an option alongside the latest production release.
+
+{{site.data.alerts.callout_danger}}
+Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+{{site.data.alerts.end}}
+
+If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
+
+## Step 7. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
 Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on GCP. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster.
 
-## Step 7. Enable VPC Peering (optional)
+## Step 8. Enable VPC Peering (optional)
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
 VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
-To continue without enabling VPC peering, click **Next** to [enter billing details](#step-8-enter-billing-details).
+To continue without enabling VPC peering, click **Next** to [enter billing details](#step-9-enter-billing-details).
 CockroachDB {{ site.data.products.cloud }}
 Otherwise, to enable VPC peering:
 
@@ -138,7 +156,7 @@ Otherwise, to enable VPC peering:
 
         Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
-## Step 8. Enter billing details
+## Step 9. Enter billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region(s), number of nodes, and the hardware configuration per node.
 1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.

@@ -190,7 +190,7 @@ table tr td:nth-child(2) {
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
  Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
- Cursors | ✗ | Standard | Traverse a table's rows. To support a cursor-like use case, see the example in [Paginate Results](pagination.html).
+ Cursors | Partial | Standard | [Cursors documentation](cursors.html)
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation](user-defined-functions.html)

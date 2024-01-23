@@ -19,6 +19,7 @@ The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [defaul
 Parameter | Description
 ----------|------------
 `FOR ROLE name`/`FOR USER name` | List the default privileges on objects created by a specific user/role, or a list of users/roles.
+`FOR GRANTEE name` | Show the default privileges that user `name` received as a grantee. For more information, see [Show default privileges for a grantee](#show-default-privileges-for-a-grantee).
 `FOR ALL ROLES` | List the default privileges on objects created by any user/role.
 
 {{site.data.alerts.callout_info}}
@@ -108,6 +109,26 @@ To show default privileges, the user/role must have any [privilege](security-ref
 -------+---------------+-------------+---------+-----------------
   demo |     false     | tables      | max     | SELECT
 (1 row)
+~~~
+
+### Show default privileges for a grantee
+
+To show the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) that a user received as a grantee, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW DEFAULT PRIVILEGES FOR GRANTEE root;
+~~~
+
+~~~
+  role | for_all_roles | object_type | grantee | privilege_type | is_grantable
+-------+---------------+-------------+---------+----------------+---------------
+  root |       f       | routines    | root    | ALL            |      t
+  root |       f       | schemas     | root    | ALL            |      t
+  root |       f       | sequences   | root    | ALL            |      t
+  root |       f       | tables      | root    | ALL            |      t
+  root |       f       | types       | root    | ALL            |      t
+(5 rows)
 ~~~
 
 ## See also

@@ -6,7 +6,7 @@ The Statements table gives details for each SQL statement fingerprint:
 
 Column | Description
 -----|------------
-Statements | SQL statement [fingerprint](#sql-statement-fingerprints). To view additional details, click the SQL statement fingerprint to open its [Statement Fingerprint page]({{ page_prefix }}statements-page.html#statement-fingerprint-page).
+Statements | SQL statement [fingerprint](#sql-statement-fingerprints). To view additional details, click the SQL statement fingerprint to open its [Statement Fingerprint page]({{ page_prefix }}statements-page.html#statement-fingerprint-page).<br><br>Statement fingerprints are displayed per application rather than grouped into a single fingerprint. This may result in multiple rows for the same statement fingerprint, one per application name.
 Execution Count | Cumulative number of executions of statements with this fingerprint within the [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Database | The database in which the statement was executed.
 Application Name | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
