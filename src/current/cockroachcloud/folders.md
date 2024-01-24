@@ -27,6 +27,11 @@ To move a folder or a cluster, you update its `parent_id`. If you move a folder 
 - A violation of the [folder structure](#folder-structure) limitations.
 - An attempt to move a folder into itself or into one of its descendant folders.
 
+### Folder naming
+
+- Folder names must begin and end with a letter or number. The only allowed special characters are spaces, hyphens, and underscores.
+- Folder names must be at least 3 characters long and cannot exceed 40 characters.
+
 ### Folder structure
 
 Folders give you the flexibility to organize and manage access to your clusters using the structure that makes the most sense for your organization. Keep the following structural limitations in mind:
