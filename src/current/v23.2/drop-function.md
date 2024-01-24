@@ -25,7 +25,7 @@ To drop a function, a user must have the `DROP` [privilege]({% link {{ page.vers
 Parameter | Description
 ----------|------------
 `func_name` | The name of one of more functions to drop.
-`func_args_list` | A list of the function arguments.
+`func_params_list` | An optional list of the function parameters.
 
 ## See also
 

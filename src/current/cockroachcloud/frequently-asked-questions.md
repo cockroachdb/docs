@@ -95,9 +95,14 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery).
 
-CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
+CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. By default, full backups are retained for 30 days and incremental backups for 7 days. However, there are some cases where you will no longer be able to restore the managed backups even within the retainment window:
+
+- Manually deleting the managed backup schedule.
+- Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster. Refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
 
 Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+
+In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.

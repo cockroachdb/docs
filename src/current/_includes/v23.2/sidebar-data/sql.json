@@ -59,6 +59,12 @@
               ]
             },
             {
+              "title": "<code>ALTER PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/alter-procedure.html"
+              ]
+            },
+            {
               "title": "<code>ALTER RANGE</code>",
               "urls": [
                 "/${VERSION}/alter-range.html"
@@ -125,6 +131,12 @@
               ]
             },
             {
+              "title": "<code>CALL</code>",
+              "urls": [
+                "/${VERSION}/call.html"
+              ]
+            },
+            {
               "title": "<code>CANCEL JOB</code>",
               "urls": [
                 "/${VERSION}/cancel-job.html"
@@ -188,6 +200,12 @@
               "title": "<code>CREATE INDEX</code>",
               "urls": [
                 "/${VERSION}/create-index.html"
+              ]
+            },
+            {
+              "title": "<code>CREATE PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/create-procedure.html"
               ]
             },
             {
@@ -302,6 +320,12 @@
               "title": "<code>DROP INDEX</code>",
               "urls": [
                 "/${VERSION}/drop-index.html"
+              ]
+            },
+            {
+              "title": "<code>DROP PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/drop-procedure.html"
               ]
             },
             {
@@ -503,7 +527,7 @@
               ]
             },
             {
-              "title": "<code>SELECT FOR UPDATE</code>",
+              "title": "<code>FOR UPDATE</code> and <code>FOR SHARE</code>",
               "urls": [
                 "/${VERSION}/select-for-update.html"
               ]
@@ -835,6 +859,12 @@
               "title": "User-Defined Functions",
               "urls": [
                 "/${VERSION}/user-defined-functions.html"
+              ]
+            },
+            {
+              "title": "Stored Procedures",
+              "urls": [
+                "/${VERSION}/stored-procedures.html"
               ]
             },
             {
@@ -1188,6 +1218,12 @@
           "title": "Session Variables",
           "urls": [
             "/${VERSION}/session-variables.html"
+          ]
+        },
+        {
+          "title": "PL/pgSQL",
+          "urls": [
+            "/${VERSION}/plpgsql.html"
           ]
         }
       ]
