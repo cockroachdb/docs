@@ -45,12 +45,13 @@ Complete the following items before starting the DMS migration:
 
     - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
-- Manually create all schema objects in the target CockroachDB cluster. AWS DMS can create a basic schema, but does not create indexes or constraints such as foreign keys and defaults.
-    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
+- Manually create all schema objects in the target CockroachDB cluster. If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, you can [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema.
 
-    {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
-    {{site.data.alerts.end}}
+    - All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
+
+    - Drop all [constraints]({% link {{ page.version.version }}/constraints.md %}) per the [AWS DMS best practices](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_BestPractices.html#CHAP_BestPractices.Performance). You can recreate them after the [full load completes](#step-3-verify-the-migration). AWS DMS can create a basic schema, but does not create [indexes]({% link {{ page.version.version }}/indexes.md %}) or constraints such as [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) and [defaults]({% link {{ page.version.version }}/default-value.md %}).
+
+    - Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
 As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
 
@@ -138,19 +139,49 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 1. Supply the appropriate **Source name** (schema name), **Table name**, and **Action**.
     <img src="{{ 'images/v23.2/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
 
-{{site.data.alerts.callout_info}}
-Use `%` as an example of a wildcard for all schemas in a PostgreSQL database. However, in MySQL, using `%` as a schema name imports all the databases, including the metadata/system ones, as MySQL treats schemas and databases as the same.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    Use `%` as an example of a wildcard for all schemas in a PostgreSQL database. However, in MySQL, using `%` as a schema name imports all the databases, including the metadata/system ones, as MySQL treats schemas and databases as the same.
+    {{site.data.alerts.end}}
+
+1. To improve full-load performance, consider defining a *parallel load* setting for selected columns. A parallel load splits the full-load task into multiple threads. For example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ json
+    "parallel-load": {
+       "type": "ranges",
+       "columns": [
+           "id"
+       ],
+       "boundaries": [
+           [
+               5000000
+           ],
+           [
+               10000000
+           ],
+           ...
+       ]
+    }
+    ~~~
+
+    For details, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Tablesettings.html#CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Tablesettings.ParallelLoad).
 
 ## Step 3. Verify the migration
 
 Data should now be moving from source to target. You can analyze the **Table Statistics** page for information about replication.
 
+{{site.data.alerts.callout_success}}
+Do not issue reads while AWS DMS is running. AWS DMS runs explicit transactions, which can cause [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). If you need to issue reads, use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
+{{site.data.alerts.end}}
+
 1. In **AWS DMS**, open **Database migration tasks** in the sidebar.
 1. Select the task you created in Step 2.
 1. Select **Table statistics** below the **Summary** section.
 
-If your migration succeeded, you should now [re-enable revision history](#before-you-begin) for cluster backups.
+If your migration succeeded, you should now:
+
+- [Re-enable revision history](#before-you-begin) for cluster backups.
+- Re-create any [constraints]({% link {{ page.version.version }}/constraints.md %}) that you dropped [before migrating](#before-you-begin).
 
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
@@ -208,11 +239,27 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - If you encounter errors like the following:
 
+    In the Amazon CloudWatch logs:
+
     ~~~
     2022-10-21T13:24:07 [SOURCE_UNLOAD   ]W:  Value of column 'metadata' in table 'integrations.integration' was truncated to 32768 bytes, actual length: 116664 bytes  (postgres_endpoint_unload.c:1072)
     ~~~
 
+    In the CockroachDB [logs]({% link {{ page.version.version }}/logging-overview.md %}):
+
+    ~~~
+    could not parse JSON: unable to decode JSON: while decoding 51200 bytes at offset 51185
+    ~~~
+
     Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
+
+- The following error in the CockroachDB [logs]({% link {{ page.version.version }}/logging-overview.md %}) indicates that AWS DMS is unable to copy into a table with a [computed column]({% link {{ page.version.version }}/computed-columns.md %}):
+
+    ~~~
+    cannot write directly to computed column ‹"column_name"›
+    ~~~
+
+    This is expected, as PostgreSQL does not allow copying into tables with a computed column. As a workaround, [drop the generated column]({% link {{ page.version.version }}/alter-table.md %}#drop-column) in CockroachDB and apply a [transformation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html) in DMS to exclude the computed column. Once the full load is done, add the computed column again in CockroachDB.
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 

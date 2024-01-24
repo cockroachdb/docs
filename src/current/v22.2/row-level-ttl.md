@@ -55,14 +55,14 @@ CREATE TABLE ttl_test_per_row (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
   expired_at TIMESTAMPTZ
-) WITH (ttl_expiration_expression = 'expired_at');
+) WITH (ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily');
 ~~~
 
 The statement has the following effects:
 
 <a name="crdb-internal-expiration"></a>
 
-1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table.
+1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table and sets it to run once per day.
 1. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
 
 To see the storage parameters, enter the [`SHOW CREATE TABLE`](show-create.html) statement:
@@ -80,7 +80,7 @@ SHOW CREATE TABLE ttl_test_per_row;
                    |     description STRING NULL,
                    |     expired_at TIMESTAMPTZ NULL,
                    |     CONSTRAINT ttl_test_per_row_pkey PRIMARY KEY (id ASC)
-                   | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@hourly')
+                   | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily')
 (1 row)
 ~~~
 
@@ -95,15 +95,15 @@ To set rows to expire a fixed amount of time after they are created or updated, 
 CREATE TABLE ttl_test_per_table (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
-  inserted_at TIMESTAMP default current_timestamp()
-) WITH (ttl_expire_after = '3 months');
+  inserted_at TIMESTAMPTZ default current_timestamp()
+) WITH (ttl_expire_after = '3 months', ttl_job_cron = '@daily');
 ~~~
 
 The statement has the following effects:
 
 <a name="crdb-internal-expiration"></a>
 
-1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table.
+1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table and sets it to run once per day.
 1. Adds a `NOT VISIBLE` column called `crdb_internal_expiration` of type [`TIMESTAMPTZ`](timestamp.html) to represent the TTL.
 1. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
 
@@ -120,10 +120,10 @@ SHOW CREATE TABLE ttl_test_per_table;
   ttl_test_per_table | CREATE TABLE public.ttl_test_per_table (
                      |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                      |     description STRING NULL,
-                     |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
+                     |     inserted_at TIMESTAMPTZ NULL DEFAULT current_timestamp():::TIMESTAMPTZ,
                      |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
                      |     CONSTRAINT ttl_test_per_table_pkey PRIMARY KEY (id ASC)
-                     | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@hourly')
+                     | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
 (1 row)
 ~~~
 
@@ -204,7 +204,7 @@ CREATE TABLE events (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
   inserted_at TIMESTAMP default current_timestamp()
-) WITH (ttl_expire_after = '3 months');
+) WITH (ttl_expire_after = '3 months', ttl_job_cron = '@daily');
 ~~~
 
 ~~~
@@ -276,7 +276,7 @@ SHOW SCHEDULES;
           id         |        label         | schedule_status |        next_run        |  state  | recurrence | jobsrunning | owner |            created            |     command
 ---------------------+----------------------+-----------------+------------------------+---------+------------+-------------+-------+-------------------------------+-------------------
   747608117920104449 | sql-stats-compaction | ACTIVE          | 2022-03-25 16:00:00+00 | pending | @hourly    |           0 | node  | 2022-03-25 15:31:31.444067+00 | {}
-  747609229470433281 | row-level-ttl-112    | ACTIVE          | 2022-03-25 16:00:00+00 | NULL    | @hourly    |           0 | root  | 2022-03-25 15:37:10.613056+00 | {"tableId": 112}
+  747609229470433281 | row-level-ttl-112    | ACTIVE          | 2022-03-25 16:00:00+00 | NULL    | @daily    |           0 | root  | 2022-03-25 15:37:10.613056+00 | {"tableId": 112}
 (2 rows)
 ~~~
 
@@ -331,7 +331,7 @@ SHOW CREATE TABLE events;
              |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
              |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
              |     CONSTRAINT events_pkey PRIMARY KEY (id ASC)
-             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@hourly')
+             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
 (1 row)
 ~~~
 
@@ -346,7 +346,7 @@ SELECT relname, reloptions FROM pg_class WHERE relname = 'events';
   relname |                                reloptions
 ----------+---------------------------------------------------------------------------
   events  | NULL
-  events  | {ttl='on',"ttl_expire_after='3 mons':::INTERVAL",ttl_job_cron='@hourly'}
+  events  | {ttl='on',"ttl_expire_after='3 mons':::INTERVAL",ttl_job_cron='@daily'}
 (2 rows)
 ~~~
 
