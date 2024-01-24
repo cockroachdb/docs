@@ -42,7 +42,7 @@ This table compares CockroachDB's automatic resiliency and the disaster recovery
     </td>
     <td>1–10 seconds</td>
     <td>1–10 seconds</td>
-    <td>~10s of minutes</td>
+    <td>minutes</td>
     <td>~ minutes to hours</td>
   </tr>
 
