@@ -27,6 +27,11 @@ To move a folder or a cluster, you update its `parent_id`. If you move a folder 
 - A violation of the [folder structure](#folder-structure) limitations.
 - An attempt to move a folder into itself or into one of its descendant folders.
 
+### Folder naming
+
+- Folder names must begin and end with a letter or number. The only allowed special characters are spaces, hyphens, and underscores.
+- Folder names must be at least 3 characters long and cannot exceed 40 characters.
+
 ### Folder structure
 
 Folders give you the flexibility to organize and manage access to your clusters using the structure that makes the most sense for your organization. Keep the following structural limitations in mind:
@@ -200,8 +205,13 @@ To move a cluster from the organization level into a folder, or to move it from 
 1. In the dialog, select the destination to move the cluster to, then click **Next**.
 1. Click **Move**.
 
+To move a cluster to a new folder from the **Clusters** page:
+
+1. Browse to the location of the destination folder.
+1. Click the the three-dots **Action** button, then select **Move**.
+
 {{site.data.alerts.callout_info}}
-You can also move a cluster to a new folder by browsing to the location of the destination folder, then clicking the the three-dots **Action** button and selecting **Move**.
+A cluster is [billed]({% link cockroachcloud/billing-management.md %}#view-invoices) to the folder it resides in at the end of the billing period, even if it was moved from one folder to another during the billing period.
 {{site.data.alerts.end}}
 
 ## Move a folder into another folder

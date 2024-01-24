@@ -5,9 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to take and restore [customer-owned backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from **CockroachDB {{ site.data.products.serverless }}** and **CockroachDB {{ site.data.products.dedicated }}** clusters. 
+This page describes how to take and restore [customer-owned backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from **CockroachDB {{ site.data.products.serverless }}** and **CockroachDB {{ site.data.products.dedicated }}** clusters.
 
-The examples demonstrate how to back up and restore from cloud storage and `userfile` storage. We recommend using cloud storage for your backups.
+The examples on this page demonstrate how to back up and restore from cloud storage and `userfile` storage. We recommend using cloud storage for your backups.
+
+For a list of other backup types you can run manually, including [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups) and [encrypted](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups) backups, refer to the [Backup and Restore Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview) page.
 
 {{site.data.alerts.callout_danger}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -102,7 +104,7 @@ The following examples show how to run manual restores:
 
 {% include cockroachcloud/restore-examples.md %}
 
-For more information on restoring to your cluster, read the [`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) page. 
+For more information on restoring to your cluster, read the [`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) page.
 
 </section>
 
