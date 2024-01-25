@@ -37,7 +37,7 @@ With CockroachDB {{ site.data.products.serverless }}, you are charged for the st
 
 ### Do I have to pay for CockroachDB {{ site.data.products.serverless }}?
 
-No, you can create one CockroachDB {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 10 GiB of storage per month. If you need more resources, you can [set higher limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) for your cluster. You will only be charged for your usage beyond the free threshold.
+No, you can create one CockroachDB {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 10 GiB of storage per month. If you need more resources, you can [set higher limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) for your cluster. You will be charged only for your usage beyond the free threshold.
 
 ### What regions are available for CockroachDB {{ site.data.products.serverless }} clusters?
 
