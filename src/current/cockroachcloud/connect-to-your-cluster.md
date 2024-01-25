@@ -1,5 +1,5 @@
 ---
-title: Connect to a CockroachDB Cloud Dedicated Cluster
+title: Connect to a CockroachDB Dedicated Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 docs_area: deploy
@@ -99,7 +99,12 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-To connect to your cluster with the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql):
+You can connect to your cluster with any supported version of the full CockroachDB binary or the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql). To download the full binary and connect to a CockroachDB {{ site.data.products.dedicated }} cluster, follow these steps.
+
+{{site.data.alerts.callout_success}}
+To download a supported version of the SQL shell instead of the full binary, visit [Releases](https://cockroachlabs.com/releases), then follow the steps below beginning with [Step 3](#step-3-create-certs).
+{{site.data.alerts.end}}
+
 
 1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
@@ -111,7 +116,7 @@ To connect to your cluster with the [built-in SQL client](https://www.cockroachl
 
 1. {% include cockroachcloud/download-the-binary.md %}
 
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+1. <a id="step-3-create-certs"></a>In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
     {% include cockroachcloud/download-the-cert.md %}
 
