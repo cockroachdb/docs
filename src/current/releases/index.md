@@ -29,7 +29,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 
 ## Staged release process
 
-As of 2024, CockroachDB will be released under a staged delivery process. New releases are made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+As of 2024, CockroachDB will be released under a staged delivery process. New releases will be made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
 
 {{ experimental_js_warning }}
 
