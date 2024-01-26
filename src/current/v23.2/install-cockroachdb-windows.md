@@ -19,10 +19,6 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
-{{site.data.alerts.callout_success}}
-To connect to a CockroachDB cluster running any supported version of CockroachDB from your local system, you can download and install any available version of either the SQL Shell binary or the full binary for your operating system and architecture. Refer to [Releases](https://cockroachlabs.com/docs/releases/).
-{{site.data.alerts.end}}
-
 <section id="download-the-binary-windows" markdown="1" class="install-option">
 <h2 id="install-binary">Download the executable</h2>
 

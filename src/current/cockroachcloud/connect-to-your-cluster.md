@@ -70,7 +70,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 
     The **Setup** page of the **Connect to cluster** dialog displays.
 
-1. If you set up a private connection, click **AWS PrivateLink** (for clusters deployed in AWS) or **VPC Peering** (for clusters deployed in GCP) to connect privately.
+1. If you set up a private connection, click **AWS PrivateLink** (for clusters deployed in AWS) or **VPC Peering** (for clusters deployed in GCP) to connect privately. Otherwise, click **IP Allowlist**.
 1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
 
     {{site.data.alerts.callout_info}}

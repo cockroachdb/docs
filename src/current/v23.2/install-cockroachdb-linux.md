@@ -24,7 +24,7 @@ To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-complia
 CockroachDB on ARM is <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Generally Available</a></b> in v23.2.0 and above. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
 
 {{site.data.alerts.callout_success}}
-To connect to a CockroachDB cluster running any supported version of CockroachDB from your local system, you can download and install any supported version of either the SQL Shell binary or the full binary for your operating system and architecture. Refer to [Releases](https://cockroachlabs.com/docs/releases/).
+To connect to a CockroachDB cluster running any [supported version](https://www.cockroachlabs.com/docs/releases/release-support-policy#current-supported-releases) of CockroachDB from your local system, you can download and install any supported version of either the SQL Shell binary or the full binary for your operating system and architecture. Refer to [Releases](https://cockroachlabs.com/docs/releases/).
 {{site.data.alerts.end}}
 
 <div id="download-the-binary-linux" class="install-option">
