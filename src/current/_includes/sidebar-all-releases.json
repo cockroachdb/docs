@@ -17,6 +17,12 @@
   ]
 },
 {
+  "title": "Staged Release Process",
+  "urls": [
+    "/releases/staged-release-process.html"
+  ]
+},
+{
   "title": "Release Support Policy",
   "urls": [
     "/releases/release-support-policy.html"
