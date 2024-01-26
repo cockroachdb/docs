@@ -27,6 +27,10 @@ For more details, refer to [Release Naming](#release-naming).
 In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
 {{site.data.alerts.end}}
 
+## Staged release process
+
+As of 2024, CockroachDB will be released under a staged delivery process. New releases are made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+
 {{ experimental_js_warning }}
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
