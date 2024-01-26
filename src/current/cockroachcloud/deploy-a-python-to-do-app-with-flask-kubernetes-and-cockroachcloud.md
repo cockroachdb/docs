@@ -60,9 +60,24 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 ### Step 3. Connect to the cluster
 
-To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+In this step, you connect both your application and your local system to the cluster.
 
-### Step 4. Create the CockroachDB {{ site.data.products.cloud }} database
+1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
+
+    The **Setup** page of the **Connect to cluster** dialog displays.
+1. Select the **SQL User** you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
+1. For **Database**, select `defaultdb`. You will change this after you follow the instructions in [Step 4. Create the database](#step-4-create-the-database).
+1. Select the **Command Line** tab.
+1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
+1. Select the **Connection string** tab.
+1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
+1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.dedicated }}.
+1. Click **Close**.
+1. Use the connection string to connect to the cluster using `cockroach sql`:
+
+    {% include cockroachcloud/sql-connection-string.md %}
+
+### Step 4. Create the database
 
 On your local workstation's terminal:
 
