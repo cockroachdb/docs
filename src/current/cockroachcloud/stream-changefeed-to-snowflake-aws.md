@@ -32,19 +32,13 @@ Before you begin, make sure you have:
 
 If you have not done so already, [create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
+## Step 2. Connect to your cluster
+
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+
 ## Step 2. Configure your cluster
 
-1. Connect to the built-in SQL shell as a user with [`admin`](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) privileges, replacing the placeholders in the [client connection string]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257?sslmode=verify-full&sslrootcert=certs/ca.crt'
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    For more information on connecting to your cluster, refer to [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your CockroachDB {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
-    {{site.data.alerts.end}}
+1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:
 

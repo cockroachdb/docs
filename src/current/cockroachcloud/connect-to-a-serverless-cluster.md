@@ -41,7 +41,7 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 Private connectivity is not available for CockroachDB {{ site.data.products.serverless }} clusters on GCP.
 {{site.data.alerts.end}}
 
-## Select a connection method
+## Connect to your cluster
 
 1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
 
@@ -52,8 +52,6 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
 1. _(Optional)_ If you have multiple SQL users or databases, you can:
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
-
-## Connect to your cluster
 
 1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
 
