@@ -53,7 +53,7 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
 
-1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
+1. Select a connection method from the **Select option / Language** dropdown (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
@@ -85,10 +85,9 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
-1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Downloada CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Select the **Parameters only** option of the **Select option** dropdown.
-
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
 
     Parameter | Description
@@ -101,6 +100,8 @@ For connection examples and code snippets in your language, see the following:
 
   </section>
   <section class="filter-content" markdown="1" data-scope="command-line">
+
+You can connect to your cluster with any [supported version](https://www.cockroachlabs.com/docs/releases/release-support-policy#current-supported-releases) of the full CockroachDB binary or the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql). To download the full binary and connect to a CockroachDB {{ site.data.products.serverless }} cluster, follow these steps.
 
 1. Select **CockroachDB Client** from the **Select option/language** dropdown.
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
