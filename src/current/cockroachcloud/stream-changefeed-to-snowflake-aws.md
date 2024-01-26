@@ -34,7 +34,10 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
 
 ## Step 2. Connect to your cluster
 
-To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, Refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster) for detailed instructions on how to to:
+
+1. Download and install CockroachDB and your cluster's CA certificate locally.
+1. Generate the `cockroach sql` command that you will use to connect to the cluster from the command line.
 
 ## Step 2. Configure your cluster
 
