@@ -154,7 +154,7 @@ To enable autoprovisioning for an SSO authentication method:
 
 ## Add a custom authentication method
 
-You can add a custom authentication method to connect to any IdP that supports [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/).
+You can add a custom authentication method to connect to any IdP that supports [OpenID Connect (OIDC)](https://openid.net/connect/) or [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
 ### OIDC
 
@@ -177,7 +177,7 @@ To configure a custom OIDC authentication method:
 
 ### SAML
 
-To configure a custom SAML authentication method:
+To configure a custom SAML authentication method using the service provider-initiated flow, follow these steps. If you need to use the identity provider-initiated flow instead, contact [Cockroach Labs support](https://support.cockroachlabs.com/hc).
 
 1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
 1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
