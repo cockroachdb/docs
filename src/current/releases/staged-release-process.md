@@ -5,4 +5,4 @@ toc: true
 docs_area: releases
 ---
 
-As of 2024, CockroachDB will be released under a staged delivery process. New releases are made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+As of 2024, CockroachDB will be released under a staged delivery process. New releases will be made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
