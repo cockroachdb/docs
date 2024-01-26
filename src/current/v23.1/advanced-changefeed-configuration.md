@@ -39,7 +39,9 @@ For a more technical explanation of elastic CPU, refer to the [Rubbing control t
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. Its functionality is enabled via the `changefeed.mux_rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). We recommend large-scale changefeed workloads enable this cluster setting.
+`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. It significantly reduces the overhead of running [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). Without `MuxRangefeed` enabled the number of RPC streams is proportional with the number of ranges in a table. For example, a large table could have tens of thousands of ranges. With `MuxRangefeed` enabled, this proportion improves so that the number of RPC streams is relative to the number of nodes in a cluster.
+
+You can enable its functionality with the `changefeed.mux_rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 Use the following workflow to enable `MuxRangefeed`:
 
