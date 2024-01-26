@@ -27,7 +27,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
 - [Step 2. Create a SQL user](#step-2-create-a-sql-user)
 - [Step 3. Connect to the cluster](#step-3-connect-to-the-cluster)
-- [Step 4. Create the CockroachDB {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachdb-cloud-database)
+- [Step 4. Create the CockroachDB {{ site.data.products.dedicated }} database](#step-4-create-the-database)
 - [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
