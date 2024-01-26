@@ -7,9 +7,21 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a CockroachDB {{ site.data.products.dedicated }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+This page guides you through the process of creating a {{ site.data.products.dedicated }} cluster using the [Cloud Console](https://cockroachlabs.cloud).
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+
+You can also use the following to create a {{ site.data.products.dedicated }} cluster instead:
+
+- The Cloud API, refer to [Use the Cloud API: Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+- The [Terraform provider for CockroachDB Cloud
+](https://github.com/cockroachdb/terraform-provider-cockroach). Use the Terraform provider to manage your cluster configuration with an [Infrastructure as code
+](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach. Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
+
+{{site.data.alerts.callout_info}}
+Certain cluster creation options are only available using the API or Terraform, including the option to deny all egress traffic.
+{{site.data.alerts.end}}
+
+{% include cockroachcloud/cluster-create-console-required-role.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB v23.2 is now generally available and production-ready for CockroachDB Dedicated, and is scheduled to be made available for CockroachDB Self-Hosted on February 5, 2024. 

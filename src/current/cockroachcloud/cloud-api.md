@@ -6,15 +6,17 @@ docs_area: manage
 cloud: true
 ---
 
-The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
+The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows service accounts programmatic access to manage the lifecycle of clusters within your organization.
 
 ## API reference
 
-Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1) for detailed descriptions of the API endpoints and options.
+Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) for detailed descriptions of the API endpoints and options.
 
 ## Call the API
 
-The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access). The secret key is associated with a service account, and inherits the [permissions of the account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access), associated with a service account. The API calls you can make is limited by the roles granted to the service account you are using.
+
+Refer to: [Manage service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 To send the secret key when making an API call, add the secret key to the `Authorization` HTTP header sent with the request.
 
@@ -78,141 +80,31 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
+{% include cockroachcloud/cluster-create-console-required-role.md %}
 
-{{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `CREATE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
-{{site.data.alerts.end}}
+Serverless and Dedicated clusters have different configuration options. Refer to [CockroachDB Cloud FAQs
+]({% link cockroachcloud/frequently-asked-questions.md %}) for an overview of the differences.
 
-<div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
-    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
-</div>
+It is also possible to use the [Terraform provider for CockroachDB Cloud
+](https://github.com/cockroachdb/terraform-provider-cockroach) to manage your cluster configuration with an [Infrastructure as code
+](https://en.wikipedia.org/wiki/Infrastructure_as_code) approach.
 
-<section class="filter-content" markdown="1" data-scope="curl">
+Refer to: [Provision a CockroachDB Cloud Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated).
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters \
-  --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
-~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="raw">
-
-{% include_cached copy-clipboard.html %}
-~~~ json
-{
-  "name": "{cluster_name}",
-  "provider": "{cloud_provider}",
-  "spec": {
-    "serverless": {
-      "regions": [
-        "{region_name}"
-      ],
-      "spendLimit": {spend_limit}
-    }
-  }
-}
-~~~
-
-</section>
-
-Where:
-
-  - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
-
-For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
-    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+    <button class="filter-button page-level" data-scope="serverless"><strong>Serverless</strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>Dedicated</strong></button>
+<section class="filter-content" markdown="1" data-scope="dedicated">
+{% include cockroachcloud/create-cluster-api-dedicated.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+{% include cockroachcloud/create-cluster-api-serverless.md %}
+</section>
+
 </div>
-
-<section class="filter-content" markdown="1" data-scope="curl">
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters \
-  --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="raw">
-
-{% include_cached copy-clipboard.html %}
-~~~ JSON
-{
-  "name": "notorious-moose",
-  "provider": "GCP",
-  "spec": {
-    "serverless": {
-      "regions": [
-        "us-central1"
-      ],
-      "spendLimit": 0
-    }
-  }
-}
-~~~
-
-</section>
-
-If the request was successful, the API will return information about the newly created cluster.
-
-{% include_cached copy-clipboard.html %}
-~~~ json
-{
-  "cloud_provider": "{cloud_provider}",
-  "created_at": "2022-03-14T14:15:22Z",
-  "creator_id": "{account_id}",
-  "deleted_at": "2022-03-14T14:15:22Z",
-  "id": "{cluster_id}",
-  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
-  "name": "{cluster_name}",
-  "plan": "SERVERLESS",
-  "regions": [
-    {
-      "name": "{region_name}",
-      "sql_dns": "{server_host}",
-      "ui_dns": ""
-    }
-  ],
-  "config": {
-    "serverless": {
-      "regions": [
-        "{region_name}"
-      ],
-      "spend_limit": 0,
-      "routing_id": "{routing_id}"
-    }
-  },
-  "state": "CREATING",
-  "updated_at": "2022-03-14T14:15:22Z"
-}
-~~~
-
-Where:
-
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
-    {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
-    {{site.data.alerts.end}}
-  - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
-  - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a specific cluster
 

@@ -19,8 +19,7 @@ This tutorial shows you how to provision a CockroachDB Cloud cluster using the C
 Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-- Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
-- Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
+- Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign the Cluster Creator role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
 
 ## Create the Terraform configuration files
 
@@ -28,46 +27,35 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
-
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
+1. Download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
+    ~~~shell
+    curl -O https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
     ~~~
 
-1. In a text editor create a new file `terraform.tfvars` with the following settings:
+1. Specify your cluster in a `terraform.tfvars` file with the following parameters:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    cluster_name = "{cluster name}"
-    sql_user_name = "{SQL user name}"
-    sql_user_password = "{SQL user password}"
-    ~~~
+    - `cluster_name`: the name of the cluster you want to create.
+    - `sql_user_name`: the name of the SQL user you want to create.
+    - `sql_user_password`: the password for the SQL user you want to create.
 
-    Where:
-    - `{cluster name}` is the name of the cluster you want to create.
-    - `{SQL user name}` is the name of the SQL user you want to create.
-    - `{SQL user password}` is the password for the SQL user you want to create.
-
-    For example, the following `terraform.tfvars` file creates a CockroachDB {{ site.data.products.serverless }} with a `maxroach` SQL user.
+    For example, the following `.tfvars` file specifies a CockroachDB {{ site.data.products.serverless }} with a `maxroach` SQL user.
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    cluster_name = "blue-dog"
+    #serverless-cluster.tfvars
+    cluster_name = "blue-dog-123"
     sql_user_name = "maxroach"
-    sql_user_password = "NotAGoodPassword"
+    sql_user_password = "jsdf8sdh9sdfgsdgf9sd9fgsdgf9sdf"
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Export an [API key]({% link cockroachcloud/managing-access.md %}#api-access) into your environment as the `COCKROACH_API_KEY`:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export COCKROACH_API_KEY={API key}
+    ~~~shell
+    export COCKROACH_API_KEY={ your API key }
     ~~~
-
-    Where `{API key}` is the API key you copied from the CockroachDB Cloud Console.
 
 </section>
 
@@ -79,43 +67,29 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
+    curl -O https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
     ~~~
 
-1. In a text editor create a new file `terraform.tfvars` with the following settings:
+1. Specify your cluster in a `.tfvars` file with the following parameters:
+
+    - `cluster_name`: the name of the cluster you want to create.
+    - `sql_user_name`: the name of the SQL user you want to create.
+    - `sql_user_password`: the password for the SQL user you want to create.
+    - `cloud_provider`: the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure: in limited access. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+    - `cloud_provider_regions`: the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
+    - `cluster_node_count`: the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
+    - `storage_gib`: the amount of storage specified in GiB.
+    - `machine_type` is the machine type for the cloud infrastructure provider.
+    - `allow_list_name`: the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
+    - `cidr_ip`: the Classless Inter-Domain Routing (CIDR) IP address base.
+    - `cidr_mask`: the CIDR mask.
+    - `restrict_egress_traffic`: (optional; default: false) boolean value specifying whether or not to deny-all egress on cluster creation.
+
+    For example, the following configuration file specifies a single-region 3-node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    cluster_name = "{cluster name}"
-    sql_user_name = "{SQL user name}"
-    sql_user_password = "{SQL user password}"
-    cloud_provider = "{cloud provider}"
-    cloud_provider_regions = ["{cloud provider region}"]
-    cluster_node_count = {number of nodes}
-    storage_gib = {storage in GiB}
-    machine_type = "{cloud provider machine type}"
-    allow_list_name = "{allow list name}"
-    cidr_ip = "{allow list CIDR IP}"
-    cidr_mask = {allow list CIDR mask}
-    ~~~
-
-    Where:
-       - `{cluster name}` is the name of the cluster you want to create.
-       - `{SQL user name}` is the name of the SQL user you want to create.
-       - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`.
-       - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
-       - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
-       - `{storage in GiB}` is the amount of storage specified in GiB.
-       - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
-       - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
-       - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
-       - `{allow list CIDR mask}` is the CIDR mask.
-
-    For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
+    #dedicated-cluster.tfvars
     cluster_name = "blue-dog"
     sql_user_name = "maxroach"
     sql_user_password = "NotAGoodPassword"
@@ -129,14 +103,12 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Export an [API key]({% link cockroachcloud/managing-access.md %}#api-access) into your environment as the `COCKROACH_API_KEY`:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export COCKROACH_API_KEY={API key}
+    ~~~shell
+    export COCKROACH_API_KEY={ your API key }
     ~~~
-
-    Where `{API key}` is the API key you copied from the CockroachDB Cloud Console.
 
 </section>
 
@@ -149,7 +121,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     terraform init -upgrade
     ~~~
 
-    This reads the `main.tf` configuration file and uses the `terraform.tfvars` file for settings specific to your cluster. The `-upgrade` flag ensures you are using the latest version of the provider.
+    This reads the `main.tf` configuration file and uses the `.tfvars` file for parameters specific to your cluster. The `-upgrade` flag ensures you are using the latest version of the provider.
 
 1. Create the Terraform plan. This shows the actions the provider will take, but won't perform them:
 
