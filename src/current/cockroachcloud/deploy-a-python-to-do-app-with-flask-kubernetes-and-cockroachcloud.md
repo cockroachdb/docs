@@ -67,6 +67,10 @@ In this step, you connect both your application and your local system to the clu
     The **Setup** page of the **Connect to cluster** dialog displays.
 1. Select the **SQL User** you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. For **Database**, select `defaultdb`. You will change this after you follow the instructions in [Step 4. Create the database](#step-4-create-the-database).
+1. Click **Next**.
+
+    The **Connect** page of the **Connection info** dialog displays.
+
 1. Select the **Command Line** tab.
 1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
 1. Select the **Connection string** tab.
