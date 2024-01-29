@@ -356,6 +356,10 @@ Read hot spots can occur if you perform lots of scans of a portion of a table in
 
 {% include {{ page.version.version }}/performance/reduce-hot-spots.md %}
 
+For a demo on hot spot reduction, what the following video:
+
+{% include_cached youtube.html video_id="j15k01NeNNA" %}
+
 ## See also
 
 - If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries).
