@@ -441,7 +441,7 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 (27 rows)
 ~~~
 
-### Range demo
+### Video Demo
 
 For a deep dive demo on ranges and how data is stored within them, watch the following video:
 
