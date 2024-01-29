@@ -19,6 +19,8 @@ docs_area: deploy
 
 Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
+If your workload is already running well under `SERIALIZABLE` isolation, Cockroach Labs does not recommend changing to `READ COMMITTED` isolation unless there is a specific need.
+
 {{site.data.alerts.callout_info}}
 `READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md).
 {{site.data.alerts.end}}
@@ -924,6 +926,12 @@ The following are not yet supported with `READ COMMITTED`:
 - `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
 - [Shared locks](#locking-reads) cannot yet be promoted to exclusive locks.
 - [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by `READ COMMITTED` transactions.
+
+The following affect the performance of `READ COMMITTED` transactions:
+
+- Because locks acquired by [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks, [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}), and [`SELECT FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) are fully replicated under `READ COMMITTED` isolation, some queries experience a delay for Raft replication.
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks are not performed in parallel under `READ COMMITTED` isolation.
+- [`SELECT FOR UPDATE` and `SELECT FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) statements are less optimized under `READ COMMITTED` isolation than under `SERIALIZABLE` isolation.
 
 ## See also
 
