@@ -55,6 +55,12 @@ When the scan has completed you will find the output shows `succeeded` in the `s
 
 {% include {{ page.version.version }}/cdc/schedule-query-example.md %}
 
+### Video Demo
+
+For a demo on how to use changefeeds to export data, watch the following video:
+
+{% include_cached youtube.html video_id="UXsKuXbkjws" %}
+
 ## See also
 
 - [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %})
