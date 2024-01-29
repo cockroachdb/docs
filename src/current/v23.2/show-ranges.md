@@ -441,6 +441,12 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 (27 rows)
 ~~~
 
+### Range demo
+
+For a deep dive demo on ranges and how data is stored within them, watch the following video:
+
+{% include_cached youtube.html video_id="BVqnI4tnLA8" %}
+
 ## See also
 
 - [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %})
