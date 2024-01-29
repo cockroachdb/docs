@@ -242,7 +242,7 @@ To see a demo of an online schema change against a primary key column, watch the
 
 ### Updating foreign key columns
 
-To see a demo of an online schema change against a _foreign key column_, watch the following video:
+To see a demo of an online schema change against a foreign key column, watch the following video:
 
 {% include_cached youtube.html video_id="HXAIB6bJuZQ" %}
 
