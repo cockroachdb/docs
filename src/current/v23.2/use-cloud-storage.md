@@ -257,7 +257,7 @@ While Cockroach Labs supports configuring an AWS storage class, we only test aga
 
 #### Incremental backups and archive storage classes
 
-[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require ad-hoc reading of previous backups, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
+[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
 
 Refer to the AWS documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for steps.
 
