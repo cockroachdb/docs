@@ -1,5 +1,5 @@
 ---
-title: Connect to a CockroachDB Cloud Dedicated Cluster
+title: Connect to a CockroachDB Dedicated Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 docs_area: deploy
@@ -63,73 +63,61 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
 1. On the **Networking** page, verify the connection status is **Available**.
 
-## Select a connection method
-
-1. In the top right corner of the Console, click the **Connect** button.
-
-    The **Connect** dialog displays with **IP Allowlist** selected by default.
-
-1.  Select a **Network Security** option:
-
-      You can use the **IP Allowlist** option if you have already [added an IP address to your allowlist.](#add-ip-addresses-to-the-allowlist)
-
-      For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-gcp-vpc-peering-or-aws-privatelink).
-
-      For GCP clusters, you can select **VPC Peering** if you have already:
-    - [Enabled VPC peering while creating your cluster]({% link cockroachcloud/create-your-cluster.md %}#step-8-enable-vpc-peering-optional)
-    - [Established a VPC Peering connection](#establish-gcp-vpc-peering-or-aws-privatelink)
-
-1. From the **User** dropdown, select the SQL user you created.
-1. From the **Region** dropdown, select the region closest to where your client or application is running.
-1. From the **Database** dropdown, select the database you want to connect to.
-
-    The default database is `defaultdb`. For more information, see [Default databases](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-databases#preloaded-databases).
-
-1. Click **Next**.
-
-1. Select a connection method (the instructions below will adjust accordingly):
-
-    <div class="filters clearfix">
-        <button class="filter-button page-level" data-scope="command-line">Command line</button>
-        <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
-        <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
-    </div>
 
 ## Connect to your cluster
 
-  <section class="filter-content" markdown="1" data-scope="command-line">
+1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
 
-To connect to your cluster with the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql):
+    The **Setup** page of the **Connect to cluster** dialog displays.
 
-1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
+1. If you set up a private connection, click **AWS PrivateLink** (for clusters deployed in AWS) or **VPC Peering** (for clusters deployed in GCP) to connect privately. Otherwise, click **IP Allowlist**.
+1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
+
+    {{site.data.alerts.callout_info}}
+    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    {{site.data.alerts.end}}
+
+1. Select the **Database**. If you have only one database, it is automatically selected.
+1. For a multiregion cluster, select the **Region** to connect to. If you have only one region, it is automatically selected.
+1. Click **Next**.
+
+    The **Connect** page of the **Connection info** dialog displays.
+
+1. In the dialog, select the tab for a connection method, then follow the instructions below for that method.
 
     <div class="filters clearfix">
-        <button class="filter-button page-level" data-scope="mac">Mac</button>
-        <button class="filter-button page-level" data-scope="linux">Linux</button>
-        <button class="filter-button page-level" data-scope="windows">Windows</button>
+        <button class="filter-button page-level" data-scope="command-line">Command line</button>
+        <button class="filter-button page-level" data-scope="connection-string">Connection string</button>
+        <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 
-1. {% include cockroachcloud/download-the-binary.md %}
+  <section class="filter-content" markdown="1" data-scope="command-line">
 
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+You can connect to your cluster with any [supported version](https://www.cockroachlabs.com/docs/releases/release-support-policy#current-supported-releases) of the full CockroachDB binary or the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql). To download the full binary and connect to a CockroachDB {{ site.data.products.dedicated }} cluster, follow these steps.
 
-    {% include cockroachcloud/download-the-cert.md %}
+{{site.data.alerts.callout_success}}
+To download a supported version of the SQL shell instead of the full binary, visit [Releases](https://cockroachlabs.com/releases).
+{{site.data.alerts.end}}
 
-1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
-
-1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
-
-    {% include cockroachcloud/sql-connection-string.md %}
-
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
+1. Select the **Command Line** tab.
+1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
+1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
+1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command, which will be used in the next step (and to connect to your cluster in the future). Click **Close**.
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
 
-    {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page. Refer to: [Change a User's password](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#change-a-sql-users-password).
-    {{site.data.alerts.end}}
+    A welcome message displays:
+
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ~~~
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 
@@ -137,58 +125,15 @@ To connect to your cluster with the [built-in SQL client](https://www.cockroachl
 
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
-To connect to your cluster with your application, use the connection string provided in the Console:
+To connect to your cluster from your application:
 
-1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
+1. Select the **Connection string** tab.
+1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
+1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.dedicated }}.
+1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.serverless }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
+1. Click **Close**.
 
-    <div class="filters clearfix">
-        <button class="filter-button page-level" data-scope="mac">Mac</button>
-        <button class="filter-button page-level" data-scope="linux">Linux</button>
-        <button class="filter-button page-level" data-scope="windows">Windows</button>
-    </div>
-
-1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
-
-    {% include cockroachcloud/download-the-cert.md %}
-
-1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
-
-1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachDB {{ site.data.products.cloud }}:
-
-    <section class="filter-content" markdown="1" data-scope="mac">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    "postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
-    ~~~
-
-    </section>
-
-1. Add your copied connection string to your application code.
-
-    {% include cockroachcloud/postgresql-special-characters.md %}
-
-    {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
-    {{site.data.alerts.end}}
+{% include cockroachcloud/postgresql-special-characters.md %}
 
 For examples, see the following:
 
@@ -199,12 +144,21 @@ For examples, see the following:
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-To connect to your cluster with a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools), use the connection parameters provided in the Console.
+To connect to your cluster with a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools):
 
-1. From the cluster's **Details** page, click **Connect**.
-1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
-1. Copy the connection string and provide it to the CockroachDB-compatible tool.
+1. If the CA certificate for the cluster is not downloaded locally, select the **Connection string** tab, then copy the command to download the CA certificate. In your terminal, run the command.
+1. Select the **Connection parameters** tab.
+1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
 
+    Parameter     | Description
+    --------------|------------
+    `{username}`  | The [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) connecting to the cluster.
+    `{password}`  | The password for the SQL user connecting to the cluster.
+    `{host}`      | The host on which the CockroachDB node is running.
+    `{port}`      | The port at which the CockroachDB node is listening.
+    `{database}`  | The name of the (existing) database.
+
+1. Click **Close**.
   </section>
 
 ## What's next
