@@ -83,7 +83,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_shdescription` | `pg_shdescription`
 `pg_shmem_allocations` | `pg_shmem_allocations` (empty)
 `pg_shseclabel` | `pg_shseclabel`
-`pg_stat_activity` | `pg_stat_activity`
+`pg_stat_activity` | `pg_stat_activity` (empty)
 `pg_stat_all_indexes` | `pg_stat_all_indexes` (empty)
 `pg_stat_all_tables` | `pg_stat_all_tables` (empty)
 `pg_stat_archiver` | `pg_stat_archiver` (empty)
