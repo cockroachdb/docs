@@ -45,7 +45,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 ## Check trial code details
 
-If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-9-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
+If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-6-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
