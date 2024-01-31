@@ -19,7 +19,7 @@ You can create a CockroachDB {{ site.data.products.serverless }} cluster using e
 
 ### Create a free cluster
 
-{% include {{ page.version.version }}/setup/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
 ### Create a SQL user
 

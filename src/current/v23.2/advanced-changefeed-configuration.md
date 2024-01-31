@@ -69,6 +69,10 @@ This setting provides a mechanism to pace the [closed timestamp]({% link {{ page
 
 For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every `kv.closed_timestamp.target_duration` (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
 
+### Lagging ranges
+
+{% include {{ page.version.version }}/cdc/lagging-ranges.md %}
+
 ## Tuning for high durability delivery
 
 When designing a system that relies on high durability message delivery—that is, not missing any message acknowledgement at the downstream sink—consider the following settings and configuration in this section:
@@ -78,7 +82,7 @@ When designing a system that relies on high durability message delivery—that i
 - [Choosing changefeed sinks](#choosing-changefeed-sinks)
 - [Defining schema change behavior](#defining-schema-change-behavior)
 
-Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
+Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees).
 
 ### Pausing changefeeds and garbage collection
 
@@ -86,7 +90,7 @@ By default, [protected timestamps]({% link {{ page.version.version }}/architectu
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads.
 
-For more detail on changefeeds and protected timestamps, refer to [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds).
+For more detail on changefeeds and protected timestamps, refer to [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}).
 
 To balance protecting change data and prevent the over-accumulation of garbage, Cockroach Labs recommends creating a changefeed with [options to define your protection duration](#protecting-change-data-on-pause) and [monitoring your changefeed](#monitoring-protected-timestamp-records) for protected timestamp record collection.
 
@@ -104,7 +108,7 @@ To balance protecting change data and prevent the over-accumulation of garbage, 
 
 ### Defining Kafka message acknowledgment
 
-To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
+To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
 
 For high durability delivery, Cockroach Labs recommends setting:
 

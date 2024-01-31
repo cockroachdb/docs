@@ -54,7 +54,7 @@ SHOW DATABASES;
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method).
+It's best to set the default database directly in your connection string. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#connect-to-your-cluster).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

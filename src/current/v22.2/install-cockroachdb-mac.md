@@ -13,24 +13,24 @@ docs_area: deploy
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-<p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
+
+See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
 
 {% comment %}v22.2.0+{% endcomment %}
 {{site.data.alerts.callout_danger}}
 <p>On macOS ARM systems, <a href="spatial-data.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
-{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
+{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
-{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
-
-{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p><p>CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.</p>{% endcapture %}
+{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p><p>CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
 Use one of the options below to install CockroachDB.
 
-<div id="use-homebrew" class="install-option">
+<div id="use-homebrew" markdown="1" class="install-option">
 
   <h2 id="install-homebrew">Use Homebrew</h2>
   {{ arch_note_homebrew }}
@@ -52,8 +52,21 @@ Use one of the options below to install CockroachDB.
         {% include marketo-install.html uid="1" %}
     </li>
   </ol>
-{{site.data.alerts.callout_info}}
-If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
+{{site.data.alerts.callout_success}}
+If you previously installed CockroachDB via Homebrew, you can [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the CockroachDB binary to the next major version or to a patch version using HomeBrew. After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade. If you need to upgrade through multiple major versions, you must complete each major-version upgrade separately, including finalizing the upgrade, before beginning the next one.
+
+Before starting the upgrade, review the [release notes]({% link releases/{{ page.version.version }}.md %}), including temporary limitations during the upgrade.
+
+To upgrade CockroachDB via HomeBrew:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+brew update
+~~~
+~~~ shell
+brew update
+brew upgrade cockroach
+~~~
 {{site.data.alerts.end}}
 </div>
 
@@ -207,7 +220,7 @@ true
 
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
-- CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use.
+- CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.
 - Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
 - When [building from source](#install-source), it is not possible to disable FMA intrinsics. For more details, refer to [Issue #36971](https://github.com/golang/go/issues/36971) in the Go project's issue tracker.

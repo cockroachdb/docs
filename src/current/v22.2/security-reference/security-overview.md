@@ -169,7 +169,7 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td><a href="../../cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
+  <td><a href="../../cockroachcloud/create-your-cluster.html#step-4-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink">AWS PrivateLink</a> for AWS clusters </td>
  </tr>
  <tr>
   <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>

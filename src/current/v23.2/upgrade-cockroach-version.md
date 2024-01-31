@@ -16,6 +16,10 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
+{{site.data.alerts.callout_info}}
+CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. 
+{{site.data.alerts.end}}
+
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
@@ -110,12 +114,6 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 {% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
 See our [support policy for restoring backups across versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
-### Review breaking changes
-
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
-
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
@@ -141,8 +139,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) statement allows you to create scheduled changefeeds.
-- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+TODO
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
 
@@ -292,7 +289,13 @@ Once you are satisfied with the new version:
     > SHOW CLUSTER SETTING version;
     ~~~
 
-After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+    When the upgrade has been finalized, the cluster will report that it is on the new version. If the cluster continues to report that it is on the previous version, finalization has not completed. When finalization is in progress but has not yet finished, the output still shows the previous major version, but may include additional details about the finalization progress. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](https://www.cockroachlabs.com/docs/v23.2/node-shutdown?filters=decommission#status-change) where decommission has not finished. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
+
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
 
 ## Troubleshooting
 

@@ -63,6 +63,12 @@ When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2]
 
 Before starting the upgrade, complete the following steps.
 
+### Review breaking changes
+
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+
 ### Check load balancing
 
 Make sure your cluster is behind a [load balancer](recommended-production-settings.html#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
@@ -98,12 +104,6 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 
     1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
     1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
-
-### Review breaking changes
-
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -282,6 +282,8 @@ Once you are satisfied with the new version:
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
+
+    When the upgrade has been finalized, the cluster will report that it is on the new version. If the cluster continues to report that it is on the previous version, finalization has not completed. When finalization is in progress but has not yet finished, the output still shows the previous major version, but may include additional details about the finalization progress. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](https://www.cockroachlabs.com/docs/v22.2/node-shutdown?filters=decommission#status-change) where decommission has not finished. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 

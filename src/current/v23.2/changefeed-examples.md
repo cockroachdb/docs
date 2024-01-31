@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.dedicated }}, on CockroachDB {{ site.data.products.serverless }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}), and on CockroachDB {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}). Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.dedicated }}, on CockroachDB {{ site.data.products.serverless }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Core changefeeds are available in all products Core changefeeds are available in all products.
 
 For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
@@ -47,12 +47,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
 
-1. Move into the extracted `confluent-<version>` directory and start Confluent:
+1. In a new terminal window, go to the extracted `confluent-<version>` directory and start Confluent:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -192,7 +192,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start-single-node --insecure --listen-addr=localhost --background
+    cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
@@ -506,7 +506,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 {% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
@@ -572,7 +572,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. In this example, you'll run CockroachDB's [Movr]({% link {{ page.version.version }}/movr.md %}) application workload to set up some data for your changefeed.

@@ -96,6 +96,7 @@ N/A                                | Back up the cluster. For an example of a fu
 
 Query parameter | Value | Description
 ----------------+-------+------------
+`ASSUME_ROLE` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |{% include {{ page.version.version }}/misc/assume-role-description.md %} Refer to [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup details.
 `COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail and examples.
 `S3_STORAGE_CLASS` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
 
@@ -123,13 +124,7 @@ Backups support cloud object locking and [Amazon S3 storage classes](#back-up-wi
 
 ### Object dependencies
 
-Dependent objects must be backed up at the same time as the objects they depend on.
-
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_foreign_keys).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence it uses; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_sequences).
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 {{site.data.alerts.callout_info}}
 To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#exclude-a-tables-data-from-backups).
@@ -188,7 +183,7 @@ Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.
 
 #### Cloud storage cluster settings
 
-The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.   
+The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.
 
 #### `cloudstorage.<provider>.write.node_rate_limit`
 
@@ -210,7 +205,7 @@ Limit the number of bytes per second per node across operations reading to the d
 
 #### `cloudstorage.<provider>.read.node_burst_limit`
 
-Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero. 
+Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero.
 
 **Default:** unlimited, `0 B`
 

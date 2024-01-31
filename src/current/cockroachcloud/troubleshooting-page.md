@@ -162,12 +162,20 @@ Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonat
 
 ## CockroachDB {{ site.data.products.serverless }}
 
+### Delayed cluster access
+
+To enhance security, CockroachDB {{ site.data.products.serverless }} uses authentication throttling tracked per proxy and per (client IP, serverless cluster) pair. This means if multiple login attempts fail on the same client to the same cluster (for example, due to repeated incorrect passwords or brute force attacks), access is temporarily delayed, with the wait time increasing after each attempt (up to an hour).
+
+<h4>Solution</h4>
+
+If you are experiencing access issues, ensure that the password is correct. If the problem persists, [contact support](https://support.cockroachlabs.com/).
+
 ### Hanging or stuck queries
 
 A hanging or stuck query using CockroachDB {{ site.data.products.serverless }} may be caused by reaching the cluster's configured [resource limits]({% link cockroachcloud/plan-your-cluster-serverless.md %}#choose-resource-limits) for [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
 
 <h4>Solution</h4>
 
-If you've reached your storage or RU limit, you can [increase your resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) and then re-run the query.
+If you've reached your storage or RU limit, you can [increase your resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) and then re-run the query.
 
 If you've only reached your RU limit, you can wait until the next billing cycle when [monthly free RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) become available and then re-run the query.

@@ -24,7 +24,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
 
 CockroachDB {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' {{ site.data.products.enterprise }} Support staff. 
+{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' {{ site.data.products.enterprise }} Support staff.
 
 - See the [list of {{ site.data.products.enterprise }} features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
@@ -169,7 +169,7 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td><a href="../../cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
+  <td><a href="../../cockroachcloud/create-your-cluster.html#step-4-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
  </tr>
  <tr>
   <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
@@ -188,4 +188,3 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
   <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
  </tr>
 </table>
-

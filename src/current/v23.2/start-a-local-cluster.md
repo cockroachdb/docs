@@ -16,11 +16,19 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
 
 - Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 - For quick SQL testing or app development, consider [running a single-node cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+- Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, refer to [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+
+{{site.data.alerts.callout_danger}}
+Reusing a previously initialized store when starting a new cluster is not recommended. If the store is incompatible with either the new CockroachDB binary or the new cluster configuration, this can lead to panics or other problems when starting a cluster. Instead, either move or delete the previous store directory before starting the `cockroach` process. An example of an incompatible configuration is if the new cluster is started with the `--start-single-node` flag, which disables replication, when the cluster configuration in the store has replication enabled.
+
+The store directory is `cockroach-data/` in the same directory as the `cockroach` command by default, or the location passed to the `--store` flag otherwise. For details about configuring the store location, refer to [cockroach start]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+{{site.data.alerts.end}}
 
 ## Step 1. Start the cluster
 
-1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the first node:
+This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+
+1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the `node1` in the foreground:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -29,9 +37,14 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
     --store=node1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    The `--background` flag is not recommended. If you decide to start nodes in the background, you must also pass the `--pid-file` argument. To stop a `cockroach` process running in the background, extract the process ID from the PID file and pass it to the command to [stop the node](#step-7-stop-the-cluster).
+
+    In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+    {{site.data.alerts.end}}
 
     You'll see a message like the following:
 
@@ -61,9 +74,8 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
     - The `--join` flag specifies the addresses and ports of the nodes that will initially comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
         {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
-    - The `--background` flag starts the `cockroach` process in the background so you can continue using the same terminal for other operations.
 
-1. Start two more nodes:
+1. In new terminal windows, start `node2` and `node3`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -72,8 +84,7 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -83,8 +94,7 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
@@ -102,7 +112,7 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command retrieves node 1's startup details:
+    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log, and to `STDOUT` in the terminal window where the node was started. For example, the following command retrieves `node1`'s startup details:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -130,11 +140,18 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
 
 Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use CockroachDB's built-in SQL client.
 
-1. Run the [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}) command against node 1:
+1. In a new terminal, run the [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}) command and connect to `node1`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
+    ~~~
+
+    To exit the SQL shell at any time, you can use the `\q` command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > \q
     ~~~
 
 1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
@@ -166,12 +183,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-1. Now exit the SQL shell on node 1 and open a new shell on node 2:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
+1. In a new terminal window, open a new SQL shell and connect to `node2`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -198,7 +210,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-1. Exit the SQL shell on node 2:
+1. Exit all SQL shell sessions by issuing the `\q` command in the terminals where they are running:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -273,18 +285,18 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
       501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --insecure --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    Gracefully shut down node 3, specifying its process ID:
+    Gracefully shut down `node3`, specifying its process ID:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4503
     ~~~
 
-1. Back in the DB Console, despite one node being "suspect", notice the continued SQL traffic:
+1. In the DB Console, despite one node being "suspect", notice the continued SQL traffic:
 
     <img src="{{ 'images/v23.2/ui_overview_dashboard_1_suspect.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Restart node 3:
+1. Go to the terminal window for `node3` and restart it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,15 +305,14 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 ## Step 6. Scale the cluster
 
 Adding capacity is as simple as starting more nodes with `cockroach start`.
 
-1. Start 2 more nodes:
+1. In new terminal windows, start two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -310,8 +321,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --store=node4 \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -321,17 +331,16 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     Again, these commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-1. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
+1. In the DB Console **Cluster Overview** page, confirm that the cluster now has five nodes.
 
     <img src="{{ 'images/v23.2/ui_cluster_overview_5_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) to utilize the additional capacity of the new nodes.
+    At first, the replica count will be lower for `node4` and `node5`. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) to utilize the additional capacity of the new nodes.
 
 ## Step 7. Stop the cluster
 
@@ -352,40 +361,23 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
       501  4622     1   0  2:43PM ttys000    0:02.51 cockroach start --insecure --store=node5 --listen-addr=localhost:26261 --http-addr=localhost:8084 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    Gracefully shut down each node, specifying its process ID:
+    Gracefully shut down each node by sending the `SIGTERM` signal to the `cockroach` process:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4482
     ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kill -TERM 4497
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kill -TERM 4503
-    ~~~
+    Repeat this command for each node.
 
     {{site.data.alerts.callout_info}}
-    For nodes 4 and 5, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
+    For `node4` and `node5`, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. Because only two of the five nodes are now running, the cluster has lost quorum and is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kill -TERM 4510
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kill -TERM 4622
-    ~~~
 
 1. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
-    If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
+1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

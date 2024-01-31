@@ -31,6 +31,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
+        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled (excluding features that are currently <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-unsupported-features">unsupported</a>). </li>
       </ul></td>
   </tr>
   <tr>

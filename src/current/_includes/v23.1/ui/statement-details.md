@@ -2,7 +2,7 @@
 
 ## Statement Fingerprint page
 
-The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page.
+The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page and the application name and database specified in the selected row of the [Statements table](#statements-table).
 
 ### Overview
 
@@ -26,6 +26,7 @@ The following screenshot shows the statement fingerprint of the query described 
 #### Insights
 
 The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
+
 - **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
 - **Details**: Provides a description and possible recommendation.
 - **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution]({{ link_prefix }}ui-insights-page.html#statement-execution-details), click the ID.

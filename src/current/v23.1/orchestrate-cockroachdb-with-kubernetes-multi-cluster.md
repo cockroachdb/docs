@@ -63,9 +63,7 @@ To enable the pods to communicate across regions, we peer the VPCs in all 3 regi
 #### Exposing DNS servers
 
 {{site.data.alerts.callout_danger}}
-Until December 2019, Google Cloud Platform restricted clients to using a load balancer in the same region. In the approach documented below, the DNS servers from each Kubernetes cluster are hooked together by exposing them via a load balanced IP address that is visible to the public Internet. None of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
-
-You can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access) on Google Cloud Platform to allow clients from one region to use an internal load balancer in another. We will update this tutorial accordingly.
+Instead of using this approach, you can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access), which exposes the Kubernetes cluster's DNS servers via a load-balanced IP address that is visible to the public internet. With this this approach, noone of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
 {{site.data.alerts.end}}
 </section>
 

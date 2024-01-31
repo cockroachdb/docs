@@ -105,8 +105,8 @@ No special privilege is required for:
  `table_pattern` | The table or [view]({% link {{ page.version.version }}/views.md %}) you want to restore.
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `collectionURI` | The [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI where the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) (and appended [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-backup) example.
- <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
+ `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-full-or-incremental-backup) example.
+ <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-full-or-incremental-backup) example.
  `localityURI` | The URI where a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). You can restore point-in-time data if you had taken full or incremental backup [with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). If the backup was not taken with `revision_history`, you can use `SHOW BACKUP` to restore to a time that the backup covers (including in the full or incremental backup). See the [example](#restore-with-as-of-system-time).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
@@ -120,16 +120,17 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 <a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. The target database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | [Rename a database during a restore](#rename-a-database-on-restore). The existing backed-up database can remain active while the same database is restored with a different name. <br><br>Example: `RESTORE DATABASE movr ... WITH new_db_name = 'new_movr'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the missing [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
-<a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence]({% link {{ page.version.version }}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
+<a name="skip-missing-sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence]({% link {{ page.version.version }}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner]({% link {{ page.version.version }}/create-sequence.md %}#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
-`skip_missing_views`                                                | N/A                                         | Use to skip restoring [views]({% link {{ page.version.version }}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
+<a name="skip-missing-views"></a>`skip_missing_views`                                                | N/A                                         | Use to skip restoring [views]({% link {{ page.version.version }}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 <a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
-<a name="skip_missing_udfs"></a>`skip_missing_udfs` | N/A | Must be used when restoring a table with referenced [UDF]({% link {{ page.version.version }}/user-defined-functions.md %}) dependencies. Any column's `DEFAULT` expression using UDFs is dropped. <br><br>Example: `WITH skip_missing_udfs`
+<a name="skip-missing-udfs"></a>`skip_missing_udfs` | N/A | Must be used when restoring a table with referenced [UDF]({% link {{ page.version.version }}/user-defined-functions.md %}) dependencies. Any column's `DEFAULT` expression using UDFs is dropped. <br><br>Example: `WITH skip_missing_udfs`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) statement.
 <a name="detached"></a>`DETACHED`                                   | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example]({% link {{ page.version.version }}/restore.md %}#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) statement. <br><br>To run a restore within a [transaction]({% link {{ page.version.version }}/transactions.md %}), use the `DETACHED` option.
+<span class="version-tag">New in v23.2:</span><a name="execution_locality"></a>`EXECUTION LOCALITY` | Key-value pairs                             | Restricts the execution of the restore to nodes that match the defined [locality filter]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) requirements. <br><br>Example: `WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'`
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job]({% link {{ page.version.version }}/show-jobs.md %}) self pause when it encounters an error. The `RESTORE` job can then be [resumed]({% link {{ page.version.version }}/resume-job.md %}) after the error has been fixed or [canceled]({% link {{ page.version.version }}/cancel-job.md %}) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
-<a name="incr-location"></a>`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
-`schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will restore the backed-up schema without any user data. See [Backup Validation]({% link {{ page.version.version }}/backup-validation.md %}#validate-a-backup-is-restorable) for detail and an example. For specifics around cluster backups using `schema_only`, see [Cluster-level backup validation]({% link {{ page.version.version }}/backup-validation.md %}#cluster-level-backup-validation).
+<a name="incr-location"></a>`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-a-specific-full-or-incremental-backup) for more detail.
+`schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will restore the backed-up schema without any user data. Refer to [Backup Validation]({% link {{ page.version.version }}/backup-validation.md %}#validate-a-backup-is-restorable) for detail and an example.
 `verify_backup_table_data` | N/A | Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the user data before writing it to disk. You must also include the `schema_only` option in the `RESTORE` statement with `verify_backup_table_data`. For more detail, see [Backup Validation]({% link {{ page.version.version }}/backup-validation.md %}#validate-backup-table-data-is-restorable).
 
 ### Backup file URLs
@@ -224,15 +225,11 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 
 ### Object dependencies
 
-Dependent objects must be restored at the same time as the objects they depend on.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence.
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
-
-Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option.
+{{site.data.alerts.callout_info}}
+Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip-missing-udfs) option.
+{{site.data.alerts.end}}
 
 ### Users and privileges
 
@@ -247,7 +244,7 @@ You can either restore from a full backup or from a full backup with incremental
 Restore Type | Parameters
 -------------|----------
 Full backup | Include the path to the full backup destination and the [subdirectory](#view-the-backup-subdirectories) of the backup. See the [Examples](#examples) section for syntax of [cluster](#restore-a-cluster), [database](#restore-a-database), and [table](#restore-a-table) restores.
-Full backup + <br>incremental backups | Include the path that contains the backup collection and the [subdirectory](#view-the-backup-subdirectories) containing the incremental backup. See [Restore from incremental backups](#restore-from-incremental-backups) for an example.
+Full backup + <br>incremental backups | Include the path that contains the backup collection and the [subdirectory](#view-the-backup-subdirectories) containing the incremental backup. See [Restore from incremental backups](#restore-a-specific-full-or-incremental-backup) for an example.
 
 {{site.data.alerts.callout_info}}
 CockroachDB does **not** support incremental-only restores.
@@ -296,18 +293,20 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 ## Examples
 
-There are two ways to specify a backup to restore:
+There are two ways to specify a full or incremental backup to restore:
 
-- [Restoring from the most recent backup](#restore-the-most-recent-backup)
-- [Restoring from a specific backup](#restore-a-specific-backup)
+- [Restoring from the most recent backup](#restore-the-most-recent-full-or-incremental-backup)
+- [Restoring from a specific backup](#restore-a-specific-full-or-incremental-backup)
 
-In this section, each example demonstrates restoring from the most recent backup using the `LATEST` syntax.
+{{site.data.alerts.callout_success}}
+You can use external connections to represent an external storage or sink URI. This means that you can specify the external connection's name in statements rather than the provider-specific URI:
 
-The examples in this section use external connections, which allow you to represent an external storage or sink URI. This means that you can specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %}) page.
+For detail on using external connections, refer to the [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %}) page.
+{{site.data.alerts.end}}
 
-For guidance on connecting to cloud storage or using other authentication parameters, read [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}#example-file-urls).
+Some of the examples in this section use an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to represent the external storage URI. For guidance on connecting to cloud storage or using other authentication parameters, read [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}#example-file-urls).
 
-If you need to limit the control specific users have over your storage buckets, see [Assume role authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup instructions.
+If you need to limit the control specific users have over your storage buckets, refer to [Assume role authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup instructions.
 
 ### View the backup subdirectories
 
@@ -315,39 +314,45 @@ If you need to limit the control specific users have over your storage buckets, 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUPS IN 'external://backup_s3';
+SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
 ~~~
 
 ~~~
        path
 -------------------------
-/2021/12/14-190909.83
-/2021/12/20-155249.37
-/2021/12/21-142943.73
+/2023/12/14-190909.83
+/2023/12/20-155249.37
+/2023/12/21-142943.73
 (3 rows)
 ~~~
 
-When you want to [restore a specific backup](#restore-a-specific-backup), add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`]({% link {{ page.version.version }}/show-backup.md %}#show-the-most-recent-backup).
+When you want to [restore a specific backup](#restore-a-specific-full-or-incremental-backup), add the backup's subdirectory path (e.g., `/2023/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`]({% link {{ page.version.version }}/show-backup.md %}#show-the-most-recent-backup).
 
-### Restore the most recent backup
+### Restore the most recent full or incremental backup
 
-To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE FROM LATEST IN 'external://backup_s3';
-~~~
-
-### Restore a specific backup
-
-To restore a specific backup, use the backup's subdirectory in the collection's location:
+To restore from the most recent backup ([full or incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})) in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM '2021/03/23-213101.37' IN 'external://backup_s3';
+RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
 ~~~
 
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+If you are restoring an incremental backup, the storage location **must** contain a full backup.
+
+{% include {{ page.version.version }}/backups/no-incremental-restore.md %}
+
+{{site.data.alerts.callout_info}}
+`RESTORE` will re-validate [indexes]({% link {{ page.version.version }}/indexes.md %}) when [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+{{site.data.alerts.end}}
+
+### Restore a specific full or incremental backup
+
+To restore a specific full or incremental backup, specify that backup's subdirectory in the `RESTORE` statement. To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories). If you are restoring an incremental backup, the URI must point to the storage location that contains the full backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
+~~~
 
 ### Restore a cluster
 
@@ -393,25 +398,10 @@ RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'external://backup_s3
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
-### Restore from incremental backups
-
-To restore the most recent [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) from a location containing the full and incremental backup:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
-~~~
-
-{% include {{ page.version.version }}/backups/no-incremental-restore.md %}
-
-{{site.data.alerts.callout_info}}
- `RESTORE` will re-validate [indexes]({% link {{ page.version.version }}/indexes.md %}) when [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
-{{site.data.alerts.end}}
-
 ### Restore with `AS OF SYSTEM TIME`
 
 {{site.data.alerts.callout_danger}}
-`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`. 
+`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`.
 {{site.data.alerts.end}}
 
 Running a backup with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
@@ -590,6 +580,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 - To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 
 ## See also
 

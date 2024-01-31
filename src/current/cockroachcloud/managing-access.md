@@ -39,7 +39,7 @@ It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-or
 ### Change a team member's role
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
-1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
+1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     {{site.data.alerts.callout_info}}
@@ -173,13 +173,11 @@ To change the API key name for an existing API key:
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
-1. Click the **Add User** button in the top right corner.
-
-    The **Create SQL user** modal displays.
-
-1. Enter a **Username**.
-1. Click **Generate & save password**.
-1. Copy the generated password and save it in a secure location.
+1. In the left navigation bar, click **SQL Users**.
+1. Click **Add User**. The **Add User** dialog displays.
+1. Enter a username and click **Generate & Save Password**.
+1. Copy the generated password to a secure location, such as a password manager.
+1. Click **Close**.
 
     Currently, all new users are created with SQL admin privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
 </section>
