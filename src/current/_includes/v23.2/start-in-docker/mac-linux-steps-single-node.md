@@ -59,12 +59,11 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
       --env COCKROACH_PASSWORD={PASSWORD} \
       --name=roach-single \
       --hostname=roach-single \
-      --net=roachnet \
       -p 26257:26257 \
       -p 8080:8080 \
       -v "roach-single:/cockroach/cockroach-data"  \
       {{page.release_info.docker_image}}:{{page.release_info.version}} start-single-node \
-      --http-addr=localhost:8080 \
+      --http-addr=roach-single:8080
     ~~~
 
     By default, a `certs` directory is created and CockroachDB starts in secure mode.
@@ -83,12 +82,12 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
     ~~~
 
     ~~~ shell
-    CockroachDB node starting at 2022-09-28 14:35:27.495508396 +0000 UTC m=+1.370085757 (took 0.5s)
-    build:               CCL {{ page.page_version }} @ 2022/09/26 18:49:07 (go1.19.1)
-    webui:               https://172.18.0.3:8080
-    sql:                 postgresql://root@172.18.0.3:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
-    sql (JDBC):          jdbc:postgresql://172.18.0.3:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root
-    RPC client flags:    /cockroach/cockroach <client cmd> --host=172.18.0.3:26257 --certs-dir=certs
+    CockroachDB node starting at 2023-11-07 20:26:36.11359443 +0000 UTC m=+1.297365572 (took 1.0s)
+    build:               CCL {{ page.page_version }} @ 2023/09/27 02:36:23 (go1.19.10)
+    webui:               https://127.0.0.1:8080
+    sql:                 postgresql://root@127.0.0.1:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
+    sql (JDBC):          jdbc:postgresql://127.0.0.1:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root
+    RPC client flags:    /cockroach/cockroach <client cmd> --host=127.0.0.1:26257 --certs-dir=certs
     logs:                /cockroach/cockroach-data/logs
     temp dir:            /cockroach/cockroach-data/cockroach-temp2611102055
     external I/O path:   /cockroach/cockroach-data/extern
@@ -105,21 +104,25 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    docker log roach-single --follow
+    docker logs --follow roach-single
     ~~~
 
-    To stop monitoring the logs, press Ctrl+C to exit the `docker log` command.
+    To stop monitoring the logs, press Ctrl+C to exit the `docker logs` command.
 
-1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. You can replace the IP address with the hostname of the Docker container so that the script continues to work if the IP address changes. To run `cockroach sql` on the `roach-single` cluster:
+1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. Connect to the `roach-single` cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    docker exec -it roach-single ./cockroach sql --url="postgresql://root@roach-single:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt"
+    docker exec -it roach-single ./cockroach sql --url="postgresql://root@127.0.0.1:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt"
     ~~~
 
-1. To connect to the cluster using DB Console in your web browser, navigate to the address printed next to `webui:` in the cluster's startup details. You can replace the IP address with the hostname of the Docker container. To connect to the `roach-single` cluster, navigate to [https://roach-single:8080/](https://roach-single:8080/) for a secure cluster or [http://roach-single:8080/](http://roach-single:8080/) for an insecure cluster.
+### Step 4. Access the DB Console
 
-### Step 4. Stop the cluster
+The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+
+When you started the cluster container, you published the container's DB Console port `8080` to port `8080` on the Docker host so that DB Console can be accessed from outside the cluster container. To connect to DB Console, go to `http://localhost:8080`. If necessary, replace `localhost` with the hostname or IP address of the Docker host.
+
+### Step 5. Stop the cluster
 
 1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/node-shutdown.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
