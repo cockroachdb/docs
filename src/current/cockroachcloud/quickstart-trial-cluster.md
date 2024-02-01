@@ -23,25 +23,29 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
     {{site.data.alerts.end}}
 
 1. For **Cloud provider**, select **Google Cloud**.
-1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
+1. For **Regions & nodes**, select `California (us-west)` region and 3 nodes.
 
     {{site.data.alerts.callout_info}}
     You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) trial cluster.
     {{site.data.alerts.end}}
 
-1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
+1. For **VPC Peering**, use the default selection of **Use the default IP range**. Click **Next: Capacity**.
+
+1. On the **Capacity page**, select 2vCPU for **Compute per node** and a 35 GiB disk for **Storage per node**.
 
     {{site.data.alerts.callout_info}}
     You can select up to 9 nodes, 4 vCPUs of compute, and 150 GiB of storage. The trial code will not apply to larger clusters.
     {{site.data.alerts.end}}
 
-1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
-1. Click **Next**.
-1. On the **Summary** page, enter your credit card details.
+1. Click **Next: Finalize**.
+
+1. On the **Finalize** page, enter your credit card details.
 
     {{site.data.alerts.callout_info}}
     You will not be charged until after your free trial expires in 30 days.
     {{site.data.alerts.end}}
+
+1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
 1. Click **Create cluster**.
 
@@ -53,8 +57,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 1. In the left navigation bar, click **SQL Users**.
 1. Click **Add User**. The **Add User** dialog displays.
-1. Enter a **Username** and **Password**.
-1. Click **Save**.
+1. Enter a username and click **Generate & Save Password**.
+1. Copy the generated password to a secure location, such as a password manager.
+1. Click **Close**.
 
 ## Step 3. Authorize your network
 
@@ -64,35 +69,13 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 1. Click **Apply**.
 
-## Step 4. Connect to your cluster
+## Step 4. Connect to the cluster
 
-<section class="filter-content" markdown="1" data-scope="windows">
-{{site.data.alerts.callout_success}}
-[PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) is required to complete these steps.
-{{site.data.alerts.end}}
-</section>
-
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog will display.
-1. From the **SQL user** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
-1. Verify that the `us-west2 GCP` region and `defaultdb` database are selected.
-1. Click **Next**. The **Connect** tab is displayed.
-1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
-
-    <div class="filters clearfix">
-      <button class="filter-button page-level" data-scope="mac">Mac</button>
-      <button class="filter-button page-level" data-scope="linux">Linux</button>
-      <button class="filter-button page-level" data-scope="windows">Windows</button>
-    </div>
-
-1. {% include cockroachcloud/download-the-binary.md %}
-
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
-
-    {% include cockroachcloud/download-the-cert.md %}
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Serverless cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
 
 ## Step 5. Use the built-in SQL client
 
-1. In your terminal, run the connection string provided in the third step of the dialog to connect to CockroachDB's built-in SQL client. Your username and cluster name are pre-populated for you in the dialog.
+1. In your terminal, 1. Use the `cockroach sql` from [Step 4. Connect to the cluster](#step-4-connect-to-the-cluster) to connect to the cluster using the binary you just configured.
 
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
@@ -161,5 +144,5 @@ Learn more:
 Before you move into production:
 
 - [Authorize the network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) from which your app will access the cluster.
-- Download the `ca.crt` file to every machine from which you want to [connect to the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method).
+- Configure every machine from which you want to [connect to the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#connect-to-your-cluster).
 - Review the [production checklist]({% link cockroachcloud/production-checklist.md %}).

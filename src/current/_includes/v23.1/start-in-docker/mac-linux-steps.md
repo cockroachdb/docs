@@ -170,7 +170,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
     nodeID:              1
     ~~~
 
-### Step 4. Use the built-in SQL client
+### Step 4. Connect to the cluster
 
 Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) in the `roach1` container.
 
