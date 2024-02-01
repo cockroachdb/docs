@@ -44,9 +44,9 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Custom Metrics Chart page for CockroachDB {{ site.data.products.serverless }} clusters
+### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
-The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.serverless }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
+The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ### Log SQL Statistics to Datadog
 
