@@ -52,7 +52,7 @@ Use the following workflow to enable `MuxRangefeed`:
     SET CLUSTER SETTING changefeed.mux_rangefeed.enabled = true;
     ~~~
 
-1. After changing enabling the setting, pause the changefeed:
+1. After enabling the setting, pause the changefeed:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -61,7 +61,7 @@ Use the following workflow to enable `MuxRangefeed`:
 
     You can use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to retrieve the job ID.
 
-1. Resume the changefeed for the cluser setting to take effect:
+1. Resume the changefeed for the cluster setting to take effect:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
