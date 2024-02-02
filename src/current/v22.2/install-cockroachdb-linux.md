@@ -165,10 +165,14 @@ true
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
 - CockroachDB on ARM is **experimental** in CockroachDB v22.2 versions prior to v22.2.13, is in [Limited Access](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in CockroachDB v22.2.13, and is Generally Available (GA) in v22.2.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
-- Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
-- Because of the recommendation to avoid a mix of Intel and ARM nodes, Cockroach Labs recommends against migrating an existing cluster to or from ARM in place. move the data from the existing cluster on the old architecture to a new cluster on the new architecture using means such as [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}).
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
-- When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+
+  Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
+
+  When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+
+- Clusters with a mix of Intel and ARM nodes are not extensively tested. In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
+- When feasible, Cockroach Labs recommends that you move the data from an existing cluster on the Intel architecture to a new cluster on on ARM using means such as [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}). If migration in place is preferred, Cockroach Labs recommends that you migrate migrate all nodes to ARM in as short a period of time as possible, and that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes.
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
