@@ -14,12 +14,12 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 
 ## Feature availability phases
 
-Phase                                         | Definition | Accessibility
-----------------------------------------------+------------+-------------
-Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
-Limited access                                | Feature is production-ready but not available widely because of significant limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
-[Preview](#features-in-preview)               | Feature is publicly available. This feature may have significant limitations and/or capabilities may change or be added based on feedback. | Public
-General availability (GA)                     | Feature is production-ready and publicly available. | Public
+Phase                            | Definition | Accessibility
+---------------------------------+------------+-------------
+Private preview                  | Feature is available to select customers and not publicly documented. | Invite-only
+Limited access                   | Feature is not yet available widely or publicly documented due to the current state of limitations and/or capabilities that may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
+[Preview](#features-in-preview)  | Feature is publicly available and documented. This feature may have limitations and/or capabilities that may change or be added based on feedback. | Public
+General availability (GA)        | Feature is publicly available and documented. | Public
 
 {{site.data.alerts.callout_info}}
 Any feature made available in a phase prior to GA is provided without any warranties of any kind. Such features are not subject to any technical support or uptime availability commitments unless Cockroach Labs explicitly states otherwise in writing.
