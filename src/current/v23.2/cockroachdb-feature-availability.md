@@ -208,6 +208,10 @@ Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink]({% link {{ pag
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
 
+### Physical Cluster Replication
+
+{% include_cached new-in.html version="v23.2" %}[Physical Cluster Replication](https://www.cockroachlabs.com/docs/{{ page.version.version }}/physical-cluster-replication-overview) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical Cluster Replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only](https://www.cockroachlabs.com/docs/{{ page.version.version }}/enterprise-licensing) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
