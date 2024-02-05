@@ -70,7 +70,7 @@ If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.versi
     The Operator will perform the staged update.
 
     {{site.data.alerts.callout_info}}
-    The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain [features and performance improvements introduced in {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#features-that-require-upgrade-finalization).
+    The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain features and performance improvements introduced in {{ page.version.version }}.
 
     Note that after finalization, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to performing the upgrade.
 
