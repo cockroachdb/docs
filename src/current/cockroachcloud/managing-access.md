@@ -173,13 +173,11 @@ To change the API key name for an existing API key:
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
-1. Click the **Add User** button in the top right corner.
-
-    The **Create SQL user** modal displays.
-
-1. Enter a **Username**.
-1. Click **Generate & save password**.
-1. Copy the generated password and save it in a secure location.
+1. In the left navigation bar, click **SQL Users**.
+1. Click **Add User**. The **Add User** dialog displays.
+1. Enter a username and click **Generate & Save Password**.
+1. Copy the generated password to a secure location, such as a password manager.
+1. Click **Close**.
 
     Currently, all new users are created with SQL admin privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
 </section>

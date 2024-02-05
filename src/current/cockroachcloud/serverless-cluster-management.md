@@ -22,8 +22,10 @@ For each cluster, the following details display:
 - The cluster's cloud provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Edit resource limits**](#edit-your-resource-limits)
+    - [**Edit cluster**](#edit-cluster-capacity)
+    - [**Move cluster**](https://www.cockroachlabs.com/docs/cockroachcloud/folders#move-a-cluster-into-or-out-of-a-folder)
     - [**Delete cluster**](#delete-cluster)
+    - **Get support**
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
@@ -32,9 +34,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 The **Overview** page displays details about the selected CockroachDB {{ site.data.products.serverless }} cluster:
 
 - The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Regions**
-- The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
+- The **Capacity used this month** section, including **Request Units** and **Storage**
 - The cluster's **Current activity**
-- Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
+- Time-series graphs of the cluster's **Request Units**, **Storage usage**, and **SQL statements**
 
 For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
 
@@ -46,23 +48,19 @@ This feature is not available if your organization is billed through [Credits]({
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
-1. In the **Usage this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Estimate usage cost**.
-1. Select a time period in which your workload was active.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
+1. On the **Edit cluster** page, navigate to **Capacity**.
+1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
-    Your used [RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrused costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
 
-## Edit your resource limits
+## Edit cluster capacity
 
 On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
 
-1. Navigate to the **Overview** page for the cluster you want to edit.
-1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 
-    You will be taken to the **Edit cluster** page, which shows a graph of your cluster's **Recommended budget** compared to your current budget.
-
-1. Enter new **Resource limits**.
-
-1. Click **Update**.
+1. On the **Capacity** page, set the configure the new resource limits. In the sidebar, click **Update cluster**.
 
 ## Edit regions
 
@@ -83,8 +81,8 @@ To add regions to your cluster:
 
 1. Click **Add region**.
 1. Choose the region you want to add or use the suggested one.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then click **Update cluster**.
 
 ### Edit the primary region
 
@@ -96,7 +94,7 @@ To set the primary region:
     The **Edit cluster** page displays.
 
 1. Select **Set primary region** next to your preferred region.
-1. Click **Update**.
+1. Click **Next: Capacity** and then click **Update cluster**.
 
 ### Move cluster to a new region
 

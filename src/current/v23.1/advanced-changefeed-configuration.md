@@ -33,6 +33,41 @@ kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 
 For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
+### MuxRangefeed
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. It significantly reduces the overhead of running [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). Without `MuxRangefeed` enabled the number of RPC streams is proportional with the number of ranges in a table. For example, a large table could have tens of thousands of ranges. With `MuxRangefeed` enabled, this proportion improves so that the number of RPC streams is relative to the number of nodes in a cluster.
+
+You can enable its functionality with the `changefeed.mux_rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+
+Use the following workflow to enable `MuxRangefeed`:
+
+1. Enable the cluster setting:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING changefeed.mux_rangefeed.enabled = true;
+    ~~~
+
+1. After enabling the setting, pause the changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    PAUSE JOB {job ID};
+    ~~~
+
+    You can use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to retrieve the job ID.
+
+1. Resume the changefeed for the cluster setting to take effect:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESUME JOB {job ID};
+    ~~~
+
 ### Latency in changefeeds
 
 When you are running large workloads, changefeeds can encounter or cause latency in a cluster in the following ways:

@@ -33,6 +33,10 @@ kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 
 For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
+### Mux rangefeeds
+
+{% include {{ page.version.version }}/cdc/mux-rangefeed.md %}
+
 ### Latency in changefeeds
 
 When you are running large workloads, changefeeds can encounter or cause latency in a cluster in the following ways:
@@ -55,7 +59,7 @@ We do **not** recommend adjusting these settings unless you are running a large 
 
 This setting controls the frequency of checkpoints for each [range]({% link {{ page.version.version }}/architecture/overview.md %}#range). A changefeed aggregates these checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). As a result, the higher the value of this setting the longer it can take for a changefeed to checkpoint. It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds.
 
-In clusters running large-scale workloads, increasing this setting can help to lower the potential impact of changefeeds on SQL latency. That is, an increase in the setting could lower the load on the cluster. This is important for workloads with tables in the TB range of data. However, for most workloads, we recommend leaving this setting at the default of `3s`.
+In clusters running large-scale workloads, increasing `kv.closed_timestamp.target_duration` can help to lower the potential impact of changefeeds on SQL latency. That is, an increase in the setting could lower the load on the cluster. This is important for workloads with tables in the TB range of data. However, for most workloads, we recommend leaving this setting at the default of `3s`.
 
 {{site.data.alerts.callout_danger}}
 Thoroughly test any adjustment in cluster settings before deploying the change in production.
