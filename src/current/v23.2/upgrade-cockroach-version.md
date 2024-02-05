@@ -140,7 +140,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TODO: Update this section with the list of features here, uncomment this section, and re-add the link to this section from earlier in step 3 as well as the other places where this PR removed such links:
+TODO: Update this section with the list of features here, uncomment this section, and re-add the link to this section from earlier in step 3 as well as the other places where [this PR](https://github.com/cockroachdb/docs/pull/18276/files) removed such links:
 
 src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-helm.md
 src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-manual.md:
