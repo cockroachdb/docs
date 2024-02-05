@@ -172,7 +172,7 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 
   Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
 
-  When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+  When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
 
 - In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
 - When feasible, Cockroach Labs recommends that you move the data from an existing cluster on the Intel architecture to a new cluster on on ARM using means such as [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}). If migration in place is preferred, Cockroach Labs recommends that you migrate all nodes to ARM in as short a period of time as possible, and that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes.
