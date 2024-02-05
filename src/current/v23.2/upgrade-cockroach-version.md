@@ -120,7 +120,7 @@ See our [support policy for restoring backups across versions]({% link {{ page.v
 This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-6-finish-the-upgrade):
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-6-finish-the-upgrade):
 
 1. [Upgrade to {{ previous_version }}](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version), if you haven't already.
 
@@ -135,13 +135,15 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     It is only possible to set this setting to the current cluster version.
 
+{% comment %}
 ### Features that require upgrade finalization
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TODO
+TODO: Update this section with the list of features here, and re-add the link to this section from earlier in step 3, where we say "This will enable certain features and performance improvements introduced in {{ page.version.version }}"
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
+{% endcomment %}
 
 ## Step 4. Perform the rolling upgrade
 
