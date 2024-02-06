@@ -31,11 +31,11 @@ If the same SQL user has the `admin` role on the system interface and also has r
 
 #### Connect to a virtual cluster
 
-By default when you connect using the DB Console, you are logged into the `application` virtual cluster. You can optionally add the `optionsl=-ccluster=application` `GET` URL parameter to the DB Console URL so that the intention to connect to the `application` virtual cluster is more clear.
+By default when you connect using the DB Console, you are logged into the `application` virtual cluster. You can optionally add the `GET` URL parameter `optionsl=-ccluster=application` to the DB Console URL so that the intention to connect to the `application` virtual cluster is more clear.
 
 #### Connect to the system interface
 
-To connect to the system interface using the DB Console, add the `optionsl=-ccluster=system` `GET` URL parameter to the DB Console URL.
+To connect to the system interface using the DB Console, add the `GET` URL parameter `optionsl=-ccluster=system` to the DB Console URL.
 
 ### SQL clients
 

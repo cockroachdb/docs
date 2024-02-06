@@ -31,7 +31,7 @@ When cluster virtualization is enabled, CockroachDB's behavior changes in severa
 When cluster virtualization is enabled, by default when you connect using `cockroach sql` or the DB Console, you are connected to the virtual cluster. To connect to the system interface, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connecting-to-a-cluster).
 
 {{site.data.alerts.callout_success}}
-If the same SQL user has the `admin` role on the system interface and also has roles in the virtual cluster, that user can switch between them from the top of the DB Console.
+If a SQL user has been added to the system interface and one or more virtual clusters with the same password, that user can select which to connect to from the top of the DB Console.
 {{site.data.alerts.end}}
 
 ### Cluster settings
