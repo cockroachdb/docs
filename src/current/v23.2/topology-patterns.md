@@ -50,6 +50,10 @@ If you want low-latency read-only access to your data in multiple regions, Cockr
 
 In summary, Cockroach Labs recommends that you use follower reads whenever you can, and use `GLOBAL` tables when you can't.
 
+In the following demo, we show the importance of choosing the correct topology patterns for your tables:
+
+{% include_cached youtube.html video_id="sO1Mr0Gmde0" %}
+
 ## Anti-patterns
 
 The following anti-patterns are ineffective or risky:

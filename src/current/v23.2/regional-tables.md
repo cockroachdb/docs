@@ -136,6 +136,12 @@ For more information about how to choose a database survival goal, see [When to 
 
 For a step-by-step demonstration showing how CockroachDB's multi-region capabilities (including [`REGIONAL BY ROW` tables](#regional-by-row-tables)) give you low-latency reads in a distributed cluster, see the tutorial on [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
+## Demo video
+
+If you'd prefer to watch a video on Regional Tables, check out the following video:
+
+{% include_cached youtube.html video_id="3gmF_yXj3q8" %}
+
 ## See also
 
 {% include {{ page.version.version }}/topology-patterns/see-also.md %}
