@@ -1,9 +1,11 @@
 algolia:
   application_id: 7RXZLDVR5F
   files_to_exclude:
-  - index.html
-  - index.md
-  - search.html
+    - index.html
+    - index.md
+    - search.html
+    - src/current/v23.1/**
+    - v23.1/**
   index_name: cockroachcloud_docs
   search_api_key: 372a10456f4ed7042c531ff3a658771b
   settings:

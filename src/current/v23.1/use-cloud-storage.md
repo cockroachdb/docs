@@ -251,9 +251,17 @@ The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
 While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes.
 
-{{site.data.alerts.callout_info}}
-[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.
-{{site.data.alerts.end}}
+#### Incremental backups and archive storage classes
+
+[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
+
+Refer to the AWS documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for steps.
+
+When you are restoring archived backup files from Glacier Flexible Retrieval or Glacier Deep Archive back to an S3 bucket, you must restore both the full backup and incremental backup layers for that backup. By default, CockroachDB stores the incremental backup layers in a separate top-level directory at the backup's storage location. Refer to [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for detail on the backup directory structure at its storage location.
+
+Once you have restored all layers of a backup's archived files back to its S3 bucket, you can then [restore]({% link {{ page.version.version }}/restore.md %}) the backup to your CockroachDB cluster.
+
+#### Supported storage classes
 
 This table lists the valid CockroachDB parameters that map to an S3 storage class:
 

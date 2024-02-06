@@ -124,13 +124,7 @@ Backups support cloud object locking and [Amazon S3 storage classes](#back-up-wi
 
 ### Object dependencies
 
-Dependent objects must be backed up at the same time as the objects they depend on.
-
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_foreign_keys).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence it uses; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_sequences).
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 {{site.data.alerts.callout_info}}
 To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#exclude-a-tables-data-from-backups).
