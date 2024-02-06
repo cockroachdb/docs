@@ -14,12 +14,16 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 
 ## Feature availability phases
 
-Phase                                         | Definition | Accessibility
-----------------------------------------------+------------+-------------
-Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
-Limited access                                | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
-[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
-General availability (GA)                     | Feature is production-ready and publicly available. | Public
+Phase                            | Definition | Accessibility
+---------------------------------+------------+-------------
+Private preview                  | Feature is available to select customers and not publicly documented. | Invite-only
+Limited access                   | Feature is publicly documented but not yet available widely. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Opt-in </br>Contact your Cockroach Labs account team.
+[Preview](#features-in-preview)  | Feature is publicly available and documented. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Public
+General availability (GA)        | Feature is publicly available and documented. | Public
+
+{{site.data.alerts.callout_info}}
+Any feature made available in a phase prior to GA is provided without any warranties of any kind. Such features are not subject to any technical support or uptime availability commitments unless Cockroach Labs explicitly states otherwise in writing.
+{{site.data.alerts.end}}
 
 ## Features in limited access
 
@@ -58,9 +62,9 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Custom Metrics Chart page for CockroachDB {{ site.data.products.serverless }} clusters
+### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
-The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.serverless }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
+The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ### Log SQL Statistics to Datadog
 

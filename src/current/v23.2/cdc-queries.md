@@ -500,6 +500,12 @@ You can then use this function within a CDC query tagetting a table in the same 
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides.revenue::int) FROM rides WHERE revenue < 30;
 ~~~
 
+### Video Demo
+
+For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video: 
+
+{% include_cached youtube.html video_id="mea4czXi7tI" %}
+
 ## See also
 
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
