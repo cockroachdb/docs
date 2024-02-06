@@ -40,7 +40,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
     {% include_cached copy-clipboard.html %}
     ~~~
     FROM quay.io/debezium/connect:latest
-    ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc \
+    ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc
 
 
     ARG POSTGRES_VERSION=latest

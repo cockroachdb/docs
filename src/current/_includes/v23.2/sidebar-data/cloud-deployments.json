@@ -426,7 +426,7 @@
                         ]
                     },
                     {
-                        "title": "Upgrade to v23.2 Pre-Production Preview",
+                        "title": "Upgrade to v23.2",
                         "urls": [
                             "/cockroachcloud/upgrade-to-v23.2.html"
                         ]

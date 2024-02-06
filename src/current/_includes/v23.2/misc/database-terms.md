@@ -2,7 +2,7 @@
 The requirement that a transaction must change affected data only in allowed ways. CockroachDB uses "consistency" in both the sense of [ACID semantics](https://en.wikipedia.org/wiki/ACID) and the [CAP theorem](https://wikipedia.org/wiki/CAP_theorem), albeit less formally than either definition.
 
 ### Isolation
-The degree to which a transaction may be affected by other transactions running at the same time. CockroachDB provides the [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) isolation level, which is the highest possible and guarantees that every committed transaction has the same result as if each transaction were run one at a time.
+The degree to which a transaction may be affected by other transactions running at the same time. CockroachDB provides the [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) and `READ COMMITTED` isolation levels. For more information, see [Isolation levels]({% link {{ page.version.version }}/transactions.md %}#isolation-levels).
 
 ### Consensus
 <a name="architecture-overview-consensus"></a> The process of reaching agreement on whether a transaction is committed or aborted. CockroachDB uses the [Raft consensus protocol](#architecture-raft). In CockroachDB, when a range receives a write, a quorum of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.

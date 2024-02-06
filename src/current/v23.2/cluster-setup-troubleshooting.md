@@ -170,26 +170,21 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 ###### Excessive snapshot rebalance and recovery rates
 
-The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) set the rate limits at which [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
+The `kv.snapshot_rebalance.max_rate` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate) sets the rate limit at which [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) are sent to nodes. This setting can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
 
-However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values]({% link {{ page.version.version }}/cluster-settings.md %}) without explicit approval from Cockroach Labs.
+However, if the setting is too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing this value by more than 2 times its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate) without explicit approval from Cockroach Labs.
 
-**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
+**Explanation:** If `kv.snapshot_rebalance.max_rate` is set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
 
 **Solution:** [Check LSM health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
-After [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
+After [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) has completed, lower `kv.snapshot_rebalance.max_rate` to its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate). As you add nodes to the cluster, slowly increase the value of the cluster setting, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
 
-Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}).
+Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` to its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESET CLUSTER SETTING kv.snapshot_rebalance.max_rate;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESET CLUSTER SETTING kv.snapshot_recovery.max_rate;
 ~~~
 
 ## Client connection issues

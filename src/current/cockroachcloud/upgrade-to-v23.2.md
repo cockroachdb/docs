@@ -1,12 +1,12 @@
 ---
-title: Upgrade to CockroachDB v23.2 Pre-Production Preview
-summary: Learn how to upgrade your CockroachDB cluster to v23.2 Pre-Production Preview
+title: Upgrade to CockroachDB v23.2
+summary: Learn how to upgrade your CockroachDB cluster to v23.2
 toc: true
 docs_area: manage
 page_version: v23.2
 prev_version: v23.1
-pre_production_preview: True
-pre_production_preview_version: v23.2.0-rc.1
+pre_production_preview: false
+pre_production_preview_version: v23.2.0-rc.2
 ---
 
 {% if page.pre_production_preview == true %}
@@ -22,9 +22,12 @@ An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administra
 Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 {{site.data.alerts.end}}
 {% else %}
+Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/ {{ page.page_version }}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
+
 {{site.data.alerts.callout_success}}
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
+
 {% endif %}
 
 ## Step 1. Verify that you can upgrade
@@ -55,9 +58,8 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 </section>
 
 {{site.data.alerts.callout_danger}}
-If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of the previous major version, which may differ from the patch release you were running before you initiated the upgrade. To learn more, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of {{ page.prev_version }}, which may differ from the patch release you were running before you initiated the upgrade. To learn more, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
-
 
 ## Step 4. Prepare to upgrade
 
@@ -69,6 +71,8 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with {{ page.page_version }}. Prepare your application for this brief downtime, typically a few minutes.
 
+Your cluster will be unavailable while its single node is stopped and restarted with v23.1. Prepare your application for this brief downtime, typically a few minutes.
+
 The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the CockroachDB {{ site.data.products.cloud }} Console will also be disabled during this time.
 
 </section>
@@ -78,7 +82,11 @@ The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-us
 {% comment %} Be careful with this logic and the page-level variable page_version {% endcomment %}
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
 
+{% if page.pre_production_preview == true %}
 Review the backward-incompatible changes and deprecated features announced in each {{ page.page_version }} testing release. If any affect your applications, make the necessary changes before proceeding.
+{% else %}
+Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
+{% endif %}
 
 ### Reset SQL statistics
 
@@ -125,12 +133,11 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 - If you see unexpected behavior, you can [roll back to the latest patch release of {{ page.prev_version }}](#roll-back-the-upgrade) during the 72-hour window.
 
-<a id="respect-temporary-limitations"></a>
 ### Expect temporary limitations
 
 Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-For an expanded list of features included in {{ page.page_version }}, review the temporary limitations, backward-incompatible changes, and deprecated features announced in each {{ page.page_version }} testing release.
+For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
 ### Roll back the upgrade
 
@@ -139,11 +146,11 @@ If you see unexpected behavior, you can roll back the upgrade during the 72-hour
 To stop the upgrade and roll back to {{ page.prev_version }}, click **Roll back** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Roll back upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
-During rollback, nodes will be reverted to {{ page.prev_version }} one at a time without interrupting the cluster's health and availability.
+During rollback, nodes will be reverted to the latest production patch release of {{ page.prev_version }} one at a time without interrupting the cluster's health and availability.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
-Because your cluster contains a single node, the cluster will be briefly unavailable while the node is stopped and restarted with {{ page.prev_version }}. Be sure to [prepare for this brief unavailability](#prepare-for-brief-unavailability) before starting the rollback.
+Because your cluster contains a single node, the cluster will be briefly unavailable while the node is stopped and restarted with the latest production patch release of {{ page.prev_version }}. Be sure to [prepare for this brief unavailability](#prepare-for-brief-unavailability) before starting the rollback.
 </section>
 
 ## Step 7. Complete the upgrade

@@ -128,7 +128,13 @@
           "urls": [
             "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
           ]
-        }
+        },
+        {
+          "title": "Read Committed Transactions",
+          "urls": [
+            "/${VERSION}/read-committed.html"
+          ]
+        }        
       ]
     },
     {

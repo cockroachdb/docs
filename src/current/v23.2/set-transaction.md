@@ -29,14 +29,31 @@ Parameter | Description
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable]({% link {{ page.version.version }}/show-vars.md %}) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
 `AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> The `AS OF SYSTEM TIME` clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the `READ WRITE` mode is specified, an error will be returned.<br/><br/>For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 `NOT DEFERRABLE`<br>`DEFERRABLE` |  This clause is supported for compatibility with PostgreSQL. `NOT DEFERRABLE` is a no-op and the default behavior for CockroachDB. `DEFERRABLE` returns an `unimplemented` error.
-
-CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
+`ISOLATION LEVEL` | Set the transaction isolation level. Transactions use `SERIALIZABLE` isolation by default. They can be configured to run at [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.<br/><br/>This clause only takes effect if specified at the beginning of the transaction.
 
 ## Examples
 
+### Set isolation level
+
+You can set the transaction isolation level to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) or [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+
+If not specified, transactions use the value of the current session's [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) variable.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+~~~
+
 ### Set priority
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transaction-retry-error-reference.html#client-side-retry-handling">client-side retry handling</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+This example assumes you're using <a href="transaction-retry-error-reference.html#client-side-retry-handling">client-side retry handling</a>.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -16,6 +16,10 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
+{{site.data.alerts.callout_info}}
+CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. 
+{{site.data.alerts.end}}
+
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
@@ -116,7 +120,7 @@ See our [support policy for restoring backups across versions]({% link {{ page.v
 This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-6-finish-the-upgrade):
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-6-finish-the-upgrade):
 
 1. [Upgrade to {{ previous_version }}](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version), if you haven't already.
 
@@ -131,14 +135,20 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     It is only possible to set this setting to the current cluster version.
 
+{% comment %}
 ### Features that require upgrade finalization
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) statement allows you to create scheduled changefeeds.
-- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+TODO: Update this section with the list of features here, uncomment this section, and re-add the link to this section from earlier in step 3 as well as the other places where [this PR](https://github.com/cockroachdb/docs/pull/18276/files) removed such links:
+
+src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-helm.md
+src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-manual.md:
+src/current/v23.2/upgrade-cockroachdb-kubernetes.md
+src/current/v23.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
+{% endcomment %}
 
 ## Step 4. Perform the rolling upgrade
 

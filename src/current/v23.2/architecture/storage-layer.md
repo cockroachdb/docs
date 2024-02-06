@@ -140,7 +140,11 @@ The tradeoffs in the LSM design are meant to take advantage of the way modern di
 
 CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
 
-Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}). For example, CockroachDB maintains a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies there’s a potential anomaly and the transaction must be restarted at a later timestamp.
+Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}). For example, CockroachDB maintains a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies that there is a potential anomaly. Under the default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}), the transaction must be restarted at a later timestamp.
+
+For a demo of MVCC and garbage collection in CockroachDB, watch the following video:
+
+{% include_cached youtube.html video_id="Ctp5WQdbEd4" %}
 
 #### Time-travel
 

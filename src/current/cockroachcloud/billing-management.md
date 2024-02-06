@@ -45,7 +45,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 ## Check trial code details
 
-If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-9-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
+If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-6-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
@@ -61,4 +61,6 @@ Under the **Spend over time** section, you can see a table of each of your organ
 
 ## View invoices
 
-You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
+You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period. 
+
+If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.

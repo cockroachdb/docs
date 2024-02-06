@@ -8,20 +8,22 @@ docs_area: reference.sql
 
 A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements).
 
+{% include {{ page.version.version }}/sql/udfs-vs-stored-procs.md %}
+
 ## Overview
 
 The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
 
 - An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined `ENUM`]({% link {{ page.version.version }}/enum.md %}), or implicit record type. CockroachDB **does not** support default values for arguments.
-- The return type can be a built-in [type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}), [`RECORD`]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-record-type), implicit record type, or `VOID`.
+- The return type can be a built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}), [`RECORD`]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-record-type), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, implicit record type, or `VOID`.
     - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results).
     - `VOID` indicates that there is no return type and `NULL` will always be returned. {% comment %}If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.{% endcomment %}
 - The [volatility]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from pre-evaluating the function.
-  - A `STABLE` or `IMMUTABLE` function does not mutate data.
+  - A `STABLE` or `IMMUTABLE` function does not mutate data. You cannot create a `STABLE` or `IMMUTABLE` function that executes a mutation (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) statement.
   - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`, and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
   - Non-`VOLATILE` functions can be optimized through inlining. For more information, see [Create an inlined UDF](#create-an-inlined-udf).
-- The language specifies the language of the function body. CockroachDB supports the language `SQL`.
+- `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages `SQL` and [`PLpgSQL` (PL/pgSQL)]({% link {{ page.version.version }}/plpgsql.md %}).
 - The function body:
   - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
   - Can be enclosed in a single line with single quotes `''` or multiple lines with `$$`.
@@ -109,6 +111,10 @@ SELECT add(3,5) as sum;
     8
 (1 row)
 ~~~
+
+### Create a UDF using PL/pgSQL
+
+{% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
 ### Create an inlined UDF
 
@@ -278,6 +284,12 @@ The following example demonstrates how inlining improves a UDF's performance.
 
     The query takes only `4ms` to execute because the function is inlined and transformed to a [join]({% link {{ page.version.version }}/joins.md %}) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
 
+### Video Demo
+
+For a deep-dive demo on UDFs, watch the following video:
+
+{% include_cached youtube.html video_id="glveuxrzZB4" %}
+
 ## Known limitations
 
 ### Limitations on use of UDFs
@@ -296,13 +308,21 @@ User-defined functions are not currently supported in:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
+### Limitations on UDF creation
+
+The following cannot be used in UDF definitions:
+
+- `OUT` and `INOUT` argument modes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
+
+- `RECORD` input arguments.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+
 ### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a UDF:
-
-- Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
 
 - CTEs (common table expressions).
 
@@ -311,6 +331,10 @@ The following are not currently allowed within the body of a UDF:
 - References to other user-defined functions.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+- [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
 
 ## See also
 
