@@ -165,7 +165,7 @@ true
 
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
-- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
 
   Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
 

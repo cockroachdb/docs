@@ -168,7 +168,7 @@ true
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
 - CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is Generally Available (GA) in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
-- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
 
   Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
 
