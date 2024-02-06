@@ -22,10 +22,6 @@ Schema changes consume additional resources, and if they are run when the cluste
 CockroachDB [does not support schema changes](#limitations) within explicit [transactions][txns] with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
 {{site.data.alerts.end}}
 
-To see a demo of an online schema change, watch the following video:
-
-{% include_cached youtube.html video_id="xvBBQVIGYio" %}
-
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
@@ -235,6 +231,20 @@ You can check on the status of the schema change jobs on your system at any time
 ~~~
 
 All schema change jobs can be [paused]({% link {{ page.version.version }}/pause-job.md %}), [resumed]({% link {{ page.version.version }}/resume-job.md %}), and [canceled]({% link {{ page.version.version }}/cancel-job.md %}).
+
+## Demo videos
+
+### Updating primary key columns
+
+To see a demo of an online schema change against a primary key column, watch the following video:
+
+{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+
+### Updating foreign key columns
+
+To see a demo of an online schema change against a foreign key column, watch the following video:
+
+{% include_cached youtube.html video_id="HXAIB6bJuZQ" %}
 
 ## Undoing a schema change
 

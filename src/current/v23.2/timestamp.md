@@ -27,6 +27,10 @@ A time zone offset of `+00:00` is displayed for all [`TIME`]({% link {{ page.ver
 
 You can use the [`timezone()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) and [`AT TIME ZONE`]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms) functions to convert a `TIMESTAMPTZ` into a `TIMESTAMP` at a specified timezone, or to convert a `TIMESTAMP` into a `TIMESTAMPTZ` at a specified timezone.
 
+Explore the differences of `TIMESTAMP` and `TIMESTAMPTZ` in the following video:
+
+{% include_cached youtube.html video_id="jyfQmtISr3Y" %}
+
 ## Best practices
 
 We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid [setting a session time zone offset]({% link {{ page.version.version }}/set-vars.md %}#set-time-zone) for your database.

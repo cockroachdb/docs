@@ -45,6 +45,10 @@ Note that CockroachDB [ensures serializability]({% link {{ page.version.version 
 
 {% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
+For a demo on `SELECT FOR UPDATE` and how it - alongside SERIALISABLE ISOLATION - can protect you against the [ACID Rain attack](http://www.bailis.org/papers/acidrain-sigmod2017.pdf), watch the following video:
+
+{% include_cached youtube.html video_id="vfq3o5yG-PU" %}
+
 ### `FOR SHARE` usage
 
 {% include_cached new-in.html version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
