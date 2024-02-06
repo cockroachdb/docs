@@ -5,11 +5,13 @@ toc: true
 docs_area: manage
 ---
 
-The **Metrics** page is available for CockroachDB {{ site.data.products.serverless }} clusters. To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. From this page, you can:
+The **Metrics** page of the CockroachDB Cloud Console allows you to:
 
 - [**Monitor SQL Activity**](#monitor-sql-activity)
 - [**Identify SQL Problems**](#identify-sql-problems)
 - [Create **Custom** metrics charts](#create-custom-metrics-charts)
+
+To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation.
 
 ## Time interval selection
 
