@@ -168,10 +168,14 @@ true
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
 - CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is Generally Available (GA) in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
-- Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
-- Because of the recommendation to avoid a mix of Intel and ARM nodes, Cockroach Labs recommends against migrating an existing cluster to or from ARM in place. move the data from the existing cluster on the old architecture to a new cluster on the new architecture using means such as [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}).
-- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
-- When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
+
+  Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
+
+  When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
+
+- In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
+- When feasible for migrations, Cockroach Labs recommends that you move data from an existing cluster to a new cluster using [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}). If migration in place is preferred, a mix of Intel and ARM nodes is supported as a temporary transitional state during the migration only. Cockroach Labs recommends that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes, especially with respect to floating-point arithmetic.
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
