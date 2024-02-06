@@ -17,6 +17,10 @@ You can create full or incremental backups of a [cluster]({% link {{ page.versio
 
 For an explanation of how a backup works, see [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}).
 
+For a deep-dive on backup and restore, watch the following video:
+
+{% include_cached youtube.html video_id="t_ocOi_iYQ8" %}
+
 ## CockroachDB backup types
 
 {% include cockroachcloud/backup-types.md %}
