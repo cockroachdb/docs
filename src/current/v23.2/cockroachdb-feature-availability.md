@@ -33,11 +33,11 @@ Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.co
 
 ### AWS PrivateLink for CockroachDB Serverless
 
-[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization to meet your security requirement and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### CockroachDB Cloud Folders
 
-[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in limited access. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in limited access. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 
