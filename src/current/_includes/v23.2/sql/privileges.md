@@ -29,5 +29,5 @@ Privilege | Levels | Description
 <a id="viewclustersetting"></a>`VIEWCLUSTERSETTING` | System | Grants the ability to view [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) and their values.
 <a id="viewdebug"></a>`VIEWDEBUG` | System | Grants the ability to view the [Advanced Debug Page]({% link {{ page.version.version }}/ui-debug-pages.md %}) of the DB Console and work with the debugging and profiling endpoints.
 <a id="viewjob"></a>`VIEWJOB` | System | Grants the ability to view [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on the cluster.
-`VIEWSYSTEMTABLE` | System | Grants read-only access (`SELECT`) on all tables in the cluster, without granting the ability to modify the cluster.
+`VIEWSYSTEMTABLE` | System | Grants read-only access (`SELECT`) on all tables in the `system` database, without granting the ability to modify the cluster. This privilege was introduced in v23.1.11.
 `ZONECONFIG` | Database, Table, Sequence | Grants the ability to configure [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) at the database, table, and sequence level.
