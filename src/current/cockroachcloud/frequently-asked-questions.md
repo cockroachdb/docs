@@ -169,6 +169,10 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 - [CockroachDB {{ site.data.products.cloud }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
 - [CockroachDB {{ site.data.products.cloud }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
 
+For a detailed comparison of CockroachDB's SLA versus the major Cloud Service Provider databases, watch the following video:
+
+{% include_cached youtube.html video_id="NXAsCinvgM0" %}
+
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 
 Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v21.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.html).
