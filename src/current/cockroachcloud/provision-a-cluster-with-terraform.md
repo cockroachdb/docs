@@ -9,6 +9,10 @@ docs_area: manage
 
 This tutorial shows you how to provision a CockroachDB Cloud cluster using the CockroachDB Cloud Terraform provider.
 
+Watch a demo where we use Terraform to create a CockroachDB Serverless cluster here:
+
+{% include_cached youtube.html video_id="LEytD1eld8M" %}
+
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>

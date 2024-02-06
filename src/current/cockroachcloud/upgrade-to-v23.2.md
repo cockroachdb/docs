@@ -1,6 +1,6 @@
 ---
-title: Upgrade to CockroachDB v23.2 Pre-Production Preview
-summary: Learn how to upgrade your CockroachDB cluster to v23.2 Pre-Production Preview
+title: Upgrade to CockroachDB v23.2
+summary: Learn how to upgrade your CockroachDB cluster to v23.2
 toc: true
 docs_area: manage
 page_version: v23.2
@@ -28,11 +28,6 @@ Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/doc
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. 
-
-Through February 5, customers who create a new cluster or upgrade to v23.2 may be notified about their cluster receiving cloud-only patch releases, including the public 23.2.0 GA binary as a patch release. Descriptions of any substantive fixes in such patches will be added to the [CockroachDB v23.2.0 Release Notes]({% link releases/v23.2.md %}).
-{{site.data.alerts.end}}
 {% endif %}
 
 ## Step 1. Verify that you can upgrade
