@@ -284,6 +284,12 @@ The following example demonstrates how inlining improves a UDF's performance.
 
     The query takes only `4ms` to execute because the function is inlined and transformed to a [join]({% link {{ page.version.version }}/joins.md %}) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
 
+### Video Demo
+
+For a deep-dive demo on UDFs, watch the following video:
+
+{% include_cached youtube.html video_id="glveuxrzZB4" %}
+
 ## Known limitations
 
 ### Limitations on use of UDFs

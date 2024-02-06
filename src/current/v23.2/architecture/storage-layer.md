@@ -142,6 +142,10 @@ CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https:/
 
 Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}). For example, CockroachDB maintains a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies that there is a potential anomaly. Under the default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}), the transaction must be restarted at a later timestamp.
 
+For a demo of MVCC and garbage collection in CockroachDB, watch the following video:
+
+{% include_cached youtube.html video_id="Ctp5WQdbEd4" %}
+
 #### Time-travel
 
 As described in the [SQL:2011 standard](https://wikipedia.org/wiki/SQL:2011#Temporal_support), CockroachDB supports time travel queries (enabled by MVCC).

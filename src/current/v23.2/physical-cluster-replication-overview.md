@@ -125,3 +125,9 @@ Statement | Action
 The standby cluster host will need to be at the same version as, or one version ahead of, the primary's application virtual cluster at the time of cutover.
 
 To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the primary and standby clusters, you must carefully and manually apply the upgrade. We recommend upgrading the standby cluster first. It is preferable to avoid a situation in which the application virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
+
+## Demo video
+
+Learn how to harness Physical Cluster Replication to meet your RTO and RPO requirements with the following demo:
+
+{% include_cached youtube.html video_id="VDqw4XIpEAk" %}

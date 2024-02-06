@@ -28,14 +28,18 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET CLUSTER SETTING kv.rangefeed.enabled = true;
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
 {% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}
 
 Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
 
-The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
+The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance. Refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) for more detail.
+
+#### Mux rangefeeds
+
+{% include {{ page.version.version }}/cdc/mux-rangefeed.md %}
 
 ### Recommendations for the number of target tables
 

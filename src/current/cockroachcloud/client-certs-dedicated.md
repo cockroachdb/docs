@@ -239,9 +239,7 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 ## Update the CA certificate for a cluster
 
 {{site.data.alerts.callout_danger}}
-Clients must be provisioned with client certificates signed by the new CA prior to the update, or their new connections will be blocked.
-
-This operation also interrupts existing database connections. End users should be informed of a potential service interruption.
+Clients must be provisioned with client certificates signed by the cluster's CA prior to the update, or their new connections will be blocked.
 {{site.data.alerts.end}}
 
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
