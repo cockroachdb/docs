@@ -137,7 +137,7 @@ When a user connects to a database, either via the built-in SQL client or a clie
 <a id="role-options"></a>
 ### Supported privileges
 
-System-level privileges (also known as global privileges) offer granular control over a user's actions when working with CockroachDB.
+System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model]({% link {{ page.version.version }}/create-role.md %}#role-options).
 
 You can work with system-level privileges using the [`GRANT `]({% link {{ page.version.version }}/grant.md %}) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`]({% link {{ page.version.version }}/show-system-grants.md %}) statement.
 
