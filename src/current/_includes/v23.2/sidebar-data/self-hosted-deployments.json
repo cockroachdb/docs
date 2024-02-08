@@ -542,7 +542,7 @@
                 "title": "Backups and Restores",
                 "items": [
                   {
-                    "titles": "Overview",
+                    "title": "Overview",
                     "urls": [
                       "/${VERSION}/backup-and-restore-overview.html"
                     ]
