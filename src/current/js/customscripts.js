@@ -240,9 +240,9 @@ $(function() {
     // find the filter set with this scope
     $('[data-scope].current').each(function(index) {
       // console.log("data-scope is: " + $(this).attr('data-scope'));
-      // if the target scope is in the same group as the current scope for that 
+      // if the target scope is in the same group as the current scope for that
       // group, remove the current class
-      
+
       const sectionScopes = $(this).attr('data-scope').split(" ");
       // multiple scopes can be set, so try each scope, but stop after removing current
       sectionScopes.every(v => {
@@ -442,7 +442,16 @@ $(function() {
 
   clipboard.on('success', function(e) {
     $(e.trigger).addClass('copy-clipboard--copied');
-    // $(e.trigger).find('.copy-clipboard__text').text('copied');
+
+    console.log(window.analytics);
+
+    try {
+      window.analytics.track('Link copied', {
+        text: e.text // The copied text is sent as a property
+      });
+    } catch (e) {
+      console.log("Error here", e);
+    }
   });
 
   $('[data-tooltip]').tooltip();
