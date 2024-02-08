@@ -1,0 +1,1 @@
+This metric tracks the number of active automatically generated statistics jobs that could also be consuming resources. Ensure that foreground SQL traffic is not impacted by correlating this metric with SQL latency and query volume metrics.

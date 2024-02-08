@@ -1,0 +1,1 @@
+This metric tracks the total number of all running changefeeds.

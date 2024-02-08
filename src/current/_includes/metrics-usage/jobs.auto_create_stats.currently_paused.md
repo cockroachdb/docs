@@ -1,0 +1,1 @@
+This metric is a high-level indicator that automatically generated statistics jobs are paused which can lead to the query optimizer running with stale statistics. Stale statistics can cause suboptimal query plans to be selected leading to poor query performance.

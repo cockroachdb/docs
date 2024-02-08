@@ -1,0 +1,1 @@
+The CPU and I/O resources being used by queries in the cluster. Simple queries consume few RUs, while complicated queries with many reads and writes consume more RUs. <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-resource-usage">Learn more.</a>

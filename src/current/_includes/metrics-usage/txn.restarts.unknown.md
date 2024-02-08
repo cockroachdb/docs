@@ -1,0 +1,1 @@
+The errors tracked by this metric are generally due to deadlocks. Deadlocks can often be prevented with a considered transaction design. Identify the conflicting transactions involved in the deadlocks, then, if possible, redesign the business logic implementation prone to deadlocks.

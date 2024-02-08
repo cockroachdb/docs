@@ -1,0 +1,1 @@
+The number of RUs that were consumed due to cross-region networking. Correlate these metrics with Request Units (RUs). <a href="https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#multi-region-clusters">Learn more</a>.

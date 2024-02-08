@@ -1,0 +1,1 @@
+This high-level metric reflects workload performance. A persistently high number of SQL transaction abort errors may negatively impact the workload performance and needs to be investigated.

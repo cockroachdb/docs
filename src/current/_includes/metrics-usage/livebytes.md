@@ -1,0 +1,1 @@
+The amount of data being stored in the cluster. This is the logical number of live bytes and does not account for compression or replication.

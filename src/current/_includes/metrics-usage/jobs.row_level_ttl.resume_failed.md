@@ -1,0 +1,1 @@
+This metric should remain at zero. Repeated errors means the Row-Level TTL job is not deleting data.

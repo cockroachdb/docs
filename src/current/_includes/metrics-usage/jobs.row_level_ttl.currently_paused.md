@@ -1,0 +1,1 @@
+Monitor this metric to ensure the Row-Level TTL job does not remain paused inadvertently for an extended period.
