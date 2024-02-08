@@ -53,7 +53,7 @@ These instructions assume that you use macOS. If you use Linux, use your default
 8. Use Gem from Homebrew to install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site. **Use the `brew-gem` command. If you use `gem`, you'll be using the outdated version of Ruby that installs with macOS.**
 
     ```
-    sudo brew-gem install jekyll bundler
+    brew-gem install jekyll bundler
     ```
 
     If you get a permission error, make sure you're using `brew-gem` and Ruby from Homebrew, rather than `/usr/bin/gem` and `/usr/bin/ruby`.
