@@ -34,17 +34,17 @@ To make `READ COMMITTED` isolation available to use on a cluster, enable the fol
 SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 ~~~
 
-After you enable the cluster setting, you can configure `READ COMMITTED` isolation at the [session](#set-the-current-session-to-read-committed) or [transaction](#set-the-current-transaction-to-read-committed) level.
+After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
 
 {{site.data.alerts.callout_info}}
 If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
 {{site.data.alerts.end}}
 
-### Set the current session to `READ COMMITTED`
+### Set the default isolation level to `READ COMMITTED`
 
-To set all future transactions in a session to run at `READ COMMITTED` isolation, use one of the following options:
+To set all future transactions to run at `READ COMMITTED` isolation, use one of the following options:
 
-- The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement:
+- The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement, which applies to the current session:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -53,7 +53,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 
 - The [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) session variable:
 
-  	At the cluster level:
+  	At the session level:
 
   	{% include_cached copy-clipboard.html %}
   	~~~ sql
@@ -81,7 +81,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 	cockroach sql -–url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read%20committed'
 	~~~
 
-To view the isolation level of a session:
+To view the default isolation level of the session:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
