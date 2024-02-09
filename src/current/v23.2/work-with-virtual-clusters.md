@@ -15,27 +15,35 @@ This page shows how to work with a cluster with [cluster virtualization]({% link
 
 ## Connecting to a cluster
 
-This section shows how to connect to a virtual cluster or to the system interface using SQL clients or the DB Console.
+This section shows how to connect to a virtual cluster or to the system virtual cluster using SQL clients or the DB Console.
 
+{% capture pcr_application_cluster_note %}
 {{site.data.alerts.callout_success}}
-When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the name of the virtual cluster is automatically set to `application`.
+When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the name of the application virtual cluster is automatically set to `application`.
 {{site.data.alerts.end}}
+{% endcapture %}
+
+{{ pcr_application_cluster_note }}
 
 ### DB Console
 
 This section shows how to connect using DB Console when cluster virtualization is enabled.
 
 {{site.data.alerts.callout_success}}
-If the same SQL user has the `admin` role on the system interface and also has roles in the virtual cluster, that user can switch between them from the top of the DB Console.
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles in the virtual cluster, that user can switch between them from the top of the DB Console.
 {{site.data.alerts.end}}
 
 #### Connect to a virtual cluster
 
-By default when you connect using the DB Console, you are logged into the `application` virtual cluster. You can optionally add the `GET` URL parameter `optionsl=-ccluster=application` to the DB Console URL so that the intention to connect to the `application` virtual cluster is more clear.
+By default when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the application virtual cluster is named `application` by default.
 
-#### Connect to the system interface
+{{site.data.alerts.callout_success}}
+ You can optionally add the `GET` URL parameter `optionsl=-ccluster=application` to the DB Console URL so that the intention to connect to the `application` virtual cluster is more clear.
+{{site.data.alerts.end}}
 
-To connect to the system interface using the DB Console, add the `GET` URL parameter `optionsl=-ccluster=system` to the DB Console URL.
+#### Connect to the system virtual cluster
+
+To connect to the system virtual cluster using the DB Console, add the `GET` URL parameter `optionsl=-ccluster=system` to the DB Console URL.
 
 ### SQL clients
 
@@ -55,15 +63,15 @@ cockroach sql --url \
 --certs-dir "certs"
 ~~~
 
-#### Connect to the system interface
+#### Connect to the system virtual cluster
 
 {{site.data.alerts.callout_info}}
-You should only connect to the system interface for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
+You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
 {{site.data.alerts.end}}
 
-To connect to the system interface, pass the `options=-ccluster=system` parameter in the URL. You must have the `admin` role on the system interface.
+To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL. You must have the `admin` role on the system virtual cluster.
 
-For example, to connect to the system interface using the `cockroach sql` command:
+For example, to connect to the system virtual cluster using the `cockroach sql` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -72,29 +80,29 @@ cockroach sql --url \
 --certs-dir "certs"
 ~~~
 
-#### Grant access to the system interface
+#### Grant access to the system virtual cluster
 
-To grant access to the system interface, you must connect to the system interface as a user with the `admin` role, then grant the `admin` role to the SQL user.
+To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant the `admin` role to the SQL user.
 
 {{site.data.alerts.callout_info}}
-To prevent unauthorized access, you should limit the users with access to the system interface.
+To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
 {{site.data.alerts.end}}
 
 ## Observability
 
-When cluster virtualization is enabled, cluster logs and metrics are scoped to a virtual cluster or to the system interface.
+When cluster virtualization is enabled, cluster logs and metrics are scoped to a virtual cluster or to the system virtual cluster.
 
 ### View cluster logs with cluster virtualization enabled
 
-When cluster virtualization is enabled, each cluster log is labeled with the name of a virtual cluster or with the system interface, depending on its scope.
+When cluster virtualization is enabled, each cluster log is labeled with the name of a virtual cluster or with the system virtual cluster, depending on its scope.
 
 ### Work with metrics with cluster virtualization enabled
 
-When cluster virtualization is enabled, cluster metrics are scoped to either a virtual cluster or the system interface. Certain metrics related to the storage cluster are available only from the system interface. For details, refer to [Cluster Virtualization Metric Scopes]({% link {{ page.version.version}}/cluster-virtualization-metric-scopes.md %}.
+When cluster virtualization is enabled, cluster metrics are scoped to either a virtual cluster or the system virtual cluster. Certain metrics related to the storage cluster are available only from the system virtual cluster. For details, refer to [Cluster Virtualization Metric Scopes]({% link {{ page.version.version}}/cluster-virtualization-metric-scopes.md %}.
 
-When connected to a virtual cluster using the DB Console, most pages and views are scoped to the virtual cluster and exclude metrics for other virtual clusters and the system interface. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+When connected to a virtual cluster using the DB Console, most pages and views are scoped to the virtual cluster and exclude metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
-Some pages and views are only viewable from the system interface, including those pertaining to overall cluster health.
+Some pages and views are only viewable from the system virtual cluster, including those pertaining to overall cluster health.
 
 ## Disaster recovery
 
@@ -105,7 +113,7 @@ When cluster virtualization is enabled, the default scope of [backup]({% link {{
 To back up a virtual cluster:
 
 1. [Connect to the virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system interface is omitted.
+1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
 
 {{site.data.alerts.callout_success}}
 A virtual cluster can be [restored](#restore-a-virtual-cluster) to the original virtual cluster on the original storage cluster, a different virtual cluster on the original storage cluster, or a different virtual cluster on a different storage cluster with cluster virtualization enabled.
@@ -113,10 +121,10 @@ A virtual cluster can be [restored](#restore-a-virtual-cluster) to the original 
 
 ### Back up the entire cluster
 
-To back up the entire storage cluster, including all virtual clusters and the system interface:
+To back up the entire storage cluster, including all virtual clusters and the system virtual cluster:
 
-1. [Connect to the system interface](#connect-to-the-system-interface) as a user with the `admin` role on the system interface.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system interface are included in the backup.
+1. [Connect to the system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
+1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system virtual cluster are included in the backup.
 
 ### Restore a virtual cluster
 
@@ -131,14 +139,14 @@ To restore only a single virtual cluster:
 
 ### Restore the entire cluster
 
-To restore the entire storage cluster, including all virtual clusters and the system interface:
+To restore the entire storage cluster, including all virtual clusters and the system virtual cluster:
 
-1. [Connect to the destination system interface](#connect-to-the-system-interface) as a user with the `admin` role on the system interface.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_TENANTS` flag. All virtual clusters and the system interface are restored.
+1. [Connect to the destination system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
+1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
 
 ### Cluster logs
 
-When cluster virtualization is enabled, cluster log messages for the system interface and each virtual cluster are labeled according to the cluster they are associated with.
+When cluster virtualization is enabled, cluster log messages for the system virtual cluster and each virtual cluster are labeled according to the cluster they are associated with.
 
 ### SQL API
 
@@ -146,24 +154,24 @@ When cluster virtualization is enabled, certain low-level SQL APIs (TODO: Which 
 
 ### Span Config Bounds
 
-- Span config bounds can be set at the overall cluster level or in the system interface. Span config bounds set in the system interface override zone config settings that are set in a virtual cluster.
-- Zone configs can be set only in a virtual cluster, but span config bounds set in the system interface override zone config settings that are set in a virtual cluster.
+- Span config bounds can be set at the overall cluster level or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.
+- Zone configs can be set only in a virtual cluster, but span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.
 
 ### DB Console
 
-In the DB Console, users with access to both the system interface and virtual clusters can select which cluster to connect to.
+In the DB Console, users with access to both the system virtual cluster and virtual clusters can select which cluster to connect to.
 
-Some pages and views are only viewable from the system interface, including those pertaining to overall cluster health.
+Some pages and views are only viewable from the system virtual cluster, including those pertaining to overall cluster health.
 
-When connected to a virtual cluster, most pages and views are scoped to the virtual cluster. by default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system interface. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+When connected to a virtual cluster, most pages and views are scoped to the virtual cluster. by default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
 ## Configure cluster settings
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system interface.
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
 
-- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system interface. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
-- When a cluster setting is scoped to the system interface, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system interface, you must have the `admin` role on the system interface, and you must connect to the system interface before configuring the setting.
-- When a cluster setting is system-visible, it can be set only from the system interface but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration.
+- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
+- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting.
+- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
 
@@ -172,15 +180,15 @@ For more details, including the scope of each cluster setting, refer to [Cluster
 When cluster virtualization is enabled to upgrade to a new major version, you must:
 
 1. Replace the binary on each node and restart the node.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system interface to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
-1. After the system interface is finalized, finalize the upgrade on the virtual cluster to upgrade it, or roll it back if you decide not to finalize it. Until it is finalized, the virtual cluster still operates in compatibility with the previous major version, some features may not be available on the virtual cluster.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
+1. After the system virtual cluster is finalized, finalize the upgrade on the virtual cluster to upgrade it, or roll it back if you decide not to finalize it. Until it is finalized, the virtual cluster still operates in compatibility with the previous major version, some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system interface without impacting schemas or data in virtual clusters. The system interface can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system interface on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
-To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required. It is not possible for a virtual cluster to run a different patch version than the system interface.
+To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required. It is not possible for a virtual cluster to run a different patch version than the system virtual cluster.
 
 - Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
-- A single physical cluster can have a maximum of one system interface and one virtual cluster.
+- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
 
 ## See also
 
@@ -194,4 +202,4 @@ To apply a patch-version upgrade, you must only replace the binary on each node 
 In CockroachDB {{page.version.version}}, cluster virtualization has the following limitations:
 
 - Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
-- A single physical cluster can have a maximum of one system interface and one virtual cluster.
+- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.

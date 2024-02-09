@@ -79,7 +79,7 @@ The node topology of the two clusters does not need to be the same. For example,
 Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for details.
 {{site.data.alerts.end}}
 
-### Connect to the system interface and virtual cluster
+### Connect to the system virtual cluster and virtual cluster
 
 A cluster with physical cluster replication enabled is a [virtualized cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}); the primary and standby clusters each contain:
 
@@ -87,7 +87,7 @@ A cluster with physical cluster replication enabled is a [virtualized cluster]({
 
 To connect to a virtualized cluster using the SQL shell:
 
-- For the system interface, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
+- For the system virtual cluster, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -102,7 +102,7 @@ To connect to a virtualized cluster using the SQL shell:
     ~~~
 
 {{site.data.alerts.callout_info}}
-Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system interface.
+Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).

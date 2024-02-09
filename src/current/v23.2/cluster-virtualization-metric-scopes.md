@@ -1,6 +1,6 @@
 ---
 title: Cluster Metric Scopes with Cluster Virtualization enabled
-summary: Learn which metrics are scoped to the system interface and to virtual clusters when Cluster Virtualization is enabled.
+summary: Learn which metrics are scoped to the system virtual cluster and to virtual clusters when Cluster Virtualization is enabled.
 toc: true
 docs_area: deploy
 ---
@@ -13,8 +13,8 @@ Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }
 
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [metric]({% link {{ page.version.version }}/metrics.md %}) has a scope:
 
-- When a metric is scoped to the virtual cluster, the metric is tracked separately for each virtual cluster (including the system interface). Most metrics are scoped to the virtual cluster. Refer to [Metrics scoped to the virtual cluster](#metrics-scoped-to-the-virtual-cluster).
-- When a metric is scoped to the system interface, it is included only in the metrics for the system interface. These metrics provide information about the underlying storage cluster's performance. Refer to [Metrics scoped to the system interface](#metrics-scoped-to-the-system-interface).
+- When a metric is scoped to the virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to the virtual cluster. Refer to [Metrics scoped to the virtual cluster](#metrics-scoped-to-the-virtual-cluster).
+- When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying storage cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
 {% comment %}
 Src: cockroach gen metrics-list against v23.2.0-rc.2
@@ -23,7 +23,7 @@ Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRp
 (shared CRL-internal). There is a filter-view on the STORAGE column:
 
 APPLICATION: Scoped to the virtual cluster
-STORAGE: Scoped to the system interface
+STORAGE: Scoped to the system virtual cluster
 SERVER: n/a
 {% endcomment %}
 
@@ -809,7 +809,7 @@ SERVER: n/a
 - `txn.rollbacks.async.failed`
 - `txn.rollbacks.failed`
 
-## Metrics scoped to the system interface
+## Metrics scoped to the system virtual cluster
 
 {% comment %}LAYER=STORAGE{% endcomment %}
 

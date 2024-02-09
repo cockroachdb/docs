@@ -1,6 +1,6 @@
 ---
 title: Cluster Setting Scopes with Cluster Virtualization enabled
-summary: Learn which cluster settings are scoped to the system interface and to virtual clusters when Cluster Virtualization is enabled.
+summary: Learn which cluster settings are scoped to the system virtual cluster and to virtual clusters when Cluster Virtualization is enabled.
 toc: true
 docs_area: deploy
 ---
@@ -11,11 +11,11 @@ docs_area: deploy
 Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system interface.
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
 
-- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system interface. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster. Refer to [Cluster settings scoped to the virtual cluster](#cluster-settings-scoped-to-the-virtual-cluster).
-- When a cluster setting is scoped to the system interface, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system interface, you must have the `admin` role on the system interface, and you must connect to the system interface before configuring the setting. Refer to [Cluster settings scoped to the system interface](#cluster-settings-scoped-to-the-system-interface).
-- When a cluster setting is system-visible, it can be set only from the system interface but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration. Refer to [System-visible cluster settings](#system-visible-cluster-settings).
+- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster. Refer to [Cluster settings scoped to the virtual cluster](#cluster-settings-scoped-to-the-virtual-cluster).
+- When a cluster setting is scoped to the system virtual cluster, it affects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. Refer to [Cluster settings scoped to the system virtual cluster](#cluster-settings-scoped-to-the-system-virtual-cluster).
+- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration. Refer to [System-visible cluster settings](#system-visible-cluster-settings).
 
 {% comment %}
 Src: cockroach gen settings-list --show-class --show-format against v23.2.0-rc.2
@@ -24,8 +24,8 @@ Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRp
 (shared CRL-internal). There is a filter-view on the Class column:
 
 application: Scoped to the virtual cluster
-system interface: Scoped to the system interface
-system visible: Can be set / modified only from the system interface, but can be viewed from a VC
+system virtual cluster: Scoped to the system virtual cluster
+system visible: Can be set / modified only from the system virtual cluster, but can be viewed from a VC
 {% endcomment %}
 
 ## Cluster settings scoped to the virtual cluster
@@ -260,9 +260,9 @@ system visible: Can be set / modified only from the system interface, but can be
 - `ui.display_timezone`
 - `version`
 
-## Cluster settings scoped to the system interface
+## Cluster settings scoped to the system virtual cluster
 
-{% comment %}Class=system interface{% endcomment %}
+{% comment %}Class=system virtual cluster{% endcomment %}
 
 - `admission.disk_bandwidth_tokens.elastic.enabled`
 - `admission.kv.enabled`
