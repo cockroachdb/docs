@@ -139,7 +139,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The coalescing of storage ranges for each table, index, or partition (collectively referred to as "schema objects") into a single range when individual schema objects are smaller than the default configured maximum range size (controlled using zone configs, specifically the `range_max_bytes parameter`). This change improves scalability with respect to the number of schema objects, since the underlying range count is no longer a potential performance bottleneck. After finalizing the upgrade to v23.2, you may observe a round of range merges and snapshot transfers. To disable this optimization, set the `spanconfig.storage_coalesce_adjacent.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{ page.version.version }}/cluster-settings) to `false`. Finalization is not required before disabling the optimization. See the [v23.1 release notes]({% link releases/v23.1.md %}) for `SHOW RANGES` for more details. [#102961][#102961]
+- The coalescing of storage ranges for each table, index, or partition (collectively referred to as "schema objects") into a single range when individual schema objects are smaller than the default configured maximum range size (controlled using zone configs, specifically the `range_max_bytes parameter`). This change improves scalability with respect to the number of schema objects, since the underlying range count is no longer a potential performance bottleneck. After finalizing the upgrade to v23.2, you may observe a round of range merges and snapshot transfers. To disable this optimization, **before finalizing the upgrade**, set the `spanconfig.storage_coalesce_adjacent.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{ page.version.version }}/cluster-settings) to `false`. See the [v23.1 release notes]({% link releases/v23.1.md %}) for `SHOW RANGES` for more details. [#102961][#102961]
 - The new output log format, which allows configuration of a time zone in log output. Before configuring a time zone, the cluster must be finalized on v23.2. [#104265][#104265]
 - Performance improvements when a node reclaims disk space. [#106177][#106177]
 - The following [admission control](https://www.cockroachlabs.com/docs/{{ page.version.version }}/admission-control#operations-subject-to-admission-control) mechanisms, which help to maintain cluster performance and availability when some nodes experience high load: <ul><li>Delete operations</li><li>Replication</li>[#98308][#98308]
@@ -323,3 +323,14 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [Collect Debug Information]({% link {{ page.version.version }}/cockroach-debug-zip.md %})
 - [View Version Details]({% link {{ page.version.version }}/cockroach-version.md %})
 - [Release notes for our latest version](https://www.cockroachlabs.com/docs/releases/{{page.version.version}})
+
+[#102961]: https://github.com/cockroachdb/cockroach/pull/102961
+[#104265]: https://github.com/cockroachdb/cockroach/pull/104265
+[#107474]: https://github.com/cockroachdb/cockroach/pull/107474
+[#106177]: https://github.com/cockroachdb/cockroach/pull/106177
+[#98308]: https://github.com/cockroachdb/cockroach/pull/98308
+[#105477]: https://github.com/cockroachdb/cockroach/pull/105477
+[#107903]: https://github.com/cockroachdb/cockroach/pull/107903
+[#108190]: https://github.com/cockroachdb/cockroach/pull/108190
+[#110649]: https://github.com/cockroachdb/cockroach/pull/110649
+[#114203]: https://github.com/cockroachdb/cockroach/pull/114203
