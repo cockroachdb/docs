@@ -51,6 +51,10 @@ During enablement of the feature, a list of affected members is shown, and those
 ### Ensure that at least one organization admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization
 
 {{site.data.alerts.callout_success}}
+You can now use[Folders]({% link cockroachcloud/folders.md %}) (Limited Access) to  to group, organize, and manage access to clusters in a hierarchy within a single CockroachDB Cloud organization. When compared to managing multiple CockroachDB Cloud organizations, this approach simplifies billing and centralizes cluster administration and observability. To learn more, contact your Cockroach Labs account team.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
 If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that the admin who is enabling CockroachDB {{ site.data.products.cloud }} Organization SSO is not a member of any other CockroachDB {{ site.data.products.cloud }} organization.
 {{site.data.alerts.end}}
 
@@ -195,7 +199,11 @@ To configure a custom SAML authentication method using the service provider-init
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
 1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
-1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}. Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Refer to the documentation for your IdP.
+1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}.
+
+    Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Otherwise, [autoprovisioning](#autoprovisioning) for the authentication method will fail, and users will need to be invited before they can sign in. To configure the SAML assertion, refer to the documentation for your IdP.
+
+    In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
 1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 ## Require SSO
