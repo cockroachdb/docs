@@ -92,20 +92,13 @@ We do **not** recommend adjusting these settings unless you are running a large 
 Adjusting `kv.closed_timestamp.target_duration` could have a detrimental impact on [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). If you are using follower reads, refer to the [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) cluster setting instead to ease changefeed impact on foreground SQL latency.
 {{site.data.alerts.end}}
 
-`kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by aborting or retrying ongoing requests that are below this time.
+`kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by possibly retrying or aborting ongoing writes that are below this time.
 
 A changefeed aggregates checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). In the context of changefeeds, `kv.closed_timestamp.target_duration` affects how old the checkpoints will be, which will determine the latency before changefeeds can consider the history of an event complete.
 
-As a result, adjusting `kv.closed_timestamp.target_duration` can affect changefeeds encountering latency **and** changefeeds causing foreground SQL latency. In clusters running large-scale workloads, it may be helpful to:
-
-- **Decrease** the value for a lower changefeed emission latency — that is, the time from committing a write until the changefeed emits that event.
-- **Increase** the value to reduce the potential impact of changefeeds on SQL latency. This will lower the resource cost of changefeeds, which can be especially important for workloads with tables in the TB range of data.
-
-It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds. When you create a changefeed with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}), you can adjust this with the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option.
-
 #### `kv.rangefeed.closed_timestamp_refresh_interval`
 
-**Default:** `3s`
+**Default:** `0s`
 
 This setting controls the interval at which [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) updates are delivered to [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) and in turn emitted as a [changefeed checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
 
@@ -113,9 +106,22 @@ Increasing the interval value will lengthen the delay between each checkpoint, w
 
 If you are running changefeeds at a large scale and notice foreground SQL latency, we recommend increasing this setting.
 
-{{site.data.alerts.callout_info}}
-The `kv.closed_timestamp.side_transport_interval` cluster setting controls how often the closed timestamp is updated (with a default of `200ms`). Although the closed timestamp is updated every `200ms`, CockroachDB will only emit an event across the rangefeed containing the closed timestamp value every `3s` as per the `kv.rangefeed.closed_timestamp_refresh_interval` value.
-{{site.data.alerts.end}}
+As a result, adjusting `kv.rangefeed.closed_timestamp_refresh_interval` can affect changefeeds encountering latency **and** changefeeds causing foreground SQL latency. In clusters running large-scale workloads, it may be helpful to:
+
+- **Decrease** the value for a lower changefeed emission latency — that is, how often a client can confirm that all relevant events up to a certain timestamp have been emitted.
+- **Increase** the value to reduce the potential impact of changefeeds on SQL latency. This will lower the resource cost of changefeeds, which can be especially important for workloads with tables in the TB range of data.
+
+It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds. When you create a changefeed with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}), you can adjust this with the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option.
+
+#### `kv.closed_timestamp.side_transport_interval`
+
+**Default:** `200ms`
+
+The `kv.closed_timestamp.side_transport_interval` cluster setting controls how often the closed timestamp is updated. Although the closed timestamp is updated every `200ms`, CockroachDB will only emit an event across the rangefeed containing the closed timestamp value every `3s` as per the [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) value.
+
+`kv.closed_timestamp.side_transport_interval` is helpful when ranges are inactive. The closed timestamp subsystem usually propagates [closed timestamps via Raft commands]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps). However, an idle range (i.e., a range not actively receiving or processing requests) does not receive any Raft commands, so it would stall. This setting is an efficient mechanism to broadcast closed timestamp updates for all idle ranges between nodes.
+
+Adjusting `kv.closed_timestamp.side_transport_interval` will affect both [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) and changefeeds. While you can use, `kv.closed_timestamp.side_transport_interval` to tune the checkpointing interval, we recommend `kv.rangefeed.closed_timestamp_refresh_interval` if you are using follower reads.
 
 #### `kv.rangefeed.closed_timestamp_smear_interval`
 
