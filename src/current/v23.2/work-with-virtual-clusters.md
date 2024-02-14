@@ -15,11 +15,11 @@ This page shows how to work with a cluster with [cluster virtualization]({% link
 
 ## Connecting to a cluster
 
-This section shows how to connect to a virtual cluster or to the system virtual cluster using SQL clients or the DB Console.
+This section shows how to use SQL clients or the DB Console to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
 {{site.data.alerts.callout_success}}
-When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the name of the application virtual cluster is automatically set to `application`.
+When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 {{site.data.alerts.end}}
 {% endcapture %}
 
@@ -30,43 +30,56 @@ When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-
 This section shows how to connect using DB Console when cluster virtualization is enabled.
 
 {{site.data.alerts.callout_success}}
-If the same SQL user has the `admin` role on the system virtual cluster and also has roles in the virtual cluster, that user can switch between them from the top of the DB Console.
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
 {{site.data.alerts.end}}
 
-#### Connect to a virtual cluster
+Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
-By default when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the application virtual cluster is named `application` by default.
+To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
 {{site.data.alerts.callout_success}}
- You can optionally add the `GET` URL parameter `optionsl=-ccluster=application` to the DB Console URL so that the intention to connect to the `application` virtual cluster is more clear.
+When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
 {{site.data.alerts.end}}
 
 #### Connect to the system virtual cluster
 
-To connect to the system virtual cluster using the DB Console, add the `GET` URL parameter `optionsl=-ccluster=system` to the DB Console URL.
+{{site.data.alerts.callout_info}}
+You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
+{{site.data.alerts.end}}
+
+To connect to the system virtual cluster using the DB Console, add the `GET` URL parameter `options=-ccluster=system` to the DB Console URL.
 
 ### SQL clients
 
 This section shows how to connect using `cockroach sql` when cluster virtualization is enabled.
 
-#### Connect to a virtual cluster
+Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
-By default when you connect using a SQL client, you are logged into the `application` virtual cluster. You can optionally add the `optionsl=-ccluster=application` option to the connection string so that the intention to connect to the `application` virtual cluster is more clear. Replace `virtual_cluster_name` with the name of the virtual cluster.
+To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the connection URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster. You must use `--url` rather than `--host`.
 
-
-For example, to connect to the `application` virtual cluster using the `cockroach sql` command:
+For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257/?options=-optionsl=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
+
+Replace:
+
+- `{node IP or hostname}`: the IP or hostname of a cluster node.
+- `{virtual_cluster_name}`: the name of the virtual cluster.
+- `{certs_dir}`: The directory containing the cluster's certificates.
+
+{{site.data.alerts.callout_success}}
+When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the connection string so that the intention to connect to a specific virtual cluster is more clear.
+{{site.data.alerts.end}}
 
 #### Connect to the system virtual cluster
 
 {{site.data.alerts.callout_info}}
-You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
+You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL. You must have the `admin` role on the system virtual cluster.
@@ -80,9 +93,12 @@ cockroach sql --url \
 --certs-dir "certs"
 ~~~
 
-#### Grant access to the system virtual cluster
+## Grant access to the system virtual cluster
 
-To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant the `admin` role to the SQL user.
+To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
+
+- The `admin` [role]({% link v23.2/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md $}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 
 {{site.data.alerts.callout_info}}
 To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
@@ -94,13 +110,13 @@ When cluster virtualization is enabled, cluster logs and metrics are scoped to a
 
 ### View cluster logs with cluster virtualization enabled
 
-When cluster virtualization is enabled, each cluster log is labeled with the name of a virtual cluster or with the system virtual cluster, depending on its scope.
+When cluster virtualization is enabled, each cluster log is labeled with the name of the virtual cluster that generated it, including the system virtual cluster.
 
 ### Work with metrics with cluster virtualization enabled
 
-When cluster virtualization is enabled, cluster metrics are scoped to either a virtual cluster or the system virtual cluster. Certain metrics related to the storage cluster are available only from the system virtual cluster. For details, refer to [Cluster Virtualization Metric Scopes]({% link {{ page.version.version}}/cluster-virtualization-metric-scopes.md %}.
+When cluster virtualization is enabled, cluster metrics are scoped to non-system virtual clusters or the system virtual cluster. Certain metrics related to the underlying storage cluster are available only from the system virtual cluster. For details, refer to [Cluster Virtualization Metric Scopes]({% link {{ page.version.version}}/cluster-virtualization-metric-scopes.md %}).
 
-When connected to a virtual cluster using the DB Console, most pages and views are scoped to the virtual cluster and exclude metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+When connected to a virtual cluster using the DB Console, most pages and views are scoped to the virtual cluster, and metrics for other virtual clusters, including the system virtual cluster, are excluded. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
 Some pages and views are only viewable from the system virtual cluster, including those pertaining to overall cluster health.
 
