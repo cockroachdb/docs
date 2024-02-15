@@ -5442,6 +5442,13 @@
   sha: 9ad399071aba1d361202f9ed6f64aae4f9351f4b
   has_sql_only: true
   has_sha256sum: true
+  cloud_only: True
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+    This version is currently available only for select
+    CockroachDB Cloud clusters. To request to upgrade
+    a CockroachDB self-hosted cluster to this version,
+    [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
   mac:
     mac_arm: true
     mac_arm_experimental: true
