@@ -15,9 +15,10 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicate
 
 ### Cluster Maintenance
 
-[Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) receive email alerts when your cluster undergoes an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades). 
+[Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) receive email alerts when: 
 
-- When a cluster is scheduled for [maintenance or a patch upgrade]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete. 
+- When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
 - When a cluster's CockroachDB version is nearing [end of life](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-cycle) and must be upgraded to maintain support.
 
 ### CMEK
