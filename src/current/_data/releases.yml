@@ -5442,7 +5442,7 @@
   sha: 9ad399071aba1d361202f9ed6f64aae4f9351f4b
   has_sql_only: true
   has_sha256sum: true
-  cloud_only: True
+  cloud_only: true
   cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
   cloud_only_message: >
     This version is currently available only for select
@@ -5456,14 +5456,14 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: true
+    linux_arm_experimental: false
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
-    docker_arm_experimental: true
+    docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.14
