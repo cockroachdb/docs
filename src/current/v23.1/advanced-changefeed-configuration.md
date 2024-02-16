@@ -81,7 +81,7 @@ When you are running large workloads, changefeeds can **encounter** or **cause**
 The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) reduce bursts of [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) work so that updates are paced steadily over time.
 
 {{site.data.alerts.callout_danger}}
-We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html). Thoroughly test different cluster setting configuration before deploying to production.
+We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html). Thoroughly test different cluster setting configurations before deploying to production.
 {{site.data.alerts.end}}
 
 #### `kv.closed_timestamp.target_duration`
@@ -92,7 +92,7 @@ We do **not** recommend adjusting these settings unless you are running a large 
 Adjusting `kv.closed_timestamp.target_duration` could have a detrimental impact on [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). If you are using follower reads, refer to the [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) cluster setting instead to ease changefeed impact on foreground SQL latency.
 {{site.data.alerts.end}}
 
-`kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by possibly retrying or aborting ongoing writes that are below this time.
+`kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value of `3s`, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by possibly retrying or aborting ongoing writes that are below this time.
 
 A changefeed aggregates checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). In the context of changefeeds, `kv.closed_timestamp.target_duration` affects how old the checkpoints will be, which will determine the latency before changefeeds can consider the history of an event complete.
 
@@ -121,7 +121,7 @@ The `kv.closed_timestamp.side_transport_interval` cluster setting controls how o
 
 `kv.closed_timestamp.side_transport_interval` is helpful when ranges are inactive. The closed timestamp subsystem usually propagates [closed timestamps via Raft commands]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps). However, an idle range that does not see any writes does not receive any Raft commands, so it would stall. This setting is an efficient mechanism to broadcast closed timestamp updates for all idle ranges between nodes.
 
-Adjusting `kv.closed_timestamp.side_transport_interval` will affect both [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) and changefeeds. While you can use, `kv.closed_timestamp.side_transport_interval` to tune the checkpointing interval, we recommend `kv.rangefeed.closed_timestamp_refresh_interval` if you are using follower reads.
+Adjusting `kv.closed_timestamp.side_transport_interval` will affect both [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) and changefeeds. While you can use `kv.closed_timestamp.side_transport_interval` to tune the checkpointing interval, we recommend `kv.rangefeed.closed_timestamp_refresh_interval` if you are using follower reads.
 
 #### `kv.rangefeed.closed_timestamp_smear_interval`
 
