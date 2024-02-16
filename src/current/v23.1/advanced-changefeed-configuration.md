@@ -102,7 +102,7 @@ A changefeed aggregates checkpoints across all ranges, and once the timestamp on
 
 This setting controls the interval at which [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) updates are delivered to [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) and in turn emitted as a [changefeed checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
 
-Increasing the interval value will lengthen the delay between each checkpoint, which will increase the latency of changefeed checkpoints, but reduce the impact on SQL latency due to [overload]({% link {{ page.version.version }}/admission-control.md %}#use-cases-for-admission-control) on the cluster. This happens because every range with a rangefeed has to emit a checkpoint event with this `3s` interval. As an example, across 1 million ranges that would result in 330,000 events per second, which would use more CPU resources.
+At the `0s` interval default for this setting, every range with a rangefeed will emit a checkpoint event based on the [`kv.closed_timestamp.side_transport_interval`](#kv-closed_timestamp-side_transport_interval) value (default `200ms`). Increasing the interval value for `kv.rangefeed.closed_timestamp_refresh_interval` will lengthen the delay between each checkpoint, which will increase the latency of changefeed checkpoints, but reduce the impact on SQL latency due to [overload]({% link {{ page.version.version }}/admission-control.md %}#use-cases-for-admission-control) on the cluster.
 
 If you are running changefeeds at a large scale and notice foreground SQL latency, we recommend increasing this setting.
 
@@ -117,7 +117,7 @@ It is important to note that a changefeed at default configuration does not chec
 
 **Default:** `200ms`
 
-The `kv.closed_timestamp.side_transport_interval` cluster setting controls how often the closed timestamp is updated. Although the closed timestamp is updated every `200ms`, CockroachDB will emit an event across the rangefeed containing the closed timestamp value as per the cluster's [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) setting, which by default is `0s`.
+The `kv.closed_timestamp.side_transport_interval` cluster setting controls how often the closed timestamp is updated. Although the closed timestamp is updated every `200ms` by default, CockroachDB will emit an event across the rangefeed containing the closed timestamp value as per the cluster's [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) setting, which by default is `0s`.
 
 `kv.closed_timestamp.side_transport_interval` is helpful when ranges are inactive. The closed timestamp subsystem usually propagates [closed timestamps via Raft commands]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps). However, an idle range that does not see any writes does not receive any Raft commands, so it would stall. This setting is an efficient mechanism to broadcast closed timestamp updates for all idle ranges between nodes.
 
@@ -129,7 +129,11 @@ Adjusting `kv.closed_timestamp.side_transport_interval` will affect both [follow
 
 This setting provides a mechanism to pace the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) notifications to follower replicas. At the default, the closed timestamp smear interval makes rangefeed closed timestamp delivery less spiky, which can reduce its impact on foreground SQL query latency.
 
-For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
+For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) setting and will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `kv.rangefeed.closed_timestamp_refresh_interval` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for the calculated ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
+
+{{site.data.alerts.callout_info}}
+The default of [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) is `0s`, so the event emission will fall back to [`kv.closed_timestamp.side_transport_interval`](#kv-closed_timestamp-side_transport_interval), which updates the closed timestamp (default `200ms`).
+{{site.data.alerts.end}}
 
 ### Lagging ranges
 
