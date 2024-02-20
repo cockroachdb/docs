@@ -441,12 +441,15 @@ $(function() {
 
   clipboard.on('success', function(e) {
     $(e.trigger).addClass('copy-clipboard--copied');
-    $(e.trigger).find('.copy-clipboard__text').text('copied');
+    // $(e.trigger).find('.copy-clipboard__text').text('copied');
 
+    // On successful copy, send an event to Segment. This event will be used to
+    // track the text that was copied and the URL of the page where the copy.
     try {
-      window.analytics.track("copied_core_download_link", {
-        text: e.text, // The copied text is sent as a property.
-        url: window.location.href,
+      // Wrap the event submission in a try-catch block to handle cases of
+      // `window.analytics` not yet being defined yet (on load of the page).
+      window.analytics.track("copied_terminal_text", {
+        text: e.text,
       });
     } catch (e) {
       console.error("Error submitting event", e);
@@ -489,9 +492,20 @@ $(function() {
 
     return this.hostname && this.hostname !== location.hostname && cockroachDomains.includes(this.hostname);
   }).addClass('external').attr("target","_blank").attr("rel","noopener");
+
+  // Attach a binary-link click event listener to all binary links on the page.
+  // This event listener will send an event to Segment when a binary link is clicked.
+  document.querySelectorAll("a.binary-link").forEach(link => {
+    link.addEventListener("click", function() {
+      const href = this.getAttribute('href');
+
+      try {
+        window.analytics.track("binary_link_clicked", {
+          binaryUrl: href,
+        });
+      } catch (error) {
+        console.error("Error submitting event", error);
+      }
+    });
+  });
 });
-
-
-// $('.nav-docs-mobile').on('click', function(){
-//   $('#sidebarMenu').collapse();
-// });
