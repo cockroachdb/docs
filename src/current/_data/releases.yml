@@ -5439,7 +5439,7 @@
   release_date: '2024-02-15'
   release_type: Production
   go_version: go1.21
-  sha: d883e5469388eb44c830e126408b286ac1627a2e
+  sha: 898cd6a363fd47bb92a03bac216f9bed0f64bc08
   has_sql_only: true
   has_sha256sum: true
   mac:
@@ -5460,7 +5460,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0
-  cloud_only: True
+  cloud_only: false
   cloud_only_message_short: 'Available only to select CockroachDB Cloud clusters'
   cloud_only_message: >
       This version is currently available only to select
