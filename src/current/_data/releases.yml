@@ -5436,7 +5436,7 @@
   
 - release_name: v23.2.1
   major_version: v23.2
-  release_date: '2024-02-15'
+  release_date: '2024-02-20'
   release_type: Production
   go_version: go1.21
   sha: 898cd6a363fd47bb92a03bac216f9bed0f64bc08
