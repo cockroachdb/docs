@@ -1,1 +1,1 @@
-This metric provides a useful context when assessing the state of changefeeds. This metric characterizes the end-to-end lag between a committed change and that change applied at the destination.
+This metric provides a useful context when assessing the state of <a href="https://www.cockroachlabs.com/docs/stable/change-data-capture-overview">changefeeds</a>. This metric characterizes the end-to-end lag between a committed change and that change applied at the destination.
