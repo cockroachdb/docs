@@ -34,7 +34,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB Serverless 
         {% assign tab_array = m.metric_ui_tab | remove: '["' | remove: '"]'| split: "," %}
         
             <tr>
-            <td><code>{{ m.metric_id }}</code></td>
+            <td><code>{{ m.metric_id }}</code><a id="{{ m.metric_id }}"></a></td>
             <td>{{ m.short_name }}</td>
             <td>{{ metrics-list[0].description}}</td>
             <td>{% include metrics-usage/{{ m.metric_id }}.md %}</td>

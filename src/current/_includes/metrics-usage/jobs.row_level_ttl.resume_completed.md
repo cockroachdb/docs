@@ -1,1 +1,1 @@
-If Row-Level TTL is enabled, this metric should be nonzero and correspond to the `ttl_cron` setting that was chosen. If this metric is zero, it means the job is not running.
+If <a href="https://www.cockroachlabs.com/docs/stable/row-level-ttl">Row-Level TTL</a> is enabled, this metric should be nonzero and correspond to the `ttl_cron` setting that was chosen. If this metric is zero, it means the job is not running.
