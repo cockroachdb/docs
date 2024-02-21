@@ -135,7 +135,7 @@ SHOW transaction_isolation;
 ~~~
 
 {{site.data.alerts.callout_success}}
-Starting a transaction as `READ COMMITTED` does not affect the [session-level isolation setting](#set-the-current-session-to-read-committed), which can be different.
+Starting a transaction as `READ COMMITTED` does not affect the [default isolation level](#set-the-default-isolation-level-to-read-committed), which can be different.
 {{site.data.alerts.end}}
 
 ## `READ COMMITTED` transaction behavior
