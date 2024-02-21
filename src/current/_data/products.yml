@@ -1,11 +1,11 @@
-serverless: Serverless
-
-dedicated: Dedicated
-
 core: Self-Hosted
-
-dedicated-advanced: Dedicated advanced
 
 enterprise: Enterprise
 
 cloud: Cloud
+
+basic: Basic
+
+standard: Standard
+
+advanced: Advanced
