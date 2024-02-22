@@ -3,12 +3,17 @@
 # Populate the site_url to be used by jekyll for generating sidebar and search links
 site_url="${DEPLOY_PRIME_URL}"
 JEKYLL_ENV="preview"
-echo "This is a $CONTEXT deploy"
+echo "Netlify has passed context $CONTEXT"
 if [[ "$CONTEXT" = "production" ]]; then
-	site_url="https://www.cockroachlabs.com"
-	JEKYLL_ENV="production"
-else [[ "$CONTEXT" = "branch-deploy" ]]; then
-  echo "This is a branch deploy"
+    site_url="https://www.cockroachlabs.com"
+    JEKYLL_ENV="production"
+	echo "Setting site domain to cockroachlabs.com and JEKYLL_ENV to production"
+# For deploy previews and branch deploys, use Netlify-provided domain
+# and leave JEKYLL_ENV set to "preview" for more efficient builds
+elif [[ "$CONTEXT" = "deploy-preview" ]]; then
+    echo "Using Netlify-provided deploy preview domain and setting JEKYLL_ENV to preview"
+elif [[ "$CONTEXT" = "branch-deploy" ]]; then
+    echo "Using Netlify-provided deploy preview domain and setting JEKYLL_ENV to preview"
 fi
 
 echo "url: ${site_url}" > _config_url.yml
