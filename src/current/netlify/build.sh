@@ -13,7 +13,7 @@ if [[ "$CONTEXT" = "production" ]]; then
 elif [[ "$CONTEXT" = "deploy-preview" ]]; then
     echo "Using Netlify-provided deploy preview domain and setting JEKYLL_ENV to preview"
 elif [[ "$CONTEXT" = "branch-deploy" ]]; then
-    echo "Using Netlify-provided deploy preview domain and setting JEKYLL_ENV to preview"
+    echo "Using Netlify-provided branch deploy domain and setting JEKYLL_ENV to preview"
 fi
 
 echo "url: ${site_url}" > _config_url.yml
