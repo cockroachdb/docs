@@ -8,7 +8,7 @@ docs_area: get_started
 This tutorial walks you through some of the most important CockroachDB SQL statements. For a list of all supported SQL statements, see [SQL Statements](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-statements).
 
 {{site.data.alerts.callout_info}}
-This tutorial is for {{ site.data.products.cloud }} users.
+This tutorial requires a cluster deployed on {{ site.data.products.cloud }}.
 {{site.data.alerts.end}}
 
 ## Before you begin
