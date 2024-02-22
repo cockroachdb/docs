@@ -136,4 +136,4 @@ If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org
 
 You can change your method of login authentication (email/password or SSO with a specific provider), in the [**My Account** page in the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/account/profile).
 
-Once you have changed your authentication method, you will receive a confirmation email."
+Once you have changed your authentication method, you will receive a confirmation email.
