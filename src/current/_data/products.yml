@@ -1,3 +1,9 @@
+serverless: Serverless
+
+dedicated: Dedicated
+
+dedicated-advanced: Dedicated advanced
+
 core: Self-Hosted
 
 enterprise: Enterprise
