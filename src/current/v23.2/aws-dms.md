@@ -15,36 +15,30 @@ For any issues related to AWS DMS, aside from its interaction with CockroachDB a
 Using CockroachDB as a source database within AWS DMS is unsupported.
 {{site.data.alerts.end}}
 
-## Before you begin
+## Setup
 
 Complete the following items before starting the DMS migration:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
+
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
+
 - Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your AWS DMS [target endpoint](#step-1-create-a-target-endpoint-pointing-to-cockroachdb).
-    - Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ sql
-        ALTER ROLE {username} SET copy_from_retries_enabled = true;
-        ~~~
+- Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ sql
-        ALTER ROLE {username} SET copy_from_atomic_enabled = false;
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER ROLE {username} SET copy_from_retries_enabled = true;
+    ~~~
 
-        This prevents a potential issue when migrating especially large tables with millions of rows.
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER ROLE {username} SET copy_from_atomic_enabled = false;
+    ~~~
 
-- If you are migrating to CockroachDB {{ site.data.products.dedicated }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}). This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
+    This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) for the migration to succeed.
-    {{site.data.alerts.callout_danger}}
-    You will not be able to run a [point-in-time restore]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
-    {{site.data.alerts.end}}
-
-    - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
-    - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, you can [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema.
 
     - All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
@@ -53,7 +47,19 @@ Complete the following items before starting the DMS migration:
 
     - Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
-As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
+- If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) for the migration to succeed.
+    {{site.data.alerts.callout_danger}}
+    You will not be able to run a [point-in-time restore]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
+    {{site.data.alerts.end}}
+
+    - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
+    - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
+
+- If you are migrating to CockroachDB {{ site.data.products.dedicated }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}) **before** starting the DMS migration. This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
+
+#### Supported database technologies
+
+As of publishing, AWS DMS supports migrations from these relational databases (for the most accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
 
 - Amazon Aurora
 - Amazon DocumentDB (with MongoDB compatibility)
@@ -67,6 +73,16 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 - Oracle
 - PostgreSQL
 - SAP ASE
+
+## Best practices
+
+- Do not issue reads while AWS DMS is running. AWS DMS runs explicit transactions, which can cause [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). If you need to issue reads, use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
+
+- Do not run additional workloads (e.g., benchmarking) while AWS DMS is running.
+
+- To conserve CPU, consider migrating tables in multiple [replication tasks](#step-2-create-a-database-migration-task), rather than performing a full load in a single task.
+
+- If you perform a full load, you can improve performance by defining a *parallel load* setting for selected columns. See [Table Mappings](#step-2-3-table-mappings).
 
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
@@ -95,6 +111,10 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 ## Step 2. Create a database migration task
 
 A database migration task, also known as a replication task, controls what data are moved from the source database to the target database.
+
+{{site.data.alerts.callout_success}}
+To conserve CPU, consider migrating tables in multiple replication tasks, rather than performing a full load in a single task.
+{{site.data.alerts.end}}
 
 ### Step 2.1. Task configuration
 
@@ -169,10 +189,6 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 ## Step 3. Verify the migration
 
 Data should now be moving from source to target. You can analyze the **Table Statistics** page for information about replication.
-
-{{site.data.alerts.callout_success}}
-Do not issue reads while AWS DMS is running. AWS DMS runs explicit transactions, which can cause [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). If you need to issue reads, use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
-{{site.data.alerts.end}}
 
 1. In **AWS DMS**, open **Database migration tasks** in the sidebar.
 1. Select the task you created in Step 2.
@@ -252,6 +268,14 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~
 
     Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
+
+- The following error in the CockroachDB [logs]({% link {{ page.version.version }}/logging-overview.md %}) indicates that a large transaction such as an [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %}) has created more [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) than can be quickly resolved:
+
+    ~~~
+    a transaction has hit the intent tracking limit (kv.transaction.max_intents_bytes)
+    ~~~
+
+    This will likely cause high latency and [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). Try raising the value of the [`kv.transaction_max_intents_bytes` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-transaction-max-intents-bytes) to configure CockroachDB to use more memory for quick intent resolution. Note that this memory limit is applied **per-transaction**. To prevent unexpected memory usage at higher workload concurrencies, you should also have proper memory accounting.
 
 - The following error in the CockroachDB [logs]({% link {{ page.version.version }}/logging-overview.md %}) indicates that AWS DMS is unable to copy into a table with a [computed column]({% link {{ page.version.version }}/computed-columns.md %}):
 
