@@ -41,7 +41,7 @@ To understand these resources, you need to understand a bit about the CockroachD
 
 ## Diagnose and optimize your resource consumption
 
-Substantial RU consumption (greater than 100 RU/second) is usually caused by SQL queries issued by the application. This can be confirmed by verifying that RU consumption tightly follows changes to the application’s SQL QPS (queries per second). On the CockroachDB {{ site.data.products.cloud }} Console [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}), you can compare the [**Request Units** chart]({% link cockroachcloud/metrics-overview.md %}#request-units) to the [**SQL Statements** chart]({% link cockroachcloud/metrics-overview.md %}#sql-statements). Assuming the charts correlate, then reducing Request Unit consumption is about optimizing application SQL queries (SELECT, UPDATE, INSERT, DELETE).
+Substantial RU consumption (greater than 100 RU/second) is usually caused by SQL queries issued by the application. This can be confirmed by verifying that RU consumption tightly follows changes to the application’s SQL QPS (queries per second). On the CockroachDB {{ site.data.products.cloud }} Console [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}), you can compare the [**Request Units** chart]({% link cockroachcloud/metrics-overview.md %}#request-units) to the [**SQL Statements** chart]({% link cockroachcloud/metrics-overview.md %}#sql-statements). Assuming the charts correlate, then reducing Request Unit consumption is about optimizing application SQL queries ([`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %})).
 
 In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages. You can sort queries by the time they took to process, the number of rows processed, or the number of bytes read to see which queries are using the most resources. If you have queries that return more data than needed or have long runtimes, those are good candidates for optimization. 
 
@@ -108,7 +108,7 @@ Initial data ingestion during a migration may consume a high number of RUs. Gene
 
 ### Changefeeds (CDC)
 
-Changefeeds can contribute to significant RU usage. To monitor changefeed performance, navigate to your cluster's [**Changefeeds** metrics page]({% link cockroachcloud/metrics-changefeeds.md %}) in the {{ site.data.products.cloud }} Console and monitor the various available charts.
+[Changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}) can contribute to significant RU usage. To monitor changefeed performance, navigate to your cluster's [**Changefeeds** metrics page]({% link cockroachcloud/metrics-changefeeds.md %}) in the {{ site.data.products.cloud }} Console and monitor the available charts.
 
 Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption.
 
@@ -124,7 +124,8 @@ If the [**Reads** chart]({% link cockroachcloud/metrics-request-units.md %}#read
 
 - Use [secondary indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/schema-design-indexes) that reduce the number of rows that need to be scanned.
 - Avoid “wide” columns in tables that are frequently scanned, such as large text or [binary]({% link {{site.current_cloud_version}}/bytes.md %}) columns. Instead, offload them to a separate table that is only accessed when those columns are needed.
-- Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
+- Don't disable [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics), as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
+- Take advantage of SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
 
 ### Writes
 
@@ -139,7 +140,7 @@ If the [**Writes** chart]({% link cockroachcloud/metrics-request-units.md %}#wri
 If the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) shows high RU's for client traffic or bulk I/O operations:
 
 - Avoid returning columns that your application does not need.
-- Take advantage of SQL filters, joins, and aggregations rather than performing these operations in the application to reduce the amount of data returned to the client.
+- Take advantage of SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
 
 ### Cross-region Networking
 
@@ -152,7 +153,7 @@ If the [**Cross-region Networking** chart]({% link cockroachcloud/metrics-reques
 If the [**CPU** chart]({% link cockroachcloud/metrics-request-units.md %}#cpu) shows high RU's for total amount of CPU used by SQL pods:
 
 - Most of the above tips also apply to reducing SQL CPU.
-- Ensure that frequently executed queries are [“prepared”]({% link {{site.current_cloud_version}}/sql-grammar.md %}#prepare_stmt) so they can be cached by the SQL layer. Most Postgres ORMs and drivers do this automatically, so it’s usually not a problem.
+- Ensure that frequently executed queries are [“prepared”]({% link {{site.current_cloud_version}}/sql-grammar.md %}#prepare_stmt) so they can be cached by the SQL layer. Most [ORMs and drivers]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}) do this automatically, so it’s usually not a problem.
 
 ## Example Request Unit calculation
 
