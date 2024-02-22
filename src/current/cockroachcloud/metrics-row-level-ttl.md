@@ -41,7 +41,7 @@ The time interval selector at the top of each tab allows you to filter the view 
         {% comment %} Get the row from the metrics-list with the given metric_id. {% endcomment %}
             <tr>
             <td>{{ m.short_name }}</td>
-            <td><code>{{ m.metric_id }}</code></td>
+            <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
             <td>{{ metrics-list[0].description}}</td>
             <td>{% include metrics-usage/{{ m.metric_id }}.md %}</td>
         </tr>
