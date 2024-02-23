@@ -49,7 +49,7 @@ sinks:
       format: json
       method: POST
       compression: gzip
-      headers: {DD-API-KEY: "{DATADOG API KEY}"} # replace with actual API key
+      headers: {DD-API-KEY: "DATADOG_API_KEY"} # replace with actual DATADOG API key
       buffering:
         format: json-array
         max-staleness: 5s
@@ -59,6 +59,17 @@ sinks:
     telemetry:  # do not write telemetry events to disk
       channels: [] # set to empty square brackets
 ~~~
+
+{{site.data.alerts.callout_success}}
+If you prefer to keep the `DD-API-KEY` in a file other than the `logs.yaml`, replace the `headers` parameter with the [`file-based-headers` parameter]({% link {{ page.version.version }}/configure-logs.md %}#file-based-headers):
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+      file-based-headers: {DD-API-KEY: "path/to/file"} # replace with path of file containing DATADOG API key
+~~~
+
+The value in the file containing the Datadog API key can be updated without restarting the `cockroach` process. Instead, send SIGHUP to the `cockroach` process to notify it to refresh the value.
+{{site.data.alerts.end}}
 
 Pass the [`logs.yaml` file]({% link {{ page.version.version }}/configure-logs.md %}#yaml-payload) to the  `cockroach` process with either `--log-config-file` or ` --log` flag.
 

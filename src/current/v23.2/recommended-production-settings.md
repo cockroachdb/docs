@@ -146,6 +146,10 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+{{site.data.alerts.end}}
+
 ##### Disk I/O
 
 Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.
@@ -316,7 +320,7 @@ CockroachDB is purpose-built to be fault-tolerant and to recover automatically, 
 
 Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-support).
 
 ## Clock synchronization
 
