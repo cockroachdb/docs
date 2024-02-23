@@ -11,7 +11,7 @@ The `cockroach debug ballast` [command]({% link {{ page.version.version }}/cockr
 
 - Do not run `cockroach debug ballast` with a unix `root` user. Doing so brings the risk of mistakenly affecting system directories or files.
 -  `cockroach debug ballast` now refuses to overwrite the target ballast file if it already exists. This change is intended to prevent mistaken uses of the `ballast` command. Consider adding an `rm` command to scripts that integrate `cockroach debug ballast`, or provide a new file name every time and then remove the old file.
-- In addition to placing a ballast file in each node's storage directory, it is important to actively [monitor remaining disk space]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#events-to-alert-on).
+- In addition to placing a ballast file in each node's storage directory, it is important to actively [monitor remaining disk space]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#node-is-running-low-on-disk-space).
 - Ballast files may be created in many ways, including the standard `dd` command. `cockroach debug ballast` uses the `fallocate` system call when available, so it will be faster than `dd`.
 
 ## Subcommands
