@@ -29,7 +29,7 @@ To move a folder or a cluster, you update its `parent_id`. If you move a folder 
 
 ### Folder naming
 
-- Folder names must begin and end with a letter or number. The only allowed special characters are spaces, hyphens, and underscores.
+- Folder names must begin and end with a letter or number. The only allowed special characters are spaces, hyphens, apostrophes, and underscores.
 - Folder names must be at least 3 characters long and cannot exceed 40 characters.
 
 ### Folder structure

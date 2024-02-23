@@ -79,7 +79,7 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ go mod init basic-sample && go mod tidy
+    $ go mod tidy
     ~~~
 
 1. Run the code:

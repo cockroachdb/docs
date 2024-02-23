@@ -4,7 +4,7 @@ summary: The Custom Metrics Chart page lets you create custom charts showing the
 toc: true
 ---
 
-The **Custom Metrics Chart** page is available only for CockroachDB {{ site.data.products.serverless }} clusters. To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. Navigate to the **Custom** tab to create custom charts showing the time series data for an available metric or combination of metrics.
+The **Custom Metrics Chart** page allows you to create custom charts showing the time-series data for an available metric or combination of metrics. To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. Navigate to the **Custom** tab.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}

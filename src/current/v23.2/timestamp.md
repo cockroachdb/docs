@@ -27,6 +27,10 @@ A time zone offset of `+00:00` is displayed for all [`TIME`]({% link {{ page.ver
 
 You can use the [`timezone()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) and [`AT TIME ZONE`]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms) functions to convert a `TIMESTAMPTZ` into a `TIMESTAMP` at a specified timezone, or to convert a `TIMESTAMP` into a `TIMESTAMPTZ` at a specified timezone.
 
+Explore the differences of `TIMESTAMP` and `TIMESTAMPTZ` in the following video:
+
+{% include_cached youtube.html video_id="jyfQmtISr3Y" %}
+
 ## Best practices
 
 We recommend always using the `TIMESTAMPTZ` variant because the `TIMESTAMP` variant can sometimes lead to unexpected behaviors when it ignores a session offset. However, we also recommend you avoid [setting a session time zone offset]({% link {{ page.version.version }}/set-vars.md %}#set-time-zone) for your database.
@@ -81,9 +85,9 @@ Type | Details
 
 ### Infinity `TIMESTAMP` casts
 
-CockroachDB does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
+CockroachDB does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4714-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
 
-Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4714-11-24 00:00:00+00:00`).
 
 ## Examples
 

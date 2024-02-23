@@ -20,6 +20,10 @@ MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured 
 
 This page describes how to [install](#installation), [configure](#configuration), [secure](#security), and [use the LMS](#molt-lms-cli) to perform a live migration. {% comment %}For more information, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).{% endcomment %}
 
+For a demo of the Live Migration Service in action, watch the following video:
+
+{% include_cached youtube.html video_id="HA8ec9e_a-s" %}
+
 ## Terminology
 
 - A *live migration* keeps two production databases online (a source and a target database) and uses either replication or dual writing to keep data identical between them until a final cutover.

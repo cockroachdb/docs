@@ -146,7 +146,6 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     ~~~ sql
     SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
-    SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '256 MiB';
     SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
     SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';
