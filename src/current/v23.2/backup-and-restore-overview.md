@@ -195,6 +195,6 @@ For practical examples of running backup and restore jobs, watch the following v
 
 ## See also
 
-- Considerations for using [backup]({% link {{ page.version.version }}/backup.md %}#considerations) and [restore]({% link {{ page.version.version }}/restore.md %}#considerations)
-- [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for details on how CockroachDB stores backups
+- Considerations for using [backup]({% link {{ page.version.version }}/backup.md %}#considerations) and [restore]({% link {{ page.version.version }}/restore.md %}#considerations).
+- [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for details on how CockroachDB stores backups.
 - [Restoring backups]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}) across major versions of CockroachDB.

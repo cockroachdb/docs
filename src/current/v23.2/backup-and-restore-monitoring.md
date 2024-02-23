@@ -25,13 +25,13 @@ Refer to the [Monitor CockroachDB with Prometheus]({% link {{ page.version.versi
 
 We recommend the following guidelines:
 
-- Use the `schedules.BACKUP.last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
-- Configure alerting on the `schedules.BACKUP.last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
+- Use the `schedules.BACKUP.last-completed-time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
+- Configure alerting on the `schedules.BACKUP.last-completed-time` metric to watch for cases where the timestamp has not moved forward as expected.
 
 Metric | Description
 -------+-------------
 `schedules.BACKUP.failed` | The number of scheduled backup jobs that have failed. **Note:** A stuck scheduled job will not increment this metric.
-`schedules.BACKUP.last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#schedule-options).
+`schedules.BACKUP.last-completed-time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#schedule-options).
 `schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp record]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups) protected by backup schedules.
 `schedules.BACKUP.protected_record_count` | The number of [protected timestamp records]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups) held by backup schedules.
 `schedules.BACKUP.started` | The number of scheduled backup jobs that have started.

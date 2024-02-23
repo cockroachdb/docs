@@ -4,7 +4,7 @@ summary: An overview of backup and restore for CockroachDB Cloud.
 toc: true
 ---
 
-CockroachDB is built to be [fault-tolerant through automatic recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.md), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed-service backups_ to Cockroach Labs' cloud storage. Additionally, you can also manually create _customer-owned backups_ using [CockroachDB's backup features](#backup-and-restore-support).
+CockroachDB is built to be [fault-tolerant through automatic recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/demo-fault-tolerance-and-recovery), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed-service backups_ to Cockroach Labs' cloud storage. Additionally, you can also manually create _customer-owned backups_ using [CockroachDB's backup features](#backup-and-restore-support).
 
 ## CockroachDB Cloud backups
 
@@ -137,7 +137,7 @@ The following sections outline some of the features and resources for taking bac
 
 {% include cockroachcloud/backups/scheduled-backups-tip.md %}
 
-CockroachDB supports [creating schedules for periodic backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-schedule-for-backup#create-schedule-for-backup). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/storage-layer#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones#gc-ttlseconds) of the data.
+CockroachDB supports [creating schedules for periodic backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-schedule-for-backup). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/storage-layer#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones#gc-ttlseconds) of the data.
 
 For detail on scheduled backup features CockroachDB supports:
 
@@ -150,27 +150,27 @@ The following table outlines SQL statements you can use to create, configure, pa
 
  SQL Statement  | Description
 ----------------|---------------------------------------------------------------------------------------------
-[`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#backup)       | Create full and incremental backups.
-[`SHOW JOBS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-jobs#show-jobs)    | Show a list of all running jobs or show the details of a specific job by its `job ID`.
-[`PAUSE JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/pause-job#pause-job)    | Pause a backup or restore job with its `job ID`.
-[`RESUME JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/resume-job#resume-job)   | Resume a backup or restore job with its `job ID`.
-[`CANCEL JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cancel-job#cancel-job)   | Cancel a backup or restore job with its `job ID`.
-[`SHOW BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-backup#show-backup)  | Show a backup's details at the [backup collection's](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#backup-collections) storage location.
-[`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore#restore)      | Restore full and incremental backups.
-[`ALTER BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-backup#alter-backup) | Add a new [KMS encryption key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups#use-key-management-service) to an encrypted backup.
-[`CREATE SCHEDULE FOR BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-schedule-for-backup#create-schedule-for-backup) | Create a schedule for periodic backups.
-[`ALTER BACKUP SCHEDULE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-backup-schedule#alter-backup-schedule) | Alter an existing backup schedule.
-[`SHOW SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-schedules#show-schedules) | View information on backup schedules.
-[`PAUSE SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/pause-schedules#pause-schedules) | Pause backup schedules.
-[`RESUME SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/resume-schedules#resume-schedules) | Resume paused backup schedules.
-[`DROP SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-schedules#drop-schedules) | Drop backup schedules.
+[`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup)       | Create full and incremental backups.
+[`SHOW JOBS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-jobs)    | Show a list of all running jobs or show the details of a specific job by its `job ID`.
+[`PAUSE JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/pause-job)    | Pause a backup or restore job with its `job ID`.
+[`RESUME JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/resume-job)   | Resume a backup or restore job with its `job ID`.
+[`CANCEL JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cancel-job)   | Cancel a backup or restore job with its `job ID`.
+[`SHOW BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-backup)  | Show a backup's details at the [backup collection's](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#backup-collections) storage location.
+[`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore)      | Restore full and incremental backups.
+[`ALTER BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-backup) | Add a new [KMS encryption key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups#use-key-management-service) to an encrypted backup.
+[`CREATE SCHEDULE FOR BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-schedule-for-backup) | Create a schedule for periodic backups.
+[`ALTER BACKUP SCHEDULE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-backup-schedule) | Alter an existing backup schedule.
+[`SHOW SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-schedules) | View information on backup schedules.
+[`PAUSE SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/pause-schedules) | Pause backup schedules.
+[`RESUME SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/resume-schedules) | Resume paused backup schedules.
+[`DROP SCHEDULES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-schedules) | Drop backup schedules.
 
 ### Backup storage
 
-We recommend taking backups to [cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage#use-cloud-storage) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
+We recommend taking backups to [cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
 
 - [Example file URLs](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
-- [Authentication](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cloud-storage-authentication#cloud-storage-authentication) to set up authentication to a cloud storage bucket and include those credentials in the URL.
+- [Authentication](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cloud-storage-authentication) to set up authentication to a cloud storage bucket and include those credentials in the URL.
 
 For detail on additional cloud storage features CockroachDB supports:
 
@@ -196,8 +196,8 @@ You can track backup jobs using metrics that cover scheduled backups, status of 
 
 CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored:
 
-- [Locality-restricted backup execution](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-locality-restricted-backups#take-locality-restricted-backups): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
-- [Locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups#take-and-restore-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
+- [Locality-restricted backup execution](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-locality-restricted-backups): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
+- [Locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
 
 ## Video demo
 

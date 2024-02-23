@@ -15,7 +15,7 @@ You can't configure [alerts on changefeeds](https://www.cockroachlabs.com/docs/{
 
 ## Backups
 
-CockroachDB {{ site.data.products.serverless }} only support automated full backups. Automated [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups) and [revision history](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time) backups are not supported. However, [user managed incremental and revision history backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) using user provided storage locations are supported.
+CockroachDB {{ site.data.products.serverless }} clusters only support automated full backups. Automated [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups) and [revision history](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time) backups are not supported. However, [user managed incremental and revision history backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) using user provided storage locations are supported.
 
 Automated database and table level backups are not supported in CockroachDB {{ site.data.products.serverless }}. However, [user managed database and table level backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) using user provided storage locations are supported.
 
