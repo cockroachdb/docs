@@ -380,6 +380,12 @@
                     ]
                   },
                   {
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster",
+                    "urls": [
+                      "/cockroachcloud/export-metrics-standard.html"
+                    ]
+                  },
+                  {
                     "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
