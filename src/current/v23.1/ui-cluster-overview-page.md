@@ -43,6 +43,8 @@ If a node is currently unavailable, the last-known capacity usage will be shown,
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 ## Node List
 
 The **Node List** groups nodes by locality. The lowest-level locality tier is used to organize the Node List. Hover over a locality to see all localities for the group of nodes.

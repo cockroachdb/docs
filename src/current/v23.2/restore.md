@@ -254,7 +254,7 @@ CockroachDB does **not** support incremental-only restores.
 
 - The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
 - When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
-- A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
+- A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs. {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 - A restore job will [pause]({% link {{ page.version.version }}/pause-job.md %}) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume]({% link {{ page.version.version }}/resume-job.md %}) or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) it.
 
 ## Restoring to multi-region databases
