@@ -201,7 +201,7 @@ To configure a custom SAML authentication method using the service provider-init
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
 1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}.
 
-    Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Otherwise, [autoprovisioning](#autoprovisioning) for the authentication method will fail, and users will need to be invited before they can sign in. To configure the SAML assertion, refer to the documentation for your IdP.
+    Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. To configure the SAML assertion, refer to the documentation for your IdP.
 
     In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
 1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
