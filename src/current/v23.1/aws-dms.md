@@ -129,7 +129,7 @@ To conserve CPU, consider migrating tables in multiple replication tasks, rather
 1. Select the appropriate **Migration type** based on your needs.
 
     {{site.data.alerts.callout_danger}}
-    If you choose **Migrate existing data and replicate ongoing changes** or **Replicate data changes only**, you must first [disable revision history for backups](#before-you-begin).
+    If you choose **Migrate existing data and replicate ongoing changes** or **Replicate data changes only**, you must first [disable revision history for backups](#setup).
     {{site.data.alerts.end}}
     <img src="{{ 'images/v23.1/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
 
@@ -200,8 +200,8 @@ Do not issue reads while AWS DMS is running. AWS DMS runs explicit transactions,
 
 If your migration succeeded, you should now:
 
-- [Re-enable revision history](#before-you-begin) for cluster backups.
-- Re-create any [constraints]({% link {{ page.version.version }}/constraints.md %}) that you dropped [before migrating](#before-you-begin).
+- [Re-enable revision history](#setup) for cluster backups.
+- Re-create any [constraints]({% link {{ page.version.version }}/constraints.md %}) that you dropped [before migrating](#setup).
 
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
@@ -251,7 +251,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 - For visibility into migration problems:
 
     - Check the [Amazon CloudWatch logs that you enabled](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
-    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.dedicated }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#before-you-begin).
+    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.dedicated }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#setup).
 
         {{site.data.alerts.callout_danger}}
         Personally identifiable information (PII) may be exported to CloudWatch unless you [redact the logs]({% link {{ page.version.version }}/configure-logs.md %}#redact-logs). Redacting logs may hide the data that is causing the issue, making it more difficult to troubleshoot.
