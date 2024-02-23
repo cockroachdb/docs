@@ -6,13 +6,13 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB Standard users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all regions of your CockroachDB Standard cluster to your chosen cloud metrics sink.
+CockroachDB {{ site.data.products.standard }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all regions of your CockroachDB {{ site.data.products.standard }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
-CockroachDB Standard clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
+CockroachDB {{ site.data.products.standard }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
 {{site.data.alerts.end}}
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB Standard clusters which are hosted on AWS. Metrics export to Datadog is supported on all CockroachDB Standard clusters.
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. Metrics export to Datadog is supported on all CockroachDB {{ site.data.products.standard }} clusters.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
@@ -22,7 +22,7 @@ Exporting metrics to AWS CloudWatch is only available on CockroachDB Standard cl
 
 ## `metricexport` endpoint
 
-To configure and manage metrics export for your CockroachDB Standard cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
+To configure and manage metrics export for your CockroachDB {{ site.data.products.standard }} cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
 
 Cloud metrics sink | Metrics export endpoint
 ------------------ | ----------------------------------------------------
@@ -50,17 +50,17 @@ See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-servi
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB Standard clusters which are hosted on AWS. If your CockroachDB Standard cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
 Enabling metrics export will send around 90 metrics per region to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
 {{site.data.alerts.end}}
 
-Perform the following steps to enable metrics export from your CockroachDB Standard cluster to AWS CloudWatch.
+Perform the following steps to enable metrics export from your CockroachDB {{ site.data.products.standard }} cluster to AWS CloudWatch.
 
-1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. When your CockroachDB Standard cluster emits metrics to AWS CloudWatch, they are written to this log group.
+1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. When your CockroachDB {{ site.data.products.standard }} cluster emits metrics to AWS CloudWatch, they are written to this log group.
 
-1. Find your CockroachDB Standard cluster ID:
+1. Find your CockroachDB {{ site.data.products.standard }} cluster ID:
 
 	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
@@ -76,8 +76,8 @@ Perform the following steps to enable metrics export from your CockroachDB Stand
     ~~~
 
     Where:
-    - `{your_cluster_id}` is the cluster ID of your CockroachDB Standard cluster as determined in step 2.
-    - `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for more details.
+    - `{your_cluster_id}` is the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster as determined in step 2.
+    - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for more details.
 
 1.  Create a cross-account IAM role in your AWS account:
 
@@ -85,8 +85,8 @@ Perform the following steps to enable metrics export from your CockroachDB Stand
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-		1. For **Account ID**, provide the CockroachDB Standard cloud provider account ID from step 3.
-		1. Select the option to **Require external ID**, and for the value of **External ID**, provide the cluster ID of your CockroachDB Standard cluster as determined in step 2.
+		1. For **Account ID**, provide the CockroachDB {{ site.data.products.standard }} cloud provider account ID from step 3.
+		1. Select the option to **Require external ID**, and for the value of **External ID**, provide the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster as determined in step 2.
 	1. Finish creating the IAM role with a suitable name. These instructions will use the role name `CockroachCloudMetricsExportRole`. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -122,14 +122,14 @@ Perform the following steps to enable metrics export from your CockroachDB Stand
     ~~~
 
     Where:
-    - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your CockroachDB Standard cluster from step 3. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
+    - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your CockroachDB {{ site.data.products.standard }} cluster from step 3. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
     - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
 
-    This defines the set of permissions that the CockroachDB Standard metrics export feature requires to be able to write metrics to CloudWatch.
+    This defines the set of permissions that the CockroachDB {{ site.data.products.standard }} metrics export feature requires to be able to write metrics to CloudWatch.
 
 1. Copy the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the `CockroachCloudMetricsExportRole` role found under **Summary**, which is needed for the next step.
 
-1. Issue the following Cloud API command to enable metrics export for your CockroachDB Standard cluster:
+1. Issue the following Cloud API command to enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -140,8 +140,8 @@ Perform the following steps to enable metrics export from your CockroachDB Stand
     ~~~
 
     Where:
-    - `{cluster_id}` is your CockroachDB Standard cluster ID as determined in step 2.
-    - `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+    - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 2.
+    - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
     - `{aws_region}` is your AWS region, like `us-east-1`.
     - `{role_arn}` is the ARN for the `CockroachCloudMetricsExportRole` role you copied in step 7. If you used a different role name there, be sure to use your role name in place of `CockroachCloudMetricsExportRole` in the above command.
     - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
@@ -159,21 +159,21 @@ Perform the following steps to enable metrics export from your CockroachDB Stand
 
     Run the command periodically until the command returns a status of `ENABLED`, at which point the configuration is complete, and metrics will begin appearing in CloudWatch under the log group you created in step 1. Since the configuration is applied to the cluster regions in a rolling fashion, you may see some metrics appear even before the `GET` command returns an `ENABLED` status.
 
-1. Once metrics export has been enabled, you can access metrics from your CockroachDB Standard cluster directly in [AWS CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in [AWS CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
 
-To enable metrics export for your CockroachDB Standard cluster to Datadog, you can either:
+To enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster to Datadog, you can either:
 
-- Use the Cloud Console, following the [Monitor CockroachDB Standard with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) instructions.
+- Use the Cloud Console, following the [Monitor CockroachDB {{ site.data.products.standard }} with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) instructions.
 
 OR
 
 - Use the [Cloud API]({% link cockroachcloud/cloud-api.md %}), following the steps below.
 
-1. Find your CockroachDB Standard cluster ID:
+1. Find your CockroachDB {{ site.data.products.standard }} cluster ID:
 
 	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
@@ -181,7 +181,7 @@ OR
 
 1. Determine the [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/) you'd like to use. If you don't already have one, follow the steps to [add a new Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
 
-1. Issue the following Cloud API command to enable metrics export for your CockroachDB Standard cluster:
+1. Issue the following Cloud API command to enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -192,8 +192,8 @@ OR
     ~~~
 
     Where:
-    - `{cluster_id}` is your CockroachDB Standard cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-    - `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+    - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+    - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
     - `{datadog_site}` is your Datadog site. Valid sites are: `US1`, `US3`, `US5`, `US1_GOV`, and `EU1`.
     - `{datadog_api_key}` is the Datadog API key determined in step 2.
 
@@ -208,7 +208,7 @@ OR
 
     Run the command periodically until the command returns a status of `ENABLED`, at which point the configuration is complete, and metrics will begin appearing in the Datadog interface. Since the configuration is applied to cluster regions in a rolling fashion, you may see some metrics appear even before the `GET` command returns an `ENABLED` status.
 
-1. Once metrics export has been enabled, you can access metrics from your CockroachDB Standard cluster directly in Datadog's [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/), or via Datadog's [notebook](https://docs.datadoghq.com/notebooks/) or [dashboard](https://docs.datadoghq.com/dashboards/) features.
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in Datadog's [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/), or via Datadog's [notebook](https://docs.datadoghq.com/notebooks/) or [dashboard](https://docs.datadoghq.com/dashboards/) features.
 
 1. Review [enable percentiles for selected metrics]({% link cockroachcloud/tools-page.md %}#enable-percentiles-for-selected-metrics). Configure metrics as necessary.
 
@@ -238,8 +238,8 @@ curl --request GET \
 
 Where:
 
-- `{cluster_id}` is the cluster ID of your CockroachDB Standard cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+- `{cluster_id}` is the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 </section>
 
@@ -256,14 +256,14 @@ curl --request GET \
 
 Where:
 
-- `{cluster_id}` is the cluster ID of your CockroachDB Standard cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+- `{cluster_id}` is the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 </section>
 
 ## Update an existing metrics export configuration
 
-To update an existing CockroachDB Standard metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or Datadog), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
+To update an existing CockroachDB {{ site.data.products.standard }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or Datadog), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
 
 ## Disable metrics export
 
@@ -285,8 +285,8 @@ curl --request DELETE \
 
 Where:
 
-- `{cluster_id}` is the cluster ID of your CockroachDB Standard cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+- `{cluster_id}` is the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 </section>
 
@@ -303,15 +303,15 @@ curl --request DELETE \
 
 Where:
 
-- `{cluster_id}` is the cluster ID of your CockroachDB Standard cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your CockroachDB Standard API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+- `{cluster_id}` is the cluster ID of your CockroachDB {{ site.data.products.standard }} cluster, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 </section>
 
 ## Limitations
 
-- Metrics export to AWS CloudWatch is only available on CockroachDB Standard clusters which are hosted on AWS. If your CockroachDB Standard cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
-- AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB Standard cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
+- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+- AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.standard }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
 ## Troubleshooting
 
@@ -321,7 +321,7 @@ Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM p
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
-Your CockroachDB Standard cluster must be running on AWS (not GCP) to make use of metrics export to AWS CloudWatch. If your CockroachDB Standard cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+Your CockroachDB {{ site.data.products.standard }} cluster must be running on AWS (not GCP) to make use of metrics export to AWS CloudWatch. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
 
 ## See Also
 
