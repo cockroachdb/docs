@@ -443,15 +443,27 @@
                 "title": "Backups and Restores",
                 "items": [
                     {
+                        "title": "Overview",
+                        "urls": [
+                          "/cockroachcloud/backup-and-restore-overview.html"
+                        ]
+                    },
+                    {
                         "title": "Use Managed-Service Backups",
                         "urls": [
                           "/cockroachcloud/use-managed-service-backups.html"
                         ]
                     },
                     {
-                        "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
+                        "title": "Take and Restore Customer-Owned Backups",
                         "urls": [
                           "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+                        ]
+                    },
+                    {
+                        "title": "Monitoring",
+                        "urls": [
+                          "/cockroachcloud/backup-and-restore-monitoring.html"
                         ]
                     }
                 ]

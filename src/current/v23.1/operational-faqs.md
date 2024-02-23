@@ -47,6 +47,78 @@ or about 6 GiB. With on-disk compression, the actual disk usage is likely to be 
 
 However, depending on your usage of time-series charts in the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, refer to [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
+## Why is my disk usage not decreasing after deleting data?
+
+{% comment %}
+The below is a lightly edited version of https://stackoverflow.com/questions/74481018/why-is-my-cockroachdb-disk-usage-not-decreasing
+{% endcomment %}
+
+There are several reasons why disk usage may not decrease right after deleting data:
+
+- [The data could be preserved for MVCC history.](#the-data-could-be-preserved-for-mvcc-history)
+- [The data could be in the process of being compacted.](#the-data-could-be-in-the-process-of-being-compacted)
+
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
+### The data could be preserved for MVCC history
+
+CockroachDB implements [Multi-Version Concurrency Control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc), which means that it maintains a history of all mutations to a row. This history is used for a wide range of functionality: [transaction isolation]({% link {{ page.version.version }}/transactions.md %}#isolation-levels), historical [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) queries, [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}), [changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}), [cluster replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}), and so on. The requirement to preserve history means that CockroachDB "soft deletes" data: The data is marked as deleted by a tombstone record so that CockroachDB will no longer surface the deleted rows to queries, but the old data is still present on disk.
+
+The length of history preserved by MVCC is determined by two things: the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) of the zone that contains the data, and whether any [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) exist. You can check the range's statistics to observe the `key_bytes`, `value_bytes`, and `live_bytes`. The `live_bytes` metric reflects data that's not garbage. The value of `(key_bytes + value_bytes) - live_bytes` will tell you how much MVCC garbage is resident within a range.
+
+This information can be accessed in the following ways:
+
+- Using the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) SQL statement, which lists the above values under the names `live_bytes`, `key_bytes`, and `val_bytes`.
+- In the DB Console, under [**Advanced Debug Page > Even more Advanced Debugging**]({% link {{ page.version.version }}/ui-debug-pages.md %}#even-more-advanced-debugging), click the **Range Status** link, which takes you to a page where the values are displayed in a tabular format like the following: `MVCC Live Bytes/Count | 2.5 KiB / 62 count`.
+
+When data has been deleted for at least the duration specified by [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds), CockroachDB will consider it eligible for 'garbage collection'. Asynchronously, CockroachDB will perform garbage collection of ranges that contain significant quantities of garbage. Note that if there are backups or other processes that haven't completed yet but require the data, these processes may prevent the garbage collection of that data by setting a protected timestamp until these processes have completed.
+
+For more information about how MVCC works, see [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc).
+
+### The data could be in the process of being compacted
+
+When MVCC garbage is deleted by garbage collection, the data is still not yet physically removed from the filesystem by the [Storage Layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Removing data from the filesystem requires rewriting the files containing the data using a process also known as [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction), which can be expensive. The storage engine has heuristics to compact data and remove deleted rows when enough garbage has accumulated to warrant a compaction. It strives to always restrict the overhead of obsolete data (called the space amplification) to at most 10%. If a lot of data was just deleted, it may take the storage engine some time to compact the files and restore this property.
+
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
+## How can I free up disk space quickly?
+
+If you've noticed that [your disk space is not freeing up quickly enough after deleting data](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly. This example assumes a table `t`.
+
+1. Lower the [`gc.ttlseconds` parameter]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) to 10 minutes.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE t CONFIGURE ZONE USING gc.ttlseconds = 600;
+    ~~~
+
+1. Find the IDs of the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) storing the table data using [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT range_id FROM [SHOW RANGES FROM TABLE t];
+    ~~~
+
+    ~~~
+      range_id
+    ------------
+            68
+            69
+            70
+            ...
+    ~~~
+
+1. Drop the table using [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DROP TABLE t;
+~~~
+
+1. Visit the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}) and click the link **Run a range through an internal queue** to visit the **Manually enqueue range in a replica queue** page. On this page, select **mvccGC** from the **Queue** dropdown and enter each range ID from the previous step. Check the **SkipShouldQueue** checkbox to speed up the MVCC [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) process.
+
+1. Monitor GC progress in the DB Console by watching the [MVCC GC Queue]({% link {{ page.version.version }}/ui-queues-dashboard.md %}#mvcc-gc-queue) and the overall disk space used as shown on the [Overview Dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}).
+
 ## What is the `internal-delete-old-sql-stats` process and why is it consuming my resources?
 
 When a query is executed, a process records query execution statistics on system tables. This is done by recording [SQL statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}).
@@ -147,6 +219,8 @@ For more information about troubleshooting disk usage issues, see [storage issue
 {{site.data.alerts.callout_info}}
 In addition to using ballast files, it is important to actively [monitor remaining disk space]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-capacity).
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
 ## Why would increasing the number of nodes not result in more operations per second?
 
