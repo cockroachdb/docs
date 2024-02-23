@@ -320,7 +320,7 @@ CockroachDB is purpose-built to be fault-tolerant and to recover automatically, 
 
 Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-support).
 
 ## Clock synchronization
 
