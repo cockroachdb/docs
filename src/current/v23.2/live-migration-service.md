@@ -492,7 +492,7 @@ For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.
 |------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `connections list`     | List all client connections to the LMS and their most recent queries. See additional [flags](#connections-list-flags) and [usage example](#connections-list).                                                                       |
 | `cutover consistent`   | Specify a [consistent cutover](#consistent-cutover). You must also specify `begin`, `commit`, or `abort`. See [subcommands](#subcommands) and [usage example](#consistent-cutover).                                                 |
-| `cutover get_metadata` | Display metadata for a cutover attempt, specified with its cutover attempt ID. For example, `cutover get_metadata -i {cutover attempt ID}`. See additional [flags](#get_metadata-flags) and [usage example](#cutover-get_metadata). |
+| `cutover get_metadata` | Display metadata for a cutover attempt, specified with its cutover attempt ID. For example, `cutover get_metadata -i {cutover attempt ID}`. See additional [flags](#cutover-get_metadata-flags) and [usage example](#cutover-get_metadata). |
 | `status`               | Display the current configuration of the LMS instances. See additonal [flags](#status-flags) and [usage example](#status).                                                                                                          |
 
 
@@ -506,7 +506,7 @@ The following subcommands are run after the `cutover consistent` command.
 
 |   Subcommand   |                                                                                                                               Usage                                                                                                                               |
 |----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `begin`        | Begin a consistent cutover. This pauses traffic to the source database. See additional [flags](#begin-flags) and [example](#consistent-cutover).                                                                                                                  |
+| `begin`        | Begin a consistent cutover. This pauses traffic to the source database. See additional [flags](#cutover-consistent-begin-flags) and [example](#consistent-cutover).                                                                                                                  |
 | `commit`       | Commit a consistent cutover. This resumes traffic on the target database. This is only effective after running `cutover consistent begin`. See [example](#consistent-cutover).                                                                                    |
 | `abort`        | Abort a consistent cutover after running `cutover consistent begin`, unless you have also run `cutover consistent commit`. This resumes traffic to the source database.                                                                                           |
 
