@@ -493,10 +493,7 @@ CockroachDB memory usage has the following components:
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-    If you observe any of the following, [file an issue](file-an-issue.html):
-      - CGo Allocated is larger than the configured `--cache` size.
-      - RSS minus Go Total and CGo Total is larger than 100 MiB.
-      - Go Total or CGo Total fluctuates or grows steadily over time.
+    If you observe values not within the expected range for a healthy cluster, [file an issue](file-an-issue.html).
 
 #### Out-of-memory (OOM) crash
 
