@@ -16,7 +16,7 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Cluster configuration
 
-A single-node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#dedicated-example) for more information.
+A single-node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
 Some of a CockroachDB {{ site.data.products.dedicated }} cluster's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
@@ -46,7 +46,7 @@ We recommend you add or remove nodes from a cluster when the cluster isn't exper
 
 If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
 
-### Dedicated Example
+### Example
 
 Let's say you want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
 

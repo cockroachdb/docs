@@ -16,7 +16,7 @@ If alerts are enabled, CockroachDB {{ site.data.products.cloud }} sends alerts t
 
 **Cluster Maintenance:**
 
-- When a cluster is scheduled for [maintenance or a patch upgrade]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- When a cluster is scheduled for [maintenance or a patch upgrade]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
 - When a cluster's CockroachDB version is nearing [end of life](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-cycle) and must be upgraded to maintain support.
 
 **Storage Utilization:**
@@ -39,7 +39,7 @@ If alerts are enabled, CockroachDB {{ site.data.products.cloud }} sends alerts t
 - Cluster node unable to start due to CMEK key access failure.
 {% comment %}- Encrypted backup failed due to CMEK key access failure.{% endcomment %}
 
-If you receive an alert repeatedly, you may need to [optimize your workload](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/make-queries-fast) or [scale your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#add-or-remove-nodes-from-a-cluster).
+If you receive an alert repeatedly, you may need to [optimize your workload](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/make-queries-fast) or [scale your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/advanced-cluster-management.md %}?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
 [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) also receive email alerts when your cluster undergoes an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 

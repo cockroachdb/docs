@@ -33,7 +33,7 @@ Use GCP VPC Peering or AWS PrivateLink if:
 Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 
 {{site.data.alerts.callout_info}}
-Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Cluster default network configuration
@@ -80,7 +80,7 @@ GKE users should note that we recommend deploying your application to a VPC-nati
 
 Setting up a VPC peering connection between your CockroachDB {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
-1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}#step-4-enable-vpc-peering-optional)
+1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-4-enable-vpc-peering-optional)
 1. [Establish a VPC Peering connection after creating the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}

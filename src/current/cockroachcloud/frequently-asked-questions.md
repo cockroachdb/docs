@@ -23,9 +23,9 @@ CockroachDB {{ site.data.products.dedicated }} provides fully-managed, single-te
 
 CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
-### How do CockroachDB {{ site.data.products.dedicated }} free trials work?
+### How do CockroachDB free trials work?
 
-CockroachDB {{ site.data.products.dedicated }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
+CockroachDB {{ site.data.products.cloud }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
 
 - Create the first cluster in your organization
 - Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
@@ -79,17 +79,17 @@ The Cockroach Labs SRE team has direct access to CockroachDB {{ site.data.produc
 
 ### How do I change the configurations on my cluster?
 
-You can [change your cluster's compute]({% link cockroachcloud/cluster-management.md %}#change-compute-for-a-cluster), [add and remove nodes]({% link cockroachcloud/cluster-management.md %}#add-or-remove-nodes-from-a-cluster), and [increase storage]({% link cockroachcloud/cluster-management.md %}#increase-storage-for-a-cluster) using the CockroachDB {{ site.data.products.cloud }} Console, the [Cloud API]({% link cockroachcloud/cloud-api.md %}), or [Terraform](provision-a-cluster-with-terraform.html). Due to cloud provider limitations, storage space cannot be removed from a node once added.
+You can [change your cluster's compute]({% link cockroachcloud/advanced-cluster-management.md %}#change-compute-for-a-cluster), [add and remove nodes]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster), and [increase storage]({% link cockroachcloud/advanced-cluster-management.md %}#increase-storage-for-a-cluster) using the CockroachDB {{ site.data.products.cloud }} Console, the [Cloud API]({% link cockroachcloud/cloud-api.md %}), or [Terraform](provision-a-cluster-with-terraform.html). Due to cloud provider limitations, storage space cannot be removed from a node once added.
 
 ### How do I add nodes?
 
-You can add nodes by accessing the **Clusters** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details..
+You can add nodes by accessing the **Clusters** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Management]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster) for more details.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
 ### Do you auto-scale?
 
-We do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
+We do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Management]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster).
 
 ### Who is responsible for backup?
 
@@ -140,7 +140,7 @@ AWS clusters can set up a [PrivateLink connection]({% link cockroachcloud/networ
 
 GCP clusters can also set up VPC peering after the cluster is created, but you will be locked into our default IP range (`172.28.0.0/14`) unless you configure a different IP range during cluster creation. You can use the default IP range for VPC peering as long as it doesn't overlap with the IP ranges in your network. For more information, see [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering).
 
-Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 ## Product features
 
