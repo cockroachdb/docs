@@ -46,6 +46,10 @@ A multi-region cluster can survive the loss of a single region. For multi-region
 You cannot currently remove regions once they have been added.
 {{site.data.alerts.end}}
 
+After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is not available for {{ site.data.products.serverless }} clusters on GCP.
+
 Click **Next: Capacity**.
 
 ## Step 4. Provision cluster capacity
