@@ -58,8 +58,6 @@ There is no self-service way of accessing [audit logs]({% link cockroachcloud/sq
 
 ## Encryption
 
-[Encryption at rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest) is not supported in CockroachDB {{ site.data.products.serverless }} clusters.
-
 [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }} clusters.
 
 ## Network security
