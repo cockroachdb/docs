@@ -314,6 +314,19 @@ If you have long-running queries (such as analytics queries that perform full ta
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
+### Disallow full table scans with the `disallow_full_table_scans` setting
+
+To prevent overloading production clusters with [full table scans]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans), you have several options:
+
+1. At the cluster level, configure the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) for some or all users/roles using the [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}) statement.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER ROLE ALL SET disallow_full_table_scans = true;
+    ~~~
+
+1. At the application level, add the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) to the connection string using the [`options` parameter]({% link {{page.version.version}}/connection-parameters.md %}#additional-connection-parameters).
+
 ## Hot spots
 
 A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots can cause problems as requests increase.
