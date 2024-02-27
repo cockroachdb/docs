@@ -250,7 +250,7 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
       --header "Authorization: Bearer {secret_key}"
     ~~~
 
-    Run the command periodically until the command returns a `status` of `ENABLED`, at which point the configuration across all nodes is complete. The response also includes `targets`, a map of scrape endpoints exposing metrics to regions. For example:
+    Run the command periodically until the command returns a `status` of `ENABLED`, at which point the configuration across all regions is complete. The response also includes `targets`, a map of scrape endpoints exposing metrics to regions. For example:
 
     ~~~
     {
@@ -279,7 +279,7 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
     - `{cluster_region}` is a region of your CockroachDB {{ site.data.products.standard }} cluster as shown in the `targets` of step 3, such as `us-east4`. You can also find your cluster’s region(s) on the [Cluster Overview page]({% link cockroachcloud/cluster-overview-page.md %}).
     - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
-    Metrics are labeled with the cluster name and ID, node, organization name, and region. The beginning lines of a metrics scrape response follows:
+    Metrics are labeled with the cluster name, organization name, and region. The beginning lines of a metrics scrape response follows:
 
     ~~~
     # HELP crdb_cloud_changefeed_backfill_count Number of changefeeds currently executing backfill
@@ -293,6 +293,10 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
     crdb_cloud_changefeed_commit_latency_bucket{cluster="test-gcp",instance="10.0.3.238:8080",organization="CRL - Test",region="us-east4",le="5e+08"} 0
     crdb_cloud_changefeed_commit_latency_bucket{cluster="test-gcp",instance="10.0.3.238:8080",organization="CRL - Test",region="us-east4",le="5.57259285358743e+08"} 0
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    Metrics are only returned when an active workload is running on the cluster.
+    {{site.data.alerts.end}}
 
 1. Once metrics export has been enabled and the scrape endpoint(s) tested, you need to configure your metrics collector to periodically poll the scrape endpoint(s). Configure your [Prometheus configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) file's [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) as in the following example:
 
