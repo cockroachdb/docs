@@ -9,12 +9,11 @@ docs_area: manage
 Locality-aware [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
 {{site.data.alerts.end}}
 
-Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
+Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-This is useful for:
-
-- Reducing cloud storage data transfer costs by keeping data within cloud regions.
-- Helping you comply with data domiciling requirements.
+{{site.data.alerts.callout_danger}}
+While a locality-aware backup will always match the node locality and storage bucket locality, a [range's]({% link {{ page.version.version }}/architecture/overview.md %}#range) locality will not necessarily match the node's locality. The backup job will attempt to back up ranges through nodes matching that range's locality, however this is not always possible. As a result, **Cockroach Labs cannot guarantee that all ranges will be backed up to a cloud storage bucket with the same locality.** You should consider this as you plan a backup strategy that must comply with [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) requirements.
+{{site.data.alerts.end}}
 
 A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. [Restore jobs can read from a locality-aware backup](#restore-from-a-locality-aware-backup) when you provide the list of URIs that together contain the locations of all of the files for a single locality-aware backup.
 
@@ -24,11 +23,15 @@ A locality-aware backup is specified by a list of URIs, each of which has a `COC
 
 For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-and-export-of-locality-aware-backups).
 
-{% include {{ page.version.version }}/backups/support-products.md %}
+## Supported products
+
+Locality-aware backups are available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [customer-owned backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#cockroachdb-backup-types). For a full list of features, see [Backup and restore product support]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
 
 {{site.data.alerts.callout_info}}
-CockroachDB also supports _locality-restricted backup execution_, which allow you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) for more detail.
+{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
 {{site.data.alerts.end}}
+
+CockroachDB also supports _locality-restricted backup execution_, which allows you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This allows only nodes to execute a backup that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) for more detail.
 
 ## Create a locality-aware backup
 
