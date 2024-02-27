@@ -51,7 +51,7 @@ During enablement of the feature, a list of affected members is shown, and those
 ### Ensure that at least one organization admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization
 
 {{site.data.alerts.callout_success}}
-You can now use[Folders]({% link cockroachcloud/folders.md %}) (Limited Access) to  to group, organize, and manage access to clusters in a hierarchy within a single CockroachDB Cloud organization. When compared to managing multiple CockroachDB Cloud organizations, this approach simplifies billing and centralizes cluster administration and observability. To learn more, contact your Cockroach Labs account team.
+You can now use [Folders]({% link cockroachcloud/folders.md %}) (Limited Access) to group, organize, and manage access to clusters in a hierarchy within a single CockroachDB Cloud organization. Compared with managing multiple CockroachDB Cloud organizations, folders simplify billing and centralize cluster administration and observability. To learn more, contact your Cockroach Labs account team.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
