@@ -14,7 +14,7 @@ CockroachDB backups operate as _jobs_, which are potentially long-running operat
 
 The [Overview](#overview) section that follows provides an outline of a backup job's process. For a more detailed explanation of how a backup job works, read from the [Job creation phase](#job-creation-phase) section.
 
-For a technical overview of [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) or [locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}), refer to the [Backup jobs with locality requirements](#backup-jobs-with-locality-requirements) section.
+For a technical overview of [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) or [locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}), refer to the [Backup jobs with locality requirements](#backup-jobs-with-locality) section.
 
 ## Overview
 
@@ -95,20 +95,22 @@ The backup metadata files describe everything a backup contains. That is, all th
 
 With the full backup complete, the specified storage location will contain the backup data and its metadata ready for a potential [restore]({% link {{ page.version.version }}/restore.md %}). After subsequent backups of the `movr` database to this storage location, CockroachDB will create a _backup collection_. Refer to [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for information on how CockroachDB structures a collection of multiple backups.
 
-## Backup jobs with locality requirements
+## Backup jobs with locality
 
 CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored. This section provides a technical overview of how the backup job process works for each of these backup features:
 
-- [Locality-aware backup](#job-coordination-and-export-of-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
+- [Locality-aware backup](#job-coordination-and-export-of-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality.
 - [Locality-restricted backup execution](#job-coordination-using-the-execution-locality-option): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
 
 ### Job coordination and export of locality-aware backups
 
 When you create a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) job, any node in the cluster can [claim the backup job](#job-creation-phase). A successful locality-aware backup job requires that each node in the cluster has access to each storage location. This is because any node in the cluster can claim the job and become the coordinator node. Once each node informs the coordinator node that it has completed exporting the row data, the coordinator will start to write metadata, which involves writing to each locality bucket a partial manifest recording what row data was written to that [storage bucket]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
-Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) at the time the coordinator planned the [distributed backup flow]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase). The locality of the node ([configured at node startup]({% link {{ page.version.version }}/cockroach-start.md %}#locality)) exporting the row data determines where the backups files will be placed in a locality-aware backup.
+Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) at the time the coordinator planned the [distributed backup flow]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase).
 
-The node exporting the row data, and the leaseholder of the range being backed up, are usually the same. However, these nodes can differ when lease transfers have occurred during the [execution](#export-phase) of the backup. In this case, the leaseholder node returns the files to the node exporting the backup data (usually a local transfer), which then writes the file to the external storage location with a locality that matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
+Every node backing up a [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) will back up to the storage bucket that most closely matches that node's locality. The backup job attempts to back up ranges through nodes matching the range's locality. As a result, there is no guarantee that all ranges will be backed up to their locality's storage bucket. For additional detail on locality-aware backups in the context of a CockroachDB {{ site.data.products.serverless }} cluster, refer to [Job coordination on Serverless clusters](#job-coordination-on-serverless-clusters).
+
+The node exporting the row data, and the leaseholder of the range being backed up, are usually the same. However, these nodes can differ when lease transfers have occurred during the [execution](#export-phase) of the backup. In this case, the leaseholder node returns the files to the node exporting the backup data (usually a local transfer), which then writes the file to the external storage location with a locality that usually matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
 
 For example, in the following diagram there is a three-node cluster split across three regions. The leaseholders write the ranges to be backed up to the external storage in the same region. As **Nodes 1** and **3** complete their work, they send updates to the coordinator node (**Node 2**). The coordinator will then [write the partial manifest files](#metadata-writing-phase) containing metadata about the backup work completed on each external storage location, which is stored with the backup SST files written to that storage location.
 
@@ -116,18 +118,26 @@ During a [restore]({% link {{ page.version.version }}/restore.md %}) job, the jo
 
 <img src="{{ 'images/v23.1/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
 
+#### Job coordination on Serverless clusters
+
+{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
+
 ### Job coordination using the `EXECUTION LOCALITY` option
 
 When you start or [resume]({% link {{ page.version.version }}/resume-job.md %}) a backup with [`EXECUTION LOCALITY`]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}), the backup job must determine the [coordinating node for the job](#job-creation-phase). If a node that does not match the locality filter is the first node to claim the job, the node is responsible for finding a node that does match the filter and transferring the execution to it. This transfer can result in a short delay in starting or resuming a backup job that has execution locality requirements.
 
 If you create a backup job on a [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#overview) with a locality filter that does **not** meet the filter requirement in `EXECUTION LOCALITY`, and the job does not use the [`DETACHED`]({% link {{ page.version.version }}/backup.md %}#detached) option, the job will return an error indicating that it moved execution to another node. This error is returned because when you create a job without the [`DETACHED`]({% link {{ page.version.version }}/backup.md %}#detached) option, the [job execution]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase) must run to completion by the gateway node while it is still attached to the SQL client to return the result.
 
-Once the coordinating node is determined, it will [assign chunks of row data]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase) to eligible nodes, and each node reads its assigned row data and backs it up. The coordinator will assign row data only to those nodes that match the backup job's the locality filter in full. The following situations could occur:
+Once the coordinating node is determined, it will [assign chunks of row data]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase) to eligible nodes, and each node reads its assigned row data and backs it up. The coordinator will assign row data only to those nodes that match the backup job's locality filter in full. The following situations could occur:
 
 - If the [leaseholder]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-leaseholder) for part of the row data matches the filter, the coordinator will assign it the matching row data to process.
 - If the leaseholder does not match the locality filter, the coordinator will select a node from the eligible nodes with a preference for those with localities that are closest to the leaseholder.
 
 When the coordinator assigns row data to a node matching the locality filter to back up, that node will read from the closest [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}), including potentially non-voting replicas that will have less impact on read latency, in the locality or region you plan on pinning for backup job execution.
+
+{{site.data.alerts.callout_info}}
+Similarly to [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), the backup job will send [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) to the cloud storage bucket matching the node's locality.
+{{site.data.alerts.end}}
 
 ## See also
 
