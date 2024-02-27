@@ -99,7 +99,7 @@ This table outlines the level of product support for backup and restore features
       <td>
         <a href="{% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}">Locality-aware backup and restore</a>
       </td>
-      <td>A backup where each node writes files only to the backup destination that matches the node locality configured at node startup.</td>
+      <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
       <td>
         <ul>
           <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
