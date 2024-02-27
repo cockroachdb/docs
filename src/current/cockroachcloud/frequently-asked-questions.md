@@ -89,7 +89,7 @@ You can add nodes by accessing the **Clusters** page on the [CockroachDB {{ site
 
 ### Do you auto-scale?
 
-We do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Management]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster).
+We do not automatically scale nodes based on your capacity usage. To add or remove nodes, refer to [Cluster Management]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster).
 
 ### Who is responsible for backup?
 

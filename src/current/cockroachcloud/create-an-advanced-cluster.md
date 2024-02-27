@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a CockroachDB {{ site.data.products.advanced }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+This page guides you through the process of creating a CockroachDB {{ site.data.products.advanced }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
 Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
@@ -16,15 +16,15 @@ Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link coc
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
-1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the organization where the cluster will be created from the selector in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Select a plan** page, select the **Advanced** plan.
 
 ## Step 2. Select the cloud provider
 
-On the **Cloud & Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure**.
+On the **Cloud & Regions page**, go to the **Cloud provider** section and select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure**.
 
-You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.advanced }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.advanced }} cluster with data or services in a cloud tenant that you manage, select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -40,11 +40,11 @@ Select the region(s) and number of nodes for your cluster:
     - For single-region application development and testing, you may create a 1 node cluster.
     - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster.md %}#example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-    - See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
+    - Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
 
         {% include cockroachcloud/nodes-limitation.md %}
 
-        Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/requests/new).
+        Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
 
 Click **Next: Capacity**.
 
@@ -52,7 +52,7 @@ Click **Next: Capacity**.
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
-VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+VPC peering is available only for GCP clusters. For clusters deployed on AWS, you can [configure AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
 
@@ -68,7 +68,7 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 1. Click **Next: Capacity**.
 
-        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
+        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
 
@@ -109,14 +109,14 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 To change the hardware configuration after the cluster is created, see [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %}).
 
-See the [Example]({% link cockroachcloud/plan-your-cluster.md %}#example) for further guidance.
+Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster.md %}#example) for examples and further guidance.
 
 
 Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can add advanced security features for PCI and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. 
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. 
 
     {{site.data.alerts.callout_danger}}
     This configuration cannot be changed after cluster creation.
@@ -126,7 +126,7 @@ You can add advanced security features for PCI and HIPAA [compliance]({% link co
 
 1. On the **Finalize** page, verify your selections for the cloud provider, region(s), number of nodes, and the capacity.
 
-        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
+        Once your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
 
 1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
 
@@ -134,13 +134,14 @@ You can add advanced security features for PCI and HIPAA [compliance]({% link co
 
 1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
 1. [If applicable]({% link cockroachcloud/frequently-asked-questions.md %}#how-do-cockroachdb-free-trials-work), the 30-day trial code is pre-applied to your cluster.
+
       {{site.data.alerts.callout_info}}
-      Make sure that you [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
+      Remember to [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Otherwise, your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
       {{site.data.alerts.end}}
 
 ## Step 7. Name the cluster
 
-The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after the cluster is created.
 
 ## Step 8. Select the CockroachDB version
 
@@ -166,10 +167,10 @@ To start using your CockroachDB {{ site.data.products.cloud }} cluster, see the 
 
 If you created a multi-region cluster, it is important to carefully choose:
 
-- The right [survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals) for each database.
-- The right [table locality](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/table-localities) for each of your tables.
+- The most appropriate [survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals) for each database.
+- The most appropriate [table locality](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/table-localities) for each of your tables.
 
-Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).
+Otherwise, your cluster may experience unexpected latency and reduced resiliency.  For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).
 
 {% comment %}
 ### [WIP] Select hardware configuration based on performance requirements

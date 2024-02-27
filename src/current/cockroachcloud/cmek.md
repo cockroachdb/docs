@@ -166,7 +166,7 @@ Not yet. To restore a failed CMEK-enabled cluster, please create a support ticke
 
 ## Limitations
 
-The CMEK feature has the following limitations:
+CMEK has the following limitations:
 
 - CMEK is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}). To express interest, contact your Cockroach Labs account team.
 - To enable or revoke a CMEK on a cluster, you must use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable a CMEK using the CockroachDB {{ site.data.products.cloud }} Console.

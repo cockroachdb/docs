@@ -7,12 +7,12 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
 Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 {{site.data.alerts.callout_success}}
-To create and connect to a 30-day free CockroachDB {{ site.data.products.standard }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
+To create and connect to a 30-day free CockroachDB {{ site.data.products.standard }} cluster and run your first query, refer to the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 {{site.data.alerts.end}}
 
 ## Step 1. Start the cluster creation process
@@ -28,7 +28,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.standar
 
 On the **Cloud & Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**.
 
-You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.standard }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.standard }} cluster with data or services in a cloud tenant that you manage, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
 Pricing depends on your cloud provider and region selections. 
 
@@ -38,12 +38,12 @@ Pricing depends on your cloud provider and region selections.
 
 In the **Regions** section, select at least one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.standard }} clusters can be deployed. 
 
-For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.standard }} cluster.
+For optimal performance, select the cloud provider region nearest to the region where you are running your application. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB {{ site.data.products.standard }} cluster.
 
 A multi-region cluster can survive the loss of a single region. For multi-region clusters, CockroachDB will optimize access to data from the primary region. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
 {{site.data.alerts.callout_info}}
-You cannot currently remove regions once they have been added.
+You cannot remove regions once they have been added.
 {{site.data.alerts.end}}
 
 After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
@@ -56,7 +56,7 @@ Click **Next: Capacity**.
 
 Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
-You will only be charged for the storage you use. Storage starts at $0.75/GiB hour and the cost varies by region.
+You will be charged only for the storage you use. Storage starts at $0.75/GiB hour and the cost varies by region.
 
 Click **Next: Finalize**.
 
