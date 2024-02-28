@@ -156,8 +156,9 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 
 ### Locality-aware backup
 
-{% comment %}Add note here on Serverless locality-aware issue from main{% endcomment %}
-
+{{site.data.alerts.callout_info}}
+{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{{site.data.alerts.end}}
 
 For example, to create a [locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups) where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 

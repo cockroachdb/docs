@@ -99,7 +99,7 @@ This table outlines the level of product support for backup and restore features
       <td>
         <a href="{% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}">Locality-aware backup and restore</a>
       </td>
-      <td>A backup where each node writes files only to the backup destination that matches the node locality configured at node startup.</td>
+      <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
       <td>
         <ul>
           <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
@@ -141,7 +141,7 @@ For detail on scheduled backup features CockroachDB supports:
 CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored:
 
 - [Locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
-- [Locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
+- [Locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}): Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 ## Backup and restore SQL statements
 
