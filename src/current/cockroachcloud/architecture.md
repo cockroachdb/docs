@@ -33,7 +33,7 @@ Each single-region cluster has a minimum of three nodes spread across three avai
 CockroachDB {{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a CockroachDB {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
 {{site.data.alerts.callout_info}}
-Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 CockroachDB {{ site.data.products.cloud }} clusters also use digital certificates for inter-node authentication, [SSL modes]({% link cockroachcloud/authentication.md %}#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates]({% link cockroachcloud/client-certs-dedicated.md %}) can be used for client identity verification. Refer to [Authentication]({% link cockroachcloud/authentication.md %}) for more details.

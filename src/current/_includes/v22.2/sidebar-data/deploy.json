@@ -28,7 +28,7 @@
                   "urls": [
                     "/cockroachcloud/plan-your-cluster-serverless.html"
                   ]
-                },                                  
+                },
                 {
                   "title": "Create a CockroachDB Serverless Cluster",
                   "urls": [
@@ -67,7 +67,7 @@
                 {
                   "title": "CockroachDB Dedicated on Azure",
                   "urls": [
-                    "/cockroachcloud/cockroachdb-dedicated-on-azure.html"
+                    "/cockroachcloud/cockroachdb-advanced-on-azure.html"
                   ]
                 },
                 {
