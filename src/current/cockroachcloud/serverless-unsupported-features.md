@@ -66,4 +66,4 @@ Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted
 
 ## Network security
 
-[Private clusters]({% link cockroachcloud/private-clusters.md %}), compliance with [PCI DSS], and compliance with [HIPAA] are not supported in {{ site.data.products.serverless }}. These features are available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
+[Private clusters]({% link cockroachcloud/private-clusters.md %}), compliance with [PCI DSS]({% link cockroachcloud/pci-dss.md %}), and compliance with [HIPAA]({% link cockroachcloud/pci-dss.md %}#hipaa) are not supported in {{ site.data.products.serverless }}. These features are available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
