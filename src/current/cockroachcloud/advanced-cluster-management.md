@@ -87,7 +87,7 @@ AWS disks can only be scaled once every six hours.
 
 You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
-### Add a region to your cluster
+### Add a region to a cluster
 
 You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
@@ -120,9 +120,11 @@ To remove a region from your cluster:
     The **Edit cluster** page displays.
 
 1. On the **Regions** page, click the **X** button next to each region you want to remove.
+
     {{site.data.alerts.callout_info}}
     If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
     {{site.data.alerts.end}}
+
 1. In the sidebar, verify the hourly estimated cost for the cluster.
 1. Click **Next: Capacity** and then **Update cluster**.
 
