@@ -62,7 +62,7 @@ There is no self-service way of accessing [audit logs]({% link cockroachcloud/sq
 
 ## Encryption
 
-Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted at rest by the Cloud provider. [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }}. CMEK is available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
+Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted at rest by the cloud provider. [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }}. CMEK is available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Network security
 
