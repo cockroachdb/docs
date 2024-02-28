@@ -30,7 +30,7 @@ Select one of the following filters for your deployment:
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
-Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in, or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters). Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely.
+Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -45,7 +45,7 @@ Click on **Backup and Restore** in the **Data section** of the left-side navigat
 Consider the following as you use managed-service backups:
 
 - By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
-- Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in, or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters). Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely.
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
