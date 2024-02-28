@@ -37,7 +37,7 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 2vCPUs per node on AWS and GCP or 4vcPUs per node on Azure.
+CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
 {{site.data.alerts.end}}
 
 For an example, refer to [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).

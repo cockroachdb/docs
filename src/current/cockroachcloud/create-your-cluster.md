@@ -106,7 +106,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
 
     {{site.data.alerts.callout_info}}
-    Clusters deployed in CockroachDB Cloud can be created with a minimum of 2vCPUs per node on AWS and GCP or 4vcPUs per node on Azure.
+    Clusters deployed in CockroachDB Cloud can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
     {{site.data.alerts.end}}
 
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
