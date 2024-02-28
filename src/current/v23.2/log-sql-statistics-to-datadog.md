@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This tutorial describes how to configure logging of telemetry events, including [`sampled_query`]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and `sampled_transaction`, to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL statistics. The `sampled_query` and `sampled_transaction` events contain common SQL event and execution details for statements and transactions.
+This tutorial describes how to configure logging of telemetry events, including [`sampled_query`]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and [`sampled_transaction`]({% link {{ page.version.version }}/eventlog.md %}#sampled_query), to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL statistics. The `sampled_query` and `sampled_transaction` events contain common SQL event and execution details for [statements]({% link {{ page.version.version }}/sql-statements.md %}) and [transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 CockroachDB supports a built-in integration with Datadog which sends these events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query and transaction events for greater workload observability.
 
@@ -23,15 +23,14 @@ CockroachDB supports a built-in integration with Datadog which sends these event
 
 Configure an [HTTP network collector]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) by creating or modifying the [`logs.yaml` file]({% link {{ page.version.version }}/configure-logs.md %}#yaml-payload).
 
-{{site.data.alerts.callout_danger}}
-Given the [volume of `sampled_query` and `sampled_transaction` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write these events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` and `sampled_transaction` events to a file group will unnecessarily consume cluster resources and impact workload performance. 
-
-To disable the creation of a telemetry file and avoid writing `sampled_query` and `sampled_transaction` events and other [telemetry events]({% link {{ page.version.version }}/eventlog.md %}#telemetry-events) to disk, change the telemetry `file-groups` setting from the [default of `channels: [TELEMETRY]`]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to `channels: []`.
-{{site.data.alerts.end}}
-
 In this `logs.yaml` example:
 
    1. To send telemetry events directly to Datadog without writing events to disk, override telemetry default configuration by setting `file-groups: telemetry: channels:` to `[]`.
+   {{site.data.alerts.callout_danger}}
+    Given the [volume of `sampled_query` and `sampled_transaction` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write these events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` and `sampled_transaction` events to a file group will unnecessarily consume cluster resources and impact workload performance. 
+
+    To disable the creation of a telemetry file and avoid writing `sampled_query` and `sampled_transaction` events and other [telemetry events]({% link {{ page.version.version }}/eventlog.md %}#telemetry-events) to disk, change the telemetry `file-groups` setting from the [default of `channels: [TELEMETRY]`]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to `channels: []`.
+   {{site.data.alerts.end}}
    1. To connect to Datadog, replace `{DATADOG API KEY}` with the value you copied in Step 1.
    1. To control the ingestion and potential drop rate for telemetry events, configure the following `buffering` values depending on your workload:
 
@@ -78,7 +77,7 @@ Set the [`sql.telemetry.query_sampling.mode` cluster setting]({% link {{ page.ve
 SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'statement';
 ~~~
 
-Set the `sql.telemetry.query_sampling.max_event_frequency` cluster setting to `100000` to emit query events at a higher rate per second than the default value of `8`, which is extremely conservative for the Datadog HTTP API. This cluster setting controls the max event frequency at which CockroachDB samples queries for telemetry.
+Set the [`sql.telemetry.query_sampling.max_event_frequency` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-query-sampling-max-event-frequency) to `100000` to emit query events at a higher rate per second than the default value of `8`, which is extremely conservative for the Datadog HTTP API. This cluster setting controls the max event frequency at which CockroachDB samples queries for telemetry.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -107,8 +106,8 @@ SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'transaction';
 
 Configure the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to values that are dependent on the level of granularity you require and how much performance impact from frequent logging you can tolerate:
 
-- `sql.telemetry.transaction_sampling.max_event_frequency` (default `8`) is the max event frequency (events per second) at which we sample transactions for telemetry. If sampling mode is set to 'statement', this setting is ignored. In practice, this means that we only sample a transaction if 1/max_event_frequency seconds have elapsed since the last transaction was sampled. 
-- `sql.telemetry.transaction_sampling.statement_events_per_transaction.max` (default `50`) is the maximum number of statement events to log for every sampled transaction. Note that statements that are logged by force do not adhere to this limit.
+- [`sql.telemetry.transaction_sampling.max_event_frequency`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-max-event-frequency) (default `8`) is the max event frequency (events per second) at which we sample transactions for telemetry. If sampling mode is set to 'statement', this setting is ignored. In practice, this means that we only sample a transaction if 1/max_event_frequency seconds have elapsed since the last transaction was sampled.
+- [`sql.telemetry.transaction_sampling.statement_events_per_transaction.max`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-statement-events-per-transaction-max) (default `50`) is the maximum number of statement events to log for every sampled transaction. Note that statements that are logged by force do not adhere to this limit.
 
 ## Step 5. Monitor TELEMETRY logs in Datadog
 
