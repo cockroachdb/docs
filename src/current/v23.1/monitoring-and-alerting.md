@@ -985,6 +985,8 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 #### Node is not executing SQL
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.

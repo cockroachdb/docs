@@ -18,13 +18,13 @@ For an explanation of how a backup works, see [Backup Architecture](backup-archi
 
 ## CockroachDB backup types
 
-{% include cockroachcloud/backup-types.md %} 
+{% include cockroachcloud/backup-types.md %}
 
 ## Backup and restore product support
 
 This table outlines the level of product support for backup and restore features in CockroachDB. See each of the pages linked in the table for usage examples:
 
-Backup / Restore  | Description  | Product Support 
+Backup / Restore  | Description  | Product Support
 ------------------+--------------+-----------------
 [Full backup](take-full-and-incremental-backups.html) | An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups. | <ul><li>All products (Enterprise license not required)</li><ul>
 [Incremental backup](take-full-and-incremental-backups.html) | A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup). | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — managed-service backups and customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
@@ -32,7 +32,7 @@ Backup / Restore  | Description  | Product Support
 [Backups with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 [Point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A restore from an arbitrary point in time within the revision history of a backup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 [Encrypted backup and restore](take-and-restore-encrypted-backups.html) | An encrypted backup using a KMS or passphrase. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
-[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul> 
+[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files to the backup destination that matches the node locality configured at node startup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
@@ -40,14 +40,14 @@ Backup / Restore  | Description  | Product Support
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
- SQL Statement  | Description                                                                                 
+ SQL Statement  | Description
 ----------------|---------------------------------------------------------------------------------------------
 [`BACKUP`](backup.html)       | Create full and incremental backups.
 [`SHOW JOBS`](show-jobs.html)    | Show a list of all running jobs or show the details of a specific job by its `job ID`.
 [`PAUSE JOB`](pause-job.html)    | Pause a backup or restore job with its `job ID`.
-[`RESUME JOB`](resume-job.html)   | Resume a backup or restore job with its `job ID`.  
+[`RESUME JOB`](resume-job.html)   | Resume a backup or restore job with its `job ID`.
 [`CANCEL JOB`](cancel-job.html)   | Cancel a backup or restore job with its `job ID`.
-[`SHOW BACKUP`](show-backup.html)  | Show a backup's details at the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location.     
+[`SHOW BACKUP`](show-backup.html)  | Show a backup's details at the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location.
 [`RESTORE`](restore.html)      | Restore full and incremental backups.
 [`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup.
 [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.

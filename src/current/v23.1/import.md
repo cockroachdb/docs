@@ -157,7 +157,7 @@ Imported tables are treated as new tables, so you must [`GRANT`]({% link {{ page
 - All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
 - To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
 - To further improve performance, order the data in the imported files by [primary key]({% link {{ page.version.version }}/primary-key.md %}) and ensure the primary keys do not overlap between files.
-- An import job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling import jobs](#viewing-and-controlling-import-jobs) for information on resuming and showing the progress of import jobs.
+- An import job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling import jobs](#viewing-and-controlling-import-jobs) for information on resuming and showing the progress of import jobs. {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 - An import job will [pause]({% link {{ page.version.version }}/pause-job.md %}) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the import has paused, you can either [resume]({% link {{ page.version.version }}/resume-job.md %}) or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) it.
 
 For more detail on optimizing import performance, see [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %}).
