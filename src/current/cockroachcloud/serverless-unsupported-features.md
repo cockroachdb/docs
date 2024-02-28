@@ -58,8 +58,8 @@ There is no self-service way of accessing [audit logs]({% link cockroachcloud/sq
 
 ## Encryption
 
-[Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }} clusters.
+Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted at rest by the Cloud provider. [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }}. CMEK is available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Network security
 
-[Private clusters]({% link cockroachcloud/private-clusters.md %}) are not supported in {{ site.data.products.serverless-plan }}.
+[Private clusters]({% link cockroachcloud/private-clusters.md %}), compliance with [PCI DSS], and compliance with [HIPAA] are not supported in {{ site.data.products.serverless }}. These features are available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
