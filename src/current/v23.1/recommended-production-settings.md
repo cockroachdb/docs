@@ -51,7 +51,7 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 - For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues).
 
     {{site.data.alerts.callout_info}}
-    Clusters deployed in CockroachDB Cloud can be created with a minimum of 2vCPUs per node on AWS and GCP or 4vcPUs per node on Azure.
+    Clusters deployed in CockroachDB {{ site.data.products.cloud }} can be created with a minimum of 2vCPUs per node on AWS and GCP or 4vcPUs per node on Azure.
     {{site.data.alerts.end}}
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
