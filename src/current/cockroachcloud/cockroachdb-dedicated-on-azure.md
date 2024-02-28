@@ -64,7 +64,7 @@ Refer to [Azure Regions]({% link cockroachcloud/regions.md %}?filters=dedicated#
 
 {{ site.data.products.dedicated }} clusters on Azure use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types.
 
-{{ site.data.products.dedicated }} clusters can be created with a minimum of 4vcPUs per node on Azure.
+CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 4vcPUs per node on Azure.
 
 ### Can we use {{ site.data.products.db }} credits to pay for clusters on Azure?
 
