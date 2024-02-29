@@ -118,7 +118,17 @@ SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'transaction';
 Configure the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to values that are dependent on the level of granularity you require and how much performance impact from frequent logging you can tolerate:
 
 - [`sql.telemetry.transaction_sampling.max_event_frequency`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-max-event-frequency) (default `8`) is the max event frequency (events per second) at which we sample transactions for telemetry. If sampling mode is set to 'statement', this setting is ignored. In practice, this means that we only sample a transaction if 1/max_event_frequency seconds have elapsed since the last transaction was sampled.
-- [`sql.telemetry.transaction_sampling.statement_events_per_transaction.max`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-statement-events-per-transaction-max) (default `50`) is the maximum number of statement events to log for every sampled transaction. Note that statements that are logged by force do not adhere to this limit.
+- [`sql.telemetry.transaction_sampling.statement_events_per_transaction.max`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-statement-events-per-transaction-max) (default `50`) is the maximum number of statement events to log for every sampled transaction. Note that statements that are always captured do not adhere to this limit. Logs are always captured for statements under the following conditions:
+  - Statements that are not of type [DML (data manipulation language)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements). These statement types are:
+      - [DDL (data definition language)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements)
+      - [DCL (data control language)]({% link {{ page.version.version }}/sql-statements.md %}#data-control-statements)
+      - [TCL (transaction control language)]({% link {{ page.version.version }}/sql-statements.md %}#transaction-control-statements). Even though `BEGIN` and `COMMIT` are TCL, they are not always captured, but may be captured from sampling.
+  - Statements that are in [sessions with tracing enabled]({% link {{ page.version.version }}/set-vars.md %}#set-tracing).
+  - Statements that are from the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) when [cluster setting `sql.telemetry.query_sampling.internal_console.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}) is `true` (default). These events have `ApplicationName` set to `$ internal-console`.
+
+### Correlating query events with a specific transaction
+
+Each `sampled_query` and `sampled_transaction` event has an `event.TransactionID` attribute. To correlate a `sampled_query` with a specific `sampled_transaction`, filter for a given value of this attribute.
 
 ## Step 5. Monitor TELEMETRY logs in Datadog
 
