@@ -382,13 +382,13 @@
                   {
                     "title": "Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster",
                     "urls": [
-                      "/cockroachcloud/export-metrics-standard.html"
+                      "/cockroachcloud/export-metrics.html"
                     ]
                   },
                   {
-                    "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster",
                     "urls": [
-                      "/cockroachcloud/export-metrics.html"
+                      "/cockroachcloud/export-metrics-advanced.html"
                     ]
                   },
                   {
