@@ -105,7 +105,7 @@ Click **Create cluster**. Your cluster will be created in a few seconds.
 
 ## What's next
 
-- [Connect to your CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %})
+- [Connect to your CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [Authorize users]({% link cockroachcloud/managing-access.md %})
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 - Explore our [example apps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.

@@ -16,21 +16,21 @@ The **Cluster Overview** page displays key metrics about your CockroachDB {{ sit
 
 ## Cluster settings
 
-The **Cluster settings** panel displays the settings you chose during [cluster creation]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+The **Cluster settings** panel displays the settings you chose during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}).
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
-| Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-2-select-the-cloud-provider). |
+| Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-basic-cluster.md %}#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
-| Regions    | The cluster's [regions]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-3-select-the-regions).         |
+| Regions    | The cluster's [regions]({% link cockroachcloud/create-a-basic-cluster.md %}#step-3-select-the-regions).         |
 
 ## Capacity used this month
 
-The **Capacity used this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**]({% link cockroachcloud/serverless-cluster-management.md %}#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
+The **Capacity used this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**]({% link cockroachcloud/basic-cluster-management.md %}#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Capacity used   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured capacity]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-configure-cluster-capacity). Click the **edit** icon to change the configured capacity.                                                                                                         |
+| Capacity used   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured capacity]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity). Click the **edit** icon to change the configured capacity.                                                                                                         |
 | [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your configured capacity. For more context, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).              |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity. For details, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#performance). |
 

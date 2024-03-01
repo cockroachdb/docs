@@ -176,6 +176,6 @@ A hanging or stuck query using CockroachDB {{ site.data.products.serverless }} m
 
 <h4>Solution</h4>
 
-If you've reached your storage or RU limit, you can [increase your resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) and then re-run the query.
+If you've reached your storage or RU limit, you can [increase your resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) and then re-run the query.
 
 If you've only reached your RU limit, you can wait until the next billing cycle when [monthly free RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) become available and then re-run the query.

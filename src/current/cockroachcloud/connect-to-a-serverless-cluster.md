@@ -11,7 +11,7 @@ This page shows you how to connect to your CockroachDB {{ site.data.products.ser
 
 ## Before you start
 
-- [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+- [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
 - [Create a new SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
 - Understand [Network Authorization for CockroachDB Cloud Clusters]({% link cockroachcloud/network-authorization.md %})
 

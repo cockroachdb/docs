@@ -184,5 +184,5 @@ This will insert the data, and also output information from the optimizer about 
 
 - [Learn About CockroachDB {{ site.data.products.serverless }} Pricing]({% link cockroachcloud/plan-your-cluster-basic.md %}#pricing)
 - [Learn About Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units)
-- [Manage Your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/serverless-cluster-management.md %})
+- [Manage Your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})
 - [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})
