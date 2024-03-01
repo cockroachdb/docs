@@ -12,7 +12,7 @@ The **Tools** page is accessible on CockroachDB {{ site.data.products.dedicated 
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
 
-## Monitor CockroachDB {{ site.data.products.dedicated }} with Datadog
+## Monitor CockroachDB {{ site.data.products.cloud }} with Datadog
 
 The [CockroachDB {{ site.data.products.dedicated }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting#prometheus-endpoint), using the Datadog platform.
 
