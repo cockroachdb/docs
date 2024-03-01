@@ -7,7 +7,7 @@ docs_area: manage
 
 The **Tools** page is accessible on CockroachDB {{ site.data.products.dedicated }} clusters. This page allows you to:
 
-- Set up cluster [monitoring with Datadog](#monitor-cockroachdb-dedicated-with-datadog).
+- Set up cluster [monitoring with Datadog](#monitor-cockroachdb-cloud-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.

@@ -3,7 +3,7 @@ These essential CockroachDB metrics enable you to build custom dashboards with t
 * [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
 * [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics) column lists the corresponding Datadog metric which requires the `cockroachdb.` prefix.
 {% elsif include.deployment == 'dedicated' %}
-* [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics) column lists the corresponding Datadog metric which requires the `crdb_dedicated.` prefix.
+* [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics) column lists the corresponding Datadog metric which requires the `crdb_dedicated.` prefix.
 * [Metrics export]({% link cockroachcloud/export-metrics.md %})
 {% endif %}
 
