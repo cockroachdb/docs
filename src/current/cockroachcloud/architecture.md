@@ -74,7 +74,7 @@ Your cluster's [resource limits](#resource-limits) are the maximum amount of sto
 
 #### Free
 
-All CockroachDB {{ site.data.products.cloud }} organizations are given 50 million [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+All CockroachDB {{ site.data.products.cloud }} organizations are given 50 million [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 #### Paid
 

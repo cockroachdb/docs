@@ -26,7 +26,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.standar
 
 ## Step 2. Select the cloud provider
 
-On the **Cloud & Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**.
+On the **Cloud & Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**. Creating a CockroachDB {{ site.data.products.standard }} cluster on Azure is not yet supported.
 
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.standard }} cluster with data or services in a cloud tenant that you manage, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 

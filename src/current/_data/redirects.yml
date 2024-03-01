@@ -247,8 +247,9 @@
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
-- destination: plan-your-cluster-serverless.md
+- destination: plan-your-cluster-basic.md
   sources:
+    - 'plan-your-cluster-serverless.md'
     - 'planning-your-serverless-cluster.md'
     - 'learn-about-pricing.md'
     - 'learn-about-request-units.md'
@@ -681,6 +682,12 @@
 
 - destination: cockroachcloud/cockroachdb-advanced-on-azure.md
   sources: ['cockroachcloud/cockroachdb-dedicated-on-azure.md']
+
+- destination: cockroachcloud/create-a-basic-cluster.md
+  sources: ['cockroachcloud/create-a-serverless-cluster.md']
+
+- destination: cockroachcloud/basic-cluster-management.md
+  sources: ['cockroachcloud/serverless-cluster-management.md']
 
 - destination: community-tooling.md
   sources:
