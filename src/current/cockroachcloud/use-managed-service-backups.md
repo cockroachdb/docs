@@ -5,32 +5,32 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to use [managed-service backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
+This page describes how to use [_managed-service backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
 
-To access your managed-service backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left side navigation.
+Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
+
+{{site.data.alerts.callout_info}}
+In addition to managed-service backups, you can configure manual backups to your own storage bucket with customer-owned backups. Refer to the [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) page.
+{{site.data.alerts.end}}
+
+This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
+
+{% include cockroachcloud/backups/managed-service-backups-frequency.md %}
+
+To access your managed-service backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left-side navigation.
+
+Select one of the following filters for your deployment:
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
 </div>
 
-
-This page describes the **Backup and Restore** page and how to restore your data.
-
 <section class="filter-content" markdown="1" data-scope="serverless">
-Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) hourly for every CockroachDB {{ site.data.products.serverless }} cluster. Consider the following when using managed-service backups:
 
-- By default, full backups are retained for 30 days. However, if you delete the backup schedule manually you will not be able to restore from these backups.
-- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days.
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Consider the following when using managed-service backups:
-
-- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
-- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days.
-- Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
+Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -38,9 +38,25 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 </section>
 
-## Backups tab
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup and Restore** page.
+
+Consider the following as you use managed-service backups:
+
+- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
+
+{{site.data.alerts.callout_info}}
+You cannot restore a backup of a multi-region database into a single-region database.
+{{site.data.alerts.end}}
+
+</section>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
+
+## Backups tab
+
 The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
@@ -54,7 +70,10 @@ For each backup, the following details display:
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-The **Backups** tab displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+## Backup Recovery page
+
+The **Backup Recovery** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 

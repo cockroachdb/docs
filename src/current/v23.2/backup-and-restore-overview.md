@@ -5,40 +5,120 @@ toc: true
 docs_area: manage
 ---
 
-This page provides an overview of the backup and restore features available in CockroachDB:
+CockroachDB is built to be [fault-tolerant with automatic recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}), but sometimes disasters happen. Backup and restore is an important part of a robust disaster recovery plan. CockroachDB {{ site.data.products.core }} clusters provide a range of [backup and restore features](#backup-and-restore-support).
 
-- [Types of backup available in CockroachDB](#cockroachdb-backup-types)
-- [Backup and restore product support](#backup-and-restore-product-support)
+- [Backup and restore product support](#backup-and-restore-support)
 - [Schedules](#scheduled-backups) for periodic backups
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
 
 You can create full or incremental backups of a [cluster]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster), [database]({% link {{ page.version.version }}/backup.md %}#back-up-a-database), or [table]({% link {{ page.version.version }}/backup.md %}#back-up-a-table-or-view). Taking regular backups of your data is an operational best practice.
 
-For an explanation of how a backup works, see [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}).
+For a technical explanation of how a backup works, refer to the [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}) page.
 
-For a deep-dive on backup and restore, watch the following video:
-
-{% include_cached youtube.html video_id="t_ocOi_iYQ8" %}
-
-## CockroachDB backup types
-
-{% include cockroachcloud/backup-types.md %}
-
-## Backup and restore product support
+## Backup and restore support
 
 This table outlines the level of product support for backup and restore features in CockroachDB. See each of the pages linked in the table for usage examples:
 
-Backup / Restore  | Description  | Product Support
-------------------+--------------+-----------------
-[Full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) | An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups. | <ul><li>All products (Enterprise license not required)</li><ul>
-[Incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) | A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup). | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — managed-service backups and customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Scheduled backup]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) | A schedule for periodic backups. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Backups with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) | A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Point-in-time restore]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) | A restore from an arbitrary point in time within the revision history of a backup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Encrypted backup and restore]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) | An encrypted backup using a KMS or passphrase. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Locality-aware backup and restore]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
-[Locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) | A backup with the `EXECUTION LOCALITY` option restricts the nodes that can execute a backup job with a defined locality filter. | <ul><li>CockroachDB {{ site.data.products.serverless }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.dedicated }} — customer-owned backups</li><li>CockroachDB {{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})</li><ul>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Backup / Restore</th>
+      <th>Description</th>
+      <th>Self-hosted support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups">Full backup</a>
+      </td>
+      <td>An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.</td>
+      <td>
+        <ul>
+          <li>Enterprise license not required</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups">Incremental backup</a>
+      </td>
+      <td>A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/manage-a-backup-schedule.md %}">Scheduled backup</a>
+      </td>
+      <td>A schedule for periodic backups.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Backups with revision history</a>
+      </td>
+      <td>A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Point-in-time restore</a>
+      </td>
+      <td>A restore from an arbitrary point in time within the revision history of a backup.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}">Encrypted backup and restore</a>
+      </td>
+      <td>An encrypted backup using a KMS or passphrase.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}">Locality-aware backup and restore</a>
+      </td>
+      <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{% link {{ page.version.version }}/take-locality-restricted-backups.md %}">Locality-restricted backup execution</a>
+      </td>
+      <td>A backup with the <code>EXECUTION LOCALITY</code> option restricts the nodes that can execute a backup job with a defined locality filter.</td>
+      <td>
+        <ul>
+          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Additional backup and restore features
 
@@ -49,7 +129,7 @@ Backup / Restore  | Description  | Product Support
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
-CockroachDB supports [creating schedules for periodic backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) of the data. 
+CockroachDB supports [creating schedules for periodic backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) of the data.
 
 For detail on scheduled backup features CockroachDB supports:
 
@@ -61,7 +141,7 @@ For detail on scheduled backup features CockroachDB supports:
 CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored:
 
 - [Locality-restricted backup execution]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
-- [Locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
+- [Locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}): Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 ## Backup and restore SQL statements
 
@@ -97,8 +177,6 @@ For detail on additional cloud storage features CockroachDB supports:
 - Set a specific storage class for your backups with [Storage Class (AWS S3 only)]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes).
 - [Expire past backups]({% link {{ page.version.version }}/expire-past-backups.md %}) from cloud storage
 
-{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
-
 ## Backup and restore observability
 
 You can verify that your stored backups are restorable with backup validation. While a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
@@ -109,8 +187,14 @@ You can track backup jobs using metrics that cover scheduled backups, status of 
 
 See the [Backup and Restore Monitoring]({% link {{ page.version.version }}/backup-and-restore-monitoring.md %}) page for product availability and a list of the available metrics.
 
+## Video demo
+
+For practical examples of running backup and restore jobs, watch the following video:
+
+{% include_cached youtube.html video_id="t_ocOi_iYQ8" %}
+
 ## See also
 
-- Considerations for using [backup]({% link {{ page.version.version }}/backup.md %}#considerations) and [restore]({% link {{ page.version.version }}/restore.md %}#considerations)
-- [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for details on how CockroachDB stores backups
-- [Restoring backups]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}) across major versions of CockroachDB
+- Considerations for using [backup]({% link {{ page.version.version }}/backup.md %}#considerations) and [restore]({% link {{ page.version.version }}/restore.md %}#considerations).
+- [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for details on how CockroachDB stores backups.
+- [Restoring backups]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}) across major versions of CockroachDB.

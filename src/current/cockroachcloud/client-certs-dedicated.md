@@ -242,7 +242,7 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 Clients must be provisioned with client certificates signed by the cluster's CA prior to the update, or their new connections will be blocked.
 {{site.data.alerts.end}}
 
-This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
+This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication. To roll out a new CA certificate gradually instead of following this procedure directly, CockroachDB supports the ability to include multiple CA certificates for a cluster by concatenating them in PEM format. This allows clients to connect as long as the client certificate is signed by either the old CA certificate or the new one. PEM format requires a blank line in between certificates.
 
 {{site.data.alerts.callout_success}}
 The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
