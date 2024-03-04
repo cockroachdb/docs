@@ -17,7 +17,7 @@
       	{
       	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-serverless-cluster.html",
+      	    "/cockroachcloud/create-a-basic-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
@@ -48,7 +48,7 @@
         {
           "title": "Manage Your Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/basic-cluster-management.html",
             "/cockroachcloud/cluster-management.html"
           ]
         },
