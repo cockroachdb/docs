@@ -30,9 +30,9 @@
                 ]
             },
             {
-                "title": "Connect to a Serverless Cluster",
+                "title": "Connect to a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
                 ]
             },
             {

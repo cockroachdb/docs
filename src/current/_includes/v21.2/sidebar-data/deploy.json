@@ -32,7 +32,7 @@
                 {
               	  "title": "Connect to Your Cluster",
               	  "urls": [
-              	    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+              	    "/cockroachcloud/connect-to-a-basic-cluster.html"
               	  ]
               	}
               ]

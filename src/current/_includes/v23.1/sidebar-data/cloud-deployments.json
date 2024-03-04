@@ -30,9 +30,9 @@
                 ]
             },
             {
-                "title": "Connect to a Serverless Cluster",
+                "title": "Connect to a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
                 ]
             },
             {
@@ -59,7 +59,7 @@
         "title": "Standard Deployments",
         "items": [
             {
-            "title": "Plan a Dedicated Cluster",
+            "title": "Plan a Standard Cluster",
             "urls": [
                 "/cockroachcloud/plan-your-cluster.html"
             ]
@@ -71,7 +71,7 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to a Standard Cluster",
             "urls": [
                 "/cockroachcloud/connect-to-your-cluster.html"
             ]
@@ -118,13 +118,13 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/connect-to-your-cluster.html"
+                "/cockroachcloud/connect-to-an-advanced-cluster.html"
             ]
             },
             {
-            "title": "Manage a Advanced Cluster",
+            "title": "Manage an Advanced Cluster",
             "urls": [
                 "/cockroachcloud/advanced-cluster-management.html"
             ]

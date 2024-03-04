@@ -19,7 +19,7 @@ This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} C
 
 ## Connect to the cluster
 
-Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html?fiters=command-line#connect-to-your-cluster).
+Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-basic-cluster.html?fiters=command-line#connect-to-your-cluster).
 
     <div class="filters clearfix">
       <button class="filter-button" data-scope="java">Java</button>
@@ -213,4 +213,4 @@ This page highlights just one way you can get started with CockroachDB. For info
 - To create a Self-Hosted cluster, see [Start a Local Cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/start-a-local-cluster).
 - To create a CockroachDB {{ site.data.products.dedicated }} cluster, see [Quickstart with CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 - To create a CockroachDB {{ site.data.products.serverless }} cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
-- To connect to a CockroachDB {{ site.data.products.serverless }} cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools)), see [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+- To connect to a CockroachDB {{ site.data.products.serverless }} cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools)), see [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).

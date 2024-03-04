@@ -79,9 +79,9 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 {% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
 {{site.data.alerts.end}}
 
-<!---
-## Connect to your cluster
 
+## Connect to your cluster
+<!---
 1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
 
     The **Setup** page of the **Connect to cluster** dialog displays.
@@ -180,7 +180,7 @@ To connect to your cluster with a [CockroachDB-compatible tool](https://www.cock
 
 --->
 
-## Connect to your cluster
+
 
 1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
 

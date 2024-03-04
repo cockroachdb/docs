@@ -69,7 +69,7 @@ If your application servers’ IP addresses are not static, or you want to limit
 
 Refer to:
 
-- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#authorize-your-network).
+- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-basic-cluster.md %}#authorize-your-network).
 - [Connect to a CockroachDB {{ site.data.products.dedicated }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
 
 ## VPC peering
@@ -81,7 +81,7 @@ GKE users should note that we recommend deploying your application to a VPC-nati
 Setting up a VPC peering connection between your CockroachDB {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
 1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-4-enable-vpc-peering-optional)
-1. [Establish a VPC Peering connection after creating the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
+1. [Establish a VPC Peering connection after creating the cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.

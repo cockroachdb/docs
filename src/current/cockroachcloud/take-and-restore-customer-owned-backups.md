@@ -20,7 +20,7 @@ The [examples](#examples) on this page provide a quick overview of the backup fe
 
 ## Examples
 
-Before you begin, connect to your cluster. For guidance on connecting to your CockroachDB {{ site.data.products.cloud }} cluster, visit [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) or [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Before you begin, connect to your cluster. For guidance on connecting to your CockroachDB {{ site.data.products.cloud }} cluster, visit [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) or [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
 The examples on this page demonstrate how to back up and restore from your own storage bucket.
 
