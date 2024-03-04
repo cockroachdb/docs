@@ -12,9 +12,9 @@
           ]
         },
         {
-          "title": "Manage a CockroachDB Serverless Cluster",
+          "title": "Manage a CockroachDB Serverless (Basic) Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html"
+            "/cockroachcloud/basic-cluster-management.html"
           ]
         },
         {

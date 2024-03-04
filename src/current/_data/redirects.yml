@@ -816,9 +816,11 @@
 
 - destination: cockroachcloud/create-a-basic-cluster.md
   sources: ['cockroachcloud/create-a-serverless-cluster.md']
+  versions: ['cockroachcloud']
 
 - destination: cockroachcloud/basic-cluster-management.md
   sources: ['cockroachcloud/serverless-cluster-management.md']
+  versions: ['cockroachcloud']
 
 - destination: plan-your-cluster-basic.md
   sources:
