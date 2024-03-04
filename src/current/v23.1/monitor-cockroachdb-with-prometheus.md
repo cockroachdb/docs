@@ -209,5 +209,5 @@ When storage of time-series metrics is disabled, the cluster continues to expose
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
 - [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
 - [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})
