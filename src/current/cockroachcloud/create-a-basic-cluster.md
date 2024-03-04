@@ -26,7 +26,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select the cloud provider
 
-On the **Cloud & Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Basic cluster on Azure is not supported.
+On the **Cloud & Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a {{ site.data.products.basic }} cluster on Azure is not supported.
 
 {{site.data.alerts.callout_info}}
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your CockroachDB {{ site.data.products.basic }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.

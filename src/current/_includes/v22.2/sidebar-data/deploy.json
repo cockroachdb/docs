@@ -82,7 +82,7 @@
               "title": "CockroachDB Advanced",
               "items": [
                 {
-                  "title": "Plan a CockroachDB Dedicated Cluster",
+                  "title": "Plan a CockroachDB Standard Cluster",
                   "urls": [
                     "/cockroachcloud/plan-your-cluster.html"
                   ]

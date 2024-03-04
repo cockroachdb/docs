@@ -138,7 +138,7 @@ CockroachDB {{ site.data.products.serverless }} is a multi-tenant offering and r
 
 ### Can I upgrade my free CockroachDB {{ site.data.products.serverless }} cluster's performance?
 
-Yes, you can upgrade your cluster through the Console by [increasing your resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) and entering [billing information]({% link cockroachcloud/billing-management.md %}) if you haven't already.
+Yes, you can upgrade your cluster through the Cloud Console by [increasing your resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) and entering [billing information]({% link cockroachcloud/billing-management.md %}) if you haven't already.
 
 ### Can I upgrade the version of CockroachDB my CockroachDB {{ site.data.products.serverless }} cluster is running on?
 
