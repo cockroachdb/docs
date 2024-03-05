@@ -71,7 +71,7 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to a Standard Cluster",
             "urls": [
                 "/cockroachcloud/connect-to-your-cluster.html"
             ]
@@ -118,9 +118,9 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/connect-to-your-cluster.html"
+                "/cockroachcloud/connect-to-an-advanced-cluster.html"
             ]
             },
             {
