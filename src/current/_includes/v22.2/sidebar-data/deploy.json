@@ -44,7 +44,7 @@
                 {
                   "title": "Optimize Your CockroachDB Serverless Workload",
                   "urls": [
-                    "/cockroachcloud/serverless-resource-usage.html"
+                    "/cockroachcloud/resource-usage.html"
                   ]
                 }
               ]
@@ -84,7 +84,7 @@
                 {
                   "title": "Plan a CockroachDB Advanced Cluster",
                   "urls": [
-                    "/cockroachcloud/plan-your-cluster.html"
+                    "/cockroachcloud/plan-your-cluster-advanced.html"
                   ]
                 },
                 {

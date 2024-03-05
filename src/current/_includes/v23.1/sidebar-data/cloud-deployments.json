@@ -38,7 +38,7 @@
             {
                 "title": "Understand your Serverless Resource Usage",
                 "urls": [
-                    "/cockroachcloud/serverless-resource-usage.html"
+                    "/cockroachcloud/resource-usage.html"
                 ]
             },
             {
@@ -106,9 +106,9 @@
         "title": "Advanced Deployments",
         "items": [
             {
-            "title": "Plan a Dedicated Cluster",
+            "title": "Plan an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/plan-your-cluster.html"
+                "/cockroachcloud/plan-your-cluster-advanced.html"
             ]
             },
             {

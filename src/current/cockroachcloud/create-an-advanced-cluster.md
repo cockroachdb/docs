@@ -34,13 +34,13 @@ Select the region(s) and number of nodes for your cluster:
 
 1. In the **Regions** section, select at minimum one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.advanced }} clusters can be deployed. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.advanced }} cluster.
 
-    A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
+    A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
 1. Select the number of nodes:
     - For single-region application development and testing, you may create a 1 node cluster.
-    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster.md %}#example) for further guidance.
+    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-    - Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
+    - Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
 
         {% include cockroachcloud/nodes-limitation.md %}
 
@@ -109,7 +109,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 To change the hardware configuration after the cluster is created, see [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %}).
 
-Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster.md %}#example) for examples and further guidance.
+Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for examples and further guidance.
 
 
 Click **Next: Security**.
