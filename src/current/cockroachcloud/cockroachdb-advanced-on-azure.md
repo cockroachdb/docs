@@ -28,7 +28,7 @@ For the list of supported Azure regions, refer to [Azure Regions]({% link cockro
 
 ### Observability
 
-- Exporting metrics to [Datadog](https://www.datadoghq.com/) is available. Enable the Datadog integration in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) or with the [Cloud API]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export).
+- Exporting metrics to [Datadog](https://www.datadoghq.com/) is available. Enable the Datadog integration in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) or with the [Cloud API]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export).
 - Exporting metrics to Azure Monitor is not yet available. To express interest, contact your Cockroach Labs account team.
 - [Log Export]({% link cockroachcloud/export-logs.md %}) is not yet available.
 

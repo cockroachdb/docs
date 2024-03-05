@@ -439,9 +439,9 @@
                     ]
                   },
                   {
-                    "title": "Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments",
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments",
                     "urls": [
-                      "/${VERSION}/essential-metrics-dedicated.html"
+                      "/${VERSION}/essential-metrics-advanced.html"
                     ]
                   }
                 ]

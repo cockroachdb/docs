@@ -24,7 +24,7 @@ For detail on [managed-service backups]({% link cockroachcloud/use-managed-servi
 
 ## Prometheus
 
-This section outlines the available backup and restore job metrics with Prometheus. For instructions on accessing the `metricexport` endpoint for Promethus, refer to [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}).
+This section outlines the available backup and restore job metrics with Prometheus. For instructions on accessing the `metricexport` endpoint for Prometheus, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}).
 
 We recommend the following guidelines:
 
@@ -62,10 +62,10 @@ Metric | Description
 
 ## Datadog
 
-To use the Datadog integration with your CockroachDB {{ site.data.products.dedicated }} cluster, you can:
+To use the Datadog integration with your CockroachDB {{ site.data.products.advanced }} cluster, you can:
 
-- Export the following schedule backup metrics to Datadog using the [Cloud API]({% link cockroachcloud/cloud-api.md %}). To set this up, refer to [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}).
-- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, refer to [Monitor CockroachDB Dedicated with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog).
+- Export the following schedule backup metrics to Datadog using the [Cloud API]({% link cockroachcloud/cloud-api.md %}). To set this up, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}).
+- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, refer to [Monitor CockroachDB {{ site.data.products.cloud }} with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog).
 
 ### Available metrics in Datadog
 
