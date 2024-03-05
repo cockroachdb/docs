@@ -58,11 +58,7 @@ At the key-value level, CockroachDB starts off with a single, empty range. As yo
 
 When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
-For more information about scaling a CockroachDB cluster, see the following docs:
-
-- [Plan Your Serverless Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/plan-your-cluster.html?filters=dedicated#cluster-scaling)
-- [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
+For more information about scaling a CockroachDB cluster, refer to [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?
 

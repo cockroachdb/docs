@@ -36,15 +36,15 @@
                   ]
                 },
                 {
-                  "title": "Connect to Your Cluster",
+                  "title": "Connect to a Basic Cluster",
                   "urls": [
-                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
                   ]
                 },
                 {
-                  "title": "Optimize Your CockroachDB Serverless Workload",
+                  "title": "Optimize Your CockroachDB Basic Workload",
                   "urls": [
-                    "/cockroachcloud/serverless-resource-usage.html"
+                    "/cockroachcloud/resource-usage.html"
                   ]
                 }
               ]
@@ -53,7 +53,7 @@
               "title": "CockroachDB Standard",
               "items": [
                 {
-                  "title": "Plan a CockroachDB Dedicated Cluster",
+                  "title": "Plan a CockroachDB Standard Cluster",
                   "urls": [
                     "/cockroachcloud/plan-your-cluster.html"
                   ]
@@ -65,7 +65,7 @@
                   ]
                 },
                 {
-                  "title": "Connect to Your Cluster",
+                  "title": "Connect to a CockroachDB Standard Cluster",
                   "urls": [
                     "/cockroachcloud/connect-to-your-cluster.html"
                   ]
@@ -82,9 +82,9 @@
               "title": "CockroachDB Advanced",
               "items": [
                 {
-                  "title": "Plan a CockroachDB Standard Cluster",
+                  "title": "Plan a CockroachDB Advanced Cluster",
                   "urls": [
-                    "/cockroachcloud/plan-your-cluster.html"
+                    "/cockroachcloud/plan-your-cluster-advanced.html"
                   ]
                 },
                 {
@@ -100,9 +100,9 @@
                   ]
                 },
                 {
-                  "title": "Connect to Your Cluster",
+                  "title": "Connect to a CockroachDB Advanced Cluster",
                   "urls": [
-                    "/cockroachcloud/connect-to-your-cluster.html"
+                    "/cockroachcloud/connect-to-an-advanced-cluster.html"
                   ]
                 },
                 {

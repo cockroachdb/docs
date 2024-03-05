@@ -1,29 +1,29 @@
 ---
-title: Understand your Serverless Resource Usage
+title: Understand your Resource Usage
 summary: Diagnose your RU consumption and tune your workload to reduce costs
 toc: true
 docs_area: deploy
 ---
 
-This page describes how to diagnose your CockroachDB {{ site.data.products.serverless }} cluster's Request Unit (RU) consumption and tune your workload to reduce costs.
+This page describes how to understand your CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster's Request Unit (RU) consumption and tune your workload to balance performance and costs.
 
-- [Understand resource consumption in CockroachDB {{ site.data.products.serverless }}](#understand-resource-consumption-in-cockroachdb-serverless) gives an overview of the CockroachDB {{ site.data.products.serverless }} architecture that affects RU and storage consumption and explains how RUs are calculated.
+- [Understand resource consumption (#understand-resource-consumption) gives an overview of the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} architecture that affects RU and storage consumption and explains how RUs are calculated.
 
 - [Diagnose and optimize your resource consumption](#diagnose-and-optimize-your-resource-consumption) explains how to find and optimize queries and processes that may be consuming excessive resources and provides general tips for reducing resource usage.
 
-For information on planning your cluster configuration and setting resource limits, refer to [Plan a Serverless Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
+For information on planning your cluster configuration and setting resource limits, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster and [Plan a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for a {{ site.data.products.standard }} cluster.
 
-## Understand resource consumption in CockroachDB {{ site.data.products.serverless }}
+## Understand resource consumption
 
-CockroachDB {{ site.data.products.serverless }} clusters consume three kinds of resources:
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters consume three kinds of resources:
 
 - SQL CPU
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.serverless }} [architecture]({% link cockroachcloud/architecture.md %}). A CockroachDB {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} [architecture]({% link cockroachcloud/architecture.md %}). A CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
-**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
+**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
 **Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network egress.
 
@@ -64,7 +64,7 @@ Reducing the rate of queries is application-specific and must be achieved at the
 
 ### Excessive number of connections
 
-CockroachDB {{ site.data.products.serverless }} consumes minimal resources per connection, so the number of connections is not the most likely cause of increased RU consumption. However, managing your connections is increasingly important for both performance optimization and RU consumption as your application scales up.
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} consume minimal resources per connection, so the number of connections is not the most likely cause of increased RU consumption. However, managing your connections is increasingly important for both performance optimization and RU consumption as your application scales up.
 
 To diagnose excessive connections, navigate to your cluster's [**Metrics** page]({% link cockroachcloud/metrics-page.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connection Attempts** chart displays new SQL connection attempts over time. Maintaining fewer than five active connections is recommended for most workloads.
 
@@ -182,7 +182,8 @@ This will insert the data, and also output information from the optimizer about 
 
 ## Learn more
 
-- [Learn About CockroachDB {{ site.data.products.serverless }} Pricing]({% link cockroachcloud/plan-your-cluster-basic.md %}#pricing)
-- [Learn About Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units)
-- [Manage Your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})
+- [Learn About CockroachDB {{ site.data.products.cloud }} Pricing]({% link cockroachcloud/plan-your-cluster.md %}#pricing)
+- [Learn About Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
+- [Manage Your CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})
+- [Manage Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/cluster-management.md %})
 - [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})

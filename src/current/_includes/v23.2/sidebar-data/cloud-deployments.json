@@ -30,15 +30,15 @@
                 ]
             },
             {
-                "title": "Connect to a Serverless Cluster",
+                "title": "Connect to a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
                 ]
             },
             {
-                "title": "Understand your Serverless Resource Usage",
+                "title": "Understand your Resource Usage",
                 "urls": [
-                    "/cockroachcloud/serverless-resource-usage.html"
+                    "/cockroachcloud/resource-usage.html"
                 ]
             },
             {
@@ -59,7 +59,7 @@
         "title": "Standard Deployments",
         "items": [
             {
-            "title": "Plan a Dedicated Cluster",
+            "title": "Plan a Standard Cluster",
             "urls": [
                 "/cockroachcloud/plan-your-cluster.html"
             ]
@@ -71,10 +71,16 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to a Standard Cluster",
             "urls": [
                 "/cockroachcloud/connect-to-your-cluster.html"
             ]
+            },
+            {
+                "title": "Understand your Resource Usage",
+                "urls": [
+                    "/cockroachcloud/resource-usage.html"
+                ]
             },
             {
             "title": "Manage a Standard Cluster",
@@ -106,9 +112,9 @@
         "title": "Advanced Deployments",
         "items": [
             {
-            "title": "Plan a Dedicated Cluster",
+            "title": "Plan an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/plan-your-cluster.html"
+                "/cockroachcloud/plan-your-cluster-advanced.html"
             ]
             },
             {
@@ -118,9 +124,9 @@
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/connect-to-your-cluster.html"
+                "/cockroachcloud/connect-to-an-advanced-cluster.html"
             ]
             },
             {
