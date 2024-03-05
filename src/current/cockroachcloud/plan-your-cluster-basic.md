@@ -48,7 +48,7 @@ Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administ
 
 ## Multi-region clusters
 
-You can [create a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) with up to [six regions]({% link cockroachcloud/serverless-faqs.md %}#what-regions-are-available-for-cockroachdb-serverless-clusters). When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/basic-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/use-managed-service-backups.md %}) your data into a new cluster with the desired configuration. 
+When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/basic-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/use-managed-service-backups.md %}) your data into a new cluster with the desired configuration. 
 
 {{site.data.alerts.callout_info}}
 You cannot currently remove regions once they have been added.
