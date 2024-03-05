@@ -57,6 +57,22 @@ Metric | Description
 `jobs.restore.resume_failed` | The number of restore jobs that failed with a non-retryable error.
 `jobs.restore.resume_retry_error` | The number of restore jobs that failed with a retryable error.
 
+## Datadog integration
+
+To use the Datadog integration with your **CockroachDB {{ site.data.products.dedicated }}** cluster, you can:
+
+- Export the following schedule backup metrics to Datadog using the [Cloud API]({% link cockroachcloud/cloud-api.md %}). To set this up, refer to [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export).
+- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, refer to [Monitor CockroachDB Cloud with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog).
+
+### Available metrics in Datadog
+
+Metric | Description 
+-------+-------------
+`schedules.BACKUP.succeeded` | The number of scheduled backup jobs that have succeeded.
+`schedules.BACKUP.started` | The number of scheduled backup jobs that have started.
+`schedules.BACKUP.last_completed_time` | The Unix timestamp of the most recently completed backup by a schedule specified as maintaining this metric.
+`schedules.BACKUP.failed` | The number of scheduled backup jobs that have failed.
+
 ## See also
 
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})

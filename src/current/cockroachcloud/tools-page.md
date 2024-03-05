@@ -7,12 +7,12 @@ docs_area: manage
 
 The **Tools** page is accessible on CockroachDB {{ site.data.products.dedicated }} clusters. This page allows you to:
 
-- Set up cluster [monitoring with Datadog](#monitor-cockroachdb-dedicated-with-datadog).
+- Set up cluster [monitoring with Datadog](#monitor-cockroachdb-cloud-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
 
-## Monitor CockroachDB {{ site.data.products.dedicated }} with Datadog
+## Monitor CockroachDB {{ site.data.products.cloud }} with Datadog
 
 The [CockroachDB {{ site.data.products.dedicated }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting#prometheus-endpoint), using the Datadog platform.
 
