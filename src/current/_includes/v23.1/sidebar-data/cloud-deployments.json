@@ -15,18 +15,18 @@
         ]
     },
     {
-        "title": "Serverless Deployments",
+        "title": "Basic Deployments",
         "items": [
             {
-                "title": "Plan a Serverless Cluster",
+                "title": "Plan a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/plan-your-cluster-serverless.html"
+                    "/cockroachcloud/plan-your-cluster-basic.html"
                 ]
             },
             {
-                "title": "Create a Serverless Cluster",
+                "title": "Create a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/create-a-serverless-cluster.html"
+                    "/cockroachcloud/create-a-basic-cluster.html"
                 ]
             },
             {
@@ -42,9 +42,9 @@
                 ]
             },
             {
-            "title": "Manage a Serverless Cluster",
+            "title": "Manage a Basic Cluster",
             "urls": [
-                "/cockroachcloud/serverless-cluster-management.html"
+                "/cockroachcloud/basic-cluster-management.html"
                     ]
             },
             {
@@ -56,7 +56,7 @@
         ]
     },
     {
-        "title": "Dedicated Deployments",
+        "title": "Standard Deployments",
         "items": [
             {
             "title": "Plan a Dedicated Cluster",
@@ -65,7 +65,7 @@
             ]
             },
             {
-            "title": "Create a Dedicated Cluster",
+            "title": "Create a Standard Cluster",
             "urls": [
                 "/cockroachcloud/create-your-cluster.html"
             ]
@@ -77,7 +77,7 @@
             ]
             },
             {
-            "title": "Manage a Dedicated Cluster",
+            "title": "Manage a Standard Cluster",
             "urls": [
                 "/cockroachcloud/cluster-management.html"
             ]
@@ -95,7 +95,54 @@
             ]
             },
             {
-            "title": "CockroachDB Dedicated on Azure",
+            "title": "Migrate from Serverless to Dedicated",
+            "urls": [
+                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+            ]
+            }
+        ]
+    },
+    {
+        "title": "Advanced Deployments",
+        "items": [
+            {
+            "title": "Plan a Dedicated Cluster",
+            "urls": [
+                "/cockroachcloud/plan-your-cluster.html"
+            ]
+            },
+            {
+            "title": "Create an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/create-an-advanced-cluster.html"
+            ]
+            },
+            {
+            "title": "Connect to a Dedicated Cluster",
+            "urls": [
+                "/cockroachcloud/connect-to-your-cluster.html"
+            ]
+            },
+            {
+            "title": "Manage a Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/advanced-cluster-management.html"
+            ]
+            },
+            {
+            "title": "Move into Production",
+            "urls": [
+                "/cockroachcloud/production-checklist.html"
+            ]
+            },
+            {
+            "title": "Provision a Dedicated Cluster with Terraform",
+            "urls": [
+                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
+            ]
+            },
+            {
+            "title": "CockroachDB Advanced on Azure",
             "urls": [
                 "/cockroachcloud/cockroachdb-advanced-on-azure.html"
             ]

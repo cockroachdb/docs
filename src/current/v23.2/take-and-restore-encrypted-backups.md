@@ -9,7 +9,7 @@ docs_area: manage
 Encrypted [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
 {{site.data.alerts.end}}
 
-This doc provides information about how to take and restore encrypted backups in the following ways:
+This page provides information about how to take and restore encrypted backups in the following ways:
 
 - [Using AWS Key Management Service (KMS)](#aws-kms-uri-format)
 - [Using Google Cloud Key Management Service (KMS)](#google-cloud-kms-uri-format)

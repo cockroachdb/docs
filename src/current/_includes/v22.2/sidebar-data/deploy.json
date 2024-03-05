@@ -21,18 +21,18 @@
               ]
             },
             {
-              "title": "CockroachDB Serverless",
+              "title": "CockroachDB Basic",
               "items": [
                 {
                   "title": "Plan a CockroachDB Serverless Cluster",
                   "urls": [
-                    "/cockroachcloud/plan-your-cluster-serverless.html"
+                    "/cockroachcloud/plan-your-cluster-basic.html"
                   ]
                 },
                 {
-                  "title": "Create a CockroachDB Serverless Cluster",
+                  "title": "Create a CockroachDB Basic Cluster",
                   "urls": [
-                    "/cockroachcloud/create-a-serverless-cluster.html"
+                    "/cockroachcloud/create-a-basic-cluster.html"
                   ]
                 },
                 {
@@ -50,7 +50,7 @@
               ]
             },
             {
-              "title": "CockroachDB Dedicated",
+              "title": "CockroachDB Standard",
               "items": [
                 {
                   "title": "Plan a CockroachDB Dedicated Cluster",
@@ -59,13 +59,42 @@
                   ]
                 },
                 {
-                  "title": "Create a CockroachDB Dedicated Cluster",
+                  "title": "Create a CockroachDB Standard Cluster",
                   "urls": [
                     "/cockroachcloud/create-your-cluster.html"
                   ]
                 },
                 {
-                  "title": "CockroachDB Dedicated on Azure",
+                  "title": "Connect to Your Cluster",
+                  "urls": [
+                    "/cockroachcloud/connect-to-your-cluster.html"
+                  ]
+                },
+                {
+                  "title": "Move into Production",
+                  "urls": [
+                    "/cockroachcloud/production-checklist.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "CockroachDB Advanced",
+              "items": [
+                {
+                  "title": "Plan a CockroachDB Standard Cluster",
+                  "urls": [
+                    "/cockroachcloud/plan-your-cluster.html"
+                  ]
+                },
+                {
+                  "title": "Create a CockroachDB Advanced Cluster",
+                  "urls": [
+                    "/cockroachcloud/create-an-advanced-cluster.html"
+                  ]
+                },
+                {
+                  "title": "CockroachDB Advanced on Azure",
                   "urls": [
                     "/cockroachcloud/cockroachdb-advanced-on-azure.html"
                   ]
