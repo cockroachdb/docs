@@ -16,7 +16,7 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Cluster configuration
 
-A single-node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+A single-node cluster is appropriate only for single-region application development and testing. For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
 Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned memory capacity is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
@@ -28,7 +28,7 @@ You cannot scale a multi-node cluster down to a single-node cluster. If you need
 
 #### Advanced security features
 
-If your cluster needs access to all features required for [PCI readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview), you should [configure advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) while creating your CockroachDB {{ site.data.products.advanced }} cluster.
+If your cluster needs access to all features required for [PCI DSS readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview), you should [configure advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) while creating your CockroachDB {{ site.data.products.advanced }} cluster.
 
 #### Multi-region clusters
 
@@ -36,7 +36,7 @@ Multi-region CockroachDB {{ site.data.products.advanced }} clusters must contain
 
 Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-by-row-tables) table locality. We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
 
-You can have a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
+You can configure a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact your Cockroach Labs account team](https://support.cockroachlabs.com).
 
 ### Cluster scaling
 

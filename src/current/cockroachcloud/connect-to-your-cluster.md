@@ -17,7 +17,7 @@ This page shows you how to connect to your CockroachDB {{ site.data.products.sta
 
 ## Authorize your network
 
-By default, CockroachDB {{ site.data.products.standard }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. Standard clusters can accept connections via two types of authorized network:
+By default, CockroachDB {{ site.data.products.standard }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. {{ site.data.products.standard }}  clusters can accept connections via two types of authorized network:
 
 - Allowed IP address ranges on the internet.
 - Cloud-provider-specific peer networking options:
@@ -44,9 +44,9 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 
 ## Connect to your cluster
 
-1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+1. Select your cluster to navigate to its [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
 
-1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
+1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click **Connect**.
 
     The **Connect to cluster** dialog displays.
 
@@ -66,7 +66,7 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 
 1. In the **Download CA Cert (Required only once)** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to CockroachDB {{ site.data.products.standard }}.
-1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.standard }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
+1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.standard }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), refer to [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
 
 {% include cockroachcloud/postgresql-special-characters.md %}
 

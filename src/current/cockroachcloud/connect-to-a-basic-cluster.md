@@ -17,7 +17,7 @@ This page shows you how to connect to your CockroachDB {{ site.data.products.bas
 
 ## Authorize your network
 
-On creation, a {{ site.data.products.basic }} cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist.
+When it is created, a {{ site.data.products.basic }} cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist.
 
 It is recommended to restrict your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or backup-restore pipelines for disaster recovery. Therefore, if possible you should replace the `0.0.0.0/0` allowlist entry with more specific CIDR ranges for legitimate access.
 

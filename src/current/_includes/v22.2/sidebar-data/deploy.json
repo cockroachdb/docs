@@ -42,7 +42,7 @@
                   ]
                 },
                 {
-                  "title": "Optimize Your CockroachDB Serverless Workload",
+                  "title": "Optimize Your CockroachDB Basic Workload",
                   "urls": [
                     "/cockroachcloud/resource-usage.html"
                   ]

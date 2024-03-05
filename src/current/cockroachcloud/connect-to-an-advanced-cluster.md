@@ -105,7 +105,7 @@ To download a supported version of the SQL shell instead of the full binary, vis
 1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command, which will be used in the next step (and to connect to your cluster in the future). Click **Close**.
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
-1. Enter the SQL user's password and hit enter.
+1. Enter the SQL user's password and enter.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
 
