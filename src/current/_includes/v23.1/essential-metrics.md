@@ -4,7 +4,7 @@ These essential CockroachDB metrics enable you to build custom dashboards with t
 * [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics) column lists the corresponding Datadog metric which requires the `cockroachdb.` prefix.
 {% elsif include.deployment == 'advanced' %}
 * [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) - The [**Datadog Integration Metric Name**](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/#metrics) column lists the corresponding Datadog metric which requires the `crdb_cloud.` prefix.
-* [Metrics export]({% link cockroachcloud/export-metrics.md %})
+* [Metrics export]({% link cockroachcloud/export-metrics-advanced.md %})
 {% endif %}
 
 The **Usage** column explains why each metric is important to visualize in a custom dashboard and how to make both practical and actionable use of the metric in a production deployment.

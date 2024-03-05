@@ -24,7 +24,7 @@ For detail on [managed-service backups]({% link cockroachcloud/use-managed-servi
 
 ## Prometheus
 
-This section outlines the available backup and restore job metrics with Prometheus. For instructions on accessing the `metricexport` endpoint for Promethus, refer to [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}).
+This section outlines the available backup and restore job metrics with Prometheus. For instructions on accessing the `metricexport` endpoint for Prometheus, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}).
 
 We recommend the following guidelines:
 
