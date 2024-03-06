@@ -822,6 +822,12 @@
   sources: ['cockroachcloud/serverless-cluster-management.md']
   versions: ['cockroachcloud']
 
+- destination: cockroachcloud/connect-to-a-basic-cluster.md
+  sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
+
+- destination: cockroachcloud/resource-usage.md
+  sources: ['cockroachcloud/serverless-resource-usage.md']
+
 - destination: plan-your-cluster-basic.md
   sources:
     - 'plan-your-cluster-serverless.md'

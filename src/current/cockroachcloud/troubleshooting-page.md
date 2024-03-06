@@ -8,7 +8,7 @@ docs_area: manage
 This page describes common CockroachDB {{ site.data.products.cloud }} errors and their solutions.
 
 {{site.data.alerts.callout_danger}}
-We have updated the CA certificate used by CockroachDB {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
+On June 17, 2021, Cockroach Labs updated the CA certificate used by CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate]({% link cockroachcloud/connect-to-your-cluster.md %}#connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
 {{site.data.alerts.end}}
 
 ## Connection errors
