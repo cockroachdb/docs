@@ -58,7 +58,7 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
 
-### Reserved users
+### Reserved identities
 
 These identities are reserved within CockroachDB. These identities are created automatically and cannot be removed.
 
