@@ -7,7 +7,7 @@ docs_area: deploy
 
 This page describes how to understand your CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster's Request Unit (RU) consumption and tune your workload to balance performance and costs.
 
-- [Understand resource consumption (#understand-resource-consumption) gives an overview of the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} architecture that affects RU and storage consumption and explains how RUs are calculated.
+- [Understand resource consumption](#understand-resource-consumption) gives an overview of the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} architecture that affects RU and storage consumption and explains how RUs are calculated.
 
 - [Diagnose and optimize your resource consumption](#diagnose-and-optimize-your-resource-consumption) explains how to find and optimize queries and processes that may be consuming excessive resources and provides general tips for reducing resource usage.
 

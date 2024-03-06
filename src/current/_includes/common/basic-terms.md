@@ -46,7 +46,7 @@ A CockroachDB {{ site.data.products.cloud }} cluster deployed on request for a s
 
 #### Request Unit (RU)
 
-Represents the compute and I/O resources used by a query. All database operations in CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}cluster-overview-page.html#request-units) page.
+In CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}, all cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represents the compute and I/O resources used by a database operation. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or connecting a changefeed to an external sink, also consumes RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}cluster-overview-page.html#request-units) page.
 
 #### Resource limits
 
