@@ -63,9 +63,10 @@ For each backup, the following details display:
 
 - **Data From**: The date and time the backup was taken.
 - **Type**: Whether the backup is a [full](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) or [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) backup.
-- **Size**: The size of the backup, measured in `KiB`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
+
+To [restore a particular cluster backup](#restore-a-cluster), click **Restore** in the corresponding row.
 
 </div>
 
@@ -92,12 +93,6 @@ To view the databases included in the backup, click the number in the **Database
 For each database in the backup, the following details display:
 
 - The **Name** of the database.
-- The **Size** of the database data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a database in an incremental backup is **0 B**, it means no changes were made in the database since the last full backup.
-    {{site.data.alerts.end}}
-
 - The number of [**Tables**](#tables) in the database.
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
@@ -112,16 +107,9 @@ If a database does not contain tables, it will not display in the Databases view
 
 To view the tables in a database, click the number in the **Tables** column on the [**Databases**](#databases) page.
 
-For each table in the database, the following details display:
+For each table in the database, the **Name** of the table displays.
 
-- The **Name** of the table.
-- The **Size** of the table data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a table in an incremental backup is **0.00 B**, it means no changes were made in the table since the last full backup.
-    {{site.data.alerts.end}}
-
-- The number of **Rows** captured in the backup.
+To [restore a table](#restore-a-table), click **Restore** in the corresponding row.
 
 ### Incomplete Backups
 
