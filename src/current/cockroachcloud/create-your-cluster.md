@@ -24,7 +24,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicat
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Select a plan** page, select the **Dedicated standard** or **Dedicated advanced** plan.
 
-CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI DSS readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
 ## Step 2. Select the cloud provider
 
@@ -55,7 +55,7 @@ Select the region(s) and number of nodes for your cluster:
     A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} clusters.
 
 1. Select the number of nodes:
-    - For single-region application development and testing, you may create a 1 node cluster.
+    - For single-region application development and testing on AWS or GCP, you can create a single-node cluster. Single-node clusters are not available on Azure.
     - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
     - See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} cluster configuration.
@@ -106,7 +106,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
 
     {{site.data.alerts.callout_info}}
-    Clusters deployed in CockroachDB Cloud can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+    Clusters deployed in CockroachDB {{ site.data.products.cloud }} can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
     {{site.data.alerts.end}}
 
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
