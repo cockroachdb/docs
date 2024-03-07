@@ -169,7 +169,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 To enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster to Datadog, you can either:
 
-- Use the Cloud Console, following the [Monitor CockroachDB {{ site.data.products.standard }} with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) instructions.
+- Use the Cloud Console, following the [Monitor CockroachDB {{ site.data.products.cloud }} with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) instructions.
 
 OR
 
