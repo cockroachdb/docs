@@ -46,7 +46,7 @@ The diagram below shows a high-level representation of a CockroachDB {{ site.dat
 
 <img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="width:100%; max-width:800px" />
 
-## CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }}
+## CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}
 
 CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are fully-managed, auto-scaling deployments of CockroachDB. Being familiar with the following concepts will help you understand their architecture. CockroachDB {{ site.data.products.serverless }} is ideal for lightweight applications, starter projects, development environments, and highly-variable workloads, while {{ site.data.products.standard }} is ideal for production workloads that require cost predictability.
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference
 ---
 
-CockroachDB {{ site.data.products.serverless }} is a [managed multi-tenant deployment of CockroachDB]({% link cockroachcloud/architecture.md %}#cockroachdb-serverless) that automatically scales up and down based on the load on the cluster. CockroachDB {{ site.data.products.serverless }} works with almost all workloads that CockroachDB supports, but there are feature differences between CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and CockroachDB {{ site.data.products.serverless }} clusters. This topic describes the features that are either unsupported or partially supported in CockroachDB {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of CockroachDB {{ site.data.products.serverless }}.
+CockroachDB {{ site.data.products.serverless }} is a [managed multi-tenant deployment of CockroachDB]({% link cockroachcloud/architecture.md %}#cockroachdb-basic-and-standard) that automatically scales up and down based on the load on the cluster. CockroachDB {{ site.data.products.serverless }} works with almost all workloads that CockroachDB supports, but there are feature differences between CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and CockroachDB {{ site.data.products.serverless }} clusters. This topic describes the features that are either unsupported or partially supported in CockroachDB {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of CockroachDB {{ site.data.products.serverless }}.
 
 ## Change data capture
 
