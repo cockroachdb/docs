@@ -34,19 +34,23 @@ Service accounts operate under a unified authorization model with organization u
 
 However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts is now deprecated. It is recommended to update such service accounts with updated organization roles.
 
-To learn more, refer to [Manage Service Accounts]({{ link_prefix }})managing-access.html#manage-service-accounts)
+To learn more, refer to [Manage Service Accounts]({{ link_prefix }}managing-access.html#manage-service-accounts).
 
 #### CockroachDB {{ site.data.products.basic }} cluster
 
-A CockroachDB {{ site.data.products.cloud }} cluster deployed on request for a specific customer in *shared* network and compute infrastructure.
+A CockroachDB {{ site.data.products.cloud }} cluster with minimal operational features deployed in *shared* network and compute infrastructure.
 
-#### CockroachDB {{ site.data.products.dedicated }} cluster
+#### CockroachDB {{ site.data.products.standard }} cluster
 
-A CockroachDB {{ site.data.products.cloud }} cluster deployed on request for a specific customer, in a cloud provider's network and compute infrastructure *dedicated* to that customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features.
+A CockroachDB {{ site.data.products.cloud }} cluster with full operational features and provisioned capacity, deployed in *shared* network and compute infrastructure.
+
+#### CockroachDB {{ site.data.products.advanced }} cluster
+
+A CockroachDB {{ site.data.products.cloud }} cluster with full operational capacity deployed in a cloud provider's network and compute infrastructure *dedicated* to each customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, Advanced clusters can be customized with advanced security features for PCI DSS and HIPAA [compliance]({{ link_prefix }}compliance.html) at an additional cost.
 
 #### Request Unit (RU)
 
-In CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}, all cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represents the compute and I/O resources used by a database operation. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or connecting a changefeed to an external sink, also consumes RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}cluster-overview-page.html#request-units) page.
+{% include cockroachcloud/request-units.md %}
 
 #### Resource limits
 
@@ -54,4 +58,4 @@ The maximum amounts of storage and RUs a CockroachDB {{ site.data.products.basic
 
 #### Storage
 
-Disk space for permanently storing data over time. All data in CockroachDB {{ site.data.products.basic }} is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage you see in the [Cluster Overview]({{ link_prefix }}basic-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.
+Disk space for permanently storing data over time. All data in CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage you see in the [Cluster Overview]({{ link_prefix }}basic-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.

@@ -14,9 +14,9 @@ For an intro to CockroachDB's core architecture and capabilities, see [Cockroach
 
 {% include common/basic-terms.md %}
 
-## CockroachDB {{ site.data.products.dedicated }}
+## CockroachDB {{ site.data.products.advanced }}
 
-If you need a single tenant cluster with no shared resources, we recommend CockroachDB {{ site.data.products.dedicated }}. CockroachDB {{ site.data.products.dedicated }} supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform. CockroachDB {{ site.data.products.dedicated }} is recommended for all workloads: lightweight and critical production.
+If you need a single tenant cluster with no shared resources, we recommend CockroachDB {{ site.data.products.advanced }}. CockroachDB {{ site.data.products.advanced }} supports single and multi-region clusters in Amazon Web Services, Google Cloud Platform, and Microsoft Azure. CockroachDB {{ site.data.products.advanced }} is recommended for all workloads: lightweight and critical production.
 
 ### Hardware
 
@@ -30,7 +30,7 @@ Each single-region cluster has a minimum of three nodes spread across three avai
 
 ### Security and Connection
 
-CockroachDB {{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a CockroachDB {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
+CockroachDB {{ site.data.products.advanced }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a CockroachDB {{ site.data.products.advanced }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
 {{site.data.alerts.callout_info}}
 Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
@@ -42,23 +42,23 @@ CockroachDB {{ site.data.products.cloud }} clusters also use digital certificate
 
 ### Multi-region architecture
 
-The diagram below shows a high-level representation of a CockroachDB {{ site.data.products.dedicated }} multi-region cluster:
+The diagram below shows a high-level representation of a CockroachDB {{ site.data.products.advanced }} multi-region cluster:
 
 <img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="width:100%; max-width:800px" />
 
-## CockroachDB {{ site.data.products.serverless }}
+## CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }}
 
-CockroachDB {{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture. CockroachDB {{ site.data.products.serverless }} is ideal for lightweight applications, starter projects, development environments, and proofs of concept.
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are fully-managed, auto-scaling deployments of CockroachDB. Being familiar with the following concepts will help you understand their architecture. CockroachDB {{ site.data.products.serverless }} is ideal for lightweight applications, starter projects, development environments, and highly-variable workloads, while {{ site.data.products.standard }} is ideal for production workloads that require cost predictability.
 
 ### Architecture
 
-CockroachDB {{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB. A Serverless cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are managed multi-tenant deployments of CockroachDB. A {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
 
-CockroachDB {{ site.data.products.serverless }} has separate compute and storage layers. The storage pods (KV pods) can be shared across users, and the compute pods (SQL pods) are unique to each user. These shared resources make CockroachDB {{ site.data.products.serverless }} architecture "multi-tenant," in contrast to the single tenant architecture of [CockroachDB {{ site.data.products.dedicated }}](?filters=dedicated#security-and-connection).
+A {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster has separate compute and storage layers. The storage pods (KV pods) can be shared across users, and the compute pods (SQL pods) are unique to each user. These shared resources make CockroachDB A {{ site.data.products.basic }} and {{ site.data.products.standard }} cluster architecture "multi-tenant," in contrast to the single tenant architecture of [CockroachDB {{ site.data.products.advanced }}](?filters=dedicated#security-and-connection).
 
-Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes (K8s) cluster that hosts CockroachDB. K8s pods allow CockroachDB {{ site.data.products.serverless }} to limit SQL resource consumption for each user. They also minimize interference between pods that are scheduled on the same machine, giving each user a high-quality experience even when other users are running heavy workloads.
+Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes (K8s) cluster that hosts CockroachDB. K8s pods allow CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster to limit SQL resource consumption for each user. They also minimize interference between pods that are scheduled on the same machine, giving each user a high-quality experience even when other users are running heavy workloads.
 
-The following diagram is a high-level representation of what a typical Serverless cluster looks like:
+The following diagram is a high-level representation of what a typical {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster cluster looks like:
 
 <img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="width:100%; max-width:800px" />
 
@@ -78,17 +78,21 @@ All CockroachDB {{ site.data.products.cloud }} organizations are given 50 millio
 
 #### Paid
 
-You must enter billing information and set [resource limits](#resource-limits) if you've already created one free CockroachDB {{ site.data.products.serverless }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage, or choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
+You must enter billing information and set [resource limits](#resource-limits) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage, or choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ### Autoscaling
 
-Serverless clusters also have the ability to scale to zero and consume no compute resources when there are no active queries. When there are no active queries, you will pay for the storage your app is using, but not for Request Units. To avoid wasted resources, CockroachDB {{ site.data.products.cloud }} automatically pauses Serverless clusters that are inactive, which is defined by having no connection to the cluster for five consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist]({% link cockroachcloud/production-checklist.md %}).
+CockroachDB {{ site.data.products.basic }} clusters have the ability to scale to zero and consume no compute resources when there are no active queries. When there are no active queries, you will pay for the storage your app is using, but not for Request Units. To avoid wasted resources, CockroachDB {{ site.data.products.cloud }} automatically pauses {{ site.data.products.basic }} clusters that are inactive, which is defined by having no connection to the cluster for five consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist]({% link cockroachcloud/production-checklist.md %}).
 
-The diagrams below shows how CockroachDB {{ site.data.products.serverless }} autoscales with your application's traffic:
+The diagrams below shows how CockroachDB {{ site.data.products.basic }} autoscales with your application's traffic:
 
 <img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="width:100%; max-width:800px" />
 
 <img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="width:100%; max-width:800px" />
+
+### Provisioned capacity
+
+Each CockroachDB {{ site.data.products.standard }} cluster is configured with a single capacity value (in Request Units/sec) indicating the maximum expected throughput the cluster will need over time. We reserve sufficient system infrastructure to support the workload based on the configured capacity value. This value can be scaled up/down as needed.
 
 ## Learn more
 
