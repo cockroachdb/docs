@@ -30,7 +30,7 @@ Select one of the following filters for your deployment:
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
-Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in, or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters). Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely.
+Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -45,7 +45,7 @@ Click on **Backup and Restore** in the **Data section** of the left-side navigat
 Consider the following as you use managed-service backups:
 
 - By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
-- Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in, or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters). Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely.
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -63,9 +63,10 @@ For each backup, the following details display:
 
 - **Data From**: The date and time the backup was taken.
 - **Type**: Whether the backup is a [full](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) or [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) backup.
-- **Size**: The size of the backup, measured in `KiB`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
+
+To [restore a particular cluster backup](#restore-a-cluster), click **Restore** in the corresponding row.
 
 </div>
 
@@ -92,12 +93,6 @@ To view the databases included in the backup, click the number in the **Database
 For each database in the backup, the following details display:
 
 - The **Name** of the database.
-- The **Size** of the database data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a database in an incremental backup is **0 B**, it means no changes were made in the database since the last full backup.
-    {{site.data.alerts.end}}
-
 - The number of [**Tables**](#tables) in the database.
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
@@ -112,16 +107,9 @@ If a database does not contain tables, it will not display in the Databases view
 
 To view the tables in a database, click the number in the **Tables** column on the [**Databases**](#databases) page.
 
-For each table in the database, the following details display:
+For each table in the database, the **Name** of the table displays.
 
-- The **Name** of the table.
-- The **Size** of the table data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a table in an incremental backup is **0.00 B**, it means no changes were made in the table since the last full backup.
-    {{site.data.alerts.end}}
-
-- The number of **Rows** captured in the backup.
+To [restore a table](#restore-a-table), click **Restore** in the corresponding row.
 
 ### Incomplete Backups
 
