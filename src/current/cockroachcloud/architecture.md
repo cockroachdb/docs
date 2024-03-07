@@ -48,7 +48,7 @@ The diagram below shows a high-level representation of a CockroachDB {{ site.dat
 
 ## CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}
 
-CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are fully-managed, auto-scaling deployments of CockroachDB. Being familiar with the following concepts will help you understand their architecture. CockroachDB {{ site.data.products.serverless }} is ideal for lightweight applications, starter projects, development environments, and highly-variable workloads, while {{ site.data.products.standard }} is ideal for production workloads that require cost predictability.
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are fully-managed, auto-scaling deployments of CockroachDB. Being familiar with the following concepts will help you understand their architecture. CockroachDB {{ site.data.products.basic }} is ideal for lightweight applications, starter projects, development environments, and highly-variable workloads, while {{ site.data.products.standard }} is ideal for production workloads that require cost predictability.
 
 ### Architecture
 
@@ -78,7 +78,7 @@ All CockroachDB {{ site.data.products.cloud }} organizations are given 50 millio
 
 #### Paid
 
-You must enter billing information and set [resource limits](#resource-limits) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage, or choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
+You must enter billing information if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. 
 
 ### Autoscaling
 
@@ -93,6 +93,10 @@ The diagrams below shows how CockroachDB {{ site.data.products.basic }} autoscal
 ### Provisioned capacity
 
 Each CockroachDB {{ site.data.products.standard }} cluster is configured with a single capacity value (in Request Units/sec) indicating the maximum expected throughput the cluster will need over time. We reserve sufficient system infrastructure to support the workload based on the configured capacity value. This value can be scaled up/down as needed.
+
+{{site.data.alerts.callout_info}}
+You can scale down provisioned capacity up to 3 times per week.
+{{site.data.alerts.end}}
 
 ## Learn more
 
