@@ -15,6 +15,7 @@ CockroachDB {{ site.data.products.dedicated }} advanced has been certified by a 
 
 This page provides information about compliance with PCI DSS within CockroachDB {{ site.data.products.dedicated }} advanced, describes some of the ways that CockroachDB {{ site.data.products.cloud }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your CockroachDB {{ site.data.products.dedicated }} clusters.
 
+<a id="hipaa"></a>
 {{site.data.alerts.callout_success}}
 When a CockroachDB {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
