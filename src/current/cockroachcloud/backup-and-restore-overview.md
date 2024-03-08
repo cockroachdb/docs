@@ -23,7 +23,7 @@ You can interact with managed-service backups through the **Backup and Restore**
 
 ### Customer-owned backups
 
-You can take manual backups and store them in your [cloud storage buckets](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement. Customer-owned backups are supported in all CockroachDB {{ site.data.products.cloud }}. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
+You can take manual backups and store them in your [cloud storage buckets](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement. Customer-owned backups are supported in all CockroachDB {{ site.data.products.cloud }} products. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
 
 ## Backup and restore support
 
