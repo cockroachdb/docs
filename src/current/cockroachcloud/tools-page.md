@@ -62,7 +62,7 @@ To monitor the health of metrics export, you can [create a custom Monitor](#moni
 
 ### View and configure dashboards
 
-Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list). There are two out of the box dashboards that present CockroachDB metrics
+Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list). There are two sample dashboards that present CockroachDB metrics:
 
 - `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }}`
 - `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}`
