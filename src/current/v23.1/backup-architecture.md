@@ -120,7 +120,7 @@ During a [restore]({% link {{ page.version.version }}/restore.md %}) job, the jo
 
 #### Job coordination on Serverless clusters
 
-{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
+{% include {{ page.version.version }}/backups/locality-aware-multi-tenant.md %}
 
 ### Job coordination using the `EXECUTION LOCALITY` option
 

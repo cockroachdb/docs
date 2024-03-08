@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to take and restore [_customer-owned backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) from CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
+This page describes how to take and restore [_customer-owned backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
 
 The [examples](#examples) on this page provide a quick overview of the backup features you can run to your own storage bucket. For more technical detail on the complete list of backup features, refer to:
 
@@ -20,7 +20,11 @@ The [examples](#examples) on this page provide a quick overview of the backup fe
 
 ## Examples
 
-Before you begin, connect to your cluster. Refer to [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) or [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Before you begin, connect to your cluster. Refer to:
+
+- [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+- [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}).
+- [Connect to a CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 
 The examples on this page demonstrate how to back up and restore from your own storage bucket.
 
@@ -157,7 +161,7 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 ### Locality-aware backup
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include {{ site.current_cloud_version }}/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 For example, to create a [locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups) where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:

@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Backup type</th>
-            <th>Tier</th>
+            <th>Cluster tier</th>
             <th>Frequency</th>
             <th>Retention</th>
         </tr>

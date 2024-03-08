@@ -141,7 +141,7 @@ CockroachDB supports [creating schedules for periodic backups](https://www.cockr
 
 For detail on scheduled backup features CockroachDB supports:
 
-- [Set up monitoring for the backup schedule](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule)
+- [Set up monitoring for the backup schedule](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule).
 - [View](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#view-the-schedule), [pause](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#pause-the-schedule), [resume](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#resume-the-schedule), or [drop](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#drop-the-schedule) the schedule.
 
 ### Backup and restore SQL statements
@@ -188,11 +188,11 @@ Refer to the [Backup Validation](https://www.cockroachlabs.com/docs/{{site.curre
 
 You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. Depending on your CockroachDB {{ site.data.products.cloud }} deployment, you can track these metrics with:
 
-Products                   | Prometheus | Datadog | Cloud Console Metrics page
----------------------------+------------+---------+---------------------------
-CockroachDB Standard        | ✔          | ✔       | ✔
-CockroachDB Advanced        | ✔          | ✔       | ✔
-CockroachDB Basic           |            |         | ✔
+|  | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
+|-----------------------------|----------------------|----------------------|------|
+| [Cloud Console Metrics page]({% link cockroachcloud/metrics-page.md %}) | ✔ | ✔ | ✔ |
+| [Prometheus]({% link cockroachcloud/backup-and-restore-monitoring.md %}#prometheus) | ✔ | ✔  |  |
+| [Datadog]({% link cockroachcloud/backup-and-restore-monitoring.md %}#datadog) | ✔  | ✔  |  |
 
 ### Backup jobs with locality requirements
 
@@ -202,7 +202,7 @@ CockroachDB supports two backup features that use a node's locality to determine
 - [Locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) bucket that is closest to the node locality configured at [node startup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-start).
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include cockroachcloud/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 ## Video demo
