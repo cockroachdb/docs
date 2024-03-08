@@ -30,7 +30,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %})
-    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
+    - [**Add or remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
