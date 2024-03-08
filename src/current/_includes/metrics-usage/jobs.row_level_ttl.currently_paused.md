@@ -1,0 +1,1 @@
+Monitor this metric to ensure the <a href="https://www.cockroachlabs.com/docs/stable/row-level-ttl">Row-Level TTL</a> job does not remain paused inadvertently for an extended period.

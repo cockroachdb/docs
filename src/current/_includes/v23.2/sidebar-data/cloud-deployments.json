@@ -380,16 +380,74 @@
                     ]
                   },
                   {
-                    "title": "Metrics Page",
-                    "urls": [
-                      "/cockroachcloud/metrics-page.html"
-                    ]
+                    "title": "Metrics for {{ site.data.products.dedicated }}",
+                        "items": [
+                            {
+                                "title": "Metrics in Cloud Console",
+                                "urls": [
+                                "/cockroachcloud/metrics-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Export Metrics from {{ site.data.products.dedicated }}",
+                                "urls": [
+                                  "/cockroachcloud/export-metrics.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.dedicated }}",
+                                "urls": [
+                                  "/${VERSION}/essential-metrics-dedicated.html"
+                                ]
+                            }
+                        ]
                   },
                   {
-                    "title": "Custom Metrics Chart Page",
-                    "urls": [
-                      "/cockroachcloud/custom-metrics-chart-page.html"
-                    ]
+                    "title": "Metrics for {{ site.data.products.serverless }}",
+                        "items": [
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.serverless }}",
+                                "urls": [
+                                "/cockroachcloud/metrics-essential-serverless.html"
+                                ]
+                            },
+                            {
+                                "title": "Overview metrics",
+                                "urls": [
+                                "/cockroachcloud/metrics-overview.html"
+                                ]
+                            },
+                            {
+                                "title": "Request Units",
+                                "urls": [
+                                "/cockroachcloud/metrics-request-units.html"
+                                ]
+                            },
+                            {
+                                "title": "SQL",
+                                "urls": [
+                                "/cockroachcloud/metrics-sql.html"
+                                ]
+                            },
+                            {
+                                "title": "Changefeeds",
+                                "urls": [
+                                "/cockroachcloud/metrics-changefeeds.html"
+                                ]
+                            },
+                            {
+                                "title": "Row-Level TTL",
+                                "urls": [
+                                "/cockroachcloud/metrics-row-level-ttl.html"
+                                ]
+                            },
+                            {
+                                "title": "Custom",
+                                "urls": [
+                                "/cockroachcloud/custom-metrics-chart-page.html"
+                                ]
+                            }
+                        ]
                   },
                   {
                     "title": "SQL Activity Page",
