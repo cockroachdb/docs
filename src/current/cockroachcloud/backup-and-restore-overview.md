@@ -21,6 +21,10 @@ Cockroach Labs takes automated backups of CockroachDB {{ site.data.products.serv
 
 You can interact with managed-service backups through the **Backup and Restore** menu in the Cloud Console. Refer to [Use Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions on using the Cloud console to work with managed-service backups for both CockroachDB {{ site.data.products.cloud }} clusters.
 
+{{site.data.alerts.callout_info}}
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+{{site.data.alerts.end}}
+
 ### Customer-owned backups
 
 You can take manual backups and store them in your [cloud storage buckets](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement. Customer-owned backups are supported in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
