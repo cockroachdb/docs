@@ -30,7 +30,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %})
-    {% comment %}- [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster){% endcomment %}
+    - [**Add or remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -45,7 +45,7 @@ The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-a
 
 - The **PCI Ready** section shows the status of features required for PCI DSS. Requires CockroachDB {{ site.data.products.dedicated }} advanced.
 
-- The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
+- The status of security features required for [PCI DSS readiness](#configure-pci-ready-features-dedicated-advanced).
 
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
@@ -58,10 +58,10 @@ These sections show how to scale a {{ site.data.products.dedicated }} cluster ho
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster. Single-node clusters are not available on Azure.
 {{site.data.alerts.end}}
 
-To add or remove nodes from your cluster:
+To add or remove nodes from a cluster on AWS or GCP:
 
 1. Navigate to the cluster's **Overview** page.
 1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
@@ -113,7 +113,9 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 
 ### Add a region to your cluster
 
-You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
+To add or remove regions from a cluster on Azure, you must use the CockroachDB {{ site.data.products.cloud }} API. Refer to [Scale, edit or upgrade a cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
+
+For clusters on AWS or GCP, you can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 1. Navigate to the cluster's **Overview** page.
 1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
@@ -182,7 +184,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 ## Configure PCI ready features (Dedicated advanced)
 
-CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI DSS readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
