@@ -12,7 +12,7 @@
 - metric_id: sql.new_conns
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Connections Per Second"
   datadog_id_selfhosted: sql.new_conns.count
   essential: true
@@ -23,7 +23,7 @@
 - metric_id: sql.select.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Select"
   datadog_id_selfhosted: sql.select.count
   datadog_id_dedicated: sql.select.count
@@ -35,7 +35,7 @@
 - metric_id: sql.update.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Update"
   datadog_id_selfhosted: sql.update.count
   datadog_id_dedicated: sql.update.count
@@ -47,7 +47,7 @@
 - metric_id: sql.insert.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Insert"
   datadog_id_selfhosted: sql.insert.count
   datadog_id_dedicated: sql.insert.count
@@ -59,7 +59,7 @@
 - metric_id: sql.delete.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Delete"
   datadog_id_selfhosted: sql.delete.count
   datadog_id_dedicated: sql.delete.count
@@ -71,7 +71,7 @@
 - metric_id: sql.service.latency
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "P90, P99, P99.9, P99.99"
   datadog_id_selfhosted: sql.service.latency
   datadog_id_dedicated: sql.service.latency
@@ -83,7 +83,7 @@
 - metric_id: tenant.consumption.request_units
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "RU, Average RUs"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -95,7 +95,7 @@
 - metric_id: livebytes
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Storage usage"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -107,7 +107,7 @@
 - metric_id: tenant.consumption.sql_pods_cpu_seconds
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Total amount of CPU used by SQL pods"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -119,7 +119,7 @@
 - metric_id: tenant.consumption.pgwire_egress_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Client traffic"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -131,7 +131,7 @@
 - metric_id: tenant.consumption.external_io_egress_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Bulk I/O operations"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -143,7 +143,7 @@
 - metric_id: tenant.consumption.read_requests
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Requests"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -155,7 +155,7 @@
 - metric_id: tenant.consumption.read_batches
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Batches"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -167,7 +167,7 @@
 - metric_id: tenant.consumption.read_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Bytes"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -179,7 +179,7 @@
 - metric_id: tenant.consumption.write_requests
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Requests"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -191,7 +191,7 @@
 - metric_id: tenant.consumption.write_batches
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Batches"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -203,7 +203,7 @@
 - metric_id: tenant.consumption.write_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Bytes"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -215,7 +215,7 @@
 - metric_id: tenant.consumption.cross_region_network_ru
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Network traffic"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -227,7 +227,7 @@
 - metric_id: sql.conn.latency
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "P90, P99"
   datadog_id_selfhosted: sql.conn.latency
   datadog_id_dedicated: sql.conn.latency
@@ -239,7 +239,7 @@
 - metric_id: sql.conns
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Connections"
   datadog_id_selfhosted: sql.conns
   datadog_id_dedicated: sql.conns
@@ -251,7 +251,7 @@
 - metric_id: sql.txns.open
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Open Transactions"
   datadog_id_selfhosted: sql.txns.open
   datadog_id_dedicated: sql.txns.open
@@ -263,7 +263,7 @@
 - metric_id: sql.txn.begin.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Begin"
   datadog_id_selfhosted: sql.txn.begin.count
   datadog_id_dedicated: sql.txn.begin.count
@@ -275,7 +275,7 @@
 - metric_id: sql.txn.commit.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Commits"
   datadog_id_selfhosted: sql.txn.commit.count
   datadog_id_dedicated: sql.txn.commit.count
@@ -287,7 +287,7 @@
 - metric_id: sql.txn.rollback.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Rollbacks"
   datadog_id_selfhosted: sql.txn.rollback.count
   datadog_id_dedicated: sql.txn.rollback.count
@@ -299,7 +299,7 @@
 - metric_id: sql.txn.abort.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Aborts"
   datadog_id_selfhosted: sql.txn.abort.count
   datadog_id_dedicated: sql.txn.abort.count
@@ -311,7 +311,7 @@
 - metric_id: txn.restarts.writetooold
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Write Too Old"
   datadog_id_selfhosted: txn.restarts.writetooold
   datadog_id_dedicated: txn.restarts.writetooold
@@ -323,7 +323,7 @@
 - metric_id: txn.restarts.writetoooldmulti
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Write Too Old (multiple)"
   datadog_id_selfhosted: txn.restarts.writetoooldmulti.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -335,7 +335,7 @@
 - metric_id: txn.restarts.serializable
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Forwarded Timestamp"
   datadog_id_selfhosted: txn.restarts.serializable
   datadog_id_dedicated: txn.restarts.serializable
@@ -347,7 +347,7 @@
 - metric_id: txn.restarts.asyncwritefailure
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Async Consensus Failure"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -359,7 +359,7 @@
 - metric_id: txn.restarts.readwithinuncertainty
   deploy_selfhosted: false
   deploy_dedicated: false
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Read Within Uncertainty Interval"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -371,7 +371,7 @@
 - metric_id: txn.restarts.txnaborted
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Aborted"
   datadog_id_selfhosted: txn.restarts.txnaborted.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -383,7 +383,7 @@
 - metric_id: txn.restarts.txnpush
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Push Failure"
   datadog_id_selfhosted: txn.restarts.txnpush.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -395,7 +395,7 @@
 - metric_id: txn.restarts.unknown
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Unknown"
   datadog_id_selfhosted: txn.restarts.unknown.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -407,7 +407,7 @@
 - metric_id: sql.txn.latency
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "P90, P99"
   datadog_id_selfhosted: sql.txn.latency
   datadog_id_dedicated: sql.txn.latency
@@ -419,7 +419,7 @@
 - metric_id: sql.statements.active
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Active Statements"
   datadog_id_selfhosted: sql.statements.active
   datadog_id_dedicated: sql.statements.active
@@ -431,7 +431,7 @@
 - metric_id: sql.failure.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Errors"
   datadog_id_selfhosted: sql.failure
   datadog_id_dedicated: sql.failure.count
@@ -443,7 +443,7 @@
 - metric_id: sql.distsql.contended_queries.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Contention"
   datadog_id_selfhosted: sql.distsql.contended.queries
   datadog_id_dedicated: sql.distsql.contended.queries
@@ -455,7 +455,7 @@
 - metric_id: sql.full.scan.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Full scans"
   datadog_id_selfhosted: sql.full.scan
   datadog_id_dedicated: sql.full.scan.count
@@ -467,7 +467,7 @@
 - metric_id: sql.ddl.count
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "DDL Statements"
   datadog_id_selfhosted: sql.ddl.count
   datadog_id_dedicated: sql.ddl.count
@@ -479,7 +479,7 @@
 - metric_id: jobs.auto_create_stats.currently_running
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Auto Create Statistics Running"
   datadog_id_selfhosted: jobs.auto_create_stats.currently_running
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -491,7 +491,7 @@
 - metric_id: jobs.create_stats.currently_running
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Create Statistics Running"
   datadog_id_selfhosted: jobs.create_stats.currently_running
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -503,7 +503,7 @@
 - metric_id: jobs.auto_create_stats.resume_failed
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Auto Create Statistics Failed"
   datadog_id_selfhosted: jobs.auto.create.stats.resume_failed.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -515,7 +515,7 @@
 - metric_id: jobs.auto_create_stats.currently_paused
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Auto Create Statistics Paused"
   datadog_id_selfhosted: jobs.auto.create.stats.currently_paused
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -527,7 +527,7 @@
 - metric_id: changefeed.running
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Running"
   datadog_id_selfhosted: changefeed.running
   datadog_id_dedicated: changefeed.running
@@ -539,7 +539,7 @@
 - metric_id: jobs.changefeed.currently_paused
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Paused"
   datadog_id_selfhosted: jobs.changefeed.currently_paused
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -551,7 +551,7 @@
 - metric_id: changefeed.failures
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Failures"
   datadog_id_selfhosted: changefeed.failures
   datadog_id_dedicated: changefeed.failures
@@ -563,7 +563,7 @@
 - metric_id: changefeed.error_retries
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Errors"
   datadog_id_selfhosted: changefeed.error_retries
   datadog_id_dedicated: changefeed.error_retries
@@ -575,7 +575,7 @@
 - metric_id: changefeed.emitted_messages
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Emitted messages"
   datadog_id_selfhosted: changefeed.emitted.messages
   datadog_id_dedicated: changefeed.emitted.messages
@@ -587,7 +587,7 @@
 - metric_id: changefeed.emitted_bytes
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Emitted bytes"
   datadog_id_selfhosted: changefeed.emitted_bytes.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -599,7 +599,7 @@
 - metric_id: changefeed.commit_latency
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "P99, P90"
   datadog_id_selfhosted: changefeed.commit_latency
   datadog_id_dedicated: changefeed.commit_latency
@@ -611,7 +611,7 @@
 - metric_id: jobs.changefeed.protected_age_sec
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Protected Timestamp Age"
   datadog_id_selfhosted: jobs.changefeed.protected_age_sec
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -623,7 +623,7 @@
 - metric_id: jobs.row_level_ttl.resume_completed
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Resume Completed"
   datadog_id_selfhosted: jobs.row_level_ttl.resume_completed.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -635,7 +635,7 @@
 - metric_id: jobs.row_level_ttl.currently_running
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Running"
   datadog_id_selfhosted: jobs.row.level.ttl.currently_running
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -647,7 +647,7 @@
 - metric_id: jobs.row_level_ttl.currently_paused
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Paused"
   datadog_id_selfhosted: jobs.row_level_ttl.currently_paused
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -659,7 +659,7 @@
 - metric_id: jobs.row_level_ttl.resume_failed
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Resume Failed"
   datadog_id_selfhosted: jobs.row_level_ttl.resume_failed.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -671,7 +671,7 @@
 - metric_id: schedules.scheduled-row-level-ttl-executor.failed
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Failed Schedules"
   datadog_id_selfhosted: schedules.scheduled-row-level-ttl-executor.failed.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -683,7 +683,7 @@
 - metric_id: jobs.row_level_ttl.rows_selected
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Rows selected"
   datadog_id_selfhosted: jobs.row_level_ttl.rows_selected.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -695,7 +695,7 @@
 - metric_id: jobs.row_level_ttl.rows_deleted
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Rows deleted"
   datadog_id_selfhosted: jobs.row_level_ttl.rows_deleted.count
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -707,7 +707,7 @@
 - metric_id: jobs.row_level_ttl.total_rows
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Total Rows"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -719,7 +719,7 @@
 - metric_id: jobs.row_level_ttl.total_expired_rows
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Expired Rows"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -731,7 +731,7 @@
 - metric_id: jobs.row_level_ttl.select_duration
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Select Latency (P90), Select Latency (P99)"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"
@@ -743,7 +743,7 @@
 - metric_id: jobs.row_level_ttl.delete_duration
   deploy_selfhosted: true
   deploy_dedicated: true
-  deploy_serverless: true
+  deploy_standard: true
   short_name: "Delete Latency (P90), Delete Latency (P99)"
   datadog_id_selfhosted: "NOT AVAILABLE"
   datadog_id_dedicated: "NOT AVAILABLE"

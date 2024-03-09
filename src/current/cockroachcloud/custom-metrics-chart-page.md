@@ -40,4 +40,5 @@ In the **Create custom chart** dialog, you can customize each chart.
 
 ## See also
 
-- [Metrics Page]({% link cockroachcloud/metrics-page.md %})
+- [Metrics in Cloud Console for Advanced Deployments]({% link cockroachcloud/metrics-page.md %})
+- [Essential Metrics for Standard/Basic Deployments]({% link cockroachcloud/metrics-essential.md %})

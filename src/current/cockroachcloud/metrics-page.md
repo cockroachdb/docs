@@ -1,12 +1,12 @@
 ---
-title: Metrics in Cloud Console for Dedicated Deployments
-summary: The Metrics page lets you monitor the performance of your Serverless cluster's SQL queries.
+title: Metrics in Cloud Console for Advanced Deployments
+summary: The Metrics page lets you monitor the performance of your Advanced cluster's SQL queries.
 toc: true
 docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are only available for CockroachDB {{ site.data.products.dedicated }} Deployments. For CockroachDB {{ site.data.products.serverless }} Deployments, refer to [Metrics for {{ site.data.products.serverless }}]({% link cockroachcloud/metrics-overview.md %}).
+These graphs are only available for CockroachDB {{ site.data.products.advanced }} Deployments. For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} Deployments, refer to [Metrics for {{ site.data.products.standard }}/{{ site.data.products.basic }}]({% link cockroachcloud/metrics-essential.md %}).
 {{site.data.alerts.end}}
 
 The **Metrics** page of the CockroachDB Cloud Console allows you to:

@@ -1,10 +1,10 @@
 ---
-title: Essential Metrics for CockroachDB Serverless Deployments
-summary: Learn about the recommended essential metrics for monitoring your CockroachDB Serverless cluster.
+title: Essential Metrics for CockroachDB Standard and Basic Deployments
+summary: Learn about the recommended essential metrics for monitoring your CockroachDB Standard/Basic cluster.
 toc: true
 ---
 
-These essential CockroachDB metrics let you monitor your CockroachDB Serverless cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}).
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}).
 
 {% assign types = site.data.metrics | map: "metric_type" | uniq %}
 {% comment %} Fetch the list of all metric types {% endcomment %}
@@ -13,7 +13,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB Serverless 
 
 ## {{ t }}
 
-    {% assign metrics = site.data.metrics | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_serverless == true"%}
+    {% assign metrics = site.data.metrics | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_standard == true"%}
     {% comment %} Fetch all metrics for that metric_type. {% endcomment %}
 
 <table>

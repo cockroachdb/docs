@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are only available for CockroachDB {{ site.data.products.serverless }} Deployments. For CockroachDB {{ site.data.products.dedicated }} Deployments, refer to [Metrics for {{ site.data.products.dedicated }}]({% link cockroachcloud/metrics-page.md %}).
+These graphs are only available for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} Deployments. For CockroachDB {{ site.data.products.advanced }} Deployments, refer to [Metrics for {{ site.data.products.advanced }}]({% link cockroachcloud/metrics-page.md %}).
 {{site.data.alerts.end}}
 
 The Changefeed metrics let you monitor the performance of your [changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}).
@@ -57,4 +57,4 @@ The time interval selector at the top of each tab allows you to filter the view 
 - [Request Unit metrics]({% link cockroachcloud/metrics-request-units.md %})
 - [SQL metrics]({% link cockroachcloud/metrics-sql.md %})
 - [Row-Level TTL metrics]({% link cockroachcloud/metrics-row-level-ttl.md %})
-- [Essential Metrics for {{ site.data.products.serverless }}]({% link cockroachcloud/metrics-essential-serverless.md %})
+- [Essential Metrics for {{ site.data.products.standard }} and {{ site.data.products.basic }}]({% link cockroachcloud/metrics-essential.md %})
