@@ -79,9 +79,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
       --join=roach1:26357,roach2:26357,roach3:26357
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    If you set the `COCKROACH_ARGS` environment variable, any arguments you attempt to pass to the `cockroach` command interactively are ignored.
-    {{site.data.alerts.end}}
 
     This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
     - `docker run`: The Docker command to start a new container.
