@@ -59,11 +59,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
 1. {% include_cached new-in.html version="v23.1" %}Optionally, on each node, set the `COCKROACH_ARGS` environment variable to the string of arguments to use when starting CockroachDB. If `COCKROACH_ARGS` is set, its value is automatically passed to the `cockroach` command, and any additional arguments to the `cockroach` command are ignored.
 
-1. Start the first node and configure it to listen on `roach1:26257` for SQL clients and `roach1:8080` for the DB Console and to publish these ports, and to use `roach1:26357`for inter-node traffic. The Docker host will forward traffic to a published port to the publishing container.
-
-    This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
-
-    CockroachDB starts in insecure mode and a `certs` directory is not created.
+1. Start the first node and configure it to listen on `roach1:26257` for SQL clients and `roach1:8080` for the DB Console and to publish these ports, and to use `roach1:26357`for inter-node traffic. The Docker host will forward traffic to a published port to the publishing container. CockroachDB starts in insecure mode and a `certs` directory is not created.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -83,7 +79,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
       --join=roach1:26357,roach2:26357,roach3:26357
     ~~~
 
-1. This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
+    This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
     - `docker run`: The Docker command to start a new container.
     - `-d`: This flag runs the container in the background so you can continue the next steps in the same shell.
     - `--name`: The name for the container. This is optional, but a custom name makes it significantly easier to reference the container in other commands, for example, when opening a Bash session in the container or stopping the container.
