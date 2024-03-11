@@ -18,8 +18,8 @@ For the list of supported Azure regions, refer to [Azure Regions]({% link cockro
 
 ### Editing and scaling
 
-- A cluster must have at minimum three nodes. Single-node clusters are not supported.
-- After it is created, a cluster's regions cannot yet be modified.
+- A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported.
+- To add or remove regions from a cluster on Azure, you must use the CockroachDB {{ site.data.products.cloud }} API. Refer to [Scale, edit or upgrade a cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
 - After it is created, a cluster's storage can be increased in place, but cannot subsequently be decreased or removed.
 
 ### Networking
