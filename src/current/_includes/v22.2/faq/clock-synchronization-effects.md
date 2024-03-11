@@ -4,6 +4,10 @@ While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) 
 
 In very rare cases, CockroachDB can momentarily run with a stale clock. This can happen when using vMotion, which can suspend a VM running CockroachDB, migrate it to different hardware, and resume it. This will cause CockroachDB to be out of sync for a short period before it jumps to the correct time. During this window, it would be possible for a client to read stale data and write data derived from stale reads. By enabling the `server.clock.forward_jump_check_enabled` [cluster setting](cluster-settings.html), you can be alerted when the CockroachDB clock jumps forward, indicating it had been running with a stale clock. To protect against this on vMotion, however, use the [`--clock-device`](cockroach-start.html#general) flag to specify a [PTP hardware clock](https://www.kernel.org/doc/html/latest/driver-api/ptp.html) for CockroachDB to use when querying the current time. When doing so, you should not enable `server.clock.forward_jump_check_enabled` because forward jumps will be expected and harmless. For more information on how `--clock-device` interacts with vMotion, see [this blog post](https://core.vmware.com/blog/cockroachdb-vmotion-support-vsphere-7-using-precise-timekeeping).
 
+{{site.data.alerts.callout_danger}}
+In CockroachDB versions prior to v22.2.13, the [`--clock-device`](cockroach-start.html#general) flag had a bug that could cause it to generate timestamps in the far future. This could cause nodes to crash due to incorrect timestamps, or in the worst case irreversibly advance the cluster's HLC clock into the far future. Before attempting to use this flag, Cockroach Labs strongly recommends upgrading your cluster to a version where the bug is fixed.
+{{site.data.alerts.end}}
+
 ### Considerations
 
 When setting up clock synchronization:

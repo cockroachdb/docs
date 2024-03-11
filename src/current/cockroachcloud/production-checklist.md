@@ -120,9 +120,9 @@ For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admin
 
 For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
-## PCI ready features (Dedicated advanced)
+## PCI ready features ({{ site.data.products.advanced }} with Security add-on)
 
-CockroachDB {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
+CockroachDB {{ site.data.products.advanced }} with Security add-on has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Cluster SQL audit log export]({% link cockroachcloud/export-logs.md %})
@@ -131,4 +131,4 @@ CockroachDB {{ site.data.products.dedicated }} advanced has access to all featur
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
+You can check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready-with-security-add-on) page of the CockroachDB {{ site.data.products.cloud }} Console.
