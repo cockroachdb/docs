@@ -102,7 +102,7 @@ No special privilege is required for:
 
  Parameter | Description
 -----------|-------------
- `table_pattern` | The table or [view]({% link {{ page.version.version }}/views.md %}) you want to restore.
+ `table_pattern` | The table, [view]({% link {{ page.version.version }}/views.md %}), or [sequence]({% link {{ page.version.version }}/create-sequence.md %}) you want to restore. For details on how restore works with objects that are dependent on one another, refer to [Object dependencies](#object-dependencies).
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `collectionURI` | The [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI where the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) (and appended [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-full-or-incremental-backup) example.
@@ -198,14 +198,14 @@ If [dropping]({% link {{ page.version.version }}/drop-database.md %}) or [renami
 
 ### Tables
 
-You can also restore individual tables (which automatically includes their indexes) or [views]({% link {{ page.version.version }}/views.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the target database.
+You can also restore individual tables (which automatically includes their indexes), [views]({% link {{ page.version.version }}/views.md %}), or [sequences]({% link {{ page.version.version }}/create-sequence.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables, views, and sequences in the target database.
 
-By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the target database with the [`into_db` option](#into_db).
+By default, tables, views, and sequences are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the target database with the [`into_db` option](#into_db).
 
-The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
+The target database must not have tables, views, or sequences with the same name as the the object you're restoring. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %}), or [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions) can be used to set the value of the sequence to what it was previously.
-- [Restore the table or view into a different database](#into_db).
+- [Restore the table, view, or sequence into a different database](#into_db).
 
 {{site.data.alerts.callout_info}}
 `RESTORE` only offers table-level granularity; it **does not** support restoring subsets of a table.
