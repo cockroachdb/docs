@@ -15,15 +15,15 @@ CockroachDB Cloud clusters can run two types of backups:
 
 ### Managed-service backups
 
-Cockroach Labs takes automated backups of CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters that are stored in Cockroach Labs' cloud storage. This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
+Cockroach Labs takes automated backups of CockroachDB {{ site.data.products.cloud }} clusters that are stored in Cockroach Labs' cloud storage. This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
 
 {% include cockroachcloud/backups/managed-service-backups-frequency.md %}
 
-You can interact with managed-service backups through the **Backup and Restore** menu in the Cloud Console. Refer to [Use Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions on using the Cloud console to work with managed-service backups for both CockroachDB {{ site.data.products.cloud }} clusters.
+You can interact with managed-service backups through the **Backup and Restore** menu in the Cloud Console. Refer to [Use Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions on using the Cloud Console to work with managed-service backups for CockroachDB {{ site.data.products.cloud }} clusters.
 
 ### Customer-owned backups
 
-You can take manual backups and store them in your [cloud storage buckets](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement. Customer-owned backups are supported in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
+You can take manual backups and store them in your [cloud storage buckets](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement. Customer-owned backups are supported in all CockroachDB {{ site.data.products.cloud }} products. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
 
 ## Backup and restore support
 
@@ -43,8 +43,8 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.</td>
       <td>
         <ul>
-          <li>Managed-service backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Managed-service backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -55,8 +55,8 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).</td>
       <td>
         <ul>
-          <li>Managed-service backups in CockroachDB {{ site.data.products.dedicated }}.</li>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Managed-service backups in CockroachDB {{ site.data.products.advanced }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -67,7 +67,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A schedule for periodic backups.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -78,7 +78,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -89,7 +89,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A restore from an arbitrary point in time within the revision history of a backup.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -100,7 +100,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>An encrypted backup using a KMS or passphrase.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -111,7 +111,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -122,7 +122,7 @@ You can take manual backups and store them in your [cloud storage buckets](https
       <td>A backup with the <code>EXECUTION LOCALITY</code> option restricts the nodes that can execute a backup job with a defined locality filter.</td>
       <td>
         <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
+          <li>Customer-owned backups in all CockroachDB {{ site.data.products.cloud }} products.</li>
         </ul>
       </td>
     </tr>
@@ -141,7 +141,7 @@ CockroachDB supports [creating schedules for periodic backups](https://www.cockr
 
 For detail on scheduled backup features CockroachDB supports:
 
-- [Set up monitoring for the backup schedule](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule)
+- [Set up monitoring for the backup schedule](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule).
 - [View](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#view-the-schedule), [pause](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#pause-the-schedule), [resume](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#resume-the-schedule), or [drop](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/manage-a-backup-schedule#drop-the-schedule) the schedule.
 
 ### Backup and restore SQL statements
@@ -188,9 +188,11 @@ Refer to the [Backup Validation](https://www.cockroachlabs.com/docs/{{site.curre
 
 You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. Depending on your CockroachDB {{ site.data.products.cloud }} deployment, you can track these metrics with:
 
-- Prometheus: Dedicated
-- Datadog: Dedicated
-- Cloud Console Metrics page: Serverless, Dedicated
+|  | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
+|-----------------------------|----------------------|----------------------|------|
+| [Cloud Console Metrics page]({% link cockroachcloud/metrics-page.md %}) | ✔ | ✔ | ✔ |
+| [Prometheus]({% link cockroachcloud/backup-and-restore-monitoring.md %}#prometheus) | ✔ | ✔  |  |
+| [Datadog]({% link cockroachcloud/backup-and-restore-monitoring.md %}#datadog) | ✔  | ✔  |  |
 
 ### Backup jobs with locality requirements
 
@@ -200,7 +202,7 @@ CockroachDB supports two backup features that use a node's locality to determine
 - [Locality-aware backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) bucket that is closest to the node locality configured at [node startup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-start).
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include cockroachcloud/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 ## Video demo

@@ -10,8 +10,8 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 
  Attribute | Description
 -----------|-------------
-**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
-**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
+**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
 **Database** | The database on which the statements executed.
 **Application Name** | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 **Fingerprint ID** | The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
@@ -126,7 +126,7 @@ The **Diagnostics** tab allows you to activate and download diagnostics for a SQ
 {{site.data.alerts.callout_info}}
 The **Diagnostics** tab is not visible:
 
-- On CockroachDB {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.standard }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 

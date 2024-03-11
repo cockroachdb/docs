@@ -22,7 +22,7 @@ Automated database and table level backups are not supported in CockroachDB {{ s
 Both CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups). However, you can take manual locality-aware backups to your own [cloud storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include cockroachcloud/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 ## Adding and removing regions

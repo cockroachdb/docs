@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to use [_managed-service backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
+This page describes how to use [_managed-service backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) in CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
 
 Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
 
@@ -22,11 +22,11 @@ To access your managed-service backups, select a cluster from the [**Clusters** 
 Select one of the following filters for your deployment:
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="basic-and-standard"><strong>CockroachDB {{ site.data.products.standard }}/{{ site.data.products.basic }}</strong></button>
+    <button class="filter-button page-level" data-scope="advanced"><strong>CockroachDB {{ site.data.products.advanced }}</strong></button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic-and-standard">
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
@@ -38,7 +38,7 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="advanced">
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup and Restore** page.
 
@@ -53,7 +53,7 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 </section>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 ## Backups tab
 
@@ -70,7 +70,7 @@ To [restore a particular cluster backup](#restore-a-cluster), click **Restore** 
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="basic-and-standard">
 
 ## Backup Recovery page
 
@@ -84,7 +84,7 @@ For each backup, the following details display:
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 ### Databases
 
@@ -100,7 +100,7 @@ For each database in the backup, the following details display:
 To [restore a database](#restore-a-database), click **Restore** in the corresponding row.
 
 {{site.data.alerts.callout_info}}
-If a database does not contain tables, it will not display in the Databases view.
+If a database does not contain tables, it will not display in the **Databases** view.
 {{site.data.alerts.end}}
 
 ### Tables
@@ -144,8 +144,7 @@ Additional ways to restore data:
 {{site.data.alerts.callout_danger}}
 The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
 
-This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
-
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when designing your system of privilege grants.
 {{site.data.alerts.end}}
 
 To restore a cluster:
@@ -155,7 +154,7 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
+1. Select the cluster to restore to. You can restore to either the same cluster or a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
 
     {{site.data.alerts.callout_info}}
     Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work.
@@ -280,7 +279,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
 
 - For [restoring a cluster](#restore-a-cluster):
     - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restoring-backups-across-versions).
-    - Restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work.
+    - Restoring CockroachDB {{ site.data.products.advanced }} clusters to a CockroachDB {{ site.data.products.basic }} or CockroachDB {{ site.data.products.standard }} cluster (or the reverse) does not work.
     - Restoring to a different cluster is disabled for [CMEK]({% link cockroachcloud/cmek.md %}) clusters.
     - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
     - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.
@@ -337,14 +336,14 @@ Or [change the existing table's name](https://www.cockroachlabs.com/docs/{{site.
 
 </div>
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic-and-standard">
 
 ## Restore a cluster
 
 Find the cluster backup you want to restore, and click **Restore**.
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.serverless }} does not support cross-cluster restores through the CockroachDB {{ site.data.products.cloud }} Console. If you need to restore data into a new or different cluster, use [customer-owned backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [contact support](https://support.cockroachlabs.com).
+CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not support cross-cluster restores through the CockroachDB {{ site.data.products.cloud }} Console. If you need to restore data into a new or different cluster, use [customer-owned backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [contact support](https://support.cockroachlabs.com).
 {{site.data.alerts.end}}
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
