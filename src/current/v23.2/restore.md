@@ -198,7 +198,7 @@ If [dropping]({% link {{ page.version.version }}/drop-database.md %}) or [renami
 
 ### Tables
 
-You can also restore individual tables (which automatically includes their indexes), [views]({% link {{ page.version.version }}/views.md %}), or [sequences]({% link {{ page.version.version }}/create-sequence.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables, views, sequences in the target database.
+You can also restore individual tables (which automatically includes their indexes), [views]({% link {{ page.version.version }}/views.md %}), or [sequences]({% link {{ page.version.version }}/create-sequence.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables, views, and sequences in the target database.
 
 By default, tables, views, and sequences are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the target database with the [`into_db` option](#into_db).
 
