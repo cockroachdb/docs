@@ -92,6 +92,7 @@ North America   | `centralcanada`      | Toronto
                 | `eastus2`            | Virginia
                 | `westus2`            | Washington
 Western Europe  | `germanywestcentral` | Frankfurt
+                | `northeurope`        | Ireland
                 | `uksouth`            | London
                 | `westeurope`         | Netherlands
 
