@@ -11,7 +11,7 @@ This page describes how to understand your CockroachDB {{ site.data.products.bas
 
 - [Diagnose and optimize your resource consumption](#diagnose-and-optimize-your-resource-consumption) explains how to find and optimize queries and processes that may be consuming excessive resources and provides general tips for reducing resource usage.
 
-For information on planning your cluster configuration and setting resource limits, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster and [Plan a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for a {{ site.data.products.standard }} cluster.
+For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster and [Plan a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for a {{ site.data.products.standard }} cluster.
 
 ## Understand resource consumption
 
