@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Populate the site_url to be used by jekyll for generating sidebar and search links
+# Populate the site_url to be used by Jekyll for generating sidebar and search links
 site_url="${DEPLOY_PRIME_URL}"
 JEKYLL_ENV="preview"
 if [[ "$CONTEXT" = "production" ]]; then
