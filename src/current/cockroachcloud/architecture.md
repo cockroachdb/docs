@@ -14,10 +14,11 @@ For an intro to CockroachDB's core architecture and capabilities, see [Cockroach
 
 {% include common/basic-terms.md %}
 
-## CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}
+## CockroachDB {{ site.data.products.basic }} 
 
-CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are fully-managed, auto-scaling deployments of CockroachDB. Being familiar with the following concepts will help you understand their architecture. CockroachDB {{ site.data.products.basic }} is ideal for lightweight applications, starter projects, development environments, and highly-variable workloads, while {{ site.data.products.standard }} is ideal for production workloads that require cost predictability.
+CockroachDB {{ site.data.products.basic }} is a fully-managed, auto-scaling deployment of CockroachDB, ideal for lightweight applications, starter projects, development environments, and highly-variable workloads.
 
+{% comment %}
 ### Architecture
 
 CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are managed multi-tenant deployments of CockroachDB. A {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
@@ -26,7 +27,7 @@ A {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster ha
 
 Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes (K8s) cluster that hosts CockroachDB. K8s pods allow CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster to limit SQL resource consumption for each user. They also minimize interference between pods that are scheduled on the same machine, giving each user a high-quality experience even when other users are running heavy workloads.
 
-The following diagram is a high-level representation of what a typical {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster cluster looks like:
+The following diagram is a high-level representation of what a typical {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster looks like:
 
 <img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="width:100%; max-width:800px" />
 
@@ -35,6 +36,8 @@ Proxy pods allow many users to share the same IP address, balance loads across a
 After the cloud load balancer routes a new connection to one of the proxy pods, the proxy pod will in turn forward that connection to a SQL pod owned by the connecting user. Each SQL pod is dedicated to just one user, and multiple SQL pods can be owned by the same user. Network security rules prevent SQL pods from communicating with one another unless they are owned by the same user.
 
 Finally, the SQL pods communicate with the KV layer to access data managed by the shared storage pods, each of which stores that data in an [AWS](https://aws.amazon.com/ebs/features/) or [GCP](https://cloud.google.com/compute/docs/disks#pdspecs) block storage system.
+
+{% endcomment %}
 
 ### Performance
 
@@ -57,6 +60,10 @@ The diagrams below shows how CockroachDB {{ site.data.products.basic }} autoscal
 <img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="width:100%; max-width:800px" />
 
 <img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="width:100%; max-width:800px" />
+
+## CockroachDB {{ site.data.products.standard }}
+
+CockroachDB {{ site.data.products.standard }} is a fully-managed deployment of CockroachDB, ideal for production workloads that require cost predictability.
 
 ### Provisioned capacity
 
