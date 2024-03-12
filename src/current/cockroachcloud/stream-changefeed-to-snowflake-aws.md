@@ -90,7 +90,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 1. Create an S3 bucket where streaming updates from the watched tables will be collected.
 
-    You will need the name of the S3 bucket when you [create your changefeed](#step-6-create-an-enterprise-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-6-create-an-enterprise-changefeed).
+    You will need the name of the S3 bucket when you [create your changefeed](#step-7-create-an-enterprise-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-7-create-an-enterprise-changefeed).
 
 ## Step 7. Create an enterprise changefeed
 
@@ -177,7 +177,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     SHOW PIPES;
     ~~~
 
-1. Copy the **ARN** of the SQS queue for your stage, which displays in the **notification_channel** column. You will use this information to [configure the S3 bucket](#step-9-configure-the-s3-bucket).
+1. Copy the **ARN** of the SQS queue for your stage, which displays in the **notification_channel** column. You will use this information to [configure the S3 bucket](#step-10-configure-the-s3-bucket).
 
 ## Step 10. Configure the S3 bucket
 
@@ -188,7 +188,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     - **Event types:** Select the **All object create events**.
     - **Destination:** Select **SQS Queue**.
     - **Specify SQS queue:** Select **Enter SQS queue ARN** from the drop-down.
-    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 8](#step-8-configure-snowflake)).
+    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 8](#step-9-configure-snowflake)).
 
 1. Navigate back to Snowflake.
 
