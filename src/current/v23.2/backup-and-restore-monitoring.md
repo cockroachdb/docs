@@ -59,7 +59,7 @@ Metric | Description
 
 ## Datadog integration
 
-To use the Datadog integration with your **CockroachDB {{ site.data.products.core }}** cluster, use the Datadog platform to collect and alert on the [available](#available-metrics-in-datadog) backup metrics. Refer to the [Monitor CockroachDB Self-Hosted with Datadog]({% link {{ page.version.version }}/datadog.md %}) for setup instructions.
+To use the Datadog integration with your **CockroachDB {{ site.data.products.core }}** cluster, you can set up the Datadog platform to collect and alert on the [available](#available-metrics-in-datadog) backup metrics. Refer to the [Monitor CockroachDB Self-Hosted with Datadog]({% link {{ page.version.version }}/datadog.md %}) for instructions.
 
 ### Available metrics in Datadog
 
