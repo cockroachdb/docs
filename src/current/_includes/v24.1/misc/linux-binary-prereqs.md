@@ -1,0 +1,1 @@
+<p>The CockroachDB binary for Linux requires <code>glibc</code>, <code>libncurses</code>, and <code>tzdata</code>, which are found by default on nearly all Linux distributions, with Alpine as the notable exception.</p>
