@@ -1,0 +1,1 @@
+For production deployments, set `--cache` to `25%` or higher. Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
