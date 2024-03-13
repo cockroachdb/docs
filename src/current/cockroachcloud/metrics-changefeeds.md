@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [Metrics Overview]({% link cockroachcloud/metrics-page.md %}#cockroachdb-cloud-console-metrics-page).
+These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
 {{site.data.alerts.end}}
 
 The Changefeed metrics let you monitor the performance of your [changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}).
@@ -53,7 +53,7 @@ The time interval selector at the top of each tab allows you to filter the view 
 
 ## See also
 
-- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics.md %})
 - [Overview metrics tab]({% link cockroachcloud/metrics-overview.md %})
 - [Request Unit metrics]({% link cockroachcloud/metrics-request-units.md %})
 - [SQL metrics]({% link cockroachcloud/metrics-sql.md %})

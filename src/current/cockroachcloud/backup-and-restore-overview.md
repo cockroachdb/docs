@@ -194,7 +194,7 @@ You can track backup jobs using metrics that cover scheduled backups, status of 
 
 |  | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
 |-----------------------------|----------------------|----------------------|------|
-| [Cloud Console Metrics page]({% link cockroachcloud/metrics-page.md %}) | ✔ | ✔ | ✔ |
+| [Cloud Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) | ✔ | ✔ | ✔ |
 | [Prometheus]({% link cockroachcloud/backup-and-restore-monitoring.md %}#prometheus) | ✔ | ✔  |  |
 | [Datadog]({% link cockroachcloud/backup-and-restore-monitoring.md %}#datadog) | ✔  | ✔  |  |
 

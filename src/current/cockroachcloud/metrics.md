@@ -21,8 +21,8 @@ To view this page, select a cluster from the [**Clusters** page]({% link cockroa
 
 Depending on your CockroachDB {{ site.data.products.cloud }} deployment, the **Metrics** page will have the following tabs on which you can view time-series graphs:
 
-| Metrics Tab | Standard | Advanced | Basic |
-|:------------|:--------:|:--------:|:-----:|
+| Metrics Tab | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
+|:------------|:--------------------:|:--------------------:|:-----------------:|
 | [Overview]({% link cockroachcloud/metrics-overview.md %}) | ✔ |  |  |
 | [Request Units]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |  |
 | [SQL]({% link cockroachcloud/metrics-sql.md %}) | ✔ |  |  |
@@ -40,6 +40,11 @@ The time interval selector at the top of each tab allows you to filter the view 
 
 CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} users can export metrics to the following third-party cloud sinks:
 
-- AWS CloudWatch - Refer to the AWS CloudWatch documentation for CockroachDB [{{ site.data.products.standard }}]({% link cockroachcloud/export-metrics.md %}) and CockroachDB [{{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}).
-- Datadog - Refer to the Datadog documentation for CockroachDB [{{ site.data.products.standard }}]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) and CockroachDB [{{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export).
-- Prometheus - Refer to the Prometheus documentation for CockroachDB [{{ site.data.products.standard }}]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) and CockroachDB [{{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export).
+- AWS Cloudwatch
+- Datadog
+- Prometheus
+
+For more information, refer to:
+
+- [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %})
+- [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %})

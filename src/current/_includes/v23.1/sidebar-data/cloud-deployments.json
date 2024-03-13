@@ -376,7 +376,7 @@
                   {
                     "title": "Metrics Page",
                     "urls": [
-                      "/cockroachcloud/metrics-page.html"
+                      "/cockroachcloud/metrics.html"
                     ]
                   },
                   {

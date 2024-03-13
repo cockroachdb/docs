@@ -41,7 +41,7 @@ CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant 
 
 The [DB Console](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview) is not supported in CockroachDB {{ site.data.products.serverless }}. The CockroachDB [Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) provides metrics and graphs to monitor the health, performance, and state of your cluster.
 
-The Cloud Console provides a subset of observability information from the DB Console including [**SQL Metrics**]({% link cockroachcloud/metrics-page.md %}), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
+The Cloud Console provides a subset of observability information from the DB Console including [**Metrics**]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
 
 - Non-SQL metrics
 - Network Latency

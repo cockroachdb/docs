@@ -6,7 +6,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are available for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.basic }} deployments. For graphs available to CockroachDB {{ site.data.products.standard }} deployments, refer to the [Metrics Overview]({% link cockroachcloud/metrics-page.md %}#cockroachdb-cloud-console-metrics-page).
+These graphs are available for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.basic }} deployments. For graphs available to CockroachDB {{ site.data.products.standard }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
 {{site.data.alerts.end}}
 
 To view these graphs, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Monitor SQL Activity** tab.
@@ -47,7 +47,7 @@ This graph shows a moving average of new SQL connection attempts to the cluster 
 
 ## See also
 
-- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics.md %})
 - [Statements Page]({% link cockroachcloud/statements-page.md %})
 - [Transactions Page]({% link cockroachcloud/transactions-page.md %})
 - [Sessions Page]({% link cockroachcloud/sessions-page.md %})

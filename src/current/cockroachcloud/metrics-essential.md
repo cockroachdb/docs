@@ -54,7 +54,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
 
 ## See also
 
-- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics.md %})
 - [Overview metrics]({% link cockroachcloud/metrics-overview.md %})
 - [Request Unit metrics]({% link cockroachcloud/metrics-request-units.md %})
 - [SQL metrics]({% link cockroachcloud/metrics-sql.md %})
