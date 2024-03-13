@@ -380,16 +380,87 @@
                     ]
                   },
                   {
-                    "title": "Metrics Page",
+                    "title": "Metrics",
+                        "items": [
+                            {
+                                "title": "Metrics Overview",
                     "urls": [
-                      "/cockroachcloud/metrics-page.html"
+                      "/cockroachcloud/metrics.html"
+                                ]
+                            },
+                            {
+                                "title": "Overview tab",
+                                "urls": [
+                                "/cockroachcloud/metrics-overview.html"
                     ]
                   },
                   {
-                    "title": "Custom Metrics Chart Page",
-                    "urls": [
-                      "/cockroachcloud/custom-metrics-chart-page.html"
-                    ]
+                    "title": "Request Units",
+                                "urls": [
+                                "/cockroachcloud/metrics-request-units.html"
+                                ]
+                            },
+                            {
+                                "title": "SQL",
+                                "urls": [
+                                "/cockroachcloud/metrics-sql.html"
+                                ]
+                            },
+                            {
+                                "title": "Changefeeds",
+                                "urls": [
+                                "/cockroachcloud/metrics-changefeeds.html"
+                                ]
+                            },
+                            {
+                                "title": "Row-Level TTL",
+                                "urls": [
+                                "/cockroachcloud/metrics-row-level-ttl.html"
+                                ]
+                            },
+                            {
+                                "title": "Monitor SQL Activity",
+                                "urls": [
+                                "/cockroachcloud/metrics-monitor-sql-activity.html"
+                                ]
+                            },
+                            {
+                                "title": "Identify SQL Problems tab",
+                                "urls": [
+                                "/cockroachcloud/metrics-identify-sql-problems.html"
+                                ]
+                            },
+                            {
+                                "title": "Custom",
+                                "urls": [
+                                "/cockroachcloud/custom-metrics-chart-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Export Metrics from {{ site.data.products.standard }}",
+                                "urls": [
+                                  "/cockroachcloud/export-metrics.html"
+                                ]
+                            },
+                            {
+                                "title": "Export Metrics from {{ site.data.products.advanced }}",
+                                "urls": [
+                                  "/cockroachcloud/export-metrics-advanced.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.standard }}",
+                                "urls": [
+                                "/cockroachcloud/metrics-essential.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.advanced }}",
+                                "urls": [
+                                  "/${VERSION}/essential-metrics-advanced.html"
+                                ]
+                            }
+                        ]
                   },
                   {
                     "title": "SQL Activity Page",
@@ -430,18 +501,6 @@
                     "title": "Jobs Page",
                     "urls": [
                       "/cockroachcloud/jobs-page.html"
-                    ]
-                  },
-                  {
-                    "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
-                    "urls": [
-                      "/cockroachcloud/export-metrics.html"
-                    ]
-                  },
-                  {
-                    "title": "Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments",
-                    "urls": [
-                      "/${VERSION}/essential-metrics-dedicated.html"
                     ]
                   }
                 ]
