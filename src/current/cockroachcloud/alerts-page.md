@@ -8,14 +8,14 @@ docs_area: manage
 The **Alerts** page allows you to enable email alerts, send test alerts, and view the email recipients and alert history for your CockroachDB {{ site.data.products.cloud }} organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**. 
 
 {{site.data.alerts.callout_info}}
-The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicated }} clusters in your CockroachDB {{ site.data.products.cloud }} organization. For CockroachDB {{ site.data.products.serverless }} clusters in your organization, all [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicated }} clusters in your CockroachDB {{ site.data.products.cloud }} organization. For CockroachDB {{ site.data.products.serverless }} clusters in your organization, all [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 {{site.data.alerts.end}}
 
 ## Automatic alerts
 
 ### Cluster Maintenance
 
-[Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) receive email alerts when: 
+[Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) who have [subscribed](#configure-alerts) to email alerts will receive notifications when:
 
 - A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete. 
 - When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
