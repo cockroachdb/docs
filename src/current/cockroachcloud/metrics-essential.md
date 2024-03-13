@@ -1,10 +1,10 @@
 ---
-title: Essential Metrics for CockroachDB Standard and Basic Deployments
-summary: Learn about the recommended essential metrics for monitoring your CockroachDB Standard/Basic cluster.
+title: Essential Metrics for CockroachDB Standard Deployments
+summary: Learn about the recommended essential metrics for monitoring your CockroachDB Standard cluster.
 toc: true
 ---
 
-These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}).
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}). The **Usage** column explains why each metric is important to visualize and how to make both practical and actionable use of the metric in a production deployment.
 
 {% assign types = site.data.metrics | map: "metric_type" | uniq %}
 {% comment %} Fetch the list of all metric types {% endcomment %}
@@ -54,6 +54,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
 
 ## See also
 
+- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
 - [Overview metrics]({% link cockroachcloud/metrics-overview.md %})
 - [Request Unit metrics]({% link cockroachcloud/metrics-request-units.md %})
 - [SQL metrics]({% link cockroachcloud/metrics-sql.md %})

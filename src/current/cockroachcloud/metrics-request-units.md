@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are only available for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} Deployments. For CockroachDB {{ site.data.products.advanced }} Deployments, refer to [Metrics for {{ site.data.products.advanced }}]({% link cockroachcloud/metrics-page.md %}).
+These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [Metrics Overview]({% link cockroachcloud/metrics-page.md %}#cockroachdb-cloud-console-metrics-page).
 {{site.data.alerts.end}}
 
 The Request Unit metrics let you monitor [resource consumption]({% link cockroachcloud/resource-usage.md %}). All cluster activity, including [SQL queries]({% link {{ site.current_cloud_version }}/selection-queries.md %}), bulk operations, and [background jobs]({% link {{ site.current_cloud_version }}/show-jobs.md %}), is measured in Request Units, or RUs. An RU is an abstracted metric that represents the compute and I/O resources used by a database operation. In addition to queries that you run, background activity, such as [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics) to optimize your queries or connecting a [changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) to an external sink, also consumes RUs.
@@ -14,7 +14,7 @@ To view these graphs, select a cluster from the [**Clusters** page]({% link cock
 
 ## Time interval selection
 
-The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the page.
+The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the **Metrics** page.
 
 {% assign tab = "Request Units" %}
 {% assign graphs = site.data.metrics | where_exp: "graphs", "graphs.metric_ui_tab contains tab" | map: "metric_ui_graph" | uniq %}
@@ -53,8 +53,9 @@ The time interval selector at the top of each tab allows you to filter the view 
 
 ## See also
 
-- [Overview metrics]({% link cockroachcloud/metrics-overview.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
+- [Overview metrics tab]({% link cockroachcloud/metrics-overview.md %})
 - [SQL metrics]({% link cockroachcloud/metrics-sql.md %})
 - [Changefeed metrics]({% link cockroachcloud/metrics-changefeeds.md %})
 - [Row-Level TTL metrics]({% link cockroachcloud/metrics-row-level-ttl.md %})
-- [Essential Metrics for {{ site.data.products.standard }} and {{ site.data.products.basic }}]({% link cockroachcloud/metrics-essential.md %})
+- [Essential Metrics for {{ site.data.products.standard }}]({% link cockroachcloud/metrics-essential.md %})

@@ -40,5 +40,6 @@ In the **Create custom chart** dialog, you can customize each chart.
 
 ## See also
 
-- [Metrics in Cloud Console for Advanced Deployments]({% link cockroachcloud/metrics-page.md %})
-- [Essential Metrics for Standard/Basic Deployments]({% link cockroachcloud/metrics-essential.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics-page.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.standard }} Deployments]({% link cockroachcloud/metrics-essential.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ site.current_cloud_version }}/essential-metrics-advanced.md %})

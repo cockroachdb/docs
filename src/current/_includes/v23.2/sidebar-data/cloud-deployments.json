@@ -380,16 +380,16 @@
                     ]
                   },
                   {
-                    "title": "Metrics for {{ site.data.products.standard }}/{{ site.data.products.basic }}",
+                    "title": "Metrics",
                         "items": [
                             {
-                                "title": "Essential Metrics for a {{ site.data.products.standard }}/{{ site.data.products.basic }}",
+                                "title": "Metrics Overview",
                                 "urls": [
-                                "/cockroachcloud/metrics-essential.html"
+                                "/cockroachcloud/metrics-page.html"
                                 ]
                             },
                             {
-                                "title": "Overview metrics",
+                                "title": "Overview tab",
                                 "urls": [
                                 "/cockroachcloud/metrics-overview.html"
                                 ]
@@ -419,32 +419,39 @@
                                 ]
                             },
                             {
+                                "title": "Monitor SQL Activity",
+                                "urls": [
+                                "/cockroachcloud/metrics-monitor-sql-activity.html"
+                                ]
+                            },
+                            {
+                                "title": "Identify SQL Problems tab",
+                                "urls": [
+                                "/cockroachcloud/metrics-identify-sql-problems.html"
+                                ]
+                            },
+                            {
                                 "title": "Custom",
                                 "urls": [
                                 "/cockroachcloud/custom-metrics-chart-page.html"
                                 ]
                             },
                             {
-                                "title": "Export Metrics From a {{ site.data.products.standard }} Cluster",
+                                "title": "Export Metrics from {{ site.data.products.standard }}",
                                 "urls": [
                                   "/cockroachcloud/export-metrics.html"
-                                ]
-                            }
-                        ]
-                  },
-                  {
-                    "title": "Metrics for {{ site.data.products.advanced }}",
-                        "items": [
-                            {
-                                "title": "Metrics in Cloud Console",
-                                "urls": [
-                                "/cockroachcloud/metrics-page.html"
                                 ]
                             },
                             {
                                 "title": "Export Metrics from {{ site.data.products.advanced }}",
                                 "urls": [
                                   "/cockroachcloud/export-metrics-advanced.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.standard }}",
+                                "urls": [
+                                "/cockroachcloud/metrics-essential.html"
                                 ]
                             },
                             {
