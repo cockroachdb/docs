@@ -188,7 +188,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     - **Event types:** Select the **All object create events**.
     - **Destination:** Select **SQS Queue**.
     - **Specify SQS queue:** Select **Enter SQS queue ARN** from the drop-down.
-    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 8](#step-9-configure-snowflake)).
+    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 9](#step-9-configure-snowflake)).
 
 1. Navigate back to Snowflake.
 
