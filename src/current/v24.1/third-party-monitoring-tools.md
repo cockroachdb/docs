@@ -67,8 +67,8 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 | CockroachDB Deployment | Integration | Tutorial |
 | ---------------------- | ----------- | -------- |
-| {{ site.data.products.standard }} | [Google Cloud Logging](https://cloud.google.com/logging?hl=en) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
-| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging?hl=en) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
+| {{ site.data.products.standard }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
+| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
 
 ### Kibana
 
