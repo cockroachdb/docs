@@ -255,8 +255,6 @@ For details about when and how to change security certificates without restartin
 
 ## Background on public key cryptography and digital certificates
 
-CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric and asymmetric encryption to encrypt data in flight.
-
 {% include common/tls-bad-cipher-warning.md %}
 
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
@@ -302,6 +300,44 @@ As discussed [earlier](#certificate-authority), the CA's public key is widely di
 ### How it all works together
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
+
+## Supported cipher suites
+
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. However, only cipher suites currently recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to version 22.2.
+
+The following cipher suites are enabled by default:
+
+- `TLS_DHE_RSA_WITH_AES_128_GCM_SHA256`
+- `TLS_DHE_RSA_WITH_AES_256_GCM_SHA384`
+- `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384`
+- `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`
+- `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384`
+- `TLS_DHE_RSA_WITH_AES_128_CCM`
+- `TLS_DHE_RSA_WITH_AES_256_CCM`
+- `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256`
+- `TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256`
+- `TLS_DHE_PSK_WITH_AES_128_GCM_SHA256`
+- `TLS_DHE_PSK_WITH_AES_256_GCM_SHA384`
+- `TLS_DHE_PSK_WITH_AES_128_CCM`
+- `TLS_DHE_PSK_WITH_AES_256_CCM`
+- `TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256`
+- `TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384`
+- `TLS_ECDHE_PSK_WITH_AES_128_CCM_SHA256`
+- `TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256`
+- `TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256`
+
+The following cipher suites are rejected by default because they are not recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)). To enable them, set the environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` to `true`.
+
+- `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`
+- `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA`
+- `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA`
+- `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA`
+- `TLS_RSA_WITH_AES_128_GCM_SHA256`
+- `TLS_RSA_WITH_AES_256_GCM_SHA384`
+- `TLS_RSA_WITH_AES_128_CBC_SHA`
+- `TLS_RSA_WITH_AES_256_CBC_SHA`
 
 ## See also
 
