@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.cli
 ---
 
-This page explains the `cockroach start-single-node` [command](cockroach-commands.html), which you use to start a single-node cluster with replication disabled. A single-node cluster is all you need for quick SQL testing or app development.
+This page explains the `cockroach start-single-node` [command]({% link {{ page.version.version }}/cockroach-commands.md %}), which you use to start a single-node cluster with replication disabled. A single-node cluster is appropriate for quick SQL testing or app development.
 
-{{site.data.alerts.callout_success}}
-To run a multi-node cluster with replicated data for availability and consistency, use [`cockroach start`](cockroach-start.html) and [`cockroach init`](cockroach-init.html).
+{{site.data.alerts.callout_danger}}
+A single-node cluster is not appropriate for use in production or for performance testing. To run a multi-node cluster with replicated data for availability, consistency and resiliency, including load balancing across multiple nodes, use [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) and [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) to start a multi-node cluster with a minimum of three nodes instead.
 {{site.data.alerts.end}}
 
 ## Synopsis

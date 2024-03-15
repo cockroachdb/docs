@@ -38,7 +38,7 @@
             {
                 "title": "Understand your Serverless Resource Usage",
                 "urls": [
-                    "/cockroachcloud/resource-usage.html"
+                    "/cockroachcloud/resource-usage.html?filters=basic"
                 ]
             },
             {
@@ -376,7 +376,7 @@
                   {
                     "title": "Metrics Page",
                     "urls": [
-                      "/cockroachcloud/metrics-page.html"
+                      "/cockroachcloud/metrics.html"
                     ]
                   },
                   {

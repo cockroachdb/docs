@@ -41,7 +41,7 @@ CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant 
 
 The [DB Console](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview) is not supported in CockroachDB {{ site.data.products.serverless }}. The CockroachDB [Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) provides metrics and graphs to monitor the health, performance, and state of your cluster.
 
-The Cloud Console provides a subset of observability information from the DB Console including [**SQL Metrics**]({% link cockroachcloud/metrics-page.md %}), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
+The Cloud Console provides a subset of observability information from the DB Console including [**Metrics**]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
 
 - Non-SQL metrics
 - Network Latency
@@ -62,10 +62,8 @@ There is no self-service way of accessing [audit logs]({% link cockroachcloud/sq
 
 ## Encryption
 
-[Encryption at rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest) is not supported in CockroachDB {{ site.data.products.serverless }} clusters.
-
-[Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }} clusters.
+Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted at rest by the cloud provider. [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }}. CMEK is available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Network security
 
-[Private clusters]({% link cockroachcloud/private-clusters.md %}) are not supported in {{ site.data.products.serverless-plan }}.
+[Private clusters]({% link cockroachcloud/private-clusters.md %}), compliance with [PCI DSS]({% link cockroachcloud/pci-dss.md %}), and compliance with [HIPAA]({% link cockroachcloud/pci-dss.md %}#hipaa) are not supported in {{ site.data.products.serverless }}. These features are available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).

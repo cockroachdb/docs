@@ -4,7 +4,7 @@ summary: Release notes for older versions of CockroachDB.
 toc: true
 docs_area: releases
 toc_not_nested: true
-pre_production_preview: true
+pre_production_preview: false
 pre_production_preview_version: v23.2.0-beta.3
 ---
 
