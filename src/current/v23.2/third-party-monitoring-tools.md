@@ -19,7 +19,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 | [AWS CloudWatch](#aws-cloudwatch-metrics) | ✔ | ✔ |  |
 | [DataDog](#datadog) | ✔ | ✔ | ✔ |
 | [DBmarlin](#dbmarlin) |  |  | ✔ |
-| [Kibana]() |  |  | ✔ |
+| [Kibana](#kibana) |  |  | ✔ |
 | [Prometheus](#prometheus) | ✔ | ✔ | ✔ |
 
 ### Logs
