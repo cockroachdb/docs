@@ -22,7 +22,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 ### Elixir
 
 - [Postgrex](https://hexdocs.pm/postgrex/Postgrex.html)
-    - [Example of connecting to CockroachDB {{ site.data.products.serverless }} using Postgrex](https://github.com/devalexandre/elixir-cockroach)
+    - [Example of connecting to CockroachDB {{ site.data.products.basic }} using Postgrex](https://github.com/devalexandre/elixir-cockroach)
 
 ### Go
 
