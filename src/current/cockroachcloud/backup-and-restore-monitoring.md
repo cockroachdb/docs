@@ -10,7 +10,7 @@ Depending on the tier of your CockroachDB {{ site.data.products.cloud }} cluster
 
 |              | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
 |-----------------------------|----------------------|----------------------|-------------------|
-| [Cloud Console Metrics page]({% link cockroachcloud/metrics-page.md %}) | ✔ | ✔ | ✔           |
+| [Cloud Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) | ✔ | ✔ | ✔           |
 | [Prometheus](#prometheus)   | ✔                    | ✔                    |                   |
 | [Datadog](#datadog)         | ✔                    | ✔                    |                   |
 

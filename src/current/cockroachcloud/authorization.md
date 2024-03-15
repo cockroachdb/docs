@@ -81,7 +81,7 @@ Cluster Operators can perform a variety of cluster functions:
   - View backups in a cluster's [Backup and Restore Page]({% link cockroachcloud/use-managed-service-backups.md %}#backups-tab).
   - [Restore a cluster from a backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster).
   - View a cluster's Jobs from the [Jobs page]({% link cockroachcloud/jobs-page.md %}).
-  - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics-page.md %}).
+  - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
   - View a cluster's Insights from the [Insights page]({% link cockroachcloud/insights-page.md %}).
   - [Upgrade]({% link cockroachcloud/upgrade-to-v23.1.md %}#step-5-start-the-upgrade) a cluster's CRDB version.
   - View a cluster's [PCI-readiness status ({{ site.data.products.advanced }} clusters with Security add-on only)]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready-with-security-add-on).
