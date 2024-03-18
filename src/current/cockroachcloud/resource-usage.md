@@ -23,7 +23,7 @@ CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} [architecture]({% link cockroachcloud/architecture.md %}). A CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} architecture. A CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
 **SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
@@ -326,4 +326,3 @@ This will insert the data, and also output information from the optimizer about 
 - [Learn About Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
 - [Manage Your CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})
 - [Manage Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/cluster-management.md %})
-- [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})

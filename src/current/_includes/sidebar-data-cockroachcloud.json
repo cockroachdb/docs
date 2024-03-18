@@ -307,12 +307,6 @@
       ]
     },
     {
-      "title": "Architecture",
-      "urls": [
-         "/cockroachcloud/architecture.html"
-      ]
-    },
-    {
       "title": "Tutorials",
       "items": [
       	{

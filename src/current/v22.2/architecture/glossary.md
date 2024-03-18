@@ -32,5 +32,3 @@ Term | Definition
 For more information on deployment options and guidelines on how to choose a deployment option, see [How to Choose a Deployment Option](../choose-a-deployment-option.html).
 
 {% include common/basic-terms.md %}
-
-For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](../../cockroachcloud/architecture.html#architecture).
