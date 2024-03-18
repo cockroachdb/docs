@@ -54,7 +54,7 @@ A CockroachDB {{ site.data.products.cloud }} cluster with full operational capac
 
 #### Resource limits
 
-The maximum amounts of storage and RUs a CockroachDB {{ site.data.products.basic }} cluster can use in a particular billing period. The amount you are billed is based on the actual resources the cluster used during that billing period.
+The maximum amount of storage and RUs a CockroachDB {{ site.data.products.basic }} cluster can use in a particular billing period. The amount you are billed is based on the actual resources the cluster used during that billing period.
 
 #### Storage
 
