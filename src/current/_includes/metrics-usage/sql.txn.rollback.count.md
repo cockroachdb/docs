@@ -1,0 +1,1 @@
+This metric shows the number of orderly transaction <a href="https://www.cockroachlabs.com/docs/stable/rollback-transaction">rollbacks</a>. A persistently high number of rollbacks may negatively impact the workload performance and needs to be investigated.
