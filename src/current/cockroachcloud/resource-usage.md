@@ -13,7 +13,7 @@ This page describes how to understand your CockroachDB {{ site.data.products.bas
 
 - [General tips for reducing RU usage](#general-tips-for-reducing-ru-usage) gives recommendations depending on the kind of resource usage.
 
-For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) and [Plan a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/plan-your-cluster.md %}).
+For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster and [Plan a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for a {{ site.data.products.standard }} cluster.
 
 ## Understand resource consumption
 
@@ -23,7 +23,7 @@ CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }}
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} [architecture]({% link cockroachcloud/architecture.md %}). A CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} architecture. A CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
 **SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
@@ -185,7 +185,7 @@ Initial data ingestion during a migration may consume a high number of RUs. Gene
 
 ### Changefeeds (CDC)
 
-In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
+In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.advanced }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
 
 </section>
 
@@ -326,4 +326,3 @@ This will insert the data, and also output information from the optimizer about 
 - [Learn About Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
 - [Manage Your CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})
 - [Manage Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/cluster-management.md %})
-- [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})
