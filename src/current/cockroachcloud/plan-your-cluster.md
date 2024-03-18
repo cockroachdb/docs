@@ -8,9 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
-This page describes how to plan your CockroachDB {{ site.data.products.standard }} cluster.
-
-This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.standard }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
+CockroachDB {{ site.data.products.standard }} is a fully-managed deployment of CockroachDB, ideal for production workloads that require cost predictability. This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.standard }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
 
 ## Request Units
 
@@ -34,7 +32,15 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 CockroachDB {{ site.data.products.standard }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.standard }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.standard }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
-  
+
+### Provisioned capacity
+
+Each CockroachDB {{ site.data.products.standard }} cluster is configured with a single capacity value (in Request Units/sec) indicating the maximum expected throughput the cluster will need over time. We reserve sufficient system infrastructure to support the workload based on the configured capacity value. This value can be scaled up/down as needed.
+
+{{site.data.alerts.callout_info}}
+You can scale down provisioned capacity up to 3 times per week.
+{{site.data.alerts.end}}
+
 ## Choose resource limits
 
 Your cluster's [configured capacity]({% link cockroachcloud/create-your-cluster.md %}#step-4-provision-cluster-capacity) determines the [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) (the maximum amount of storage and RUs the cluster can use in a month).

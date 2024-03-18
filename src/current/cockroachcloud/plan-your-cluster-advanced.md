@@ -8,7 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
-This page describes how to plan your CockroachDB {{ site.data.products.advanced }} cluster.
+If you need a single tenant cluster with no shared resources, we recommend CockroachDB {{ site.data.products.advanced }}. CockroachDB {{ site.data.products.advanced }} supports single and multi-region clusters in Amazon Web Services, Google Cloud Platform, and Microsoft Azure. CockroachDB {{ site.data.products.advanced }} is recommended for all workloads: lightweight and critical production. This page describes how to plan your CockroachDB {{ site.data.products.advanced }} cluster.
 
 ## Planning your cluster
 
