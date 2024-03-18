@@ -185,7 +185,7 @@ Initial data ingestion during a migration may consume a high number of RUs. Gene
 
 ### Changefeeds (CDC)
 
-In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
+In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.advanced }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
 
 </section>
 

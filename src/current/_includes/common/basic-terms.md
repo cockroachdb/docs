@@ -46,7 +46,7 @@ A CockroachDB {{ site.data.products.cloud }} cluster with full operational featu
 
 #### CockroachDB {{ site.data.products.advanced }} cluster
 
-A CockroachDB {{ site.data.products.cloud }} cluster with full operational capacity deployed in a cloud provider's network and compute infrastructure *dedicated* to each customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, Advanced clusters can be customized with advanced security features for PCI DSS and HIPAA [compliance]({{ link_prefix }}compliance.html) at an additional cost.
+A CockroachDB {{ site.data.products.cloud }} cluster with full operational capacity deployed in a cloud provider's network and compute infrastructure *dedicated* to each customer. In addition to infrastructure isolation, Advanced clusters can be customized with advanced security features for PCI DSS and HIPAA [compliance]({{ link_prefix }}compliance.html) at an additional cost.
 
 #### Request Unit (RU)
 
