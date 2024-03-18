@@ -132,7 +132,7 @@ Yes, see the [Cloud API]({% link cockroachcloud/cloud-api.md %}) page for more i
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-CockroachDB {{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. For more information, see [CockroachDB {{ site.data.products.serverless }} Architecture]({% link cockroachcloud/architecture.md %}).
+CockroachDB {{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. 
 
 ## Cluster maintenance
 
