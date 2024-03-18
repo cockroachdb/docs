@@ -1,4 +1,3 @@
-List: {{ include.list }}
 {% if include.list == 'enabled' %}
 - `TLS_DHE_RSA_WITH_AES_128_GCM_SHA256`
 - `TLS_DHE_RSA_WITH_AES_256_GCM_SHA384`
