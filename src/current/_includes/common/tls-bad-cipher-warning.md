@@ -6,5 +6,5 @@ CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transp
 CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. Only cipher suites currently recommended by the IETF ([RFC 8447](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to v22.2. You should set this environment variable only if you cannot use one of the default cipher suites, but you can use one of the disabled ones.
 {% endif %}
 
-SQL clients, intermediate proxies, or load balancers that do not support any cipher suites that CockroachDB supports will be unable to connect to CockroachDB clusters. For the full list of supported cipher suites, refer to [Supported cipher suites]({% link {{ page.version.version}}/authentication.md %}#supported-cipher-suites).
+SQL clients, intermediate proxies, or load balancers that do not support any cipher suites that CockroachDB supports will be unable to connect to CockroachDB clusters. For the full list of supported cipher suites, refer to [Supported cipher suites](https://cockroachlabs.com/docs/stable/authentication#supported-cipher-suites).
 {{site.data.alerts.end}}
