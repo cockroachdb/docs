@@ -29,29 +29,9 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 
 ## Free vs. paid usage
 
-CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
+CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice. 
 
-Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
-
-#### Performance
-
-Your cluster's [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
-
-CockroachDB {{ site.data.products.basic }} clusters have the ability to scale to zero and consume no compute resources when there are no active queries. When there are no active queries, you will pay for the storage your app is using, but not for Request Units. To avoid wasted resources, CockroachDB {{ site.data.products.cloud }} automatically pauses {{ site.data.products.basic }} clusters that are inactive, which is defined by having no connection to the cluster for five consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist]({% link cockroachcloud/production-checklist.md %}).
-
-The diagrams below shows how CockroachDB {{ site.data.products.basic }} autoscales with your application's traffic:
-
-<img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="width:100%; max-width:800px" />
-
-<img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="width:100%; max-width:800px" />
-
-#### Free
-
-All CockroachDB {{ site.data.products.cloud }} organizations are given 50 million [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
-
-#### Paid
-
-You must enter billing information if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. 
+Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) and enter billing information if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
   
 ## Choose resource limits
 
