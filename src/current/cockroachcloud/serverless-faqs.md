@@ -33,7 +33,7 @@ Organizations without billing information on file can only create one cluster. O
 
 ### What is a Request Unit?
 
-With CockroachDB {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), or RUs. An RU is an abstracted metric that represent the size and complexity of requests made to your cluster. See [Plan your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) for more information.
+{% include cockroachcloud/request-units.md %}
 
 ### Do I have to pay for CockroachDB {{ site.data.products.serverless }}?
 
