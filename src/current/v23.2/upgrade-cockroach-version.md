@@ -16,10 +16,6 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
-{{site.data.alerts.callout_info}}
-CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024.
-{{site.data.alerts.end}}
-
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
@@ -192,6 +188,8 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     ~~~ shell
     cp -i {COCKROACHDB_DIR}/cockroach /usr/local/bin/cockroach
     ~~~
+
+1. If a cluster has corrupt descriptors, a major-version upgrade cannot be finalized. In CockroachDB v23.2 and above, automatic descriptor repair is enabled by default. After restarting each cluster node on v23.2, monitor the [cluster logs](https://www.cockroachlabs.com/docs/{{ page.version.version }}/logging) for errors. If a descriptor cannot be repaired automatically, [contact support](https://support.cockroachlabs.com/hc) for assistance completing the upgrade. To disable automatic descriptor repair (not generally recommended), set the environment variable `COCKROACH_RUN_FIRST_UPGRADE_PRECONDITION` to `false`.
 
 1. Start the node so that it can rejoin the cluster.
 
