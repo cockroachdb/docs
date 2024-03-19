@@ -27,7 +27,7 @@ To get started with CockroachDB {{ site.data.products.serverless }}, <a href="ht
 
 All non-contract CockroachDB {{ site.data.products.cloud }} organizations are given 50M RUs and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
-[Setting higher resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
+[Setting higher resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
 Organizations without billing information on file can only create one cluster. Once you [set up billing information]({% link cockroachcloud/billing-management.md %}), your organization can have up to 200 clusters.
 
@@ -37,7 +37,7 @@ With CockroachDB {{ site.data.products.serverless }}, you are charged for the st
 
 ### Do I have to pay for CockroachDB {{ site.data.products.serverless }}?
 
-No, you can create one CockroachDB {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 10 GiB of storage per month. If you need more resources, you can [set higher limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) for your cluster. You will only be charged for your usage beyond the free threshold.
+No, you can create one CockroachDB {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 10 GiB of storage per month. If you need more resources, you can [set higher limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) for your cluster. You will be charged only for your usage beyond the free threshold.
 
 ### What regions are available for CockroachDB {{ site.data.products.serverless }} clusters?
 
@@ -73,7 +73,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### I created a CockroachCloud Free (beta) cluster before CockroachDB {{ site.data.products.serverless }} was available. Can I still use my cluster?
 
-Yes, your free cluster has been automatically migrated to CockroachDB {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) for your cluster with no downtime.
+Yes, your free cluster has been automatically migrated to CockroachDB {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) for your cluster with no downtime.
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
@@ -138,7 +138,7 @@ CockroachDB {{ site.data.products.serverless }} is a multi-tenant offering and r
 
 ### Can I upgrade my free CockroachDB {{ site.data.products.serverless }} cluster's performance?
 
-Yes, you can upgrade your cluster through the Console by [increasing your resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) and entering [billing information]({% link cockroachcloud/billing-management.md %}) if you haven't already.
+Yes, you can upgrade your cluster through the Console by [increasing your resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-cluster-capacity) and entering [billing information]({% link cockroachcloud/billing-management.md %}) if you haven't already.
 
 ### Can I upgrade the version of CockroachDB my CockroachDB {{ site.data.products.serverless }} cluster is running on?
 
@@ -175,6 +175,6 @@ You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENT
 
 ### Can I backup my CockroachDB {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-CockroachDB {{ site.data.products.cloud }} automatically [runs full backups](use-managed-service-backups.html?filters=serverless) daily for every CockroachDB {{ site.data.products.serverless }} cluster. Full backups are retained for 30 days. CockroachDB {{ site.data.products.cloud }} does not take incremental backups of CockroachDB {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also [take manual backups locally](take-and-restore-customer-owned-backups.html#back-up-data) and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
+CockroachDB {{ site.data.products.cloud }} automatically [runs full backups](use-managed-service-backups.html?filters=serverless) daily for every CockroachDB {{ site.data.products.serverless }} cluster. Full backups are retained for 30 days. CockroachDB {{ site.data.products.cloud }} does not take incremental backups of CockroachDB {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also [take manual backups locally](take-and-restore-customer-owned-backups.html) and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.

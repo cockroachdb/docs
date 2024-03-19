@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: CPU utilized by CockroachDB should not persistently exceed 80%. Because this metric does not reflect system CPU usage, values above 80% suggest that actual CPU utilization is nearing 100%.

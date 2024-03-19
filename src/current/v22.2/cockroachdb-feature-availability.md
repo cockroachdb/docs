@@ -27,9 +27,23 @@ General availability (GA)                     | Feature is production-ready and 
 **The following features are in limited access** and are only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
 {{site.data.alerts.end}}
 
-### Export logs from CockroachDB {{ site.data.products.dedicated }} clusters
+## Features in limited access
 
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
+{{site.data.alerts.callout_info}}
+**The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+{{site.data.alerts.end}}
+
+### CockroachDB Dedicated on Azure
+
+Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is in limited access. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### AWS PrivateLink for CockroachDB Serverless
+
+[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### CockroachDB Cloud Folders
+
+[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in limited access. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 

@@ -30,7 +30,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %})
-    {% comment %}- [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster){% endcomment %}
+    - [**Add or remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -45,7 +45,7 @@ The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-a
 
 - The **PCI Ready** section shows the status of features required for PCI DSS. Requires CockroachDB {{ site.data.products.dedicated }} advanced.
 
-- The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
+- The status of security features required for [PCI DSS readiness](#configure-pci-ready-features-dedicated-advanced).
 
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
@@ -58,21 +58,34 @@ These sections show how to scale a {{ site.data.products.dedicated }} cluster ho
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster. Single-node clusters are not available on Azure.
 {{site.data.alerts.end}}
 
-To add or remove nodes from your cluster:
+To add or remove nodes from a cluster on AWS or GCP:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
-1. From the **Nodes** dropdown, select the number of nodes you want in each region.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+1. On the **Regions** page, select the number of nodes you want in each region from the **Nodes** dropdown.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Update cluster**.
+
+### Change compute for a cluster
+
+1. Navigate to the cluster's **Overview** page and click **Update capacity**.
+
+    The **Edit cluster** page displays.
+
+1. In the **Compute per node** section, select the new amount of vCPUs per node.
+
+    {{site.data.alerts.callout_info}}
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
+    {{site.data.alerts.end}}
+
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Update cluster**.
 
 ### Increase storage for a cluster
 
@@ -85,36 +98,14 @@ AWS disks can only be scaled once every six hours.
 
     The **Edit cluster** page displays.
 
-1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
-1. Select the new amount of storage per node.
+1. In the **Storage per node** section, select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
     Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
-
-### Change compute for a cluster
-
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
-
-    The **Edit cluster** page displays.
-
-1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
-1. Select the new amount of vCPUs per node.
-
-    {{site.data.alerts.callout_info}}
-    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
-    {{site.data.alerts.end}}
-
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Update cluster**.
 
 ## Add or remove regions from a cluster
 
@@ -122,20 +113,22 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 
 ### Add a region to your cluster
 
-You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
+To add or remove regions from a cluster on Azure, you must use the CockroachDB {{ site.data.products.cloud }} API. Refer to [Scale, edit or upgrade a cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
+
+For clusters on AWS or GCP, you can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
-1. Click **Add a region**.
+1. On the **Regions** page, click **Add a region**.
 
     If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
 
-1. In the **Regions & Nodes** section, select the desired new region and specify the number of nodes for it.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. Select the desired new region and specify the number of nodes for it.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Update cluster**.
 
 ### Remove a region from your cluster
 
@@ -148,16 +141,16 @@ If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_
 To remove a region from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
-1. Click the **X** button next to each region you want to remove.
+1. On the **Regions** page, click the **X** button next to each region you want to remove.
     {{site.data.alerts.callout_info}}
     If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
     {{site.data.alerts.end}}
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Update cluster**.
 
 ## Set a maintenance window
 
@@ -183,7 +176,7 @@ To set a maintenance window:
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
 
-Additionally, you can [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.dedicated }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
+Additionally, you can [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.dedicated }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -191,7 +184,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 ## Configure PCI ready features (Dedicated advanced)
 
-CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI DSS readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})

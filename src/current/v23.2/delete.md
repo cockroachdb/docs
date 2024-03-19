@@ -58,6 +58,8 @@ the zone by setting `gc.ttlseconds` to a lower value, which will cause
 garbage collection to clean up deleted objects (rows, tables) more
 frequently.
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 ## Select performance on deleted rows
 
 Queries that scan across tables that have lots of deleted rows will

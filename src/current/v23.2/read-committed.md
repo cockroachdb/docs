@@ -19,6 +19,8 @@ docs_area: deploy
 
 Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
+If your workload is already running well under `SERIALIZABLE` isolation, Cockroach Labs does not recommend changing to `READ COMMITTED` isolation unless there is a specific need.
+
 {{site.data.alerts.callout_info}}
 `READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md).
 {{site.data.alerts.end}}
@@ -32,17 +34,17 @@ To make `READ COMMITTED` isolation available to use on a cluster, enable the fol
 SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 ~~~
 
-After you enable the cluster setting, you can configure `READ COMMITTED` isolation at the [session](#set-the-current-session-to-read-committed) or [transaction](#set-the-current-transaction-to-read-committed) level.
+After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
 
 {{site.data.alerts.callout_info}}
 If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
 {{site.data.alerts.end}}
 
-### Set the current session to `READ COMMITTED`
+### Set the default isolation level to `READ COMMITTED`
 
-To set all future transactions in a session to run at `READ COMMITTED` isolation, use one of the following options:
+To set all future transactions to run at `READ COMMITTED` isolation, use one of the following options:
 
-- The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement:
+- The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement, which applies to the current session:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -51,7 +53,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 
 - The [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) session variable:
 
-  	At the cluster level:
+  	At the session level:
 
   	{% include_cached copy-clipboard.html %}
   	~~~ sql
@@ -79,7 +81,7 @@ To set all future transactions in a session to run at `READ COMMITTED` isolation
 	cockroach sql -–url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read%20committed'
 	~~~
 
-To view the isolation level of a session:
+To view the default isolation level of the session:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -133,7 +135,7 @@ SHOW transaction_isolation;
 ~~~
 
 {{site.data.alerts.callout_success}}
-Starting a transaction as `READ COMMITTED` does not affect the [session-level isolation setting](#set-the-current-session-to-read-committed), which can be different.
+Starting a transaction as `READ COMMITTED` does not affect the [default isolation level](#set-the-default-isolation-level-to-read-committed), which can be different.
 {{site.data.alerts.end}}
 
 ## `READ COMMITTED` transaction behavior
@@ -924,6 +926,12 @@ The following are not yet supported with `READ COMMITTED`:
 - `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
 - [Shared locks](#locking-reads) cannot yet be promoted to exclusive locks.
 - [`SKIP LOCKED`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) requests do not check for [replicated locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#unreplicated-locks), which can be acquired by `READ COMMITTED` transactions.
+
+The following affect the performance of `READ COMMITTED` transactions:
+
+- Because locks acquired by [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks, [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}), and [`SELECT FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) are fully replicated under `READ COMMITTED` isolation, some queries experience a delay for Raft replication.
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks are not performed in parallel under `READ COMMITTED` isolation.
+- [`SELECT FOR UPDATE` and `SELECT FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) statements are less optimized under `READ COMMITTED` isolation than under `SERIALIZABLE` isolation. Under `READ COMMITTED` isolation, `SELECT FOR UPDATE` and `SELECT FOR SHARE` usually perform an extra lookup join for every locked table when compared to the same queries under `SERIALIZABLE`. In addition, some optimization steps (such as de-correlation of correlated [subqueries]({% link {{ page.version.version }}/subqueries.md %})) are not currently performed on these queries.
 
 ## See also
 

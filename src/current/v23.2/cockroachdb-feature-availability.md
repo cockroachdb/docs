@@ -14,18 +14,44 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 
 ## Feature availability phases
 
-Phase                                         | Definition | Accessibility
-----------------------------------------------+------------+-------------
-Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
-Limited access                                | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
-[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
-General availability (GA)                     | Feature is production-ready and publicly available. | Public
+Phase                            | Definition | Accessibility
+---------------------------------+------------+-------------
+Private preview                  | Feature is available to select customers and not publicly documented. | Invite-only
+Limited access                   | Feature is publicly documented but not yet available widely. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Opt-in </br>Contact your Cockroach Labs account team.
+[Preview](#features-in-preview)  | Feature is publicly available and documented. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Public
+General availability (GA)        | Feature is publicly available and documented. | Public
+
+{{site.data.alerts.callout_info}}
+Any feature made available in a phase prior to GA is provided without any warranties of any kind. Such features are not subject to any technical support or uptime availability commitments unless Cockroach Labs explicitly states otherwise in writing.
+{{site.data.alerts.end}}
+
+## Features in limited access
+
+{{site.data.alerts.callout_info}}
+**The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+{{site.data.alerts.end}}
+
+### CockroachDB Dedicated on Azure
+
+Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is in limited access. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### AWS PrivateLink for CockroachDB Serverless
+
+[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### CockroachDB Cloud Folders
+
+[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in limited access. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 
 {{site.data.alerts.callout_info}}
-**The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+**The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
+
+### `READ COMMITTED` isolation level
+
+{% include_cached new-in.html version="v23.2" %} [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) is a weaker transaction isolation level than `SERIALIZABLE` and is the default isolation level in databases such as PostgreSQL, Oracle, and SQL Server. `READ COMMITTED` isolation allows writes to interleave without aborting transactions and prevents writes from blocking reads, thus minimizing query latency and retries caused by read/write contention.
 
 ### `cockroach` commands
 
@@ -36,9 +62,9 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Custom Metrics Chart page for CockroachDB {{ site.data.products.serverless }} clusters
+### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
-The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.serverless }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
+The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ### Log SQL Statistics to Datadog
 
@@ -185,6 +211,10 @@ Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink]({% link {{ pag
 ### Multiple active portals
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
+
+### Physical Cluster Replication
+
+{% include_cached new-in.html version="v23.2" %}[Physical cluster replication](https://www.cockroachlabs.com/docs/{{ page.version.version }}/physical-cluster-replication-overview) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only](https://www.cockroachlabs.com/docs/{{ page.version.version }}/enterprise-licensing) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## See Also
 

@@ -58,11 +58,16 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
 
-### `root` user
+### Reserved identities
 
-The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
+These identities are reserved within CockroachDB. These identities are created automatically and cannot be removed.
 
-For secure clusters, in addition to [generating the client certificate]({% link {{ page.version.version }}/authentication.md %}#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement.
+Identity                         | Description
+---------------------------------|-------------
+`node`                         | Used for all internode communications and for executing internal SQL operations that are run as part of regular node background processes. The `node` user does not appear when listing a cluster's users.
+<a id="root-user"></a>`root`   | Used for administrator access in cases where it is required to manage other admins, such as when deploying a new cluster. The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.<br />For routine administration in production, Cockroach Labs recommends that you:<ul><li>Assign a password for the `root` user using the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement, and restrict access to the password.</li><li>Avoid relying on the `root` user, and instead [grant the `admin` role]({% link {{ page.version.version }}/authorization.md %}#create-and-manage-roles) to users.</li></ul>
+
+In production, access to the `node` and `root` cluster certificates must be handled with care due to the broad level of access they confer on their holders.
 
 ## Roles
 
@@ -134,9 +139,10 @@ Users that own objects cannot be dropped until the [ownership is transferred to 
 
 When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
 
+<a id="role-options"></a>
 ### Supported privileges
 
-System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
+System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model]({% link {{ page.version.version }}/create-role.md %}#role-options).
 
 You can work with system-level privileges using the [`GRANT `]({% link {{ page.version.version }}/grant.md %}) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`]({% link {{ page.version.version }}/show-system-grants.md %}) statement.
 
@@ -169,17 +175,6 @@ To change the default privileges on objects that a user creates, use the [`ALTER
 The creator of an object is also the object's [owner](#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
 For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}#examples) and [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}#examples) statement pages.
-
-## Role options
-
-Users' authorization to perform certain actions are governed not by grants but by [`role options`]({% link {{ page.version.version }}/create-user.md %}#role-options). These options govern whether users can perform actions such as:
-
-- Viewing or canceling ongoing queries and sessions owned by other roles.
-- Pausing, resuming, and canceling jobs.
-- Creating or renaming databases.
-- Managing authentication for other users.
-- Modifying cluster settings.
-- Creating changefeeds.
 
 ## Authorization best practices
 

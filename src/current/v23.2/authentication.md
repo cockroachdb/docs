@@ -303,6 +303,18 @@ As discussed [earlier](#certificate-authority), the CA's public key is widely di
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
 
+## Supported cipher suites
+
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. However, only cipher suites currently recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to version 22.2. You should set this environment variable only if you cannot use one of the default cipher suites, but you can use one of the disabled ones.
+
+The following cipher suites are enabled by default:
+
+{% include common/tls-cipher-suites.md list='enabled' %}
+
+The following cipher suites are rejected by default because they are not recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)):
+
+{% include common/tls-cipher-suites.md list='disabled' %}
+
 ## See also
 
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})

@@ -51,6 +51,10 @@ During enablement of the feature, a list of affected members is shown, and those
 ### Ensure that at least one organization admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization
 
 {{site.data.alerts.callout_success}}
+You can now use [Folders]({% link cockroachcloud/folders.md %}) (Limited Access) to group, organize, and manage access to clusters in a hierarchy within a single CockroachDB Cloud organization. Compared with managing multiple CockroachDB Cloud organizations, folders simplify billing and centralize cluster administration and observability. To learn more, contact your Cockroach Labs account team.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
 If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that the admin who is enabling CockroachDB {{ site.data.products.cloud }} Organization SSO is not a member of any other CockroachDB {{ site.data.products.cloud }} organization.
 {{site.data.alerts.end}}
 
@@ -154,7 +158,7 @@ To enable autoprovisioning for an SSO authentication method:
 
 ## Add a custom authentication method
 
-You can add a custom authentication method to connect to any IdP that supports [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/).
+You can add a custom authentication method to connect to any IdP that supports [OpenID Connect (OIDC)](https://openid.net/connect/) or [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
 ### OIDC
 
@@ -177,7 +181,7 @@ To configure a custom OIDC authentication method:
 
 ### SAML
 
-To configure a custom SAML authentication method:
+To configure a custom SAML authentication method using the service provider-initiated flow, follow these steps. If you need to use the identity provider-initiated flow instead, contact [Cockroach Labs support](https://support.cockroachlabs.com/hc).
 
 1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
 1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
@@ -195,7 +199,11 @@ To configure a custom SAML authentication method:
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
 1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
-1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}. Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Refer to the documentation for your IdP.
+1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}.
+
+    Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. To configure the SAML assertion, refer to the documentation for your IdP.
+
+    In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
 1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 ## Require SSO

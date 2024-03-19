@@ -277,6 +277,8 @@ CockroachDB requires disk space in order to accept writes and report node livene
 Ensure that you [provision sufficient storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If storage is correctly provisioned and is running low, CockroachDB automatically creates an emergency ballast file that can free up space. For details, see [Disks filling up]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up).
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 #### Disk IOPS
 
 Insufficient disk I/O can cause [poor SQL performance](#service-latency) and potentially [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls).
