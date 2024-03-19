@@ -41,6 +41,8 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the source and target schemas are identical. Tables with mismatching columns may only be partially migrated.
 
+- Ensure that the SQL user running MOLT Fetch has the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) statements, depending on your intended [mode](#fetch-mode).
+
 - If you are migrating from MySQL, enable GTID consistency. This is necessary for returning the [CDC cursor](#cdc-cursor) for ongoing replication. Pass the following two flags to the `mysql` start command or define them in `mysl.cnf`:
 
 	~~~
