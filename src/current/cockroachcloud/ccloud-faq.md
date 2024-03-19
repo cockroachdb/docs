@@ -19,7 +19,7 @@ The user who creates a new organization is assigned a combination of Org Adminis
 
 ### Is it possible to assign more than one role to a user in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator, and Cluster Admin roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization.
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. For example, the initial user automatically assigned the Org Member, Org Administrator, Cluster Administrator, and Billing Coordinator roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization.
 
 ### Can we follow the least privilege principle by using the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model?
 
