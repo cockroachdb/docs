@@ -324,7 +324,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-Managing the certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)  role.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

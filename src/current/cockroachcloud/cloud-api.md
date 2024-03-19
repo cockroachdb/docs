@@ -80,7 +80,6 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
-{% comment %}TODO: Did these get migrated? Several other mentions below -- maybe reuse this note{% endcomment %}
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
