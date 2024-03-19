@@ -12,3 +12,29 @@
 - [Dropping a single partition from a table]({% link {{ page.version.version }}/partitioning.md %}#known-limitations).
 - Foreign data wrappers.
 - Advisory Lock Functions (although some functions are defined with no-op implementations).
+- `COPY [table] TO [file]` syntax.
+- Variadic parameters in procedures:
+
+``` sql
+CREATE PROCEDURE examle(VARIADIC a INT[]) LANGUAGE SQL AS 'SELECT 1';
+```
+
+- Variadic parameters in functions:
+
+``` sql
+CREATE OR REPLACE FUNCTION example(VARIADIC a INT[]) RETURNS INT AS 'SELECT 1' LANGUAGE SQL;
+```
+
+- Table inheritance:
+
+``` sql
+CREATE TABLE cities (
+  name            TEXT,
+  population      FLOAT,
+  altitude        INT
+);
+
+CREATE TABLE capitals (
+	state           CHAR(2)
+) INHERITS (cities);
+```
