@@ -96,7 +96,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
+  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"basic":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
 ~~~
 
 </section>
@@ -109,7 +109,7 @@ curl --request POST \
   "name": "{cluster_name}",
   "provider": "{cloud_provider}",
   "spec": {
-    "serverless": {
+    "basic": {
       "regions": [
         "{region_name}"
       ],
@@ -128,7 +128,7 @@ Where:
   - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
-For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
+For example, to create a new free CockroachDB {{ site.data.products.basic }} cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -142,7 +142,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
+  --data '{"name":"notorious-moose","provider":"GCP","spec":{"basic":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
 
 </section>
@@ -155,7 +155,7 @@ curl --request POST \
   "name": "notorious-moose",
   "provider": "GCP",
   "spec": {
-    "serverless": {
+    "basic": {
       "regions": [
         "us-central1"
       ],
@@ -179,7 +179,7 @@ If the request was successful, the API will return information about the newly c
   "id": "{cluster_id}",
   "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
-  "plan": "SERVERLESS",
+  "plan": "BASIC",
   "regions": [
     {
       "name": "{region_name}",
@@ -188,7 +188,7 @@ If the request was successful, the API will return information about the newly c
     }
   ],
   "config": {
-    "serverless": {
+    "basic": {
       "regions": [
         "{region_name}"
       ],
@@ -249,7 +249,7 @@ If the request was successful, the API will return detailed information about th
   "id": "{cluster_id}",
   "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
-  "plan": "SERVERLESS",
+  "plan": "BASIC",
   "regions": [
     {
       "name": "{region_name}",
@@ -258,7 +258,7 @@ If the request was successful, the API will return detailed information about th
     }
   ],
   "config": {
-    "serverless": {
+    "basic": {
       "regions": [
         "{region_name}"
       ],
@@ -338,9 +338,9 @@ Where:
 - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
 - `{status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`.
 
-## Set the maximum resource limits of a Serverless cluster
+## Set the maximum resource limits of a CockroachDB {{ site.data.products.basic }} cluster
 
-To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
+To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a CockroachDB {{ site.data.products.basic }}, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
@@ -508,7 +508,7 @@ If the request was successful, the client will receive a list of all clusters wi
       "id": "{cluster_id}",
       "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
       "name": "{cluster_name}",
-      "plan": "SERVERLESS",
+      "plan": "BASIC",
       "regions": [
         {
           "name": "{region_name}",
@@ -517,7 +517,7 @@ If the request was successful, the client will receive a list of all clusters wi
         }
       ],
       "config": {
-        "serverless": {
+        "basic": {
           "regions": [
             "{region_name}"
           ],

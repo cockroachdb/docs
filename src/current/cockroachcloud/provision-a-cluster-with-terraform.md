@@ -9,13 +9,14 @@ docs_area: manage
 
 This tutorial shows you how to provision a CockroachDB Cloud cluster using the CockroachDB Cloud Terraform provider.
 
+{% comment %}TODO: Update text when video is updated to Cloud 2.0 {% endcomment %}
 Watch a demo where we use Terraform to create a CockroachDB Serverless cluster here:
 
 {% include_cached youtube.html video_id="LEytD1eld8M" %}
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="basic"><strong>CockroachDB {{ site.data.products.basic }}</strong></button>
+    <button class="filter-button page-level" data-scope="standard"><strong>CockroachDB {{ site.data.products.standard }}</strong></button>
 </div>
 
 ## Before you begin
@@ -23,22 +24,21 @@ Watch a demo where we use Terraform to create a CockroachDB Serverless cluster h
 Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-- Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
 - Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
 
 ## Create the Terraform configuration files
 
 Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic">
 
-In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
+In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} cluster.
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.basic }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_basic_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
@@ -55,7 +55,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.serverless
     - `{SQL user name}` is the name of the SQL user you want to create.
     - `{SQL user password}` is the password for the SQL user you want to create.
 
-    For example, the following `terraform.tfvars` file creates a CockroachDB {{ site.data.products.serverless }} with a `maxroach` SQL user.
+    For example, the following `terraform.tfvars` file creates a CockroachDB {{ site.data.products.basic }} with a `maxroach` SQL user.
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -75,15 +75,15 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.serverless
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="standard">
 
-In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated }} cluster
+In this tutorial, you will create a CockroachDB {{ site.data.products.standard }} cluster
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.standard }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_standard_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
@@ -116,7 +116,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
 
-    For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
+    For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.standard }} cluster and sets an IP allowlist for a single IP address.
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -173,7 +173,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
 
 You will see output similar to the following:
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic">
 
 ~~~
 Terraform used the selected providers to generate the following execution
@@ -200,7 +200,7 @@ Terraform will perform the following actions:
               + ui_dns     = (known after apply)
             },
         ]
-      + serverless        = {
+      + basic        = {
           + routing_id  = (known after apply)
           + spend_limit = 0
         }
@@ -233,7 +233,7 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="standard">
 
 ~~~
 Terraform used the selected providers to generate the following execution
@@ -250,7 +250,7 @@ Terraform will perform the following actions:
       + cloud_provider    = (known after apply)
       + cockroach_version = (known after apply)
       + creator_id        = (known after apply)
-      + dedicated         = {
+      + standard         = {
           + disk_iops        = (known after apply)
           + machine_type     = (known after apply)
           + memory_gib       = (known after apply)
@@ -263,7 +263,7 @@ Terraform will perform the following actions:
       + plan              = (known after apply)
       + regions           = [
         ] -> (known after apply)
-      + serverless        = {
+      + basic        = {
           + routing_id  = (known after apply)
           + spend_limit = (known after apply)
         } -> (known after apply)
@@ -287,7 +287,7 @@ Terraform will perform the following actions:
       + cloud_provider    = "GCP"
       + cockroach_version = "v22.2"
       + creator_id        = (known after apply)
-      + dedicated         = {
+      + standard         = {
           + disk_iops        = (known after apply)
           + machine_type     = "n1-standard-2"
           + memory_gib       = (known after apply)
@@ -325,13 +325,13 @@ Changes to Outputs:
       + cloud_provider    = (known after apply)
       + cockroach_version = (known after apply)
       + creator_id        = (known after apply)
-      + dedicated         = (known after apply)
+      + standard         = (known after apply)
       + id                = (known after apply)
       + name              = (known after apply)
       + operation_status  = (known after apply)
       + plan              = (known after apply)
       + regions           = (known after apply)
-      + serverless        = (known after apply)
+      + basic        = (known after apply)
       + state             = (known after apply)
     }
 
@@ -361,7 +361,7 @@ cluster = {
   "cloud_provider" = "GCP"
   "cockroach_version" = "v22.2.0"
   "creator_id" = tostring(null)
-  "dedicated" = {
+  "standard" = {
     "disk_iops" = 450
     "machine_type" = "n1-standard-2"
     "memory_gib" = 7.5
@@ -371,7 +371,7 @@ cluster = {
   "id" = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
   "name" = "blue-dog"
   "operation_status" = "CLUSTER_STATUS_UNSPECIFIED"
-  "plan" = "DEDICATED"
+  "plan" = "STANDARD"
   "regions" = tolist([
     {
       "name" = "us-west2"
@@ -380,7 +380,7 @@ cluster = {
       "ui_dns" = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
     },
   ])
-  "serverless" = null /* object */
+  "basic" = null /* object */
   "state" = "CREATED"
 }
 ~~~
@@ -398,7 +398,7 @@ terraform show
 
 This will show the following output:
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic">
 
 ~~~
 # cockroach_cluster.example:
@@ -409,11 +409,11 @@ resource "cockroach_cluster" "example" {
     id                = "1aaae1f8-19e2-4653-ba62-db16de2a84b9"
     name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "SERVERLESS"
+    plan              = "BASIC"
     regions           = [
         # (1 unchanged element hidden)
     ]
-    serverless        = {
+    basic        = {
         routing_id  = "blue-dog-6821"
         spend_limit = 0
     }
@@ -431,7 +431,7 @@ resource "cockroach_sql_user" "example" {
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="standard">
 
 ~~~
 # cockroach_allow_list.example:
@@ -451,7 +451,7 @@ resource "cockroach_cluster" "example" {
     cloud_provider    = "GCP"
     cockroach_version = "v22.2"
     creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
-    dedicated         = {
+    standard         = {
         disk_iops        = 450
         machine_type     = "n1-standard-2"
         memory_gib       = 7.5
@@ -461,7 +461,7 @@ resource "cockroach_cluster" "example" {
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
     name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
+    plan              = "STANDARD"
     regions           = [
         # (1 unchanged element hidden)
     ]
@@ -480,7 +480,7 @@ resource "cockroach_sql_user" "example" {
 data "cockroach_cluster" "example" {
     cloud_provider    = "GCP"
     cockroach_version = "v22.2.0"
-    dedicated         = {
+    standard         = {
         disk_iops        = 450
         machine_type     = "n1-standard-2"
         memory_gib       = 7.5
@@ -490,7 +490,7 @@ data "cockroach_cluster" "example" {
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
     name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
+    plan              = "STANDARD"
     regions           = [
         # (1 unchanged element hidden)
     ]
@@ -505,7 +505,7 @@ cluster = {
     cloud_provider    = "GCP"
     cockroach_version = "v22.2.0"
     creator_id        = null
-    dedicated         = {
+    standard         = {
         disk_iops        = 450
         machine_type     = "n1-standard-2"
         memory_gib       = 7.5
@@ -515,7 +515,7 @@ cluster = {
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
     name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
+    plan              = "STANDARD"
     regions           = [
         {
             name       = "us-west2"
@@ -524,7 +524,7 @@ cluster = {
             ui_dns     = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
         },
     ]
-    serverless        = null
+    basic        = null
     state             = "CREATED"
 }
 ~~~
@@ -544,7 +544,7 @@ Enter `yes` when prompted to delete the cluster.
 
 You will see output similar to the following:
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="basic">
 
 ~~~
 cockroach_cluster.example: Refreshing state... [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9]
@@ -576,7 +576,7 @@ Destroy complete! Resources: 2 destroyed.
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="standard">
 
 ~~~
 cockroach_cluster.example: Refreshing state... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
