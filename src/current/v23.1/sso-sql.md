@@ -100,7 +100,7 @@ You can also view all of your cluster settings in the DB Console.
     SET CLUSTER SETTING server.jwt_authentication.audience = '984901724939-njig7lkv7k724rbv2hllvr4of8ul7th7.apps.googleusercontent.com';
     ~~~
 
-1. Set `server.jwt_authentication.claim` to the field in the JWT that the cluster will use as the identity of the SQL user. To use the email field in the JWT, set `server.jwt_authentication.claim` to `email`.
+1. Set `server.jwt_authentication.claim` to the field in the JWT that the cluster will use as the identity of the [SQL user](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster). To use the email field in the JWT, set `server.jwt_authentication.claim` to `email`.
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -223,7 +223,7 @@ Examples:
 
 - `https://accounts.google.com 1232316645658094244789 roach`
 
-    Maps a single external identity with the hard-coded ID to the SQL user `roach`.
+    Maps a single external identity with the hard-coded ID to the [SQL user](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster) `roach`.
 
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 

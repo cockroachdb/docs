@@ -229,7 +229,7 @@ Examples:
 
 - `https://accounts.google.com 1232316645658094244789 roach`
 
-    Maps a single external identity with the hard-coded ID to the SQL user `roach`.
+    Maps a single external identity with the hard-coded ID to the [SQL user](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster) `roach`.
 
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
