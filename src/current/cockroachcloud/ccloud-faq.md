@@ -23,13 +23,12 @@ Yes, it is possible, and often necessary, to assign more than one role to a user
 
 ### Can we follow the least privilege principle by using the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model?
 
-Yes, the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows.
+Yes, the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model allow Org Administrators to grant only those entitlements to users that are required for their intended workflows.
 
 Cluster level roles like Cluster Admin, Cluster Operator and Cluster Developer allow users to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements.
 
 ### Is the same authorization model used for both service accounts and human users in a CockroachDB {{ site.data.products.cloud }} organization?
 
-{% comment %}TODO: Did these get migrated?{% endcomment %}
 Yes, service accounts and human users utilize the same authorization model.
 
 ### Can I assign a cluster-level role to a few users such that they have the relevant entitlements on all clusters in the CockroachDB {{ site.data.products.cloud }} organization?
