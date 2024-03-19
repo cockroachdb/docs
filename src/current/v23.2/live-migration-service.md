@@ -95,7 +95,7 @@ image:
   tag: 0.2.4  
 ~~~
 
-`image.tag` specifies the LMS version. This **must** match the installed [`molt-lms-cli`](#molt-lms-cli) version.
+`image.tag` specifies the LMS version. This **must** match the installed [`molt-lms-cli`](#molt-lms-cli) version, which can be queried with `molt-lms-cli version`.
 
 {% comment %}
 For release details, see the [MOLT changelog]({% link releases/molt-releases.md %}).
@@ -366,7 +366,7 @@ In the preceding example, each `.crt` and `.key` filename is associated with its
 In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`. 
 
 {{site.data.alerts.callout_info}}
-Certificates **must** be mounted in a readable format, or the LMS will error. The format should match the output of `cat {certificate}`.
+Certificates **must** be mounted in a readable format, or the LMS will error. The format should match the output of `cat {certificate}` on your host machine.
 {{site.data.alerts.end}}
 
 ~~~ yaml
@@ -504,11 +504,11 @@ For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.
 
 The following subcommands are run after the `cutover consistent` command.
 
-|   Subcommand   |                                                                                                                               Usage                                                                                                                               |
-|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `begin`        | Begin a consistent cutover. This pauses traffic to the source database. See additional [flags](#cutover-consistent-begin-flags) and [example](#consistent-cutover).                                                                                                                  |
-| `commit`       | Commit a consistent cutover. This resumes traffic on the target database. This is only effective after running `cutover consistent begin`. See [example](#consistent-cutover).                                                                                    |
-| `abort`        | Abort a consistent cutover after running `cutover consistent begin`, unless you have also run `cutover consistent commit`. This resumes traffic to the source database.                                                                                           |
+| Subcommand |                                                                                                               Usage                                                                                                                |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `begin`    | Begin a consistent cutover. This pauses traffic to the source database. See additional [flags](#cutover-consistent-begin-flags) and [example](#consistent-cutover).                                                                |
+| `commit`   | Commit a consistent cutover. This resumes traffic and sends it to the **target** database, which becomes the source of truth. This is only effective after running `cutover consistent begin`. See [example](#consistent-cutover). |
+| `abort`    | Abort a consistent cutover after running `cutover consistent begin`, unless you have also run `cutover consistent commit`. This resumes traffic to the source database.                                                            |
 
 ### Flags
 
@@ -530,11 +530,12 @@ The following subcommands are run after the `cutover consistent` command.
 
 #### `cutover consistent begin` flags
 
-|           Flag          |                                                                                                                                                                                                                      Description                                                                                                                                                                                                                      |
-|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--abort-begin-timeout` | Maximum duration to wait before the LMS aborts cutover following a `ctrl-c` command.<br><br>**Default:** `"2s"`                                                                                                                                                                                                                                                                                                                                       |
-| `--begin-timeout`       | Maximum duration to wait before traffic to the LMS is paused for consistent cutover. This should be the approximate length of the longest-running transaction, e.g., `30s`. If no `--begin-timeout` value is specified, the LMS waits for all transactions and queries to finish before pausing traffic.                                                                                                                                              |
-| `-l`, `--lms-addresses` | LMS instances to run the command against. This can be a comma-separated list of IP addresses (e.g., `127.0.0.1`), IP addresses and ports (e.g., `127.0.0.1:1024`), or hostnames (e.g., `https://lms.net`). By default, cutover is performed on all LMS instances deployed in the same environment as the orchestrator. LMS addresses should only be manually specified if the orchestrator is deployed in a different environment than the instances. |
+
+|           Flag          |                                                                                                                                                                                                                                                                                                                                     Description                                                                                                                                                                                                                                                                                                                                      |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--abort-begin-timeout` | Maximum duration for the orchestrator to wait for confirmation from all LMS instances that cutover successfully aborted, after receiving a `ctrl-c` command from `molt-lms-cli`. This affects the performance of the `ctrl-c` command only. <br><br>**Default:** `"2s"`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `--begin-timeout`       | Maximum duration to wait before traffic to the LMS is paused for consistent cutover; i.e., time limit for all connections to be transaction- and query-free. This should be the approximate length of the longest-running transaction, e.g., `30s`. If no `--begin-timeout` value is specified, the LMS waits for all transactions and queries to finish before pausing traffic.                                                                                                                                                                                                                                                                                                     |
+| `-l`, `--lms-addresses` | LMS instances to run the command against. This can be a comma-separated list of IP addresses (e.g., `127.0.0.1`), IP addresses and ports (e.g., `127.0.0.1:1024`), or hostnames (e.g., `https://lms.net`). By default, cutover is performed on all LMS instances deployed in the same namespace as the orchestrator. For example, if the orchestrator and all LMS instances are deployed on the same namespace on a Kubernetes cluster, the orchestrator automatically detects the addresses of all LMS instances, and no user configuration is needed. LMS addresses should only be manually specified if the orchestrator is deployed in a different namespace than the instances. |
 
 #### `cutover consistent abort` flags
 
@@ -570,7 +571,7 @@ The LMS can be configured to shadow production traffic from the source database 
 - Query results from the source of truth are returned to the application.
 - Writes must be manually replicated from the source database to the target database.
 
-You **must** use this mode to perform a [consistent cutover](#consistent-cutover), along with a database replication technology that replicates writes to the target database.
+You **must** use the `none` shadowing mode to perform a [consistent cutover](#consistent-cutover), along with a database replication technology that replicates writes to the target database.
 
 ### `async`
 
