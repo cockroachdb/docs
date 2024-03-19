@@ -18,7 +18,7 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.dedicate
 [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) receive email alerts when:
 
 - A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete. 
-- When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance. 
 - When a cluster's CockroachDB version is nearing [end of life](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-cycle) and must be upgraded to maintain support.
 
 ### CMEK
@@ -85,6 +85,10 @@ If you receive an alert repeatedly:
 - Identify unoptimized queries and [optimize your workload](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/make-queries-fast). 
 - Add one or more [indexes](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/create-index) to improve query performance.
 - Consider [increasing the capacity]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#change-compute-for-a-cluster) of the nodes or [add more nodes]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#add-or-remove-nodes-from-a-cluster) to reduce the load per node. 
+
+### Maintenance Window 
+
+For clusters with [maintenance windows]({% link cockroachcloud/cluster-management.md %}?filters=dedicated#set-a-maintenance-window) configured, users who have [signed up for alerts](#configure-alerts) will receive email notifications.
 
 ## Configure alerts
 
