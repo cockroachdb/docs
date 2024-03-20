@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Depending on your CockroachDB {{ site.data.products.cloud }} [deployment]({% link {{site.current_cloud_version}}/choose-a-deployment-option.md %}), you can monitor the performance of your CockroachDB cluster in the following ways:
+Depending on your CockroachDB {{ site.data.products.cloud }} deployment, you can monitor the performance of your CockroachDB cluster in the following ways:
 
 - For all CockroachDB {{ site.data.products.cloud }} deployments, you can use the [CockroachDB {{ site.data.products.cloud }} Console **Metrics** page](#cockroachdb-cloud-console-metrics-page).
 - For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} deployments, you can [export metrics](#export-metrics) to a third-party cloud sink.
