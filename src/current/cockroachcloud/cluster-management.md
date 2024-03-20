@@ -27,8 +27,6 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 
 ## Add a region to your cluster
 
-To add a region to your cluster:
-
 1. Navigate to the cluster's **Overview** page.
 1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
