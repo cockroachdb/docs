@@ -19,7 +19,7 @@ The user who creates a new organization is assigned a combination of Org Adminis
 
 ### Is it possible to assign more than one role to a user in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. For example, the initial user automatically assigned the Org Member, Org Administrator, Cluster Administrator, and Billing Coordinator roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization.
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. For example, the initial user is automatically assigned the Org Member, Org Administrator, Cluster Administrator, and Billing Coordinator roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization.
 
 ### Can we follow the least privilege principle by using the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model?
 
@@ -70,4 +70,4 @@ Refer to:
 
 ### How can we track and audit role-assignment actions in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Any user with the Org Administrator role can access [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) capability to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Administrator role can access [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.
