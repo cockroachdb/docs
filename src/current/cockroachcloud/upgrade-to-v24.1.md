@@ -1,12 +1,12 @@
 ---
-title: Upgrade to CockroachDB v23.2
-summary: Learn how to upgrade your CockroachDB cluster to v23.2
+title: Upgrade to CockroachDB v24.1
+summary: Learn how to upgrade your CockroachDB cluster to v24.1
 toc: true
 docs_area: manage
-page_version: v23.2
-prev_version: v23.1
+page_version: v24.1
+prev_version: v23.2
 pre_production_preview: false
-pre_production_preview_version: v23.2.0-rc.2
+pre_production_preview_version: v24.1.0-rc.2
 ---
 
 {% if page.pre_production_preview == true %}
