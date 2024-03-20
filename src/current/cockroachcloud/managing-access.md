@@ -28,7 +28,7 @@ The settings and information about the organization are found on the **Informati
 ## Manage an organization's users
 ### Invite team members to an organization
 
-As an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
@@ -47,7 +47,7 @@ It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-or
     {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-As an [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke that role from their own user, but cannot subsequently re-grant the administrator role to themselves.
 {{site.data.alerts.end}}
 
 ### Remove a team member
@@ -84,10 +84,6 @@ If you are sure you want to delete the organization, proceed with the following 
 ## Manage service accounts
 
 The access management model for service accounts is unified with the [user model](#manage-an-organizations-users). This means that service accounts may have all of the same [access roles]({% link cockroachcloud/authorization.md %}#organization-user-roles). However, service accounts and users still differ in the actions they can perform: only users can access the console, and only service accounts can access the API. The console and API differ in functionality.
-
-Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts]({% link cockroachcloud/authorization.md %}#service-accounts).
-
-It is recommended to update service accounts to roles in the new authorization model, by [editing their roles](#edit-roles-on-a-service-account).
 
 ### Create a service account
 
@@ -236,7 +232,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](https://www.cockro
 <section class="filter-content" markdown="1" data-scope="console">
 
 {{site.data.alerts.callout_info}}
-Only users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or Org Administrator to change the password.
+Only users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) can change a user's password. If you do not have the required permissions, ask a user with one of the required roles to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:

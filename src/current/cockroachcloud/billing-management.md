@@ -7,7 +7,7 @@ docs_area:
 
 The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
-Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) or [Org Administrator (Legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role can manage billing for the organization.
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization.
 
 ## Set up billing for an organization
 
@@ -61,6 +61,6 @@ Under the **Spend over time** section, you can see a table of each of your organ
 
 ## View invoices
 
-You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period. 
+You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
