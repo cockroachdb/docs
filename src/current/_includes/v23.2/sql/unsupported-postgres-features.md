@@ -71,3 +71,13 @@ INSERT INTO thousands (n) VALUES
   (1_000_000),
   (1_000_000_000);
 ```
+
+* Table access methods
+
+``` sql
+CREATE ACCESS METHOD heap TYPE TABLE HANDLER heap_tableam_handler;
+
+CREATE TABLE example(
+  name text
+) USING heap;
+```
