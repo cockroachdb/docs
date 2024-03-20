@@ -92,3 +92,34 @@ CREATE TABLE example (
 ALTER TABLE example SET LOGGED;
 ALTER TABLE example SET UNLOGGED;
 ```
+
+* ALTER object IF EXISTS
+
+``` sql
+ALTER TABLE IF EXISTS does_not_exist
+ADD COLUMN v TEXT NOT NULL;
+
+ALTER TABLE IF EXISTS does_not_exist
+ADD COLUMN IF NOT EXISTS v TEXT NOT NULL;
+```
+
+* WITHIN GROUP
+
+``` sql
+CREATE TABLE example AS
+	SELECT generate_series(1,20) AS val;
+
+-- Supported
+WITH subset AS (
+    SELECT val,
+       ntile(4) OVER (ORDER BY val) AS tile
+    FROM example
+  )
+SELECT max(val)
+FROM subset GROUP BY tile ORDER BY tile;
+
+-- Unsupported
+SELECT unnest(percentile_disc(array[0.25,0.5,0.75,1])
+  WITHIN GROUP (ORDER BY val))
+FROM example;
+```
