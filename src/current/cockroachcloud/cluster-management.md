@@ -113,9 +113,7 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 
 ### Add a region to your cluster
 
-To add or remove regions from a cluster on Azure, you must use the CockroachDB {{ site.data.products.cloud }} API. Refer to [Scale, edit or upgrade a cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
-
-For clusters on AWS or GCP, you can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
+You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 1. Navigate to the cluster's **Overview** page.
 1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
