@@ -38,3 +38,22 @@ CREATE TABLE capitals (
 	state           CHAR(2)
 ) INHERITS (cities);
 ```
+
+- Range types:
+
+``` sql
+CREATE TABLE ranges (
+  ts TSRANGE,
+  n NUMRANGE
+);
+
+INSERT INTO ranges (ts, n) VALUES
+  ('[2024-01-01 00:00, 2024-01-31 23:59)', numrange(1, 20));
+```
+
+- Multiranges:
+
+``` sql
+SELECT nummultirange(numrange(1, 10), numrange(2, 20));
+-- {[1,20)}
+```
