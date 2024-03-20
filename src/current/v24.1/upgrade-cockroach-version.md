@@ -193,6 +193,8 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     cp -i {COCKROACHDB_DIR}/cockroach /usr/local/bin/cockroach
     ~~~
 
+1. If a cluster has corrupt descriptors, a major-version upgrade cannot be finalized. Automatic descriptor repair is enabled by default in {{ page.version.version }}. After restarting each cluster node on {{ page.version.version }}, monitor the [cluster logs](https://www.cockroachlabs.com/docs/{{ page.version.version }}/logging) for errors. If a descriptor cannot be repaired automatically, [contact support](https://support.cockroachlabs.com/hc) for assistance completing the upgrade. To disable automatic descriptor repair (not generally recommended), set the environment variable `COCKROACH_RUN_FIRST_UPGRADE_PRECONDITION` to `false`.
+
 1. Start the node so that it can rejoin the cluster.
 
     <div class="filter-content" markdown="1" data-scope="linux">
