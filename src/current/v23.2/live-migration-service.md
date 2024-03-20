@@ -754,7 +754,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 You can monitor your cutover attempts with the following commands.
 
-### `connections list`
+#### `connections list`
 
 `molt-lms-cli connections list` outputs client connection details from each LMS instance, including the most recent query and error, if any.
 
@@ -792,7 +792,7 @@ Connections Details.
 
 In the preceding output, `remote_address` is the address of the LMS instance, and `source_address` is the address of the client connected to the LMS instance.
 
-### `cutover get_metadata`
+#### `cutover get_metadata`
 
 `molt-lms-cli cutover get_metadata` outputs the metadata for a specific cutover attempt initiated with `cutover consistent begin`.
 
@@ -835,7 +835,7 @@ In the preceding output:
 - `COMMIT TIME` is the timestamp when the cutover attempt was completed on the LMS instance.
 - `ERROR` is the error encountered by the cutover attempt, if any.
 
-### `status`
+#### `status`
 
 `molt-lms-cli status` outputs the overall status of the LMS, including its [shadowing mode](#shadowing-modes), source and target database addresses, and any errors encountered on the LMS instances.
 
