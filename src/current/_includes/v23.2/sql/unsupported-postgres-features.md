@@ -12,8 +12,9 @@
 - [Dropping a single partition from a table]({% link {{ page.version.version }}/partitioning.md %}#known-limitations).
 - Foreign data wrappers.
 - Advisory Lock Functions (although some functions are defined with no-op implementations).
-* LISTEN, UNLISTEN and NOTIFY
+- LISTEN, UNLISTEN and NOTIFY
 - `COPY [table] TO [file]` syntax.
+- PL/python
 - Variadic parameters in procedures:
 
 ``` sql
@@ -111,10 +112,10 @@ CREATE TABLE example AS
 
 -- Supported
 WITH subset AS (
-    SELECT val,
-       ntile(4) OVER (ORDER BY val) AS tile
-    FROM example
-  )
+	SELECT val,
+		ntile(4) OVER (ORDER BY val) AS tile
+	FROM example
+)
 SELECT max(val)
 FROM subset GROUP BY tile ORDER BY tile;
 
