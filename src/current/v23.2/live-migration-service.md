@@ -750,7 +750,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}
 
-## Monitor cutover
+### Monitor cutover
 
 You can monitor your cutover attempts with the following commands.
 
