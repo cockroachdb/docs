@@ -49,13 +49,6 @@ Complete the following items before using MOLT Verify:
 
 - Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
 
-- If you are migrating from MySQL, enable GTID consistency. This is necessary for returning the [CDC cursor](#cdc-cursor) for ongoing replication. Pass the following two flags to the `mysql` start command or define them in `mysl.cnf`:
-
-    ~~~
-    --gtid-mode=ON
-    --enforce-gtid-consistency=ON
-    ~~~
-
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
   - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:

@@ -70,6 +70,31 @@ Complete the following items before using MOLT Fetch:
 		postgres://postgres:a%2452%26@localhost:5432/replicationload
 		~~~
 
+- If you are using Amazon S3 for [cloud storage](#cloud-storage):
+
+	- Ensure that the environment variable and access tokens are set appropriately in the terminal running `molt fetch`. For example:
+
+		{% include_cached copy-clipboard.html %}
+		~~~ shell
+		export AWS_REGION='us-east-1'
+		export AWS_SECRET_ACCESS_KEY='key'
+		export AWS_ACCESS_KEY_ID='id'
+		~~~
+
+	- Ensure the S3 bucket is created and accessible to CockroachDB.
+
+- If you are using Google Cloud Storage for [cloud storage](#cloud-storage):
+
+	- Ensure that your local environment is authenticated using [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login):
+
+		{% include_cached copy-clipboard.html %}
+		~~~ shell
+		gcloud init
+		gcloud auth application-default login
+		~~~
+
+	- Ensure the Google Cloud Storage bucket is created and accessible to CockroachDB.
+
 ## Flags
 
 |                      Flag                     |                                                                                                                                                                                                        Description                                                                                                                                                                                                        |
@@ -77,15 +102,15 @@ Complete the following items before using MOLT Fetch:
 | `--source`                                    | (Required) Connection string for the source database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                       |
 | `--target`                                    | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                       |
 | `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`).                                                                                                                                                                                                                                                                     |
-| `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path).                                                                                                                                                                                                                                                                                                                        |
+| `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                               |
 | `--compression`                               | Compression method for data when using [`IMPORT INTO` mode](#fetch-mode) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                      |
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                   |
 | `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                |
 | `--direct-copy`                               | Enables [direct copy mode](#fetch-mode), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                            |
-| `--export-concurrency`                        | Number of shards to use for data export. **Note:** This number will multiply the number of tables being moved by `--table-concurrency`. Ensure your machine has sufficient resources to handle thi level of concurrency.<br><br>**Default:** `4`                                                                                                                                                                          |
+| `--export-concurrency`                        | Number of shards to use for data export. **Note:** This number will multiply the number of tables being moved by `--table-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** `4`                                                                                                                                                                         |
 | `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                 |
-| `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files.                                                                                                                                                                                                                                                                                                                                                   |
-| `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files.                                                                                                                                                                                                                                                                                                                                                  |
+| `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag that is written first in the command.                                                                                                                                                                                                                      |
+| `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag that is written first in the command.                                                                                                                                                                                                                     |
 | `--local-path`                                | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                        |
 | `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is reachable by CockroachDB. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment).<br><br>**Default:** Value of `--local-path-listen-addr`. `--local-path` and `--local-path-listen-addr` must be specified. |
 | `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                              |
@@ -100,7 +125,7 @@ Complete the following items before using MOLT Fetch:
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                       |
 | `--table-concurrency`                         | Number of tables to move at a time. **Note:** This number will be multiplied by the value of `--export-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** 4                                                                                                                                                                                              |
 | `--table-filter`                              | Move tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                        |
-| `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                                              |
+| `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                       |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                    |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                        |
 
@@ -257,7 +282,7 @@ With each option, MOLT Fetch creates a new CcokroachDB table to load the source 
 
 ### Fetch continuation
 
-If `molt fetch` exits with an error after being run, you can continue the process from the *continuation point* where it was interrupted.
+If `molt fetch` exits with an error after loading data from [cloud](#cloud-storage) or [local storage](#local-file-server), you can continue the process from the *continuation point* where it was interrupted.
 
 To retry all data starting from the continuation point, include `--fetch-id` and specify the process ID from the `molt fetch` output.
 
@@ -292,7 +317,7 @@ Continuation is not possible when using [direct copy mode](#direct-copy).
 
 ### CDC cursor
 
-If the fetch process succeeds, a change data capture (CDC) cursor is written to the output as `cdc_cursor`. For example:
+A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch process. For example:
 
 ~~~ json
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
