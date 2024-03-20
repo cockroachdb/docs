@@ -12,6 +12,7 @@
 - [Dropping a single partition from a table]({% link {{ page.version.version }}/partitioning.md %}#known-limitations).
 - Foreign data wrappers.
 - Advisory Lock Functions (although some functions are defined with no-op implementations).
+* LISTEN, UNLISTEN and NOTIFY
 - `COPY [table] TO [file]` syntax.
 - Variadic parameters in procedures:
 
@@ -56,4 +57,17 @@ INSERT INTO ranges (ts, n) VALUES
 ``` sql
 SELECT nummultirange(numrange(1, 10), numrange(2, 20));
 -- {[1,20)}
+```
+
+* Underscores for thousand separators
+
+``` sql
+CREATE TABLE thousands (
+  n INT
+);
+
+INSERT INTO thousands (n) VALUES
+  (1_000),
+  (1_000_000),
+  (1_000_000_000);
 ```
