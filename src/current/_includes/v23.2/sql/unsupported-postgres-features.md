@@ -81,3 +81,14 @@ CREATE TABLE example(
   name text
 ) USING heap;
 ```
+
+* Set `LOGGED/UNLOCKED`
+
+``` sql
+CREATE TABLE example (
+  name TEXT
+);
+
+ALTER TABLE example SET LOGGED;
+ALTER TABLE example SET UNLOGGED;
+```
