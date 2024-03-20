@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the CockroachDB {{ site.data.products.cloud }} Console. This page walks through the process.
+Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your cluster directly from the CockroachDB {{ site.data.products.cloud }} Console. This page walks through the process.
 
 ## Step 1. Verify that you can upgrade
 
@@ -103,7 +103,7 @@ Most v20.2 features can be used right away, but there are some that will be enab
 
 - **Materialized views:** After finalization, it will be possible to create [materialized views](https://www.cockroachlabs.com/docs/v20.2/views#materialized-views), or views that store their selection query results on-disk.
 
-- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
+- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.
 
 ## Step 7. Finish the upgrade
 

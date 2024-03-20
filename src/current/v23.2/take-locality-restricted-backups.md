@@ -7,7 +7,7 @@ docs_area: manage
 
 The `EXECUTION LOCALITY` option allows you to restrict the nodes that can execute a [backup]({% link {{ page.version.version }}/backup.md %}) job by using a [locality filter]({% link {{ page.version.version }}/cockroach-start.md %}#locality) when you create the backup. This will pin the [coordination of the backup job]({% link {{ page.version.version }}/backup-architecture.md %}#job-creation-phase) and the nodes that [process the row data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase) to the defined locality filter.
 
-{% include_cached new-in.html version="v23.2" %} Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities. 
+{% include_cached new-in.html version="v23.2" %} Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities.
 
 Defining an execution locality for a backup job is useful in the following cases:
 
@@ -15,7 +15,7 @@ Defining an execution locality for a backup job is useful in the following cases
 - When a multi-region cluster is running heavy workloads and an aggressive backup schedule, designating a region as the "backup" locality may improve latency. For an example, refer to [Create a non-primary region for backup jobs](#create-a-non-primary-region-for-backup-jobs).
 
 {{site.data.alerts.callout_info}}
-CockroachDB also supports _locality-aware backups_, which allow you to partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs. Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail.
+CockroachDB also supports _locality-aware backups_, which allow you to partition and store backup data in a way that is optimized for locality. In general, when you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}). Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail.
 {{site.data.alerts.end}}
 
 ## Technical overview
@@ -39,6 +39,7 @@ When you run a backup or restore that uses `EXECUTION LOCALITY`, consider the fo
 - The backup or restore job may take slightly more time to start, because it must select the node that coordinates the backup or restore (the _coordinating node_). Refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
 - Even after a backup or restore job has been pinned to a locality filter, it may still read data from another locality if no replicas of the data are available in the locality specified by the backup job's locality filter.
 - If the job is created on a node that does not match the locality filter, you will receive an error even when the **job creation was successful**. This error indicates that the job execution moved to another node. To avoid this error when creating a manual job (as opposed to a [scheduled job]({% link {{ page.version.version }}/create-schedule-for-backup.md %})), you can use the [`DETACHED`]({% link {{ page.version.version }}/backup.md %}#detached) option with `EXECUTION LOCALITY`. Then, use the [`SHOW JOB WHEN COMPLETE`]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete) statement to determine when the job has finished. For more details, refer to [Job coordination using the `EXECUTION LOCALITY` option]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-using-the-execution-locality-option).
+- The backup job will send [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) to the cloud storage bucket matching the node's locality. However, a range's locality will not necessarily match the node's locality. The backup job will attempt to back up ranges through nodes matching that range's locality, however this is not always possible.
 
 ## Examples
 

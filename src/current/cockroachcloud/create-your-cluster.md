@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page walks you through the process of creating a CockroachDB {{ site.data.products.dedicated }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
@@ -24,7 +24,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicat
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Select a plan** page, select the **Dedicated standard** or **Dedicated advanced** plan.
 
-CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+CockroachDB {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI DSS readiness]({% link cockroachcloud/pci-dss.md %}) in addition to all CockroachDB {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a CockroachDB {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
 ## Step 2. Select the cloud provider
 
@@ -55,7 +55,7 @@ Select the region(s) and number of nodes for your cluster:
     A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} clusters.
 
 1. Select the number of nodes:
-    - For single-region application development and testing, you may create a 1 node cluster.
+    - For single-region application development and testing on AWS or GCP, you can create a single-node cluster. Single-node clusters are not available on Azure.
     - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
     - See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for CockroachDB {{ site.data.products.dedicated }} cluster configuration.
@@ -75,7 +75,7 @@ VPC peering is only available for GCP clusters. For clusters deployed on AWS, yo
 You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
 
 1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
-    
+
 1. Enter the IP range and size (in CIDR format) for the CockroachDB {{ site.data.products.cloud }} network based on the following considerations:
       -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
@@ -104,6 +104,11 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     ----------|------------
     Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+
+    {{site.data.alerts.callout_info}}
+    Clusters deployed in CockroachDB {{ site.data.products.cloud }} can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+    {{site.data.alerts.end}}
+
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 1. Select the **Storage per node**.

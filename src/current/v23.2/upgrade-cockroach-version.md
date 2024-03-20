@@ -16,10 +16,6 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
-{{site.data.alerts.callout_info}}
-CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. 
-{{site.data.alerts.end}}
-
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
@@ -135,20 +131,22 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     It is only possible to set this setting to the current cluster version.
 
-{% comment %}
 ### Features that require upgrade finalization
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TODO: Update this section with the list of features here, uncomment this section, and re-add the link to this section from earlier in step 3 as well as the other places where [this PR](https://github.com/cockroachdb/docs/pull/18276/files) removed such links:
+- The coalescing of storage ranges for each table, index, or partition (collectively referred to as "schema objects") into a single range when individual schema objects are smaller than the default configured maximum range size (controlled using zone configs, specifically the `range_max_bytes parameter`). This change improves scalability with respect to the number of schema objects, since the underlying range count is no longer a potential performance bottleneck. After finalizing the upgrade to v23.2, you may observe a round of range merges and snapshot transfers. To disable this optimization, **before finalizing the upgrade**, set the `spanconfig.storage_coalesce_adjacent.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{ page.version.version }}/cluster-settings) to `false`. See the [v23.1 release notes]({% link releases/v23.1.md %}) for `SHOW RANGES` for more details. [#102961][#102961]
+- The new output log format, which allows configuration of a time zone in log output. Before configuring a time zone, the cluster must be finalized on v23.2. [#104265][#104265]
+- Performance improvements when a node reclaims disk space. [#106177][#106177]
+- The following [admission control](https://www.cockroachlabs.com/docs/{{ page.version.version }}/admission-control#operations-subject-to-admission-control) mechanisms, which help to maintain cluster performance and availability when some nodes experience high load: <ul><li>Delete operations</li><li>Replication</li>[#98308][#98308]
+- Collecting a statement diagnostic bundle for a particular plan. The existing fingerprint-based matching has been extended to also include plan-gist-based matching and "anti-matching" (collecting a bundle for any plan other than the provided plan gist). [#105477][#105477]
+- A new system table, `system.region_liveness`, that tracks the availability and the timestamp of the latest unavailability for each cluster region. [#107903][#107903]
+- The ability of a `WaitPolicy_Error` request to push the timestamp of a transaction with a lower priority. [#108190][#108190]
+- Configuring a changefeed with the `lagging_ranges_threshold` or `lagging_ranges_polling_interval` [changefeed options](https://www.cockroachlabs.com/docs/{{ page.version.version }}/create-changefeed#options). [#110649][#110649]
+- Removal of the upgrade step `grantExecuteToPublicOnAllFunctions`, which is no longer required because post-serialization changes now grant `EXECUTE` on functions to the public role. [#114203][#114203]
+- A fix to a bug that could allow a user to execute a user-defined function without the `EXECUTE` privilege on the function. If a user does not have the privilege, the user-defined function does not run and an error is logged. [#114203][#114203]
 
-src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-helm.md
-src/current/_includes/v23.2/orchestration/kubernetes-upgrade-cluster-manual.md:
-src/current/v23.2/upgrade-cockroachdb-kubernetes.md
-src/current/v23.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md
-
-For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}).
-{% endcomment %}
+For more details about a given feature, refer to the [CockroachDB v23.2.0 release notes](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0).
 
 ## Step 4. Perform the rolling upgrade
 
@@ -190,6 +188,8 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     ~~~ shell
     cp -i {COCKROACHDB_DIR}/cockroach /usr/local/bin/cockroach
     ~~~
+
+1. If a cluster has corrupt descriptors, a major-version upgrade cannot be finalized. In CockroachDB v23.2 and above, automatic descriptor repair is enabled by default. After restarting each cluster node on v23.2, monitor the [cluster logs](https://www.cockroachlabs.com/docs/{{ page.version.version }}/logging) for errors. If a descriptor cannot be repaired automatically, [contact support](https://support.cockroachlabs.com/hc) for assistance completing the upgrade. To disable automatic descriptor repair (not generally recommended), set the environment variable `COCKROACH_RUN_FIRST_UPGRADE_PRECONDITION` to `false`.
 
 1. Start the node so that it can rejoin the cluster.
 
@@ -321,3 +321,14 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [Collect Debug Information]({% link {{ page.version.version }}/cockroach-debug-zip.md %})
 - [View Version Details]({% link {{ page.version.version }}/cockroach-version.md %})
 - [Release notes for our latest version](https://www.cockroachlabs.com/docs/releases/{{page.version.version}})
+
+[#102961]: https://github.com/cockroachdb/cockroach/pull/102961
+[#104265]: https://github.com/cockroachdb/cockroach/pull/104265
+[#107474]: https://github.com/cockroachdb/cockroach/pull/107474
+[#106177]: https://github.com/cockroachdb/cockroach/pull/106177
+[#98308]: https://github.com/cockroachdb/cockroach/pull/98308
+[#105477]: https://github.com/cockroachdb/cockroach/pull/105477
+[#107903]: https://github.com/cockroachdb/cockroach/pull/107903
+[#108190]: https://github.com/cockroachdb/cockroach/pull/108190
+[#110649]: https://github.com/cockroachdb/cockroach/pull/110649
+[#114203]: https://github.com/cockroachdb/cockroach/pull/114203

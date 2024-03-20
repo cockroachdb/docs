@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the CockroachDB {{ site.data.products.cloud }} Console. This page walks through the process.
+Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your cluster directly from the CockroachDB {{ site.data.products.cloud }} Console. This page walks through the process.
 
 {% include_cached youtube.html video_id="PKpCcAtXxjo" %}
 

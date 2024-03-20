@@ -15,11 +15,15 @@ You can't configure [alerts on changefeeds](https://www.cockroachlabs.com/docs/{
 
 ## Backups
 
-CockroachDB {{ site.data.products.serverless }} only support automated full backups. Automated [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups) and [revision history](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time) backups are not supported. However, [user managed incremental and revision history backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) using user provided storage locations are supported.
+CockroachDB {{ site.data.products.serverless }} clusters only support automated full backups. Automated [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups) and [revision history](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time) backups are not supported. However, you can take manual [incremental and revision history backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#examples) to your own [storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
-Automated database and table level backups are not supported in CockroachDB {{ site.data.products.serverless }}. However, [user managed database and table level backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) using user provided storage locations are supported.
+Automated database and table level backups are not supported in CockroachDB {{ site.data.products.serverless }}. However, you can take manual [database and table level backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#examples) to your own [storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
-Both CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups). However, user managed locality-aware backups using user provided storage locations are supported in CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }}, and CockroachDB {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
+Both CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups). However, you can take manual locality-aware backups to your own [cloud storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
+
+{{site.data.alerts.callout_info}}
+{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{{site.data.alerts.end}}
 
 ## Adding and removing regions
 
@@ -58,10 +62,8 @@ There is no self-service way of accessing [audit logs]({% link cockroachcloud/sq
 
 ## Encryption
 
-[Encryption at rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest) is not supported in CockroachDB {{ site.data.products.serverless }} clusters.
-
-[Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }} clusters.
+Cluster storage for CockroachDB {{ site.data.products.serverless }} is encrypted at rest by the cloud provider. [Customer-managed encryption keys]({% link cockroachcloud/managing-cmek.md %}) (CMEK) are not supported in CockroachDB {{ site.data.products.serverless }}. CMEK is available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Network security
 
-[Private clusters]({% link cockroachcloud/private-clusters.md %}) are not supported in {{ site.data.products.serverless-plan }}.
+[Private clusters]({% link cockroachcloud/private-clusters.md %}), compliance with [PCI DSS]({% link cockroachcloud/pci-dss.md %}), and compliance with [HIPAA]({% link cockroachcloud/pci-dss.md %}#hipaa) are not supported in {{ site.data.products.serverless }}. These features are available only in [CockroachDB {{ site.data.products.dedicated }} advanced]({% link cockroachcloud/create-your-cluster.md %}).

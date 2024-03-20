@@ -36,6 +36,10 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
 
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+{{site.data.alerts.end}}
+
 For an example, refer to [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
 
 ## Topology patterns
@@ -112,7 +116,7 @@ Since upgrading a cluster can have a significant impact on your workload, make s
 
 ### Patch upgrades
 
-For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
+For CockroachDB {{ site.data.products.dedicated }} clusters, [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
 For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
