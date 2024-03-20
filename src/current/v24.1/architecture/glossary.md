@@ -39,8 +39,6 @@ A part of a data center that is considered to form a unit with regards to failur
 
 A full featured, self-managed CockroachDB deployment.
 
-For more information on deployment options and guidelines on how to choose a deployment option, see [How to Choose a Deployment Option]({% link {{ page.version.version }}/choose-a-deployment-option.md %}).
-
 {% include common/basic-terms.md %}
 
 For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture).
