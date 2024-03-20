@@ -11,16 +11,16 @@ docs_area: deploy
 Refer to the [Known Limitations](#known-limitations) section for further detail.
 {{site.data.alerts.end}}
 
-This page gives an overview of _cluster virtualization_ in CockroachDB {{page.version.version}}. Cluster virtualization allows you to separate a cluster's _control plane_ from its _data plane_. The cluster's control plane manages cluster nodes and node-to-node traffic, while its data plane reads and writes data to the cluster's storage.
+This page gives an overview of _cluster virtualization_ in CockroachDB {{page.version.version}}. Cluster virtualization allows you to separate a cluster's _control plane_ from its _data plane_. The cluster's control plane manages cluster nodes and node-to-node traffic, while its data plane reads data from and writes data to the cluster's storage.
 
 {{site.data.alerts.callout_success}}
-Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). This is the only situation where cluster virtualization is supported in production.
+Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
 {{site.data.alerts.end}}
 
-When cluster virtualization is disabled, the `cockroach` process on a node runs a single cluster that handles all system and user activity, and manages the cluster's control plane and data plane. When cluster virtualization is enabled, the `cockroach` process on a node runs both a _system virtual cluster_ and one or more _virtual clusters_.
+When cluster virtualization is disabled, the control plane and data plane are unified, and the `cockroach` process on a node handles all system and user activity, and manages the cluster's control plane and data plane. When cluster virtualization is enabled, the `cockroach` process on a node runs both a _system virtual cluster_ and one or more _virtual clusters_.
 
 - The system virtual cluster manages the cluster's control plane. Administrative access to the system virtual cluster can be restricted. Certain low-level cluster settings can be modified only on the system virtual cluster.
-- One or more virtual clusters manage their own data plane. Administrative access on a virtual cluster does not grant any access to the system virtual cluster. The effect of some settings is scoped to the virtual cluster rather than the system virtual cluster.
+- A virtual cluster manages its own data plane. Administrative access on a virtual cluster does not grant any access to the system virtual cluster. The effect of some settings is scoped to the virtual cluster rather than the system virtual cluster.
 
 ## Differences when cluster virtualization is enabled
 
@@ -31,7 +31,7 @@ When cluster virtualization is enabled, CockroachDB's behavior changes in severa
 When cluster virtualization is enabled, by default when you connect using `cockroach sql` or the DB Console, you are connected to the virtual cluster. To connect to the system virtual cluster, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connecting-to-a-cluster).
 
 {{site.data.alerts.callout_success}}
-If a SQL user has been added to the system virtual cluster and one or more virtual clusters with the same password, that user can select which to connect to from the top of the DB Console.
+If a SQL user has been added to the system virtual cluster and one or more virtual clusters with the same username and password, that user can select which to connect to from the top of the DB Console.
 {{site.data.alerts.end}}
 
 ### Cluster settings
@@ -39,8 +39,8 @@ If a SQL user has been added to the system virtual cluster and one or more virtu
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
 
 - When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
-- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting.
-- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration.
+- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. For example, the cluster setting `admission.disk_bandwidth_tokens.elastic.enabled` is scoped to the system virtual cluster.
+- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the storage cluster's configuration.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
 
@@ -60,8 +60,8 @@ For details, refer to [Work with virtual clusters]({% link {{ page.version.versi
 
 When cluster virtualization is enabled, the default scope of [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands is the virtual cluster. This means that:
 
-- By default, backups taken from a virtual cluster contain only data for that virtual cluster, not the system virtual cluster.
-- To back up the entire cluster, you must connect to the system virtual cluster to run the backup and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag.
+- A backup taken from a virtual cluster contains all data for that virtual cluster, but does not contain modifications made via the system interface such as system-level cluster settings.
+- If your deployment contains system-level customizations, you can take a separate backup of the system virtual cluster to capture them.
 - A backup of a virtual cluster can be restored as a virtual cluster in any storage cluster with cluster virtualization enabled.
 
 For more details about backing up and restoring a cluster with cluster virtualization enabled, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#disaster-recovery).
@@ -72,11 +72,24 @@ For details about configuring and using Physical Cluster Replication for disaste
 
 ### Observability
 
-When cluster virtualization is enabled, cluster log messages and metrics are scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly.
+When cluster virtualization is enabled, cluster log messages are scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. For example, this log message relates to a virtual cluster named `demo`:
 
-When connected to a virtual cluster, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+~~~ none
+I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  found 0 temporary schemas
+~~~
 
-Some pages and views are only viewable from the system virtual cluster, including those pertaining to overall cluster health.
+Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system interface, but metrics scoped to the system interface are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
+
+For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the virtual cluster and the system virtual cluster:
+
+~~~ none
+sql_txn_commit_count{tenant="system"} 0
+sql_txn_commit_count{tenant="demo"} 0
+~~~
+
+When connected to a virtual cluster from DB Console, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
+
+Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability)
 
@@ -100,5 +113,5 @@ When cluster virtualization is enabled, certain low-level SQL APIs (TODO: Which 
 
 In CockroachDB {{page.version.version}}, cluster virtualization has the following limitations:
 
-- Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
-- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
+- Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
+- Currently, a single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.

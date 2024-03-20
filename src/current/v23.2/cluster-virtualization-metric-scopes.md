@@ -13,7 +13,7 @@ Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }
 
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [metric]({% link {{ page.version.version }}/metrics.md %}) has a scope:
 
-- When a metric is scoped to the virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to the virtual cluster. Refer to [Metrics scoped to the virtual cluster](#metrics-scoped-to-the-virtual-cluster).
+- When a metric is scoped to a non-system virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to the virtual cluster. Refer to [Metrics scoped to the virtual cluster](#metrics-scoped-to-the-virtual-cluster).
 - When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying storage cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
 {% comment %}

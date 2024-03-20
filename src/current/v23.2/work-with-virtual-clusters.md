@@ -106,19 +106,30 @@ To prevent unauthorized access, you should limit the users with access to the sy
 
 ## Observability
 
-When cluster virtualization is enabled, cluster logs and metrics are scoped to a virtual cluster or to the system virtual cluster.
+When cluster virtualization is enabled, cluster log entries and metrics are scoped to a virtual cluster or to the system virtual cluster.
 
 ### View cluster logs with cluster virtualization enabled
 
-When cluster virtualization is enabled, each cluster log is labeled with the name of the virtual cluster that generated it, including the system virtual cluster.
+When cluster virtualization is enabled, each cluster log is labeled with the name of the virtual cluster that generated it, including the system virtual cluster. For example, this log message relates to a virtual cluster named `demo`:
+
+~~~ none
+I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  found 0 temporary schemas
+~~~
 
 ### Work with metrics with cluster virtualization enabled
 
-When cluster virtualization is enabled, cluster metrics are scoped to non-system virtual clusters or the system virtual cluster. Certain metrics related to the underlying storage cluster are available only from the system virtual cluster. For details, refer to [Cluster Virtualization Metric Scopes]({% link {{ page.version.version}}/cluster-virtualization-metric-scopes.md %}).
+Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system interface, but metrics scoped to the system interface are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
 
-When connected to a virtual cluster using the DB Console, most pages and views are scoped to the virtual cluster, and metrics for other virtual clusters, including the system virtual cluster, are excluded. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the virtual cluster and the system virtual cluster:
 
-Some pages and views are only viewable from the system virtual cluster, including those pertaining to overall cluster health.
+~~~ none
+sql_txn_commit_count{tenant="system"} 0
+sql_txn_commit_count{tenant="demo"} 0
+~~~
+
+When connected to a virtual cluster from DB Console, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
+
+Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
 ## Disaster recovery
 
@@ -201,7 +212,11 @@ When cluster virtualization is enabled to upgrade to a new major version, you mu
 
 This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
-To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required. It is not possible for a virtual cluster to run a different patch version than the system virtual cluster.
+{{site.data.alerts.callout_info}}
+The `preserve_downgrade_option` cluster setting is scoped to the virtual cluster. To prevent automatic finalization of the upgrade, you must set it to `false` both in the virtual cluster and in the system virtual cluster.
+{{site.data.alerts.end}}
+
+To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required.
 
 - Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
 - A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
