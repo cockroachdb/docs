@@ -25,7 +25,7 @@ Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version
 Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/ {{ page.page_version }}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
-Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
+Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
 {% endif %}
