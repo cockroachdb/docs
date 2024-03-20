@@ -50,9 +50,15 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 
     The **Connect to cluster** dialog displays.
 
+<<<<<<< HEAD
 1. _(Optional)_ If you have multiple SQL users or databases, you can:
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
+=======
+    {{site.data.alerts.callout_info}}
+    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    {{site.data.alerts.end}}
+>>>>>>> d072100ba ([DOC-7925] Remove deprecated roles (#18402))
 
 1. Select a connection method from the **Select option / Language** dropdown (the instructions below will adjust accordingly):
 

@@ -127,7 +127,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) roles can perform the following from the Console:
+Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
