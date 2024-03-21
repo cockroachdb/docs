@@ -204,10 +204,6 @@ The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefee
 
 For usage details, see the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) page.
 
-### Google Pub/Sub sink for changefeeds
-
-Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
-
 ### Multiple active portals
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
