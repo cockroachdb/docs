@@ -35,16 +35,6 @@ docs_area:
           </a>
         </div>
         </div>
-      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex ">
-        <a href="frequently-asked-questions.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">CockroachDB Cloud <br>FAQS</h6>
-            <p class="text-black">Answers to frequently asked questions</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
-          </div>
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -106,8 +96,6 @@ docs_area:
       <h3 class="mt-3">Learn More</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{% link cockroachcloud/frequently-asked-questions.md %}">CockroachDB Cloud FAQs</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions">CockroachDB FAQs</a></li>
         <li><a href="{% link cockroachcloud/upgrade-policy.md %}">Upgrade Policy</a></li>
         <li><a href="{% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %}">Deploy a Python App</a></li>
         <li><a href="{% link cockroachcloud/stream-changefeed-to-snowflake-aws.md %}">Stream a Changefeed</a></li>

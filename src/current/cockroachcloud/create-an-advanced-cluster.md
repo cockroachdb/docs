@@ -133,7 +133,7 @@ You can enable advanced security features for PCI DSS and HIPAA [compliance]({% 
     You will be billed monthly.
 
 1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
-1. [If applicable]({% link cockroachcloud/frequently-asked-questions.md %}#how-do-cockroachdb-free-trials-work), the 30-day trial code is pre-applied to your cluster.
+1. If applicable, the 30-day trial code is pre-applied to your cluster.
 
       {{site.data.alerts.callout_info}}
       Remember to [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Otherwise, your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
