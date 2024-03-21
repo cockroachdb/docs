@@ -93,14 +93,17 @@ Some pages and views are by default viewable only from the system virtual cluste
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability)
 
+{% comment %}
 ### SQL API
 
-When cluster virtualization is enabled, certain low-level SQL APIs (TODO: Which ones) are accessible only by those users with the `admin` role on the system virtual cluster, and not from virtual clusters.
+When cluster virtualization is enabled, certain low-level SQL APIs, such as (TODO: Which ones) are accessible only by those users with the `admin` role on the system virtual cluster, and not from virtual clusters.
+{% endcomment %}
 
-### Span Config Bounds
+### Replication
 
-- Span config bounds can be set in a virtual cluster or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.
-- Zone configs can be set only in a virtual cluster, but span config bounds set in the system virtual cluster override zone configs that are set in a virtual cluster.
+[Replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be configured only in a virtual cluster, and are not applicable to the `system` virtual cluster.
+
+{% comment %}- Span config bounds can be set in a virtual cluster or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.{% endcomment %}
 
 ## See also
 
