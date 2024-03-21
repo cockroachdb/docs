@@ -46,7 +46,7 @@ Click on **Backup and Restore** in the **Data section** of the left-side navigat
 
 Consider the following as you use managed-service backups:
 
-- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
+- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. 
 - Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 

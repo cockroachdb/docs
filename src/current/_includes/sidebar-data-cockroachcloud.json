@@ -324,13 +324,6 @@
       ]
     },
     {
-      "title": "FAQs",
-      "urls": [
-        "/cockroachcloud/serverless-faqs.html",
-        "/cockroachcloud/frequently-asked-questions.html"
-      ]
-    },
-    {
       "title": "Cloud Release Notes",
       "urls": [
         "/releases/cloud.html"
