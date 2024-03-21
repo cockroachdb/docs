@@ -31,15 +31,15 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-{% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}
+If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
 
 Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
 
-The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance. Refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) for more detail.
+For further detail on performance-related configuration, refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) page.
 
-#### Mux rangefeeds
-
-{% include {{ page.version.version }}/cdc/mux-rangefeed.md %}
+{{site.data.alerts.callout_info}}
+[`MuxRangefeed`]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#mux-rangefeeds) is a subsystem that improves the performance of rangefeeds with scale, which is enabled by default in v24.1 and later versions.
+{{site.data.alerts.end}}
 
 ### Recommendations for the number of target tables
 
