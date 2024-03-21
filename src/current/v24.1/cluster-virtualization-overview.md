@@ -87,6 +87,10 @@ sql_txn_commit_count{tenant="system"} 0
 sql_txn_commit_count{tenant="demo"} 0
 ~~~
 
+{{site.data.alerts.callout_info}}
+The `_status/vars` endpoint includes metrics from virtual clusters and the system virtual cluster. The internal `crdb_internal.node_metrics` command includes only metrics for the virtual cluster you are connected to (whether it is the system virtual cluster or any other virtual cluster).
+{{site.data.alerts.end}}
+
 When connected to a virtual cluster from DB Console, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
 
 Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
