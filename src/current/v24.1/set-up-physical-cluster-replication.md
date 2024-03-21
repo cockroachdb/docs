@@ -11,7 +11,7 @@ docs_area: manage
 
 In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
-The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters.
+The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
 
 In this tutorial, you will connect to:
 
