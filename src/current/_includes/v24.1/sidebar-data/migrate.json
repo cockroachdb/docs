@@ -18,6 +18,12 @@
           ]
         },
         {
+          "title": "MOLT Fetch",
+          "urls": [
+            "/${VERSION}/molt-fetch.html"
+          ]
+        },
+        {
           "title": "MOLT Verify",
           "urls": [
             "/${VERSION}/molt-verify.html"
