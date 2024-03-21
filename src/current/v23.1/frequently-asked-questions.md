@@ -34,7 +34,7 @@ Alternatively, you can download a binary or run our official Kubernetes configur
 
 ### How do I know which CockroachDB deployment option is right for my project?
 
-There are four way to use and deploy CockroachDB:
+There are four ways to use and deploy CockroachDB:
 
 - **CockroachDB {{ site.data.products.basic }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.basic }} provides highly available database clusters that scale instantly and automatically for small production and dev/test workloads.
 - **CockroachDB {{ site.data.products.standard }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.standard }} allows you to consolidate a variety of production workloads while optimizing cost.
