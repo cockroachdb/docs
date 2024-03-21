@@ -105,6 +105,10 @@ When cluster virtualization is enabled, certain low-level SQL APIs, such as (TOD
 
 {% comment %}- Span config bounds can be set in a virtual cluster or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.{% endcomment %}
 
+### Node draining
+
+When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually) can cause a temporary SQL latency spike.
+
 ## See also
 
 - [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %})
