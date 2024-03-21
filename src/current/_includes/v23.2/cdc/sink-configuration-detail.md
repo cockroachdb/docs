@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_danger}}
-Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
+Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency` will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
 {{site.data.alerts.end}}
 
 Some complexities to consider when setting `Flush` fields for batching:
