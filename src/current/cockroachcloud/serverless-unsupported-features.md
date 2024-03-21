@@ -35,7 +35,7 @@ The [`ALTER TABLE ... SPLIT AT`](https://www.cockroachlabs.com/docs/{{site.curre
 
 ## Self service upgrades
 
-CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and patch upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users]({% link cockroachcloud/serverless-faqs.md %}#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-cluster-is-running-on).
+CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and patch upgrades of CockroachDB are handled by Cockroach Labs, and can't be initiated by users.
 
 ## Monitoring workloads and cluster health
 
