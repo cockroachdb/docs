@@ -13,7 +13,7 @@ Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }
 
 This page shows how to work with a cluster with [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
 
-## Connecting to a cluster
+## Connect to a virtual cluster
 
 This section shows how to use SQL clients or the DB Console to connect to a virtual cluster.
 

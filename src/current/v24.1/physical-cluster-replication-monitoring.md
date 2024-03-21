@@ -118,7 +118,7 @@ To verify that the data at a certain point in time is correct on the standby clu
     (1 row)
     ~~~
 
-    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-interface).
+    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-virtual-cluster).
 
 1. From the **primary cluster's system virtual cluster**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
 
@@ -133,7 +133,7 @@ To verify that the data at a certain point in time is correct on the standby clu
     (1 row)
     ~~~
 
-    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-interface).
+    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-virtual-cluster).
 
 1. From the **standby cluster's system virtual cluster**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
 
