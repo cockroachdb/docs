@@ -118,7 +118,7 @@ I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  fo
 
 ### Work with metrics with cluster virtualization enabled
 
-Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system interface, but metrics scoped to the system interface are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
+Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system virtual cluster, but metrics scoped to the system virtual cluster are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
 
 For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the virtual cluster and the system virtual cluster:
 

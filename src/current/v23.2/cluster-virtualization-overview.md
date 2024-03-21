@@ -60,7 +60,7 @@ For details, refer to [Work with virtual clusters]({% link {{ page.version.versi
 
 When cluster virtualization is enabled, the default scope of [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands is the virtual cluster. This means that:
 
-- A backup taken from a virtual cluster contains all data for that virtual cluster, but does not contain modifications made via the system interface such as system-level cluster settings.
+- A backup taken from a virtual cluster contains all data for that virtual cluster, but does not contain modifications made via the system virtual cluster such as system-level cluster settings.
 - If your deployment contains system-level customizations, you can take a separate backup of the system virtual cluster to capture them.
 - A backup of a virtual cluster can be restored as a virtual cluster in any storage cluster with cluster virtualization enabled.
 
@@ -78,7 +78,7 @@ When cluster virtualization is enabled, cluster log messages are scoped to the v
 I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  found 0 temporary schemas
 ~~~
 
-Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system interface, but metrics scoped to the system interface are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
+Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system virtual cluster, but metrics scoped to the system virtual cluster are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
 
 For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the virtual cluster and the system virtual cluster:
 

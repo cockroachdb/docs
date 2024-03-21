@@ -79,20 +79,13 @@ The node topology of the two clusters does not need to be the same. For example,
 Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for detail.
 {{site.data.alerts.end}}
 
-### Connect to the system interface and virtual cluster
+### Connect to the application or system virtual cluster
 
 A cluster with physical cluster replication enabled is a _virtualized cluster_; the primary and standby clusters each contain:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
 To connect to a cluster using the SQL shell:
-
-- For the system interface, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
-    ~~~
 
 - For the application virtual cluster, include the `options=-ccluster=application` parameter in the `postgresql` connection URL:
 
@@ -101,8 +94,15 @@ To connect to a cluster using the SQL shell:
     cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
+- For the system virtual cluster, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
+    ~~~
+
 {{site.data.alerts.callout_info}}
-Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system interface.
+Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).
