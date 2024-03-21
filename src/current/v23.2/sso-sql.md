@@ -40,10 +40,11 @@ You must have the ability to update your cluster settings, which can be achieved
 
 You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) in the following table to enable JWT authentication to your cluster. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
-| Cluster Setting | Description 
-|-----------------|------ 
+| Cluster Setting | Description
+|-----------------|------
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
-| `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. 
+| `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. If `server.jwt_authentication.jwks_auto_fetch.enabled` is `true`, there is no need to set `server.jwt_authentication.jwks`.
+| `server.jwt_authentication.jwks_auto_fetch.enabled` | If `true`, public signing keys are automatically fetched from the issuer and there is no need to set `server.jwt_authentication.jwks`. Defaults to `false`.
 | `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
 | `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
@@ -72,10 +73,10 @@ You can also view all of your cluster settings in the DB Console.
     SET CLUSTER SETTING server.jwt_authentication.enabled = true;
     ~~~
 
-1.  Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers.
+1.  Add your IdP's formal `issuer` name (this must match the `iss` field in the JWT itself) to your cluster's list of accepted token issuers.
 
-    
-    This must match your cluster's configured  value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings).
+
+    This must match your cluster's configured value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html#cluster-settings). Issuers are expected to publish their configuration at `https://{ domain }/.well-known/openid-configuration`. For example:
 
         - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
         The `issuer` is `https://cockroachlabs.cloud`.
@@ -113,22 +114,22 @@ You can also view all of your cluster settings in the DB Console.
 1. `server.jwt_authentication.jwks`
 
     Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the public keys for SSO token issuers/IdPs that will be accepted by your cluster. This list must include a given IdP, or the cluster will reject JWTs issued by it. IdPs serve their public certificates and other required information at `https://{ domain }/.well-known/openid-configuration`.
-    
-    IdPs such as Google rotate their signing keys periodically. You must update your cluster with a new signing key before the previous one expires, or your SQL clients will be unable to connect with cluster SSO. **We recommend updating this cluster setting with the current key daily to avoid this scenario.**
 
-    <b>{{ site.data.products.db }} {{ site.data.products.dedicated }} customers:</b> 
+    IdPs such as Google rotate their signing keys periodically. You must update your cluster with a new signing key before the previous one expires, or your SQL clients will be unable to connect with cluster SSO. **We recommend updating this cluster setting with the current key daily to avoid this scenario.** Alternatively, you can enable `server.jwt_authentication.jwks_auto_fetch.enabled` to automatically fetch signing keys from the issuer instead of maintaining a static list of signing keys. If `server.jwt_authentication.jwks_auto_fetch.enabled` is enabled, then `server.jwt_authentication.jwks` is ignored.
+
+    <b>{{ site.data.products.db }} {{ site.data.products.dedicated }} customers:</b>
 
     By default, your cluster's configuration will contain the CockroachDB {{ site.data.products.cloud }}'s own public key, allowing CockroachDB {{ site.data.products.cloud }} to serve as an IdP. This is required for [SSO with `ccloud`](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). When modifying this cluster setting, you must include the CockroachDB {{ site.data.products.cloud }} public key in the key set, or SSO with `ccloud` will no longer work.
 
     The public key for {{ site.data.products.db }} can be found at `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-    
+
     For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --silent https://accounts.google.com/.well-known/openid-configuration | jq .jwks_uri | xargs curl
     ~~~
-    
+
     ~~~txt
     {
       "keys": [
@@ -175,6 +176,8 @@ You can also view all of your cluster settings in the DB Console.
       ]
     }';
     ~~~
+
+1. Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
 
 1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
@@ -226,7 +229,7 @@ Examples:
 
 - `https://accounts.google.com 1232316645658094244789 roach`
 
-    Maps a single external identity with the hard-coded ID to the SQL user `roach`.  
+    Maps a single external identity with the hard-coded ID to the [SQL user](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster) `roach`.
 
 - `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
