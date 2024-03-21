@@ -89,7 +89,7 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 ## Step 5. Enter billing details
 
-1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration. 
+1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration.
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes and provides a maximum cost estimate. Your final bill will reflect your actual usage.

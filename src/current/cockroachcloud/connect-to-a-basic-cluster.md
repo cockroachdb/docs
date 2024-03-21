@@ -54,7 +54,7 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 {% include cockroachcloud/postgresql-special-characters.md %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 For connection examples and code snippets in your language, see the following:
