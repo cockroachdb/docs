@@ -98,7 +98,7 @@ cockroach sql --url \
 To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
 
 - The `admin` [role]({% link v23.2/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
-- The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md $}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md %}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 
 {{site.data.alerts.callout_info}}
 To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
