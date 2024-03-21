@@ -39,8 +39,6 @@ For further detail on performance related configuration, refer to the [Advanced 
 
 {{site.data.alerts.callout_info}}
 [`MuxRangefeed`]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#mux-rangefeeds) is a subsystem that improves the performance of rangefeeds with scale, which is enabled by default in v24.1 and later versions.
-
-Changefeeds created on v24.1+ clusters will automatically use the `MuxRangefeed` subsystem. If you have running changefeeds created in an earlier version of CockroachDB and upgrade to v24.1+, `MuxRangefeed` will not apply to these changefeeds. Once you have [upgraded](../v24.1/upgrade-cockroach-version.html) to v24.1, we recommend [pausing](#configuring-all-changefeeds) and then resuming existing changefeeds to ensure all changefeeds benefit from the performance improvements of `MuxRangefeed`.
 {{site.data.alerts.end}}
 
 ### Recommendations for the number of target tables
