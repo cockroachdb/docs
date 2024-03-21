@@ -72,17 +72,19 @@ URI Component      | Description
 
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
 
-#### Kafka
+#### Azure Event Hubs
 
-Example of a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) URI:
+{% include_cached new-in.html version="v24.1" %} Example for an [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) URI:
 
-~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
-~~~
+{% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
-{{site.data.alerts.end}}
+#### Cloud Storage
+
+The following are example file URLs for each of the cloud storage schemes:
+
+{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
+
+For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Confluent Cloud
 
@@ -102,13 +104,17 @@ Example of a Google Cloud Pub/Sub sink URI:
 
 [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for further consideration.
 
-#### Cloud Storage
+#### Kafka
 
-The following are example file URLs for each of the cloud storage schemes:
+Example of a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) URI:
 
-{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
+~~~
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
+~~~
 
-For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
+{{site.data.alerts.end}}
 
 #### Webhook
 
@@ -140,16 +146,19 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `S3_STORAGE_CLASS` | [Amazon S3 cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#amazon-s3) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify the Amazon S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
 `sasl_client_id`   | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_client_secret` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
-`sasl_enabled`     | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. For Confluent Cloud sinks, `sasl_enabled` must be set to `true` if specified.<br><br> **Default:** `false`
+`sasl_enabled`     | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs), [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL.<br><br>For Confluent Cloud and Azure Event Hubs sinks, this is set to `true` by default.<br><br> **Default:** `false`
 `sasl_grant_type` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-`sasl_mechanism`   | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html),  [`SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required.<br><br>See the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial for detail setting up OAuth using Okta. <br><br> **Default:** `PLAIN`
+`sasl_handshake` | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs), [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`BOOL`]({% link {{ page.version.version }}/bool.md %}) | For Confluent Cloud and Azure Event Hubs sinks, this is set to `true` by default.
+`sasl_mechanism`   | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs), [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html),  [`SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required.<br><br>See the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial for detail setting up OAuth using Okta.<br><br>For Confluent Cloud and Azure Event Hubs sinks, this is set to `PLAIN` by default.<br><br> **Default:** `PLAIN`
 `sasl_scopes` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | A list of scopes that the OAuth token should have access for. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_token_url` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Client token URL for OAuth authentication from a third-party provider. **Note:** You must [URL encode](https://www.urlencoder.org/) this value before passing in a URI. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_user`        | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Your SASL username.
 `sasl_password`    | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)                               | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Your SASL password. **Note:** Passwords should be [URL encoded](https://wikipedia.org/wiki/Percent-encoding) since the value can contain characters that would cause authentication to fail.
-`tls_enabled`      | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
-<a name="topic-name-param"></a>`topic_name`       | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud), [GC Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the [Kafka topic naming limitations]({% link {{ page.version.version }}/changefeed-sinks.md %}#topic-naming) or [GC Pub/Sub topic naming]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. When using Kafka, this parameter can be combined with the [`topic_prefix` parameter](#topic-prefix-param) (this is not supported for GC Pub/Sub). <br><br>**Default:** table name.
-<a name="topic-prefix-param"></a>`topic_prefix`     | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud), [cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+<span class="version-tag">New in v24.1:</span>`shared_access_key` | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The URL-encoded key for your Event Hub shared access policy.
+<span class="version-tag">New in v24.1:</span>`shared_access_key_name` | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The name of your Event Hub shared access policy.
+`tls_enabled`      | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).<br><br>For Confluent Cloud and Azure Event Hubs sinks, this is set to `true` by default.<br><br>**Default:** `false`
+<a name="topic-name-param"></a>`topic_name` | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs), [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud), [GC Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the [Kafka topic naming limitations]({% link {{ page.version.version }}/changefeed-sinks.md %}#topic-naming) or [GC Pub/Sub topic naming]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. When using Kafka, this parameter can be combined with the [`topic_prefix` parameter](#topic-prefix-param) (this is not supported for GC Pub/Sub). <br><br>**Default:** table name.
+<a name="topic-prefix-param"></a>`topic_prefix`     | [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs), [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud), [cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) | [`STRING`]({% link {{ page.version.version }}/string.md %})             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 
 ### Options
 
