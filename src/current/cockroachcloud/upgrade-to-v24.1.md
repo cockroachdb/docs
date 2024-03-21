@@ -69,7 +69,6 @@ Before starting the upgrade, complete the following steps.
 
 ### Prepare for brief unavailability
 
-Your cluster will be unavailable while its single node is stopped and restarted with {{ page.page_version }}. Prepare your application for this brief downtime, typically a few minutes.
 
 Your cluster will be unavailable while its single node is stopped and restarted with v23.1. Prepare your application for this brief downtime, typically a few minutes.
 
@@ -117,7 +116,7 @@ Your cluster will be upgraded one node at a time without interrupting the cluste
 Your single-node cluster will be unavailable for a few minutes while the node is stopped and restarted with CockroachDB {{ page.page_version }}.
 </section>
 
-After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
+After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
 
 ## Step 6. Monitor the upgrade
 
@@ -135,7 +134,7 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 ### Expect temporary limitations
 
-Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
+Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors.
 
 For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
