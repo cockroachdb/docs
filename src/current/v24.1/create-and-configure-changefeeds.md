@@ -35,7 +35,7 @@ If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enable
 
 Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
 
-For further detail on performance related configuration, refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) page.
+For further detail on performance-related configuration, refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) page.
 
 {{site.data.alerts.callout_info}}
 [`MuxRangefeed`]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#mux-rangefeeds) is a subsystem that improves the performance of rangefeeds with scale, which is enabled by default in v24.1 and later versions.
