@@ -116,11 +116,7 @@ Since upgrading a cluster can have a significant impact on your workload, make s
 
 ### Patch upgrades
 
-<<<<<<< HEAD
-For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
-=======
-For CockroachDB {{ site.data.products.dedicated }} clusters, [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
->>>>>>> d072100ba ([DOC-7925] Remove deprecated roles (#18402))
+For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
 For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
