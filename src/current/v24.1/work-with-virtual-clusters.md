@@ -97,8 +97,8 @@ cockroach sql --url \
 
 To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
 
-- The `admin` [role]({% link v23.2/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
-- The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md $}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `admin` [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `VIEWSYSTEMDATA` [system privilege]({% link v24.1/security-reference/authorization.md %}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 
 {{site.data.alerts.callout_info}}
 To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
@@ -210,7 +210,7 @@ When cluster virtualization is enabled to upgrade to a new major version, you mu
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
 1. After the system virtual cluster is finalized, finalize the upgrade on the virtual cluster to upgrade it, or roll it back if you decide not to finalize it. Until it is finalized, the virtual cluster still operates in compatibility with the previous major version, some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 {{site.data.alerts.callout_info}}
 The `preserve_downgrade_option` cluster setting is scoped to the virtual cluster. To prevent automatic finalization of the upgrade, you must set it to `false` both in the virtual cluster and in the system virtual cluster.
