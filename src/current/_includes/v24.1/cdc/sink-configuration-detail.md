@@ -4,7 +4,7 @@ Setting either `Messages` or `Bytes` with a non-zero value without setting `Freq
 
 Some complexities to consider when setting `Flush` fields for batching:
 
-- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
+- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time a message is available." This would be the same as not providing any configuration at all:
 
     ~~~
     {
@@ -16,7 +16,7 @@ Some complexities to consider when setting `Flush` fields for batching:
     }
     ~~~
 
-- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` defaults to `0` in this case, so a batch will never trigger due to a configured byte size:
+- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` is unset, so the batch size is unlimited. No flush will be triggered due to batch size:
 
     ~~~
     {
