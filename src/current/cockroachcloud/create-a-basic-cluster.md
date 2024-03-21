@@ -8,7 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page guides you through the process of creating a cluster using CockroachDB {{ site.data.products.basic }}. Note that only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+This page guides you through the process of creating a cluster using CockroachDB {{ site.data.products.basic }}. Note that only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 ## Before you begin
 
