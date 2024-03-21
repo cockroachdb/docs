@@ -41,8 +41,6 @@ To install MOLT Verify, download the binary that matches your system. To downloa
 
 For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
 
-Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
-
 # Setup
 
 Complete the following items before using MOLT Verify:
@@ -121,7 +119,7 @@ When verification completes, the output displays a summary message like the foll
 
 ## Limitations
 
-- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. Enable `--live` mode to have the tool retry verification on these rows. You can also change the row batch size using the `--row_batch_size` [flag](#flags).
+- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change between batches, which can lead to temporary inconsistencies in data. Enable `--live` mode to have the tool retry verification on these rows. You can also change the row batch size using the `--row_batch_size` [flag](#flags).
 - MySQL enums and set types are not supported.
 - MOLT Verify checks for collation mismatches on [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{ page.version.version }}/collate.md %}).
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).

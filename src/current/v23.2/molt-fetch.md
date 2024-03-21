@@ -15,7 +15,7 @@ MOLT Fetch can use `IMPORT INTO` or `COPY FROM` to move the source data to Cockr
 
 ## Supported databases
 
-The following databases are currently supported:
+The following source databases are currently supported:
 
 - [PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 - [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
@@ -33,8 +33,6 @@ To install MOLT Fetch, download the binary that matches your system. To download
 
 For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
 
-Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt fetch` command from any shell.
-
 ## Setup
 
 Complete the following items before using MOLT Fetch:
@@ -43,12 +41,11 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the SQL user running MOLT Fetch has the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) statements, depending on your intended [mode](#fetch-mode).
 
-- If you are migrating from MySQL, enable GTID consistency. This is necessary for returning the [CDC cursor](#cdc-cursor) for ongoing replication. Pass the following two flags to the `mysql` start command or define them in `mysl.cnf`:
+- To enable the [CDC cursor](#cdc-cursor) for ongoing replication:
 
-	~~~
-	--gtid-mode=ON
-	--enforce-gtid-consistency=ON
-	~~~
+	- If you are migrating from PostgreSQL, enable logical replication. Set [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical` in `postgresql.conf` or in the SQL shell.
+
+	- If you are migrating from MySQL, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set `gtid-mode` and `enforce-gtid-consistency` to `ON` in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command.
 
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
@@ -107,7 +104,7 @@ Complete the following items before using MOLT Fetch:
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                   |
 | `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                |
 | `--direct-copy`                               | Enables [direct copy mode](#fetch-mode), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                            |
-| `--export-concurrency`                        | Number of shards to use for data export. **Note:** This number will multiply the number of tables being moved by `--table-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** `4`                                                                                                                                                                         |
+| `--export-concurrency`                        | Number of concurrent threads to use for data export. **Note:** This number will be multiplied by the number of tables being moved in `--table-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** `4`                                                                                                                                                     |
 | `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                 |
 | `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                              |
 | `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                             |
@@ -210,7 +207,7 @@ Cloud storage can be used with either the [`IMPORT INTO` or `COPY FROM` modes](#
 --local-path-listen-addr 'localhost:3000'
 ~~~
 
-In some cases, CockroachDB will not be able to use the local address specified by `--local-path-listen-addr`. This can depend on where CockroachDB is deployed, the runtime OS, and the source dialect.
+In some cases, CockroachDB will not be able to use the local address specified by `--local-path-listen-addr`. This will depend on where CockroachDB is deployed, the runtime OS, and the source dialect.
 
 For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is reachable by CockroachDB. For example:
 
@@ -237,7 +234,7 @@ A local file server can be used with either the [`IMPORT INTO` or `COPY FROM` mo
 
 ### Schema and table selection
 
-By default, MOLT Fetch moves all source data to CockroachDB. Use the following flags to move a subset of data.
+By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-databases) database to CockroachDB. Use the following flags to move a subset of data.
 
 `--schema-filter` specifies a range of schema objects to move to CockroachDB, based on a regex string. For example, to move every table in the source database's `public` schema:
 
@@ -278,7 +275,7 @@ To drop existing tables and create new tables before loading the data, use `'dro
 --table-handling 'drop-on-target-and-recreate'
 ~~~
 
-With each option, MOLT Fetch creates a new CcokroachDB table to load the source data if one does not exist.
+With each option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not exist.
 
 ### Fetch continuation
 
