@@ -7,11 +7,11 @@ docs_area: deploy
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
-
-Refer to the [Known Limitations](#known-limitations) section for further detail.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v23.2" %} This page gives an overview of _cluster virtualization_ in CockroachDB {{page.version.version}}. Cluster virtualization allows you to separate a cluster's _control plane_ from its _data plane_. The cluster's control plane manages cluster nodes and node-to-node traffic, while its data plane reads data from and writes data to the cluster's storage.
+
+Cluster virtualization is required for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
 
 {{site.data.alerts.callout_success}}
 Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
