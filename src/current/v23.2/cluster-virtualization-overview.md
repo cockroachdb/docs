@@ -72,8 +72,8 @@ When cluster virtualization is enabled, cluster log messages and metrics are sco
 
 For details and examples, refer to:
 - [Work with virtual clusters]({% link {{ page.version.version}}/work-with-virtual-clusters.md %}#observability)
-- [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}cluster-virtualization-metric-scopes.md %})
-- [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}cluster-virtualization-metric-scopes.md %})
+- [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
+- [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 
 When connected to a virtual cluster from DB Console:
 
