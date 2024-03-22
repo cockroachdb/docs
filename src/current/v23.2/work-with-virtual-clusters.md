@@ -25,30 +25,6 @@ When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-
 
 {{ pcr_application_cluster_note }}
 
-### DB Console
-
-This section shows how to connect using DB Console when cluster virtualization is enabled.
-
-{{site.data.alerts.callout_success}}
-If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
-{{site.data.alerts.end}}
-
-Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
-
-To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
-
-{{site.data.alerts.callout_success}}
-When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
-{{site.data.alerts.end}}
-
-#### Connect to the system virtual cluster
-
-{{site.data.alerts.callout_info}}
-You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
-{{site.data.alerts.end}}
-
-To connect to the system virtual cluster using the DB Console, add the `GET` URL parameter `options=-ccluster=system` to the DB Console URL.
-
 ### SQL clients
 
 This section shows how to connect using `cockroach sql` when cluster virtualization is enabled.
@@ -93,6 +69,30 @@ cockroach sql --url \
 --certs-dir "certs"
 ~~~
 
+### DB Console
+
+This section shows how to connect using DB Console when cluster virtualization is enabled.
+
+{{site.data.alerts.callout_success}}
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
+{{site.data.alerts.end}}
+
+Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
+
+To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
+
+{{site.data.alerts.callout_success}}
+When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
+{{site.data.alerts.end}}
+
+#### Connect to the system virtual cluster
+
+{{site.data.alerts.callout_info}}
+You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
+{{site.data.alerts.end}}
+
+To connect to the system virtual cluster using the DB Console, add the `GET` URL parameter `options=-ccluster=system` to the DB Console URL.
+
 ## Grant access to the system virtual cluster
 
 To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
@@ -127,9 +127,13 @@ sql_txn_commit_count{tenant="system"} 0
 sql_txn_commit_count{tenant="demo"} 0
 ~~~
 
-When connected to a virtual cluster from DB Console, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
+When connected to a virtual cluster from DB Console:
 
-Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+- Most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+
+- DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
+
+- Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
 
 ## Disaster recovery
 
@@ -171,19 +175,6 @@ To restore the entire storage cluster, including all virtual clusters and the sy
 1. [Connect to the destination system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
 1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
 
-### Cluster logs
-
-When cluster virtualization is enabled, cluster log messages for the system virtual cluster and each virtual cluster are labeled according to the cluster they are associated with.
-
-### SQL API
-
-When cluster virtualization is enabled, certain low-level SQL APIs (TODO: Which ones) are accessible only by a virtual cluster's cluster administrators, and not by other cluster users.
-
-### Span Config Bounds
-
-- Span config bounds can be set at the overall cluster level or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.
-- Zone configs can be set only in a virtual cluster, but span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.
-
 ### DB Console
 
 In the DB Console, users with access to both the system virtual cluster and virtual clusters can select which cluster to connect to.
@@ -218,19 +209,9 @@ The `preserve_downgrade_option` cluster setting is scoped to the virtual cluster
 
 To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required.
 
-- Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
-- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
-
 ## See also
 
 - [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
 - [Cluster Setting Scopes]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
 - [Cluster Metric Scopes]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 - [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
-
-## Known Limitations
-
-In CockroachDB {{page.version.version}}, cluster virtualization has the following limitations:
-
-- Cluster virtualization is supported only for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). General-purpose virtual clusters are not supported.
-- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
