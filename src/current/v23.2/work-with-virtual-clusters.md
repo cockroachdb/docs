@@ -11,7 +11,7 @@ docs_area: deploy
 Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} This page shows how to work with a cluster with [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
+{% include_cached new-in.html version="v23.2" %} This page is a guide to working with a CockroachDB cluster with [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled.
 
 ## Connect to a virtual cluster
 
