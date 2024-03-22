@@ -13,14 +13,14 @@ docs_area: deploy
 
 Cluster virtualization is required for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
 
-{{site.data.alerts.callout_success}}
-Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
-{{site.data.alerts.end}}
-
 When cluster virtualization is disabled, the control plane and data plane are unified, and the `cockroach` process on a node handles all system and user activity, and manages the cluster's control plane and data plane. When cluster virtualization is enabled, the `cockroach` process on a node runs both a _system virtual cluster_ and one or more _virtual clusters_.
 
 - The system virtual cluster manages the cluster's control plane. Administrative access to the system virtual cluster can be restricted. Certain low-level cluster settings can be modified only on the system virtual cluster.
 - A virtual cluster manages its own data plane. Administrative access on a virtual cluster does not grant any access to the system virtual cluster. The effect of some settings is scoped to the virtual cluster rather than the system virtual cluster.
+
+{{site.data.alerts.callout_success}}
+Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
+{{site.data.alerts.end}}
 
 ## Differences when cluster virtualization is enabled
 
@@ -37,10 +37,6 @@ If a SQL user has been added to the system virtual cluster and one or more virtu
 ### Cluster settings
 
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
-
-- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
-- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. For example, the cluster setting `admission.disk_bandwidth_tokens.elastic.enabled` is scoped to the system virtual cluster.
-- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the storage cluster's configuration.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
 
@@ -72,26 +68,20 @@ For details about configuring and using Physical Cluster Replication for disaste
 
 ### Observability
 
-When cluster virtualization is enabled, cluster log messages are scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. For example, this log message relates to a virtual cluster named `demo`:
+When cluster virtualization is enabled, cluster log messages and metrics are scoped to the virtual cluster or to the system virtual cluster, and are labeled with the name of the virtual cluster they relate to.
 
-~~~ none
-I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  found 0 temporary schemas
-~~~
+For details and examples, refer to:
+- [Work with virtual clusters]({% link {{ page.version.version}}/work-with-virtual-clusters.md %}#observability)
+- [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}cluster-virtualization-metric-scopes.md %})
+- [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}cluster-virtualization-metric-scopes.md %})
 
-Metrics are also scoped to the virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system virtual cluster, but metrics scoped to the system virtual cluster are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from the virtual cluster.
+When connected to a virtual cluster from DB Console:
 
-For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the virtual cluster and the system virtual cluster:
+- Most pages and views are scoped to the virtual cluster.
+- By default, the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from a virtual cluster and not from the system virtual cluster.
+- By default, some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
 
-~~~ none
-sql_txn_commit_count{tenant="system"} 0
-sql_txn_commit_count{tenant="demo"} 0
-~~~
-
-When connected to a virtual cluster from DB Console, most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
-
-Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
-
-For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability)
+For more details, including how to adjust DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
 
 {% comment %}
 ### SQL API
