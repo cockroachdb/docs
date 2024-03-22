@@ -7,8 +7,6 @@ docs_area: deploy
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
-
-Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v23.2" %} This page shows how to work with a cluster with [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
@@ -18,9 +16,7 @@ Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }
 This section shows how to use SQL clients or the DB Console to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
-{{site.data.alerts.callout_success}}
-When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
-{{site.data.alerts.end}}
+When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `application`.
 {% endcapture %}
 
 {{ pcr_application_cluster_note }}
@@ -48,9 +44,7 @@ Replace:
 - `{virtual_cluster_name}`: the name of the virtual cluster.
 - `{certs_dir}`: The directory containing the cluster's certificates.
 
-{{site.data.alerts.callout_success}}
 When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the connection string so that the intention to connect to a specific virtual cluster is more clear.
-{{site.data.alerts.end}}
 
 #### Connect to the system virtual cluster
 
@@ -73,10 +67,6 @@ cockroach sql --url \
 
 This section shows how to connect using DB Console when cluster virtualization is enabled.
 
-{{site.data.alerts.callout_success}}
-If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
-{{site.data.alerts.end}}
-
 Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
@@ -84,6 +74,8 @@ To connect to a specific virtual cluster, add the `GET` URL parameter `options=-
 {{site.data.alerts.callout_success}}
 When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
 {{site.data.alerts.end}}
+
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
 
 #### Connect to the system virtual cluster
 
@@ -100,9 +92,7 @@ To grant access to the system virtual cluster, you must connect to the system vi
 - The `admin` [role]({% link v23.2/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 - The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md %}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 
-{{site.data.alerts.callout_info}}
 To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
-{{site.data.alerts.end}}
 
 ## Observability
 
@@ -146,9 +136,7 @@ To back up a virtual cluster:
 1. [Connect to the virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
 1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
 
-{{site.data.alerts.callout_success}}
 A virtual cluster can be [restored](#restore-a-virtual-cluster) to the original virtual cluster on the original storage cluster, a different virtual cluster on the original storage cluster, or a different virtual cluster on a different storage cluster with cluster virtualization enabled.
-{{site.data.alerts.end}}
 
 ### Back up the entire cluster
 
