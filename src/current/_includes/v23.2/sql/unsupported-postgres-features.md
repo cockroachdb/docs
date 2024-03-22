@@ -34,3 +34,5 @@
 - CREATE TEMPORARY TABLE ... ON COMMIT DROP
 - Typed tables (e.g. `CREATE TABLE hgv OF vehicle_type;`)
 - UNIQUE NULLS DISTINCT/NOT DISTINCT
+- CREATE STATISTICS - most-common values (MCV) statistics
+- GROUPING SETS, CUBE and ROLLUP support
