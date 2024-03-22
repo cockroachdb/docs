@@ -15,6 +15,8 @@
 - LISTEN, UNLISTEN and NOTIFY
 - `COPY [table] TO [file]` syntax.
 - PL/python
+- Deferrable constraints
+- Exclusion constraints
 - Variadic parameters in procedures:
 
 ``` sql
@@ -60,7 +62,7 @@ SELECT nummultirange(numrange(1, 10), numrange(2, 20));
 -- {[1,20)}
 ```
 
-* Underscores for thousand separators
+- Underscores for thousand separators
 
 ``` sql
 CREATE TABLE thousands (
@@ -73,7 +75,7 @@ INSERT INTO thousands (n) VALUES
   (1_000_000_000);
 ```
 
-* Table access methods
+- Table access methods
 
 ``` sql
 CREATE ACCESS METHOD heap TYPE TABLE HANDLER heap_tableam_handler;
@@ -83,7 +85,7 @@ CREATE TABLE example(
 ) USING heap;
 ```
 
-* Set `LOGGED/UNLOCKED`
+- Set `LOGGED/UNLOCKED`
 
 ``` sql
 CREATE TABLE example (
@@ -94,7 +96,7 @@ ALTER TABLE example SET LOGGED;
 ALTER TABLE example SET UNLOGGED;
 ```
 
-* ALTER object IF EXISTS
+- ALTER object IF EXISTS
 
 ``` sql
 ALTER TABLE IF EXISTS does_not_exist
@@ -104,7 +106,7 @@ ALTER TABLE IF EXISTS does_not_exist
 ADD COLUMN IF NOT EXISTS v TEXT NOT NULL;
 ```
 
-* WITHIN GROUP
+- WITHIN GROUP
 
 ``` sql
 CREATE TABLE example AS
