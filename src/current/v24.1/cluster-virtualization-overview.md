@@ -36,6 +36,10 @@ If a SQL user has been added to the system virtual cluster and one or more virtu
 
 ### Cluster settings
 
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, cluster settings change in the following ways.
+
+### Cluster setting scopes
+
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
 
 - When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
@@ -43,6 +47,16 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the storage cluster's configuration.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
+
+### Output of `SHOW CLUSTER SETTINGS`
+
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, the output of `SHOW CLUSTER SETTINGS` and `SHOW ALL CLUSTER SETTINGS` contains two additional columns:
+
+- `default_value`: The default value of the setting, regardless of the current value.
+- `origin`: One of:
+  - `default`: The value has not been changed from the default.
+  - `override`: The value has been explicitly set in the same virtual cluster (incuding the system virtual cluster) where the SQL command was run.
+  - `external_override`: The value has been explicitly set outside of the virtual cluster where the SQL command was run, such as when you are connected to a non-system virtual cluster and the setting was overridden in the system virtual cluster for all virtual clusters.
 
 ### Security
 
