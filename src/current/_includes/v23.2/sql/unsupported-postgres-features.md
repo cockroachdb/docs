@@ -5,6 +5,7 @@
     {{site.data.alerts.callout_info}}
     Each table must have a primary key associated with it. You can [drop and add a primary key constraint within a single transaction]({% link {{ page.version.version }}/alter-table.md %}#drop-and-add-a-primary-key-constraint).
     {{site.data.alerts.end}}
+- ALTER TABLE ... ADD UNIQUE/PRIMARY KEY USING INDEX
 - XML functions
 - Column-level privileges
 - XA syntax
