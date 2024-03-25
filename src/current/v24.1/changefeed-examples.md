@@ -373,10 +373,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
