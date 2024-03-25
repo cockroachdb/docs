@@ -156,9 +156,7 @@ Review the [best practices for creating secondary indexes]({% link {{ page.versi
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data. 
-
-Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
+Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You will likely encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) related to CockroachDB's [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
 
 #### Unimplemented features and syntax incompatibilities
 
@@ -250,8 +248,6 @@ After [converting the schema](#convert-the-schema), load your data into Cockroac
 #### Validate queries
 
 After you [load the test data](#load-test-data), validate your queries on CockroachDB. You can do this by [shadowing](#shadowing) or by [manually testing](#test-query-results-and-performance) the queries.
-
-Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) transaction isolation level. If you are migrating an application that was built at a `READ COMMITTED` isolation level on the source database, you must [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
 ##### Shadowing
 
