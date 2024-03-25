@@ -44,7 +44,7 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
 - Some members may need to be re-added to your organization:
   - All members of your CockroachDB {{ site.data.products.cloud }} organization who were using [Basic SSO]({% link cockroachcloud/cloud-org-sso.md %}#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [org admin]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role, it must be granted to them again.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role, it must be granted to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
@@ -66,7 +66,7 @@ If all of your administrators belong to multiple organizations, you can create a
 
 To enable Cloud Organization SSO:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as an user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as an user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Enable Authentication**, click **Enable**.
 1. In the dialog, configure the custom URL your members will use to sign in. This value must be unique across CockroachDB {{ site.data.products.cloud }}. For more details, refer to [Update the custom URL](#update-the-custom-url).
@@ -108,7 +108,7 @@ When you enable or disable an authentication method, a notification is displayed
 
 To enable or disable an authentication method:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. To enable or disable the authentication method, toggle **Enable**.
@@ -131,7 +131,7 @@ The following sections describe the advanced settings you can configure for an S
 
 By default, members can access your CockroachDB {{ site.data.products.cloud }} organization from any email domain. To restrict access to a specific list of email domains:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. At the top of the page, click **Edit**.
@@ -140,9 +140,9 @@ By default, members can access your CockroachDB {{ site.data.products.cloud }} o
 
 ### Autoprovisioning
 
-Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Org Administrator (legacy)** role]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
+Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Org Administrator** role]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator).
 
 If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Pprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
@@ -150,7 +150,7 @@ Cockroach Labs does not recommend enabling both autoprovisioning and SCIM provis
 
 To enable autoprovisioning for an SSO authentication method:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Click the name of an authentication method.
 1. Click **Advanced Settings**.
@@ -165,7 +165,7 @@ You can add a custom authentication method to connect to any IdP that supports [
 To configure a custom OIDC authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
-1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **OIDC (OpenID Connect)**.
@@ -184,7 +184,7 @@ To configure a custom OIDC authentication method:
 To configure a custom SAML authentication method using the service provider-initiated flow, follow these steps. If you need to use the identity provider-initiated flow instead, contact [Cockroach Labs support](https://support.cockroachlabs.com/hc).
 
 1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
-1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.

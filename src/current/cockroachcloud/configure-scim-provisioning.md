@@ -16,7 +16,7 @@ This section describes how SCIM provisioning works if you use Okta. Depending on
 If your IdP is Okta, then it may be helpful to read Okta's [article about SCIM](https://developer.okta.com/docs/concepts/scim/), as well as [Configure provisioning for an app integration
 ](https://help.okta.com/en-us/Content/Topics/Provisioning/lcm/lcm-provision-application.htm) in the Okta documentation. Otherwise, refer to your IdP's documentation about configuring SCIM.
 
-To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to CockroachDB {{ site.data.products.cloud }} using a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) or [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
+To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to CockroachDB {{ site.data.products.cloud }} using a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 
 From then on, the app integration works as follows.
 
@@ -53,10 +53,10 @@ To learn more about Group Push, refer to [Automate Group Management](#automate-g
 
 ## Requirements
 
-1. As a user with either the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) or [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role:
+1. As a user with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role:
 
    1. [Enable Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-cloud-organization-sso).
-   1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) with the [**Org Administrator (legacy)**]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the CockroachDB {{ site.data.products.cloud }} API.
+   1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the CockroachDB {{ site.data.products.cloud }} API.
 
 1. If your IdP is Okta, SCIM provisioning can be enabled only on a [custom SAML authentication method]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml). This requirement is imposed by Okta, and is not part of the SCIM or SAML protocols.
 
@@ -67,7 +67,7 @@ Individual IdPs may impose different requirements, and the exact steps and requi
 The exact steps and requirements for enabling SCIM provisioning depend upon your IdP. At a minimum, you must provide your IdP two pieces of information:
 
 - The endpoint to the CockroachDB {{ site.data.products.cloud }} SCIM API, `https://cockroachlabs.cloud/api/scim/v2`.
-- The API token of a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator (legacy)**]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
+- The API token of a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 
 To add SCIM provisioning to a SAML app integration in Okta:
 
@@ -79,7 +79,7 @@ To add SCIM provisioning to a SAML app integration in Okta:
 1. In the integration's settings page, click **Provisioning** again, then click **Edit**.
 1. Click **Integrations**. This tab controls the app integration's authentication to the CockroachDB {{ site.data.products.cloud }} API. Set:
 
-    <ul><li><b>SCIM connector base URL</b>: <code>https://cockroachlabs.cloud/api/scim/v2</code></li><li><b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#org-administrator-legacy"><b>Org Administrator (legacy)</b> or <a href="authorization.html#org-administrator"><b>Org Administrator</b></a> role</li><li><b>Unique identifier field for users</b>: <code>userName</code></li><li><b>Authentication Mode</b>: <b>HTTP Header</b></li></ul>
+    <ul><li><b>SCIM connector base URL</b>: <code>https://cockroachlabs.cloud/api/scim/v2</code></li><li><b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#org-administrator"><b>Org Administrator</b></a> role</li><li><b>Unique identifier field for users</b>: <code>userName</code></li><li><b>Authentication Mode</b>: <b>HTTP Header</b></li></ul>
 
 1. Click **Test Connector Configuration**.
 1. Click **Save**.
