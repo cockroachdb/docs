@@ -59,7 +59,7 @@ Complete the following items before starting the DMS migration:
     - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 
-- If you are migrating to CockroachDB {{ site.data.products.advanced }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}). This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
+- If you are migrating to CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}). This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
 
 #### Supported database technologies
 
@@ -215,7 +215,7 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ### AWS PrivateLink
 
-If using CockroachDB {{ site.data.products.advanced }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.advanced }} cluster using a private endpoint. To configure AWS PrivateLink with CockroachDB {{ site.data.products.advanced }}, see [Network Authorization](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#aws-privatelink).
+If using CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster using a private endpoint. To configure AWS PrivateLink with CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, see [Network Authorization](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#aws-privatelink).
 
 ### `BatchApplyEnabled`
 
@@ -255,7 +255,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 - For visibility into migration problems:
 
     - Check the [Amazon CloudWatch logs that you enabled](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
-    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.advanced }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#setup).
+    - Check the CockroachDB [`SQL_EXEC` logs]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) for messages related to `COPY` statements and the tables you are migrating. To access CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} logs, you should have configured log export to Amazon CloudWatch [before beginning the DMS migration](#setup).
 
         {{site.data.alerts.callout_danger}}
         Personally identifiable information (PII) may be exported to CloudWatch unless you [redact the logs]({% link {{ page.version.version }}/configure-logs.md %}#redact-logs). Redacting logs may hide the data that is causing the issue, making it more difficult to troubleshoot.
