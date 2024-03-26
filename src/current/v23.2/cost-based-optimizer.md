@@ -232,9 +232,7 @@ Even if you have [secondary indexes]({% link {{ page.version.version }}/schema-d
 
 You can disable statement plans that perform full table scans with the [`disallow_full_table_scans` session variable]({% link {{ page.version.version }}/set-vars.md %}#disallow-full-table-scans).
 
-If you disable full scans, you can set the [`large_full_scan_rows` session variable]({% link {{ page.version.version }}/set-vars.md %}#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
-
-If you disable full scans, and you provide an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) will be updated.
+{% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
 
 ## Control whether the optimizer uses an index
 
