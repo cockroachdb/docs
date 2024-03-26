@@ -43,9 +43,9 @@ Field | Description
 `application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
-`session_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) at which the session started.
-`active_query_start` | The time when the current active query in the session was started.
-`num_txns_executed` | Count of the number of [transactions]({% link {{ page.version.version }}/transactions.md %}) that have been opened in this session. This count includes transactions that are in progress.
+`session_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the session was started.
+`active_query_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the current active query in the session was started.
+`num_txns_executed` | The number of [transactions]({% link {{ page.version.version }}/transactions.md %}) that have been opened in this session. This count includes transactions that are open.
 
 ## Examples
 
