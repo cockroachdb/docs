@@ -81,7 +81,7 @@ The following statements use the declarative schema changer by default:
 - [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
 - [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
 
-Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#sql-defaults-use_declarative_schema_changer) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}#use_declarative_schema_changer).
+Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-use-declarative-schema-changer) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}#use_declarative_schema_changer).
 
 {{site.data.alerts.callout_danger}}
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
