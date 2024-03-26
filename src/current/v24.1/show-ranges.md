@@ -7,10 +7,6 @@ docs_area: reference.sql
 
 The `SHOW RANGES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows information about the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that comprise the data for a table, index, database, or the current catalog. This information is useful for verifying how SQL data maps to underlying [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), and where the [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) for those ranges are located.
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/sql/show-ranges-output-deprecation-notice.md %}
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) statement.
 {{site.data.alerts.end}}
@@ -107,10 +103,6 @@ The `span_stats` `JSON` object has the following keys:
 `intent_bytes` | The total size (in bytes) of the keys tracked in `intent_count` and their uncommitted values.
 
 ## Examples
-
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/sql/show-ranges-output-deprecation-notice.md %}
-{{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
