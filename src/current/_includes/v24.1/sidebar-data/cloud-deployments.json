@@ -326,9 +326,15 @@
                         ]
                     },
                     {
-                        "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
+                        "title": "Export Logs From CockroachDB {{ site.data.products.standard }}",
                         "urls": [
                         "/cockroachcloud/export-logs.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs From CockroachDB {{ site.data.products.advanced }}",
+                        "urls": [
+                        "/cockroachcloud/export-logs-advanced.html"
                         ]
                     }
                 ]
