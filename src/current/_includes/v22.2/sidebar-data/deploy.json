@@ -274,6 +274,12 @@
           ]
         },
         {
+          "title": "Using GeoServer with CockroachDB",
+          "urls": [
+            "/${VERSION}/geoserver.html"
+          ]
+        },
+        {
           "title": "Topology Patterns",
           "items": [
             {
