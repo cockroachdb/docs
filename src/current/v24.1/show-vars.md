@@ -77,6 +77,7 @@ Special syntax cases supported for compatibility:
 
 ## See also
 
+- [`SHOW DEFAULT SESSION VARIABLES FOR {role}`]({% link {{ page.version.version }}/show-default-session-variables.md %})
 - [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
 - [Transactions]({% link {{ page.version.version }}/transactions.md %}), including [Priority levels]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities)
 - [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
