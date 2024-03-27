@@ -1,0 +1,40 @@
+
+ Final phase                                 
+                                             
+                    .--------------.
+                    |              |
+        .-------->  | CockroachDB  |
+       |            | {t}          |
+       |            '--------------'
+       |
+       |
+       |
++--------------+
+|              |
+| Application  |
+|{a}           |
++--------------+
+
+
+                    .--------------.
+                    |              |
+                    |  Source DB   |
+                    | {s}          | 
+                    '--------------'
+
+# Legend:
+t = {
+    stroke: #6933ff;
+    fill: #b59cf9;
+}
+s = {
+    stroke: red;
+    fill: pink;
+}
+a = {
+    fill: lightblue;
+}
+crdb = {
+    fill: #6933ff;
+    color: white;
+}
