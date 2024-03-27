@@ -14,6 +14,7 @@ CockroachDB supports the following sinks:
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
+- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -546,6 +547,33 @@ The following shows the default JSON messages for a changefeed emitting to a web
 ~~~
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
+
+## Azure Event Hubs
+
+{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to an [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), which is compatible with Apache Kafka.
+
+An Azure Event Hubs sink URI:
+
+{% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
+
+The `shared_access_key` and `shared_access_key_name` are the required parameters for an Azure Event Hubs connection URI.
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`{event_hubs_namespace}` | The Event Hub namespace.
+`shared_access_key_name` | The name of the shared access policy created for the namespace.
+`shared_access_key` | The key for the shared access policy. **Note:** You must [URL encode](https://www.urlencoder.org/) the shared access key before passing it in the connection string.
+
+Changefeeds emitting to an Azure Event hub support `topic_name` and `topic_prefix`. Azure Event Hubs also supports the standard Kafka [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For an Azure Event Hub setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-azure-event-hubs-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
 
 ## See also
 
