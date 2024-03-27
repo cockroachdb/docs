@@ -36,3 +36,4 @@
 - UNIQUE NULLS DISTINCT/NOT DISTINCT
 - CREATE STATISTICS - most-common values (MCV) statistics
 - GROUPING SETS, CUBE and ROLLUP support
+- Large Objects (lo_create etc.)
