@@ -1,4 +1,4 @@
-- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. That is, clusters that have been upgraded from a previous version of CockroachDB will not support physical cluster replication.
+- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters. Physical Cluster Replication cannot be enabled on clusters that have been upgraded from a previous version of CockroachDB.
 - Cockroach Labs supports physical cluster replication up to the following scale:
     - Initial data load: 2TB
     - Read maximum: 1000 reads per second
