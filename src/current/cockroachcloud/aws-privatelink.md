@@ -23,7 +23,7 @@ AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[lim
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 {{site.data.alerts.callout_success}}
-You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.dedicated }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
+You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.dedicated }} cluster both in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-aws-privatelink).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
@@ -33,7 +33,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.serverless }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish AWS PrivateLink]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#establish-aws-privatelink).
+You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.serverless }} cluster both in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-aws-privatelink).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
@@ -60,7 +60,7 @@ Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) on AWS in the same regions as your application.
+1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) on AWS in the same regions as your application.
 
     {{site.data.alerts.callout_info}}
     **Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
@@ -309,6 +309,6 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 - [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
-- [Connect to a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %})
+- [Connect to a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 
 </section>

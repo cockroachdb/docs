@@ -58,12 +58,6 @@
             "urls": [
               "/${VERSION}/architecture/admission-control.html"
             ]
-          },
-          {
-            "title": "CockroachDB Cloud Architecture",
-            "urls": [
-              "/cockroachcloud/architecture.html"
-            ]
           }
         ]
       },

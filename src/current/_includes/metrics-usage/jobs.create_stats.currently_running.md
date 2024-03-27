@@ -1,0 +1,1 @@
+This metric tracks the number of active <a href="https://www.cockroachlabs.com/docs/stable/create-statistics">create statistics</a> jobs that may be consuming resources. Ensure that foreground SQL traffic is not impacted by correlating this metric with <a href="#sql.service.latency">SQL latency</a> and <a href="#sql.select.count">query volume</a> metrics.

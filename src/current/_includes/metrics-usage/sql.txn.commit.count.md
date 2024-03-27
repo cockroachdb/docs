@@ -1,0 +1,1 @@
+This metric shows the number of <a href="https://www.cockroachlabs.com/docs/stable/transactions">transactions</a> that completed successfully. This metric can be used as a proxy to measure the number of successful explicit transactions.

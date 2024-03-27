@@ -247,13 +247,6 @@
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
-- destination: plan-your-cluster-serverless.md
-  sources:
-    - 'planning-your-serverless-cluster.md'
-    - 'learn-about-pricing.md'
-    - 'learn-about-request-units.md'
-  versions: ['cockroachcloud']
-
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
   versions: ['v21.1']
@@ -815,6 +808,33 @@
     - dev/interleave-in-parent.md
     - interleave-in-parent.md
     - stable/interleave-in-parent.md
+
+# Cloud 2.0 updates (Serverless/Dedicated to Basic/Standard/Advanced)
+
+- destination: cockroachcloud/cockroachdb-advanced-on-azure.md
+  sources: ['cockroachcloud/cockroachdb-dedicated-on-azure.md']
+
+- destination: cockroachcloud/create-a-basic-cluster.md
+  sources: ['cockroachcloud/create-a-serverless-cluster.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/basic-cluster-management.md
+  sources: ['cockroachcloud/serverless-cluster-management.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/connect-to-a-basic-cluster.md
+  sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
+
+- destination: cockroachcloud/resource-usage.md
+  sources: ['cockroachcloud/serverless-resource-usage.md']
+
+- destination: plan-your-cluster-basic.md
+  sources:
+    - 'plan-your-cluster-serverless.md'
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
 
 # Cloud releases
 

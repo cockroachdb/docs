@@ -24,15 +24,15 @@
               "title": "CockroachDB Serverless",
               "items": [
                 {
-              	  "title": "Create a CockroachDB Serverless Cluster",
+              	  "title": "Create a CockroachDB Serverless (Basic) Cluster",
               	  "urls": [
-              	    "/cockroachcloud/create-a-serverless-cluster.html"
+              	    "/cockroachcloud/create-a-basic-cluster.html"
               	  ]
               	},
                 {
               	  "title": "Connect to Your Cluster",
               	  "urls": [
-              	    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+              	    "/cockroachcloud/connect-to-a-basic-cluster.html"
               	  ]
               	}
               ]

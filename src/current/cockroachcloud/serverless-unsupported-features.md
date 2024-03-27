@@ -5,7 +5,7 @@ toc: true
 docs_area: reference
 ---
 
-CockroachDB {{ site.data.products.serverless }} is a [managed multi-tenant deployment of CockroachDB]({% link cockroachcloud/architecture.md %}#cockroachdb-serverless) that automatically scales up and down based on the load on the cluster. CockroachDB {{ site.data.products.serverless }} works with almost all workloads that CockroachDB supports, but there are feature differences between CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and CockroachDB {{ site.data.products.serverless }} clusters. This topic describes the features that are either unsupported or partially supported in CockroachDB {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of CockroachDB {{ site.data.products.serverless }}.
+CockroachDB {{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB that automatically scales up and down based on the load on the cluster. CockroachDB {{ site.data.products.serverless }} works with almost all workloads that CockroachDB supports, but there are feature differences between CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and CockroachDB {{ site.data.products.serverless }} clusters. This topic describes the features that are either unsupported or partially supported in CockroachDB {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of CockroachDB {{ site.data.products.serverless }}.
 
 ## Change data capture
 
@@ -22,7 +22,7 @@ Automated database and table level backups are not supported in CockroachDB {{ s
 Both CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-locality-aware-backups). However, you can take manual locality-aware backups to your own [cloud storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include cockroachcloud/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 ## Adding and removing regions
@@ -35,13 +35,13 @@ The [`ALTER TABLE ... SPLIT AT`](https://www.cockroachlabs.com/docs/{{site.curre
 
 ## Self service upgrades
 
-CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and patch upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users]({% link cockroachcloud/serverless-faqs.md %}#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-cluster-is-running-on).
+CockroachDB {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and patch upgrades of CockroachDB are handled by Cockroach Labs, and can't be initiated by users.
 
 ## Monitoring workloads and cluster health
 
 The [DB Console](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview) is not supported in CockroachDB {{ site.data.products.serverless }}. The CockroachDB [Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) provides metrics and graphs to monitor the health, performance, and state of your cluster.
 
-The Cloud Console provides a subset of observability information from the DB Console including [**SQL Metrics**]({% link cockroachcloud/metrics-page.md %}), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
+The Cloud Console provides a subset of observability information from the DB Console including [**Metrics**]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page), [**SQL Activity**]({% link cockroachcloud/statements-page.md %}), [**Jobs**]({% link cockroachcloud/jobs-page.md %}), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
 
 - Non-SQL metrics
 - Network Latency
