@@ -1,0 +1,1 @@
+This metric reflects workload volume by counting explicit <a href="https://www.cockroachlabs.com/docs/stable/transactions">transactions</a>. Use this metric to determine whether explicit transactions can be refactored as implicit transactions (individual statements).
