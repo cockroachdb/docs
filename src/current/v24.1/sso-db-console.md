@@ -76,7 +76,7 @@ You must configure the [cluster settings]({% link {{ page.version.version }}/clu
 | `server.oidc_authentication.scopes` | A space-delimited list of the [OAuth scopes](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims) being requested for an Access Token. The `openid` and `email` scopes must be included.<br>**Example:** `openid profile email`.
 | `server.oidc_authentication.claim_json_key` | The field/key used to identify the user from the external identity provider's [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 | `server.oidc_authentication.principal_regex` | Regex used to map the external identity key to a SQL user. For example: `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`, whereas `^(.+)$` maps the claim directly to a principal.
-| `server.oidc_authentication.autologin` | Must be set to `true`.
+| `server.oidc_authentication.autologin` | A Boolean that enables or disables automatic login with SSO when the DB Console is loaded. If set to false, the user will have to click "Login with OIDC" before they're authenticated.
 
 
 ### Update your cluster settings
