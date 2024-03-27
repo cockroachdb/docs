@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_success}}
-{% include_cached feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
 
 ## How folders work
@@ -17,11 +13,11 @@ Folders allow you to organize and manage access to your clusters according to yo
 
 Each folder can contain a mix of folders and clusters. Roles assigned on a folder are inherited by its descendants.
 
-Each folder that you create has an ID. To create a cluster in a folder or to move a cluster into a folder, you set its `parent_id` field to the folder's ID.
+Each folder that you create has an ID. Clusters or folders within a folder have their parent ID (`parent_id` if using the CockroachDB {{ site.data.products.cloud }} API) set to that folder's ID.
 
-If no parent ID is specified for a cluster, it is created at the root level of the organization. Clusters and folders at the organization level have their `parent_id` set to `root`.
+If a cluster or folder has no parent ID, or if its parent ID is set to `root`, its location is the root level of the organization.
 
-To move a folder or a cluster, you update its `parent_id`. If you move a folder that contains descendant resources, the descendant resources are not directly modified. A folder operation may fail in the following circumstances:
+To move a folder or a cluster, you update its parent ID. If you move a folder that contains descendant resources, the descendant resources are not directly modified. A folder operation may fail in the following circumstances:
 
 - A naming collision, such as an attempt to move a folder into a location that already contains a folder with the same name. Name collisions are limited to other folders. A folder and cluster at the same level of the hierarchy can share a name.
 - A violation of the [folder structure](#folder-structure) limitations.
@@ -75,7 +71,7 @@ The following roles allow creation of clusters at the level of the hierarchy whe
 
 The following additional roles explicitly allow management of folders and their contents:
 
-- **Folder Admins** can create, rename, and move, or delete folders where they are granted the role, and they can also manage access to these folders. This role can be granted at the level of the organization or on a specific folder. If granted on a specific folder, the role is inherited by descendant folders.
+- **Folder Admins** can create, rename, and move, or delete folders where they are granted the role, and they can also manage access to these folders. This role can be granted at the level of the organization or on a specific folder. If granted at the level of the organization, the role grants the ability to view all users and service accounts in the organization. If granted on a specific folder, the role is inherited by descendant folders.
 
     A user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role can grant themselves, another user, or a service account the Folder Admin role.
 
@@ -153,13 +149,6 @@ Your service account must have one of the following roles to read a folder's con
 - [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator).
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover).
 - [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Developer]({%link cockroachcloud/authorization.md %}#cluster-developer), [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator).
-
-{{site.data.alerts.callout_success}}
-Keep the following in mind:
-
-- When your organization enables the use of folders, the **Clusters** list contains less-detailed information about a given cluster. To see all of the details about a cluster, view its **Details** page.
-- To discover the entire folder structure, you must view each folder's contents separately.
-{{site.data.alerts.end}}
 
 1. To list the clusters and folders at the level of the organization, go to **Clusters**.
 1. To list the clusters and folders in a folder, click the folder name.
@@ -254,7 +243,7 @@ To delete a folder:
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
-- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. It is not yet possible to view the folder structure, move resources, or assign the `FOLDER_ADMIN` or `FOLDER_MOVER` roles by using the `ccloud` command.
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. It is not possible to view the folder structure, move resources, or assign the `FOLDER_ADMIN` or `FOLDER_MOVER` roles by using the `ccloud` command.
 
 ## See also
 
