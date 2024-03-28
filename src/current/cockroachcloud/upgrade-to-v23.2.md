@@ -71,7 +71,7 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with {{ page.page_version }}. Prepare your application for this brief downtime, typically a few minutes.
 
-Your cluster will be unavailable while its single node is stopped and restarted with v23.1. Prepare your application for this brief downtime, typically a few minutes.
+Your cluster will be unavailable while its single node is stopped and restarted with {{ page.page_version }}. Prepare your application for this brief downtime, typically a few minutes.
 
 The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the CockroachDB {{ site.data.products.cloud }} Console will also be disabled during this time.
 
