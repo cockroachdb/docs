@@ -31,6 +31,7 @@ Geographic Area | Region Name      | Location
 ----------------|------------------|---------
 Asia Pacific    | `ap-south-1`     | Mumbai
                 | `ap-southeast-1` | Singapore
+                | `ap-southeast-3` | Jakarta
 North America   | `us-east-1`      | N. Virginia
                 | `us-west-2`      | Oregon
 Western Europe  | `eu-central-1`   | Frankfurt
@@ -43,6 +44,7 @@ CockroachDB {{ site.data.products.serverless }} clusters can be deployed in the 
 Geographic Area | Region Name               | Location
 ----------------|---------------------------|---------
 Asia Pacific    | `asia-southeast1`         | Jurong West
+Middle East     | `me-central2`             | Dammam
 North America   | `us-central1`             | Iowa
                 | `us-east1`                | South Carolina
                 | `us-west2`                | California
