@@ -47,7 +47,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 | CockroachDB Deployment | Integration | Tutorial |
 | ---------------------- | ----------- | -------- |
 | {{ site.data.products.standard }} | [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}) |
-| {{ site.data.products.advanced }} | [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}) |
+| {{ site.data.products.advanced }} | [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs-advanced.md %}) |
 
 ### DataDog
 
@@ -68,7 +68,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 | CockroachDB Deployment | Integration | Tutorial |
 | ---------------------- | ----------- | -------- |
 | {{ site.data.products.standard }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
-| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
+| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs-advanced.md %}?filters=gcp-log-export) |
 
 ### Kibana
 
