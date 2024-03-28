@@ -37,10 +37,10 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
 {{site.data.alerts.end}}
 
-For an example, refer to [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
+For an example, refer to [Plan your Advanced cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).
 
 ## Topology patterns
 
@@ -57,10 +57,10 @@ CockroachDB {{ site.data.products.cloud }} requires you to authorize the network
 To verify that you have authorized an application server's network, navigate to the [Networking page]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) on the  CockroachDB {{ site.data.products.cloud }} Console and verify that the application server network is listed under **Authorized Networks**. If the network is not listed, you can add it to authorize the network.
 
 {{site.data.alerts.callout_danger}}
-Production clusters should not authorize `0.0.0.0/0`, which allows all networks. While developing and testing your application on CockroachDB {{ site.data.products.dedicated }}, you may have manually added `0.0.0.0/0` to the allowlist. CockroachDB {{ site.data.products.serverless }} allowlists `0.0.0.0/0` by default. Before moving into production, make sure you delete the allowlist entry for the `0.0.0.0/0` network.
+Production clusters should not authorize `0.0.0.0/0`, which allows all networks. While developing and testing your application on CockroachDB {{ site.data.products.advanced }}, you may have manually added `0.0.0.0/0` to the allowlist. CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} allowlists `0.0.0.0/0` by default. Before moving into production, make sure you delete the allowlist entry for the `0.0.0.0/0` network.
 {{site.data.alerts.end}}
 
-For enhanced network security and reduced network latency, you can set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet. For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
+For enhanced network security and reduced network latency, you can set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet. For CockroachDB {{ site.data.products.advanced }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering). For CockroachDB {{ site.data.products.advanced }} clusters or multi-region CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
 ## Transaction retries
 
@@ -80,7 +80,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
 
-Set the maximum lifetime of a connection to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+Set the maximum lifetime of a connection to between 5 and 30 minutes. CockroachDB {{ site.data.products.cloud }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
 ## Monitoring and alerting
 
@@ -90,9 +90,9 @@ To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set
 
 ## Backup and restore
 
-For CockroachDB {{ site.data.products.serverless }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
+For CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
 
-For CockroachDB {{ site.data.products.dedicated }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
+For CockroachDB {{ site.data.products.advanced }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
 
 Backups are stored in a single-region cluster's region or a multi-region cluster's primary region.
 
@@ -110,19 +110,19 @@ CockroachDB {{ site.data.products.cloud }} supports the latest major version of 
 
 ### Major version upgrades
 
-Major version upgrades are automatic for CockroachDB {{ site.data.products.serverless }} clusters and opt-in for CockroachDB {{ site.data.products.dedicated }} clusters. [Cluster Operators]({% link cockroachcloud/authorization.md %}#cluster-operator) must initiate major version upgrades for CockroachDB {{ site.data.products.dedicated }} clusters. When a major version upgrade is initiated for a cluster, it subsequently will be upgrade to the latest patch version automatically.
+Major version upgrades are automatic for CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters and opt-in for CockroachDB {{ site.data.products.advanced }} clusters. [Cluster Operators]({% link cockroachcloud/authorization.md %}#cluster-operator) must initiate major version upgrades for CockroachDB {{ site.data.products.advanced }} clusters. When a major version upgrade is initiated for a cluster, it subsequently will be upgraded to the latest patch version automatically.
 
-Since upgrading a cluster can have a significant impact on your workload, make sure you review the release notes for the latest version for backward compatibility, cluster setting changes, deprecations, and known limitations. Cockroach Labs recommends initiating the upgrade during off-peak periods. After the upgrade, carefully monitor cluster and application health. If you notice functional or performance regression, you can roll back the changes for up to 72 hours before the upgrade is automatically finalized. After an upgrade, some features might be unavailable until the upgrade is finalized. For more information, refer [Major version upgrades]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades).
+Since upgrading a cluster can have a significant impact on your workload, make sure you review the release notes for the latest version for backward compatibility, cluster setting changes, deprecations, and known limitations. Cockroach Labs recommends initiating the upgrade during off-peak periods. After the upgrade, carefully monitor cluster and application health. If you notice functional or performance regression, you can roll back the changes for up to 72 hours before the upgrade is automatically finalized. After an upgrade, some features might be unavailable until the upgrade is finalized. For more information, refer to [Major version upgrades]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades).
 
 ### Patch upgrades
 
-For CockroachDB {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
+For CockroachDB {{ site.data.products.advanced }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.advanced }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
 For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
-## PCI ready features ({{ site.data.products.advanced }} with Security add-on)
+## PCI ready features 
 
-CockroachDB {{ site.data.products.advanced }} with Security add-on has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
+CockroachDB {{ site.data.products.advanced }} has access to all features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). You must configure these settings to make your cluster PCI-ready:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Cluster SQL audit log export]({% link cockroachcloud/export-logs.md %})
