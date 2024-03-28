@@ -320,7 +320,11 @@ When the `disallow_full_table_scans` [session setting]({% link {{page.version.ve
 
 {% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
 
-#### Disallow transactions from reading or writing many rows
+#### Disallow query plans that scan more than a number of rows
+
+When the `transaction_rows_read_err` [session setting]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-read-err) is enabled, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will not create query plans with scans that exceed the specified row limit. See [Disallow transactions from reading or writing many rows](#disallow-transactions-from-reading-or-writing-many-rows).
+
+### Disallow transactions from reading or writing many rows
 
 {% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 

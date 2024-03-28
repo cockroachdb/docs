@@ -230,7 +230,7 @@ You can limit the number of rows written or read in a transaction at the cluster
 
 {% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
-The limits are enforced after each statement of a transaction has been fully executed. The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`, and `DELETE` SQL statements. The "read" limits apply to the `SELECT` statement in addition to the statements subject to the "write" limits. The limits **do not** apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`, `RESTORE`, or `CREATE STATISTICS` statements.
+The limits are enforced after each statement of a transaction has been fully executed. The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`, and `DELETE` SQL statements. The "read" limits apply to the `SELECT` statement in addition to the statements subject to the "write" limits. The limits **do not** apply to `CREATE TABLE AS`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`, `RESTORE`, or `CREATE STATISTICS` statements.
 
 {{site.data.alerts.callout_info}}
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
