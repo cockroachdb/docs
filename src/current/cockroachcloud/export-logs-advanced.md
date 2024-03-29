@@ -150,7 +150,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         - `{cluster_id}` is your CockroachDB {{ site.data.products.advanced }} cluster ID as determined in step 3.
         - `{secret_key}` is your CockroachDB {{ site.data.products.advanced }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
         - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
-        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
+        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
     1. To enable log export for your CockroachDB {{ site.data.products.advanced }} cluster with custom logging configuration:
 
@@ -230,7 +230,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 Perform the following steps to enable log export from your CockroachDB {{ site.data.products.advanced }} cluster to GCP Cloud Logging.
 
-1. Find your CockroachDB {{ site.data.products.advanced }} organization ID in the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings).
+1. Find your CockroachDB {{ site.data.products.advanced }} organization ID in the CockroachDB {{ site.data.products.cloud }} [organization information page](https://cockroachlabs.cloud/information).
 
 1. Find your CockroachDB {{ site.data.products.advanced }} cluster ID:
 

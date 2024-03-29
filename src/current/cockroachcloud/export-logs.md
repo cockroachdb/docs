@@ -152,7 +152,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
         - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
         - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
-        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
+        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
     1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with custom logging configuration:
 
@@ -232,7 +232,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 Perform the following steps to enable log export from your CockroachDB {{ site.data.products.standard }} cluster to GCP Cloud Logging.
 
-1. Find your CockroachDB {{ site.data.products.standard }} organization ID in the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings).
+1. Find your CockroachDB {{ site.data.products.standard }} organization ID in the CockroachDB {{ site.data.products.cloud }} [organization information page](https://cockroachlabs.cloud/information).
 
 1. Find your CockroachDB {{ site.data.products.standard }} cluster ID:
 
@@ -246,7 +246,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
+      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.gcp_auth_principal
     ~~~
 
     Where:
@@ -257,7 +257,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    crl-logging-user-a1c42be2e53b@crl-prod-abc.iam.gserviceaccount.com
+    CRLKeychainServiceAccount@crl-staging-1abc.iam.gserviceaccount.com
     ~~~
 
     This GCP principal refers to a resource that is owned by Cockroach Labs and is created automatically along with your cluster. You **do not** need to create this account in GCP; it is already present for use by your cluster.
@@ -270,13 +270,22 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
  1. Search for `logging.logEntries.create` in the **Filter** field, check the checkbox next to the resulting match, then click **Add**.
  1. Click the **Create** button.
 
-1. Add your cluster's GCP principal to the role you just created.
+1. Create a new service account in your GCP project:
 
-	1. In the GCP console, visit the [IAM admin page](https://console.cloud.google.com/iam-admin) for your project.
- 1. Click the **+ Grant Access** button.
- 1. In the box labeled **New principals**, enter the name of your cluster's GCP principal you determined in step 3.
- 1. In the **Select a role** dropdown, select the role you created in step 4.
-	1. Click **SAVE**.
+ 1. In the GCP console, visit the [Service Accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
+ 1. Click **+ CREATE SERVICE ACCOUNT**.
+ 1. Give your service account a name and ID of your choosing, then click **CREATE AND CONTINUE**.
+ 1. For the **Grant this service account access to project** step, select the role you created in Step 4.
+ 1. Click the **DONE** button.
+
+1. Give permissions to the new service account.
+   
+   1. Click into the new service account you created in step 5.
+   1. Under **DETAILS**, copy the email address for the service account.
+   1. Click **PERMISSIONS**.
+   1. Click **+ GRANT ACCESS**.
+   1. Under **Add principals**, enter the GCP principal from step 3.
+   1. Under **Assign roles**, select "Service Account Token Creator".
 
 1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.standard }} cluster. The first presents a basic configuration, where all logs are sent to GCP Cloud Logging using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log groups, or the ability to redact sensitive log entries.
 
@@ -287,14 +296,14 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         curl --request POST \
           --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
           --header "Authorization: Bearer {secret_key}" \
-          --data '{"type": "GCP_CLOUD_LOGGING", "log_name": "{log_name}", "auth_principal": "{gcp_project_id}"}'
+          --data '{"type": "GCP_CLOUD_LOGGING", "log_name": "{log_name}", "auth_principal": "{service_account_email}"}'
         ~~~
 
         Where:
         - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
         - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
         - `{log_name}` is a string of your choosing to represent logs written from your CockroachDB {{ site.data.products.standard }} cluster. This name will appear in the name of each log written to GCP Cloud Logging.
-        - `{gcp_project_id}` is your GCP project ID, as shown in your GCP Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
+        - `{service_account_email}` is the email address of the service account that you copied in step 6.
 
     1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with custom logging configuration:
 
@@ -307,7 +316,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             {
              "type": "GCP_CLOUD_LOGGING",
              "log_name": "default",
-             "auth_principal": "{gcp_project_id}",
+             "auth_principal": "{service_account_email}",
              "redact": true,
              "region": "",
              "omitted_channels": [ "SESSIONS", "SQL_PERF"],
@@ -337,7 +346,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
             {% include_cached copy-clipboard.html %}
             ~~~json
-            {"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{gcp_project_id}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
+            {"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{service_account_email}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
             ~~~
 
         1. Then, to enable log export for your CockroachDB {{ site.data.products.standard }} cluster with the above example custom logging configuration, issue the following Cloud API command:
@@ -347,13 +356,13 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data '{"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{gcp_project_id}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
+              --data '{"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{service_account_email}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
             ~~~
 
             Where:
             - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
             - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
-            - `{gcp_project_id}` is your GCP project ID, as shown in your GCP Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
+            - `{service_account_email}` is the email address of the service account that you copied in step 6.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
