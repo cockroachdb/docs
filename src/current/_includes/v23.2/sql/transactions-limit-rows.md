@@ -12,4 +12,4 @@
     ALTER ROLE ALL SET transaction_rows_written_err = 1000;
     ~~~
 
-To assess the impact of enabling these settings, use the corresponding session settings [`transaction_rows_read_log`]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-read-log) and [`transaction_rows_written_log`]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-written-log) to log transactions that read or write the specified number of rows. Transactions are logged to the [`SQL_PERF`]({% link {{ page.version.version }}/logging.md %}#sql_perf) channel.
+To assess the impact of configuring these session settings, use the corresponding session settings [`transaction_rows_read_log`]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-read-log) and [`transaction_rows_written_log`]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-written-log) to log transactions that read or write the specified number of rows. Transactions are logged to the [`SQL_PERF`]({% link {{ page.version.version }}/logging.md %}#sql_perf) channel.

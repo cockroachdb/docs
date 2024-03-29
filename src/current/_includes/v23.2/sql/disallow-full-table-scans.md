@@ -1,4 +1,4 @@
-- At the cluster level, set `disallow_full_table_scans` for some or all users/roles. For example:
+- At the cluster level, set `disallow_full_table_scans` for some or all users and roles. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -138,5 +138,5 @@ Time: 1ms total (execution 1ms / network 0ms)
 {% include {{ page.version.version }}/sql/no-full-scan.md %}
 
 {{site.data.alerts.callout_success}}
-For other methods of preventing full scans, see [Prevent the optimizer from planning full scans]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#prevent-the-optimizer-from-planning-full-scans).
+For other ways to prevent full scans, refer to [Prevent the optimizer from planning full scans]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#prevent-the-optimizer-from-planning-full-scans).
 {{site.data.alerts.end}}

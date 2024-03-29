@@ -12,4 +12,4 @@
     SELECT * FROM table_name@{FORCE_INDEX=index_name,NO_FULL_SCAN} WHERE b > 0;
     ~~~
 
-    This will force a constrained scan of the partial index. If a constrained scan of the partial index is not possible, an error will be returned.
+    This forces a constrained scan of the partial index. If a constrained scan of the partial index is not possible, an error is returned.
