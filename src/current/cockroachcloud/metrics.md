@@ -23,14 +23,14 @@ Depending on your CockroachDB {{ site.data.products.cloud }} deployment, the **M
 
 | Metrics Tab | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
 |:------------|:--------------------:|:--------------------:|:-----------------:|
-| [Overview]({% link cockroachcloud/metrics-overview.md %}) | ✔ |  |  |
-| [Request Units]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |  |
-| [SQL]({% link cockroachcloud/metrics-sql.md %}) | ✔ |  |  |
-| [Changefeeds]({% link cockroachcloud/metrics-changefeeds.md %}) | ✔ |  |  |
-| [Row-Level TTL]({% link cockroachcloud/metrics-row-level-ttl.md %}) | ✔ |  |  |
-| [Monitor SQL Activity]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) | available on [SQL]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
-| [Identify SQL Problems]({% link cockroachcloud/metrics-identify-sql-problems.md %}) | available on [SQL]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
-| [Custom]({% link cockroachcloud/custom-metrics-chart-page.md %}) | ✔ | ✔ | ✔ |
+| [**Overview**]({% link cockroachcloud/metrics-overview.md %}) | ✔ |  |  |
+| [**Request Units**]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |  |
+| [**SQL**]({% link cockroachcloud/metrics-sql.md %}) | ✔ |  |  |
+| [**Changefeeds**]({% link cockroachcloud/metrics-changefeeds.md %}) | ✔ |  |  |
+| [**Row-Level TTL**]({% link cockroachcloud/metrics-row-level-ttl.md %}) | ✔ |  |  |
+| [**Monitor SQL Activity**]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) | Same graphs are available<br>on **Metrics** page [**SQL**]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
+| [**Identify SQL Problems**]({% link cockroachcloud/metrics-identify-sql-problems.md %}) | Same graphs are available<br>on **Metrics** page [**SQL**]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
+| [**Custom**]({% link cockroachcloud/custom-metrics-chart-page.md %}) | ✔ | ✔ | ✔ |
 
 ### Time interval selection
 
@@ -40,7 +40,7 @@ The time interval selector at the top of each tab allows you to filter the view 
 
 CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} users can export metrics to the following third-party cloud sinks:
 
-- AWS CloudWatch
+- Amazon CloudWatch
 - Datadog
 - Prometheus
 
