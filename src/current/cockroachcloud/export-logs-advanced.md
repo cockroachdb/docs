@@ -6,7 +6,9 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.advanced }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
+{% include cockroachcloud/filter-tabs/export-logs.md %}
+
+CockroachDB {{ site.data.products.advanced }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
 
 ## The `logexport` endpoint
 
@@ -25,7 +27,7 @@ Method | Required permissions | Description
 --- | --- | ---
 `GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
 `POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
-`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
+`DELETE` | `ADMIN` | Disables log export, halting all log export to Amazon CloudWatch or GCP Cloud Logging.
 
 See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) for instructions on configuring a CockroachDB {{ site.data.products.cloud }} service account with these required permissions.
 
@@ -40,7 +42,7 @@ When written to your chosen cloud log sink, logs have the following name format:
 
 Where:
 
-- `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
+- `{log-name}` is a string of your choosing as you configure log export. For Amazon CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
 - `{region}` is the cloud provider region where your CockroachDB {{ site.data.products.advanced }} cluster resides.
 - `{log-channel}` is the CockroachDB [log channel](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the CockroachDB {{ site.data.products.advanced }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
@@ -48,15 +50,15 @@ Where:
 ## Enable log export
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-log-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="aws-log-export">Amazon CloudWatch</button>
   <button class="filter-button" data-scope="gcp-log-export">GCP Cloud Logging</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
 
-Perform the following steps to enable log export from your CockroachDB {{ site.data.products.advanced }} cluster to AWS CloudWatch.
+Perform the following steps to enable log export from your CockroachDB {{ site.data.products.advanced }} cluster to Amazon CloudWatch.
 
-1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. To send logs to more than one target log group, see the custom configuration option in step 9 below.
+1. Create the desired target Amazon CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. To send logs to more than one target log group, see the custom configuration option in step 9 below.
 
 1. Find your CockroachDB {{ site.data.products.advanced }} cluster ID:
 
@@ -117,7 +119,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
     Where:
     - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudLogExportRole` role, **not** the AWS Account ID of your CockroachDB {{ site.data.products.advanced }} cluster. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
-    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
+    - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1.
 
     This defines the set of permissions that the CockroachDB {{ site.data.products.advanced }} log export feature requires to be able to write logs to CloudWatch.
 
@@ -134,7 +136,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 1. Copy the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the `CockroachCloudLogExportRole` role found under **Summary**, which is needed for the next step.
 
-1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.advanced }} cluster. The first presents a basic configuration, where all logs are sent to AWS CloudWatch using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log groups, or the ability to redact sensitive log entries.
+1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.advanced }} cluster. The first presents a basic configuration, where all logs are sent to Amazon CloudWatch using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log groups, or the ability to redact sensitive log entries.
 
     1. To enable log export for your CockroachDB {{ site.data.products.advanced }} cluster with default logging configuration, issue the following Cloud API command:
 
@@ -149,7 +151,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         Where:
         - `{cluster_id}` is your CockroachDB {{ site.data.products.advanced }} cluster ID as determined in step 3.
         - `{secret_key}` is your CockroachDB {{ site.data.products.advanced }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
-        - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
+        - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1.
         - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
     1. To enable log export for your CockroachDB {{ site.data.products.advanced }} cluster with custom logging configuration:
@@ -183,11 +185,11 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             ~~~
 
             This configuration:
-            - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to AWS CloudWatch.
+            - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to Amazon CloudWatch.
             - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` AWS CloudWatch log group.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a Amazon CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an Amazon CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` Amazon CloudWatch log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
 
@@ -222,7 +224,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
     Run the command periodically until the command returns a status of `ENABLED`, at which point the configuration across all nodes is complete, and logs will begin appearing in CloudWatch under the log group you created in step 1. Since the configuration is applied to cluster nodes in a rolling fashion, you may see some logs appear even before the `GET` command returns an `ENABLED` status.
 
-1. Once log export has been enabled, you can access logs from your CockroachDB {{ site.data.products.advanced }} cluster directly in [AWS CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
+1. Once log export has been enabled, you can access logs from your CockroachDB {{ site.data.products.advanced }} cluster directly in [Amazon CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
 
 </section>
 
@@ -390,7 +392,7 @@ Where:
 
 ## Update an existing log export configuration
 
-To update an existing CockroachDB {{ site.data.products.advanced }} log export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or GCP Cloud Logging), then issue the same `POST` Cloud API command as shown in the [Enable log export](#enable-log-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a log export configuration](#monitor-the-status-of-a-log-export-configuration) instructions to ensure the update completes successfully.
+To update an existing CockroachDB {{ site.data.products.advanced }} log export configuration, make any necessary changes to your cloud provider configuration (e.g., Amazon CloudWatch or GCP Cloud Logging), then issue the same `POST` Cloud API command as shown in the [Enable log export](#enable-log-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a log export configuration](#monitor-the-status-of-a-log-export-configuration) instructions to ensure the update completes successfully.
 
 ## Disable log export
 
@@ -410,7 +412,7 @@ Where:
 
 ## Limitations
 
-- CockroachDB {{ site.data.products.advanced }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, CockroachDB {{ site.data.products.advanced }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
+- CockroachDB {{ site.data.products.advanced }} clusters hosted on AWS can only export logs to Amazon CloudWatch. Similarly, CockroachDB {{ site.data.products.advanced }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
 
 ## CockroachDB {{ site.data.products.advanced }} log export Frequently Asked Questions (FAQ)
 
@@ -424,11 +426,11 @@ Yes, use the custom log configuration step for your cloud provider, and specify 
 
 ### Is it possible to send logs from one cloud provider to another?
 
-No, if your CockroachDB {{ site.data.products.advanced }} cluster resides on AWS, you can only export your logs to AWS CloudWatch. Similarly, if your CockroachDB {{ site.data.products.advanced }} cluster resides on GCP, you can only export your logs to GCP Cloud Logging.
+No, if your CockroachDB {{ site.data.products.advanced }} cluster resides on AWS, you can only export your logs to Amazon CloudWatch. Similarly, if your CockroachDB {{ site.data.products.advanced }} cluster resides on GCP, you can only export your logs to GCP Cloud Logging.
 
 ### For a multi-region cluster, are the logs from all regions exported to one cloud log sink region?
 
-No, logs for each region in your cluster are exported to the corresponding cloud log sink region configured for your account. For AWS, ensure that the target AWS CloudWatch log group is configured with the same name in all target regions, and that the [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) you are using has permission to access each regional log group. For GCP, you can configure [Log Buckets](https://cloud.google.com/logging/docs/buckets) to collect logs from different regions, as well as assign individual retention policies by region if desired. By default, all logs written to GCP Cloud Logging are written to a `_Default` bucket, in the "global" region.
+No, logs for each region in your cluster are exported to the corresponding cloud log sink region configured for your account. For AWS, ensure that the target Amazon CloudWatch log group is configured with the same name in all target regions, and that the [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) you are using has permission to access each regional log group. For GCP, you can configure [Log Buckets](https://cloud.google.com/logging/docs/buckets) to collect logs from different regions, as well as assign individual retention policies by region if desired. By default, all logs written to GCP Cloud Logging are written to a `_Default` bucket, in the "global" region.
 
 ### What log channels are supported?
 
@@ -452,7 +454,7 @@ Log messages received from CockroachDB {{ site.data.products.advanced }} nodes t
 
 ## Troubleshooting
 
-### AWS CloudWatch
+### Amazon CloudWatch
 
 Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 6 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your CockroachDB {{ site.data.products.advanced }} AWS account ID (as determined in step 3) and has permission to write to your specified log group in CloudWatch (as created in step 1).
 
