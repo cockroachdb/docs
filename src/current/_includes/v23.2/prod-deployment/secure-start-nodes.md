@@ -186,6 +186,13 @@ After completing these steps, nodes will not yet be live. They will complete the
     $ systemctl start securecockroachdb
     ~~~
 
+1. Configure `systemd` to start CockroachDB automatically after a reboot:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    systemctl enable securecockroachdb
+    ~~~
+
 1. Repeat these steps for each additional node that you want in your cluster.
 
 {{site.data.alerts.callout_info}}
