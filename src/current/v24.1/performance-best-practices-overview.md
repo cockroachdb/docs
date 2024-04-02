@@ -263,9 +263,7 @@ See [Authorization Best Practices]({% link {{ page.version.version }}/security-r
 
 For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
 
-#### Example
-
-Suppose the table schema is as follows:
+For example, suppose the table schema is as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -298,24 +296,37 @@ This query returns the account balances of the customers.
 
 `SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows) instead.
 
+### Use secondary indexes to optimize queries
+
+See [Statement Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}#issue-full-table-scans).
+
 ### Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries
 
 If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause]({% link {{ page.version.version }}/select-clause.md %}#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-### Disallow full table scans with the `disallow_full_table_scans` setting
+### Prevent the optimizer from planning full scans
 
-To prevent overloading production clusters with [full table scans]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans), you have several options:
+To avoid overloading production clusters, there are several ways to prevent the [cost-based-optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from generating query plans with [full table and index scans]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans).
 
-1. At the cluster level, configure the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) for some or all users/roles using the [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}) statement.
+#### Use index hints to prevent full scans on tables
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    ALTER ROLE ALL SET disallow_full_table_scans = true;
-    ~~~
+{% include {{ page.version.version }}/sql/no-full-scan.md %}
 
-1. At the application level, add the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) to the connection string using the [`options` parameter]({% link {{page.version.version}}/connection-parameters.md %}#additional-connection-parameters).
+#### Disallow query plans that use full scans
+
+When the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) is enabled, the optimizer will not plan full table or index scans on "large" tables (i.e., those with more rows than [`large_full_scan_rows`]({% link {{ page.version.version }}/set-vars.md %}#large-full-scan-rows)).
+
+{% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
+
+#### Disallow query plans that scan more than a number of rows
+
+When the `transaction_rows_read_err` [session setting]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-read-err) is enabled, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will not create query plans with scans that exceed the specified row limit. See [Disallow transactions from reading or writing many rows](#disallow-transactions-from-reading-or-writing-many-rows).
+
+### Disallow transactions from reading or writing many rows
+
+{% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
 <a id="understanding-and-avoiding-transaction-contention"></a>
 
