@@ -140,7 +140,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.standard }} cluster. The first presents a basic configuration, where all logs are sent to Amazon CloudWatch using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log groups, or the ability to redact sensitive log entries.
 
-    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with default logging configuration, issue the following Cloud API command:
+    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with **default** logging configuration, issue the following Cloud API command:
 
         {% include_cached copy-clipboard.html %}
         ~~~shell
@@ -151,12 +151,12 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         ~~~
 
         Where:
-        - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
+        - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 2.
         - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
         - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1.
         - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
-    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with custom logging configuration:
+    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with **custom** logging configuration:
 
         1. Consult the log export entry on the [CockroachDB {{ site.data.products.cloud }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
 
@@ -193,14 +193,14 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an Amazon CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` Amazon CloudWatch log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The preceding configuration becomes the following single line:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
             {"type":"AWS_CLOUDWATCH","log_name":"default","auth_principal":"{role_arn}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
             ~~~
 
-        1. Then, to enable log export for your CockroachDB {{ site.data.products.standard }} cluster with the above example custom logging configuration, issue the following Cloud API command:
+        1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with the preceding example configuration, issue the following Cloud API command:
 
             {% include_cached copy-clipboard.html %}
             ~~~shell
@@ -211,9 +211,9 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             ~~~
 
             Where:
-            - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
+            - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 2.
             - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
-            - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
+            - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
@@ -291,7 +291,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.standard }} cluster. The first presents a basic configuration, where all logs are sent to GCP Cloud Logging using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log groups, or the ability to redact sensitive log entries.
 
-    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with default logging configuration, issue the following Cloud API command:
+    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with **default** logging configuration, issue the following Cloud API command:
 
         {% include_cached copy-clipboard.html %}
         ~~~shell
@@ -302,12 +302,12 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         ~~~
 
         Where:
-        - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
+        - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 2.
         - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
         - `{log_name}` is a string of your choosing to represent logs written from your CockroachDB {{ site.data.products.standard }} cluster. This name will appear in the name of each log written to GCP Cloud Logging.
         - `{service_account_email}` is the email address of the service account that you copied in step 6.
 
-    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with custom logging configuration:
+    1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with **custom** logging configuration:
 
         1. Consult the log export entry on the [CockroachDB {{ site.data.products.cloud }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
 
@@ -344,14 +344,14 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` GCP Cloud Logging log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The preceding configuration becomes the following single line:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
             {"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{service_account_email}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
             ~~~
 
-        1. Then, to enable log export for your CockroachDB {{ site.data.products.standard }} cluster with the above example custom logging configuration, issue the following Cloud API command:
+        1. To enable log export for your CockroachDB {{ site.data.products.standard }} cluster with the preceding example configuration, issue the following Cloud API command:
 
             {% include_cached copy-clipboard.html %}
             ~~~shell
@@ -362,7 +362,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             ~~~
 
             Where:
-            - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 3.
+            - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 2.
             - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
             - `{service_account_email}` is the email address of the service account that you copied in step 6.
 
