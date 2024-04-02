@@ -577,65 +577,71 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Set a limit for the number of open file descriptors. The specific limit you set depends on your workload and the hardware and configuration of your nodes.
 
-    ~~~
-    *              soft     nofile          35000
-    *              hard     nofile          35000
-    ~~~
+    - **If you use `systemd`**, add a line like the following to the service definition for the `cockroach` process. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+        {% include_cached copy-clipboard.html %}
+        ~~~ none
+        LimitNOFILE=35000
+        ~~~
 
-1.  Save and close the file.
+        Reload `systemd` for the new limit to take effect:
 
-1.  Restart the system for the new limits to take effect.
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
 
-1.  Verify the new limits:
+    - **If you do not use `systemd`**: Edit `/etc/security/limits.conf` and append the following lines to the file:
 
-    ~~~ shell
-    $ ulimit -a
-    ~~~
+        ~~~
+        *              soft     nofile          35000
+        *              hard     nofile          35000
+        ~~~
 
-Alternately, if you're using [Systemd](https://wikipedia.org/wiki/Systemd):
+        The `*` can be replaced with the username that will start CockroachDB.
 
-1.  Edit the service definition to configure the maximum number of open files:
+        Save and close the file, then restart the system for the new limits to take effect.
+        After the system restarts, verify the new limits:
 
-    ~~~ ini
-    [Service]
-    ...
-    LimitNOFILE=35000
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
-    {{site.data.alerts.end}}
-
-1.  Reload Systemd for the new limit to take effect:
-
-    ~~~ shell
-    $ systemctl daemon-reload
-    ~~~
+        ~~~ shell
+        ulimit -a
+        ~~~
 
 #### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
-1. Check the system-wide limit:
+1. **If you use `systemd`**, add a line like the following to the service definition for the `Manager` service. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-    ~~~ shell
-    $ cat /proc/sys/fs/file-max
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ none
+        LimitNOFILE=35000
+        ~~~
 
-1. If necessary, increase the system-wide limit in the `proc` file system:
+        Reload `systemd` for the new limit to take effect:
 
-    ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
-    ~~~
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
+
+1. **If you do not use `systemd`**:
+    1. Check the system-wide limit:
+
+        ~~~ shell
+        cat /proc/sys/fs/file-max
+        ~~~
+
+        1. If necessary, increase the system-wide limit in the `proc` file system:
+
+        ~~~ shell
+        echo 150000 > /proc/sys/fs/file-max
+        ~~~
 
 </section>
 <section id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
+CockroachDB for Windows is experimental and not supported in production. To learn about configuring limits on Windows, refer to the Microsoft community blog post [Pushing the Limits of Windows: Handles](https://techcommunity.microsoft.com/t5/windows-blog-archive/pushing-the-limits-of-windows-handles/ba-p/723848).
 
 </section>
 
