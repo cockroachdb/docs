@@ -16,7 +16,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
 |----------|:--------------------:|:--------------------:|:-----------------------:| 
-| [AWS CloudWatch](#aws-cloudwatch-metrics) | ✔ | ✔ |  |
+| [Amazon CloudWatch](#amazon-cloudwatch-metrics) | ✔ | ✔ |  |
 | [DataDog](#datadog) | ✔ | ✔ | ✔ |
 | [DBmarlin](#dbmarlin) |  |  | ✔ |
 | [Kibana](#kibana) |  |  | ✔ |
@@ -26,28 +26,28 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
 |----------|:--------------------:|:--------------------:|:-----------------------:| 
-| [AWS CloudWatch](#aws-cloudwatch-logs) | ✔ | ✔ |  |
+| [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ |  |
 | [GCP Logging](#gcp-logging) | ✔ | ✔ |  |
 
 ## Monitoring integration resources
 
-### AWS CloudWatch
+### Amazon CloudWatch
 
-<a id="aws-cloudwatch-metrics"></a>
+<a id="amazon-cloudwatch-metrics"></a>
 #### Metrics
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.standard }} | [AWS CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export) |
-| {{ site.data.products.advanced }} | [AWS CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export) |
+| {{ site.data.products.standard }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export) |
+| {{ site.data.products.advanced }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export) |
 
-<a id="aws-cloudwatch-logs"></a>
+<a id="amazon-cloudwatch-logs"></a>
 #### Logs
 
 | CockroachDB Deployment | Integration | Tutorial |
 | ---------------------- | ----------- | -------- |
-| {{ site.data.products.standard }} | [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}) |
-| {{ site.data.products.advanced }} | [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}) |
+| {{ site.data.products.standard }} | [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}) |
+| {{ site.data.products.advanced }} | [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs-advanced.md %}) |
 
 ### DataDog
 
@@ -68,7 +68,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 | CockroachDB Deployment | Integration | Tutorial |
 | ---------------------- | ----------- | -------- |
 | {{ site.data.products.standard }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
-| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs.md %}?filters=gcp-log-export) |
+| {{ site.data.products.advanced }} | [Google Cloud Logging](https://cloud.google.com/logging) | [Export Logs From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-logs-advanced.md %}?filters=gcp-log-export) |
 
 ### Kibana
 
