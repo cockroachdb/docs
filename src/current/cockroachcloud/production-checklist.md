@@ -26,7 +26,7 @@ The customer is responsible for the following tasks:
 - Initiating major version upgrades and selecting maintenance windows for patch releases.
 - (Optional) Taking customer-owned backups.
 
-This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which  the customer is responsible.
+This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which the customer is responsible.
 
 ## Deployment options
 
