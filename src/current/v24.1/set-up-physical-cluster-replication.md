@@ -150,7 +150,7 @@ The standby cluster connects to the primary cluster's system interface using an 
     cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
-    Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-address`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
+    Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
 
     {% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:
     - `options=-ccluster=application`
