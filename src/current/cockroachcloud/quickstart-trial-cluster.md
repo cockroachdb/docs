@@ -70,7 +70,7 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 ## Step 5. Use the built-in SQL client
 
-1. In your terminal, use the `cockroach sql` from [Step 4. Connect to the cluster](#step-4-connect-to-the-cluster) to connect to the cluster using the binary you just configured.
+1. In your terminal, use the `cockroach sql` command from [Step 4. Connect to the cluster](#step-4-connect-to-the-cluster) to connect to the cluster using the binary you just configured.
 
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
