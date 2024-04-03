@@ -565,11 +565,6 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 - [Per-Process Limit](#per-process-limit)
 - [System-Wide Limit](#system-wide-limit)
 
-<section id="linuxinstall" markdown="1">
-
-- [Per-Process Limit](#per-process-limit)
-- [System-Wide Limit](#system-wide-limit)
-
 #### Per-Process Limit
 
 To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
@@ -583,7 +578,6 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     ~~~
 
 1.  Set a limit for the number of open file descriptors. The specific limit you set depends on your workload and the hardware and configuration of your nodes.
-
     - **If you use `systemd`**, manually-set limits set using the `ulimit` command or a configuration file like `/etc/limits.conf` are ignored for services started by `systemd`. To limit the number of open file descriptors, add a line like the following to the service definition for the `cockroach` process. To allow an unlimited number of files, you can optionally set `LimitNOFILE` to `INFINITY`. Cockroach Labs recommends that you carefully test this configuration with a realistic workload before deploying it in production.
 
         {% include_cached copy-clipboard.html %}
@@ -596,7 +590,6 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
         ~~~ shell
         systemctl daemon-reload
         ~~~
-
     - **If you do not use `systemd`**: Edit `/etc/security/limits.conf` and append the following lines to the file:
 
         ~~~
@@ -619,16 +612,16 @@ You should also confirm that the file descriptors limit for the entire Linux sys
 
 1. **If you use `systemd`**, add a line like the following to the service definition for the `Manager` service. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ none
-        LimitNOFILE=35000
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ none
+    LimitNOFILE=35000
+    ~~~
 
-        Reload `systemd` for the new limit to take effect:
+    Reload `systemd` for the new limit to take effect:
 
-        ~~~ shell
-        systemctl daemon-reload
-        ~~~
+    ~~~ shell
+    systemctl daemon-reload
+    ~~~
 
 1. **If you do not use `systemd`**:
     1. Check the system-wide limit:
@@ -636,8 +629,7 @@ You should also confirm that the file descriptors limit for the entire Linux sys
         ~~~ shell
         cat /proc/sys/fs/file-max
         ~~~
-
-        1. If necessary, increase the system-wide limit in the `proc` file system:
+    1. If necessary, increase the system-wide limit in the `proc` file system:
 
         ~~~ shell
         echo 150000 > /proc/sys/fs/file-max
