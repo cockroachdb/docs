@@ -1,0 +1,29 @@
+name: PR Review
+on: 
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+      - auto_merge_enabled
+    
+jobs:
+  pr-review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Set up Golang
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Run PR review check
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_ORG_MEMBERSHIP }}
+        PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: go run .github/scripts/docs-prs-reviews.go
