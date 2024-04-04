@@ -116,7 +116,7 @@ After draining and decommissioning are complete, an operator [terminates the nod
 After draining is complete:
 
 - If the node was drained automatically because the `cockroach` process received a `SIGTERM` signal, the `cockroach` process is automatically terminated when draining is complete.
-- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually. Refer to [Terminate the node process](#terminate-the-node-process).
+- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually by sending it a `SIGTERM` signal. Refer to [Terminate the node process](#terminate-the-node-process).
 
 </section>
 
