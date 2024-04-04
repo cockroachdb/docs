@@ -85,8 +85,8 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
-1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Downloada CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
-1. Select the **Parameters only** option of the **Select option** dropdown.
+1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Download CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. Select the **Parameters only** option of the **Select option/language** dropdown.
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
 
     Parameter | Description

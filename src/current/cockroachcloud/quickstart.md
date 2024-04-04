@@ -1,17 +1,17 @@
 ---
 title: Quickstart with CockroachDB
-summary: Get started with a free CockroachDB Cloud cluster.
+summary: Learn how to create and use a CockroachDB Standard cluster.
 toc: true
 cloud: true
 referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) to create a CockroachDB {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java or Node.js sample application.
+This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.standard }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
-## Create a CockroachDB {{ site.data.products.serverless }} cluster
+## Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ## Create a SQL user
 
@@ -19,7 +19,7 @@ This page shows you how to use the [CockroachDB {{ site.data.products.cloud }} C
 
 ## Connect to the cluster
 
-Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-basic-cluster.html?fiters=command-line#connect-to-your-cluster).
+Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
     <div class="filters clearfix">
       <button class="filter-button" data-scope="java">Java</button>
@@ -31,8 +31,6 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 
 1. Select **Java** from the **Select option/language** dropdown.
 1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
-
-    This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
 
     {{site.data.alerts.callout_info}} 
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
@@ -47,7 +45,7 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mac linux">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+In a terminal, set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -115,8 +113,6 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 
 1. Select **General connection string** from the **Select option** dropdown.
 1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
-
-    This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
 
     {{site.data.alerts.callout_info}} 
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
@@ -200,7 +196,7 @@ The code sample uses the connection string stored in the environment variable `D
 
 ## Learn more
 
-Now that you have a free CockroachDB {{ site.data.products.serverless }} cluster running, try out the following:
+Now that you have a CockroachDB {{ site.data.products.standard }} cluster running, try out the following:
 
 - Build a simple CRUD application in [Go](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb), [Java](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb), [Node.js](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb), or [Python](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb).
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
@@ -211,6 +207,6 @@ Now that you have a free CockroachDB {{ site.data.products.serverless }} cluster
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
 - To create a Self-Hosted cluster, see [Start a Local Cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/start-a-local-cluster).
-- To create a CockroachDB {{ site.data.products.dedicated }} cluster, see [Quickstart with CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/quickstart-trial-cluster.md %}).
-- To create a CockroachDB {{ site.data.products.serverless }} cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
-- To connect to a CockroachDB {{ site.data.products.serverless }} cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools)), see [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
+- To create a CockroachDB {{ site.data.products.advanced }} cluster, see [Quickstart with CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/quickstart-trial-cluster.md %}).
+- To create a CockroachDB {{ site.data.products.standard }} cluster with other configurations (e.g., a different cloud provider, region, or provisioned capacity), see [Create a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/create-your-cluster.md %}).
+- To connect to a CockroachDB {{ site.data.products.standard }} cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools)), see [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
