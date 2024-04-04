@@ -25,11 +25,11 @@ CockroachDB {{ site.data.products.standard }} clusters consume three kinds of re
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the CockroachDB {{ site.data.products.standard }} architecture. A CockroachDB {{ site.data.products.standard }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+A CockroachDB {{ site.data.products.standard }} cluster is divided into a SQL layer and a storage layer that run in separate processes. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
 **SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
-**Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network egress.
+**Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB network egress.
 
 **Storage layer I/O** includes the read and write requests sent by the SQL layer to the storage layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using these equivalencies:
 
@@ -45,20 +45,22 @@ To understand these resources, you need to understand a bit about the CockroachD
 
 Substantial RU consumption (greater than 100 RU/second) is usually caused by SQL queries issued by the application. This can be confirmed by verifying that RU consumption tightly follows changes to the application’s SQL QPS (queries per second). On the CockroachDB {{ site.data.products.cloud }} Console [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}), you can compare the [**Request Units** chart]({% link cockroachcloud/metrics-overview.md %}#request-units) to the [**SQL Statements** chart]({% link cockroachcloud/metrics-overview.md %}#sql-statements). Assuming the charts correlate, then reducing Request Unit consumption is about [optimizing application SQL queries]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) ([`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %})).
 
-In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages. You can sort queries by the time they took to process, the number of rows processed, or the number of bytes read to see which queries are using the most resources. If you have queries that return more data than needed or [have long runtimes]({% link {{site.current_cloud_version}}/manage-long-running-queries.md %}), those are good candidates for optimization. 
+In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages.
+
+To see which queries are using the most resources, sort queries by the time they took to process, the number of rows processed, or the number of bytes read. If you have queries that return more data than needed or [have long runtimes]({% link {{site.current_cloud_version}}/manage-long-running-queries.md %}), those are good candidates for optimization.
 
 ### Expensive queries
 
-Expensive queries, [especially `FULL SCAN` operations]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}#table-scan-best-practices), are the most common cause of unexpected RU consumption increases and a good place to begin investigating your consumption. To diagnose expensive queries:
+Expensive queries, [especially `FULL SCAN` operations]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}#table-scan-best-practices), are the most common cause of unexpected RU consumption increases. To diagnose expensive queries:
 
 1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
 1. Click on the title of the **Rows Processed** column to sort your queries by the number of rows processed. 
  
     For most queries, total rows processed should be no more than a few hundred. Read queries are often more expensive than write queries.
   
-1. Next, sort the queries by the **Bytes Read** column. Most queries should read no more than a few kilobytes per row.
+1. Sort the queries by the **Bytes Read** column. Most queries should read no more than a few kilobytes per row.
 
-If any queries are more expensive than expected, you can use the [`EXPLAIN ANALYZE` SQL command]({% link {{site.current_cloud_version}}/explain-analyze.md %}#global-properties) for an estimate of the RUs consumed. Efficient queries generally consume fewer RUs, so the guidelines for [Optimizing Query Performance](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview) can be applied here. You can also refer to [Cockroach Labs Blog - How to troubleshoot and optimize query performance in CockroachDB](https://www.cockroachlabs.com/blog/query-performance-optimization/) for further information.
+If any queries are more expensive than expected, you can use the [`EXPLAIN ANALYZE` SQL command]({% link {{site.current_cloud_version}}/explain-analyze.md %}#global-properties) for an estimate of the RUs consumed. Efficient queries generally consume fewer RUs, so the guidelines for [optimizing query performance]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) can be applied here. For more information, refer to [How to troubleshoot and optimize query performance in CockroachDB](https://www.cockroachlabs.com/blog/query-performance-optimization/).
 
 ### Excessive queries
 
@@ -72,15 +74,15 @@ To investigate potentially problematic queries - ones that are excessive and exp
 
 1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
 1. Click on the title of the **Execution Count** column to sort your queries by the number of executions of the statements within the time interval.
-1. Next, sort the queries by the **Rows Processed** or **Bytes Read** column. For most queries, total rows processed should be no more than a few hundred. Most queries should read no more than a few kilobytes per row.
+1. Sort the queries by the **Rows Processed** or **Bytes Read** column. For most queries, total rows processed should be no more than a few hundred. Most queries should read no more than a few kilobytes per row.
 
 ### Excessive number of connections
 
-CockroachDB {{ site.data.products.standard }} clusters consume minimal resources per connection, so the number of connections is not the most likely cause of increased RU consumption. However, managing your connections is increasingly important for both performance optimization and RU consumption as your application scales up.
+CockroachDB {{ site.data.products.standard }} clusters consume minimal resources per connection, so increased RU consumption is not likely to be caused by a high number of connections. However, it will be important to manage your connections for both performance optimization and RU consumption as your application scales up.
 
-To diagnose excessive connections, navigate to your cluster's [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}) in the {{ site.data.products.cloud }} Console. The [**SQL Connections** chart]({% link cockroachcloud/metrics-overview.md %}#sql-connections) displays new SQL connection attempts over time. Maintaining fewer than five active connections is recommended for most workloads.
+Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}) in the {{ site.data.products.cloud }} Console. The [**SQL Connections** chart]({% link cockroachcloud/metrics-overview.md %}#sql-connections) displays new SQL connection attempts over time.
 
-[Connection pooling](https://www.cockroachlabs.com/docs/stable/connection-pooling) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
+[Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
 
 ### Excessive data egress
 
@@ -94,7 +96,7 @@ Database management tools like [DBeaver](https://dbeaver.com/) also consume RUs.
 
 To determine whether database UI tools are contributing to your RU usage, navigate to the **SQL Activity** page in the {{ site.data.products.cloud }} Console and search for queries similar to the following:
 
-~~~
+~~~ sql
 SELECT count(*) FROM crdb_internal.cluster_sessions
 
 SELECT avg((((statistics->'')->'')->'_')::INT8) AS meanrunlatency
@@ -106,7 +108,7 @@ You might also see [multiple open connections](#excessive-number-of-connections)
 
 ### Data migration
 
-Initial data ingestion during a migration may consume a high number of RUs. Generally, optimized performance will also coincide with optimized RU consumption in this case. Refer to our [Migration Overview](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/migration-overview) documentation for more information.
+An initial data load during a migration may consume a high number of RUs. Generally in this case, optimized performance will also coincide with optimized RU consumption. For more information about migrations, refer to the [Migration Overview]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
 
 ### Changefeeds (CDC)
 
@@ -173,7 +175,9 @@ Now you insert a row into the table:
 INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
 ~~~
 
-The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
+The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes.
+
+Most of the cost comes from 6 write requests to the storage layer with about 6KiB in request payload (plus some extra overhead). The `INSERT` is first issued for the primary index on `k`, and then for the secondary index on `v`. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
 
 1.5 SQL CPU milliseconds = 0.5 RU
 
@@ -219,10 +223,10 @@ EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...'
 Time: 71ms total (execution 20ms / network 50ms)
 ~~~
 
-This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
+This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs.
 
 ## Learn more
 
-- [Learn About CockroachDB {{ site.data.products.cloud }} Pricing]({% link cockroachcloud/plan-your-cluster.md %}#pricing)
-- [Learn About Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
+- [CockroachDB {{ site.data.products.cloud }} Pricing]({% link cockroachcloud/plan-your-cluster.md %}#pricing)
+- [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
 - [Manage Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/cluster-management.md %})
