@@ -5768,7 +5768,7 @@
   release_date: '2024-04-09'
   release_type: Production
   go_version: go1.22.0
-  sha: 21996d7bf12f05147bea7ea4e0b27b2f9a6e24ed
+  sha: c9fff6f54f3094ca4eacd788dabb6f8ab61cacfc
   has_sql_only: true
   has_sha256sum: true
   mac:
