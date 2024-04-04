@@ -44,12 +44,11 @@ Replace:
 - `{virtual_cluster_name}`: the name of the virtual cluster.
 - `{certs_dir}`: The directory containing the cluster's certificates.
 
-When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the connection string so that the intention to connect to a specific virtual cluster is more clear.
 
 #### Connect to the system virtual cluster
 
 {{site.data.alerts.callout_info}}
-You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
+You should only connect to the system virtual cluster for cluster administration and to manage physical cluster replication. To work with databases, tables, or workloads, connect to a virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL. You must have the `admin` role on the system virtual cluster.
@@ -71,9 +70,6 @@ Unless you specify which virtual cluster to connect to, when you connect using t
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
-{{site.data.alerts.callout_success}}
-When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
-{{site.data.alerts.end}}
 
 If the same SQL user has the `admin` role on the system virtual cluster and also has roles on other virtual clusters, that user can switch among them from the top of the DB Console.
 
@@ -119,7 +115,7 @@ sql_txn_commit_count{tenant="demo"} 0
 
 When connected to a virtual cluster from the DB Console:
 
-- Most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
+- Most pages and views are scoped to a virtual cluster. By default the DB Console displays only metrics about the virtual cluster you are connected to, and excludes metrics for the system virtual cluster. To allow the DB Console to display system-level metrics from within the virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
 - DB Console pages related to SQL activity and jobs are visible only from the virtual cluster.
 
@@ -147,9 +143,7 @@ To back up the entire storage cluster, including all virtual clusters and the sy
 
 ### Restore a virtual cluster
 
-{{site.data.alerts.callout_success}}
 A virtual cluster can be restored to the original virtual cluster on the original storage cluster, a different virtual cluster on the original storage cluster, or a different virtual cluster on a different storage cluster with cluster virtualization enabled.
-{{site.data.alerts.end}}
 
 To restore only a single virtual cluster:
 
