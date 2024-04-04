@@ -11,10 +11,10 @@ docs_area: deploy
 Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [metric]({% link {{ page.version.version }}/metrics.md %}) has a scope:
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each metric has a scope. For descriptions and details about each cluster metric, refer to [Metrics]({% link {{ page.version.version }}/metrics.md %}).
 
-- When a metric is scoped to a non-system virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to the virtual cluster. Refer to [Metrics scoped to the virtual cluster](#metrics-scoped-to-the-virtual-cluster).
-- When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying storage cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
+- When a metric is scoped to a non-system virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to a virtual cluster. Refer to [Metrics scoped to a virtual cluster](#metrics-scoped-to-the-virtual-cluster).
+- When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying CockroachDB cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
 {% comment %}
 Src: cockroach gen metrics-list against v23.2.0-rc.2
@@ -22,12 +22,12 @@ Src: cockroach gen metrics-list against v23.2.0-rc.2
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). There is a filter-view on the STORAGE column:
 
-APPLICATION: Scoped to the virtual cluster
+APPLICATION: Scoped to a virtual cluster
 STORAGE: Scoped to the system virtual cluster
 SERVER: n/a
 {% endcomment %}
 
-## Metrics scoped to the virtual cluster
+## Metrics scoped to a virtual cluster
 
 {% comment %}LAYER=APPLICATION{% endcomment %}
 

@@ -13,7 +13,7 @@ docs_area: manage
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
-This separation of concerns means that the replication stream can operate without affecting work happening in the virtual cluster.
+This separation of concerns means that the replication stream can operate without affecting work happening in a virtual cluster.
 
 ### Replication stream start-up sequence
 

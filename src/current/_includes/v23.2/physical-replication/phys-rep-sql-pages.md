@@ -1,6 +1,5 @@
-Physical cluster replication happens between an _active_ primary cluster and a _passive_ standby cluster that accepts updates from the primary cluster. The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters. Each cluster has:
+Physical cluster replication happens between an _active_ primary cluster and a _passive_ standby cluster that accepts updates from the primary cluster. The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters. The CockroachDB cluster has:
 
-- The system virtual cluster manages the cluster's control plane and the replication of the cluster's data. Admins connect to the system virtual cluster to configure and manage the underlying storage cluster, set up physical cluster replication, create and manage virtual clusters, and observe metrics and logs for the storage cluster and each virtual cluster.
-- Each other virtual cluster manages its own data plane. Users connect to a virtual cluster by default, rather than the system virtual cluster. To connect to the system virtual cluster, the connection string must be modified. Virtual clusters contain user data and run application workloads. When physical cluster replication is enabled, the non-system virtual cluster on both primary and secondary clusters is named `application`.
+{% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
 For more detail, refer to the [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).

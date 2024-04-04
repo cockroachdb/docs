@@ -11,11 +11,11 @@ docs_area: deploy
 Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each cluster setting has a scope, which may be a virtual cluster or the system virtual cluster. This page categorizes each public cluster setting by scope. For descriptions and details about each public cluster setting, refer to [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
-- When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
-- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. For example, the cluster setting `admission.disk_bandwidth_tokens.elastic.enabled` is scoped to the system virtual cluster.
-- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the storage cluster's configuration.
+- When a cluster setting is scoped to a virtual cluster, it affects only a virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to a virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to a virtual cluster and are visible only when connected to the virtual cluster.
+- When a cluster setting is scoped to the system virtual cluster, it affects the entire CockroachDB cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. For example, the cluster setting `admission.disk_bandwidth_tokens.elastic.enabled` is scoped to the system virtual cluster.
+- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the CockroachDB cluster's configuration.
 
 {% comment %}
 Src: cockroach gen settings-list --show-class --show-format against v23.2.0-rc.2
@@ -23,12 +23,12 @@ Src: cockroach gen settings-list --show-class --show-format against v23.2.0-rc.2
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). There is a filter-view on the Class column:
 
-application: Scoped to the virtual cluster
+application: Scoped to a virtual cluster
 system virtual cluster: Scoped to the system virtual cluster
 system visible: Can be set / modified only from the system virtual cluster, but can be viewed from a VC
 {% endcomment %}
 
-## Cluster settings scoped to the virtual cluster
+## Cluster settings scoped to a virtual cluster
 
 {% comment %}Class=application{% endcomment %}
 
