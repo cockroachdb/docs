@@ -61,11 +61,15 @@ After this stage, the node is automatically drained. However, to avoid possible 
 #### Draining
 
 <section class="filter-content" markdown="1" data-scope="drain">
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node.
+
+An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node. When draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down, perform the required maintenance, and then restart the `cockroach` process on the node.
+
+{% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the leases that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
 
 {{site.data.alerts.callout_danger}}
-Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes when the drained node restarts. If necessary, adjust the [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling (such as Kubernetes, Nomad, or Docker) to wait until the node has finished draining before terminating or restarting the `cockroach` process. In distributed environments, draining may take more time.
+{{ drain_early_termination_warning }}. If necessary, adjust the [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
 {{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -112,7 +116,7 @@ After draining and decommissioning are complete, an operator [terminates the nod
 After draining is complete:
 
 - If the node was drained automatically because the `cockroach` process received a `SIGTERM` signal, the `cockroach` process is automatically terminated when draining is complete.
-- If the node was drained manually because an operator issued a `cockroach node drain` command, an operator the `cockroach` proccess must be terminated manually. Refer to [Terminate the node process](#terminate-the-node-process).
+- If the node was drained manually because an operator issued a `cockroach node drain` command, `cockroach` process must be terminated manually. Refer to [Terminate the node process](#terminate-the-node-process).
 
 </section>
 
@@ -257,7 +261,7 @@ CockroachDB automatically increases the verbosity of logging when it detects a s
 On production deployments, a process manager or orchestration system can disrupt graceful node shutdown if its termination grace period is too short.
 
 {{site.data.alerts.callout_danger}}
-If the `cockroach` process terminates before draining is complete, the cluster may experience latency spikes when the drained node restarts.
+{{ drain_early_termination_warning }}
 {{site.data.alerts.end}}
 
 If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure until up-replication completes, which could cause loss of [quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview).
