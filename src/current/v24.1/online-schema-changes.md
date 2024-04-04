@@ -234,7 +234,7 @@ All schema change jobs can be [paused]({% link {{ page.version.version }}/pause-
 
 ### Enable automatic commit before running schema changes inside transactions
 
-{% include_cached new-in.html version="v24.1" %} {% include {{page.version.version}}/sql/auto-commit-before-ddl.md %}
+{% include_cached new-in.html version="v24.1" %} When the [`autocommit_before_ddl` session setting]({% link {{page.version.version}}/set-vars.md %}#autocommit-before-ddl) is set to `on`, any schema change statement that is sent during an [explicit transaction]({% link {{page.version.version}}/transactions.md %}) will cause the transaction to [commit]({% link {{page.version.version}}/commit-transaction.md %}) before executing the schema change.
 
 This setting can be used to:
 
