@@ -1,6 +1,6 @@
 ---
 title: Cluster Virtualization Overview
-summary: Learn more about cluster virtualization and how it facilities cluster-to-cluster replication.
+summary: Learn more about cluster virtualization and how it facilitates physical cluster replication.
 toc: true
 docs_area: deploy
 ---
@@ -71,17 +71,18 @@ For details about configuring and using Physical Cluster Replication for disaste
 When cluster virtualization is enabled, cluster log messages and metrics are scoped to a virtual cluster or to the system virtual cluster, and are labeled with the name of the virtual cluster they relate to.
 
 For details and examples, refer to:
+
 - [Work with virtual clusters]({% link {{ page.version.version}}/work-with-virtual-clusters.md %}#observability)
 - [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
 - [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 
-When connected to a virtual cluster from DB Console:
+When connected to a virtual cluster from the DB Console:
 
 - Most pages and views are scoped to a virtual cluster.
 - By default, the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from a virtual cluster and not from the system virtual cluster.
 - By default, some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
 
-For more details, including how to adjust DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
+For more details, including how to adjust the DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
 
 {% comment %}
 ### SQL API
