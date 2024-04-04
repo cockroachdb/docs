@@ -36,7 +36,7 @@ If a SQL user has been added to the system virtual cluster and one or more virtu
 
 ### Cluster settings
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be a virtual cluster or the system virtual cluster.
+When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is scoped to a virtual cluster or the system virtual cluster.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
 
@@ -48,7 +48,7 @@ To grant access to the system virtual cluster, you must connect to the system vi
 
 ### Upgrades
 
-When cluster virtualization is enabled to upgrade to a new major version, you must first replace the binary on each node and restart the node, [finalize]({% link {{ page.version.version %}#step-6-finish-the-upgrade}}) the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on a virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+When cluster virtualization is enabled to upgrade to a new major version, you must first replace the binary on each node and restart the node, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on a virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster).
 
@@ -72,7 +72,7 @@ When cluster virtualization is enabled, cluster log messages and metrics are sco
 
 For details and examples, refer to:
 
-- [Work with virtual clusters]({% link {{ page.version.version}}/work-with-virtual-clusters.md %}#observability)
+- [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability)
 - [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
 - [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 
@@ -94,8 +94,6 @@ When cluster virtualization is enabled, certain low-level SQL APIs, such as (TOD
 
 [Replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be configured only in a virtual cluster, and are not applicable to the `system` virtual cluster.
 
-{% comment %}- Span config bounds can be set in a virtual cluster or in the system virtual cluster. Span config bounds set in the system virtual cluster override zone config settings that are set in a virtual cluster.{% endcomment %}
-
 ### Node draining
 
 When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually) can cause a temporary SQL latency spike.
@@ -109,7 +107,7 @@ When cluster virtualization is enabled, [draining a node]({% link {{ page.versio
 
 ## Known Limitations
 
-In CockroachDB {{page.version.version}}, cluster virtualization has the following limitations:
+In CockroachDB {{ page.version.version }} , cluster virtualization has the following limitations:
 
 - Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
 - Currently, a single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
