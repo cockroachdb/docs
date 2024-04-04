@@ -154,3 +154,5 @@ To verify that the data at a certain point in time is correct on the standby clu
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
+- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})

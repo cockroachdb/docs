@@ -317,7 +317,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
 
     Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
 
-1. To view the virtual clusters on the standby, run:
+1. To view all virtual clusters on the standby, run:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -335,7 +335,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     (3 rows)
     ~~~
 
-    The standby cluster's virtual cluster is offline while the replication stream is running. The virtual cluster will be online once you explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
+    The standby cluster's virtual cluster is offline while the replication stream is running. To bring it online, you must explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
 
 1. To manage the replication stream, you can [pause and resume]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) the replication stream as well as [show]({% link {{ page.version.version }}/show-virtual-cluster.md %}) the current details for the job:
 
