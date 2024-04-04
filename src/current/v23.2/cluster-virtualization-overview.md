@@ -1,6 +1,6 @@
 ---
 title: Cluster Virtualization Overview
-summary: Learn more about cluster virtualization and how it facilities cluster-to-cluster replication.
+summary: Learn more about cluster virtualization and how it facilitates physical cluster replication.
 toc: true
 docs_area: deploy
 ---
@@ -28,7 +28,7 @@ When cluster virtualization is enabled, CockroachDB's behavior changes in severa
 
 ### Connecting to a cluster
 
-When cluster virtualization is enabled, by default when you connect using `cockroach sql` or the DB Console, you are connected to the virtual cluster. To connect to the system virtual cluster, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-a-virtual-cluster).
+When cluster virtualization is enabled, when you connect using `cockroach sql` or the DB Console, you are connected to the virtual cluster by default. To connect to the system virtual cluster, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-a-virtual-cluster).
 
 {{site.data.alerts.callout_success}}
 If a SQL user has been added to the system virtual cluster and one or more virtual clusters with the same username and password, that user can select which to connect to from the top of the DB Console.
@@ -48,7 +48,7 @@ To grant access to the system virtual cluster, you must connect to the system vi
 
 ### Upgrades
 
-When cluster virtualization is enabled to upgrade to a new major version, you must first replace the binary on each node and restart the node, [finalize] the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on the virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+When cluster virtualization is enabled to upgrade to a new major version, you must first replace the binary on each node and restart the node, [finalize] the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on the virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster).
 
@@ -71,17 +71,18 @@ For details about configuring and using Physical Cluster Replication for disaste
 When cluster virtualization is enabled, cluster log messages and metrics are scoped to the virtual cluster or to the system virtual cluster, and are labeled with the name of the virtual cluster they relate to.
 
 For details and examples, refer to:
+
 - [Work with virtual clusters]({% link {{ page.version.version}}/work-with-virtual-clusters.md %}#observability)
 - [Cluster setting scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
 - [Cluster metric scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 
-When connected to a virtual cluster from DB Console:
+When connected to a virtual cluster from the DB Console:
 
 - Most pages and views are scoped to the virtual cluster.
 - By default, the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from a virtual cluster and not from the system virtual cluster.
 - By default, some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
 
-For more details, including how to adjust DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
+For more details, including how to adjust the DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
 
 {% comment %}
 ### SQL API

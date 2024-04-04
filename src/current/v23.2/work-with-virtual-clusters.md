@@ -9,11 +9,11 @@ docs_area: deploy
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} This page is a guide to working with a CockroachDB cluster with [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled.
+{% include_cached new-in.html version="v23.2" %} Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
 
 ## Connect to a virtual cluster
 
-This section shows how to use SQL clients or the DB Console to connect to a virtual cluster.
+This section shows how to use [SQL clients](#sql-clients) or the [DB Console](#db-console) to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
 When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `application`.
@@ -23,7 +23,7 @@ When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-
 
 ### SQL clients
 
-This section shows how to connect using `cockroach sql` when cluster virtualization is enabled.
+This section shows how to connect using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) when cluster virtualization is enabled.
 
 Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
@@ -34,7 +34,7 @@ For example:
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-optionsl=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257/?options=-options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
 
@@ -75,7 +75,7 @@ To connect to a specific virtual cluster, add the `GET` URL parameter `options=-
 When connecting to the default virtual cluster, you can optionally include `options=-ccluster={virtual_cluster_name}` in the DB Console URL so that the intention to connect to a specific virtual cluster is more clear.
 {{site.data.alerts.end}}
 
-If the same SQL user has the `admin` role on the system virtual cluster and also has roles other virtual clusters, that user can switch among them from the top of the DB Console.
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles on other virtual clusters, that user can switch among them from the top of the DB Console.
 
 #### Connect to the system virtual cluster
 
@@ -87,7 +87,7 @@ To connect to the system virtual cluster using the DB Console, add the `GET` URL
 
 ## Grant access to the system virtual cluster
 
-To grant access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
+To [grant]({% link {{ page.version.version }}/grant.md %}) access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
 
 - The `admin` [role]({% link v23.2/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 - The `VIEWSYSTEMDATA` [system privilege]({% link v23.2/security-reference/authorization.md %}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
@@ -117,7 +117,7 @@ sql_txn_commit_count{tenant="system"} 0
 sql_txn_commit_count{tenant="demo"} 0
 ~~~
 
-When connected to a virtual cluster from DB Console:
+When connected to a virtual cluster from the DB Console:
 
 - Most pages and views are scoped to the virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
 
@@ -176,8 +176,8 @@ When connected to a virtual cluster, most pages and views are scoped to the virt
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) has a scope, which may be the virtual cluster or the system virtual cluster.
 
 - When a cluster setting is scoped to the virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to the virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to the virtual cluster and are visible only when connected to the virtual cluster.
-- When a cluster setting is scoped to the system virtual cluster, it effects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting.
-- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration.
+- When a cluster setting is scoped to the system virtual cluster, it affects the entire storage cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting.
+- When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value to help adapt to the storage cluster's configuration.
 
 For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
 
@@ -189,7 +189,7 @@ When cluster virtualization is enabled to upgrade to a new major version, you mu
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
 1. After the system virtual cluster is finalized, finalize the upgrade on the virtual cluster to upgrade it, or roll it back if you decide not to finalize it. Until it is finalized, the virtual cluster still operates in compatibility with the previous major version, some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, when v24.1 is released, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 {{site.data.alerts.callout_info}}
 The `preserve_downgrade_option` cluster setting is scoped to the virtual cluster. To prevent automatic finalization of the upgrade, you must set it to `false` both in the virtual cluster and in the system virtual cluster.
