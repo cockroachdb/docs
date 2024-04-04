@@ -19,7 +19,7 @@ Schema changes consume additional resources, and if they are run when the cluste
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachDB [does not support schema changes](#limitations) within explicit [transactions][txns] with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
+CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction. <br /><br /> {% include_cached new-in.html version="v24.1" %} Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
 {{site.data.alerts.end}}
 
 ## How online schema changes work
@@ -81,7 +81,7 @@ The following statements use the declarative schema changer by default:
 - [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
 - [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
 
-Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
+Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-use-declarative-schema-changer) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}#use_declarative_schema_changer).
 
 {{site.data.alerts.callout_danger}}
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
@@ -232,6 +232,33 @@ You can check on the status of the schema change jobs on your system at any time
 
 All schema change jobs can be [paused]({% link {{ page.version.version }}/pause-job.md %}), [resumed]({% link {{ page.version.version }}/resume-job.md %}), and [canceled]({% link {{ page.version.version }}/cancel-job.md %}).
 
+### Enable automatic commit before running schema changes inside transactions
+
+{% include_cached new-in.html version="v24.1" %} When the [`autocommit_before_ddl` session setting]({% link {{page.version.version}}/set-vars.md %}#autocommit-before-ddl) is set to `on`, any schema change statement that is sent during an [explicit transaction]({% link {{page.version.version}}/transactions.md %}) will cause the transaction to [commit]({% link {{page.version.version}}/commit-transaction.md %}) before executing the schema change.
+
+This setting can be used to:
+
+- Improve compatibility with some third-party tools that do not work well due to our [limitations on schema changes in explicit transactions](#schema-changes-within-transactions).
+- Use schema changes more easily under the [`READ COMMITTED` isolation level]({% link {{page.version.version}}/read-committed.md %}). The error message returned when running schema changes under `READ COMMITTED` isolation includes a hint to use this setting.
+
+With `autocommit_before_ddl` enabled, [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}), [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}), and other statements that normally return **errors** when used outside of an explicit transaction will instead return **warnings**. This behavior change is necessary because this setting can cause a transaction to end earlier than a client application may expect.
+
+To enable this setting for the current [session]({% link {{ page.version.version }}/show-sessions.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET autocommit_before_ddl = on;
+~~~
+
+To enable it for all [users]({% link {{ page.version.version }}/alter-role.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE ALL SET autocommit_before_ddl = on
+~~~
+
+You can also enable the setting [from your application's connection string]({% link {{page.version.version}}/connection-parameters.md %}#supported-options-parameters).
+
 ## Demo videos
 
 ### Updating primary key columns
@@ -259,6 +286,10 @@ For more long-term recovery solutions, consider taking either a [full or increme
 Most schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement. There are some exceptions to this, detailed below.
 
 Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
+
+{{site.data.alerts.callout_success}}
+{% include_cached new-in.html version="v24.1" %} Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+{{site.data.alerts.end}}
 
 Some schema change operations can be run within explicit, multiple statement transactions. `CREATE TABLE` and `CREATE INDEX` statements can be run within the same transaction with the same atomicity guarantees as other SQL statements. There are no performance or rollback issues when using these statements within a multiple statement transaction.
 
@@ -300,8 +331,6 @@ You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) [`ALT
 + [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
 + [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
 + [`TRUNCATE`][truncate]
-
-
 
 {% comment %} Reference Links {% endcomment %}
 
