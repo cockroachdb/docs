@@ -4,4 +4,4 @@ We do not recommend sending `SIGKILL` to perform a "hard" shutdown, which bypass
 
 - On production deployments, use the process manager, orchestration system, or other deployment tooling to send `SIGTERM` to the process. For example, with [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), run `systemctl stop {systemd config filename}`.
 
-- If you run CockroachDB in the foreground for local testing, you can use `ctrl-c` in the terminal to terminate the process.send `SIGINT` to the process, or send the `SIGINT` signal manually.
+- If you run CockroachDB in the foreground for local testing, you can use `ctrl-c` in the terminal to terminate the process.send `SIGINT` to the process.
