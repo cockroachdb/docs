@@ -16,7 +16,6 @@ You must have Rust and Cargo installed. For instructions on installing Rust and 
 
 {% include {{ page.version.version }}/setup/sample-setup.md %}
 
-
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:

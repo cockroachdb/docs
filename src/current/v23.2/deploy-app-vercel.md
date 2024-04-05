@@ -1,13 +1,13 @@
 ---
 title: Deploy a Web App Built on CockroachDB with Vercel
-summary: Learn how to use Vercel and CockroachDB Serverless.
+summary: Learn how to build with Vercel and CockroachDB Standard.
 toc: true
 twitter: false
 referral_id: docs_vercel
 docs_area: get_started
 ---
 
-This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and CockroachDB {{ site.data.products.serverless }}.
+This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and CockroachDB {{ site.data.products.standard }}.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="browser"><strong>Use the browser</strong></button>
@@ -53,7 +53,7 @@ Before starting the tutorial, do the following:
 
     A window will pop up prompting you to log in to CockroachDB {{ site.data.products.cloud }} if you haven't already.
     
-1. In the CockroachDB {{ site.data.products.cloud }} pop-up window, select the organization in which you want to create a new CockroachDB {{ site.data.products.serverless }} cluster.
+1. In the CockroachDB {{ site.data.products.cloud }} pop-up window, select the organization in which you want to create a new CockroachDB {{ site.data.products.standard }} cluster.
 1. Click **Create**.
 
     After a few seconds, your cluster will be created and the pop-up window will close automatically. Once this is done, your Vercel project will have the `DATABASE_URL` environment variable automatically populated with the connection string for your new cluster.
@@ -70,9 +70,9 @@ Before starting the tutorial, do the following:
 </section>
 <section class="filter-content" markdown="1" data-scope="local">
  
-## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 <a name="connection-string"></a>
 
