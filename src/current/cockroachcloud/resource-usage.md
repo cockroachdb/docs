@@ -114,7 +114,7 @@ An initial data load during a migration may consume a high number of RUs. Genera
 
 [Changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}) can contribute to significant RU usage. To monitor changefeed performance, navigate to your cluster's [**Changefeeds** metrics page]({% link cockroachcloud/metrics-changefeeds.md %}) in the {{ site.data.products.cloud }} Console and monitor the available charts.
 
-Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption.
+Refer to [Change Data Capture Queries]({% link {{site.current_cloud_version}}/cdc-queries.md %}) for performance guidance that may decrease RU consumption.
 
 ## General tips for reducing RU usage
 
