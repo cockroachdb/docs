@@ -1,6 +1,6 @@
 ---
 title: Deploy a Web App Built on CockroachDB with Vercel
-summary: Learn how to use Vercel and CockroachDB Standard
+summary: Learn how to build with Vercel and CockroachDB Standard.
 toc: true
 twitter: false
 referral_id: docs_vercel
