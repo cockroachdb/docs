@@ -114,7 +114,7 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
 
-- To help guard against out-of-memory (OOM) crashes, consider tuning the cache and SQL memory for cluster nodes. Refer to the section [Cache and SQL memory size](#cache-and-sql-memory-size).
+- To help guard against [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash), consider tuning the cache and SQL memory for cluster nodes. Refer to the section [Cache and SQL memory size](#cache-and-sql-memory-size).
 
 - Monitor [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
