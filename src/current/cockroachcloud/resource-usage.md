@@ -82,7 +82,7 @@ CockroachDB {{ site.data.products.standard }} clusters consume minimal resources
 
 Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}) in the {{ site.data.products.cloud }} Console. The [**SQL Connections** chart]({% link cockroachcloud/metrics-overview.md %}#sql-connections) displays new SQL connection attempts over time.
 
-[Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
+[Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/).
 
 ### Excessive data egress
 
@@ -177,7 +177,7 @@ INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
 
 The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes.
 
-Most of the cost comes from 6 write requests to the storage layer with about 6KiB in request payload (plus some extra overhead). The `INSERT` is first issued for the primary index on `k`, and then for the secondary index on `v`. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
+Most of the cost comes from 6 write requests to the storage layer with about 6 KiB in request payload (plus some extra overhead). The `INSERT` is first issued for the primary index on `k`, and then for the secondary index on `v`. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
 
 1.5 SQL CPU milliseconds = 0.5 RU
 
