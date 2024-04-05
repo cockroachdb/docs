@@ -36,9 +36,9 @@
                 ]
             },
             {
-                "title": "Understand your Serverless Resource Usage",
+                "title": "Understand your Resource Usage",
                 "urls": [
-                    "/cockroachcloud/resource-usage.html?filters=basic"
+                    "/cockroachcloud/resource-usage-basic.html"
                 ]
             },
             {
@@ -75,6 +75,12 @@
             "urls": [
                 "/cockroachcloud/connect-to-your-cluster.html"
             ]
+            },
+            {
+                "title": "Understand your Resource Usage",
+                "urls": [
+                    "/cockroachcloud/resource-usage.html"
+                ]
             },
             {
             "title": "Manage a Standard Cluster",

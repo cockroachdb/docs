@@ -38,7 +38,7 @@
             {
                 "title": "Understand your Resource Usage",
                 "urls": [
-                    "/cockroachcloud/resource-usage.html?filters=basic"
+                    "/cockroachcloud/resource-usage-basic.html"
                 ]
             },
             {
