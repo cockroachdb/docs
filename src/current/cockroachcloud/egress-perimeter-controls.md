@@ -35,14 +35,14 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 ## Before you begin
 
 - Egress Perimeter Controls are supported on AWS or GCP for the following deployment types:
-    - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features]({% link cockroachcloud/cluster-management.md %}#configure-pci-ready-features) configured.
+    - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management#configure-pci-ready-features-dedicated-advanced).
     - CockroachDB {{ site.data.products.dedicated }} [Private Cluster]({% link cockroachcloud/private-clusters.md %}).
 
     Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.dedicated }} on Azure or for CockroachDB {{ site.data.products.serverless }}.
-- You need a service account with `admin` privilege or Cluster Admin role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+- You need a service account with the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}
-The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
+The operations described in this page require an API key with very broad permissions, such as the potential to modify a cluster's configuration to add malicious egress rules that could allow the type of attack that Egress Perimeter Controls are meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
 {{site.data.alerts.end}}
 
 ## Initialize your shell with your API key and Cluster id
