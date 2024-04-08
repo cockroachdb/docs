@@ -64,7 +64,7 @@ cockroach sql --url \
 
 ### DB Console
 
-This section shows how to connect using DB Console when cluster virtualization is enabled.
+This section shows how to connect using the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) when cluster virtualization is enabled.
 
 Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
@@ -145,8 +145,8 @@ To back up the entire CockroachDB cluster, including all virtual clusters and th
 
 You can restore a backup of a virtual cluster to:
 
-- The original virtual cluster on the original CockroachDB cluster
-- A different virtual cluster on the original CockroachDB cluster
+- The original virtual cluster on the original CockroachDB cluster.
+- A different virtual cluster on the original CockroachDB cluster.
 - A different virtual cluster on a different CockroachDB cluster with cluster virtualization enabled.
 
 To restore only a virtual cluster:
@@ -173,7 +173,7 @@ For more details, including the scope of each cluster setting, refer to [Cluster
 
 ## Upgrade a cluster
 
-When cluster virtualization is enabled to upgrade to a new major version, you must:
+To upgrade to a new major version when cluster virtualization is enabled , you must:
 
 1. Replace the binary on each node and restart the node.
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
@@ -185,7 +185,7 @@ This allows you to roll back an upgrade of the system virtual cluster without im
 The `preserve_downgrade_option` cluster setting is scoped to a virtual cluster. To prevent automatic finalization of the upgrade, you must set it to `false` both in the virtual cluster and in the system virtual cluster.
 {{site.data.alerts.end}}
 
-To apply a patch-version upgrade, you must only replace the binary on each node and restart the node. Finalization is not required.
+To apply a patch-version upgrade, you must replace the binary on each node and restart the node. Finalization is not required.
 
 ## See also
 
