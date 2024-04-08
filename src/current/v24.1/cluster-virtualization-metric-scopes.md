@@ -1543,5 +1543,5 @@ SERVER: n/a
 ## See also
 
 - [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
-- [Cluster Setting Scopes] with Cluster Virtualization Enabled({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
+- [Cluster Setting Scopes with Cluster Virtualization Enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
 - [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})

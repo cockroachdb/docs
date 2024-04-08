@@ -28,7 +28,7 @@ When cluster virtualization is enabled, CockroachDB's behavior changes in severa
 
 ### Connecting to a cluster
 
-When cluster virtualization is enabled, by default when you connect using `cockroach sql` or the DB Console, you are connected to the default virtual cluster. To connect to the system virtual cluster, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-a-virtual-cluster).
+When cluster virtualization is enabled, when you connect using `cockroach sql` or the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), you are connected to the default virtual cluster. To connect to the system virtual cluster, you set `-ccluster=system` in the connection string (for SQL clients) or the DB Console URL. For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-a-virtual-cluster).
 
 {{site.data.alerts.callout_success}}
 If a SQL user has been added to the system virtual cluster and one or more virtual clusters with the same username and password, that user can select which to connect to from the top of the DB Console.
@@ -48,7 +48,7 @@ To grant access to the system virtual cluster, you must connect to the system vi
 
 ### Upgrades
 
-When cluster virtualization is enabled to upgrade to a new major version, you must first replace the binary on each node and restart the node, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on a virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+To upgrade to a new major version when cluster virtualization is enabled, you must first replace the binary on each node and restart the node, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on a virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster).
 
@@ -110,4 +110,4 @@ When cluster virtualization is enabled, [draining a node]({% link {{ page.versio
 In CockroachDB {{ page.version.version }} , cluster virtualization has the following limitations:
 
 - Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
-- Currently, a single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
+- A single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.
