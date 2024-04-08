@@ -150,11 +150,11 @@ After completing these steps, nodes will not yet be live. They will complete the
     $ chown cockroach /var/lib/cockroach
     ~~~
 
-1. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
+1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
+    curl -o insecurecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
@@ -181,6 +181,13 @@ After completing these steps, nodes will not yet be live. They will complete the
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ systemctl start insecurecockroachdb
+    ~~~
+
+1. Configure `systemd` to start CockroachDB automatically after a reboot:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    systemctl enable insecurecockroachdb
     ~~~
 
 1. Repeat these steps for each additional node that you want in your cluster.
