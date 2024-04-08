@@ -19,14 +19,6 @@ For more information on CockroachDB architecture, see [Architecture Overview]({%
 
 ## CockroachDB deployment terms
 
-#### Single-tenant
-
-A type of CockroachDB deployment where a single customer uses the database cluster.
-
-#### Multi-tenant
-
-A type of CockroachDB deployment where multiple customers share a single storage cluster. Each customer sees a virtual CockroachDB cluster. Data in each virtual cluster is isolated and is invisible to other customers.
-
 #### Region
 
 A logical identification of how nodes and data are clustered around [geographical locations]({% link {{ page.version.version }}/multiregion-overview.md %}). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
