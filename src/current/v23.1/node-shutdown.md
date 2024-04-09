@@ -9,14 +9,14 @@ A node **shutdown** terminates the `cockroach` process on the node.
 
 There are two ways to handle node shutdown:
 
-- **Drain a node** to temporarily stop it when you plan restart it later, such as during cluster maintenance. When you drain a node:
+- **Drain a node** to temporarily stop it when you plan to restart it later, such as during cluster maintenance. When you drain a node:
     - Clients are disconnected, and subsequent connection requests are sent to other nodes.
-    - The node's data store is preserved and will be reused as long as the node restarts in a short time. Otherwise, the node's data is moved to other nodes.
+    - The node's [data store]({% link {{ page.version.version }}/cockroach-start.md %}#store) is preserved and will be reused as long as the node restarts in a short time. Otherwise, the node's data is moved to other nodes.
 
     After the node is drained, you can terminate the `cockroach` process, perform maintenance, then restart it. CockroachDB automatically drains a node when [upgrading its cluster version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). Draining a node is lightweight because it generates little node-to-node traffic across the cluster.
 - **Decommission a node** to permanently remove it from the cluster, such as when scaling down the cluster or to replace the node due to hardware failure. During decommission:
     - The node is drained automatically if you have not manually drained it.
-    - The node's data is moved off the node to other nodes. This replica rebalancing generates a large amount of node-to-node network traffic, so decommissioning a node is considered a heavyweight operation.
+    - The node's data is moved off the node to other nodes. This [replica rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) generates a large amount of node-to-node network traffic, so decommissioning a node is considered a heavyweight operation.
 
 This page describes:
 
@@ -62,12 +62,12 @@ After this stage, the node is automatically drained. However, to avoid possible 
 
 <section class="filter-content" markdown="1" data-scope="drain">
 
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node. When draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down, perform the required maintenance, and then restart the `cockroach` process on the node.
+An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any [range leases]{% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to other nodes, but does not move replicas or data off of the node. When draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down, perform the required maintenance, and then restart the `cockroach` process on the node.
 
-{% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the leases that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
+{% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
 
 {{site.data.alerts.callout_danger}}
-{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
+{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) cluster setting and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
 {{site.data.alerts.end}}
 
 </section>
@@ -89,11 +89,11 @@ Node drain consists of the following consecutive phases:
 1. **Lease transfer phase:** The node's [`is_draining`]({% link {{ page.version.version }}/cockroach-node.md %}#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) or [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) must be transferred to other nodes. This phase completes when all range leases and Raft leaderships have been transferred.
 
     <section class="filter-content" markdown="1" data-scope="decommission">
-    Since all range replicas were already removed from the node during the [draining](#draining) stage, this step immediately resolves.
+    Since all [range replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) were already removed from the node during the [draining](#draining) stage, this step immediately resolves.
     </section>
 
 <section class="filter-content" markdown="1" data-scope="drain">
-When [draining manually](#drain-a-node-manually), if the above steps have not completed after [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) (10 minutes by default), node draining will stop and must be restarted manually to continue. For more information, see [Drain timeout](#drain-timeout).
+When [draining manually](#drain-a-node-manually), if the above steps have not completed after [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), node draining will stop and must be restarted manually to continue. For more information, see [Drain timeout](#drain-timeout).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -116,7 +116,7 @@ After draining and decommissioning are complete, an operator [terminates the nod
 After draining is complete:
 
 - If the node was drained automatically because the `cockroach` process received a `SIGTERM` signal, the `cockroach` process is automatically terminated when draining is complete.
-- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#terminate-the-node-process).
+- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
 
 </section>
 
@@ -201,7 +201,7 @@ If there are still open transactions on the draining node when the server closes
 
 #### `server.shutdown.lease_transfer_wait`
 
-In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this phase does not exit until all transfers are completed, changing this value affects only the frequency at which drain progress messages are printed.
+In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all [range leases]{% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) from the draining node. [`server.shutdown.lease_transfer_wait`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-shutdown-lease-transfer-wait) sets the maximum duration of each iteration of this attempt. Because this phase does not exit until all transfers are completed, changing this value affects only the frequency at which drain progress messages are printed.
 
 <section class="filter-content" markdown="1" data-scope="drain">
 In most cases, the default value is suitable. Do **not** set `server.shutdown.lease_transfer_wait` to a value lower than `5s`. In this case, leases can fail to transfer and node drain will not be able to complete.
