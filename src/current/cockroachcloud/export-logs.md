@@ -23,15 +23,13 @@ Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.pro
 - [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
-The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
+The following methods are available for use with the `logexport` endpoint:
 
-Method | Required permissions | Description
---- | --- | ---
-`GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
-`POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
-`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
-
-See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) for instructions on configuring a CockroachDB {{ site.data.products.cloud }} service account with these required permissions.
+Method | Description
+-------|------------
+`GET` | Returns the current status of the log export configuration.
+`POST` | Enables log export, or updates an existing log export configuration.
+`DELETE` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
 
 ## Log name format
 
