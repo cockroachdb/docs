@@ -8,4 +8,4 @@ Cockroach Labs does not recommend terminating the `cockroach` process by sending
 
 - On production deployments, use the process manager, orchestration system, or other deployment tooling to send `SIGTERM` to the process. For example, with [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), run `systemctl stop {systemd config filename}`.
 
-- If you run CockroachDB in the foreground for local testing, you can use `ctrl-c` in the terminal to terminate the process.send `SIGINT` to the process.
+- If you run CockroachDB in the foreground for local testing, you can use `ctrl-c` in the terminal to terminate the process.
