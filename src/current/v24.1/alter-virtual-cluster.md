@@ -44,13 +44,13 @@ Parameter | Description
 `RESUME REPLICATION` | Resume the replication stream.
 `COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time) for an example.</li></ul>
 `SET REPLICATION RETENTION = duration` | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
-`GRANT ALL CAPABILITIES` | Grant the virtual cluster all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities).
-`REVOKE ALL CAPABILITIES` | Revoke all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from the virtual cluster.
-`GRANT CAPABILITY virtual_cluster_capability_list` | Specify a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) to grant to the virtual cluster.
-`REVOKE CAPABILITY virtual_cluster_capability_list` | Revoke a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from the virtual cluster.
+`GRANT ALL CAPABILITIES` | Grant a virtual cluster all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities).
+`REVOKE ALL CAPABILITIES` | Revoke all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from a virtual cluster.
+`GRANT CAPABILITY virtual_cluster_capability_list` | Specify a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) to grant to a virtual cluster.
+`REVOKE CAPABILITY virtual_cluster_capability_list` | Revoke a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from a virtual cluster.
 `RENAME TO virtual_cluster_spec` | Rename a virtual cluster.
-`START SERVICE SHARED` | Start the virtual cluster. That is, start the standby's virtual cluster so it is ready to accept SQL connections after cutover.
-`STOP SERVICE` | Stop the `shared` service for the virtual cluster. Note that the virtual cluster's `data_state` will remain as `ready` for the service to be started once again.
+`START SERVICE SHARED` | Start a virtual cluster. That is, start the standby's virtual cluster so it is ready to accept SQL connections after cutover.
+`STOP SERVICE` | Stop the `shared` service for a virtual cluster. Note that the virtual cluster's `data_state` will remain as `ready` for the service to be started once again.
 
 ## Examples
 
@@ -79,7 +79,7 @@ ALTER VIRTUAL CLUSTER application SET REPLICATION RETENTION = '24h';
 
 {% include {{ page.version.version }}/physical-replication/retention.md %}
 
-### Start the virtual cluster
+### Start a virtual cluster
 
 When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
 
