@@ -53,7 +53,7 @@ Option | Description
 
 ## Connection string
 
-When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system interface on the primary cluster:
+When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system virtual cluster on the primary cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -67,7 +67,7 @@ Value | Description
 `{replication user}` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to the [Create a replication user and password]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-replication-user-and-password) for more detail.
 `{password}` | The replication user's password.
 `{node ID or hostname}` | The node IP address or hostname of any node from the primary cluster.
-`options=ccluster=system` | The parameter to connect to the system interface on the primary cluster.
+`options=ccluster=system` | The parameter to connect to the system virtual cluster on the primary cluster.
 `sslmode=verify-full` | The `verify-full` secure connection type.
 `sslrootcert={primary cert}` | The path to the primary cluster's CA certificate on the standby cluster.
 
@@ -90,7 +90,7 @@ To start a replication stream to the standby of the primary's application virtua
 CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
 ~~~
 
-This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-primary-cluster). The standby's system interface will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
+This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-primary-cluster). The standby's system virtual cluster will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
 
 ### Specify a retention window for a replication stream
 
