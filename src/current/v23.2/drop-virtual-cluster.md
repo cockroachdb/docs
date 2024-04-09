@@ -43,9 +43,9 @@ GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 
 Parameter | Description
 ----------+------------
-`IF EXISTS` | Drop the virtual cluster if it exists. If it does not exist, do not return an error.
+`IF EXISTS` | Drop a virtual cluster if it exists. If it does not exist, do not return an error.
 `virtual_cluster_spec` | The name of the virtual cluster.
-`IMMEDIATE` | Drop the virtual cluster immediately instead of waiting for garbage collection ([GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
+`IMMEDIATE` | Drop a virtual cluster immediately instead of waiting for garbage collection ([GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
 
 ## Examples
 
