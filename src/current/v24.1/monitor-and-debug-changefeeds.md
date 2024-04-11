@@ -77,10 +77,6 @@ If you are running a changefeed with the [`confluent_schema_registry`]({% link {
 ### Using changefeed metrics labels
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
 An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.
 {{site.data.alerts.end}}
 
