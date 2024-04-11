@@ -15,7 +15,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 **Database** | The database on which the statements executed.
 **Application Name** | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 **Fingerprint ID** | The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
-**Failed?** | Whether the statement failed to execute.
+**Failure Count** | The total number of failed executions of this statement fingerprint.
 **Full scan?** | Whether the execution performed a full scan of the table.
 **Vectorized execution?** | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 **Transaction type** | The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).

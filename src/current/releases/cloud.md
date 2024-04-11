@@ -13,8 +13,6 @@ Get future release notes emailed to you:
 
 {% include marketo.html %}
 
-{% include releases/current-cloud-version.md %}
-
 {% assign crs = site.data.cloud_releases | sort: "date" | reverse %}
 
 {% for rel in crs %}
