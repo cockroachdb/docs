@@ -34,7 +34,7 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 
 ## Before you begin
 
-- Egress Perimeter Controls are supported on AWS or GCP for the following deployment types:
+- Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
     - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management#configure-pci-ready-features-dedicated-advanced).
     - CockroachDB {{ site.data.products.dedicated }} [Private Cluster]({% link cockroachcloud/private-clusters.md %}).
 
