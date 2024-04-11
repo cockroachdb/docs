@@ -21,7 +21,7 @@ https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 
 Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) assigned one of the following [roles]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account):
 
-- [Organization Admin]({% link cockroachcloud/authorization.md %}#org-administrator)
+- [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator)
 - [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
