@@ -115,7 +115,7 @@ Each of the following settings have significant impact on a changefeed's behavio
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "client_changefeed_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "kafka_client_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
 ~~~
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
@@ -129,7 +129,7 @@ bin/kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'pro
 
 Refer to the [Kafka documentation](https://kafka.apache.org/documentation/#quotas) for details on setting quotas to client IDs.
 
-When you create a changefeed, include the `"ClientID"` field with the unique client ID (e.g., `client-changefeed-1`) you have configured in your Kafka server configuration. This will subject the changefeed to the Kafka quota applied to that client ID. We recommend tracking the [`changefeed.kafka_throttling_hist_nanos` metric]({% link {{ page.version.version }}/metrics.md %}) to monitor the time spent throttling due to changefeed messages exceeding Kafka quotas.
+When you create a changefeed, include the `"ClientID"` field with the unique client ID (e.g., `kafka_client_ID_1`) you have configured in your Kafka server configuration. This will subject the changefeed to the Kafka quota applied to that client ID. We recommend tracking the [`changefeed.kafka_throttling_hist_nanos` metric]({% link {{ page.version.version }}/metrics.md %}) to monitor the time spent throttling due to changefeed messages exceeding Kafka quotas.
 
 Using the default values or not setting fields in `kafka_sink_config` will mean that changefeed messages emit immediately.
 
@@ -137,9 +137,9 @@ The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-<span class="version-tag">New in v24.1:</span>`"ClientID"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Apply a Kafka client ID per changefeed. Configure [quotas](https://kafka.apache.org/documentation/#quotas) within your Kafka configuration that apply to a unique client ID. The `ClientID` field can only contain the characters `A-Za-z0-9._-`. | ""
+<span class="version-tag">New in v24.1:</span>`"ClientID"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Applies a Kafka client ID per changefeed. Configure [quotas](https://kafka.apache.org/documentation/#quotas) within your Kafka configuration that apply to a unique client ID. The `ClientID` field can only contain the characters `A-Za-z0-9._-`. | ""
 `"Flush"."MaxMessages"` | [`INT`]({% link {{ page.version.version }}/int.md %})  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
-`"Flush"."Messages"`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | Configure the number of messages the changefeed should batch before flushing. | `0`
+`"Flush"."Messages"`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | Configures the number of messages the changefeed should batch before flushing. | `0`
 `"Flush"."Bytes"`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `"Flush"."Frequency"`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
