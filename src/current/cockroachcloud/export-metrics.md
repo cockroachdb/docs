@@ -6,13 +6,13 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.standard }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/), [Datadog](https://www.datadoghq.com/), or [Prometheus](https://prometheus.io/). Once the export is configured, metrics will flow from all [regions]({% link cockroachcloud/regions.md %}) of your CockroachDB {{ site.data.products.standard }} cluster to your chosen cloud metrics sink.
+CockroachDB {{ site.data.products.standard }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/), [Datadog](https://www.datadoghq.com/), or [Prometheus](https://prometheus.io/). Once the export is configured, metrics will flow from all [regions]({% link cockroachcloud/regions.md %}) of your CockroachDB {{ site.data.products.standard }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
 CockroachDB {{ site.data.products.standard }} clusters use [Cloud Console]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) instead of [DB Console]({% link {{site.current_cloud_version}}/ui-overview.md %}), and DB Console is disabled. To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
 {{site.data.alerts.end}}
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.standard }} clusters.
+Exporting metrics to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.standard }} clusters.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
@@ -26,7 +26,7 @@ To configure and manage metrics export for your CockroachDB {{ site.data.product
 
 Cloud metrics sink | Metrics export endpoint
 ------------------ | ----------------------------------------------------
-AWS Cloudwatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
+Amazon CloudWatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
 Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
 Prometheus         | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/prometheus`
 
@@ -38,29 +38,29 @@ Method | Required permissions | Description
 --- | --- | ---
 `GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the metrics export configuration.
 `POST` | `ADMIN` or `EDIT` | Enables metrics export, or updates an existing metrics export configuration.
-`DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to AWS CloudWatch, Datadog, or Prometheus.
+`DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to Amazon CloudWatch, Datadog, or Prometheus.
 
 See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) for instructions on configuring a service account with these required permissions.
 
 ## Enable metrics export
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="aws-metrics-export">Amazon CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+Exporting metrics to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
-Enabling metrics export will send around 90 metrics per [region]({% link cockroachcloud/regions.md %}) to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
+Enabling metrics export will send around 90 metrics per [region]({% link cockroachcloud/regions.md %}) to Amazon CloudWatch. Review the [Amazon CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your Amazon CloudWatch spend.
 {{site.data.alerts.end}}
 
-Perform the following steps to enable metrics export from your CockroachDB {{ site.data.products.standard }} cluster to AWS CloudWatch.
+Perform the following steps to enable metrics export from your CockroachDB {{ site.data.products.standard }} cluster to Amazon CloudWatch.
 
-1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. When your CockroachDB {{ site.data.products.standard }} cluster emits metrics to AWS CloudWatch, they are written to this log group.
+1. Create the desired target Amazon CloudWatch log group by following the [Create a log group in CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. When your CockroachDB {{ site.data.products.standard }} cluster emits metrics to Amazon CloudWatch, they are written to this log group.
 
 1. Find your CockroachDB {{ site.data.products.standard }} cluster ID:
 
@@ -125,7 +125,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
     Where:
     - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your CockroachDB {{ site.data.products.standard }} cluster from step 3. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
-    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
+    - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1.
 
     This defines the set of permissions that the CockroachDB {{ site.data.products.standard }} metrics export feature requires to be able to write metrics to CloudWatch.
 
@@ -146,7 +146,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
     - `{aws_region}` is your AWS region, like `us-east-1`.
     - `{role_arn}` is the ARN for the `CockroachCloudMetricsExportRole` role you copied in step 7. If you used a different role name there, be sure to use your role name in place of `CockroachCloudMetricsExportRole` in the above command.
-    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
+    - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
 
     Specifying an AWS region (to `{aws_region}`) that you do not have a cluster in, or a region that only partially covers your cluster will result in missing metrics.
 
@@ -161,7 +161,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
     Run the command periodically until the command returns a status of `ENABLED`, at which point the configuration is complete, and metrics will begin appearing in CloudWatch under the log group you created in step 1. Since the configuration is applied to the cluster [regions]({% link cockroachcloud/regions.md %}) in a rolling fashion, you may see some metrics appear even before the `GET` command returns an `ENABLED` status.
 
-1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in [AWS CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in [Amazon CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
 
 </section>
 
@@ -328,14 +328,14 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 ## Monitor the status of a metrics export configuration
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="aws-metrics-export">Amazon CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-To check the status of an existing AWS Cloudwatch metrics export configuration, use the following Cloud API command:
+To check the status of an existing Amazon CloudWatch metrics export configuration, use the following Cloud API command:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -389,19 +389,19 @@ Where:
 
 ## Update an existing metrics export configuration
 
-To update an existing CockroachDB {{ site.data.products.standard }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch, Datadog, or Prometheus), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
+To update an existing CockroachDB {{ site.data.products.standard }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., Amazon CloudWatch, Datadog, or Prometheus), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
 
 ## Disable metrics export
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="aws-metrics-export">Amazon CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-To disable an existing AWS Cloudwatch metrics export configuration, and stop sending metrics to Cloudwatch, use the following Cloud API command:
+To disable an existing Amazon CloudWatch metrics export configuration, and stop sending metrics to Cloudwatch, use the following Cloud API command:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -455,18 +455,18 @@ Where:
 
 ## Limitations
 
-- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
-- AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.standard }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
+- Metrics export to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.standard }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+- Amazon CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.standard }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
 ## Troubleshooting
 
-### AWS CloudWatch
+### Amazon CloudWatch
 
 Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM page](https://console.aws.amazon.com/iam/) to step 6, **not** the AWS cloud provider account ID as returned from step 3.
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
-Your CockroachDB {{ site.data.products.standard }} cluster must be running on AWS (not GCP) to make use of metrics export to AWS CloudWatch. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+Your CockroachDB {{ site.data.products.standard }} cluster must be running on AWS (not GCP) to make use of metrics export to Amazon CloudWatch. If your CockroachDB {{ site.data.products.standard }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
 ## See Also
 

@@ -95,7 +95,7 @@ Cluster Operators can perform a variety of cluster functions:
   - [Export a cluster's logs]({% link cockroachcloud/export-logs.md %}).
   - [Export a cluster's metrics]({% link cockroachcloud/export-metrics.md %}).
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
-  - [Configure the export of metrics to DataDog or AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}).
+  - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
