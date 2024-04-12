@@ -63,7 +63,7 @@ Shared locks are not enabled by default for `SERIALIZABLE` transactions. To enab
 
 #### Lock behavior under `SERIALIZABLE` isolation
 
-{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+{% include {{page.version.version}}/known-limitations/select-for-update-limitations.md %}
 
 ### Wait policies
 

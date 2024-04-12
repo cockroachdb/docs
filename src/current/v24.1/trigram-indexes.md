@@ -347,7 +347,7 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 The following PostgreSQL syntax and features are currently unsupported. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41285).
 
-{% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
+{% include {{ page.version.version }}/known-limitations/trigram-unsupported-syntax.md %}
 
 ## See also
 

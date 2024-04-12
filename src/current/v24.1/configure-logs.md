@@ -188,7 +188,7 @@ The files generated for a group named `default` are named after the pattern `coc
 
 #### Known limitations
 
-Log files can only be accessed in the DB Console if they are stored in the same directory as the file sink for the `DEV` channel.
+{% include {{ page.version.version }}/known-limitations/logging-limitations.md %}
 
 ### Output to Fluentd-compatible network collectors
 

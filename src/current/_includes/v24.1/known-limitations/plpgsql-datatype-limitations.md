@@ -1,0 +1,7 @@
+- `RECORD` parameters and variables are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+- Variable shadowing (e.g., declaring a variable with the same name in an inner block) is not supported in PL/pgSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117508)
+- Syntax for accessing members of composite types without parentheses is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114687)
+- `NOT NULL` variable declarations are not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105243)
+- Cursors opened in PL/pgSQL execute their queries on opening, affecting performance and resource usage. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/111479)
+- Cursors in PL/pgSQL cannot be declared with arguments. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117746)
+- `OPEN FOR EXECUTE` is not supported for opening cursors. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/117744)

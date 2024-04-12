@@ -262,9 +262,9 @@ Locality optimized search is supported for scans that are guaranteed to return 1
 
 ### Limitations
 
-{% include {{page.version.version}}/sql/locality-optimized-search-limited-records.md %}
+{% include {{ page.version.version }}/known-limitations/locality-optimized-search-limited-records.md %}
 
-{% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
+{% include {{page.version.version}}/known-limitations/locality-optimized-search-virtual-computed-columns.md %}
 
 ## Control whether queries are limited to a single region
 
@@ -452,7 +452,7 @@ If you have an index named `FORCE_ZIGZAG` and use the hint `table@{FORCE_ZIGZAG}
 
 ## Known limitations
 
-* {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+- {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
 ## See also
 

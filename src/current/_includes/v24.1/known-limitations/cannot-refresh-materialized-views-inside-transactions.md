@@ -24,4 +24,4 @@
           SQLSTATE: 25000
           ~~~
 
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/66008)
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/66008)
