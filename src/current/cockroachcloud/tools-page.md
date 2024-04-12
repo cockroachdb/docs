@@ -8,7 +8,7 @@ docs_area: manage
 The **Tools** page is accessible on CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters. This page allows you to:
 
 - Set up cluster [monitoring with Datadog](#monitor-cockroachdb-cloud-with-datadog) (available on clusters hosted on AWS and GCP).
-- Set up cluster [monitoring with Amazon CloudWatch](#monitor-cockroachdb-cloud-with-amazon-cloudwatch) (available on clusters hosted on AWS)
+- Set up cluster [monitoring with Amazon CloudWatch](#monitor-cockroachdb-cloud-with-amazon-cloudwatch-integration) (available on clusters hosted on AWS)
 - Access the [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more (available on CockroachDB {{ site.data.products.advanced }} clusters).
 
 To view the **Tools** page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
@@ -190,7 +190,7 @@ If an issue is encountered during the integration, one of the following statuses
 - `Inactive` indicates that the integration has not been successfully deployed. Setup has either not been attempted or has encountered an error.
 - `Unknown` indicates that an unknown error has occurred. If this status is displayed, [contact our support team](https://support.cockroachlabs.com/).
 
-Metrics export from CockroachDB can be interrupted in the event of transient CockroachDB unavailability. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in CloudWatch. To resolve the issue, try [deactivating](#deactivate-cloudwatch-integration) and reactivating the integration from the **CloudWatch** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+Metrics export from CockroachDB can be interrupted in the event of transient CockroachDB unavailability. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in CloudWatch. To resolve the issue, try [deactivating](#deactivate) and reactivating the integration from the **CloudWatch** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
 
 {{site.data.alerts.callout_info}}
 Gaps in metrics within CloudWatch do not necessarily point to an availability issue with CockroachDB. If you encounter any gaps in metrics, we recommend [contacting support](https://support.cockroachlabs.com/).
