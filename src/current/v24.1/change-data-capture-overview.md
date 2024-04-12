@@ -51,7 +51,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Message delivery</b>
     </td>
     <td>Streams indefinitely until underlying SQL connection is closed.</td>
-    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a>: <br>Kafka, Google Cloud Pub/Sub, Amazon S3, Google Cloud Storage, Azure Storage, HTTP, Webhook.</td>
+    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a>: <br>Amazon S3, Azure Event Hubs, Azure Storage, Confluent Cloud, Google Cloud Pub/Sub, Google Cloud Storage, HTTP, Kafka, Webhook.</td>
   </tr>
 
   <tr>
