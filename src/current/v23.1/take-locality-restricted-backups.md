@@ -28,9 +28,11 @@ For a technical overview of how a locality-restricted backup works, refer to [Jo
 
 To specify the locality filter for the coordinating node, run `EXECUTION LOCALITY` with key-value pairs. The key-value pairs correspond to the [locality designations]({% link {{ page.version.version }}/cockroach-start.md %}#locality) a node is configured to use when it starts.
 
+You can bind any ordered list of locality key-value pairs, from most inclusive to least inclusive, to a node at startup. For example, a user with a multi-region and multi-cloud deployment may bind each node with `cloud=,region=` locality tiers. To back up to a specific `cloud,region`, add `cloud={cloud},region={region}` as the execution locality arguments:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region={region},cloud={cloud}';
+BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'cloud=gce,region=us-west1';
 ~~~
 
 When you run a backup or restore that uses `EXECUTION LOCALITY`, consider the following:
