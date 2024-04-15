@@ -27,7 +27,7 @@ First, download the storage tank GeoJSON data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-wget -O tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
+curl -o tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
 ~~~
 
 ## Step 2. Convert the GeoJSON data to SQL
