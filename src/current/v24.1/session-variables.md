@@ -15,7 +15,7 @@ CockroachDB supports setting session variables for the duration of a single tran
 
 ## See also
 
-- [`RESET`]({% link {{ page.version.version }}/reset-vars.md %})
+- [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
 - [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})
 - [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})

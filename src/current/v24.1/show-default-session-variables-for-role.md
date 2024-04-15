@@ -6,9 +6,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW DEFAULT SESSION VARIABLES FOR ROLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the values for updated [session variables]({% link {{ page.version.version }}/set-vars.md %}) that are applied to a given [user/role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
+The `SHOW DEFAULT SESSION VARIABLES FOR ROLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the values for updated [session variables]({% link {{ page.version.version }}/set-vars.md %}) that are applied to a given [user or role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
 
-It only shows the values of session variables that are changed from the defaults. When no session variables have been changed from the defaults for a given role, the statement [returns no values](#output-when-no-session-variables-have-been-changed).
+The results returned only include the values of session variables that are changed from the defaults. When no session variables have been changed from the defaults for a given role, the statement [returns no values](#output-when-no-session-variables-have-been-changed).
 
 ## Synopsis
 
@@ -20,9 +20,9 @@ It only shows the values of session variables that are changed from the defaults
 
 Parameter | Description
 ----------|------------
-`FOR {role_or_group_or_user}` | The [user/group/role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) whose updated [session variables]({% link {{ page.version.version }}/session-variables.md %}) should be displayed.
+`FOR {role_or_group_or_user}` | The [user, group, or role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) whose updated [session variables]({% link {{ page.version.version }}/session-variables.md %}) should be displayed.
 `FOR ROLE ALL` | Denotes that changes to default [session variables]({% link {{ page.version.version }}/session-variables.md %}) across all [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) should be displayed.
-`FOR USER ALL` | Synonym for `FOR ROLE ALL`.
+`FOR USER ALL` | Alias for `FOR ROLE ALL`.
 
 ## Response
 
@@ -35,7 +35,7 @@ Column | Description
 
 ## Required Privileges
 
-The [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) issuing this statement must have at least one of the following [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges):
+The [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) issuing this statement must have at least one of the following [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges):
 
 - `CREATEROLE`
 - `MODIFYCLUSTERSETTING`
