@@ -14,11 +14,11 @@ The following sections describe newly identified limitations in CockroachDB {{ p
 
 ## Existing limitations
 
-The following sections describe existing limitations in CockroachDB releases prior to {{ page.version.version }}.
+This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
 
 ### SQL statements
 
-#### Differences in syntax and behavior between CockroachDB and PostgreSQL
+#### Syntax and behavior differences from PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
@@ -57,11 +57,11 @@ Statements containing multiple modification subqueries mutating the same row cou
 - Set the `sql.multiple_modifications_of_table.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 - Use the `enable_multiple_modifications_of_table` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 
-Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/70731)
+If multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/70731)
 
 #### Using `default_int_size` session variable in batch of statements
 
-When setting the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
+When setting the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take effect until the next statement. Statement parsing is asynchronous with  statement execution.
 
 As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/32846)
 
@@ -98,7 +98,7 @@ Altering the minimum or maximum value of a series does not check the current val
 
 #### `null_ordered_last` does not produce correct results with tuples
 
-By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL` values after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it does not work when the ordering column is a tuple. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
 
 ### Transactions
 
