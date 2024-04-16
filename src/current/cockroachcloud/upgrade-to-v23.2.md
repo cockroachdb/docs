@@ -88,7 +88,7 @@ Review the backward-incompatible changes and deprecated features announced in th
 
 ### Reset SQL statistics
 
-Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's SQL statistics. Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
+Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.page_version }}/cost-based-optimizer.md %}#table-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -115,7 +115,7 @@ Your cluster will be upgraded one node at a time without interrupting the cluste
 Your single-node cluster will be unavailable for a few minutes while the node is stopped and restarted with CockroachDB {{ page.page_version }}.
 </section>
 
-After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
+After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
 
 ## Step 6. Monitor the upgrade
 
