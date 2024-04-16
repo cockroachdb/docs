@@ -27,13 +27,13 @@ General availability (GA)                     | Feature is production-ready and 
 **The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### CockroachDB Dedicated on Azure
+### CockroachDB Advanced on Azure
 
-Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is in limited access. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+Deploying [CockroachDB Advanced clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-advanced-on-azure) is in limited access. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
-### AWS PrivateLink for CockroachDB Serverless
+### AWS PrivateLink for CockroachDB Basic and Standard
 
-[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Connecting privately to a multi-region CockroachDB Basic or Standard cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### CockroachDB Cloud Folders
 
@@ -54,9 +54,9 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Custom Metrics Chart page for CockroachDB {{ site.data.products.serverless }} clusters
+### Custom Metrics Chart page for CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} clusters
 
-The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.serverless }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
+The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ### Log SQL Statistics to Datadog
 
@@ -68,9 +68,9 @@ CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq
 
 [Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
 
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
+### Export metrics from CockroachDB {{ site.data.products.advanced }} clusters
 
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+CockroachDB {{ site.data.products.advanced }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink.
 
 ### Role-based SQL audit logging
 
