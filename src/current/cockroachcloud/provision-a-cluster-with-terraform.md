@@ -23,7 +23,6 @@ Watch a demo where we use Terraform to create a CockroachDB Serverless cluster h
 Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-- Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
 - Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
 
 ## Create the Terraform configuration files
@@ -34,11 +33,11 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
@@ -79,11 +78,11 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.serverless
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated }} cluster
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
