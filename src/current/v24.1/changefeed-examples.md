@@ -14,6 +14,7 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 - [Kafka](#create-a-changefeed-connected-to-kafka)
 - [Google Cloud Pub/Sub](#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink)
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
+- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#create-a-changefeed-connected-to-an-azure-event-hubs-sink)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
 Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
@@ -553,6 +554,62 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     initiating graceful shutdown of server
     server drained and shutdown completed
     ~~~
+
+## Create a changefeed connected to an Azure Event Hubs sink
+
+{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to [Azure Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs). The changefeed watches two tables. You'll need access to the Azure Developer Portal, you can sign up for an [Azure free account](https://azure.microsoft.com/en-us/free/).
+
+{% include {{ page.version.version }}/cdc/examples-license-workload.md %}
+
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
+
+1. To prepare the Azure Event Hubs sink, in the Portal, [create a resource group](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#create-resource-groups).
+
+1. Once you have a resource group, select **Event Hubs** in the portal navigation menu and then **+ Create** from the **Event Hubs** page tool bar to create a namespace. Complete the naming details for the namespace and select the resource group you created in the previous step. For **Pricing Tier**, ensure that you select **Standard** or **Premium** (the **Basic** tier does not support Apache Kafka workloads). Complete your configuration options, and then create the namespace.
+
+1. Select **Go to resource** after the deployment is complete. On the namespace overview page, select **+ Event Hub** in the tool bar to create an event hub within this namespace. An Event Hub is equivalent to a Kafka topic. On the creation page, add a name and the configuration for partitions and message retention.
+
+    {{site.data.alerts.callout_info}}
+    You can manually create an Event Hub, or Event Hubs will create automatically when you start the changefeed.
+    {{site.data.alerts.end}}
+
+1. To send changefeed messages to your Event Hub, you will need a `shared_access_key`. Find **Shared access policies** in the left-hand navigation. Click **+ Add** and provide a name for the policy as well as confirming the permissions. Once created, click on the policy name and then copy the **Primary key** — you will need this to create your changefeed.
+
+1. Build the connection string to your Event Hub. You will need the following:
+    - The `azure-event-hub://` URI scheme.
+    - The **Host name** from your Event Hubs namespace overview page. It will be something like: `{your-event-hubs-namespace}.servicebus.windows.net`.
+    - The port `:9093` for the Kafka protocol.
+    - The `shared_access_key_name` parameter with the name of your policy.
+    - The `shared_access_key` parameter with your [**URL-encoded**](https://www.urlencoder.org/) primary key.
+
+    {% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
+
+    You can include the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) or [`topic_prefix`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix-param) parameters to create and name an Event Hub for emitted messages.
+
+1. Create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to store your connection string:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION eventhub AS 'azure-event-hub://{your-event-hubs-namespace}.servicebus.windows.net:9093?shared_access_key_name={policy-name}&shared_access_key={url-encoded key}';
+    ~~~
+
+1. Create the changefeed to your Event Hub:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE movr.rides, movr.users INTO 'external://eventhub';
+    ~~~
+    ~~~
+            job_id
+    ----------------------
+    953466342378274817
+    (1 row)
+
+    NOTICE: changefeed will emit to topic rides
+    NOTICE: changefeed will emit to topic users
+    ~~~
+
+1. To confirm the messages emitted to your Event Hub, navigate to the Event Hub's overview page that contains **Requests**, **Messages**, and **Throughput** counters. View the messages by clicking **Process Data** in the left-hand navigation menu. Then select the **Enable real time insights from events** feature box. On the **Query** page, your messages will load under **Input Preview**.
 
 ## Create a changefeed connected to a webhook sink
 

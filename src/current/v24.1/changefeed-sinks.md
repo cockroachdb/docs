@@ -14,6 +14,7 @@ CockroachDB supports the following sinks:
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
+- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -115,10 +116,21 @@ Each of the following settings have significant impact on a changefeed's behavio
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "kafka_client_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
 ~~~
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
+
+{% include_cached new-in.html version="v24.1" %} Implement a Kafka resource usage limit per changefeed by setting a client ID and Kafka quota. You can set the quota for the client ID in your Kafka server's configuration:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+bin/kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'producer_byte_rate=1024,consumer_byte_rate=2048' --entity-type clients --entity-name client-changefeed-1
+~~~
+
+Refer to the [Kafka documentation](https://kafka.apache.org/documentation/#quotas) for details on setting quotas to client IDs.
+
+When you create a changefeed, include the `"ClientID"` field with the unique client ID (e.g., `kafka_client_ID_1`) you have configured in your Kafka server configuration. This will subject the changefeed to the Kafka quota applied to that client ID. We recommend tracking the [`changefeed.kafka_throttling_hist_nanos` metric]({% link {{ page.version.version }}/metrics.md %}) to monitor the time spent throttling due to changefeed messages exceeding Kafka quotas.
 
 Using the default values or not setting fields in `kafka_sink_config` will mean that changefeed messages emit immediately.
 
@@ -126,10 +138,11 @@ The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-`Flush.MaxMessages` | [`INT`]({% link {{ page.version.version }}/int.md %})  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
-`Flush.Messages`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | Configure the number of messages the changefeed should batch before flushing. | `0`
-`Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
-`Flush.Frequency`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+<span class="version-tag">New in v24.1:</span>`"ClientID"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Applies a Kafka client ID per changefeed. Configure [quotas](https://kafka.apache.org/documentation/#quotas) within your Kafka configuration that apply to a unique client ID. The `ClientID` field can only contain the characters `A-Za-z0-9._-`. | ""
+`"Flush"."MaxMessages"` | [`INT`]({% link {{ page.version.version }}/int.md %})  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
+`"Flush"."Messages"`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | Configures the number of messages the changefeed should batch before flushing. | `0`
+`"Flush"."Bytes"`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
+`"Flush"."Frequency"`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
 <a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. {% include {{ page.version.version }}/cdc/kafka-acks.md %} | `"ONE"`
 <a name="kafka-compression"></a>`"Compression"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"NONE"`, `"GZIP"`, `"SNAPPY"`, `"LZ4"`, `"ZSTD"`. | `"NONE"`
@@ -546,6 +559,33 @@ The following shows the default JSON messages for a changefeed emitting to a web
 ~~~
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
+
+## Azure Event Hubs
+
+{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to an [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), which is compatible with Apache Kafka.
+
+An Azure Event Hubs sink URI:
+
+{% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
+
+The `shared_access_key` and `shared_access_key_name` are the required parameters for an Azure Event Hubs connection URI.
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`{event_hubs_namespace}` | The Event Hub namespace.
+`shared_access_key_name` | The name of the shared access policy created for the namespace.
+`shared_access_key` | The key for the shared access policy. **Note:** You must [URL encode](https://www.urlencoder.org/) the shared access key before passing it in the connection string.
+
+Changefeeds emitting to an Azure Event hub support `topic_name` and `topic_prefix`. Azure Event Hubs also supports the standard Kafka [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For an Azure Event Hub setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-azure-event-hubs-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
 
 ## See also
 
