@@ -181,7 +181,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[#35370](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Column name from an outer column inside a subquery
 
@@ -207,7 +207,7 @@ PostgreSQL:
  1
 ~~~
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+[#46563](https://github.com/cockroachdb/cockroach/issues/46563)
 
 ### SQL Compatibility
 

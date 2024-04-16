@@ -10,4 +10,4 @@
 
     The phrase "synthetic privileges" in the error message refers to [system-level privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
 
-    The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-system-level-privileges-on-the-entire-cluster) for each privilege in the result. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
+    The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-system-level-privileges-on-the-entire-cluster) for each privilege in the result. [#88149](https://github.com/cockroachdb/cockroach/issues/88149)

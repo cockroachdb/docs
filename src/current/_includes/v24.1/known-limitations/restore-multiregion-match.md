@@ -47,4 +47,4 @@
     ALTER DATABASE destination_database SET PRIMARY REGION "us-east1";    
     ~~~
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/71071)
+    [#71071](https://github.com/cockroachdb/cockroach/issues/71071)

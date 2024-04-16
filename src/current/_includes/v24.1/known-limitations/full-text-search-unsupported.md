@@ -11,4 +11,4 @@
 - `!! tsquery` comparisons.
 - `tsquery @> tsquery` and `tsquery <@ tsquery` comparisons.
 
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/41288)
+[#41288](https://github.com/cockroachdb/cockroach/issues/41288)
