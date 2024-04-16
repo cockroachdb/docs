@@ -920,13 +920,7 @@ SELECT * FROM schedules
 
 ## Known limitations
 
-The following are not yet supported with `READ COMMITTED`:
-
 {% include {{ page.version.version }}/known-limitations/read-committed-limitations.md %}
-
-The following affect the performance of `READ COMMITTED` transactions:
-
-{% include {{ page.version.version }}/known-limitations/read-committed-performance.md %}
 
 ## See also
 

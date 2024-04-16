@@ -22,14 +22,6 @@ This section describes limitations from previous CockroachDB versions that still
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
-#### PL/pgSQL feature support
-
-{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
-
-#### UDF and stored procedure support
-
-{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
-
 #### `AS OF SYSTEM TIME` does not support placeholders
 
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
@@ -100,19 +92,27 @@ Altering the minimum or maximum value of a series does not check the current val
 
 By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL` values after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it does not work when the ordering column is a tuple. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
 
+### Functions and procedures
+
+#### PL/pgSQL feature support
+
+{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
+
+#### PL/pgSQL data types
+
+{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
+
+#### UDF and stored procedure support
+
+{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
+
 ### Transactions
 
-#### Read Committed features
+#### Read Committed features and performance
 
-Several capabilities are not yet supported with [Read Committed isolation]({% link {{ page.version.version }}/read-committed.md %}):
+[Read Committed isolation]({% link {{ page.version.version }}/read-committed.md %}) has the following limitations:
 
 {% include {{ page.version.version }}/known-limitations/read-committed-limitations.md %}
-
-#### Read Committed performance
-
-The following affect the performance of `READ COMMITTED` transactions:
-
-{% include {{ page.version.version }}/known-limitations/read-committed-performance.md %}
 
 #### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
 
@@ -273,10 +273,6 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 ### Data types
 
-#### PL/pgSQL data types
-
-{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
-
 #### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), with the following limitations:
@@ -337,10 +333,6 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/53410)
 
-#### DB Console may become inaccessible for secure clusters
-
-Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
-
 #### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
 
 There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) is interrupted in one of the following ways:
@@ -382,10 +374,6 @@ In the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md 
 
 As a workaround, [execute the file from the command line]({% link {{ page.version.version }}/cockroach-sql.md %}#execute-sql-statements-from-a-file) with `cat data.sql | cockroach sql` instead of from within the interactive shell.
 
-#### Available capacity metric in the DB Console
-
-{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
-
 #### Spatial features disabled for ARM Macs
 
 [Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution. [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
@@ -393,6 +381,16 @@ As a workaround, [execute the file from the command line]({% link {{ page.versio
 #### Logging system limitations
 
 {% include {{ page.version.version }}/known-limitations/logging-limitations.md %}
+
+### Observability
+
+#### DB Console may become inaccessible for secure clusters
+
+Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
+
+#### Available capacity metric in the DB Console
+
+{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 
 ### Disaster recovery
 
