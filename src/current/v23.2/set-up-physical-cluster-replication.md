@@ -78,7 +78,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
@@ -147,7 +147,7 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
     Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
@@ -165,7 +165,7 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
 1. To connect to the primary cluster's application virtual cluster, use the `ccluster=application` parameter:
@@ -173,7 +173,7 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=application&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
@@ -219,7 +219,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
@@ -310,7 +310,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     ~~~ sql
     CREATE VIRTUAL CLUSTER application LIKE template
     FROM REPLICATION OF application
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
+    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
 
     {% include {{ page.version.version }}/physical-replication/like-description.md %}
@@ -358,7 +358,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     ~~~
     id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
     ---+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-    3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+    3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
     (1 row)s
     ~~~
 
@@ -372,9 +372,9 @@ For additional detail on the standard CockroachDB connection parameters, refer t
 
 Cluster | Interface | Usage | URL and Parameters
 --------+-----------+-------+------------+----
-Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
-Primary | Application | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<br><br><ul><li>`options=-ccluster=application`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
-Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
+Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
+Primary | Application | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<br><br><ul><li>`options=-ccluster=application`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
+Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 
 ## What's next
 
