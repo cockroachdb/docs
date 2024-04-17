@@ -91,7 +91,7 @@ Asia Pacific    | `australiaeast`      | New South Wales
                 | `southeastasia`      | Singapore
 Middle East     | `qatarcentral`       | Doha
                 | `uaenorth`           | Dubai
-North America   | `centralcanada`      | Toronto
+North America   | `canadacentral`      | Toronto
                 | `centralus`          | Iowa
                 | `eastus`             | Virginia
                 | `eastus2`            | Virginia
