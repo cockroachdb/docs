@@ -148,6 +148,8 @@ max@:26257/defaultdb> SHOW timezone;
 (1 row)
 ~~~
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 ### Set default session variable values for a role in a specific database
 
 In the following example, the `root` user creates a role named `max` and a database named `movr`, and sets the default value of the `statement_timeout` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for the `max` role in the `movr` database.
@@ -194,6 +196,8 @@ max@:26257/movr> SHOW statement_timeout;
 (1 row)
 ~~~
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 ### Set default session variable values for a specific database
 
 In the following example, the `root` user creates a database named `movr`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for all roles in that database.
@@ -236,6 +240,8 @@ root@:26257/movr> SHOW timezone;
 (1 row)
 ~~~
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 ### Set default session variable values for all users
 
 To set a default value for all users for any [session variable]({% link {{ page.version.version }}/set-vars.md %}) that applies during login, issue a statement like the following:
@@ -251,6 +257,8 @@ ALTER ROLE
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 ## See also
 
 - [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})
@@ -260,3 +268,4 @@ ALTER ROLE
 - [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Authorization Best Practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
