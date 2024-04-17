@@ -364,7 +364,7 @@ Install the C libpq driver as described in the [official documentation](https://
 
 ### Npgsql
 
-**Support level:** Partial
+**Support level:** Full
 
 1. Create a .NET project:
 

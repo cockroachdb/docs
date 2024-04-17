@@ -114,7 +114,7 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
 
-- {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
+- To help guard against [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash), consider tuning the cache and SQL memory for cluster nodes. Refer to the section [Cache and SQL memory size](#cache-and-sql-memory-size).
 
 - Monitor [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
@@ -351,14 +351,12 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
+cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 ~~~
 
-{{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
-{{site.data.alerts.end}}
+Because CockroachDB manages its own memory caches, Cockroach Labs recommends that you disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory. Writing to swap is significantly less performant than writing to memory.
 
 ## Dependencies
 
@@ -577,65 +575,68 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Set a limit for the number of open file descriptors. The specific limit you set depends on your workload and the hardware and configuration of your nodes.
+    - **If you use `systemd`**, manually-set limits set using the `ulimit` command or a configuration file like `/etc/limits.conf` are ignored for services started by `systemd`. To limit the number of open file descriptors, add a line like the following to the service definition for the `cockroach` process. To allow an unlimited number of files, you can optionally set `LimitNOFILE` to `INFINITY`. Cockroach Labs recommends that you carefully test this configuration with a realistic workload before deploying it in production.
 
-    ~~~
-    *              soft     nofile          35000
-    *              hard     nofile          35000
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ none
+        LimitNOFILE=35000
+        ~~~
 
-    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+        Reload `systemd` for the new limit to take effect:
 
-1.  Save and close the file.
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
+    - **If you do not use `systemd`**: Edit `/etc/security/limits.conf` and append the following lines to the file:
 
-1.  Restart the system for the new limits to take effect.
+        ~~~
+        *              soft     nofile          35000
+        *              hard     nofile          35000
+        ~~~
 
-1.  Verify the new limits:
+        The `*` can be replaced with the username that will start CockroachDB.
 
-    ~~~ shell
-    $ ulimit -a
-    ~~~
+        Save and close the file, then restart the system for the new limits to take effect.
+        After the system restarts, verify the new limits:
 
-Alternately, if you're using [Systemd](https://wikipedia.org/wiki/Systemd):
-
-1.  Edit the service definition to configure the maximum number of open files:
-
-    ~~~ ini
-    [Service]
-    ...
-    LimitNOFILE=35000
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
-    {{site.data.alerts.end}}
-
-1.  Reload Systemd for the new limit to take effect:
-
-    ~~~ shell
-    $ systemctl daemon-reload
-    ~~~
+        ~~~ shell
+        ulimit -a
+        ~~~
 
 #### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
-1. Check the system-wide limit:
+1. **If you use `systemd`**, add a line like the following to the service definition for the `Manager` service. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-    ~~~ shell
-    $ cat /proc/sys/fs/file-max
+    {% include_cached copy-clipboard.html %}
+    ~~~ none
+    LimitNOFILE=35000
     ~~~
 
-1. If necessary, increase the system-wide limit in the `proc` file system:
+    Reload `systemd` for the new limit to take effect:
 
     ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
+    systemctl daemon-reload
     ~~~
+
+1. **If you do not use `systemd`**:
+    1. Check the system-wide limit:
+
+        ~~~ shell
+        cat /proc/sys/fs/file-max
+        ~~~
+    1. If necessary, increase the system-wide limit in the `proc` file system:
+
+        ~~~ shell
+        echo 150000 > /proc/sys/fs/file-max
+        ~~~
 
 </section>
 <section id="windowsinstall" markdown="1">
 
-CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.
+CockroachDB for Windows is experimental and not supported in production. To learn about configuring limits on Windows, refer to the Microsoft community blog post [Pushing the Limits of Windows: Handles](https://techcommunity.microsoft.com/t5/windows-blog-archive/pushing-the-limits-of-windows-handles/ba-p/723848).
 
 </section>
 

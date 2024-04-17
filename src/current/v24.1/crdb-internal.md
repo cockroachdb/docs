@@ -897,7 +897,6 @@ Field | Type | Description
 ------------|-----|------------
 `db` | `STRING` | The database on which the statement is executed.
 `distsql` | `BOOLEAN` | Whether the statement is being executed by the Distributed SQL (DistSQL) engine.
-`failed` | `BOOLEAN` | Whether the statement execution failed.
 `fullScan` | `BOOLEAN` | Whether the statement performed a full scan of the table.
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
@@ -923,7 +922,8 @@ Field | Type | Description
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
 <code>statistics -> bytesRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes read from disk.
-`statistics -> cnt` | `INT8` | The total number of times this statement was executed since the begin of the aggregation period.
+`statistics -> cnt` | `INT8` | The total number of times this statement was executed since the beginning of the aggregation period.
+`statistics -> failureCount` | `INT` | The total number of times the execution of this statement fingerprint failed.
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
 <code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
 `statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
