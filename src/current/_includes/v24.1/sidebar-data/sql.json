@@ -605,6 +605,12 @@
               ]
             },
             {
+              "title": "<code>SHOW DEFAULT SESSION VARIABLES FOR ROLE</code>",
+              "urls": [
+                "/${VERSION}/show-default-session-variables-for-role.html"
+              ]
+            },
+            {
               "title": "<code>SHOW ENUMS</code>",
               "urls": [
                 "/${VERSION}/show-enums.html"

@@ -56,7 +56,7 @@ For more comprehensive guides, refer to:
 
 ### Start clusters
 
-To initiate physical cluster replication on clusters, you must [start]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--config-profile` flag. This enables cluster virtualization {% comment %}link to CV docs{% endcomment %} and sets up each cluster ready for replication.
+To initiate physical cluster replication on clusters, you must [start]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--config-profile` flag. This enables [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and sets up each cluster ready for replication.
 
 The active primary cluster that serves application traffic:
 
@@ -76,18 +76,18 @@ The node topology of the two clusters does not need to be the same. For example,
 - During a failover scenario, the standby will need to handle the full production load. However, the clusters cannot have different region topologies (refer to [Limitations](#known-limitations)).
 
 {{site.data.alerts.callout_info}}
-Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for detail.
+Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for details.
 {{site.data.alerts.end}}
 
-### Connect to the system interface and virtual cluster
+### Connect to the system virtual cluster and virtual cluster
 
-A cluster with physical cluster replication enabled is a _virtualized cluster_; the primary and standby clusters each contain:
+A cluster with physical cluster replication enabled is a [virtualized cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}); the primary and standby clusters each contain:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
-To connect to a cluster using the SQL shell:
+To connect to a virtualized cluster using the SQL shell:
 
-- For the system interface, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
+- For the system virtual cluster, include the `options=-ccluster=system` parameter in the `postgresql` connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -102,7 +102,7 @@ To connect to a cluster using the SQL shell:
     ~~~
 
 {{site.data.alerts.callout_info}}
-Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system interface.
+Physical cluster replication requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).
@@ -116,15 +116,17 @@ Statement | Action
 [`CREATE VIRTUAL CLUSTER ... FROM REPLICATION OF ...`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) | Start a replication stream.
 [`ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Pause a running replication stream.
 [`ALTER VIRTUAL CLUSTER ... RESUME REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Resume a paused replication stream.
-[`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-the-virtual-cluster) | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
-[`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show the virtual clusters.
+[`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-a-virtual-cluster) | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
+[`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show all virtual clusters.
 [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
 
 ### Cluster versions and upgrades
 
-The standby cluster host will need to be at the same version as, or one version ahead of, the primary's application virtual cluster at the time of cutover.
+The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's application virtual cluster at the time of cutover.
 
-To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the primary and standby clusters, you must carefully and manually apply the upgrade. We recommend upgrading the standby cluster first. It is preferable to avoid a situation in which the application virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
+To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
+
+When physical cluster replication is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the application virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
 
 ## Demo video
 

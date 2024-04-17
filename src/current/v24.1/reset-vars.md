@@ -87,3 +87,4 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 
 - [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})

@@ -12,3 +12,14 @@ CockroachDB supports setting session variables for the duration of a single tran
 ## Supported variables
 
 {% include {{ page.version.version }}/misc/session-vars.md %}
+
+## See also
+
+- [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
+- [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})
+- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
+- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
+- [The `TIMESTAMP` and `TIMESTAMPTZ` data types.]({% link {{ page.version.version }}/timestamp.md %})
+- [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})
+- [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %})
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})

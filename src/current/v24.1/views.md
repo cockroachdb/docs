@@ -625,9 +625,9 @@ To speed up queries on materialized views, you can add an [index]({% link {{ pag
 
 ### Known limitations
 
-{% include {{page.version.version}}/sql/materialized-views-no-stats.md %}
+{% include {{page.version.version}}/known-limitations/materialized-views-no-stats.md %}
 
-{% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
+{% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
 
 ## Temporary views
 

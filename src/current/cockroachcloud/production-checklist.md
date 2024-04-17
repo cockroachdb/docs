@@ -26,7 +26,7 @@ The customer is responsible for the following tasks:
 - Initiating major version upgrades and selecting maintenance windows for patch releases.
 - (Optional) Taking customer-owned backups.
 
-This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which  the customer is responsible.
+This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which the customer is responsible.
 
 ## Deployment options
 
@@ -35,10 +35,6 @@ When planning your deployment, it is important to carefully review and choose th
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
 
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
-
-{{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
-{{site.data.alerts.end}}
 
 For an example, refer to [Plan your Dedicated cluster]({% link cockroachcloud/plan-your-cluster.md %}).
 

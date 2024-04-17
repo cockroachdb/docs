@@ -83,29 +83,23 @@ CockroachDB {{ site.data.products.cloud }} clusters can be deployed in the follo
 Geographic Area | Region Name          | Location
 ----------------|----------------------|---------
 Africa          | `southafricanorth`   | Johannesburg
-Asia Pacific    | `japaneast`          | Tokyo
+Asia Pacific    | `australiaeast`      | New South Wales
+                | `japaneast`          | Tokyo
                 | `koreacentral`       | Seoul
-                | `australiaeast`      | New South Wales
                 | `centralindia`       | Pune
                 | `eastasia`           | Hong Kong
                 | `southeastasia`      | Singapore
-Middle East     | `israelcentral`      | Israel
-                | `qatarcentral`       | Doha
+Middle East     | `qatarcentral`       | Doha
                 | `uaenorth`           | Dubai
 North America   | `centralcanada`      | Toronto
                 | `centralus`          | Iowa
                 | `eastus`             | Virginia
                 | `eastus2`            | Virginia
-                | `northcentralus`     | Illinois ([Availability Zones Presence](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview?tabs=azure-cli) coming soon)
                 | `southcentralus`     | Texas
-                | `westcentralus`      | Wyoming  ([Availability Zones Presence](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview?tabs=azure-cli) coming soon)
-                | `westus`             | California
                 | `westus2`            | Washington
                 | `westus3`            | Washington
-South America   | `brazilsouth`        | São Paulo
 Western Europe  | `francecentral`      | Paris
                 | `germanywestcentral` | Frankfurt
-                | `italynorth`         | Milan (Premium SSD and SSD v2 storage only)
                 | `northeurope`        | Ireland
                 | `norwayeast`         | Oslo
                 | `polandcentral`      | Warsaw
