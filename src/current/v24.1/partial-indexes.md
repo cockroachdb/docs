@@ -86,12 +86,6 @@ When [inserted values]({% link {{ page.version.version }}/insert.md %}) conflict
 
 You can force queries [to use a specific partial index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
-## Known limitations
-
-- CockroachDB does not currently support [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
-- CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
-- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
-
 ## Examples
 
 ### Setup
@@ -458,6 +452,11 @@ Because the unique partial index predicate only implies the rows where `city='ne
 ~~~
 INSERT 1
 ~~~
+
+## Known limitations
+
+- {% include {{ page.version.version }}/known-limitations/drop-column-partial-index.md %}
+- {% include {{ page.version.version }}/known-limitations/multiple-arbiter-indexes.md %}
 
 ## See also
 
