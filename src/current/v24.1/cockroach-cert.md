@@ -51,12 +51,16 @@ File name pattern | File usage
 `node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate).
 `node.key`   | Key for server certificate.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ### Client key and certificates
 
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`).
 `client.<user>.key` | Key for the client certificate.
 
 Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}#accessing-the-db-console-for-a-secure-cluster).
@@ -66,6 +70,10 @@ Note the following:
 - By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
 
 ### Key file permissions
 
@@ -354,3 +362,7 @@ Certificate directory: certs
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
+- [Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %})
+- [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)

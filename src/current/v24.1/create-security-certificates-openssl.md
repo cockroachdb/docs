@@ -13,8 +13,11 @@ See also:
 - [Use the CockroachDB CLI to provision a development cluster]({% link {{ page.version.version }}/manage-certs-cli.md %}).
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
 
-
 To create these certificates and keys, use the `cockroach cert` [commands]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) (for example, a public CA or your organizational CA).
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
 
 ## Subcommands
 
@@ -63,6 +66,10 @@ Note the following:
 - The CA key should not be uploaded to the nodes and clients, so it should be created in a separate directory.
 
 - Keys (files ending in `.key`) must meet the [permission requirements check]({% link {{ page.version.version }}/cockroach-cert.md %}#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
 
 ## Examples
 
@@ -354,6 +361,10 @@ In the following steps, replace the placeholder text in the code with the actual
     ~~~ sql
     > \q
     ~~~
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
 
 ### Step 5. Create the certificate and key pair for a client
 

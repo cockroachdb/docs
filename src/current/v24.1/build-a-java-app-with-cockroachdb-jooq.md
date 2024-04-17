@@ -75,6 +75,10 @@ The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockro
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ## Step 5. Run the Java code
 
 The code below uses jOOQ to map Java methods to SQL operations. It performs the following steps, some of which correspond to method calls of the `Sample` class.

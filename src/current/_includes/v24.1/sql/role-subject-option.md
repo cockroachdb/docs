@@ -1,0 +1,1 @@
+You can associate an [X.509](https://en.wikipedia.org/wiki/X.509) certificate's Subject with a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) as shown below. Note that the Subject fields in the certificate have to be an exact match with what you pass in via the SQL statement.
