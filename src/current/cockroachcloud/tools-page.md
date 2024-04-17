@@ -8,7 +8,7 @@ docs_area: manage
 The **Tools** page is accessible on CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters. This page allows you to:
 
 - Set up cluster [monitoring with Datadog](#monitor-cockroachdb-cloud-with-datadog) (available on clusters hosted on AWS and GCP).
-- Set up cluster [monitoring with Amazon CloudWatch](#monitor-cockroachdb-cloud-with-amazon-cloudwatch-integration) (available on clusters hosted on AWS)
+- Set up cluster [monitoring with Amazon CloudWatch](#monitor-cockroachdb-cloud-with-amazon-cloudwatch-integration) (available on clusters hosted on AWS).
 - Access the [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more (available on CockroachDB {{ site.data.products.advanced }} clusters).
 
 To view the **Tools** page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
@@ -27,7 +27,7 @@ For more information about using Datadog, see the [Datadog documentation](https:
 
 ### Enable integration
 
-To enable Datadog monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster, you can either:
+To enable Datadog monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster, you can **either**:
 
 - Use the [Cloud API]({% link cockroachcloud/cloud-api.md %}), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export).
 
@@ -161,7 +161,7 @@ Enabling the Amazon CloudWatch integration on your CockroachDB {{ site.data.prod
 
 ### Enable
 
-To enable Amazon CloudWatch monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster hosted on AWS, you can either:
+To enable Amazon CloudWatch monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster hosted on AWS, you can **either**:
 
 - Use the [Cloud API]({% link cockroachcloud/cloud-api.md %}), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}).
 
@@ -172,13 +172,13 @@ OR
 1. On the cluster's **Tools** page, click **Setup** in the **CloudWatch** panel.
 
 1. Fill in the **Role ARN**, **Target Region**, and **Log Group Name** fields with their corresponding values.
-    - The **Role ARN** is in the format: `arn:aws:iam::{role_arn}:role/{role_name}`. To determine `{role_arn}` and `{role_name}`, follow steps 1 through 8 on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}#enable-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}#enable-metrics-export).
-    - The **Target Region** is your AWS region, like `us-east-1`. Specifying an AWS region that you do not have a cluster in, or a region that only partially covers your cluster will result in missing metrics.
+    - The **Role ARN** is in the format: `arn:aws:iam::{role_arn}:role/{role_name}`. To determine `{role_arn}` and `{role_name}`, follow the steps in the **Enable metrics export** section on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}#enable-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}#enable-metrics-export).
+    - The **Target Region** is your AWS region, like `us-east-1`. Specifying an AWS region that you do not have a cluster in, or a region that only partially covers your cluster, will result in missing metrics.
     - The **Log Group Name** is the target Amazon CloudWatch log group you used when creating the role in the **Role ARN**.
 
 1. Click **Create**. Depending on the size of your cluster and the current load on the system, the integration might take some time to become enabled.
 
-1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in [AWS CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.standard }} cluster directly in [Amazon CloudWatch](https://console.aws.amazon.com/cloudwatch/home).
 
 ### Verify status
 
@@ -190,7 +190,7 @@ If an issue is encountered during the integration, one of the following statuses
 - `Inactive` indicates that the integration has not been successfully deployed. Setup has either not been attempted or has encountered an error.
 - `Unknown` indicates that an unknown error has occurred. If this status is displayed, [contact our support team](https://support.cockroachlabs.com/).
 
-Metrics export from CockroachDB can be interrupted in the event of transient CockroachDB unavailability. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in CloudWatch. To resolve the issue, try [deactivating](#deactivate) and reactivating the integration from the **CloudWatch** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+In the event of transient CockroachDB unavailability, metrics export from CockroachDB can be interrupted. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in CloudWatch. To resolve the issue, try [deactivating](#deactivate) and reactivating the integration from the **CloudWatch** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
 
 {{site.data.alerts.callout_info}}
 Gaps in metrics within CloudWatch do not necessarily point to an availability issue with CockroachDB. If you encounter any gaps in metrics, we recommend [contacting support](https://support.cockroachlabs.com/).
