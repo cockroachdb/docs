@@ -3,8 +3,5 @@ layout: none
 ---
 
 {
-    "current_cloud_date": {{ site.current_cloud_date | jsonify }},
-    "current_cloud_version": {{ site.current_cloud_version | jsonify }},
-    "current_dedicated_hotfix": {{ site.current_dedicated_hotfix | jsonify }},
-    "current_serverless_hotfix": {{ site.current_serverless_hotfix | jsonify }}
+    "current_cloud_version": {{ site.current_cloud_version | jsonify }}
 }
