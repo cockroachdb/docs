@@ -310,6 +310,8 @@ Column | Description
 
 For a list of the session variables, see [supported variables]({% link {{ page.version.version }}/show-vars.md %}#supported-variables).
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 ### statistics
 
 `statistics` identifies table [indexes]({% link {{ page.version.version }}/indexes.md %}).

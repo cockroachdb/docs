@@ -122,3 +122,4 @@ To opt out of [automatic diagnostic reporting]({% link {{ page.version.version }
 - [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})
 - [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
 - [Cluster settings]({% link {{ page.version.version }}/cluster-settings.md %})
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
