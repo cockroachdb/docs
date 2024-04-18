@@ -338,6 +338,12 @@ CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
   WITH resolved;
 ~~~
 
+### Filter changefeeds for tables using TTL
+
+{% include {{ page.version.version }}/cdc/disable-replication-ttl.md %}
+
+For guidance on how to filter changefeed messages to emit [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) deletes only, refer to [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}#reference-ttl-in-a-cdc-query).
+
 ### Manage a changefeed
 
  For {{ site.data.products.enterprise }} changefeeds, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to check the status of your changefeed jobs:

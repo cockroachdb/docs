@@ -556,6 +556,8 @@ Row-level TTL interacts with [changefeeds]({% link {{ page.version.version }}/cr
 
 - When expired rows are deleted, a [changefeed delete message]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages) is emitted.
 
+{% include {{ page.version.version }}/cdc/disable-replication-ttl.md %}
+
 For guidance on how to filter changefeed messages to emit row-level TTL deletes only, refer to [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}#reference-ttl-in-a-cdc-query).
 
 ## Backup and restore
