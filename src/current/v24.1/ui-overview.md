@@ -51,6 +51,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Changefeeds dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) has metrics about the [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) created across your cluster.
 - [Overload dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system]({% link {{ page.version.version }}/admission-control.md %}).
 - [TTL dashboard]({% link {{ page.version.version }}/ui-ttl-dashboard.md %}) has metrics about the progress and performance of [batch deleting expired data using Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) from your cluster.
+- [Physical Cluster Replication dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) has metrics about the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) streams between a primary and standby cluster.
 
 ### Databases
 
