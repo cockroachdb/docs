@@ -44,7 +44,7 @@ on the type.
 
 ## Known limitations
 
-- You can only reference a user-defined type from the database that contains the type.
+{% include {{ page.version.version }}/known-limitations/alter-type-limitations.md %}
 
 ## Example
 
