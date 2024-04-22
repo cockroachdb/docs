@@ -47,4 +47,3 @@ Enabling the automatic CPU profile capture on a cluster will add overhead to the
   - [CPU usage]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
 - We anticipate a sub-10% regression on these foreground latency metrics. This overhead to your cluster may be deemed acceptable in order to collect CPU profiles that are necessary to troubleshoot problems in your cluster.
 - Overhead only occurs during profile capture, not when it is idle.
-- To minimize the impact of overhead on your cluster, consider setting `server.cpu_profile.duration` to a lower value, for example `1s` or `2s` compared to the current default value of `10s`.
