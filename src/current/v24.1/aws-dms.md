@@ -59,7 +59,7 @@ Complete the following items before starting the DMS migration:
     - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 
-- If you are migrating to CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}) **before** starting the DMS migration. This makes CockroachDB logs accessible for [troubleshooting](#troubleshooting-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
+- If you are migrating to CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, enable [CockroachDB log export to Amazon CloudWatch]({% link cockroachcloud/export-logs.md %}) **before** starting the DMS migration. This makes CockroachDB logs accessible for [troubleshooting](#troubleshoot-common-issues). You will also need to select [**Enable CloudWatch logs** in your DMS task settings](#step-2-2-task-settings).
 
 #### Supported database technologies
 
