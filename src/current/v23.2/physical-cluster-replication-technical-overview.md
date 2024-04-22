@@ -32,7 +32,7 @@ The stream initialization proceeds as follows:
 1. Once the initial scan is complete, the primary then begins streaming all changes from the point of the starting timestamp.
 
 {% comment %}TODO Kathryn to update this graphic {% endcomment%}
-<img src="{{ 'images/v23.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system and application tenants showing the directional stream." style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v23.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 ### During the replication stream
 

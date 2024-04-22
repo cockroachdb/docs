@@ -49,10 +49,9 @@ ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
 
 ## Known limitations
 
-- Stored procedures cannot call other stored procedures or [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
-- Stored procedures do not support `OUT` and `INOUT` argument modes.
-- [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`) cannot be used within a stored procedure body. 
-- [Transactions]({% link {{ page.version.version }}/transactions.md %}) cannot be run within stored procedures.
+Stored procedures have the following limitations:
+
+{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
 
 Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).
 

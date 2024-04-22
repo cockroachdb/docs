@@ -347,6 +347,8 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE ... RESET {session variable}` resets a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for a database to its default value for the client session.
 
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
+
 #### Required privileges
 
 No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to reset a session setting.
@@ -368,6 +370,8 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... RESET {session
 ### `SET {session variable}`
 
 `ALTER DATABASE ... SET {session variable}` sets the default value of a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for all future sessions on the database. This command does **not** alter the session setting of the current session.
+
+{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
 
 #### Required privileges
 
