@@ -12,6 +12,9 @@ pre_production_preview_version:
 {% if page.pre_production_preview == true %}
 [CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.advanced }} clusters for testing and experimentation.
 
+{% if page.pre_production_preview == true %}
+[CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation.
+
 {{site.data.alerts.callout_danger}}
 This [testing release]({% link releases/index.md %}#release-naming) is not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
@@ -69,7 +72,6 @@ Before starting the upgrade, complete the following steps.
 
 ### Prepare for brief unavailability
 
-
 Your cluster will be unavailable while its single node is stopped and restarted with v23.1. Prepare your application for this brief downtime, typically a few minutes.
 
 The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the CockroachDB {{ site.data.products.cloud }} Console will also be disabled during this time.
@@ -89,7 +91,7 @@ Review the backward-incompatible changes and deprecated features announced in th
 
 ### Reset SQL statistics
 
-Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's SQL statistics. Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
+Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.page_version }}/cost-based-optimizer.md %}#table-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -83,17 +83,7 @@ To [index]({% link {{ page.version.version }}/indexes.md %}) a `JSONB` column yo
 
 ## Known limitations
 
-- You cannot use [primary key]({% link {{ page.version.version }}/primary-key.md %}), [foreign key]({% link {{ page.version.version }}/foreign-key.md %}), and [unique]({% link {{ page.version.version }}/unique.md %}) [constraints]({% link {{ page.version.version }}/constraints.md %}) on `JSONB` values.
-
-- {% include {{page.version.version}}/sql/jsonb-comparison.md %}
-
-- You cannot [order]({% link {{ page.version.version }}/order-by.md %}) queries using `JSONB` and `JSON`-typed columns.
-
-    [Tracking issue](https://github.com/cockroachdb/cockroach/issues/35706)
-
-- If the execution of a [join]({% link {{ page.version.version }}/joins.md %}) query exceeds the limit set for [memory-buffering operations]({% link {{ page.version.version }}/vectorized-execution.md %}#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
-
-    [Tracking issue](https://github.com/cockroachdb/cockroach/issues/35706)
+{% include {{ page.version.version }}/known-limitations/jsonb-limitations.md %}
 
 ## Examples
 

@@ -447,20 +447,7 @@ CREATE INDEX ON t USING GIN (b);
 
 Some PostgreSQL syntax and features are unsupported. These include, but are not limited to:
 
-- Aspects of [text search configurations](#text-search-configuration) other than the specified dictionary.
-- `websearch_to_tsquery()` built-in function.
-- `tsquery_phrase()` built-in function.
-- `ts_rank_cd()` built-in function.
-- `setweight()` built-in function.
-- Inverted joins on `TSVECTOR` values.
-- `tsvector || tsvector` comparisons.
-- `tsquery || tsquery` comparisons.
-- `tsquery && tsquery` comparisons.
-- `tsquery <-> tsquery` comparisons.
-- `!! tsquery` comparisons.
-- `tsquery @> tsquery` and `tsquery <@ tsquery` comparisons.
-
-For full details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41288).
+{% include {{ page.version.version }}/known-limitations/full-text-search-unsupported.md %}
 
 ## See also
 
