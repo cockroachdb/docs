@@ -12,9 +12,6 @@ pre_production_preview_version:
 {% if page.pre_production_preview == true %}
 [CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.advanced }} clusters for testing and experimentation.
 
-{% if page.pre_production_preview == true %}
-[CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation.
-
 {{site.data.alerts.callout_danger}}
 This [testing release]({% link releases/index.md %}#release-naming) is not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
