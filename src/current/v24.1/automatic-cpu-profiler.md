@@ -45,5 +45,3 @@ Enabling the automatic CPU profile capture on a cluster will add overhead to the
   - [P99 latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile)
   - P50 latency by creating a [custom chart]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) for the `sql.exec.latency-p50` metric
   - [CPU usage]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
-- We anticipate a sub-10% regression on these foreground latency metrics. This overhead to your cluster may be deemed acceptable in order to collect CPU profiles that are necessary to troubleshoot problems in your cluster.
-- Overhead only occurs during profile capture, not when it is idle.
