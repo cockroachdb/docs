@@ -17,17 +17,19 @@ To configure and manage log export for your CockroachDB {{ site.data.products.de
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
+Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) assigned one of the following [roles]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account):
 
-The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
+- [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator)
+- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
-Method | Required permissions | Description
---- | --- | ---
-`GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
-`POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
-`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
+The following methods are available for use with the `logexport` endpoint:
 
-See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) for instructions on configuring a CockroachDB {{ site.data.products.cloud }} service account with these required permissions.
+Method | Description
+-------|------------
+`GET` | Returns the current status of the log export configuration.
+`POST` | Enables log export, or updates an existing log export configuration.
+`DELETE` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
 
 ## Log name format
 
