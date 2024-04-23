@@ -29,8 +29,7 @@ The [role]({% link {{ page.version.version }}/security-reference/authorization.m
 
 ## Known limitations
 
-- [Enum]({% link {{ page.version.version }}/enum.md %}) types are not dropped.
-{% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
+{% include {{page.version.version}}/known-limitations/drop-owned-by-limitations.md %}
 
 ## Examples
 

@@ -465,3 +465,4 @@ When setting a time zone, note the following:
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.]({% link {{ page.version.version }}/timestamp.md %})
 - [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})
 - [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %})
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})

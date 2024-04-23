@@ -262,7 +262,7 @@ For examples, see [Drop columns](#drop-columns).
 
 #### Known limitations
 
-- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
+{% include {{ page.version.version }}/known-limitations/drop-column-partial-index.md %}
 
 #### Required privileges
 
