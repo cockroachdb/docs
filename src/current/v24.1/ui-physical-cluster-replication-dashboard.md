@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.db_console
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 The **Physical Cluster Replication** dashboard in the DB Console lets you monitor the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) streams between a primary and standby cluster.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) for your standby cluster, click **Metrics** on the left-hand navigation bar, and then select **Physical Cluster Replication** from the **Dashboard** dropdown.

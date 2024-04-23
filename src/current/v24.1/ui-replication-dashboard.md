@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.db_console
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster, such as range status, replicas per store, and replica quiescence.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
