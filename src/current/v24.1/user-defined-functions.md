@@ -14,7 +14,7 @@ A user-defined function (UDF) is a named function defined at the database level 
 
 The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
 
-- An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined `ENUM`]({% link {{ page.version.version }}/enum.md %}), or implicit record type. CockroachDB **does not** support default values for arguments.
+- An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined `ENUM`]({% link {{ page.version.version }}/enum.md %}), or implicit record type. A type can have a [`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}).
 - The return type can be a built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}), [`RECORD`]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-record-type), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, implicit record type, or `VOID`.
     - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results).
     - `VOID` indicates that there is no return type and `NULL` will always be returned. {% comment %}If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.{% endcomment %}
