@@ -423,21 +423,8 @@ BEGIN
 
 ## Known limitations
 
-- PL/pgSQL blocks cannot be nested.
-- Cursors used in PL/pgSQL execute their queries on opening. This can affect performance and resource usage.
-- Cursors cannot be declared with parameters.
-- `RECORD` and `ROW`-type variables cannot be declared in PL/pgSQL.
-- `NOT NULL` variables cannot be declared in PL/pgSQL.
-- PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`).
-- PL/pgSQL `EXCEPTION` blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
-- `FOR` loops (including `FOR` cursor loops and `FOR` query loops) and `FOREACH` loops are not supported.
-- `RETURN NEXT` and `RETURN QUERY` statements are not supported.
-- `CASE` statements are not supported.
-- `EXIT` and `CONTINUE` labels and conditions are not supported.
-- Variable shadowing (e.g., declaring a variable with the same name in an inner block) is not supported in PL/pgSQL.
-- When using the `RAISE` statement, schema objects related to the error cannot be named using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, and `SCHEMA`.
-- The `INTO` statement in PL/pgSQL does not support the `STRICT` option.
-- `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `NULL` statements are not supported for PL/pgSQL.
+{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
 
 ## See also
 

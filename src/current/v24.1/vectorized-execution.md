@@ -65,15 +65,7 @@ You can also configure a node's total budget for in-memory query processing with
 
 ## Known limitations
 
-### Unsupported queries
-
-The vectorized engine does not support queries containing:
-
-- A join filtered with an [`ON` expression]({% link {{ page.version.version }}/joins.md %}#supported-join-conditions). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/38018).
-
-### Spatial features
-
-The vectorized engine does not support [working with spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}). Queries with [geospatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) or [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}) will revert to the row-oriented execution engine.
+{% include {{ page.version.version }}/known-limitations/vectorized-engine-limitations.md %}
 
 ## See also
 
