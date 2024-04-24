@@ -44,13 +44,15 @@ Parameter | Description
 `RESUME REPLICATION` | Resume the replication stream.
 `COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time) for an example.</li></ul>
 `SET REPLICATION RETENTION = duration` | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
+`SET REPLICATION EXPIRATION WINDOW = duration` | Override the default producer job 24 hour expiration window. The producer job expiration window determines how long the producer job stays alive without a heartbeat from the consumer job. Refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for more details.
+`START REPLICATION OF virtual_cluster_spec ON physical_cluster` | Rewind a virtual cluster to the time when the virtual cluster on the promoted standby diverged from it. You can run this statement as part of the [cutback]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster) process to reuse the existing data on the original primary cluster as much as possible. Note that this statement will complete a check to confirm that the virtual cluster was originally replicated from the virtual cluster on the original primary cluster.
+`START SERVICE SHARED` | Start a virtual cluster. That is, start the standby's virtual cluster so it is ready to accept SQL connections after cutover.
+`RENAME TO virtual_cluster_spec` | Rename a virtual cluster.
+`STOP SERVICE` | Stop the `shared` service for a virtual cluster. Note that the virtual cluster's `data_state` will remain as `ready` for the service to be started once again.
 `GRANT ALL CAPABILITIES` | Grant a virtual cluster all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities).
 `REVOKE ALL CAPABILITIES` | Revoke all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from a virtual cluster.
 `GRANT CAPABILITY virtual_cluster_capability_list` | Specify a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) to grant to a virtual cluster.
 `REVOKE CAPABILITY virtual_cluster_capability_list` | Revoke a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from a virtual cluster.
-`RENAME TO virtual_cluster_spec` | Rename a virtual cluster.
-`START SERVICE SHARED` | Start a virtual cluster. That is, start the standby's virtual cluster so it is ready to accept SQL connections after cutover.
-`STOP SERVICE` | Stop the `shared` service for a virtual cluster. Note that the virtual cluster's `data_state` will remain as `ready` for the service to be started once again.
 
 ## Examples
 
@@ -67,6 +69,10 @@ You can use either:
 
 - `SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - `LATEST` to specify the most recent replicated timestamp.
+
+### Start the cutback process
+
+{% include {{ page.version.version }}/physical-replication/fast-cutback-syntax.md %}
 
 ### Set a retention window
 
