@@ -9,27 +9,38 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-This page explains Cockroach Labs' policy for supporting [major releases]({% link releases/index.md %}) of CockroachDB.
+This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB Self-Hosted. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy](TODO:<link to renamed/redirected page>).
 
-{{site.data.alerts.callout_info}}
-For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
-{{site.data.alerts.end}}
+There are two support types: GA and LTS (Long-Term Support). Each patch release of CockroachDB is assigned one of these types. The default is GA, unless otherwise specified.
 
-## Support cycle
+Initially, a major release series has GA support. After the series demonstrates a continuously high level of stability and performance, new patch releases are designated as LTS releases, which provide extended support windows. Specifically, the distinction determines the time spans of a release’s support phases: Maintenance Support, Assistance Support, and EOL (End of Life).
 
-Each major release of CockroachDB goes through the following support cycle:
+## Support Phases
 
-- **Maintenance Support:** For at least 365 days from the major release date, Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.
+- **Maintenance Support**: Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.
 
-- **Assistance Support:** Following the maintenance support period, Cockroach Labs will provide assistance support for at least an additional 180 days. During this period, the following guidelines will apply:
-    - New enhancements and error corrections will not be made to the major release.
-    - Cockroach Labs will direct customers to existing fixes/patches and workarounds applicable to the reported case.
-    - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a more current version of the product if a workaround does not exist.
-    - Cockroach Labs will continue to add critical security fixes to the major release in the form of patch releases.
+- **Assistance Support**: Immediately follows the Maintenance Support period. During this period, the following guidelines apply:
+  - New enhancements will not be made to the major release.
+  - Cockroach Labs will continue to add critical security fixes to the major release in the form of patch releases.
+  - Patch releases for the purpose of resolving bugs or other errors may no longer be made to the major release. 
+  - Cockroach Labs may direct customers to workarounds or other fixes applicable to the reported case.
+  - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a later version of the product, to resolve or further troubleshoot an issue.
 
-- **End of Life (EOL):** Following the assistance support period, Cockroach Labs will no longer provide any support for the release.
+- **End of Life (EOL)**: Following the assistance support period, Cockroach Labs will no longer provide any support for the release.
 
-Cockroach Labs will notify you by mail or email 6 months in advance of a major release transitioning into **Assistance Support** or **EOL**.
+## Support Types
+
+* **GA Support**: The default support type for production releases, starting with the initial production release of a major version, followed by each subsequent patch release before LTS releases begin for that major version.
+    * **Maintenance support ends**:
+        * **365 days** **after** the day of the **first production release** of the major version (i.e. the ‘GA release,’ ending in .0).
+    * **Assistance support ends**:
+        * **180 days after** the **Maintenance Support end date** of the release.
+    * Major versions prior to v23.1 will not have LTS releases.
+* **LTS (Long-Term Support)**: Conferred to an initial LTS maintenance release of a given major version and its subsequent maintenance releases. LTS provides extended support windows while also indicating our highest level of expected release stability and performance.
+    * **Maintenance support ends**:
+        * **365 days** **after** the day of the **first LTS release** of the major version.
+    * **Assistance support ends**:
+        * **365 days after** the **Maintenance Support end date** of the release.
 
 ## Current supported releases
 
