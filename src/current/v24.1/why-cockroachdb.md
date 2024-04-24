@@ -51,7 +51,3 @@ For more information, refer to [Multi-Region Capabilities Overview]({% link {{ p
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. This means that existing applications built on PostgreSQL can often be migrated to CockroachDB without changing application code.
 
 For more information, refer to [PostgreSQL Compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %})
-
-## Pick your deployment
-
-For more information about how to deploy CockroachDB and which option is best for your workload, refer to [How to Choose a Deployment Option]({% link {{ page.version.version }}/choose-a-deployment-option.md %}).

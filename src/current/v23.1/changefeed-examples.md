@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, {{ site.data.products.basic }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Core changefeeds are available in all products.
 
 For a comparative summary of all Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
@@ -21,12 +21,6 @@ Use the following filters to show usage examples for either **Enterprise** or **
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
-
-Creating {{ site.data.products.enterprise }} changefeeds is available on:
-
-- CockroachDB {{ site.data.products.dedicated }} clusters
-- CockroachDB {{ site.data.products.serverless }} clusters
-- CockroachDB {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %})
 
 You can connect to the following sinks:
 

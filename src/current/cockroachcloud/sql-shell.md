@@ -18,8 +18,8 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 
 - All statements in the SQL Shell are executed within a transaction, so you cannot use the [SET CLUSTER SETTING](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) statement to configure cluster settings.
 - The SQL Shell does not yet support sessions.
-- The SQL Shell is not available for CockroachDB {{ site.data.products.dedicated }} advanced clusters.
-- The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
+- The SQL Shell is not available for CockroachDB {{ site.data.products.advanced }} clusters with [additional security add-ons configured]({% link cockroachcloud/managing-access.md %}).
+- The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
 
 ## Overview
 
@@ -33,7 +33,7 @@ You can select any statement that you've previously run and copy it, edit it, or
 
 ## Example workflow
 
-The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) and have [access](#limitations) to the SQL Shell.
+The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) and have [access](#limitations) to the SQL Shell.
 
 1. In the SQL Shell, run [`CREATE TABLE`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/create-table) followed by a table name, the column names, and the [data type](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/data-types) and [constraint](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/constraints), if any, for each column:
 
