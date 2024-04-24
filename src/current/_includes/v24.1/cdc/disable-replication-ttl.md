@@ -16,7 +16,7 @@ ALTER TABLE events SET (ttl_expire_after = '1 year', ttl_disable_changefeed_repl
 You can also widen the scope of disabling changefeed replication in a cluster by using one of the following:
 
 - `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}): when `true`, deletes issued by TTL jobs on the cluster will not be emitted by changefeeds.
-- `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/set-vars.md %}): when `true`, deletes issues by TTL jobs will not be emitted by changefeeds during that session.
+- `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/set-vars.md %}): when `true`, changefeeds will not emit messages for any changes (e.g., `INSERT`, `UPDATE`) issued to watched tables during that session.
 
 If you want to have a changefeed ignore a disable changefeed replication parameter, variable, or setting, you can set the changefeed option `ignore_disable_changefeed_replication` to `true`:
 
