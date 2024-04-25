@@ -108,9 +108,12 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     </thead>
     <tbody>
             {% for r in releases %}
+
+              {% capture lts_link_linux %}{% if r.lts == true %}{% assign link = "releases/release-support-policy" | relative_url %}&nbsp;(<a href="{{ link }}">LTS</a>){% endif %}{% endcapture %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{{ lts_link_linux }}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -268,9 +271,14 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
+        {% capture lts_link_docker %}{% if r.lts == true %}{% assign link = "releases/release-support-policy" | relative_url %}&nbsp;(<a href="{{ link }}">LTS</a>){% endif %}{% endcapture %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
+".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r.
+{% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -296,7 +304,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% elsif r.docker.docker_arm_experimental == true %}
               **Intel**: GA<br />**ARM**: Experimental
             {% else %}
-              GA
+              GA{{ lts_link_docker }}
             {% endif %}
             </td>
         </tr>
@@ -317,9 +325,12 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
+        {% capture lts_link_source %}{% if r.lts == true %}{% assign link = "releases/release-support-policy" | relative_url %}&nbsp;(<a href="{{ link }}">LTS</a>){% endif %}{% endcapture %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{{ lts_link_source }}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
