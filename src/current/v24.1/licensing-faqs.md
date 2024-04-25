@@ -141,7 +141,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 You can monitor the time until your license expires in two ways:
 
-1. [DB console]({% link {{ page.version.version }}/ui-overview.md %}#license-expiration-alert) - The license expiration alert message gives  the number of days until the expiration date or the days since the expiration date.
+1. [DB console]({% link {{ page.version.version }}/ui-overview.md %}) - The [license expiration message]({% link {{ page.version.version }}/ui-overview.md %}#license-expiration-message) gives the number of days until the expiration date or the days since the expiration date.
 1. [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) - The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the Enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 
 ## Renew an expired license

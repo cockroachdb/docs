@@ -146,10 +146,9 @@ The DB Console stores temporary data in a time-series database in order to gener
 
 By default, the DB Console shares anonymous usage details with Cockroach Labs. For information about the details shared and how to opt-out of reporting, see [Diagnostics Reporting]({% link {{ page.version.version }}/diagnostics-reporting.md %}).
 
-## License expiration alert
+## License expiration message
 
-If you have [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) to use [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %}), you will see an alert message on the top right of the DB Console. While the license is valid, the message will read "License expires in _X_ days". If the license is no longer valid, the message will read "License expired _X_ days ago". Hovering over either alert message will display a tooltip with the actual expiration date of the license.
-
+If you have [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) to use [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %}), a license expiration message will be displayed at the top right of the DB Console. While the license is valid, the message will read "License expires in _X_ days". If the license is no longer valid, the message will read "License expired _X_ days ago". Hovering over either message displays a tooltip with the expiration date of the license.
 
 ## See also
 
