@@ -44,7 +44,7 @@ The high-level steps in this tutorial are:
 
 ### Initialize the primary cluster
 
-To enable physical cluster replication, it is necessary to initialize the CockroachDB cluster with the appropriate flag to determine the primary and standby clusters.
+To enable physical cluster replication, it is necessary to initialize the CockroachDB cluster with the appropriate flag to create the appropriate virtual clusters on the primary and standby cluster.
 
 When initializing the primary cluster, you pass the `--virtualized` flag to create a [_virtualized cluster_]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) with a `system` virtual cluster and a `main` virtual cluster. You pass the `--virtualized-empty` flag [to create a virtualized standby cluster](#initialize-the-standby-cluster) that contains a `system` virtual cluster.
 
@@ -222,6 +222,15 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     ~~~ sql
     SET CLUSTER SETTING enterprise.license = 'your enterprise license';
     ~~~
+
+1. Set the `kv.rangefeed.enabled` cluster setting to `true`. The replication job connects to a long-lived request, a _rangefeed_, which pushes changes as they happen:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+    {% comment %}While not strictly needed, it is necessary if a user then replicates from the promoted standby to the original primary. Add a note on this once the fast cutback work is published.{% endcomment %}
 
 1. Confirm the status of your virtual cluster:
 
