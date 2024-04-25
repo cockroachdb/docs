@@ -828,6 +828,9 @@
 - destination: cockroachcloud/resource-usage.md
   sources: ['cockroachcloud/serverless-resource-usage.md']
 
+- destination: cockroachcloud/cloud-unsupported-features.md
+  sources: ['cockroachcloud/serverless-unsupported-features.md']
+
 - destination: plan-your-cluster-basic.md
   sources:
     - 'plan-your-cluster-serverless.md'

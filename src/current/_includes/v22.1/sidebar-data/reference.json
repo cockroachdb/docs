@@ -1858,9 +1858,9 @@
         ]
       },
       {
-        "title": "Unsupported Features in CockroachDB Serverless",
+        "title": "Unsupported Features in CockroachDB Cloud",
         "urls": [
-          "/cockroachcloud/serverless-unsupported-features.html"
+          "/cockroachcloud/cloud-unsupported-features.html"
         ]
       },
       {
