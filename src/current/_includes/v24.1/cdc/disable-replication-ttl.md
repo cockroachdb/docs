@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v24.1" %} Use the `ttl_disable_changefeed_replication` table storage parameter to prevent changefeeds from sending messages on a per-table basis for changes caused by row-level TTL jobs. Include the storage parameter when you create or alter the table. For example:
+{% include_cached new-in.html version="v24.1" %} Use the `ttl_disable_changefeed_replication` table storage parameter to prevent changefeeds from sending `DELETE` messages issued by row-level TTL jobs for a table. Include the storage parameter when you create or alter the table. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -13,10 +13,7 @@ CREATE TABLE tbl (
 ALTER TABLE events SET (ttl_expire_after = '1 year', ttl_disable_changefeed_replication = 'true');
 ~~~
 
-You can also widen the scope of disabling changefeed replication in a cluster by using one of the following:
-
-- `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}): when `true`, deletes issued by TTL jobs on the cluster will not be emitted by changefeeds.
-- `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/set-vars.md %}): when `true`, changefeeds will not emit messages for any changes (e.g., `INSERT`, `UPDATE`) issued to watched tables during that session.
+You can also widen the scope to the cluster by setting the `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`. This will prevent changefeeds from emitting deletes issued by TTL jobs on a cluster.
 
 If you want to have a changefeed ignore a disable changefeed replication parameter, variable, or setting, you can set the changefeed option `ignore_disable_changefeed_replication` to `true`:
 
