@@ -5780,12 +5780,12 @@
   has_sha256sum: true
   mac:
     mac_arm: true
-    mac_arm_experimental: true
+    mac_arm_experimental: false
     mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: true
+    linux_arm_experimental: false
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
