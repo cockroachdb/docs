@@ -39,21 +39,22 @@ To view the current replication timestamp, use:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~
-  id |     name           | data_state  | service_mode | source_tenant_name |                                                  source_cluster_uri                                                   | replication_job_id |       replicated_time        |         retained_time         | cutover_time
------+--------------------+-------------+--------------+--------------------+-----------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------
-   5 | application        | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
+  id | name | source_tenant_name |              source_cluster_uri                 |         retained_time           |    replicated_time     | replication_lag | cutover_time |   status
+-----+------+--------------------+-------------------------------------------------+---------------------------------+------------------------+-----------------+--------------+--------------
+   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00   | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
+(1 row)
 ~~~
 
 Run the following from the standby cluster's SQL shell to start the cutover:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER application COMPLETE REPLICATION TO LATEST;
+ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO LATEST;
 ~~~
 
 The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
@@ -73,16 +74,15 @@ To select a [specific time]({% link {{ page.version.version }}/as-of-system-time
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
 
 The `retained_time` response provides the earliest time to which you can cut over.
 
-{% include_cached copy-clipboard.html %}
 ~~~
-id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
----+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-3  | application        | replicating        | none         | application        | postgresql://{user}:redacted@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted   | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+  id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+-----+------+--------------------+-------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
+   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
 (1 row)
 ~~~
 
@@ -90,7 +90,7 @@ Specify a timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER application COMPLETE REPLICATION TO SYSTEM TIME '-1h';
+ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '-1h';
 ~~~
 
 Refer to [Using different timestamp formats]({% link {{ page.version.version }}/as-of-system-time.md %}#using-different-timestamp-formats) for more information.
@@ -99,13 +99,16 @@ Similarly, to cut over to a specific time in the future:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER application COMPLETE REPLICATION TO SYSTEM TIME '+5h';
+ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '+5h';
 ~~~
 
 A future cutover will proceed once the replicated data has reached the specified time.
 
 {{site.data.alerts.callout_info}}
-To monitor for when the replication stream completes, use [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) to find the replication stream's `replication_job_id`, which you can pass to `SHOW JOB WHEN COMPLETE job_id` as the `job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
+To monitor for when the replication stream completes, do the following:
+
+1. Find the replication stream's `job_id` using `SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';`
+1. Run `SHOW JOB WHEN COMPLETE job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
 {{site.data.alerts.end}}
 
 ## Step 2. Complete the cutover
@@ -114,12 +117,12 @@ To monitor for when the replication stream completes, use [`SHOW VIRTUAL CLUSTER
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+    SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
     ~~~
-      id |        name         |         data_state          | service_mode | source_tenant_name |                                                source_cluster_uri                                                 | replication_job_id |       replicated_time        |         retained_time         |          cutover_time
-    -----+---------------------+-----------------------------+--------------+--------------------+-------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------------------------
-      4  | application         | replication pending cutover | none         | application        | postgresql://user:redacted@3ip:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted         | 903895265809498113 | 2023-09-28 17:41:18.03092+00 | 2023-09-28 16:09:04.327473+00 | 1695922878030920020.0000000000
+    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time           | replication_lag | cutover_time                   |   status
+    ---+------+--------------------+-------------------------------------------------+-------------------------------+------------------------------+-----------------+--------------------------------+--------------
+    3  | main | main               | postgresql://user@hostname or IP:26257?redacted | 2023-09-28 16:09:04.327473+00 | 2023-09-28 17:41:18.03092+00 | 00:00:19.602682 | 1695922878030920020.0000000000 | replication pending cutover
     (1 row)
     ~~~
 
@@ -129,15 +132,14 @@ To monitor for when the replication stream completes, use [`SHOW VIRTUAL CLUSTER
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER application START SERVICE SHARED;
+    ALTER VIRTUAL CLUSTER main START SERVICE SHARED;
     ~~~
 
     ~~~
       id |        name         |     data_state     | service_mode
     -----+---------------------+--------------------+---------------
       1  | system              | ready              | shared
-      2  | template            | ready              | none
-      3  | application         | ready              | shared
+      3  | main                | ready              | shared
     (3 rows)
     ~~~
 
@@ -145,7 +147,7 @@ To monitor for when the replication stream completes, use [`SHOW VIRTUAL CLUSTER
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING server.controller.default_target_cluster='application';
+    SET CLUSTER SETTING server.controller.default_target_cluster='main';
     ~~~
 
 At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
