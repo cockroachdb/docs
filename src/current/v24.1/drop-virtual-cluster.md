@@ -55,7 +55,7 @@ To remove a virtual cluster from a CockroachDB cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DROP VIRTUAL CLUSTER IF EXISTS application;
+DROP VIRTUAL CLUSTER IF EXISTS main;
 ~~~
 
 ### Remove a virtual cluster without waiting for garbage collection
@@ -64,7 +64,7 @@ Use `IMMEDIATE` to drop a virtual cluster instead of waiting for data to be garb
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DROP VIRTUAL CLUSTER IF EXISTS application IMMEDIATE;
+DROP VIRTUAL CLUSTER IF EXISTS main IMMEDIATE;
 ~~~
 
 ## See also
