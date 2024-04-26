@@ -46,7 +46,7 @@ The high-level steps in this tutorial are:
 
 To enable physical cluster replication, it is necessary to initialize the CockroachDB cluster with the appropriate flag to create the appropriate virtual clusters on the primary and standby cluster.
 
-When initializing the primary cluster, you pass the `--virtualized` flag to create a [_virtualized cluster_]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) with a `system` virtual cluster and a `main` virtual cluster. You pass the `--virtualized-empty` flag [to create a virtualized standby cluster](#initialize-the-standby-cluster) that contains a `system` virtual cluster.
+When initializing the [primary cluster](#initialize-the-primary-cluster), you pass the `--virtualized` flag to create a [_virtualized cluster_]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) with a `system` virtual cluster and a `main` virtual cluster.  When initializing the [standby cluster](#initialize-the-standby-cluster), you pass the `--virtualized-empty` flag to create a virtualized standby cluster that contains a `system` virtual cluster.
 
 For example, the `cockroach init` command to initialize the primary cluster (according to the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-3-start-nodes)):
 
@@ -73,7 +73,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
     The prompt will include `system` when you are connected to the system virtual cluster.
 
     {{site.data.alerts.callout_info}}
-    You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to the virtual cluster.
+    You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
     {{site.data.alerts.end}}
 
 1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
@@ -346,8 +346,8 @@ The system virtual cluster in the standby cluster initiates and controls the rep
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
-    ---+------+--------------------+-------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
+    id | name | source_tenant_name |              source_cluster_uri                        |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+    ---+------+--------------------+--------------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
     3  | main | main               | postgresql://user@{node IP or hostname}:26257?redacted | 2024-04-17 20:14:31.952783+00 | 2024-04-17 20:18:50+00 | 00:00:08.738176 |         NULL | replicating
     (1 row)
     ~~~

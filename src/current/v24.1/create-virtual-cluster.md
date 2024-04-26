@@ -87,7 +87,7 @@ To start a replication stream to the standby of the primary's virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE VIRTUAL CLUSTER main FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
+CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
 ~~~
 
 This will create a `main` virtual cluster in the standby cluster. The standby's system virtual cluster will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.

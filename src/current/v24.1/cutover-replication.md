@@ -44,9 +44,9 @@ SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 
 {% include_cached copy-clipboard.html %}
 ~~~
-  id | name | source_tenant_name |              source_cluster_uri               |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
------+------+--------------------+-----------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
-   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
+  id | name | source_tenant_name |              source_cluster_uri                 |         retained_time           |    replicated_time     | replication_lag | cutover_time |   status
+-----+------+--------------------+-------------------------------------------------+---------------------------------+------------------------+-----------------+--------------+--------------
+   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00   | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
 (1 row)
 ~~~
 
@@ -80,9 +80,9 @@ SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 The `retained_time` response provides the earliest time to which you can cut over.
 
 ~~~
-  id | name | source_tenant_name |              source_cluster_uri               |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
------+------+--------------------+-----------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
-   3 | main | main               | postgresql://{user}:redacted@{hostname}:26257?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
+  id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+-----+------+--------------------+-------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
+   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
 (1 row)
 ~~~
 
@@ -105,7 +105,10 @@ ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '+5h';
 A future cutover will proceed once the replicated data has reached the specified time.
 
 {{site.data.alerts.callout_info}}
-To monitor for when the replication stream completes, use `SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';` to find the replication stream's `job_id`, which you can pass to `SHOW JOB WHEN COMPLETE job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
+To monitor for when the replication stream completes, do the following:
+
+1. Find the replication stream's `job_id` using `SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';`
+1. Run `SHOW JOB WHEN COMPLETE job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
 {{site.data.alerts.end}}
 
 ## Step 2. Complete the cutover

@@ -108,7 +108,7 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS];
+    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbymain WITH REPLICATION STATUS];
     ~~~
     ~~~
          replicated_time
@@ -123,12 +123,12 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER main] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
     tenant_name |             end_ts             |     fingerprint
     ------------+--------------------------------+----------------------
-    application | 1704816945291575000.0000000000 | 2646132238164576487
+    main        | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
@@ -138,12 +138,12 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbymain] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
         tenant_name     |             end_ts             |     fingerprint
     --------------------+--------------------------------+----------------------
-    standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
+    standbymain         | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
