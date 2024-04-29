@@ -12,7 +12,7 @@ docs_area: manage
 You can monitor a physical cluster replication stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
-- The [Physical Replication dashboard](#db-console) on the DB Console.
+- The [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) on the [DB Console](#db-console).
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
 - [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
 
@@ -48,41 +48,7 @@ id | name | source_tenant_name |              source_cluster_uri                
 
 ## DB Console
 
-You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) for your standby cluster at `https://{your IP or hostname}:8080/`. Select the **Metrics** page from the left-hand navigation bar, and then select **Physical Cluster Replication** from the **Dashboard** dropdown. The user that accesses the DB Console must have `admin` privileges to view this dashboard.
-
-{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
-
-{{site.data.alerts.callout_info}}
-The **Physical Cluster Replication** dashboard tracks metrics related to physical cluster replication jobs. This is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-{{site.data.alerts.end}}
-
-The **Physical Cluster Replication** dashboard contains graphs for monitoring:
-
-### Logical bytes
-
-<img src="{{ 'images/v24.1/ui-logical-bytes.png' | relative_url }}" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **Logical Bytes** graph shows you the throughput of the replicated bytes.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The number of logical bytes replicated in MiB.
-
-{{site.data.alerts.callout_info}}
-When you [start a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication), the **Logical Bytes** graph will record a spike of throughput as the initial scan completes. {% comment %}link to technical details here{% endcomment %}
-{{site.data.alerts.end}}
-
-### SST bytes
-
-<img src="{{ 'images/v24.1/ui-sst-bytes.png' | relative_url }}" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **SST Bytes** graph shows you the rate at which all [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes are sent to the [KV layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) by physical cluster replication jobs.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The number of SST bytes replicated in MiB.
+You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor [logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes) and [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes) on the standby cluster.
 
 ## Prometheus
 
