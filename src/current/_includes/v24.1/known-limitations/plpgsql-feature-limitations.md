@@ -2,7 +2,6 @@
 - PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [#114701](https://github.com/cockroachdb/cockroach/issues/114701)
 - `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops, are not supported. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
 - `RETURN NEXT` and `RETURN QUERY` statements are not supported. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
-- `EXIT` and `CONTINUE` labels and conditions are not supported. [#115271](https://github.com/cockroachdb/cockroach/issues/115271)
 - `CASE` statements are not supported. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
 - `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `NULL` statements are not supported for PL/pgSQL. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
 - PL/pgSQL exception blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). [#111446](https://github.com/cockroachdb/cockroach/issues/111446)

@@ -218,7 +218,7 @@ For usage examples of conditional statements, see [Examples](#examples).
 
 ### Write loops
 
-Use looping syntax to repeatedly execute statements.
+Write a loop block to repeatedly execute statements.
 
 On its own, `LOOP` executes statements infinitely.
 
@@ -238,25 +238,76 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-Add an `EXIT` statement to end a `LOOP` or `WHILE` statement block. This should be combined with a [conditional statement](#write-conditional-statements).
+Add an `EXIT` statement to end a `LOOP` or `WHILE` block. An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
 
 ~~~ sql
 LOOP
 	statements;
-	IF condition THEN
-		EXIT;
-	END IF;
+	EXIT [ WHEN condition ];
   END LOOP;
 ~~~
 
-Add a `CONTINUE` statement to end a `LOOP` or `WHILE` statement block, skipping any statements below `CONTINUE`, and begin the next iteration of the loop. This should be combined with a [conditional statement](#write-conditional-statements). In the following example, if the `IF` condition is met, then `CONTINUE` causes the loop to skip the second block of statements and begin again.
+Add a label to an `EXIT` statement to target a block that has a matching label. An `EXIT` statement with a label can target either a loop block or a sequential block. An `EXIT` statement inside a sequential block must have a label.
+
+The following `EXIT` statement will end the `label` block before the statements are executed.
+
+~~~ sql
+BEGIN
+	<<label>>
+	BEGIN
+		EXIT label;
+		statements;
+	END;
+  END
+~~~
+
+{{site.data.alerts.callout_info}}
+If more than one PL/pgSQL block has a matching label, the innermost block is chosen.
+{{site.data.alerts.end}}
+
+In the following example, the `EXIT` statement in the inner loop is used to exit the outer loop.
+
+~~~ sql
+CREATE PROCEDURE p() AS $$
+  DECLARE
+  	i INT := 0;
+  BEGIN
+  	<<outer>>
+  	LOOP
+  		i := i + 1;
+  		<<inner>>
+  		LOOP
+  			EXIT outer WHEN i > 3;
+  		END LOOP;
+  	END LOOP;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+In the following example, `EXIT` statement in the inner block is used to exit the stored procedure.
+
+~~~ sql
+CREATE PROCEDURE p() AS $$
+  <<root>>
+  BEGIN
+  	RAISE NOTICE '%', 'this is printed';
+  	<<inner>>
+  	BEGIN
+	  	EXIT root;
+	  	RAISE NOTICE '%', 'this is not printed';
+	  END;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+Add a `CONTINUE` statement to end a `LOOP` or `WHILE` block, skipping any statements below `CONTINUE`, and begin the next iteration of the loop. 
+
+A `CONTINUE` statement can be combined with an optional `WHEN` boolean condition. In the following example, if a `WHEN` condition is defined and met, then `CONTINUE` causes the loop to skip the second group of statements and begin again.
 
 ~~~ sql
 LOOP
 	statements;
-	IF condition THEN
-		CONTINUE;
-	END IF;
+	CONTINUE [ WHEN condition ];
 	statements;
   END LOOP;
 ~~~
