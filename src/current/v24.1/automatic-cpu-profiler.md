@@ -14,7 +14,7 @@ You can configure automatic CPU profile capture with the following [cluster sett
 
 Cluster Setting | Description | Default Value
 ----------------|-------------|---------------
-`server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when CPU profiles should be taken. Collect profiles from each node that meets threshold. This setting enables and disables automatic cpu profiling.<ul><li>If a value of 0 is set, a profile will be taken every time the `server.cpu_profile.interval` has passed or the provided usage is increasing.</li><li>If a value greater than 0 and less than or equal to 100 is set, the profiler is enabled (default)</li><li>If a value over 100 is set, the profiler is disabled.</li></ul> | `65`
+`server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when a CPU profile should be taken from each node that meets the threshold.<ul><li>If a value of `0` is set, a profile is taken every time the `server.cpu_profile.interval` has passed or the provided usage is increasing.</li><li>If a value greater than `0` and less than or equal to `100` is set, the profiler is enabled (default)</li><li>If a value greater than `100` is set, the profiler is disabled.</li></ul> | `65`
 `server.cpu_profile.interval` | The period of time after which the [high-water mark](#high-water-mark-threshold) resets to the baseline value. | `20m0s` (20 minutes)
 `server.cpu_profile.duration` | The length of time a CPU profile is taken. | `10s` (10 seconds)
 `server.cpu_profile.total_dump_size_limit` | Maximum combined disk size for preserving CPU profiles. | `128 MiB` (128 Mebibytes)
@@ -25,11 +25,11 @@ The Automatic CPU Profiler runs asynchronously in the background. After every se
 
 The Automatic CPU Profiler uses the configuration options to determine the high-water mark threshold. For example, with `duration` set to `10s` , `interval` set to `20m0s`, and `cpu_usage_combined_threshold` set to `65`:
 
-- At `time0` the CPU usage polled is `70` percent which exceeds the baseline threshold of `65`, so a `10s` profile is captured and the high-water mark threshold becomes `70`.
+- At `time0` the CPU usage polled is `70` percent. This exceeds the baseline threshold of `65`, so a `10s` profile is captured and the high-water mark threshold becomes `70`.
 - After the `10s` profile capture, the Automatic CPU Profiler continues to check every second if the CPU usage now exceeds `70` percent.
-- At `time1` the CPU usage polled is `80` percent, another profile is taken for `10s` and the high-water mark threshold becomes `80`.
+- At `time1` the CPU usage polled is `80` percent, another profile is taken for `10s`, and the high-water mark threshold becomes `80`.
 - At `time2`, the `20m0s` interval after `time0`, the high-water mark threshold is reset to the baseline threshold of `65`.
-- The Automatic CPU Profiler continues its every second polling and captures profiles when CPU usage exceeds the high-water mark threshold beginning at the `65` percent baseline.
+- The Automatic CPU Profiler continues to poll every second, and captures a profile whenever CPU usage exceeds the high-water mark threshold.
 
 ## Accessing CPU profiles
 
