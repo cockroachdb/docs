@@ -26,16 +26,15 @@ In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
 
 Refer to [Responses](#responses) for a description of each field.
 
-{% include_cached copy-clipboard.html %}
 ~~~
-id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
----+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time           | replication_lag | cutover_time                   |   status
+---+------+--------------------+-------------------------------------------------+-------------------------------+------------------------------+-----------------+--------------------------------+--------------
+3  | main | main               | postgresql://user@hostname or IP:26257?redacted | 2023-09-28 16:09:04.327473+00 | 2023-09-28 17:41:18.03092+00 | 00:00:19.602682 | 1695922878030920020.0000000000 | replicating
 (1 row)
 ~~~
 
@@ -75,7 +74,7 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS];
+    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbymain WITH REPLICATION STATUS];
     ~~~
     ~~~
          replicated_time
@@ -90,12 +89,12 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER main] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
     tenant_name |             end_ts             |     fingerprint
     ------------+--------------------------------+----------------------
-    application | 1704816945291575000.0000000000 | 2646132238164576487
+    main        | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
@@ -105,12 +104,12 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbymain] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
         tenant_name     |             end_ts             |     fingerprint
     --------------------+--------------------------------+----------------------
-    standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
+    standbymain         | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
