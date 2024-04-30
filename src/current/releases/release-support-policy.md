@@ -9,7 +9,7 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB Self-Hosted. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy](TODO:<link to renamed/redirected page>).
+This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB Self-Hosted. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 
 There are two support types: GA and LTS (Long-Term Support). Each patch release of CockroachDB is assigned one of these types. The default is GA, unless otherwise specified.
 
