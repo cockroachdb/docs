@@ -481,7 +481,7 @@ Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version 
 
 ## Filtering changefeed messages
 
-There are several ways to define messages, filter different types of message, or prevent all changefeed messages from emitting to the sink. The following sections outline configurable settings and SQL syntax to achieve different use cases.
+There are several ways to define messages, filter different types of message, or prevent all changefeed messages from emitting to the sink. The following sections outline configurable settings and SQL syntax to handle different use cases.
 
 ### Prevent changefeeds from emitting row-level TTL deletes
 
