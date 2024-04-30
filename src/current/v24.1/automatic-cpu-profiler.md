@@ -14,7 +14,7 @@ You can configure automatic CPU profile capture with the following [cluster sett
 
 Cluster Setting | Description | Default Value
 ----------------|-------------|---------------
-`server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when a CPU profile should be taken from each node that meets the threshold.<ul><li>If a value of `0` is set, a profile is taken every time the `server.cpu_profile.interval` has passed or the provided usage is increasing.</li><li>If a value greater than `0` and less than or equal to `100` is set, the profiler is enabled (default)</li><li>If a value greater than `100` is set, the profiler is disabled.</li></ul> | `65`
+`server.cpu_profile.cpu_usage_combined_threshold` | The baseline threshold of CPU usage at which a CPU profile is taken from a node. This value is a percentage.<ul><li>If a value of `0` is set, a profile is taken every time the `server.cpu_profile.interval` has passed or the provided usage is increasing.</li><li>If a value greater than `0` and less than or equal to `100` is set, the profiler is enabled (default)</li><li>If a value greater than `100` is set, the profiler is disabled.</li></ul> | `65`
 `server.cpu_profile.interval` | The period of time after which the [high-water mark](#high-water-mark-threshold) resets to the baseline value. | `20m0s` (20 minutes)
 `server.cpu_profile.duration` | The length of time a CPU profile is taken. | `10s` (10 seconds)
 `server.cpu_profile.total_dump_size_limit` | Maximum combined disk size for preserving CPU profiles. | `128 MiB` (128 Mebibytes)
