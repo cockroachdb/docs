@@ -135,10 +135,6 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 1. Securely send each user the certificate and key that matches their username: `client.{username}.crt` and `client.{username}.key`.
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ## See also
 
 - [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
@@ -147,6 +143,3 @@ cockroach init --certs-dir=certs --host=localhost:26257
 - [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
 - [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
 - [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})
-- [Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %})
-- [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
-- [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)

@@ -65,10 +65,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ## Step 2. Start the cluster
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the first node:

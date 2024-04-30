@@ -126,10 +126,6 @@ Create a user certificate for `abbey` as well:
 $ cockroach cert create-client abbey --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 As one of the new users, use a [`SHOW SCHEMAS` statement]({% link {{ page.version.version }}/show-schemas.md %}) to show the preloaded and user-defined schemas in the `movr` database:
 
 {% include_cached copy-clipboard.html %}

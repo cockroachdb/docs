@@ -67,10 +67,6 @@ Note the following:
 
 - Keys (files ending in `.key`) must meet the [permission requirements check]({% link {{ page.version.version }}/cockroach-cert.md %}#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ## Examples
 
 ### Step 1. Create the CA key and certificate pair
@@ -361,10 +357,6 @@ In the following steps, replace the placeholder text in the code with the actual
     ~~~ sql
     > \q
     ~~~
-
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
 
 ### Step 5. Create the certificate and key pair for a client
 

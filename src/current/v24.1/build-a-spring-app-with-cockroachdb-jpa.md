@@ -84,10 +84,6 @@ $ cockroach cert create-client {user} --certs-dir=certs --ca-key={certs-dir}/ca.
 
 The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">

@@ -36,10 +36,6 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
     This step is application-specific and may require restarting the client.
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ### Rotate node certificates
 
 To rotate a node certificate, you create a new node certificate and key and reload them on the node.

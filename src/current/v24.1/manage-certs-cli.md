@@ -172,10 +172,6 @@ total 40
 -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:17 node.key
 ~~~
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ## List certificates and keys
 
 To list the certificates and keys in a directory, use the `create-client` subcommand.

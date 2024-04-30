@@ -52,10 +52,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
-{{site.data.alerts.end}}
-
 ## Step 2. Start a 3-node cluster
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start node 1:
