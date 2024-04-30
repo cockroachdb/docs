@@ -40,6 +40,23 @@ At the highest level, a PL/pgSQL block looks like the following:
   END
 ~~~
 
+PL/pgSQL blocks can be nested. An optional label can be placed above each block. Labels can be targeted by [`EXIT` statements](#exit-and-continue-statements).
+
+~~~ sql
+[ <<outer_block>> ]
+  [ DECLARE 
+    declarations ]
+  BEGIN
+    statements
+    [ <<inner_block>> ]
+    [ DECLARE 
+      declarations ]
+    BEGIN
+      statements
+    END;
+  END
+~~~
+
 When you create a function or procedure, you can enclose the entire PL/pgSQL block in dollar quotes (`$$`). Dollar quotes are not required, but are easier to use than single quotes, which require that you escape other single quotes that are within the function or procedure body.
 
 {% include_cached copy-clipboard.html %}
@@ -61,8 +78,7 @@ For complete examples, see [Create a user-defined function using PL/pgSQL](#crea
 
 ### Declare a variable
 
-`DECLARE` specifies all variable definitions that are used in the function or procedure body. 
-
+`DECLARE` specifies all variable definitions that are used in a block.
 ~~~ sql
 DECLARE
 	variable_name [ CONSTANT ] data_type [ := expression ];
@@ -71,7 +87,7 @@ DECLARE
 - `variable_name` is an arbitrary variable name.
 - `data_type` can be a supported [SQL data type]({% link {{ page.version.version }}/data-types.md %}), [user-defined type]({% link {{ page.version.version }}/create-type.md %}), or the PL/pgSQL `REFCURSOR` type, when declaring [cursor](#declare-cursor-variables) variables.
 - `CONSTANT` specifies that the variable cannot be [reassigned](#assign-a-result-to-a-variable), ensuring that its value remains constant within the block.
-- `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provides an optional default value for the variable.
+- `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provides an optional default value for the variable. Default values are evaluated every time a block is entered in a function or procedure.
 
 For example:
 
@@ -238,7 +254,9 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-Add an `EXIT` statement to end a `LOOP` or `WHILE` block. An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
+### `EXIT` and `CONTINUE` statements
+
+Add an `EXIT` statement to end a [loop block](#write-loops). An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
 
 ~~~ sql
 LOOP
@@ -272,12 +290,12 @@ CREATE PROCEDURE p() AS $$
   DECLARE
   	i INT := 0;
   BEGIN
-  	<<outer>>
+  	<<outer_loop>>
   	LOOP
   		i := i + 1;
-  		<<inner>>
+  		<<inner_loop>>
   		LOOP
-  			EXIT outer WHEN i > 3;
+  			EXIT outer_loop WHEN i > 3;
   		END LOOP;
   	END LOOP;
   END
@@ -288,19 +306,19 @@ In the following example, `EXIT` statement in the inner block is used to exit th
 
 ~~~ sql
 CREATE PROCEDURE p() AS $$
-  <<root>>
+  <<outer_block>>
   BEGIN
   	RAISE NOTICE '%', 'this is printed';
-  	<<inner>>
+  	<<inner_block>>
   	BEGIN
-	  	EXIT root;
+	  	EXIT outer_block;
 	  	RAISE NOTICE '%', 'this is not printed';
 	  END;
   END
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-Add a `CONTINUE` statement to end a `LOOP` or `WHILE` block, skipping any statements below `CONTINUE`, and begin the next iteration of the loop. 
+Add a `CONTINUE` statement to end a [loop block](#write-loops), skipping any statements below `CONTINUE`, and begin the next iteration of the loop. 
 
 A `CONTINUE` statement can be combined with an optional `WHEN` boolean condition. In the following example, if a `WHEN` condition is defined and met, then `CONTINUE` causes the loop to skip the second group of statements and begin again.
 
