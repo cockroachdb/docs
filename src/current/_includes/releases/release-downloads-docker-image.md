@@ -26,7 +26,7 @@ Experimental downloads are not qualified for production use and not eligible for
   {% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
   {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
-<div><div id="os-tabs" class="filters clearfix">
+<div><div class="os-tabs" class="filters clearfix">
 <a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.linux-amd64.tgz"><button id="linux-intel" class="filter-button" data-scope="linux-intel" data-eventcategory="linux-binary-release-notes">Linux Intel</button></a>
 
   {% if release.linux.linux_arm == true %}
