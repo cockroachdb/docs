@@ -30,7 +30,7 @@ The **Overview** section also displays the SQL statement fingerprint statistics 
 |**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
-|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
@@ -60,7 +60,7 @@ Charts following the execution attributes display statement fingerprint statisti
 |**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
-|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
