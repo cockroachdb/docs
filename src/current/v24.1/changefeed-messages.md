@@ -17,6 +17,7 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
 - [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
+- [Filtering changefeed messages](#filtering-changefeed-messages): The settings and syntax to prevent and filter the messages that changefeeds emit.
 - [Message formats](#message-formats): The limitations and type mapping when creating a changefeed with different message formats.
 
 {{site.data.alerts.callout_info}}
@@ -477,6 +478,31 @@ Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 {{site.data.alerts.end}}
+
+## Filtering changefeed messages
+
+There are several ways to define messages, filter different types of message, or prevent all changefeed messages from emitting to the sink. The following sections outline configurable settings and SQL syntax to handle different use cases.
+
+### Prevent changefeeds from emitting row-level TTL deletes
+
+{% include {{ page.version.version }}/cdc/disable-replication-ttl.md %}
+
+### Disable changefeeds from emitting messages
+
+To prevent changefeeds from emitting messages for any changes (e.g., `INSERT`, `UPDATE`) issued to watched tables during that session, set the `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/session-variables.md %}) to `true`.
+
+### Define the change data emitted to a sink
+
+When you create a changefeed, use change data capture queries to define the change data emitted to your sink.
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH updated AS SELECT column, column FROM table;
+~~~
+
+For details on syntax and examples, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
 
 ## Message formats
 
