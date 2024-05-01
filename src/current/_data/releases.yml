@@ -5262,7 +5262,7 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: true
+    linux_arm_experimental: false
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
@@ -5937,6 +5937,7 @@
   major_version: v23.1
   release_date: '2024-05-01'
   release_type: Production
+  lts: true
   go_version: go1.22.0
   sha: 93a67980ee45391b8ef02d40a6d50ddb0245817b
   has_sql_only: true
@@ -5948,7 +5949,7 @@
   windows: true
   linux:
     linux_arm: true
-    linux_arm_experimental: true
+    linux_arm_experimental: false
     linux_arm_limited_access: false
     linux_intel_fips: true
     linux_arm_fips: false
