@@ -188,6 +188,10 @@ For more information about how to use CockroachDB's multi-region capabilities, s
 
 ### Storage
 
+- [Storage engine](#storage-engine)
+- [Store](#store)
+- [Write Ahead Log (WAL) Failover](#write-ahead-log-wal-failover)
+
 #### Storage engine
 
 The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
@@ -225,6 +229,57 @@ Field | Description
 <a name="store-size"></a> `size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When no other nodes have available capacity, this limit will be exceeded. Data may also be written to the node faster than the cluster can rebalance it away; as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space (notated as a decimal or with `%`), for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000 ----> 10000000000 bytes`<br>`--store=path=/mnt/ssd01,size=20GB ----> 20000000000 bytes`<br>`--store=path=/mnt/ssd01,size=20GiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=0.02TiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20% ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2 ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2 ----> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%`<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.
 <a name="fields-ballast-size"></a> `ballast-size` | Configure the size of the automatically created emergency ballast file. Accepts the same value formats as the [`size` field](#store-size). For more details, see [Automatic ballast files]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).<br><br>To disable automatic ballast file creation, set the value to `0`:<br><br>`--store=path=/mnt/ssd01,ballast-size=0`
 <a name="store-provisioned-rate"></a> `provisioned-rate` | A mapping of a store name to a bandwidth limit, expressed in bytes per second. This constrains the bandwidth used for [admission control]({% link {{ page.version.version }}/admission-control.md %}) for operations on the store. The disk name is separated from the bandwidth value by a colon (`:`). A value of `0` (the default) represents unlimited bandwidth. For example: <br /><br />`--store=provisioned-rate=disk-name=/mnt/ssd01:200`<br /><br />**Default:** 0<br /><br />If the bandwidth value is omitted, bandwidth is limited to the value of the  [`kv.store.admission.provisioned_bandwidth` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#settings). <strong>Modify this setting only in consultation with your <a href="https://support.cockroachlabs.com/hc/en-us">support team</a>.</strong>
+`=wal-failover` <a name="flag-wal-failover"></a> | Used to configure [WAL failover](#write-ahead-log-wal-failover) on [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store). To enable WAL failover, pass `--wal-failover=among-stores`.  To disable, pass `--wal-failover=disabled` on [node restart]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node).
+
+#### Write Ahead Log (WAL) Failover
+
+{% include_cached new-in.html version="v24.1" %}
+
+When a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) is configured to run with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover the store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory.
+
+Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read or write from it, the node can still write to the WAL on another store. This can give the node a chance to eventually catch up once the disk stall has been resolved.
+
+When WAL failover is enabled, CockroachDB will take the the following actions:
+
+- At node startup, each store is assigned another store to be its failover destination.
+- CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
+- CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
+
+{% include feature-phases/preview.md %}
+
+When this feature exits preview status and is generally available (GA), it will be an [Enterprise feature]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+
+##### Enable WAL failover
+
+To enable WAL failover, you must take one of the following actions:
+
+- Pass [`--wal-failover=among-stores`](#flag-wal-failover) to `cockroach start`, or
+- Set the environment variable `COCKROACH_WAL_FAILOVER=among-stores` before starting the node.
+
+If you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as described below. This is necessary because although WAL failover alone is not enough to give a node time to recover from a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) without the node crashing or becoming unstable. The disk unavailability will create instability via another vector: [file logging]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files).
+
+Therefore, if you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
+
+- (**Recommended**) Configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks.
+- If you must log to local disks:
+  1. Disable [audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}). File-based audit logging and the WAL failover feature cannot coexist. File-based audit logging provides guarantees that every log message makes it to disk, otherwise CockroachDB needs to shut down. Because of this, resuming operations in the face of disk unavailability is not compatible with audit logging.
+  1. Enable asynchronous buffering of [`file-groups` log sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the [`buffering` configuration option]({% link {{ page.version.version }}/configure-logs.md %}#buffering). The `buffering` configuration can be applied to [`file-defaults`]({% link {{ page.version.version }}/configure-logs.md %}#configure-logging-defaults) or individual `file-groups` as needed.
+  1. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
+  1. When [`buffering`]({% link {{ page.version.version }}/configure-logs.md %}#buffering) is enabled, [`buffered-writes`]({% link {{ page.version.version }}/configure-logs.md %}#buffered-writes) must be explicitly disabled as shown below. This is necessary because `buffered-writes` does not provide true async disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang, which in turn will cause internal routines doing other important work to hang, potentially affecting cluster stability.
+  1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
+
+        ~~~
+        file-defaults:
+          buffered-writes: false
+          buffering:
+            max-staleness: 1s
+            flush-trigger-size: 256KiB
+            max-buffer-size: 50MiB
+        ~~~
+
+##### Disable WAL failover
+
+To disable WAL failover, you must [restart the node]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node) and pass the [`--wal-failover=disabled`](#flag-wal-failover) flag to `cockroach start`.
 
 ### Logging
 

@@ -978,6 +978,47 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 }
 ~~~
 
+## Store status endpoint
+
+The store status endpoint at `/_status/stores` provides information about the [stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) attached to each [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) of your cluster.
+
+The response is a JSON object containing a `stores` array of objects.  Each store object has the following fields:
+
+Field | Description
+------|------------
+`storeId` | The [store ID]({% link {{ page.version.version }}/alter-range.md %}#find-the-cluster-store-ids) associated with this [store]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+`nodeId` | The [node ID]({% link {{ page.version.version }}/cockroach-node.md %}#list-node-ids) associated with this [store]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+`encryptionStatus` | The [encryption status]({% link {{ page.version.version }}/encryption.md %}#checking-encryption-status) of this [store]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+`totalFiles` | If the store is [encrypted]({% link {{ page.version.version }}/encryption.md %}), the total number of encrypted files on the store.
+`totalBytes` | If the store is [encrypted]({% link {{ page.version.version }}/encryption.md %}), the total number of encrypted bytes on the store.
+`activeKeyFiles` | If the store is [encrypted]({% link {{ page.version.version }}/encryption.md %}),, the number of files using the [active data key]({% link {{ page.version.version }}/encryption.md %}#changing-encryption-algorithm-or-keys).
+`activeKeyBytes` | If the store is [encrypted]({% link {{ page.version.version }}/encryption.md %}),, the number of bytes using the [active data key]({% link {{ page.version.version }}/encryption.md %}#changing-encryption-algorithm-or-keys).
+`dir` | The directory on disk where the [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) is located.
+`walFailoverPath` | If [WAL failover is enabled]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover), this field encodes the path to the secondary WAL directory used for failover in the event of high write latency to the primary WAL.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl http://localhost:8080/_status/stores/1
+~~~
+
+~~~ json
+{
+  "stores": [
+    {
+      "storeId": 1,
+      "nodeId": 1,
+      "encryptionStatus": null,
+      "totalFiles": "0",
+      "totalBytes": "0",
+      "activeKeyFiles": "0",
+      "activeKeyBytes": "0",
+      "dir": "/tmp/node0",
+      "walFailoverPath": ""
+    }
+  ]
+}
+~~~
+
 ## Alerting tools
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
