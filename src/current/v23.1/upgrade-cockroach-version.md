@@ -14,16 +14,16 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**{% if latest.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
-- A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
-- Each [supported](https://www.cockroachlabs.com/docs/releases/release-support-policy) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
-- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
-- Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
+- A new *major release* is performed multiple times per year. The major version number indicates the year of release followed by the release number, starting with 1. For example, the latest major release is {{ actual_latest_prod.major_version }}.
+- Each [supported](https://www.cockroachlabs.com/docs/releases/release-support-policy) major release is maintained across *patch releases* that contain improvements including performance or security enhancements and bug fixes. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
+- All major and patch releases are suitable for production environments, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
+- Prior to an upcoming major release, alpha, beta, and release candidate (RC) binaries are made available for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.These "testing releases" are not suitable for production environments and are not eligible for spuport or uptime SLA commitments. For more information, refer to the [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
 
 {{site.data.alerts.callout_info}}
 There are no "minor releases" of CockroachDB.

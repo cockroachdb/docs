@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Cloud Access Management (Authorization) Overview
-summary: Learn about the CockroachDB {{ site.data.products.cloud }} Authorization features and concepts
+summary: Learn about CockroachDB Cloud authorization features and concepts
 toc: true
 docs_area: manage
 ---
