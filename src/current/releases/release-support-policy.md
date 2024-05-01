@@ -94,8 +94,8 @@ Date format: YYYY-MM-DD
 
     {% if r_eol != true and r_lts_eol != true %}{% comment %}Only show non-EOL releases {% endcomment %}
 
-      {% if v.initial_lts_patch != "N/A" %}
-  <tr>{% comment %} For LTS releases print an LTS row first{% endcomment %}
+      {% if v.initial_lts_patch != "N/A" %}{% comment %} For LTS releases print an LTS row first{% endcomment %}
+  <tr>
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}</td>
     <td>{% if v.initial_lts_patch != "N/A" %}{{ v.initial_lts_patch }}+{% endif %}</td>
     <td>LTS</td>
@@ -113,8 +113,7 @@ Date format: YYYY-MM-DD
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{% if v.asst_supp_exp_date != "N/A" %}{{ v.asst_supp_exp_date }}{% endif %}</td>
   </tr>
-  {% else %}{% continue %}
-  {% endif %}
+    {% endif %}
 
   {% endfor %} {% comment %} Display each non-EOL version, its release date, its maintenance support expiration date, and its assistance support expiration date, and its LTS maintenance and assistance support dates. Also include links to the latest hotfix version. {% endcomment %}
   </tbody>
@@ -142,25 +141,26 @@ The following releases are no longer supported.
     {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where_exp: "r_latest", "r_latest.withdrawn != true" | sort: "release_date" | last | map: "version" %} {% comment %} Calculate the latest non-withdrawn release for a version v. {% endcomment %}
 
     {% comment %}Evaluate whether the version is EOL for GA or LTS or both{% endcomment %}
+    {% assign r_eol = false %}
+    {% assign r_lts_eol = false %}
+    {% if v.lts_asst_supp_exp_date != "N/A" %}
+      {% comment %}This major version has LTS releases{% endcomment %}
+      {% assign r_has_lts = true %}
+      {% if v.lts_asst_supp_exp_date < today %}
+        {% comment %}LTS releases exist for this major version and are EOL{% endcomment %}
+        {% assign r_lts_eol = true %}
+      {% endif %}
+    {% endif %}
     {% if v.asst_supp_exp_date < today %}
       {% comment %}GA releases in this version are EOL{% endcomment %}
       {% assign r_eol = true %}
-      {% if v.lts_asst_supp_exp_date != "N/A" %}
-        {% comment %}This major version has LTS releases{% endcomment %}
-        {% assign r_has_lts = true %}
-        {% if v.lts_asst_supp_exp_date < today %}
-          {% comment %}LTS releases exist for this major version and are EOL{% endcomment %}
-          {% assign r_lts_eol = true %}
-        {% endif %}
-      {% endif %}
     {% endif %}
 
-    {% if r_eol == true or r_lts_eol == true %}
-
-      {% if v.initial_lts_patch != "N/A" %}
+    {% if r_eol == true %}
+      {% if r_lts_eol == true %}
   <tr class="eol">{% comment %} For LTS releases print an LTS row first{% endcomment %}
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}</td>
-    <td>{% if v.initial_lts_patch != "N/A" %}{{ v.initial_lts_patch }}+{% endif %}</td>
+    <td>{{ v.initial_lts_patch }}+</td>
     <td>LTS</td>
     <td>{{ v.initial_lts_release_date }}</td>
     <td>{% if v.lts_maint_supp_exp_date != "N/A" %}{{ v.lts_maint_supp_exp_date }}{% endif %}</td>
@@ -168,16 +168,16 @@ The following releases are no longer supported.
   </tr>
       {% endif %}
 
-  <tr class="eol">{% comment %} Always print a GA row{% endcomment %}
-    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% assign show_lts_footnote = false %}{% if (r_has_lts == true %}{% if r_lts_eol == true) %}{% assign show_lts_footnote = true %}{% endif %}{% endif %}{% if will_never_have_lts == true %}{% assign show_lts_footnote = true %}{% endif %}{% if show_lts_footnote == true) %}&nbsp;<a href="#eol"><sup>**</sup></a>{% endif %}</td>
+    {% comment %} Always print a GA row{% endcomment %}
+  <tr class="eol">
+    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}</td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
     <td>GA</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{% if v.asst_supp_exp_date != "N/A" %}{{ v.asst_supp_exp_date }}{% endif %}</td>
   </tr>
-  {% else %}{% continue %}
-  {% endif %}
+    {% endif %}
 
   {% endfor %} {% comment %} Display each EOL version, its release date, its maintenance support expiration date, and its assistance support expiration date, and its LTS maintenance and assistance support dates. Also include links to the latest hotfix version. {% endcomment %}
   </tbody>
