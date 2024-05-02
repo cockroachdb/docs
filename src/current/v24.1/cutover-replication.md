@@ -20,12 +20,7 @@ The cutover is a two-step process on the standby cluster:
 Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. However, the cutover process does **not** automatically redirect traffic to the standby cluster. Once the cutover is complete, you must redirect application traffic to the standby (new) cluster. If you do not manually redirect traffic, writes to the primary (original) cluster may be lost.
 {{site.data.alerts.end}}
 
-After a cutover, you may want to _cut back_ to the original primary cluster (or a different cluster). That is, set up the original primary cluster to once again accept application traffic. This requires you to either:
-
-- Replicate any changes from the original standby (now primary) back to the original primary before it can accept application traffic again.
-- Configure another full replication stream in the opposite direction from the original standby (now primary) to another cluster that will become the primary.
-
-For more details, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+After a cutover, you may want to _cut back_ to the original primary cluster (or a different cluster). That is, set up the original primary cluster to once again accept application traffic. For more details, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Step 1. Initiate the cutover
 
@@ -159,18 +154,15 @@ At this point, the primary and standby clusters are entirely independent. You wi
 
 ## Cut back to the primary cluster
 
-After cutting over to the standby cluster, you may need to move back to the original primary cluster, or a completely different cluster.
-
-Refer to:
-
-- {% include_cached new-in.html version="v24.1" %} [Cut back to the original primary cluster](#cut-back-to-the-original-primary-cluster).
-- [Cut back to a different cluster](#cut-back-to-a-different-cluster).
-
-### Cut back to the original primary cluster
+After cutting over to the standby cluster, you may need to move back to the original primary cluster to serve your application.
 
 {% include {{ page.version.version }}/physical-replication/fast-cutback-syntax.md %}
 
-#### Example
+{{site.data.alerts.callout_info}}
+To move back to a different cluster, follow the physical cluster replication [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+{{site.data.alerts.end}}
+
+### Example
 
 The following is a step-by-step example of cutting back to the original primary cluster. This example assumes that a cutover from a primary to standby cluster has occurred, and the promoted standby has been serving traffic.
 
@@ -271,17 +263,6 @@ The following is a step-by-step example of cutting back to the original primary 
     ~~~
 
 At this point, **cluster A** is once again the primary and **cluster B** is once again the standby. The clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the primary (**cluster A**). To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
-
-### Cut back to a different cluster
-
-To create a completely new virtual cluster in the original primary cluster, or another physical cluster, use the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE VIRTUAL CLUSTER new_vc FROM REPLICATION OF promoted_standby_vc ON connection_string_standby;
-~~~
-
-This command will start an initial backfill of all data from the source (the promoted standby) to the new cluster, and then continuously apply changes as they are streamed.
 
 ## See also
 
