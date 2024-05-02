@@ -32,7 +32,7 @@ Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerp
 {{site.data.alerts.callout_info}}
 To obtain the execution statistics, CockroachDB samples a percentage of the executions. If you see `no samples` displayed in the **Contention**, **Max Memory**, or **Network** columns, there are two possibilities:
 - Your statement executed successfully but wasn't sampled because there were too few executions of the statement.
-- Your statement has failed (the most likely case). You can confirm by clicking the statement and viewing the value for **Failed?**.
+- Your statement has failed (the most likely case). You can confirm by clicking the statement and viewing the value for **Failure Count**.
 {{site.data.alerts.end}}
 
 To view statement details, click a SQL statement fingerprint in the **Statements** column to open the **Statement Fingerprint** page.
