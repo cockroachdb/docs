@@ -42,15 +42,19 @@ The following sections provide more details about CockroachDB {{ site.data.produ
 
 CockroachDB {{ site.data.products.serverless }} is not currently available on Azure.
 
+### Can we use {{ site.data.products.db }} credits to pay for clusters on Azure?
+
+Yes, a CockroachDB {{ site.data.products.cloud }} organization can pay for the usage of CockroachDB {{ site.data.products.dedicated }} clusters on Azure with {{ site.data.products.db }} credits. To add additional credits to your CockroachDB {{ site.data.products.cloud }} organization, contact your Cockroach Labs account team.
+
+### Can we migrate from PostgreSQL to CockroachDB {{ site.data.products.dedicated }} on Azure?
+
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. Refer to [Supported SQL Feature Support](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sql-feature-support). The same CockroachDB binaries are used across CockroachDB {{ site.data.products.cloud }} deployment environments, and all SQL features behave the same on Azure as on GCP or AWS.
+
 ### What kind of compute and storage resources are used?
 
 {{ site.data.products.dedicated }} clusters on Azure use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types.
 
 CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 4 vcPUs per node on Azure.
-
-### Can we use {{ site.data.products.db }} credits to pay for clusters on Azure?
-
-Yes, a CockroachDB {{ site.data.products.cloud }} organization can pay for the usage of CockroachDB {{ site.data.products.dedicated }} clusters on Azure with {{ site.data.products.db }} credits. To add additional credits to your CockroachDB {{ site.data.products.cloud }} organization, contact your Cockroach Labs account team.
 
 ### What backup and restore options are available for clusters on Azure?
 
@@ -61,10 +65,6 @@ You can [take and restore from encrypted backups]({% link cockroachcloud/take-an
 ### Are changefeeds available?
 
 Yes, customers can create and configure [changefeeds](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/changefeed-messages) to send data events in real-time from a CockroachDB {{ site.data.products.dedicated }} cluster to a [downstream sink](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/changefeed-sinks.html) such as Kafka, Azure storage, or Webhook. [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
-
-### Can we migrate from PostgreSQL to CockroachDB {{ site.data.products.dedicated }} on Azure?
-
-CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. Refer to [Supported SQL Feature Support](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sql-feature-support). The same CockroachDB binaries are used across CockroachDB {{ site.data.products.cloud }} deployment environments, and all SQL features behave the same on Azure as on GCP or AWS.
 
 ### What secure and centralized authentication methods are available for {{ site.data.products.dedicated }} clusters on Azure?
 
