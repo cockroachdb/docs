@@ -273,8 +273,8 @@ The following `EXIT` statement will end the `label` block before the statements 
 BEGIN
 	<<label>>
 	BEGIN
-		EXIT label;
-		statements;
+	  EXIT label;
+	  statements;
 	END;
   END
 ~~~
@@ -478,6 +478,73 @@ BEGIN
   END
 ~~~
 
+### Perform transaction control
+
+Use a `COMMIT` or `ROLLBACK` statement to issue a group of PL/pgSQL statements as an explicit transaction within a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}). Any updates made by those statements are either committed or rolled back, while [PL/pgSQL variables](#declare-a-variable) keep their values. 
+
+~~~ sql
+BEGIN
+	statements
+	[ COMMIT | ROLLBACK ]
+~~~
+
+`COMMIT` and `ROLLBACK` statements within PL/pgSQL blocks have the following requirements:
+
+- They must be used inside a PL/pgSQL [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+{% comment %}- The procedure must be called directly in a `CALL` statement, or all of its ancestors must be stored procedures or `DO` blocks{% endcomment %}.
+- The procedure must be called directly in a [`CALL`]({% link {{ page.version.version }}/call.md %}) SQL statement. It cannot be [called by another stored procedure](#call-a-procedure).
+- There cannot be a [`RAISE EXCEPTION`](#report-messages-and-handle-exceptions) or [`EXCEPTION`](#write-exception-logic) statement preceding the `COMMIT` or `ROLLBACK` statement.
+- The procedure must be called from an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements); i.e., the call cannot be enclosed by [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) and [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) SQL statements.
+
+Statements that follow a `COMMIT` or `ROLLBACK` automatically start another PL/pgSQL transaction. If a transaction is running when the procedure ends, it is implicitly committed without having to be followed by a `COMMIT`.
+
+~~~ sql
+BEGIN
+	...
+	[ COMMIT | ROLLBACK ]
+	statements
+  END
+~~~
+
+Use one or more optional `SET TRANSACTION` statements to set the [priority, isolation level, timestamp, or read-only status]({% link {{ page.version.version }}/set-transaction.md %}#parameters) of a PL/pgSQL transaction. In PL/pgSQL, `SET TRANSACTION` statements **must** directly follow a `COMMIT` or `ROLLBACK` statement and must precede the other statements in the transaction.
+
+~~~ sql
+BEGIN
+	...
+	[ COMMIT | ROLLBACK ]
+	[ SET TRANSACTION mode ]
+	statements
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE PROCEDURE p() LANGUAGE PLpgSQL AS
+  $$
+  BEGIN
+    COMMIT;
+    SET TRANSACTION PRIORITY HIGH;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    RAISE NOTICE '%', current_setting('transaction_isolation');
+    RAISE NOTICE '%', current_setting('transaction_priority');
+  END
+  $$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CALL p();
+~~~
+
+~~~
+NOTICE: read committed
+NOTICE: high
+CALL
+~~~
+
+Any PL/pgSQL transaction not preceded by a `SET TRANSACTION` statement uses the default settings.
+
 ### Call a procedure
 
 Use a `CALL` statement to call a procedure from within a PL/pgSQL [function]({% link {{ page.version.version }}/user-defined-functions.md %}) or [procedure]({% link {{ page.version.version }}/stored-procedures.md %}). 
@@ -485,7 +552,6 @@ Use a `CALL` statement to call a procedure from within a PL/pgSQL [function]({% 
 ~~~ sql
 BEGIN
 	CALL procedure(parameters);
-	...
 ~~~
 
 A PL/pgSQL routine that calls a procedure should [declare a variable](#declare-a-variable) that will store the result of each of that procedure's `OUT` parameters. For example, given the procedure:
