@@ -162,7 +162,7 @@ NOTICE: New Row: 2
 CALL
 ~~~
 
-The following [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) uses the `max()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) to find the maximum `col` value in table `t`, and assigns the result to `i`.
+The following [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) uses the `max` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) to find the maximum `col` value in table `t`, and assigns the result to `i`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -477,6 +477,45 @@ BEGIN
       RETURN others;
   END
 ~~~
+
+### Call a procedure
+
+Use a `CALL` statement to call a procedure from within a PL/pgSQL [function]({% link {{ page.version.version }}/user-defined-functions.md %}) or [procedure]({% link {{ page.version.version }}/stored-procedures.md %}). 
+
+~~~ sql
+BEGIN
+	CALL procedure(parameters);
+	...
+~~~
+
+A PL/pgSQL routine that calls a procedure should [declare a variable](#declare-a-variable) that will store the result of each of that procedure's `OUT` parameters. For example, given the procedure:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE output_one(OUT value INT) AS
+  $$
+  BEGIN
+    value := 1;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+To call `output_one` within another procedure:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE output() AS
+  $$
+  DECLARE
+    output_value INT;
+  BEGIN
+    CALL output_one(output_value);
+    RAISE NOTICE 'Output value: %', output_value;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+For another example, see [Create a stored procedure that calls a procedure]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-calls-a-procedure).
 
 ## Examples
 

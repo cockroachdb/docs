@@ -167,6 +167,58 @@ SELECT city,current_location,type FROM available_vehicles();
 (5 rows)
 ~~~
 
+### Create a function that uses `OUT` and `INOUT` parameters
+
+The following statement uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION double_triple(INOUT double INT, OUT triple INT) AS 
+  $$
+  BEGIN
+    double := double * 2;
+    triple := double * 3;
+  END;
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT double_triple(1);
+~~~
+
+~~~
+  double_triple
+-----------------
+  (2,6)
+~~~
+
+### Create a function that invokes a function
+
+The following statement defines a function that invokes the [`double_triple` example function](#create-a-function-that-uses-out-and-inout-parameters). 
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION f(input_value INT)
+  RETURNS RECORD 
+  AS $$
+  BEGIN
+      RETURN double_triple(input_value);
+  END;
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT f(1);
+~~~
+
+~~~
+    f
+---------
+  (2,6)
+~~~
+
 ### Create a function that returns a `RECORD` type
 
 The following statement defines a function that returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.

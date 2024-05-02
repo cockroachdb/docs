@@ -21,6 +21,7 @@ CREATE PROCEDURE procedure_name(parameters)
 ~~~
 
 - Each parameter can be a supported [SQL data type]({% link {{ page.version.version }}/data-types.md %}), [user-defined type]({% link {{ page.version.version }}/create-type.md %}), or the PL/pgSQL `REFCURSOR` type, when [declaring PL/pgSQL cursor variables]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables).
+- CockroachDB supports the `IN` (default), `OUT`, and `INOUT` modes for parameters. For an example, see [Create a procedure that uses `OUT` and `INOUT` parameters]({% link {{ page.version.version }}/create-procedure.md %}#create-a-procedure-that-uses-out-and-inout-parameters).
 - `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages [`SQL`]({% link {{ page.version.version }}/sql-statements.md %}) and [`PLpgSQL`]({% link {{ page.version.version }}/plpgsql.md %}).
 - The procedure body: 
 	- Can be enclosed in single or dollar (`$$`) quotes. Dollar quotes are easier to use than single quotes, which require that you escape other single quotes that are within the procedure body.
