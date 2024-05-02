@@ -5269,7 +5269,7 @@
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
-    docker_arm_experimental: true
+    docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.12
@@ -5323,7 +5323,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
+    docker_arm_experimental: true
     docker_arm_limited_access: true
   source: true
   previous_release: v23.2.0-beta.3
@@ -5350,7 +5350,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
-    docker_arm_experimental: false
+    docker_arm_experimental: true
     docker_arm_limited_access: true
   source: true
   previous_release: v23.2.0-rc.1
@@ -5792,7 +5792,7 @@
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
-    docker_arm_experimental: true
+    docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.17
@@ -5956,7 +5956,7 @@
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
-    docker_arm_experimental: true
+    docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.19
