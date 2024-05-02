@@ -34,9 +34,9 @@ have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction
 
 The following statements are not represented by the preceding fingerprint:
 
-- INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (380, 11, 11098, 1);
-- INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (192, 891, 20, 2);
-- INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (784, 452, 78, 3);
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (380, 11, 11098, 1)`;
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (192, 891, 20, 2)`;
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (784, 452, 78, 3)`;
 
 Instead, they have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (_, __more__)`
 
