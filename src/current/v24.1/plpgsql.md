@@ -121,14 +121,14 @@ For information about opening and using cursors, see [Open and use cursors](#ope
 
 ### Assign a result to a variable
 
-Use the PL/pgSQL `INTO` clause to assign a result of a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) or mutation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})) statement to a specified variable:
+Use the PL/pgSQL `INTO` clause to assign a result of a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) or mutation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})) statement to a specified variable. The optional `STRICT` clause specifies that the statement must return exactly one row; otherwise, the function or procedure will error.
 
 ~~~ sql
-SELECT expression INTO target FROM ...;
+SELECT expression INTO [ STRICT ] target FROM ...;
 ~~~
 
 ~~~ sql
-[ INSERT | UPDATE | DELETE ] ... RETURNING expression INTO target;
+[ INSERT | UPDATE | DELETE ] ... RETURNING expression INTO [ STRICT ] target;
 ~~~
 
 - `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that defines the result to be assigned to the variable.
