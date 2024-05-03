@@ -20,7 +20,7 @@ The cutover is a two-step process on the standby cluster:
 Initiating a cutover is a manual process that makes the standby cluster ready to accept SQL connections. However, the cutover process does **not** automatically redirect traffic to the standby cluster. Once the cutover is complete, you must redirect application traffic to the standby (new) cluster. If you do not manually redirect traffic, writes to the primary (original) cluster may be lost.
 {{site.data.alerts.end}}
 
-After a cutover, you may want to _cut back_ to the original primary cluster (or a different cluster). That is, set up the original primary cluster to once again accept application traffic. For more details, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+After a cutover, you may want to _cut back_ to the original primary cluster (or a different cluster) to set up the original primary cluster to once again accept application traffic. For more details, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Step 1. Initiate the cutover
 
@@ -154,7 +154,7 @@ At this point, the primary and standby clusters are entirely independent. You wi
 
 ## Cut back to the primary cluster
 
-After cutting over to the standby cluster, you may need to move back to the original primary cluster to serve your application.
+After cutting over to the standby cluster, you may need to cut back to the original primary cluster to serve your application.
 
 {% include {{ page.version.version }}/physical-replication/fast-cutback-syntax.md %}
 
@@ -164,13 +164,13 @@ To move back to a different cluster, follow the physical cluster replication [se
 
 ### Example
 
-The following is a step-by-step example of cutting back to the original primary cluster. This example assumes that a cutover from a primary to standby cluster has occurred, and the promoted standby has been serving traffic.
+This section illustrates the steps to cut back to the original primary cluster from the promoted standby cluster that is currently serving traffic.
 
 - **Cluster A** = original primary cluster
 - **Cluster B** = original standby cluster
 
-1. **Cluster B** is now serving application traffic after the [cutover](#step-2-complete-the-cutover).
-1. To begin the cutback to the original primary cluster (**cluster A**), it is necessary that the virtual cluster (e.g., `vc_a`) is no longer serving traffic. Connect to the system virtual on **cluster A**:
+1. **Cluster B** is serving application traffic after the [cutover](#step-2-complete-the-cutover).
+1. To begin the cutback to **Cluster A**, the virtual cluster must first stop accepting connections. Connect to the system virtual on **Cluster A**:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -179,14 +179,14 @@ The following is a step-by-step example of cutting back to the original primary 
     --certs-dir "certs"
     ~~~
 
-1. From the system virtual cluster on **cluster A**, ensure that service to the virtual cluster has stopped:
+1. From the system virtual cluster on **Cluster A**, ensure that service to the virtual cluster has stopped:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER vc_a STOP SERVICE;
+    ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
-1. Open another terminal window and connect to the system virtual cluster for **cluster B**:
+1. Open another terminal window and connect to the system virtual cluster for **Cluster B**:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -195,21 +195,21 @@ The following is a step-by-step example of cutting back to the original primary 
     --certs-dir "certs"
     ~~~
 
-1. From the system virtual cluster on **cluster B**, enable rangefeeds:
+1. From the system virtual cluster on **Cluster B**, enable rangefeeds:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = 'true';
     ~~~
 
-1. From the system virtual cluster on **cluster A**, start the replication from cluster B to cluster A:
+1. From the system virtual cluster on **Cluster A**, start the replication from cluster B to cluster A:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER {vc_a} START REPLICATION OF {vc_b} ON 'postgresql://{user}@{ node IP or hostname cluster B}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{standby cert}.crt';
+    ALTER VIRTUAL CLUSTER {cluster_a} START REPLICATION OF {cluster_b} ON 'postgresql://{user}@{ node IP or hostname cluster B}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{standby cert}.crt';
     ~~~
 
-    This will rewind the virtual cluster on **A** back to the time at which the same virtual cluster on **B** diverged from it. **Cluster A** will check with **cluster B** to confirm that its virtual cluster was replicated from **cluster A** as part of the original [physical cluster replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+    This will reset the virtual cluster on **Cluster A** back to the time at which the same virtual cluster on **Cluster B** diverged from it. **Cluster A** will check with **Cluster B** to confirm that its virtual cluster was replicated from **Cluster A** as part of the original [physical cluster replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
     {{site.data.alerts.callout_success}}
     For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
@@ -219,7 +219,7 @@ The following is a step-by-step example of cutting back to the original primary 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER {vc_a};
+    SHOW VIRTUAL CLUSTER {cluster_a};
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -232,11 +232,11 @@ The following is a step-by-step example of cutting back to the original primary 
       (2 rows)
     ~~~
 
-1. Run the following from **cluster A** to start the cutover:
+1. From **Cluster A**, start the cutover:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER {vc_a} COMPLETE REPLICATION TO LATEST;
+    ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
 
     The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
@@ -248,21 +248,21 @@ The following is a step-by-step example of cutting back to the original primary 
     (1 row)
     ~~~
 
-1. From **cluster A**, bring the virtual cluster online with:
+1. From **Cluster A**, bring the virtual cluster online:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER {vc_a} START SERVICE SHARED;
+    ALTER VIRTUAL CLUSTER {cluster_a} START SERVICE SHARED;
     ~~~
 
-1. To make **cluster A's** virtual cluster the default for connection strings, set the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+1. To make **Cluster A's** virtual cluster the default for [connection strings]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#sql-clients), set the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING server.controller.default_target_cluster='{vc_a}';
+    SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~
 
-At this point, **cluster A** is once again the primary and **cluster B** is once again the standby. The clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the primary (**cluster A**). To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 ## See also
 
