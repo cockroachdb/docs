@@ -10,7 +10,7 @@ keywords: authentication, ldap, X.509, X509, tls
 
 This mapping (hereafter referred to as "Subject mapping") can be used to automate the synchronization of SQL user roles with specific certificate attributes, leading to improved scalability of access control mechanisms.
 
-Subject mapping can be useful if:
+Subject mapping is useful if:
 
 - You run your own [Certificate Authority (CA)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority) infrastructure.
 - You need to use your existing CA infrastructure to manage [SQL user authentication]({% link {{ page.version.version }}/create-user.md %}#user-authentication).
