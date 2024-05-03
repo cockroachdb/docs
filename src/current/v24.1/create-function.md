@@ -167,6 +167,33 @@ SELECT city,current_location,type FROM available_vehicles();
 (5 rows)
 ~~~
 
+### Create a function that returns a `RECORD` type
+
+The following statement defines a function that returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
+
+In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
+  SELECT * FROM users WHERE id = (
+    SELECT rider_id FROM rides WHERE end_time = (SELECT max(end_time) FROM rides)
+  )
+$$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT last_rider();
+~~~
+
+~~~
+                                                last_rider
+----------------------------------------------------------------------------------------------------------
+  (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
+(1 row)
+~~~
+
 ### Create a function that uses `OUT` and `INOUT` parameters
 
 The following statement uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
@@ -193,6 +220,30 @@ SELECT double_triple(1);
   (2,6)
 ~~~
 
+Note that the `CREATE FUNCTION` statement does not need a `RETURN` statement because this is added implicitly for a function with `OUT` parameters:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE FUNCTION double_triple;
+~~~
+
+~~~
+  function_name |                             create_statement
+----------------+---------------------------------------------------------------------------
+  double_triple | CREATE FUNCTION public.double_triple(INOUT double INT8, OUT triple INT8)
+                |     RETURNS RECORD
+                |     VOLATILE
+                |     NOT LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE plpgsql
+                |     AS $$
+                |     BEGIN
+                |     double := double * 2;
+                |     triple := double * 3;
+                |     END;
+                | $$
+~~~
+
 ### Create a function that invokes a function
 
 The following statement defines a function that invokes the [`double_triple` example function](#create-a-function-that-uses-out-and-inout-parameters). 
@@ -217,33 +268,6 @@ SELECT f(1);
     f
 ---------
   (2,6)
-~~~
-
-### Create a function that returns a `RECORD` type
-
-The following statement defines a function that returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
-
-In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
-  SELECT * FROM users WHERE id = (
-    SELECT rider_id FROM rides WHERE end_time = (SELECT max(end_time) FROM rides)
-  )
-$$;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT last_rider();
-~~~
-
-~~~
-                                                last_rider
-----------------------------------------------------------------------------------------------------------
-  (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
-(1 row)
 ~~~
 
 ### Create a function that uses a loop

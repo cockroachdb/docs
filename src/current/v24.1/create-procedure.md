@@ -83,7 +83,7 @@ CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-When calling a procedure, you need to supply placeholder values for any `OUT` parameters. When [calling a procedure from within another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
+When calling a procedure, you need to supply placeholder values for any `OUT` parameters. When [calling a procedure from another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -99,6 +99,10 @@ CALL double_triple(1, NULL);
 ### Create a stored procedure that calls a procedure
 
 The following example defines a procedure that calls the [`double_triple` example procedure](#create-a-stored-procedure-that-uses-out-and-inout-parameters). The `triple_result` variable is assigned the result of the `OUT` parameter, while the `double_input` variable both provides the input and stores the result of the `INOUT` parameter.
+
+{{site.data.alerts.callout_info}}
+A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine]({% link {{ page.version.version }}/plpgsql.md %}#call-a-procedure). 
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
