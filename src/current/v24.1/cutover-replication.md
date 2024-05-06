@@ -169,7 +169,8 @@ This section illustrates the steps to cut back to the original primary cluster f
 - **Cluster A** = original primary cluster
 - **Cluster B** = original standby cluster
 
-1. **Cluster B** is serving application traffic after the [cutover](#step-2-complete-the-cutover).
+**Cluster B** is serving application traffic after the [cutover](#step-2-complete-the-cutover).
+
 1. To begin the cutback to **Cluster A**, the virtual cluster must first stop accepting connections. Connect to the system virtual on **Cluster A**:
 
     {% include_cached copy-clipboard.html %}
