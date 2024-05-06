@@ -63,7 +63,7 @@ h1, h2 {
 
   code {
     background-color: $neutral-100 !important;
-    color: $neutral-700 !important;    
+    color: $neutral-700 !important;
   }
 }
 
@@ -77,7 +77,7 @@ h3, h4, h5, h6 {
 
   code {
     background-color: $neutral-100 !important;
-    color: $neutral-700 !important;    
+    color: $neutral-700 !important;
   }
 }
 
@@ -951,9 +951,46 @@ a.btn-primary {
   }
 }
 
+/* Used for feature highlights tables in .0 release pages and for release download tables in v23.1+ */
+div.os-tabs th,
+div#feature-highlights th {
+  background-color: #E6EAF0;
+}
+
+/* Used for feature highlights tables in .0 release pages */
+
+div#feature-highlights th,
+div#feature-highlights td {
+        border: none;
+        padding: 5px;
+        text-align: left;
+}
+
+div#feature-highlights .center-align {
+        text-align: center;
+        vertical-align: middle;
+}
+
+div#feature-highlights .icon-center {
+        text-align: center;
+}
+
+div#feature-highlights .table-icon {
+        width: 26px;
+        border: none;
+}
+
+div#feature-highlights .feature-summary {
+    font-weight: bold;
+}
+
+div#feature-highlights .feature-description {
+    margin-top: 5px;
+}
 
 @media (min-width: 700px) {
-	#os-tabs {
+
+  .os-tabs {
 		button {
 			&#mac {
 

@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Cloud Access Management (Authorization) FAQ
-summary: Frequently asked questions about CockroachDB {{ site.data.products.cloud }}
+summary: Frequently asked questions about CockroachDB Cloud
 toc: true
 docs_area: manage
 ---

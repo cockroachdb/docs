@@ -1,0 +1,1 @@
+- When running the [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) statement, you can only reference a user-defined type from the database that contains the type.
