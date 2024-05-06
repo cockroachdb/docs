@@ -25,18 +25,7 @@ If your workload is already running well under `SERIALIZABLE` isolation, Cockroa
 
 ## Enable `READ COMMITTED` isolation
 
-To make `READ COMMITTED` isolation available to use on a cluster, enable the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) in the SQL shell:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
-~~~
-
-After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
-
-{{site.data.alerts.callout_info}}
-If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
-{{site.data.alerts.end}}
+By default, the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is enabled. If the cluster setting is `false`, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
 
 ### Set the default isolation level to `READ COMMITTED`
 
