@@ -22,6 +22,10 @@ Initiating a cutover is a manual process that makes the standby cluster ready to
 
 After a cutover, you may want to _cut back_ to the original primary cluster (or a different cluster) to set up the original primary cluster to once again accept application traffic. For more details, refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
+## Before you begin
+
+During a replication stream, jobs running on the primary cluster will replicate to the standby cluster. Before you cut over to the standby cluster, or cut back to the original primary cluster, consider how you will manage running (replicated) jobs between the clusters. Refer to [Job management](#job-management) for instructions.
+
 ## Step 1. Initiate the cutover
 
 To initiate a cutover to the standby cluster, there are different ways of specifying the point in time for the standby's promotion. That is, the standby cluster's live data at the point of cutover. Refer to the following sections for steps:
@@ -150,7 +154,30 @@ To monitor for when the replication stream completes, do the following:
     SET CLUSTER SETTING server.controller.default_target_cluster='main';
     ~~~
 
-At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
+
+To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+
+## Job management
+
+During a replication stream, jobs running on the primary cluster will replicate to the standby cluster. Once you have [completed a cutover](#step-2-complete-the-cutover) (or a [cutback](#cut-back-to-the-primary-cluster)), refer to the following sections for details on resuming jobs on the promoted cluster.
+
+### Backup schedules
+
+[Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after cutover on the promoted cluster. Take the following steps to resume jobs:
+
+1. Verify that there are no other schedules running backups to the same [collection of backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections), i.e., the schedule that was running on the original primary cluster.
+1. Resume the backup schedule on the promoted cluster.
+
+{{site.data.alerts.callout_info}}
+If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after cutover. In this case, you must pause the schedule manually on the promoted cluster and then take the outlined steps.
+{{site.data.alerts.end}}
+
+### Changefeeds
+
+[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after cutover. We recommend that you recreate changefeeds on the promoted cluster.
+
+[Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the original primary and promoted standby clusters.
 
 ## Cut back to the primary cluster
 
@@ -263,7 +290,9 @@ This section illustrates the steps to cut back to the original primary cluster f
     SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~
 
-At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
+
+To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 ## See also
 
