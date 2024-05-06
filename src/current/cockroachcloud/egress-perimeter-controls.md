@@ -1,6 +1,6 @@
 ---
 title: Egress Perimeter Controls for CockroachDB Dedicated
-summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a CockroachDB {{ site.data.products.dedicated }} cluster.
+summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a CockroachDB Cloud cluster.
 toc: true
 toc_not_nested: true
 docs_area: security

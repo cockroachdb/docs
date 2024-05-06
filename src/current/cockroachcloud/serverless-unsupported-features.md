@@ -50,7 +50,6 @@ The Cloud Console provides a subset of observability information from the DB Con
 
 The Cloud Console also does not currently provide the following features available in the DB Console:
 
-- [Statement diagnostic bundles](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-statements-page#diagnostics) on the **Statements** Page
 - [Direct actions to drop unused indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-databases-page#index-recommendations) on the **Insights** and **Databases** pages
 - [Direct actions to create missing indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-insights-page#schema-insights-tab) and [replace existing indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-insights-page#schema-insights-tab) on the **Insights** page
 
