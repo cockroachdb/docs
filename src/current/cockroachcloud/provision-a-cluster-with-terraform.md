@@ -96,7 +96,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     cloud_provider_regions = ["{cloud provider region}"]
     cluster_node_count = {number of nodes}
     storage_gib = {storage in GiB}
-    machine_type = "{cloud provider machine type}"
     allow_list_name = "{allow list name}"
     cidr_ip = "{allow list CIDR IP}"
     cidr_mask = {allow list CIDR mask}
@@ -110,7 +109,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
-       - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
        - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
@@ -126,7 +124,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     cloud_provider_regions = ["us-west2"]
     cluster_node_count = 3
     storage_gib = 15
-    machine_type = "n1-standard-2"
     allow_list_name = "Max's home network"
     cidr_ip = "1.2.3.4"
     cidr_mask = 32
@@ -251,7 +248,6 @@ Terraform will perform the following actions:
       + creator_id        = (known after apply)
       + dedicated         = {
           + disk_iops        = (known after apply)
-          + machine_type     = (known after apply)
           + memory_gib       = (known after apply)
           + num_virtual_cpus = (known after apply)
           + storage_gib      = (known after apply)
@@ -288,7 +284,6 @@ Terraform will perform the following actions:
       + creator_id        = (known after apply)
       + dedicated         = {
           + disk_iops        = (known after apply)
-          + machine_type     = "n1-standard-2"
           + memory_gib       = (known after apply)
           + num_virtual_cpus = (known after apply)
           + storage_gib      = 15
@@ -362,7 +357,6 @@ cluster = {
   "creator_id" = tostring(null)
   "dedicated" = {
     "disk_iops" = 450
-    "machine_type" = "n1-standard-2"
     "memory_gib" = 7.5
     "num_virtual_cpus" = 2
     "storage_gib" = 15
@@ -452,7 +446,6 @@ resource "cockroach_cluster" "example" {
     creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
@@ -481,7 +474,6 @@ data "cockroach_cluster" "example" {
     cockroach_version = "v22.2.0"
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
@@ -506,7 +498,6 @@ cluster = {
     creator_id        = null
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
