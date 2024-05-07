@@ -34,7 +34,7 @@ For example:
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257?options=-options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
 
@@ -58,7 +58,7 @@ For example, to connect to the system virtual cluster using the `cockroach sql` 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
 

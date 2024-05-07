@@ -23,7 +23,7 @@ You can use physical cluster replication in a disaster recovery plan to:
 
 - Meet your RTO (Recovery Time Objective) and RPO (Recovery Point Objective) requirements. Physical cluster replication provides lower RTO and RPO than [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - Automatically replicate everything in your primary cluster to recover quickly from a control plane or full cluster failure.
-- Protect against region failure when you cannot use individual [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) — for example, if you have a two-datacenter architecture and do not have access to three regions; or, you need low-write latency in a single region. Physical cluster replication allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in different region.
+- Protect against region failure when you cannot use individual [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) — for example, if you have a two-datacenter architecture and do not have access to three regions; or, you need low-write latency in a single region. Physical cluster replication allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in a different region.
 - Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state as of a certain point in time.
 
 ## Features
@@ -56,18 +56,18 @@ For more comprehensive guides, refer to:
 
 ### Start clusters
 
-To initiate physical cluster replication on clusters, you must [start]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--config-profile` flag. This enables [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and sets up each cluster ready for replication.
+To use physical cluster replication on clusters, you must [initialize]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--virtualized` and `--virtualized-empty` flags respectively. This enables [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and sets up each cluster ready for replication.
 
 The active primary cluster that serves application traffic:
 
 ~~~shell
-cockroach start ... --config-profile replication-source
+cockroach init ... --virtualized
 ~~~
 
 The passive standby cluster that will ingest the replicated data:
 
 ~~~shell
-cockroach start ... --config-profile replication-target
+cockroach init ... --virtualized-empty
 ~~~
 
 The node topology of the two clusters does not need to be the same. For example, you can provision the standby cluster with fewer nodes. However, consider that:
@@ -91,14 +91,14 @@ To connect to a virtualized cluster using the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
-- For the application virtual cluster, include the `options=-ccluster=application` parameter in the `postgresql` connection URL:
+- For the virtual cluster, include the `options=-ccluster=main` parameter in the `postgresql` connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=main&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
 {{site.data.alerts.callout_info}}
@@ -122,11 +122,11 @@ Statement | Action
 
 ### Cluster versions and upgrades
 
-The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's application virtual cluster at the time of cutover.
+The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's virtual cluster at the time of cutover.
 
 To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
 
-When physical cluster replication is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the application virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
+When physical cluster replication is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
 
 ## Demo video
 

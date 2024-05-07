@@ -57,7 +57,7 @@ When you [initiate a replication stream]({% link {{ page.version.version }}/set-
 
 {% include_cached copy-clipboard.html %}
 ~~~
-'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
+'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
 ~~~
 
 To form a connection string similar to the example, include the following values and query parameters. Replace values in `{...}` with the appropriate values for your configuration:

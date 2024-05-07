@@ -30,7 +30,7 @@ The **Overview** section also displays the SQL statement fingerprint statistics 
 |**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
-|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
@@ -60,7 +60,7 @@ Charts following the execution attributes display statement fingerprint statisti
 |**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
-|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
@@ -124,10 +124,7 @@ If you click **Apply** to create the index and then execute the statement again,
 The **Diagnostics** tab allows you to activate and download diagnostics for a SQL statement fingerprint.
 
 {{site.data.alerts.callout_info}}
-The **Diagnostics** tab is not visible:
-
-- On CockroachDB {{ site.data.products.serverless }} clusters.
-- For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
+The **Diagnostics** tab is not visible for roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
 When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces]({{ link_prefix }}show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger]({{ link_prefix }}query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`]({{ link_prefix }}explain-analyze.html#debug-option). You can use the information collected in the bundle to diagnose problematic SQL statements, such as [slow queries]({{ link_prefix }}query-behavior-troubleshooting.html#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team]({{ link_prefix }}support-resources.html), which can help you interpret the results.

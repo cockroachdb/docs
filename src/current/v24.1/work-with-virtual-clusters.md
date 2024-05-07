@@ -16,7 +16,7 @@ docs_area: deploy
 This section shows how to use [SQL clients](#sql-clients) or the [DB Console](#db-console) to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
-When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `application`.
+When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `main`.
 {% endcapture %}
 
 {{ pcr_application_cluster_note }}
@@ -25,7 +25,7 @@ When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-
 
 This section shows how to connect using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
+Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the connection URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster. You must use `--url` rather than `--host`.
 
@@ -34,7 +34,7 @@ For example:
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257?options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
 
@@ -58,7 +58,7 @@ For example, to connect to the system virtual cluster using the `cockroach sql` 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
-"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
 --certs-dir "certs"
 ~~~
 
@@ -69,7 +69,6 @@ This section shows how to connect using the [DB Console]({% link {{ page.version
 Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
-
 
 If the same SQL user has the `admin` role on the system virtual cluster and also has roles on other virtual clusters, that user can switch among them from the top of the DB Console.
 

@@ -91,14 +91,14 @@ To connect to a virtualized cluster using the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
 - For the application virtual cluster, include the `options=-ccluster=application` parameter in the `postgresql` connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
 {{site.data.alerts.callout_info}}
