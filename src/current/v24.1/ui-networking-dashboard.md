@@ -35,17 +35,17 @@ Metric: `sys.host.net.recv.packets`
 
 ## Network Packet Errors on Receive
 
-- In the node view, the graph shows the errors receiving packets on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows the errors on receiving packets on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view, the graph shows the errors receiving packets on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view, the graph shows the errors on receiving packets on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.recv.err`
 
 ## Network Packet Drops on Receive
 
-- In the node view, the graph shows receiving packets that got dropped on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows received packets that were dropped on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view, the graph shows receiving packets that got dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view, the graph shows received packets that were dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.recv.drop`
 
@@ -67,17 +67,17 @@ Metric: `sys.host.net.send.packets`
 
 ## Network Packet Errors on Send
 
-- In the node view, the graph shows errors on sending packets on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows the errors on sending packets on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view,the graph shows errors on sending packets on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view,the graph shows the errors on sending packets on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.send.err`
 
 ## Network Packet Drops on Send
 
-- In the node view, the graph shows sending packets that got dropped on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows sent packets that were dropped on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view,the graph shows sending packets that got dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view,the graph shows sent packets that were dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.send.drop`
 
@@ -117,19 +117,19 @@ Metric: `rpc.connection.unhealthy` Gauge of current connections in an unhealthy 
 
 - In the cluster view, the graph shows the number of proxy attempts each [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) in the cluster is initiating.
 
-Metric: `distsender.rpc.proxy.sent` Number of attempts by a gateway to proxy a request to an unreachable [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#leaseholder) via a [follower]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario) [replica]({% link {{ page.version.version }}/architecture/overview.md %}#replica).
+Metric: `distsender.rpc.proxy.sent` Number of attempts by a gateway to proxy a request to an unreachable [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#leaseholder) via a [follower replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario).
 
 ### Monitoring for partial network partition
 
-Operators should alert if the number of proxy requests (`distsender.rpc.proxy.sent`) divided by [batches (`distsender.batches`)]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#batches) is greater than 1% over a 1 minute window. This indicates that the system likely has a partial network partition. You can verify which nodes are partitioned by navigating to the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) and determining if the Cockroach process has connectivity issues between nodes. To resolve this issue, you may need to work with your network administrator.
+Operators should alert if the number of proxy requests (`distsender.rpc.proxy.sent`) divided by [batches (`distsender.batches`)]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#batches) is greater than 1% over a 1-minute window. This indicates that the system likely has a partial network partition. You can verify which nodes are partitioned by navigating to the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) and determining if the `cockroach` process has connectivity issues between nodes. To resolve this issue, you may need to work with your network administrator.
 
 ## Proxy request errors
 
-- In the node view, the graph shows the number of proxy attempts by the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) which resulted in an error.
+- In the node view, the graph shows the number of proxy attempts by the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) that resulted in an error.
 
-- In the cluster view, the graph shows the number of proxy attempts by each [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) in the cluster which resulted in an error.
+- In the cluster view, the graph shows the number of proxy attempts by each [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) in the cluster that resulted in an error.
 
-Metric: `distsender.rpc.proxy.err` Number of attempts by a gateway to proxy a request which resulted in a failure.
+Metric: `distsender.rpc.proxy.err` Number of attempts by a gateway to proxy a request that resulted in a failure.
 
 ## Proxy forwards
 
@@ -137,17 +137,15 @@ Metric: `distsender.rpc.proxy.err` Number of attempts by a gateway to proxy a re
 
 - In the cluster view, the graph shows the number of proxy requests each server node in the cluster is attempting to forward.
 
-The number of proxy requests each server node is attempting to forward.
-
-Metric: `distsender.rpc.proxy.forward.sent` Number of attempts on a [follower]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario) [replica]({% link {{ page.version.version }}/architecture/overview.md %}#replica) to proxy a request to an unreachable [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#leaseholder).
+Metric: `distsender.rpc.proxy.forward.sent` Number of attempts on a [follower replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario) to proxy a request to an unreachable [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#leaseholder).
 
 ## Proxy forward errors
 
-- In the node view, the graph shows the number of proxy forward attempts on the node which resulted in an error.
+- In the node view, the graph shows the number of proxy forward attempts on the node that resulted in an error.
 
-- In the cluster view, the graph shows the number of proxy forward attempts on each node of the cluster which resulted in an error.
+- In the cluster view, the graph shows the number of proxy forward attempts on each node of the cluster that resulted in an error.
 
-Metrics: `distsender.rpc.proxy.forward.err` Number of attempts on a [follower]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario) [replica]({% link {{ page.version.version }}/architecture/overview.md %}#replica) to proxy a request which resulted in a failure.
+Metrics: `distsender.rpc.proxy.forward.err` Number of attempts on a [follower replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#write-scenario) to proxy a request that resulted in a failure.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 

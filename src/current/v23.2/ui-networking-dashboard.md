@@ -35,17 +35,17 @@ Metric: `sys.host.net.recv.packets`
 
 ## Network Packet Errors on Receive
 
-- In the node view, the graph shows the errors receiving packets on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows the errors on receiving packets on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view, the graph shows the errors receiving packets on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view, the graph shows the errors on receiving packets on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.recv.err`
 
 ## Network Packet Drops on Receive
 
-- In the node view, the graph shows receiving packets that got dropped on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows received packets that were dropped on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view, the graph shows receiving packets that got dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view, the graph shows received packets that were dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.recv.drop`
 
@@ -67,17 +67,17 @@ Metric: `sys.host.net.send.packets`
 
 ## Network Packet Errors on Send
 
-- In the node view, the graph shows errors on sending packets on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows the errors on sending packets on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view,the graph shows errors on sending packets on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view,the graph shows the errors on sending packets on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.send.err`
 
 ## Network Packet Drops on Send
 
-- In the node view, the graph shows sending packets that got dropped on all network interfaces since the CockroachDB process started for the node.
+- In the node view, the graph shows sent packets that were dropped on all network interfaces since the CockroachDB process started for the node.
 
-- In the cluster view,the graph shows sending packets that got dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
+- In the cluster view,the graph shows sent packets that were dropped on all network interfaces since the CockroachDB process started for each node in the cluster.
 
 Metric: `sys.host.net.send.drop`
 
