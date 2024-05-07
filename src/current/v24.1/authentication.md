@@ -135,7 +135,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by the CA represented by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (e.g., `CN=marc` for `client.marc.crt`) <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
