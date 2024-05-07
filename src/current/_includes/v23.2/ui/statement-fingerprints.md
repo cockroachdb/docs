@@ -24,19 +24,19 @@ These SQL statements:
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)`
 
-have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (_, _, _)`
+have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (_, _, __more1_10__)`
 
 These SQL statements:
 
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($3, $4, 300)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 300)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
 
-have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $1, _)`.
+have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $1, __more1_10__)`.
 
-The following statements are not represented by either fingerprint:
+The following statement is not represented by either of the preceding fingerprints:
 
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
 
 It is possible to see the same fingerprint listed multiple times in the following scenarios:
 

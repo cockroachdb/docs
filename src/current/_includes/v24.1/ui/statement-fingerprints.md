@@ -26,7 +26,7 @@ These SQL statements:
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($3, $4, 300)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 300)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
 
