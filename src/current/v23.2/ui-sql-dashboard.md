@@ -63,6 +63,16 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current statement load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
+See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
+
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+
+- [`INSERT ... ON CONFLICT DO UPDATE ...`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements update the `INSERT` metric (`sql.insert.count`) even when the `DO UPDATE` clause is actually executed. The root of the [abstract syntax tree (AST)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#parsing) is used to increment the metric, not the actual execution details.
+
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements also update the `INSERT` metric (`sql.insert.count`).
+
+- [Data manipulation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) other than  `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric. However, this metric is not displayed on this graph.
+
 ## SQL Statement Errors
 
 - In the node view, the graph shows the 10-second average of the number of SQL statements issued to the node that returned a [planning]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor),  [runtime]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor), or [retry error]({% link {{ page.version.version }}/transactions.md %}#error-handling).
