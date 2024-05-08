@@ -121,6 +121,12 @@
       ]
     },
     {
+      "title": "Migrate from Oracle",
+      "urls": [
+        "/${VERSION}/migrate-from-oracle.html"
+      ]
+    },
+    {
       "title": "Migration Strategy: Lift and Shift",
       "urls": [
         "/${VERSION}/migration-strategy-lift-and-shift.html"
