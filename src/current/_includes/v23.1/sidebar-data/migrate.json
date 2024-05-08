@@ -28,7 +28,12 @@
           "urls": [
             "/${VERSION}/live-migration-service.html"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "Third-Party Migration Tools",
+      "items": [
         {
           "title": "AWS DMS",
           "urls": [
