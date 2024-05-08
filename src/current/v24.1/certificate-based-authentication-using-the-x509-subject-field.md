@@ -50,7 +50,7 @@ General guidelines for certificate creation:
 
 At cluster startup, you'll need to pass the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) flags [`--node-cert-distinguished-name`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-node-cert-distinguished-name) and [`--root-cert-distinguished-name`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-root-cert-distinguished-name).
 
-The argument to each flag is a string with a comma separated list of distinguished name (DN) mappings in `{attribute-type}={attribute-value}` format in accordance with [RFC4514](https://www.rfc-editor.org/rfc/rfc4514). When each of these flags are set, the argument needs to be an exact match with the DN subject in the client certificate provided.
+The argument to each flag is a string with a comma separated list of distinguished name (DN) mappings in `{attribute-type}={attribute-value}` format in accordance with [RFC4514](https://www.rfc-editor.org/rfc/rfc4514). When each of these flags are set, the argument needs to be an exact match with the DN subject in the client certificate provided. By exact match, we mean that the order of attributes in the argument must match the order of attributes in the DN subject in the certificate.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
