@@ -9,7 +9,7 @@
       ]
     },
     {
-      "title": "Migration Tools",
+      "title": "MOLT Tools",
       "items": [
         {
           "title": "Schema Conversion Tool",
@@ -18,13 +18,13 @@
           ]
         },
         {
-          "title": "MOLT Fetch",
+          "title": "Fetch",
           "urls": [
             "/${VERSION}/molt-fetch.html"
           ]
         },
         {
-          "title": "MOLT Verify",
+          "title": "Verify",
           "urls": [
             "/${VERSION}/molt-verify.html"
           ]

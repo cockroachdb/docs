@@ -1,6 +1,6 @@
 ---
-title: Use the Schema Conversion Tool
-summary: Use the Schema Conversion Tool to begin a database migration to CockroachDB.
+title: Use the MOLT Schema Conversion Tool
+summary: Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB.
 toc: true
 cloud: true
 docs_area: migrate
@@ -8,11 +8,11 @@ docs_area: migrate
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features a **Schema Conversion Tool** that helps you:
+The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features the MOLT Schema Conversion Tool. This tool helps you:
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
-- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 - Migrate directly to a CockroachDB {{ site.data.products.cloud }} database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
+- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 
     {{site.data.alerts.callout_info}}
     The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}).
@@ -75,7 +75,7 @@ The steps to convert your schema depend on your source dialect.
 ### Upload File
 <a name="upload-a-sql-dump"></a>
 
-The Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements]({% link {{version_prefix}}sql-statements.md %}#data-definition-statements). 
+The MOLT Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements]({% link {{version_prefix}}sql-statements.md %}#data-definition-statements). 
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 To generate an appropriate PostgreSQL schema file, run the [`pg_dump` utility](https://www.postgresql.org/docs/current/app-pgdump.html) and specify the `-s` or `--schema-only` options to extract **only the schema** of a PostgreSQL database to a `.sql` file.
@@ -102,14 +102,10 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
 ### Use Credentials
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
+The MOLT Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
 
 1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
-1. Click **Convert** and wait for the schema to be analyzed. In the background, the Schema Conversion Tool runs the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) or [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) utility to obtain the schema.
+1. Click **Convert** and wait for the schema to be analyzed. In the background, the MOLT Schema Conversion Tool runs the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) or [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) utility to obtain the schema.
 
     A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 
@@ -125,10 +121,10 @@ Credentials can be added for PostgreSQL and MySQL databases.
 1. Provide the following information:
     - A **Credential Name** to associate with the credentials.
     - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
-    - The **Host** for accessing the database. For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
+    - The **Host** for accessing the database. Exclude the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
     - The **Port** for accessing the database.
     - A valid **Username** and **Password** for accessing the database.
-    - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
+    - The **Database Name** to access. The MOLT Schema Conversion Tool will obtain the schema for this database.
     - The **SSL Mode** for accessing the database:
         - `None`: Do not force a secure connection.
         - `Verify CA`: Force a secure connection and verify that the server certificate is signed by a known CA.
@@ -139,7 +135,7 @@ If the credentials are valid, they will be added to the [**Credentials** table](
 </section>
 
 {{site.data.alerts.callout_info}}
-The Schema Conversion Tool creates the following internal objects when you convert a schema:
+The MOLT Schema Conversion Tool creates the following internal objects when you convert a schema:
 
 - A database prefixed with `_migration_internal_` is created on the {{ site.data.products.cloud }} cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the {{ site.data.products.cloud }} cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
 - A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a {{ site.data.products.cloud }} cluster](#migrate-the-schema).
