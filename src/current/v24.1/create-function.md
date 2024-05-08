@@ -220,7 +220,7 @@ SELECT double_triple(1);
   (2,6)
 ~~~
 
-Note that the `CREATE FUNCTION` statement does not need a `RETURN` statement because this is added implicitly for a function with `OUT` parameters:
+The `CREATE FUNCTION` statement does not need a `RETURN` statement because this is added implicitly for a function with `OUT` parameters:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

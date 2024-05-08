@@ -459,9 +459,9 @@ BEGIN
   END
 ~~~
 
-### Perform transaction control
+### Control transactions
 
-Use a `COMMIT` or `ROLLBACK` statement within a PL/pgSQL [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}) to finish the current transaction and start a new one. 
+Use a `COMMIT` or `ROLLBACK` statement within a PL/pgSQL [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}) to finish the current transaction and automatically start a new one. 
 
 - Any updates made within the previous transaction are either committed or rolled back, while [PL/pgSQL variables](#declare-a-variable) keep their values. 
 - Execution of the stored procedure resumes in a new transaction with the statements immediately following the `COMMIT` or `ROLLBACK` statement.
