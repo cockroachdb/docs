@@ -13,8 +13,11 @@ See also:
 - [Use the CockroachDB CLI to provision a development cluster]({% link {{ page.version.version }}/manage-certs-cli.md %}).
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
 
-
 To create these certificates and keys, use the `cockroach cert` [commands]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) (for example, a public CA or your organizational CA).
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
 
 ## Subcommands
 
