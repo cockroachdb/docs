@@ -134,7 +134,9 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 ### Expect temporary limitations
 
-Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors. {% comment %}TODO: List of temporary limitations for GA{% endcomment %}
+Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors.
+
+- Splits no longer hold latches for time proportional to the range size while computing MVCC statistics. Instead, MVCC statistics are pre-computed before the critical section of the split. As a side effect, the resulting statistics are no longer 100% accurate because they may correctly distribute writes concurrent with the split. To mitigate against this potential inaccuracy, and to prevent the statistics from drifting after successive splits, the existing stored statistics are re-computed and corrected if needed during the non-critical section of the split. [#119894](https://github.com/cockroachdb/cockroach/pull/119894)
 
 For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
