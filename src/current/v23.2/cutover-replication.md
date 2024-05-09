@@ -173,9 +173,9 @@ If your backup schedule was created on a cluster in v23.1 or earlier, it will **
 
 ### Changefeeds
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after cutover. We recommend that you recreate changefeeds on the promoted cluster.
+[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after cutover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
 
-[Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the original primary and promoted standby clusters.
+[Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the original primary and promoted standby clusters to avoid two clusters running the same changefeed to one sink.
 
 ## Cut back to the primary cluster
 

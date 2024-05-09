@@ -427,6 +427,10 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
 
+### Physical cluster replication
+
+{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
+
 ### Performance optimization
 
 #### Optimizer and locking behavior

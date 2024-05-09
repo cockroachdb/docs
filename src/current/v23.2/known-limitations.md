@@ -71,6 +71,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 - Casting subqueries to ENUMs in views and UDFs is not supported. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/108184)
 
+### Physical cluster replication
+
+{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
