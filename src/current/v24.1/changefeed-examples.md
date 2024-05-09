@@ -14,8 +14,9 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 - [Kafka](#create-a-changefeed-connected-to-kafka)
 - [Google Cloud Pub/Sub](#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink)
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
-- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#create-a-changefeed-connected-to-an-azure-event-hubs-sink)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
+- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#create-a-changefeed-connected-to-an-azure-event-hubs-sink)
+- {% include_cached new-in.html version="v24.1" %} [Apache Pulsar](#create-a-changefeed-connected-to-an-apache-pulsar-sink) (Preview)
 
 Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
@@ -693,6 +694,81 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     2021/08/24 14:00:21 {"payload":[{"after":{"city":"rome","creation_time":"2019-01-02T03:04:05","current_location":"39141 Travis Curve Suite 87","ext":{"brand":"Schwinn","color":"red"},"id":"d7b18299-c0c4-4304-9ef7-05ae46fd5ee1","dog_owner_id":"5d0c85b5-8866-47cf-a6bc-d032f198e48f","status":"in_use","type":"bike"},"key":["rome","d7b18299-c0c4-4304-9ef7-05ae46fd5ee1"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"84888 Wallace Wall","ext":{"color":"black"},"id":"020cf7f4-6324-48a0-9f74-6c9010fb1ab4","dog_owner_id":"b74ea421-fcaf-4d80-9dcc-d222d49bdc17","status":"available","type":"scooter"},"key":["san francisco","020cf7f4-6324-48a0-9f74-6c9010fb1ab4"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","dog_owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
+    ~~~
+
+    For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
+
+## Create a changefeed connected to an Apache Pulsar sink
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a [local Apache Pulsar](https://pulsar.apache.org/docs/next/getting-started-standalone/) sink. The changefeed will watch a table and send messages to the sink.
+
+{% include {{ page.version.version }}/cdc/examples-license-workload.md %}
+
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
+
+1. To prepare a Pulsar sink, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/next/getting-started-standalone/) to set up a cluster. This example uses a standalone local cluster.
+
+1. In a different terminal window, start your Pulsar cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    bin/pulsar standalone
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You can start a changefeed and Pulsar will automatically use the table as the topic name.
+
+    If you want to create a topic name first, use the [`pulsar-admin`](https://pulsar.apache.org/docs/2.10.x/reference-cli-tool) tool to specify the topic's tenant and namespace. This example uses the default namespace:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    bin/pulsar-admin topics create persistent://public/default/topic-name
+    ~~~
+
+    For more detail on persistent topics and working with topic resources, refer to the [Manage Topics](https://pulsar.apache.org/docs/3.2.x/admin-api-topics/) Apache Pulsar documentation.
+
+    {{site.data.alerts.end}}
+
+1. Enter the SQL shell:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --insecure
+    ~~~
+
+1. Create your changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE movr.rides INTO 'pulsar://localhost:6650';
+    ~~~
+
+    By default, Apache Pulsar listens for client connections on port `:6650`. For more detail on configuration, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/2.10.x/reference-configuration).
+
+    Changefeeds emitting to a Pulsar sink do not support external connections or a number of changefeed options. For a full list, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) page.
+
+1. In a different terminal window, start a [Pulsar consumer](https://pulsar.apache.org/docs/next/tutorials-produce-consume/) to read messages from the changefeed. This example consumes messages from the `rides` topic:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    bin/pulsar-client consume rides -s sub1 -n 0
+    ~~~
+
+    You will receive the changefeed's messages similar to the following:
+
+    ~~~
+    ----- got message -----
+    key:[null], properties:[], content:{"Key":["seattle", "09265ab7-5f3a-40cb-a543-d37c8c893793"],"Value":{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "09265ab7-5f3a-40cb-a543-d37c8c893793", "revenue": 53.00, "rider_id": "44576296-d4a7-4e79-add9-f880dd951064", "start_address": "25795 Alyssa Extensions", "start_time": "2024-05-09T12:18:42.022952", "vehicle_city": "seattle", "vehicle_id": "a0c935f6-8872-408e-bc12-4d0b5a85fa71"}},"Topic":"rides"}
+    ----- got message -----
+    key:[null], properties:[], content:{"Key":["amsterdam", "b3548485-9475-44cf-9769-66617b9cb151"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "b3548485-9475-44cf-9769-66617b9cb151", "revenue": 25.00, "rider_id": "adf4656f-6a0d-4315-b035-eaf7fa6b85eb", "start_address": "49614 Victoria Cliff Apt. 25", "start_time": "2024-05-09T12:18:42.763718", "vehicle_city": "amsterdam", "vehicle_id": "eb1d1d2c-865e-4a40-a7d7-8f396c1c063f"}},"Topic":"rides"}
+    ----- got message -----
+    key:[null], properties:[], content:{"Key":["amsterdam", "d119f344-318f-41c0-bfc0-b778e6e38f9a"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "d119f344-318f-41c0-bfc0-b778e6e38f9a", "revenue": 24.00, "rider_id": "1a242414-f704-4e1f-9f5e-2b468af0c2d1", "start_address": "54909 Douglas Street Suite 51", "start_time": "2024-05-09T12:18:42.369755", "vehicle_city": "amsterdam", "vehicle_id": "99d98e05-3114-460e-bb02-828bcd745d44"}},"Topic":"rides"}
+    ----- got message -----
+    key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
     ~~~
 
     For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).

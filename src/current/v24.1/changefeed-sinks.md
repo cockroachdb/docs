@@ -15,6 +15,7 @@ CockroachDB supports the following sinks:
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 - {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
+- {% include_cached new-in.html version="v24.1" %} [Apache Pulsar](#apache-pulsar) (in Preview)
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -607,6 +608,24 @@ The following parameters are also needed, but are **set by default** in Cockroac
 - `sasl_enabled=true`
 - `sasl_handshake=true`
 - `sasl_mechanism=PLAIN`
+
+## Apache Pulsar
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+
+A Pulsar sink URI:
+
+{% include {{ page.version.version }}/cdc/apache-pulsar-uri.md %}
+
+Changefeeds emitting to an Apache Pulsar sink support `json` and `csv` [format options]({% link {{ page.version.version }}/create-changefeed.md %}#format).
+
+{% include {{ page.version.version }}/cdc/apache-pulsar-unsupported.md %}
+
+For an Azure Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
 
 ## See also
 
