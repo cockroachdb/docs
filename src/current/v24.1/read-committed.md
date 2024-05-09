@@ -394,7 +394,7 @@ To use locking reads:
 
 - If you need to read and later update a row within a transaction, use `SELECT ... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations.
 
-- If you need to read the latest version of a row, but not update the row, use `SELECT ... FOR SHARE` to acquire a shared lock on the row. This blocks all concurrent writes on the row without unnecessarily blocking concurrent reads.
+- If you need to read the latest version of a row, and later update a **different** row within a transaction, use `SELECT ... FOR SHARE` to acquire a shared lock on the row. This blocks all concurrent writes on the row without unnecessarily blocking concurrent reads or other `SELECT ... FOR SHARE` queries.
 
 	{{site.data.alerts.callout_success}}
 	This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed.
