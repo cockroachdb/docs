@@ -466,6 +466,12 @@
                       ]
                     },
                     {
+                      "title": "Physical Cluster Replication Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-physical-cluster-replication-dashboard.html"
+                      ]
+                    },
+                    {
                       "title": "Custom Chart",
                       "urls": [
                         "/${VERSION}/ui-custom-chart-debug-page.html"
