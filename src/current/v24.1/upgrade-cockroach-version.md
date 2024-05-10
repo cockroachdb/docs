@@ -135,7 +135,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- Splits no longer hold latches for time proportional to the range size while computing MVCC statistics. Instead, MVCC statistics are pre-computed before the critical section of the split. As a side effect, the resulting statistics are no longer 100% accurate because they may correctly distribute writes concurrent with the split. To mitigate against this potential inaccuracy, and to prevent the statistics from drifting after successive splits, the existing stored statistics are re-computed and corrected if needed during the non-critical section of the split. [#119894](https://github.com/cockroachdb/cockroach/pull/119894)
+- {% include v24.1/finalization-required/119894.md version="v24.1" %}
 
 For more details about a given feature, refer to the [CockroachDB v24.1.0 release notes](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0).
 
