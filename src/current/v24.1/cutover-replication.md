@@ -214,12 +214,30 @@ This section illustrates the steps to cut back to the original primary cluster f
     ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
-1. Open another terminal window and connect to the system virtual cluster for **Cluster B**:
+1. Open another terminal window and generate a connection string for **Cluster B** using `cockroach encode-uri`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach encode-uri {replication user}:{password}@{cluster B node IP or hostname}:26257 --ca-cert certs/ca.crt --inline
+    ~~~
+
+    Copy the output ready for starting the replication stream, which requires the connection string to **Cluster B**:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    postgresql://{replication user}:{password}@{cluster B node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A
+    ~~~
+
+    {{site.data.alerts.callout_success}}
+    For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
+    {{site.data.alerts.end}}
+
+1. Connect to the system virtual cluster for **Cluster B**:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://{user}@{node IP or hostname cluster B}:26257?options=-ccluster=system&sslmode=verify-full" \
+    "postgresql://{user}@{cluster B node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
@@ -230,18 +248,14 @@ This section illustrates the steps to cut back to the original primary cluster f
     SET CLUSTER SETTING kv.rangefeed.enabled = 'true';
     ~~~
 
-1. From the system virtual cluster on **Cluster A**, start the replication from cluster B to cluster A:
+1. From the system virtual cluster on **Cluster A**, start the replication from **Cluster B** to **Cluster A**. Include the connection string for **Cluster B**:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER {cluster_a} START REPLICATION OF {cluster_b} ON 'postgresql://{user}@{ node IP or hostname cluster B}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{standby cert}.crt';
+    ALTER VIRTUAL CLUSTER {cluster_a} START REPLICATION OF {cluster_b} ON 'postgresql://{replication user}:{password}@{cluster B node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
 
     This will reset the virtual cluster on **Cluster A** back to the time at which the same virtual cluster on **Cluster B** diverged from it. **Cluster A** will check with **Cluster B** to confirm that its virtual cluster was replicated from **Cluster A** as part of the original [PCR stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
-
-    {{site.data.alerts.callout_success}}
-    For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
-    {{site.data.alerts.end}}
 
 1. Check the status of the virtual cluster on **A**:
 
