@@ -1,15 +1,11 @@
 ---
 title: Set Up Physical Cluster Replication
-summary: Follow a tutorial to set up physical replication between a primary and standby cluster.
+summary: Follow a tutorial to set up physical cluster replication between a primary and standby cluster.
 toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -44,7 +40,7 @@ The high-level steps in this tutorial are:
 
 ### Initialize the primary cluster
 
-To enable physical cluster replication, it is necessary to initialize the CockroachDB cluster with the appropriate flag to create the appropriate virtual clusters on the primary and standby cluster.
+To enable PCR, it is necessary to initialize the CockroachDB cluster with the appropriate flag to create the appropriate virtual clusters on the primary and standby cluster.
 
 When initializing the [primary cluster](#initialize-the-primary-cluster), you pass the `--virtualized` flag to create a [_virtualized cluster_]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) with a `system` virtual cluster and a `main` virtual cluster.  When initializing the [standby cluster](#initialize-the-standby-cluster), you pass the `--virtualized-empty` flag to create a virtualized standby cluster that contains a `system` virtual cluster.
 
@@ -55,7 +51,7 @@ For example, the `cockroach init` command to initialize the primary cluster (acc
 cockroach init --certs-dir=certs --host={address of any node on --join list} --virtualized
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
 ### Connect to the primary cluster system virtual cluster
 
@@ -195,7 +191,7 @@ For example, the `cockroach init` command to initialize the standby cluster (acc
 cockroach init --certs-dir=certs --host={address of any node on --join list} --virtualized-empty
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
 ### Connect to the standby cluster system virtual cluster
 

@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to cut over from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication, it will stop the stream of new data, reset the standby virtual cluster to a point in time where all ingested data is consistent, and then mark the standby virtual cluster as ready to accept traffic.
+[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to cut over from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication, it will stop the stream of new data, reset the standby virtual cluster to a point in time where all ingested data is consistent, and then mark the standby virtual cluster as ready to accept traffic.
 
 The cutover is a two-step process on the standby cluster:
 
@@ -156,7 +156,7 @@ To monitor for when the replication stream completes, do the following:
 
 At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
 
-To enable physical cluster replication again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
+To enable PCR again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-primary-cluster).
 
 ## Job management
 
@@ -186,7 +186,7 @@ After cutting over to the standby cluster, you may need to cut back to the origi
 {% include {{ page.version.version }}/physical-replication/fast-cutback-syntax.md %}
 
 {{site.data.alerts.callout_info}}
-To move back to a different cluster, follow the physical cluster replication [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+To move back to a different cluster, follow the PCR [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 {{site.data.alerts.end}}
 
 ### Example
@@ -237,7 +237,7 @@ This section illustrates the steps to cut back to the original primary cluster f
     ALTER VIRTUAL CLUSTER {cluster_a} START REPLICATION OF {cluster_b} ON 'postgresql://{user}@{ node IP or hostname cluster B}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{standby cert}.crt';
     ~~~
 
-    This will reset the virtual cluster on **Cluster A** back to the time at which the same virtual cluster on **Cluster B** diverged from it. **Cluster A** will check with **Cluster B** to confirm that its virtual cluster was replicated from **Cluster A** as part of the original [physical cluster replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+    This will reset the virtual cluster on **Cluster A** back to the time at which the same virtual cluster on **Cluster B** diverged from it. **Cluster A** will check with **Cluster B** to confirm that its virtual cluster was replicated from **Cluster A** as part of the original [PCR stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
     {{site.data.alerts.callout_success}}
     For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
@@ -290,9 +290,13 @@ This section illustrates the steps to cut back to the original primary cluster f
     SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~
 
+<<<<<<< HEAD
 At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
 
 To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+=======
+At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable PCR again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+>>>>>>> c9b9928e7 (Bring physical cluster replication into GA v24.1)
 
 ## See also
 
