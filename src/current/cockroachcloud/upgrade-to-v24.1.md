@@ -138,7 +138,7 @@ Most {{ page.page_version }} features can be used right away, but some will be e
 
 - {% include v24.1/finalization-required/119894.md version="v24.1" %}
 
-For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
+For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
 ### Roll back the upgrade
 
