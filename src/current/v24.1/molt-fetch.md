@@ -5,10 +5,6 @@ toc: true
 docs_area: migrate
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
 
 MOLT Fetch uses `IMPORT INTO` or `COPY FROM` to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data onto a target CockroachDB database. For details, see [Usage](#usage).
@@ -41,11 +37,11 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the SQL user running MOLT Fetch has the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) statements, depending on your intended [mode](#fetch-mode).
 
-- To enable the [CDC cursor](#cdc-cursor) for ongoing replication:
+- To enable continuous replication using [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor):
 
-	- If you are migrating from PostgreSQL, enable logical replication. Set [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical` in `postgresql.conf` or in the SQL shell.
+	- If you are migrating from PostgreSQL, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
-	- If you are migrating from MySQL, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set `gtid-mode` and `enforce-gtid-consistency` to `ON` in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command.
+	- If you are migrating from MySQL, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. In `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command, set `gtid-mode` and `enforce-gtid-consistency` to `ON` and set `binlog_row_metadata` to `full`.
 
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
@@ -94,9 +90,9 @@ Complete the following items before using MOLT Fetch:
 	
 ## Commands
 
-| Command |                                       Usage                                        |
-|---------|------------------------------------------------------------------------------------|
-| `fetch` | Start the fetch process between a source database and target CockroachDB database. |
+| Command |                                               Usage                                               |
+|---------|---------------------------------------------------------------------------------------------------|
+| `fetch` | Start the fetch process. This loads data from a source database to a target CockroachDB database. |
 
 ### Subcommands
 
@@ -131,10 +127,12 @@ The following subcommands are run after the `fetch` command.
 | `--logging`                                   | Level at which to log messages (`'trace'`/`'debug'`/`'info'`/`'warn'`/`'error'`/`'fatal'`/`'panic'`).<br><br>**Default:** `'info'`                                                                                                                                                                                                                                                                                        |
 | `--metrics-listen-addr`                       | Address of the metrics endpoint.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                   |
 | `--non-interactive`                           | Run the fetch process without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                |
+| `--ongoing-replication`                       | Enable continuous [replication](#replication) to begin after the fetch process succeeds (i.e., initial source data is loaded into CockroachDB).                                                                                                                                                                                                                                                                           |
 | `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                 |
-| `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). This flag is only necessary if you want to use a replication slot other than the default slot.                                                                                                                                                                                                                               |
+| `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#replication) from a source PostgreSQL database.                                                                                                                                                                                                                   |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                  |
 | `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                     |
+| `--replicator-flags`                          | If continuous [replication](#replication) is enabled with `--ongoing-replication`, specify Replicator arguments to override.                                                                                                                                                                                                                                                                                              |
 | `--row-batch-size`                            | Number of rows to select at a time for export from the source database.<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                      |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                       |
 | `--table-concurrency`                         | Number of tables to move at a time. **Note:** This number will be multiplied by the value of `--export-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** 4                                                                                                                                                                                              |
@@ -303,11 +301,11 @@ With each option, MOLT Fetch creates a new CockroachDB table to load the source 
 
 ### Fetch continuation
 
-If `molt fetch` encounters an error while loading data onto CockroachDB from [cloud](#cloud-storage) or [local storage](#local-file-server), it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
+If `molt fetch` fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
 
 Continuation is only possible under the following conditions:
 
-- All data has been exported from the source database into intermediate files.
+- All data has been exported from the source database into intermediate files on [cloud](#cloud-storage) or [local storage](#local-file-server).
 - The *initial load* of source data to the target CockroachDB database is incomplete. This means that ongoing [replication](#replication) of source data has not begun.
 
 {{site.data.alerts.callout_info}}
@@ -324,7 +322,7 @@ To retry all data starting from the continuation point, reissue the `molt fetch`
 To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch process encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
 
 {{site.data.alerts.callout_info}}
-This will retry only the table that corresponds to the continuation token. If the fetch process succeeds, there may still be source data that is not yet loaded onto CockroachDB.
+This will retry only the table that corresponds to the continuation token. If the fetch process succeeds, there may still be source data that is not yet loaded into CockroachDB.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -364,6 +362,40 @@ molt fetch token \
 Continuation Tokens.
 ~~~
 
+### Replication
+
+`--ongoing-replication` enables logical replication from the source database to the target CockroachDB database. 
+
+{% include_cached copy-clipboard.html %}
+~~~
+--ongoing-replication
+~~~
+
+When the `--ongoing-replication` flag is set, changes on the source database are continuously replicated on CockroachDB. This begins only after the fetch process succeeds—i.e., the initial source data is loaded into CockroachDB—as indicated by a `fetch complete` message in the output.
+
+Before using this feature, complete the following:
+
+- Install the Replicator binary. Before running `molt fetch` with continuous replication, [download the binary that matches your system](https://github.com/cockroachdb/replicator/wiki/Installing#automated-builds). The Replicator binary **must** be located in the same directory as your [`molt` binary](#installation).
+- Configure the source PostgreSQL or MySQL database for continuous replication, as described in [Setup](#setup).
+
+If the source is a PostgreSQL database, you must also specify a replication slot name:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--ongoing-replication
+--pglogical-replication-slot-name 'replication_slot'
+~~~
+
+If you need to customize the Replicator behavior, use `--replicator-flags` to specify one or more Replicator flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override. This will only be necessary for advanced use cases.
+
+{% include_cached copy-clipboard.html %}
+~~~
+--ongoing-replication
+--replicator-flags '--applyTimeout 1h'
+~~~
+
+To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
+
 ### CDC cursor
 
 A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch process. For example:
@@ -376,13 +408,13 @@ You can use the `cdc_cursor` value with an external change data capture (CDC) to
 
 ## Examples
 
-The following examples demonstrate how to issue `molt fetch` commands to load data onto CockroachDB. 
+The following examples demonstrate how to issue `molt fetch` commands to load data into CockroachDB. 
 
 {{site.data.alerts.callout_success}}
 After successfully running MOLT Fetch, you can run [`molt verify`]({% link {{ page.version.version }}/molt-verify.md %}) to confirm that replication worked successfully without missing or mismatched rows.
 {{site.data.alerts.end}}
 
-### Load PostgreSQL data via S3
+### Load PostgreSQL data via S3 with ongoing replication
 
 The following `molt fetch` command uses `IMPORT INTO` to load a subset of tables from a PostgreSQL database to CockroachDB.
 
@@ -394,13 +426,17 @@ molt fetch \
 --table-handling 'truncate-if-exists' \
 --table-filter 'employees' \
 --bucket-path 's3://migration/data/cockroach' \
---cleanup
+--cleanup \
+--pglogical-replication-slot-name 'replication_slot' \
+--ongoing-replication
 ~~~
 
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
 - `--table-filter` filters for tables with the `employees` string in the name.
 - `--bucket-path` specifies a directory on an [Amazon S3 bucket](#data-path) where intermediate files will be written.
 - `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
+- `--pglogical-replication-slot-name` specifies a replication slot name to be created on the source PostgreSQL database. This is used in continuous [replication](#replication).
+- `--ongoing-replication` starts continuous [replication](#replication) of data from the source database to CockroachDB after the fetch process succeeds.
 
 If the fetch process succeeds, the output displays a `fetch complete` message like the following:
 
@@ -408,9 +444,20 @@ If the fetch process succeeds, the output displays a `fetch complete` message li
 {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 ~~~
 
+{{site.data.alerts.callout_info}}
 If the fetch process encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
+{{site.data.alerts.end}}
 
-### Load MySQL data via GCP
+Continuous [replication](#replication) begins immediately afterward:
+
+~~~ json
+{"level":"info","time":"2024-05-13T14:33:07-04:00","message":"starting replicator"}
+{"level":"info","time":"2024-05-13T14:36:22-04:00","message":"creating publication"}
+~~~
+
+To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
+
+### Load MySQL data via GCP with ongoing replication
 
 The following `molt fetch` command uses `COPY FROM` to load a subset of tables from a MySQL database to CockroachDB.
 
@@ -423,7 +470,7 @@ molt fetch \
 --table-filter 'employees' \
 --bucket-path 'gs://migration/data/cockroach' \
 --use-copy \
---cleanup
+--cleanup \
 ~~~
 
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
@@ -431,6 +478,7 @@ molt fetch \
 - `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.
 - `--use-copy` specifies that `COPY FROM` is used to load the tables, keeping the source tables online and queryable but loading the data more slowly than `IMPORT INTO`.
 - `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
+- `--ongoing-replication` starts continuous [replication](#replication) of data from the source database to CockroachDB after the fetch process succeeds.
 
 If the fetch process succeeds, the output displays a `fetch complete` message like the following:
 
@@ -438,7 +486,17 @@ If the fetch process succeeds, the output displays a `fetch complete` message li
 {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 ~~~
 
+{{site.data.alerts.callout_info}}
 If the fetch process encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
+{{site.data.alerts.end}}
+
+Continuous [replication](#replication) begins immediately afterward:
+
+~~~ json
+{"level":"info","time":"2024-05-13T14:33:07-04:00","message":"starting replicator"}
+~~~
+
+To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
 
 ### Load CockroachDB data via direct copy
 
@@ -458,7 +516,7 @@ molt fetch \
 
 ### Continue fetch after encountering an error
 
-If `molt fetch` encounters an error, it exits with an error message, fetch ID, and continuation token for each table that failed to load on the target database. You can use these values to [continue the fetch process](#fetch-continuation) from where it was interrupted.
+If the fetch process encounters an error, it exits with an error message, fetch ID, and continuation token for each table that failed to load on the target database. You can use these values to [continue the fetch process](#fetch-continuation) from where it was interrupted.
 
 ~~~ json
 {"level":"info","table":"public.tbl1","file_name":"shard_01_part_00000001.csv","message":"creating or updating token for duplicate key value violates unique constraint \"tbl1_pkey\"; Key (id)=(22) already exists."}
