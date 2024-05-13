@@ -11,7 +11,7 @@ docs_area: migrate
 
 MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
 
-MOLT Fetch can use `IMPORT INTO` or `COPY FROM` to move the source data to CockroachDB via cloud storage (Google Cloud Storage or Amazon S3), a local file server, or directly without an intermediate store. For details, see [Usage](#usage).
+MOLT Fetch uses `IMPORT INTO` or `COPY FROM` to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data onto a target CockroachDB database. For details, see [Usage](#usage).
 
 ## Supported databases
 
@@ -92,7 +92,23 @@ Complete the following items before using MOLT Fetch:
 
 		- Ensure the Google Cloud Storage bucket is created and accessible to CockroachDB.
 	
+## Commands
+
+| Command |                                       Usage                                        |
+|---------|------------------------------------------------------------------------------------|
+| `fetch` | Start the fetch process between a source database and target CockroachDB database. |
+
+### Subcommands
+
+The following subcommands are run after the `fetch` command.
+
+| Command |                                Usage                                 |
+|---------|----------------------------------------------------------------------|
+| `token` | List active [continuation tokens](#list-active-continuation-tokens). |
+
 ## Flags
+
+### Global flags
 
 |                      Flag                     |                                                                                                                                                                                                        Description                                                                                                                                                                                                        |
 |-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -114,6 +130,7 @@ Complete the following items before using MOLT Fetch:
 | `--log-file`                                  | Write messages to the specified log filename. If not specified, messages are only written to `stdout`.                                                                                                                                                                                                                                                                                                                    |
 | `--logging`                                   | Level at which to log messages (`'trace'`/`'debug'`/`'info'`/`'warn'`/`'error'`/`'fatal'`/`'panic'`).<br><br>**Default:** `'info'`                                                                                                                                                                                                                                                                                        |
 | `--metrics-listen-addr`                       | Address of the metrics endpoint.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                   |
+| `--non-interactive`                           | Run the fetch process without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                |
 | `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                 |
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). This flag is only necessary if you want to use a replication slot other than the default slot.                                                                                                                                                                                                                               |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                  |
@@ -125,6 +142,13 @@ Complete the following items before using MOLT Fetch:
 | `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                       |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                    |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                        |
+
+### `token` flags
+
+|          Flag         |                                                                 Description                                                                 |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `--conn-string`       | (Required) Connection string for the target database. For details, see [List active continuation tokens](#list-active-continuation-tokens). |
+| `-n`, `--num-results` | Number of results to return.                                                                                                                |
 
 ## Usage
 
@@ -279,16 +303,25 @@ With each option, MOLT Fetch creates a new CockroachDB table to load the source 
 
 ### Fetch continuation
 
-If `molt fetch` exits with an error after loading data from [cloud](#cloud-storage) or [local storage](#local-file-server), you can continue the process from the *continuation point* where it was interrupted.
+If `molt fetch` encounters an error while loading data onto CockroachDB from [cloud](#cloud-storage) or [local storage](#local-file-server), it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
 
-To retry all data starting from the continuation point, include `--fetch-id` and specify the process ID from the `molt fetch` output.
+Continuation is only possible under the following conditions:
+
+- All data has been exported from the source database into intermediate files.
+- The *initial load* of source data to the target CockroachDB database is incomplete. This means that ongoing [replication](#replication) of source data has not begun.
+
+{{site.data.alerts.callout_info}}
+Only one fetch ID and set of continuation tokens are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
+{{site.data.alerts.end}}
+
+To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
-To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch process encounters a subsequent error, it generates a new token for each failed table.
+To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch process encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
 
 {{site.data.alerts.callout_info}}
 This will retry only the table that corresponds to the continuation token. If the fetch process succeeds, there may still be source data that is not yet loaded onto CockroachDB.
@@ -311,6 +344,25 @@ To retry all data starting from a specific file, include both `--fetch-id` and `
 {{site.data.alerts.callout_info}}
 Continuation is not possible when using [direct copy mode](#direct-copy).
 {{site.data.alerts.end}}
+
+#### List active continuation tokens
+
+To view all active continuation tokens, issue a `molt fetch token` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch token \
+--conn-string 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full'
+~~~
+
+~~~
++--------------------------------------+--------------------------------------+------------------+----------------------+
+|                  ID                  |               FETCH ID               |    TABLE NAME    |      FILE NAME       |
++--------------------------------------+--------------------------------------+------------------+----------------------+
+| f6f0284c-d9c1-43c9-8fde-af609d0dbd82 | 66443597-5689-4df3-a7b9-9fc5e27180eb | public.employees | part_00000001.tar.gz |
++--------------------------------------+--------------------------------------+------------------+----------------------+
+Continuation Tokens.
+~~~
 
 ### CDC cursor
 
@@ -416,6 +468,10 @@ If `molt fetch` encounters an error, it exits with an error message, fetch ID, a
 
 To retry a specific table, reissue the initial `molt fetch` command and include the fetch ID and a continuation token:
 
+{{site.data.alerts.callout_success}}
+To list all active continuation tokens, run a `molt fetch tokens` command. See [List active continuation tokens](#list-active-continuation-tokens).
+{{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
@@ -424,7 +480,15 @@ molt fetch \
 --continuation-token '5e7c7173-101c-4539-9b8d-28fad37d0240'
 ~~~
 
-To retry all tables that failed, exclude `--continuation-token` from the command.
+To retry all tables that failed, exclude `--continuation-token` from the command. When prompted, type `y` to clear all active continuation tokens. To avoid the prompt (e.g., when running `molt fetch` in a job), include the `--non-interactive` flag:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+... \
+--fetch-id '87bf8dc0-803c-4e26-89d5-3352576f92a7' \
+--non-interactive
+~~~
 
 ## See also
 
