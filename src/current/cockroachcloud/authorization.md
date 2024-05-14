@@ -30,7 +30,7 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
 
 1. Cluster: Each CockroachDB cluster defines its own set of [SQL users](https://www.cockroachlabs.com/docs/stable/authorization#create-cockroachdb-users) and [roles](https://www.cockroachlabs.com/docs/stable/authorization#create-and-manage-roles) which manage permission to execute SQL statements on the cluster.
 
-The levels within the hierarchy intersect, because administrating SQL-level users on specific clusters within an organization is an organization-level function.
+The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
 

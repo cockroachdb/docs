@@ -13,17 +13,17 @@ This page explains how to organize and manage access to your {{ site.data.produc
 
 ## How folders work
 
-Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
+Folders allow you to organize and manage access to your clusters according to your organization's requirements, and to [summarize billing by folder]({% link cockroachcloud/billing-management.md %}#view-invoices). For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
 
 Each folder can contain a mix of folders and clusters. Roles assigned on a folder are inherited by its descendants.
 
-Each folder that you create has an ID, which determines its position in the organization's hierarchy.
+Each folder is assigned a unique ID when it is created, and each folder and cluster has an optional _parent ID_ field, which determines its position in the organization's hierarchy.
 
 - Clusters or folders within a folder have their parent ID set to that folder's ID.
-- If a cluster or folder has no parent ID, or if its parent ID is set to `root`, its location is the root level of the organization.
-- Moving a folder is a lightweight operation that does not modify the folder itself or its descendant folders or clusters; you need only update the folder's parent ID. Similarly, to move a cluster into or out of a folder, you need only update the cluster's folder ID. If you move a folder that contains descendant resources, the descendant resources are not directly modified.
+- A cluster or folder created at the root level of the organization has no parent ID. When using the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), you can either omit the parent ID for a folder or cluster, or set it to `root`, to create it at or move it to the root level.
+- Moving a folder is a lightweight operation that does not modify the folder itself or its descendant folders or clusters; only the folder's parent ID field is updated. Similarly, when moving a cluster into or out of a folder, only the cluster's parent ID field is updated. If you move a folder that contains descendant resources, the descendant resources are not directly modified.
 
-A folder operation may fail if it violates [folder naming](#folder-naming) or [folder structure](#folder-structure) guidelines or if you attempt to move a folder into itself or into one of its descendant folders.
+A folder operation may fail if it violates [folder naming](#folder-naming) or [folder structure](#folder-structure) restrictions or if you attempt to move a folder into itself or into one of its descendant folders.
 
 ### Folder naming
 
@@ -46,12 +46,12 @@ Folders give you the flexibility to organize and manage access to your clusters 
           -- Subfolder B
             -- Subfolder B2
               -- Cluster B2
-              -- Subfolder B3
+              -- Subfolder B3     <-- Too deep, violates folder structure
     ~~~
 
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
 
-Operations that violate these limitations result in an error.
+Operations that violate these restrictions result in an error.
 
 ### Folders and role assignment
 
