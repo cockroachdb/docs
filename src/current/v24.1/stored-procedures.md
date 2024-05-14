@@ -21,6 +21,7 @@ CREATE PROCEDURE procedure_name(parameters)
 ~~~
 
 - Each parameter can be a supported [SQL data type]({% link {{ page.version.version }}/data-types.md %}), [user-defined type]({% link {{ page.version.version }}/create-type.md %}), or the PL/pgSQL `REFCURSOR` type, when [declaring PL/pgSQL cursor variables]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables).
+- CockroachDB supports the `IN` (default), `OUT`, and `INOUT` modes for parameters. For an example, see [Create a procedure that uses `OUT` and `INOUT` parameters]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-out-and-inout-parameters).
 - `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages [`SQL`]({% link {{ page.version.version }}/sql-statements.md %}) and [`PLpgSQL`]({% link {{ page.version.version }}/plpgsql.md %}).
 - The procedure body: 
 	- Can be enclosed in single or dollar (`$$`) quotes. Dollar quotes are easier to use than single quotes, which require that you escape other single quotes that are within the procedure body.
@@ -49,10 +50,9 @@ ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
 
 ## Known limitations
 
-- Stored procedures cannot call other stored procedures or [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
-- Stored procedures do not support `OUT` and `INOUT` argument modes.
-- [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`) cannot be used within a stored procedure body. 
-- [Transactions]({% link {{ page.version.version }}/transactions.md %}) cannot be run within stored procedures.
+Stored procedures have the following limitations:
+
+{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
 
 Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).
 

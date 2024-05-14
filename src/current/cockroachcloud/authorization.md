@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Cloud Access Management (Authorization) Overview
-summary: Learn about the CockroachDB {{ site.data.products.cloud }} Authorization features and concepts
+summary: Learn about CockroachDB Cloud authorization features and concepts
 toc: true
 docs_area: manage
 ---
@@ -61,8 +61,6 @@ Org Administrators can:
 Org Administrators automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about planned cluster maintenance and when CockroachDB {{ site.data.products.cloud }} detects that a cluster is overloaded or experiencing issues. In addition, Org Administrators can subscribe other members to the email alerts, and can configure how alerts work for the organization.
 
 This role can be granted only at the scope of the organization.
-
-This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which is considered deprecated.
 
 ### Billing Coordinator
 
@@ -163,51 +161,11 @@ A user with the [Org Administrator](#org-administrator) or the [Folder Admin](#f
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
-## Legacy Roles (deprecated)
-
-### Org Administrator (legacy)
-
-Org Administrator (legacy) can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a CockroachDB {{ site.data.products.cloud }} organization:
-
-- [Create or delete a cluster]({% link cockroachcloud/create-your-cluster.md %})
-- [Invite team members to the organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization)
-- [Manage an organization's users and their roles]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users)
-- [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}#create-a-sql-user)
-- [Manage billing for the organization]({% link cockroachcloud/billing-management.md %})
-- [Restore databases and tables from a CockroachDB {{ site.data.products.cloud }} backup]({% link cockroachcloud/use-managed-service-backups.md %}#ways-to-restore-data)
-- [Delete an organization]({% link cockroachcloud/managing-access.md %}#delete-an-organization)
-
-{{site.data.alerts.callout_info}}
-This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
-
-- [Org Administrator](#org-administrator)
-- [Cluster Administrator](#cluster-administrator)
-- [Billing Coordinator](#billing-coordinator)
-{{site.data.alerts.end}}
-
-### Org Developer (legacy)
-
-Org Developer (legacy) can read information for all clusters, and monitor all clusters using DB Console.
-
-{{site.data.alerts.callout_info}}
-This role is deprecated in favor of more fine-grained roles described above.
-{{site.data.alerts.end}}
-
 ## Service accounts
 
 Service accounts authenticate with API keys to the CockroachDB {{ site.data.products.cloud }} API, rather than to the CockroachDB {{ site.data.products.cloud }} Console UI.
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
-
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*:
-
-- The `ADMIN` role  allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
-- The `CREATE` role allows the service account to create new clusters within the organization.
-- The `DELETE` role allows the service account to delete clusters within the organization.
-- The `EDIT` role allows the service account to modify clusters within the organization.
-- The `READ` role allows the service account to get details about clusters within the organization.
-
-Update legacy service accounts to roles in the new authorization model, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 

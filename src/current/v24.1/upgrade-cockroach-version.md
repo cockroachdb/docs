@@ -14,20 +14,16 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
-
-{{site.data.alerts.callout_info}}
-CockroachDB v23.2 is now generally available and production-ready for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024.
-{{site.data.alerts.end}}
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**{% if latest.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
-- A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
-- Each [supported](https://www.cockroachlabs.com/docs/releases/release-support-policy) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
-- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
-- Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
+- A new *major release* is performed multiple times per year. The major version number indicates the year of release followed by the release number, starting with 1. For example, the latest major release is {{ actual_latest_prod.major_version }}.
+- Each [supported](https://www.cockroachlabs.com/docs/releases/release-support-policy) major release is maintained across *patch releases* that contain improvements including performance or security enhancements and bug fixes. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
+- All major and patch releases are suitable for production environments, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
+- Prior to an upcoming major release, alpha, beta, and release candidate (RC) binaries are made available for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.These "testing releases" are not suitable for production environments and are not eligible for spuport or uptime SLA commitments. For more information, refer to the [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
 
 {{site.data.alerts.callout_info}}
 There are no "minor releases" of CockroachDB.
@@ -139,18 +135,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The coalescing of storage ranges for each table, index, or partition (collectively referred to as "schema objects") into a single range when individual schema objects are smaller than the default configured maximum range size (controlled using zone configs, specifically the `range_max_bytes parameter`). This change improves scalability with respect to the number of schema objects, since the underlying range count is no longer a potential performance bottleneck. After finalizing the upgrade to v23.2, you may observe a round of range merges and snapshot transfers. To disable this optimization, **before finalizing the upgrade**, set the `spanconfig.storage_coalesce_adjacent.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{ page.version.version }}/cluster-settings) to `false`. See the [v23.1 release notes]({% link releases/v23.1.md %}) for `SHOW RANGES` for more details. [#102961][#102961]
-- The new output log format, which allows configuration of a time zone in log output. Before configuring a time zone, the cluster must be finalized on v23.2. [#104265][#104265]
-- Performance improvements when a node reclaims disk space. [#106177][#106177]
-- The following [admission control](https://www.cockroachlabs.com/docs/{{ page.version.version }}/admission-control#operations-subject-to-admission-control) mechanisms, which help to maintain cluster performance and availability when some nodes experience high load: <ul><li>Delete operations</li><li>Replication</li>[#98308][#98308]
-- Collecting a statement diagnostic bundle for a particular plan. The existing fingerprint-based matching has been extended to also include plan-gist-based matching and "anti-matching" (collecting a bundle for any plan other than the provided plan gist). [#105477][#105477]
-- A new system table, `system.region_liveness`, that tracks the availability and the timestamp of the latest unavailability for each cluster region. [#107903][#107903]
-- The ability of a `WaitPolicy_Error` request to push the timestamp of a transaction with a lower priority. [#108190][#108190]
-- Configuring a changefeed with the `lagging_ranges_threshold` or `lagging_ranges_polling_interval` [changefeed options](https://www.cockroachlabs.com/docs/{{ page.version.version }}/create-changefeed#options). [#110649][#110649]
-- Removal of the upgrade step `grantExecuteToPublicOnAllFunctions`, which is no longer required because post-serialization changes now grant `EXECUTE` on functions to the public role. [#114203][#114203]
-- A fix to a bug that could allow a user to execute a user-defined function without the `EXECUTE` privilege on the function. If a user does not have the privilege, the user-defined function does not run and an error is logged. [#114203][#114203]
+- {% include v24.1/finalization-required/119894.md version="v24.1" %}
 
-For more details about a given feature, refer to the [CockroachDB v23.2.0 release notes](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0).
+For more details about a given feature, refer to the [CockroachDB v24.1.0 release notes](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0).
 
 ## Step 4. Perform the rolling upgrade
 
@@ -192,6 +179,8 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     ~~~ shell
     cp -i {COCKROACHDB_DIR}/cockroach /usr/local/bin/cockroach
     ~~~
+
+1. If a cluster has corrupt descriptors, a major-version upgrade cannot be finalized. Automatic descriptor repair is enabled by default in {{ page.version.version }}. After restarting each cluster node on {{ page.version.version }}, monitor the [cluster logs](https://www.cockroachlabs.com/docs/{{ page.version.version }}/logging) for errors. If a descriptor cannot be repaired automatically, [contact support](https://support.cockroachlabs.com/hc) for assistance completing the upgrade. To disable automatic descriptor repair (not generally recommended), set the environment variable `COCKROACH_RUN_FIRST_UPGRADE_PRECONDITION` to `false`.
 
 1. Start the node so that it can rejoin the cluster.
 

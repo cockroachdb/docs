@@ -39,6 +39,10 @@ A CockroachDB cluster consists of multiple nodes and clients. The nodes can comm
 - Node authentication using [TLS 1.3](https://wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}) (for Enterprise users).
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ### Node authentication
 
 To set up a secure cluster without using an existing certificate authority, you'll need to generate the following files:
@@ -131,7 +135,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by the CA represented by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (e.g., `CN=marc` for `client.marc.crt`) <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
@@ -255,8 +259,6 @@ For details about when and how to change security certificates without restartin
 
 ## Background on public key cryptography and digital certificates
 
-CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric and asymmetric encryption to encrypt data in flight.
-
 {% include common/tls-bad-cipher-warning.md %}
 
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
@@ -303,6 +305,18 @@ As discussed [earlier](#certificate-authority), the CA's public key is widely di
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
 
+## Supported cipher suites
+
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. However, only cipher suites currently recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to version 22.2. You should set this environment variable only if you cannot use one of the default cipher suites, but you can use one of the disabled ones.
+
+The following cipher suites are enabled by default:
+
+{% include common/tls-cipher-suites.md list='enabled' %}
+
+The following cipher suites are rejected by default because they are not recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)):
+
+{% include common/tls-cipher-suites.md list='disabled' %}
+
 ## See also
 
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
@@ -310,3 +324,11 @@ Let's see how the digital certificate is used in client-server communication: Th
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %})
+- [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
+- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
+- [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
+- [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
+- [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})

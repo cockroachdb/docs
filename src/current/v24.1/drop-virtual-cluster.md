@@ -43,9 +43,9 @@ GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 
 Parameter | Description
 ----------+------------
-`IF EXISTS` | Drop the virtual cluster if it exists. If it does not exist, do not return an error.
+`IF EXISTS` | Drop a virtual cluster if it exists. If it does not exist, do not return an error.
 `virtual_cluster_spec` | The name of the virtual cluster.
-`IMMEDIATE` | Drop the virtual cluster immediately instead of waiting for garbage collection ([GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
+`IMMEDIATE` | Drop a virtual cluster immediately instead of waiting for garbage collection ([GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
 
 ## Examples
 
@@ -55,7 +55,7 @@ To remove a virtual cluster from a CockroachDB cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DROP VIRTUAL CLUSTER IF EXISTS application;
+DROP VIRTUAL CLUSTER IF EXISTS main;
 ~~~
 
 ### Remove a virtual cluster without waiting for garbage collection
@@ -64,7 +64,7 @@ Use `IMMEDIATE` to drop a virtual cluster instead of waiting for data to be garb
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DROP VIRTUAL CLUSTER IF EXISTS application IMMEDIATE;
+DROP VIRTUAL CLUSTER IF EXISTS main IMMEDIATE;
 ~~~
 
 ## See also

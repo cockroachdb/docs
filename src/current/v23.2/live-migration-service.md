@@ -62,13 +62,6 @@ For a demo of the Live Migration Service in action, watch the following video:
     If you named the release `lms`, exclude `{releasename}-` from the command.
     {{site.data.alerts.end}}
 
-1. To set up the LMS resources, [install `molt-lms-cli`](#molt-lms-cli) and run the following command, specifying the orchestrator URL:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    molt-lms-cli initialize --orchestrator-url localhost:4200
-    ~~~
-
 1. The LMS proxy instances and orchestrator are initialized as Kubernetes pods:
 
     {% include_cached copy-clipboard.html %}
@@ -94,6 +87,19 @@ For a demo of the Live Migration Service in action, watch the following video:
 To configure the LMS, override the [Helm chart values](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml). This involves a rolling restart of your pods. For information on setting Helm chart values, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
 
 This section describes the most important and commonly used values. For details on all configurable values, refer to the [`values.yaml`](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml) file.
+
+#### LMS version
+
+~~~ yaml
+image:
+  tag: 0.2.4  
+~~~
+
+`image.tag` specifies the LMS version. This **must** match the installed [`molt-lms-cli`](#molt-lms-cli) version, which can be queried with `molt-lms-cli version`.
+
+{% comment %}
+For release details, see the [MOLT changelog]({% link releases/molt-releases.md %}).
+{% endcomment %}
 
 #### Source dialect
 
@@ -357,7 +363,11 @@ spec:
 
 In the preceding example, each `.crt` and `.key` filename is associated with its corresponding value in the remote secret `lms-certs`.
 
-In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
+In the [Helm configuration](#configuration), `lms.sslVolumes` and `lms.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `lms.env`. Cockroach Labs recommends mounting certificates to `/app/certs`. 
+
+{{site.data.alerts.callout_info}}
+Certificates **must** be mounted in a readable format, or the LMS will error. The format should match the output of `cat {certificate}` on your host machine.
+{{site.data.alerts.end}}
 
 ~~~ yaml
 lms:
@@ -422,6 +432,10 @@ In the preceding example, each `.crt` and `.key` filename is associated with its
 
 In the [Helm configuration](#configuration), `orchestrator.sslVolumes` and `orchestrator.sslVolumeMounts` must specify [volumes](https://kubernetes.io/docs/concepts/storage/volumes/#secret) and mount paths that contain the server-side certificates. The path to each file is specified as an environment variable in `orchestrator.env`. Cockroach Labs recommends mounting certificates to `/app/certs`.
 
+{{site.data.alerts.callout_info}}
+Certificates **must** be mounted in a readable format, or the LMS will error. The format should match the output of `cat {certificate}`.
+{{site.data.alerts.end}}
+
 ~~~ yaml
 orchestrator:
   sslVolumes:
@@ -470,34 +484,78 @@ To install `molt-lms-cli`, download the binary that matches your system. To down
 | Linux            | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/lms/cli/molt-lms-cli-latest.darwin-arm64.tgz)  |
 
-{{site.data.alerts.callout_success}}
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/lms/cli/versions.html).
-{{site.data.alerts.end}}
+For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/lms/cli/versions.html). The `molt-lms-cli` version **must** match the [configured LMS version](#lms-version).
 
 ### Commands
 
-|       Command        |                                                                                    Usage                                                                                    |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `initialize`         | Set up the required objects for running the LMS. You must run this before using the LMS.                                                                                    |
-| `connections list`   | List all client connections to the LMS and their most recent queries.                                                                                                       |
-| `cutover consistent` | Specify a [consistent cutover](#consistent-cutover). You must also specify `begin`, `commit`, or `abort`. For usage details, see [Consistent cutover](#consistent-cutover). |
-| `begin`              | Begin a consistent cutover. This pauses traffic to the source database.                                                                                                     |
-| `commit`             | Commit a consistent cutover. This resumes traffic on the target database. This is only effective after running `cutover consistent begin`.                                  |
-| `abort`              | Abort a consistent cutover after running `consistent cutover begin`, unless you have also run `consistent cutover commit`. This resumes traffic to the source database.     |
-| `status`             | Display the current configuration of the LMS instances.                                                                                                                     |
+|        Command         |                                                                                                                Usage                                                                                                                |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `connections list`     | List all client connections to the LMS and their most recent queries. See additional [flags](#connections-list-flags) and [usage example](#connections-list).                                                                       |
+| `cutover consistent`   | Specify a [consistent cutover](#consistent-cutover). You must also specify `begin`, `commit`, or `abort`. See [subcommands](#subcommands) and [usage example](#consistent-cutover).                                                 |
+| `cutover get_metadata` | Display metadata for a cutover attempt, specified with its cutover attempt ID. For example, `cutover get_metadata -i {cutover attempt ID}`. See additional [flags](#cutover-get_metadata-flags) and [usage example](#cutover-get_metadata). |
+| `status`               | Display the current configuration of the LMS instances. See additonal [flags](#status-flags) and [usage example](#status).                                                                                                          |
+
 
 {% comment %}
 | `cutover immediate`  | Initiate an [immediate cutover](#immediate-cutover). This switches the source of truth to the target database. For usage details, see [Immediate cutover](#immediate-cutover). |
 {% endcomment %}
 
+#### Subcommands
+
+The following subcommands are run after the `cutover consistent` command.
+
+| Subcommand |                                                                                                               Usage                                                                                                                |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `begin`    | Begin a consistent cutover. This pauses traffic to the source database. See additional [flags](#cutover-consistent-begin-flags) and [example](#consistent-cutover).                                                                |
+| `commit`   | Commit a consistent cutover. This resumes traffic and sends it to the **target** database, which becomes the source of truth. This is only effective after running `cutover consistent begin`. See [example](#consistent-cutover). |
+| `abort`    | Abort a consistent cutover after running `cutover consistent begin`, unless you have also run `cutover consistent commit`. This resumes traffic to the source database.                                                            |
+
 ### Flags
 
-|         Flag         |                                                                                                                                              Description                                                                                                                                              |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is required unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
+#### Global flags
+
+|         Flag         |                                                                                                                                                Description                                                                                                                                                |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is **required** unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
 | `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
-| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_CERT="{path-to-cli-client-cert}"`.                                                                                                               |
-| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"`.                                                                                                                        |
+| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_CERT="{path-to-cli-client-cert}"`.                                                                                           |
+| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"`.                                                                                                     |
+
+#### `connections list` flags
+
+|           Flag          |                                                                                                Description                                                                                                 |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-l`, `--lms-addresses` | LMS instances to run the command against. This can be a comma-separated list of IP addresses (e.g., `127.0.0.1`), IP addresses and ports (e.g., `127.0.0.1:1024`), or hostnames (e.g., `https://lms.net`). |
+| `-o`, `--output-type`   | Specify whether `molt-lms-cli` output is formatted in `json` or `table` format.<br><br>**Default:** `table`                                                                                                |
+
+#### `cutover consistent begin` flags
+
+
+|           Flag          |                                                                                                                                                                                                                                                                                                                                     Description                                                                                                                                                                                                                                                                                                                                      |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--abort-begin-timeout` | Maximum duration for the orchestrator to wait for confirmation from all LMS instances that cutover successfully aborted, after receiving a `ctrl-c` command from `molt-lms-cli`. This affects the performance of the `ctrl-c` command only. <br><br>**Default:** `"2s"`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `--begin-timeout`       | Maximum duration to wait before traffic to the LMS is paused for consistent cutover; i.e., time limit for all connections to be transaction- and query-free. This should be the approximate length of the longest-running transaction, e.g., `30s`. If no `--begin-timeout` value is specified, the LMS waits for all transactions and queries to finish before pausing traffic.                                                                                                                                                                                                                                                                                                     |
+| `-l`, `--lms-addresses` | LMS instances to run the command against. This can be a comma-separated list of IP addresses (e.g., `127.0.0.1`), IP addresses and ports (e.g., `127.0.0.1:1024`), or hostnames (e.g., `https://lms.net`). By default, cutover is performed on all LMS instances deployed in the same namespace as the orchestrator. For example, if the orchestrator and all LMS instances are deployed on the same namespace on a Kubernetes cluster, the orchestrator automatically detects the addresses of all LMS instances, and no user configuration is needed. LMS addresses should only be manually specified if the orchestrator is deployed in a different namespace than the instances. |
+
+#### `cutover consistent abort` flags
+
+|          Flag         |                                                 Description                                                 |
+|-----------------------|-------------------------------------------------------------------------------------------------------------|
+| `-o`, `--output-type` | Specify whether `molt-lms-cli` output is formatted in `json` or `table` format.<br><br>**Default:** `table` |
+
+#### `cutover get_metadata` flags
+
+|          Flag         |                                                                                      Description                                                                                       |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-i`, `--cutover-id`  | ID of the cutover attempt.                                                                                                                                                             |
+| `-o`, `--output-type` | Specify whether `molt-lms-cli` output is formatted in `json` or `table` format.<br><br>**Default:** `table` |
+
+#### `status` flags
+
+|           Flag          |                                                                                                Description                                                                                                 |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-l`, `--lms-addresses` | LMS instances to run the command against. This can be a comma-separated list of IP addresses (e.g., `127.0.0.1`), IP addresses and ports (e.g., `127.0.0.1:1024`), or hostnames (e.g., `https://lms.net`). |
+| `-o`, `--output-type`   | Specify whether `molt-lms-cli` output is formatted in `json` or `table` format.<br><br>**Default:** `table`                                                                                                |
 
 ## Shadowing modes
 
@@ -513,7 +571,7 @@ The LMS can be configured to shadow production traffic from the source database 
 - Query results from the source of truth are returned to the application.
 - Writes must be manually replicated from the source database to the target database.
 
-You can use this mode to perform a [consistent cutover](#consistent-cutover), along with a database replication technology that replicates writes to the target database. {% comment %}For an example, see [Consistent cutover without shadowing](#consistent-cutover-without-shadowing).{% endcomment %}
+You **must** use the `none` shadowing mode to perform a [consistent cutover](#consistent-cutover), along with a database replication technology that replicates writes to the target database.
 
 ### `async`
 
@@ -601,6 +659,14 @@ To perform a consistent cutover with the LMS:
     molt-lms-cli cutover consistent begin {flags}
     ~~~
 
+    ~~~
+    Pausing traffic, press Ctrl-C to exit cutover and resume the traffic.
+    Successfully began consistent cutover with ID 1.
+
+    To check the status of this command, please run:
+    molt-lms-cli cutover get_metadata -i 1
+    ~~~
+
     This command tells the LMS to pause all application traffic to the source of truth. The LMS then waits for transactions to complete and prepared statements to close.
 
 1. Verify that replication on CockroachDB has caught up with the source of truth. For example, insert a row on the source database and check that the row exists on CockroachDB.
@@ -612,6 +678,20 @@ To perform a consistent cutover with the LMS:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     molt-lms-cli cutover consistent commit {flags}
+    ~~~
+
+    ~~~
+    |-----------------|-----------------|-----------------|----------------------------|----------------------------|----------------------------|
+    |   LMS ADDRESS   | SOURCE OF TRUTH |      STATUS     |        TRIGGER TIME        |    TRAFFIC PAUSED TIME     |        COMMIT TIME         |
+    |-----------------|-----------------|-----------------|----------------------------|----------------------------|----------------------------|
+    | demo-lms-1:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.991048 | 2024-02-15 19:10:06.991048 | 2024-02-15 19:14:22.95108  |
+    |                 |                 |                 | +0000 UTC                  | +0000 UTC                  | +0000 UTC                  |
+    | demo-lms-2:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.991063 | 2024-02-15 19:10:06.991063 | 2024-02-15 19:14:22.950753 |
+    |                 |                 |                 | +0000 UTC                  | +0000 UTC                  | +0000 UTC                  |
+    | demo-lms-3:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.992059 | 2024-02-15 19:10:06.992059 | 2024-02-15 19:14:22.950753 |
+    |                 |                 |                 | +0000 UTC                  | +0000 UTC                  | +0000 UTC                  |
+    |-----------------|-----------------|-----------------|----------------------------|----------------------------|----------------------------|
+    LMS-Specific Consistent Cutover Metadata.
     ~~~
 
     This command tells the LMS to switch the source of truth to the target database. Application traffic is now routed to the target database, and requests are processed from the queue in the LMS.
@@ -669,6 +749,116 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}
+
+### Monitor cutover
+
+You can monitor your cutover attempts with the following commands.
+
+#### `connections list`
+
+`molt-lms-cli connections list` outputs client connection details from each LMS instance, including the most recent query and error, if any.
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt-lms-cli connections list --output-type=json
+~~~
+
+~~~ json
+{
+    "error": "",
+    "last_query": "",
+    "remote_address": "10.42.0.2:9043",
+    "source_address": "10.42.0.5:36676",
+    "source_of_truth": "MySQL"
+}
+{
+    "error": "",
+    "last_query": "",
+    "remote_address": "10.42.0.4:9043",
+    "source_address": "10.42.0.5:34620",
+    "source_of_truth": "MySQL"
+}
+{
+    "error": "",
+    "last_query": "",
+    "remote_address": "10.42.0.6:9043",
+    "source_address": "10.42.0.5:41052",
+    "source_of_truth": "MySQL"
+}
+Connections Details.
+~~~
+
+In the preceding output, `remote_address` is the address of the LMS instance, and `source_address` is the address of the client connected to the LMS instance.
+
+#### `cutover get_metadata`
+
+`molt-lms-cli cutover get_metadata` outputs the metadata for a specific cutover attempt initiated with `cutover consistent begin`.
+
+For example, specifying cutover attempt `1`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt-lms-cli cutover get_metadata --cutover-id=1
+~~~
+
+~~~
+cutover metadata for attempt id 1:
++-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+| SOURCE OF TRUTH |     STATUS      |          TRIGGER TIME          |      TRAFFIC PAUSED TIME       |          COMMIT TIME           |
++-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+| Cockroach       | CommitCompleted | 2024-02-15 19:10:06.974503749  | 2024-02-15 19:10:06.998836442  | 2024-02-15 19:14:22.951534482  |
+|                 |                 | +0000 UTC m=+736.110121156     | +0000 UTC m=+736.134453848     | +0000 UTC m=+992.087151888     |
++-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+Summarized Consistent Cutover Metadata.
++-----------------+-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+|   LMS ADDRESS   | SOURCE OF TRUTH |     STATUS      |          TRIGGER TIME          |      TRAFFIC PAUSED TIME       |          COMMIT TIME           |
++-----------------+-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+| demo-lms-1:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.991048     | 2024-02-15 19:10:06.991048     | 2024-02-15 19:14:22.95108      |
+|                 |                 |                 | +0000 UTC                      | +0000 UTC                      | +0000 UTC                      |
+| demo-lms-2:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.991063     | 2024-02-15 19:10:06.991063     | 2024-02-15 19:14:22.950753     |
+|                 |                 |                 | +0000 UTC                      | +0000 UTC                      | +0000 UTC                      |
+| demo-lms-3:9043 | Cockroach       | CommitCompleted | 2024-02-15 19:10:06.992059     | 2024-02-15 19:10:06.992059     | 2024-02-15 19:14:22.950753     |
+|                 |                 |                 | +0000 UTC                      | +0000 UTC                      | +0000 UTC                      |
++-----------------+-----------------+-----------------+--------------------------------+--------------------------------+--------------------------------+
+LMS-Specific Consistent Cutover Metadata.
+~~~
+
+In the preceding output:
+
+- `LMS ADDRESS` is the IP address and port number of the running LMS instance.
+- `SOURCE OF TRUTH` is the database that was serving reads and writes to the LMS instance at the time that `cutover get_metadata` was run.
+- `STATUS` is the status of the cutover attempt. This can indicate whether the cutover attempt began, aborted, paused traffic, committed, or encountered an error. In this example, `CommitCompleted` indicates that a consistent cutover was committed successfully with `cutover consistent commit`.
+- `TRIGGER TIME` is the timestamp when the cutover attempt was initiated on the LMS instance.
+- `TRAFFIC PAUSED TIME` is the timestamp when traffic to the LMS instance was paused during a consistent cutover attempt.
+- `COMMIT TIME` is the timestamp when the cutover attempt was completed on the LMS instance.
+- `ERROR` is the error encountered by the cutover attempt, if any.
+
+#### `status`
+
+`molt-lms-cli status` outputs the overall status of the LMS, including its [shadowing mode](#shadowing-modes), source and target database addresses, and any errors encountered on the LMS instances.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt-lms-cli status --lms-addresses="demo-lms-1:9043,demo-lms-2:9043"
+~~~
+
+~~~
++----------------+----------------+---------------+
+| SOURCE DIALECT | TARGET DIALECT | TRANSITIONING |
++----------------+----------------+---------------+
+| MySQL          | Cockroach      | false         |
++----------------+----------------+---------------+
+Proxy Settings Table.
++-----------------+-------------+----------------+----------------+----------------+----------------+-------+
+|   LMS ADDRESS   | SHADOW MODE | SOURCE DIALECT | TARGET DIALECT | SOURCE ADDRESS | TARGET ADDRESS | ERROR |
++-----------------+-------------+----------------+----------------+----------------+----------------+-------+
+| demo-lms-1:9043 | None        | MySQL          | Cockroach      | mysql:3306     | crdb:26257     |       |
+| demo-lms-2:9043 | None        | MySQL          | Cockroach      | mysql:3306     | crdb:26257     |       |
++-----------------+-------------+----------------+----------------+----------------+----------------+-------+
+Individual LMS Proxy Status.
+~~~
 
 ## See also
 

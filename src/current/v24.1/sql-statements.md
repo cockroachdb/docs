@@ -50,6 +50,7 @@ Statement | Usage
 [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %}) | List constraints on a table.
 [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) | View the `CREATE` statement for a database, function, sequence, table, or view.
 [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}) | List databases in the cluster.
+[`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %}) | List the values for updated [session variables]({% link {{ page.version.version }}/set-vars.md %}) that are applied to a given [user or role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
 [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) | List user-defined, [enumerated data types]({% link {{ page.version.version }}/enum.md %}) in a database.
 [`SHOW FULL TABLE SCANS`]({% link {{ page.version.version }}/show-full-table-scans.md %}) | List recent queries that used a full table scan.
 [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}) | View index information for a table or database.

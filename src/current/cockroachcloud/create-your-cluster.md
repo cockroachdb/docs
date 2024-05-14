@@ -7,9 +7,9 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a CockroachDB {{ site.data.products.dedicated }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+This page walks you through the process of creating a CockroachDB {{ site.data.products.dedicated }} cluster using the [Cloud Console](https://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
@@ -35,14 +35,6 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters cannot currentl
 {{site.data.alerts.end}}
 
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
-
-CockroachDB {{ site.data.products.cloud }} clusters use the following machine and storage types:
-
-Cloud | Compute type                                                                          | Storage type
-------|---------------------------------------------------------------------------------------|-------------
-GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
-AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
-Azure | [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -102,7 +94,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     Factor | Description
     ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
+    Transactions per second | Each vCPU can handle approximately 400 transactions per second, depending on the workload. Read-heavy workloads can be expected to perform better.
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
 
     {{site.data.alerts.callout_info}}

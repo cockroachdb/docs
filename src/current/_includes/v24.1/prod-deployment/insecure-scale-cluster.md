@@ -56,15 +56,14 @@ For each additional node you want to add to the cluster, complete the following 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    curl -o cockroach-{{ page.release_info.version }}.linux-amd64.tgz; tar xzvf cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
 1. Copy the binary into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
+    cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.
@@ -73,28 +72,28 @@ For each additional node you want to add to the cluster, complete the following 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ mkdir /var/lib/cockroach
+    mkdir /var/lib/cockroach
     ~~~
 
 1. Create a Unix user named `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ useradd cockroach
+    useradd cockroach
     ~~~
 
 1. Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ chown cockroach /var/lib/cockroach
+    chown cockroach /var/lib/cockroach
     ~~~
 
 1. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
+    curl -o insecurecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:

@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-The `SHOW VIRTUAL CLUSTER` statement lists the virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` only supports inspecting virtual cluster status as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -49,7 +49,18 @@ This table lists all possible responses from the different `SHOW VIRTUAL CLUSTER
 
 {% include {{ page.version.version }}/physical-replication/show-virtual-cluster-responses.md %}
 
+{{site.data.alerts.callout_success}}
+To find the job ID for the replication stream, use the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) statement. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';
+~~~
+{{site.data.alerts.end}}
+
 ### Data state
+
+The `data_state` and `status` fields show the current state of a virtual cluster's data and progress of the replication stream job.
 
 {% include {{ page.version.version }}/physical-replication/show-virtual-cluster-data-state.md %}
 
@@ -57,7 +68,7 @@ This table lists all possible responses from the different `SHOW VIRTUAL CLUSTER
 
 ### Show all virtual clusters
 
-List all of the virtual clusters:
+List all virtual clusters:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -66,22 +77,22 @@ SHOW VIRTUAL CLUSTERS;
 
 ### Show a virtual cluster
 
-To show more details about the `application` virtual cluster:
+To show more details about the `main` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application;
+SHOW VIRTUAL CLUSTER main;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~
-  id |     name           | data_state  | service_mode | source_tenant_name |                                                  source_cluster_uri                                                   | replication_job_id |       replicated_time        |         retained_time         | cutover_time
------+--------------------+-------------+--------------+--------------------+-----------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------
-   5 | application        | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
+  id | name | data_state  | service_mode
+-----+------+-------------+---------------
+   3 | main | replicating | none
+(1 row)
 ~~~
 
 ### Show replication status
-{% comment %}this code block and output could be in an include. This is in several place e.g., cutover page, monitoring{% endcomment %}
 
 To show the replication status of all virtual clusters:
 
@@ -90,11 +101,17 @@ To show the replication status of all virtual clusters:
 SHOW VIRTUAL CLUSTERS WITH REPLICATION STATUS;
 ~~~
 
-To show the replication status of the `application` virtual cluster:
+To show the replication status of the `main` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
+~~~
+~~~
+  id | name | source_tenant_name |              source_cluster_uri               |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+-----+------+--------------------+-----------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
+   3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
+(1 row)
 ~~~
 
 ## See also

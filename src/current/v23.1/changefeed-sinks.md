@@ -205,15 +205,15 @@ Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integr
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?REGION={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`PROJECT NAME`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
+`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
@@ -251,6 +251,28 @@ When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the fol
 You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
 
 For a list of compatible parameters and options, refer to [Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) on the `CREATE CHANGEFEED` page.
+
+### Pub/Sub sink configuration
+
+The `pubsub_sink_config` option allows the changefeed flushing and retry behavior of your Pub/Sub sink to be configured.
+
+You can configure the following fields:
+
+Field              | Type                | Description      | Default
+-------------------+---------------------+------------------+-------------------
+`Flush.Messages`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
+`Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
+`Flush.Frequency`  | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`Retry.Max`        | [`INT`]({% link {{ page.version.version }}/int.md %}) | The maximum number of attempted batch emit retries after sending a message batch in a request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects batch emit retries, not other causes of [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages). Note that setting this field will not prevent the whole changefeed job from retrying indefinitely. | `3`
+`Retry.Backoff`    | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
+
+For example:
+
+~~~
+pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
+~~~
+
+{% include {{ page.version.version }}/cdc/sink-configuration-detail.md %}
 
 ### Pub/Sub sink messages
 
@@ -438,34 +460,7 @@ For example:
 webhook_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
 ~~~
 
-{{site.data.alerts.callout_danger}}
-Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
-{{site.data.alerts.end}}
-
-Some complexities to consider when setting `Flush` fields for batching:
-
-- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
-
-~~~
-{
-  "Flush": {
-    "Messages": 0,
-    "Bytes": 0,
-    "Frequency": "0s"
-  }
-}
-~~~
-
-- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` defaults to `0` in this case, so a batch will never trigger due to a configured byte size:
-
-~~~
-{
-  "Flush": {
-    "Messages": 100,
-    "Frequency": "5s"
-  }
-}
-~~~
+{% include {{ page.version.version }}/cdc/sink-configuration-detail.md %}
 
 ### Webhook sink messages
 

@@ -16,13 +16,13 @@ pre_production_preview_version: v23.2.0-rc.2
 This [testing release]({% link releases/index.md %}#release-naming) is not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
 
 {{site.data.alerts.callout_success}}
 Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 {{site.data.alerts.end}}
 {% else %}
-Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/ {{ page.page_version }}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/ {{ page.page_version }}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
@@ -71,8 +71,6 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with {{ page.page_version }}. Prepare your application for this brief downtime, typically a few minutes.
 
-Your cluster will be unavailable while its single node is stopped and restarted with v23.1. Prepare your application for this brief downtime, typically a few minutes.
-
 The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the CockroachDB {{ site.data.products.cloud }} Console will also be disabled during this time.
 
 </section>
@@ -90,7 +88,7 @@ Review the backward-incompatible changes and deprecated features announced in th
 
 ### Reset SQL statistics
 
-Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's SQL statistics. Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
+Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.page_version }}/cost-based-optimizer.md %}#table-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -117,7 +115,7 @@ Your cluster will be upgraded one node at a time without interrupting the cluste
 Your single-node cluster will be unavailable for a few minutes while the node is stopped and restarted with CockroachDB {{ page.page_version }}.
 </section>
 
-After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
+After it is started, an upgrade cannot be cancelled. Instead, you can wait for the upgrade to finish, then [roll it back](#roll-back-the-upgrade) for up to 72 hours, after which time it will be finalized and cannot be rolled back.
 
 ## Step 6. Monitor the upgrade
 
@@ -137,7 +135,29 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
+- The coalescing of storage ranges for each table, index, or partition (collectively referred to as "schema objects") into a single range when individual schema objects are smaller than the default configured maximum range size (controlled using zone configs, specifically the `range_max_bytes parameter`). This change improves scalability with respect to the number of schema objects, since the underlying range count is no longer a potential performance bottleneck. After finalizing the upgrade to v23.2, you may observe a round of range merges and snapshot transfers. To disable this optimization, **before finalizing the upgrade**, set the `spanconfig.storage_coalesce_adjacent.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{ page.version.version }}/cluster-settings) to `false`. Refer to the [v23.1 release notes]({% link releases/v23.1.md %}) for `SHOW RANGES` for more details. [#102961][#102961]
+- The new output log format, which allows configuration of a time zone in log output. Before configuring a time zone, the cluster must be finalized on v23.2. [#104265][#104265]
+- Performance improvements when a node reclaims disk space. [#106177][#106177]
+- The following [admission control](https://www.cockroachlabs.com/docs/{{ page.version.version }}/admission-control#operations-subject-to-admission-control) mechanisms, which help to maintain cluster performance and availability when some nodes experience high load: <ul><li>Delete operations</li><li>Replication</li>[#98308][#98308]
+- Collecting a statement diagnostic bundle for a particular plan. The existing fingerprint-based matching has been extended to also include plan-gist-based matching and "anti-matching" (collecting a bundle for any plan other than the provided plan gist). [#105477][#105477]
+- A new system table, `system.region_liveness`, that tracks the availability and the timestamp of the latest unavailability for each cluster region. [#107903][#107903]
+- The ability of a `WaitPolicy_Error` request to push the timestamp of a transaction with a lower priority. [#108190][#108190]
+- Configuring a changefeed with the `lagging_ranges_threshold` or `lagging_ranges_polling_interval` [changefeed options](https://www.cockroachlabs.com/docs/{{ page.version.version }}/create-changefeed#options). [#110649][#110649]
+- Removal of the upgrade step `grantExecuteToPublicOnAllFunctions`, which is no longer required because post-serialization changes now grant `EXECUTE` on functions to the public role. [#114203][#114203]
+- A fix to a bug that could allow a user to execute a user-defined function without the `EXECUTE` privilege on the function. If a user does not have the privilege, the user-defined function does not run and an error is logged. [#114203][#114203]
+
+[#102961]: https://github.com/cockroachdb/cockroach/pull/102961
+[#104265]: https://github.com/cockroachdb/cockroach/pull/104265
+[#107474]: https://github.com/cockroachdb/cockroach/pull/107474
+[#106177]: https://github.com/cockroachdb/cockroach/pull/106177
+[#98308]: https://github.com/cockroachdb/cockroach/pull/98308
+[#105477]: https://github.com/cockroachdb/cockroach/pull/105477
+[#107903]: https://github.com/cockroachdb/cockroach/pull/107903
+[#108190]: https://github.com/cockroachdb/cockroach/pull/108190
+[#110649]: https://github.com/cockroachdb/cockroach/pull/110649
+[#114203]: https://github.com/cockroachdb/cockroach/pull/114203
+
+For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
 ### Roll back the upgrade
 

@@ -14,4 +14,4 @@ timezone
 3
 ~~~
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69396)
+[#69396](https://github.com/cockroachdb/cockroach/issues/69396)

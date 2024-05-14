@@ -198,16 +198,6 @@ $ cockroach sql --user=jpointsman --insecure
 
 The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
 
-### Changefeed metrics labels
-
-{% include {{ page.version.version }}/cdc/metrics-labels.md %}
-
-For usage details, see the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) page.
-
-### Google Pub/Sub sink for changefeeds
-
-Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
-
 ### Multiple active portals
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).

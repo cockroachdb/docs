@@ -33,6 +33,14 @@ The **SQL Connection Rate** is an average of the number of connection attempts p
 
 - In the cluster view, the graph shows the rate of SQL connection attempts to all nodes, with lines for each node.
 
+## Upgrades of SQL Transaction Isolation Level
+
+- In the node view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level on the selected node.
+
+- In the cluster view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level across all nodes.
+
+If this metric is non-zero, then transactions at weaker isolation levels (such as [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %})) are being upgraded to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) instead. To ensure that `READ COMMITTED` transactions run as `READ COMMITTED`, see [Enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+
 ## Open SQL Transactions
 
 - In the node view, the graph shows the total number of open SQL transactions on the node.
@@ -83,11 +91,11 @@ The statement contention metric is a counter that represents the number of state
 
 ## Full Table/Index Scans
 
-- In the node view, the graph shows the total number of full table and index scans on that node.
+- In the node view, the graph shows the total number of full table and index scans per second on that node. This is a non-negative rate.
 
-- In the cluster view, the graph shows the total number of full table and index scans across all nodes in the cluster.
+- In the cluster view, the graph shows the total number of full table and index scans per second across all nodes in the cluster. This is a non-negative rate.
 
-[Examine the statements]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) that result in full table scans and consider adding [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#create-a-secondary-index).
+You can [identify the specific statements]({% link {{ page.version.version }}/ui-statements-page.md %}#filter) that result in full table scans by filtering for them on the **Statements** page. [Examine these statements]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) that result in full table scans and consider adding [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#create-a-secondary-index).
 
 ## Active Flows for Distributed SQL Statements
 
@@ -101,7 +109,7 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 
 - In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
 
 ## Connection Latency: 90th Percentile
 

@@ -57,7 +57,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) of transactions by CockroachDB. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#actions-to-take).
+**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) of transactions by CockroachDB. This occurs under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation and only rarely under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#actions-to-take).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here]({% link {{ page.version.version }}/common-errors.md %}#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) or [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -68,7 +68,7 @@ Transactions may require retries due to [contention]({% link {{ page.version.ver
 There are two cases in which transaction retries can occur:
 
 - [Automatic retries](#automatic-retries), which CockroachDB silently processes for you.
-- [Client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
+- [Client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) under `SERIALIZABLE` isolation. Client-side retry handling is not necessary for [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions. 
 
 To reduce the need for transaction retries, see [Reduce transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention).
 
@@ -228,26 +228,13 @@ For more information about the relationship between these levels, see [A Critiqu
 
 You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
-Use the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.defaults.transaction_rows_written_log`,
-`sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
-`sql.defaults.transaction_rows_read_err` and [session settings]({% link {{ page.version.version }}/set-vars.md %}) `transaction_rows_written_log`,
-`transaction_rows_written_err`, `transaction_rows_read_log`, and
-`transaction_rows_read_err` to limit the number of rows written or read in a
-transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
-When the `err` limit is reached, the transaction is rejected. The limits are enforced after each
-statement of a transaction has been fully executed.
+{% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
-The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
-and `DELETE` SQL statements. The "read" limits apply to the `SELECT`
-statement in addition to the statements subject to the "write" limits. The limits **do not**
-apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`,
-`RESTORE`, or `CREATE STATISTICS` statements.
+The limits are enforced after each statement of a transaction has been fully executed. The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`, and `DELETE` SQL statements. The "read" limits apply to the `SELECT` statement in addition to the statements subject to the "write" limits. The limits **do not** apply to `CREATE TABLE AS`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`, `RESTORE`, or `CREATE STATISTICS` statements.
 
 {{site.data.alerts.callout_info}}
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
-
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## See also
 

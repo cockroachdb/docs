@@ -8,7 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Note that only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+This page guides you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 ## Before you begin
 
@@ -89,7 +89,7 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 ## Step 5. Enter billing details
 
-1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration. 
+1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration.
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes and provides a maximum cost estimate. Your final bill will reflect your actual usage.

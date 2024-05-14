@@ -263,9 +263,7 @@ See [Authorization Best Practices]({% link {{ page.version.version }}/security-r
 
 For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
 
-#### Example
-
-Suppose the table schema is as follows:
+For example, suppose the table schema is as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -298,24 +296,37 @@ This query returns the account balances of the customers.
 
 `SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows) instead.
 
+### Use secondary indexes to optimize queries
+
+See [Statement Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}#issue-full-table-scans).
+
 ### Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries
 
 If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause]({% link {{ page.version.version }}/select-clause.md %}#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-### Disallow full table scans with the `disallow_full_table_scans` setting
+### Prevent the optimizer from planning full scans
 
-To prevent overloading production clusters with [full table scans]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans), you have several options:
+To avoid overloading production clusters, there are several ways to prevent the [cost-based-optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from generating query plans with [full table and index scans]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#full-table-index-scans).
 
-1. At the cluster level, configure the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) for some or all users/roles using the [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}) statement.
+#### Use index hints to prevent full scans on tables
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    ALTER ROLE ALL SET disallow_full_table_scans = true;
-    ~~~
+{% include {{ page.version.version }}/sql/no-full-scan.md %}
 
-1. At the application level, add the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) to the connection string using the [`options` parameter]({% link {{page.version.version}}/connection-parameters.md %}#additional-connection-parameters).
+#### Disallow query plans that use full scans
+
+When the `disallow_full_table_scans` [session setting]({% link {{page.version.version}}/set-vars.md %}#disallow-full-table-scans) is enabled, the optimizer will not plan full table or index scans on "large" tables (i.e., those with more rows than [`large_full_scan_rows`]({% link {{ page.version.version }}/set-vars.md %}#large-full-scan-rows)).
+
+{% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
+
+#### Disallow query plans that scan more than a number of rows
+
+When the `transaction_rows_read_err` [session setting]({% link {{ page.version.version }}/set-vars.md %}#transaction-rows-read-err) is enabled, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will not create query plans with scans that exceed the specified row limit. See [Disallow transactions from reading or writing many rows](#disallow-transactions-from-reading-or-writing-many-rows).
+
+### Disallow transactions from reading or writing many rows
+
+{% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
 <a id="understanding-and-avoiding-transaction-contention"></a>
 
@@ -327,15 +338,15 @@ To prevent overloading production clusters with [full table scans]({% link {{ pa
 - They operate on table rows with the same index key values (either on [primary keys]({% link {{ page.version.version }}/primary-key.md %}) or secondary [indexes]({% link {{ page.version.version }}/indexes.md %})).
 - At least one of the transactions holds a [write intent]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or exclusive [locking read]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on the data.
 
-By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, transactions that operate on the same index key values (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) to prevent interactions with concurrent transactions. 
+Writing transactions ["lock" rows]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) to prevent interactions with concurrent transactions. Locking reads issued with [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) perform a similar function by placing an [*exclusive lock*]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on rows, which can cause contention.
 
-Locking reads issued with [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) perform a similar function by placing an [*exclusive lock*]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on rows, which can cause contention for both `SERIALIZABLE` and [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, transactions that operate on the same index key values (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized. To maintain this isolation, `SERIALIZABLE` transactions [refresh their reads]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) at commit time to verify that the values they read were not subsequently updated by other, concurrent transactions. If read refreshing is unsuccessful, then the transaction must be retried.
 
 [When transactions are experiencing contention]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
 - [Delays in query completion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
-- [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) among all of the currently-executing transactions. This is also called a *serializability conflict*.
-- [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+- [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a serializable ordering among all of the currently-executing transactions. This is also called a *serialization conflict*.
+- [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Under `SERIALIZABLE` isolation, your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 - [Cluster hot spots](#hot-spots).
 
 To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hot spots](#reduce-hot-spots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).

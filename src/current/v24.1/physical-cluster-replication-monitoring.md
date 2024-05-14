@@ -12,7 +12,7 @@ docs_area: manage
 You can monitor a physical cluster replication stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
-- The [Physical Replication dashboard](#db-console) on the DB Console.
+- The [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) on the [DB Console](#db-console).
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
 - [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
 
@@ -26,16 +26,15 @@ In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
 
 Refer to [Responses](#responses) for a description of each field.
 
-{% include_cached copy-clipboard.html %}
 ~~~
-id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
----+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time           | replication_lag | cutover_time                   |   status
+---+------+--------------------+-------------------------------------------------+-------------------------------+------------------------------+-----------------+--------------------------------+--------------
+3  | main | main               | postgresql://user@hostname or IP:26257?redacted | 2023-09-28 16:09:04.327473+00 | 2023-09-28 17:41:18.03092+00 | 00:00:19.602682 | 1695922878030920020.0000000000 | replicating
 (1 row)
 ~~~
 
@@ -49,41 +48,7 @@ id |        name        |     data_state     | service_mode | source_tenant_name
 
 ## DB Console
 
-You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) for your standby cluster at `https://{your IP or hostname}:8080/`. Select the **Metrics** page from the left-hand navigation bar, and then select **Physical Cluster Replication** from the **Dashboard** dropdown. The user that accesses the DB Console must have `admin` privileges to view this dashboard.
-
-{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
-
-{{site.data.alerts.callout_info}}
-The **Physical Cluster Replication** dashboard tracks metrics related to physical cluster replication jobs. This is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-{{site.data.alerts.end}}
-
-The **Physical Cluster Replication** dashboard contains graphs for monitoring:
-
-### Logical bytes
-
-<img src="{{ 'images/v24.1/ui-logical-bytes.png' | relative_url }}" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **Logical Bytes** graph shows you the throughput of the replicated bytes.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The number of logical bytes replicated in MiB.
-
-{{site.data.alerts.callout_info}}
-When you [start a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication), the **Logical Bytes** graph will record a spike of throughput as the initial scan completes. {% comment %}link to technical details here{% endcomment %}
-{{site.data.alerts.end}}
-
-### SST bytes
-
-<img src="{{ 'images/v24.1/ui-sst-bytes.png' | relative_url }}" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **SST Bytes** graph shows you the rate at which all [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes are sent to the [KV layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) by physical cluster replication jobs.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The number of SST bytes replicated in MiB.
+You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor [logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes) and [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes) on the standby cluster.
 
 ## Prometheus
 
@@ -109,7 +74,7 @@ To verify that the data at a certain point in time is correct on the standby clu
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS];
+    SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbymain WITH REPLICATION STATUS];
     ~~~
     ~~~
          replicated_time
@@ -118,33 +83,33 @@ To verify that the data at a certain point in time is correct on the standby clu
     (1 row)
     ~~~
 
-    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-interface).
+    For detail on connecting to the standby cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-standby-cluster-system-virtual-cluster).
 
-1. From the **primary cluster's system interface**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
+1. From the **primary cluster's system virtual cluster**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER application] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER main] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
     tenant_name |             end_ts             |     fingerprint
     ------------+--------------------------------+----------------------
-    application | 1704816945291575000.0000000000 | 2646132238164576487
+    main        | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
-    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-interface).
+    For detail on connecting to the primary cluster, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connect-to-the-primary-cluster-system-virtual-cluster).
 
-1. From the **standby cluster's system interface**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
+1. From the **standby cluster's system virtual cluster**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbyapplication] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
+    SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbymain] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
     ~~~
         tenant_name     |             end_ts             |     fingerprint
     --------------------+--------------------------------+----------------------
-    standbyapplication  | 1704816945291575000.0000000000 | 2646132238164576487
+    standbymain         | 1704816945291575000.0000000000 | 2646132238164576487
     (1 row)
     ~~~
 
@@ -154,3 +119,5 @@ To verify that the data at a certain point in time is correct on the standby clu
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
+- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})

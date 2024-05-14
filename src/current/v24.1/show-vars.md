@@ -87,3 +87,4 @@ Special syntax cases supported for compatibility:
 - [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
 - [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
 - [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %})
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
