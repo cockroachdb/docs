@@ -66,7 +66,7 @@ cockroach sql --url \
 
 This section shows how to connect using the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
+Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`. In order to view metrics on [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for a PCR job, connect to the standby cluster's DB Console.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
