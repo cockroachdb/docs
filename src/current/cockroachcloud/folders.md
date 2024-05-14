@@ -105,10 +105,6 @@ To grant the `FOLDER_ADMIN` role:
 1. Set **Role** to **Folder Admin** or **Folder Mover**.
 1. Click **Confirm**.
 
-{{site.data.alerts.callout_success}}
-A recommended security practice is to limit the users or service accounts with `FOLDER_ADMIN` at the level of the organization. After your desired folder structure is in place, you could revoke the `FOLDER_ADMIN` role from the organization and grant it on individual folders instead. When you [create a folder](#create-a-folder), you can grant the `FOLDER_ADMIN` role at the level of the folder.
-{{site.data.alerts.end}}
-
 ## Create a folder
 
 Your service account must have the following roles on the organization, the folder, or by inheritance:
