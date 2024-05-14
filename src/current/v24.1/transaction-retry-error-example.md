@@ -9,6 +9,10 @@ When a [transaction]({% link {{ page.version.version }}/transactions.md %}) is u
 
 This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#test-transaction-retry-logic) against your application's needs.
 
+{{site.data.alerts.callout_info}}
+Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
+{{site.data.alerts.end}}
+
 ## Client-side retry handling example
 
 The Python-like pseudocode below shows how to implement an application-level retry loop; it does not require your driver or ORM to implement [advanced retry handling logic]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}), so it can be used from any programming language or environment. In particular, your retry loop must:
