@@ -306,6 +306,17 @@ root                       |                                       | {admin}
 (11 rows)
 ~~~
 
+### Set the `SUBJECT` role option for certificate based authentication
+
+{% include {{page.version.version}}/sql/role-subject-option.md %}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE maxroach WITH SUBJECT 'CN=myName,OU=myOrgUnit,O=myOrg,L=myLocality,ST=myState,C=myCountry' LOGIN;
+~~~
+
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+
 ## See also
 
 - [Authorization]({% link {{ page.version.version }}/authorization.md %})

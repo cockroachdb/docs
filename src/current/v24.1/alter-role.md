@@ -259,6 +259,17 @@ ALTER ROLE
 
 {% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
 
+### Set the `SUBJECT` role option for certificate based authentication
+
+{% include {{page.version.version}}/sql/role-subject-option.md %}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE maxroach WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
+~~~
+
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+
 ## See also
 
 - [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %})

@@ -22,10 +22,6 @@ If you need a single tenant cluster with no shared resources, we recommend Cockr
 
 We use the Kubernetes offerings in AWS, GCP, and Azure (EKS, GKE, and AKS respectively) to run CockroachDB {{ site.data.products.cloud }} offerings.
 
-- GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs).
-- AWS clusters use [M6 instance types](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
-- Azure clusters use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds).
-
 Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
 
 ### Security and Connection

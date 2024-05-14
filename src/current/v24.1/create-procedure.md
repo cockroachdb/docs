@@ -68,6 +68,67 @@ NOTICE: (1,foo)
 CALL
 ~~~
 
+### Create a stored procedure that uses `OUT` and `INOUT` parameters
+
+The following example uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
+  $$
+  BEGIN
+    double := double * 2;
+    triple := double * 3;
+  END;
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+When calling a procedure, you need to supply placeholder values for any `OUT` parameters. A `NULL` value is commonly used. When [calling a procedure from another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CALL double_triple(1, NULL);
+~~~
+
+~~~
+  double | triple
+---------+---------
+       2 |      6
+~~~
+
+### Create a stored procedure that calls a procedure
+
+The following example defines a procedure that calls the [`double_triple` example procedure](#create-a-stored-procedure-that-uses-out-and-inout-parameters). The `triple_result` variable is assigned the result of the `OUT` parameter, while the `double_input` variable both provides the input and stores the result of the `INOUT` parameter.
+
+{{site.data.alerts.callout_info}}
+A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine]({% link {{ page.version.version }}/plpgsql.md %}#call-a-procedure). 
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE p(double_input INT) AS
+  $$
+  DECLARE
+    triple_result INT;
+  BEGIN
+    CALL double_triple(double_input, triple_result);    
+    RAISE NOTICE 'Doubled value: %', double_input;
+    RAISE NOTICE 'Tripled value: %', triple_result;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CALL p(1);
+~~~
+
+~~~
+NOTICE: Doubled value: 2
+NOTICE: Tripled value: 6
+CALL
+~~~
+
 ### Create a stored procedure that uses conditional logic
 
 The following example uses [PL/pgSQL conditional statements]({% link {{ page.version.version }}/plpgsql.md %}#write-conditional-statements):
