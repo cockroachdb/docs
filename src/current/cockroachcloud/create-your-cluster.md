@@ -36,14 +36,6 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters cannot currentl
 
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
-CockroachDB {{ site.data.products.cloud }} clusters use the following machine and storage types:
-
-Cloud | Compute type                                                                          | Storage type
-------|---------------------------------------------------------------------------------------|-------------
-GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
-AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
-Azure | [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
-
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Configure region(s) and node(s)
