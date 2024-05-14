@@ -82,11 +82,9 @@ By default, CockroachDB guarantees [`SERIALIZABLE` SQL transactions]({% link {{ 
 
 - Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
 
-- Stored data is versioned with MVCC, so under `SERIALIZABLE` isolation, [reads simply limit their scope to the data visible at the time the read transaction started]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks).
+- Stored data is versioned with [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc), so under `SERIALIZABLE` isolation, [reads simply limit their scope to the data visible at the time the read transaction started]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks).
 
-To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) which remembers when data was last read by ongoing transactions.
-
-This ensures that clients can always observe `SERIALIZABLE` consistency while issuing multiple concurrent transactions.
+To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) which remembers when data was last read by an ongoing transaction. This ensures that clients can always observe `SERIALIZABLE` consistency while issuing multiple concurrent transactions.
 
 ### How is CockroachDB both highly available and strongly consistent?
 
