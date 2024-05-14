@@ -1,115 +1,59 @@
 ---
-title: Essential Alerts for Self-Hosted Deployments
+title: Essential Alerts for CockroachDB Self-Hosted Deployments
 summary: Essential Alerts for Self-Hosted Deployments
 toc: true
 ---
 
-<table>
-<tr>
-<th>Purpose</th>
-<td>
-</td>
-</tr>
-<tr>
-<th>Metric</th>
-<td><code></code>
-</td>
-</tr>
-<tr>
-<th>Rule</th>
-<td>
-</td>
-</tr>
-<tr>
-</table>
-
-**Response**
+**Action**
 
 ## Changefeeds
 
 {{site.data.alerts.callout_info}}
-During rolling  maintenance, the changefeed jobs restart following node restarts. **Mute alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
+During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), the [changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) restart following node restarts. **Mute alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
 {{site.data.alerts.end}}
 
 ### Changefeed Failure
 
-<table>
-<tr>
-<th>Purpose</th>
-<td>Changefeeds can suffer permanent failures (that the jobs system will not try to restart). Any increase in this counter should prompt investigative action.
-</td>
-</tr>
-<tr>
-<th>Metric</th>
-<td><code>changefeed.failures</code>
-</td>
-</tr>
-<tr>
-<th>Rule</th>
-<td>CRITICAL:  If <code>changefeed.failures</code> is greater than <code>0</code>. 
-</td>
-</tr>
-</table>
+Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) will not try to restart). Any increase in this metric counter should prompt investigative action.
 
-**Response**
+**Metric**    [`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-failures)
 
-1. If the alert goes off during cluster maintenance, mute it. Otherwise start investigation with the query:
+**Rule**        CRITICAL:  If `changefeed.failures` is greater than 0. 
+
+**Action**
+
+1. If the alert is triggered during cluster maintenance, mute it. Otherwise start investigation with the following query:
 
     {% include_cached copy-clipboard.html %}
     ```sql
     select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
     ```
 
-2. If the cluster is not undergoing maintenance, check the health of [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) endpoints. If the sink is [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), check for sink connection errors such as  `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`
+2. If the cluster is not undergoing maintenance, check the health of [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) endpoints. If the sink is [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), check for sink connection errors such as `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`.
 
 ### Frequent Changefeed Restarts
 
-<table>
-<tr>
-<th>Purpose</th>
-<td>Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
-</td>
-</tr>
-<tr>
-<th>Metric</th>
-<td><code>changefeed.error_retries</code>
-</td>
-</tr>
-<tr>
-<th>Rule</th>
-<td>WARNING:  If <code>changefeed.error_retries</code> is greater than <code>50</code> for more than <code>15 minutes</code>.
-</td>
-</tr>
-<tr>
-</table>
+Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
 
-**Response**
+**Metric**    [`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-error-retries)
 
-Follow the response for a [changefeed failure](#changefeed-failure).
+**Rule**        WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`.
+
+**Action**
+
+Follow the action for a [changefeed failure](#changefeed-failure).
 
 ### Changefeed Falling Behind
 
-<table>
-<tr>
-<th>Purpose</th>
-<td>Changefeed has fallen behind. This is determined by the end to end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
-</td>
-</tr>
-<tr>
-<th>Metric</th>
-<td><code>changefeed.commit_latency</code>
-</td>
-</tr>
-<tr>
-<th>Rule</th>
-<td>WARNING:  Max end to end lag for any changefeed is greater than <code>10 minutes</code><br>
-CRITICAL:  Max end to end lag for any changefeed is greater than <code>15 minutes</code>
-</td>
-</tr>
-<tr>
-</table>
+Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
 
-**Response**
+**Metric**    [`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
+
+**Rule**        WARNING:  Max end-to-end lag for any changefeed is greater than `10 minutes`.
+
+                  CRITICAL:  Max end-to-end lag for any changefeed is greater than `15 minutes`.
+
+**Action**
 
 1. Open changefeeds metrics dashboard for the cluster (e.g. https://url/#/metrics/changefeeds/cluster) and check max latency. Alternatively, individual changefeed latency can be verified by using the SQL cli:
 
