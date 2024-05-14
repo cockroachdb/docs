@@ -42,14 +42,18 @@ You can use PCR in a disaster recovery plan to:
 Cockroach Labs supports PCR up to the following scale:
 
 - Cluster size: 30TB
-- Nodes: 7
-- Transaction payload: [TPC-C]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload)
-- Initial data load: 500,000 warehouses
 - Writes: 10,000 writes per second
 - Reads: 18,000 reads per second
+
+Cockroach Labs' testing with [TPC-C]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) has demonstrated support for workloads up to the following scale:
+
+- Initial data load: 500,000 warehouses
 - [Replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) (steady state, no bulk changes): 20–45 seconds
-- [Replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) (bulk changes / schema changes): Infinite
 - [Cutover]({% link {{ page.version.version }}/cutover-replication.md %}): 2–5 minutes
+
+{{site.data.alerts.callout_info}}
+Frequent large schema changes or imports may cause a significant spike in [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
+{{site.data.alerts.end}}
 
 ## Get started
 
