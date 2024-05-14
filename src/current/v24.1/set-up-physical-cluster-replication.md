@@ -272,14 +272,7 @@ To create certificates signed by an external certificate authority, refer to [Cr
 
 At this point, the primary and standby clusters are both running. The next step allows the standby cluster to connect to the primary cluster and begin ingesting its data. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
 
-You can do this by either:
-
-- [Using the `cockroach encode-uri` command to generate a connection string containing the certificate](#generate-a-connection-string-containing-the-certificate).
-- [Adding the primary cluster's certificate to the standby cluster](#copy-certificates).
-
-### Generate a connection string containing the certificate
-
-{% include_cached new-in.html version="v24.1" %} Use the `cockroach encode-uri` command to generate a connection string that contains a cluster's certifcate. You can pass this connection string whenever necessary to connect to the other cluster.
+{% include_cached new-in.html version="v24.1" %} You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
 
 For example, in this tutorial you will need a connection string for the primary cluster when you start the replication stream from the standby.
 
@@ -299,25 +292,13 @@ postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb
 
 Copy the output ready for [Step 4](#step-4-start-replication), which requires the connection string to the primary cluster.
 
-### Copy certificates
-
-For example, if you followed the [Deploy CockroachDB]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) prerequisite, you need to add the `ca.crt` from the primary cluster to the `certs` directory on all the nodes in the standby cluster.
-
-1. Name the `ca.crt` from the primary cluster to a new name on the standby cluster. For example, `ca_primary.crt`.
-1. Securely copy `ca_primary.crt` to the `certs` directory of the standby cluster nodes.
-
-You need to add the `ca.crt` from the standby cluster to the `certs` directory on all the nodes in the primary cluster.
-
-1. Name the `ca.crt` from the standby cluster to a new name on the primary cluster. For example, `ca_standby.crt`.
-1. Securely copy `ca_standby.crt` to the `certs` directory of the primary cluster nodes.
-
 ## Step 4. Start replication
 
 The system virtual cluster in the standby cluster initiates and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
 
-1. From the **standby** cluster, use your connection string to the primary.
+1. From the **standby** cluster, use your connection string to the primary:
 
-    If you generated the connection string using [`cockroach encode-uri`](#generate-a-connection-string-containing-the-certificate):
+    If you generated the connection string using [`cockroach encode-uri`](#step-3-manage-the-cluster-certificates):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -397,7 +378,7 @@ Cluster | Virtual Cluster | Usage | URL and Parameters
 Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 Primary | Main | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<br><br><ul><li>`options=-ccluster={virtual_cluster_name}`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
 Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
-Standby/Primary | System | Connect to the other cluster. | `"postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#generate-a-connection-string-containing-the-certificate). Use the generated connection string in:<br><br><ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster).</li></ul>
+Standby/Primary | System | Connect to the other cluster. | `"postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#step-3-manage-the-cluster-certificates). Use the generated connection string in:<br><br><ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster).</li></ul>
 
 ## What's next
 
