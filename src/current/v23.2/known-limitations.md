@@ -73,7 +73,8 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Physical cluster replication
 
-{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
+{% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ## Unresolved limitations
 

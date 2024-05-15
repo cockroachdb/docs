@@ -399,6 +399,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 #### Physical cluster replication
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 #### Table-level restore will not restore user-defined functions
 
@@ -421,6 +422,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 
 #### `ALTER CHANGEFEED` limitations
