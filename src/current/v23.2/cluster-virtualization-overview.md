@@ -11,11 +11,9 @@ docs_area: deploy
 
 {% include_cached new-in.html version="v23.2" %} This page gives an overview of _cluster virtualization_ in CockroachDB {{page.version.version}}. Cluster virtualization allows you to separate a cluster's _control plane_ from its _data plane_. The cluster's control plane manages cluster nodes and node-to-node traffic, while its data plane reads data from and writes data to the cluster's storage.
 
-Cluster virtualization is required for [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
+Cluster virtualization is only necessary if you want to use [physical cluster replication (PCR)]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). For details on how PCR works, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
 
 When cluster virtualization is disabled, the control plane and data plane are unified, and the `cockroach` process on a node handles all system and user activity, and manages the cluster's control plane and data plane. When cluster virtualization is enabled, the `cockroach` process on a node runs both a _system virtual cluster_ and one or more _virtual clusters_.
-
-CockroachDB uses virtual clusters to run PCR streaming. Refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for details on how physical cluster replication works.
 
 - The system virtual cluster manages the cluster's control plane and virtual clusters. Administrative access to the system virtual cluster can be restricted. Certain low-level cluster settings can be modified only on the system virtual cluster.
 - A virtual cluster manages its own data plane. Administrative access on a virtual cluster does not grant any access to the system virtual cluster. Some settings are scoped to a virtual cluster rather than the system virtual cluster.
