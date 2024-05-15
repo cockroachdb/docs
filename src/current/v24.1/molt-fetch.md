@@ -33,7 +33,7 @@ For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.
 
 Complete the following items before using MOLT Fetch:
 
-- Ensure that the source and target schemas are identical. Tables with mismatching columns may only be partially migrated.
+- Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option.
 
 - Ensure that the SQL user running MOLT Fetch has the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) statements, depending on your intended [mode](#fetch-mode).
 
@@ -138,6 +138,7 @@ The following subcommands are run after the `fetch` command.
 | `--table-concurrency`                         | Number of tables to move at a time. **Note:** This number will be multiplied by the value of `--export-concurrency`. Ensure your machine has sufficient resources to handle this level of concurrency.<br><br>**Default:** 4                                                                                                                                                                                              |
 | `--table-filter`                              | Move tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                        |
 | `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                       |
+| `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling 'drop-on-target-and-recreate'`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                    |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                    |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                        |
 
@@ -297,7 +298,81 @@ To drop existing tables and create new tables before loading the data, use `'dro
 --table-handling 'drop-on-target-and-recreate'
 ~~~
 
-With each option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not exist.
+When using the `'drop-on-target-and-recreate'` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
+
+#### Type mapping
+
+If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch automatically creates a CockroachDB schema that is compatible with the source data. The column types are determined as follows:
+
+- All PostgreSQL types are mapped to identical CockroachDB [types]({% link {{ page.version.version }}/data-types.md %}).
+- Some MySQL types are mapped to different CockroachDB types:
+
+	|                  MySQL type                  |                                                CockroachDB type                                                |
+	|----------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+	| `CHAR`, `CHARACTER`, `NCHAR`, `NVARCHAR`     | [`VARCHAR`]({% link {{ page.version.version }}/string.md %})                                                   |
+	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT` | [`STRING`]({% link {{ page.version.version }}/string.md %})                                                    |
+	| `GEOMCOLLECTION`                             | [`GEOMETRYCOLLECTION`]({% link {{ page.version.version }}/geometrycollection.md %})                            |
+	| `JSON`                                       | [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})                                                      |
+	| `TINYINT`, `INT1`                            | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `BLOB`                                       | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `SMALLINT`                                   | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `MEDIUMINT`, `INT`, `INTEGER`                | [`INT4`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `BIGINT`, `INT8`                             | [`INT`]({% link {{ page.version.version }}/int.md %})                                                          |
+	| `FLOAT`                                      | [`FLOAT4`]({% link {{ page.version.version }}/float.md %})                                                     |
+	| `DOUBLE`                                     | [`FLOAT`]({% link {{ page.version.version }}/float.md %})                                                      |
+	| `NUMERIC`, `REAL`                            | [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) (Negative scale values are autocorrected to `0`) |
+	| `BINARY`, `VARBINARY`                        | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `DATETIME`                                   | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})                                              |
+	| `TIMESTAMP`                                  | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})                                            |
+	| `BIT`                                        | [`VARBIT`]({% link {{ page.version.version }}/bit.md %})                                                       |
+	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`         | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `BOOLEAN`                                    | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                                                        |
+	| `ENUM`                                       | [`ANY_ENUM`]({% link {{ page.version.version }}/enum.md %})                                                    |
+
+- Source types can be explicitly mapped to target CockroachDB types using a JSON file, thus overriding the preceding behavior. The allowable type mappings are valid CockroachDB aliases, casts, and the following, which are specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
+
+	- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
+	- [`VARCHAR`]({% link {{ page.version.version }}/string.md %}) <> [`UUID`]({% link {{ page.version.version }}/uuid.md %})
+	- [`BOOL`]({% link {{ page.version.version }}/bool.md %}) <> [`INT2`]({% link {{ page.version.version }}/int.md %})
+	- [`VARBIT`]({% link {{ page.version.version }}/bit.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
+	- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
+	- [`INET`]({% link {{ page.version.version }}/inet.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
+
+`--type-map-file` specifies the path to the JSON file that contains explicit type mappings. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--type-map-file 'type-mappings.json'
+~~~
+
+The JSON should be formatted as follows:
+
+~~~ json
+[
+  {
+    "table": "public.t1",
+    "column-type-map": [
+      {
+        "column": "*",
+        "type-kv": {
+          "source-type": "int",
+          "crdb-type": "INT2"
+        }
+      },
+      {
+        "column": "name",
+        "type-kv": {
+          "source-type": "varbit",
+          "crdb-type": "string"
+        }
+      }
+    ]
+  }
+]
+~~~
+
+- `type-kv` specifies the `source-type` that maps to the target `crdb-type`.
+- `column` specifies the column name to convert. If `*` is specified, then all columns with the matching `source-type` are converted.
 
 ### Fetch continuation
 
