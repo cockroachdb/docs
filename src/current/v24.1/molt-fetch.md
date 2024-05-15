@@ -37,7 +37,7 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option.
 
-- Ensure that the SQL user running MOLT Fetch has the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) statements, depending on your intended [mode](#fetch-mode).
+- Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
 
 - To enable continuous replication using [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor):
 
