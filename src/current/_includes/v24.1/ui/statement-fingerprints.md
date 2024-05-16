@@ -12,7 +12,7 @@ See [View historical statement statistics and the sampled logical plan per finge
 
 ## SQL statement fingerprints
 
-The Statements page displays SQL statement fingerprints.
+The **Statements** page displays SQL statement fingerprints.
 
 A _statement fingerprint_ represents one or more SQL statements by replacing literal values (e.g., numbers and strings) and placeholders with underscores (`_`). Lists with only literals or placeholders and similar expressions are shortened to their first item followed by `__more__`.
 
