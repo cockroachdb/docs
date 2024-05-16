@@ -180,7 +180,7 @@ Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integr
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?REGION={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -188,7 +188,7 @@ A Pub/Sub sink URI follows this example:
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`REGION`           | (Required) The single region to which all output will be sent.
+`region`           | (Required) The single region to which all output will be sent.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
