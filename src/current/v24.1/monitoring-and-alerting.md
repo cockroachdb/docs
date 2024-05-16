@@ -996,6 +996,8 @@ Field | Description
 `dir` | The directory on disk where the [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) is located.
 `walFailoverPath` | If [WAL failover is enabled]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover), this field encodes the path to the secondary WAL directory used for failover in the event of high write latency to the primary WAL.
 
+For example, to get the status of the stores of nodeID `1`, use the following:
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl http://localhost:8080/_status/stores/1
