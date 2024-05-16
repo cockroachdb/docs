@@ -42,6 +42,7 @@ You can use physical cluster replication in a disaster recovery plan to:
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ## Get started
 
