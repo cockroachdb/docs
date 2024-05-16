@@ -66,13 +66,13 @@ For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift
 
 #### Minimal downtime
 
-If your application cannot tolerate downtime, then you should aim for a *live migration*. This is also called a "zero-downtime" approach. "Zero" means that downtime is reduced to either an absolute minimum or zero, such that users do not notice the migration.
+If your application cannot tolerate downtime, then you should aim for a *live migration*. This reduces downtime to an absolute minimum, such that users do not notice the migration.
 
 The minimum possible downtime depends on whether you can tolerate inconsistency in the migrated data:
 
-- Migrations with *consistent cutover* reduce downtime to an absolute minimum (i.e., from 30 seconds to sub-seconds) while keeping data synchronized between the source database and CockroachDB. **Consistency requires downtime.** In this approach, downtime occurs right before [cutover](#cutover-strategy), as you drain the remaining transactions from the source database to CockroachDB.
+- Migrations performed using *consistent cutover* reduce downtime to an absolute minimum (i.e., seconds or sub-seconds) while keeping data synchronized between the source database and CockroachDB. **Consistency requires downtime.** In this approach, downtime occurs right before [cutover](#cutover-strategy), as you drain the remaining transactions from the source database to CockroachDB.
 
-- Migrations with *immediate cutover* can reduce downtime to zero. These require the most preparation, and typically allow read/write traffic to both databases for at least a small amount of time, thereby sacrificing consistency for availability. {% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your source database and CockroachDB.{% endcomment %} Without stopping application traffic, you perform an **immediate** [cutover](#cutover-strategy), while assuming that some writes will not be replicated to CockroachDB. You may want to manually reconcile these data inconsistencies after switching over.
+- Migrations performed using *immediate cutover* can reduce downtime to zero. These require the most preparation, and typically allow read/write traffic to both databases for at least a small amount of time, thereby sacrificing consistency for availability. {% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your source database and CockroachDB.{% endcomment %} Without stopping application traffic, you perform an **immediate** [cutover](#cutover-strategy), while assuming that some writes will not be replicated to CockroachDB. You may want to manually reconcile these data inconsistencies after switching over.
 
 For an overview of zero-downtime migrations to CockroachDB, see [Zero Downtime](#zero-downtime). {% comment %}For details, see [Migration Strategy: Zero Downtime](migration-strategy-zero-downtime).{% endcomment %}
 
@@ -261,9 +261,9 @@ Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.v
 
 ##### Shadowing
 
-You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. The [CockroachDB Live Migration Service (MOLT LMS)]({% link {{ page.version.version }}/live-migration-service.md %}) can [perform shadowing]({% link {{ page.version.version }}/live-migration-service.md %}#shadowing-modes). You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
 
-Shadowing should **not** be used in production when performing a [live migration with consistent cutover](#zero-downtime).
+Shadowing should **not** be used in production when performing a [live migration](#zero-downtime). The [CockroachDB Live Migration Service (MOLT LMS)]({% link {{ page.version.version }}/live-migration-service.md %}) can [perform shadowing]({% link {{ page.version.version }}/live-migration-service.md %}#shadowing-modes). This is intended only for [testing](#test-query-results-and-performance) or [performing a dry run](#perform-a-dry-run).
 
 ##### Test query results and performance
 
