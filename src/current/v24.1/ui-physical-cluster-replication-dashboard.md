@@ -53,8 +53,8 @@ Hovering over the graph displays:
 
 Hovering over the graph displays:
 
-- The date and time.
-- The replication lag time.
+- The specific date and time of the replication lag.
+- The reported replication lag time.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
