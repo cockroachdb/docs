@@ -9,6 +9,8 @@ CockroachDB **physical cluster replication (PCR)** continuously sends all data a
 
 In a disaster recovery scenario, you can [_cut over_]({% link {{ page.version.version }}/cutover-replication.md %}) from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
+Physical cluster replication is supported on CockroachDB {{ site.data.products.core }} in new clusters on v23.2 or above.
+
 {% include enterprise-feature.md %}
 
 ## Use cases
@@ -35,6 +37,7 @@ You can use PCR in a disaster recovery plan to:
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ## Performance

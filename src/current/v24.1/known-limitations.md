@@ -31,6 +31,10 @@ Limitations will be added as they are discovered.
 - Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
 - A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
 
+### Physical cluster replication cut back to primary cluster
+
+{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
