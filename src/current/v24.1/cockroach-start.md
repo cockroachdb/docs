@@ -245,9 +245,11 @@ When WAL failover is enabled, CockroachDB will take the the following actions:
 - CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
 - CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 
 When this feature exits preview status and is generally available (GA), it will be an [Enterprise feature]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+{{site.data.alerts.end}}
 
 ##### Enable WAL failover
 
