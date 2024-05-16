@@ -4,8 +4,6 @@ summary: Essential Alerts for Self-Hosted Deployments
 toc: true
 ---
 
-**Action**
-
 ## Changefeeds
 
 {{site.data.alerts.callout_info}}
@@ -16,9 +14,11 @@ During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroac
 
 Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) will not try to restart). Any increase in this metric counter should prompt investigative action.
 
-**Metric**    [`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-failures)
+**Metric**
+<br>[`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-failures)
 
-**Rule**        CRITICAL:  If `changefeed.failures` is greater than 0. 
+**Rule**
+<br>CRITICAL:  If `changefeed.failures` is greater than `0`. 
 
 **Action**
 
@@ -35,9 +35,11 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ pag
 
 Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
 
-**Metric**    [`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-error-retries)
+**Metric**
+<br>[`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-error-retries)
 
-**Rule**        WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`.
+**Rule**
+<br>WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`.
 
 **Action**
 
@@ -47,174 +49,126 @@ Follow the action for a [changefeed failure](#changefeed-failure).
 
 Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
 
-**Metric**    [`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
+**Metric**
+<br>[`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
 
-**Rule**        WARNING:  Max end-to-end lag for any changefeed is greater than `10 minutes`.
-
-                  CRITICAL:  Max end-to-end lag for any changefeed is greater than `15 minutes`.
+**Rule**
+<br>WARNING:  Max end-to-end lag for any changefeed is greater than `10 minutes`.
+<br>CRITICAL:  Max end-to-end lag for any changefeed is greater than `15 minutes`.
 
 **Action**
 
-1. Open changefeeds metrics dashboard for the cluster (e.g. https://url/#/metrics/changefeeds/cluster) and check max latency. Alternatively, individual changefeed latency can be verified by using the SQL cli:
+1. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) for the cluster and check the maximum values on the [**Commit Latency** graph]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}#commit-latency). Alternatively, individual changefeed latency can be verified by using the following SQL query:
 
     {% include_cached copy-clipboard.html %}
     ```sql
     select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
     ```
 
-2. Copy the job number for the changefeed job with highest latency and pause it
+2. Copy the `job_id` for the changefeed job with highest `changefeed latency` and pause the job:
 
     {% include_cached copy-clipboard.html %}
     ```sql
     PAUSE JOB 681491311976841286;
     ```
 
-3. Check the status of the pause request by running the same query from step 1. If the job status is `pause-requested`, check again in few minutes.
+3. Check the status of the pause request by running the query from step 1. If the job status is `pause-requested`, check again in a few minutes.
 
 4. After the job is `paused`, resume the job.
 
-```sql
-RESUME JOB 681491311976841286;
-```
+    {% include_cached copy-clipboard.html %}
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
 
-5. The changefeed latency may not progress after above steps due to lack of cluster resources, availability of changefeed sink, etc.  Escalate to L2 Support.
+5. If the changefeed latency does not progress after the above steps due to lack of cluster resources or availability of the changefeed sink, [contact Support](https://support.cockroachlabs.com).
 
+### Changefeed has been paused a long time 
 
+Changefeed jobs should not be paused for a long time because the protected timestamp prevents garbage collections. As a hedge against an operational error, this alert guard against an inadvertently "forgotten" pause. 
 
+**Metric**
+<br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-currently-paused)
 
+**Rule**
+<br>WARNING:  `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`.
+<br>CRITICAL:  `jobs.changefeed.currently_paused` is greater than `0` for more than `60 minutes`.
 
------------------
+**Action**
 
-### Alert: Changefeed has been Paused for long time 
+1. Check the status of each changefeed using the following SQL query: 
 
-#### Purpose of this Alert
+    {% include_cached copy-clipboard.html %}
+    ```sql
+    select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
+    ```
 
-A hedge against an operational error. Changefeed jobs should not be  paused for long time b/c the protected timestamp prevents garbage collections.  This is a safety catch to guard against an inadvertently "forgotten" pause. 
+2. If all the changefeeds have status as `running`, one or more changefeeds may have run into an error and recovered. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) for the cluster and check the [**Changefeed Restarts** graph]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}#changefeed-restarts).
 
-------
-
-#### Monitoring Metric
-
-```
-jobs.changefeed.currently_paused
-```
-
-
-#### Alert Rule
-
-| Tier     | Definition                                                   |
-| -------- | ------------------------------------------------------------ |
-| WARNING  | The number of paused changefeeds is greater than `0` for more than `15 minutes` |
-| CRITICAL | The number of paused changefeeds is greater than `0` for more than `60 minutes` |
-
-
-#### Alert Response
-
-1. Open SQL cli and check status of each changefeed. 
-
-```sql
-select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
-```
-2. If all the changefeeds are in `running` state, one or more feed may have ran into an error and recovered. Check the UI (e.g. `https://<cluster_url>/#/metrics/changefeeds/cluster`) for number of changefeed restarts. 
-3.  Resume paused changefeed(s) with the job id (e.g. `RESUME JOB 681491311976841286;`).
+3. Resume paused changefeed(s) with the `job_id` using:
+   
+    {% include_cached copy-clipboard.html %}
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
 
 
 ## Expirations
 
-### Alert: Enterprise License Expiration
+### Enterprise License Expiration
 
-#### Purpose of this Alert
+Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration.
 
-Avoid enterprise license expiration.
+**Metric**
+<br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#seconds-until-enterprise-license-expiry)
 
-------
+**Rule**
+<br>WARNING:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `1814400` seconds (3 weeks).
+<br>CRITICAL:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `259200` seconds (3 days).
 
-#### Monitoring Metric
+**Action**
 
-```
-seconds.until.enterprise.license.expiry
-```
+[Renew the enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#renew-an-expired-license).
 
-Seconds until enterprise license expiry. If no license is present, this metric is 0.
+### Security Certificate Expiration
 
+Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.md %}) expiration.
 
+**Metric**
+<br>[`security.certificate.expiration.ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ca)
+<br>[`security.certificate.expiration.client-ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-client-ca)
+<br>[`security.certificate.expiration.ui`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ui)
+<br>[`security.certificate.expiration.ui-ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ui-ca)
+<br>[`security.certificate.expiration.node`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-node)
+<br>[`security.certificate.expiration.node-client`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-node-client)
 
-#### Alert Rule
+**Rule**
+<br>Set alerts for the metric of each type of certificate.
+<br>WARNING:  Metric is greater than `0` and less than 1814400 seconds (3 weeks) until enterprise license expiry
+<br>CRITICAL:  Metric is greater than `0` and less than 259200 seconds (3 days) until enterprise license expiry
 
-| Tier     | Definition                                                   |
-| -------- | ------------------------------------------------------------ |
-| WARNING  | Less than 1814400 seconds (3 weeks) until enterprise license expiry |
-| CRITICAL | Less than 259200 seconds (3 days) until enterprise license expiry |
+**Action**
 
-#### Alert Response
-
-Renew the enterprise license.
-
----------------------------------
-
-
-
-
-
-### Alert: Security Certificate Expiration
-
-#### Purpose of this Alert
-
-Avoid security certificate expiration.
-
-------
-
-#### Monitoring Metric
-
-```
-security.certificate.expiration.ca
-security.certificate.expiration.client-ca
-security.certificate.expiration.ui-ca
-security.certificate.expiration.node
-security.certificate.expiration.node-client
-security.certificate.expiration.ui
-```
-
-Expiration timestamp in seconds since Unix epoch for the certificate. 0 means no certificate or error.
-
-Set the alert for each type of certificate.
-
-
-
-#### Alert Rule
-
-| Tier     | Definition                                                   |
-| -------- | ------------------------------------------------------------ |
-| WARNING  | Less than 1814400 seconds (3 weeks) until enterprise license expiry |
-| CRITICAL | Less than 259200 seconds (3 days) until enterprise license expiry |
-
-#### Alert Response
-
-Rotate the expiring certificates.
+[Rotate the expiring certificates]({% link {{ page.version.version }}/rotate-certificates.md %}).
 
 ## Intent Buildup
 
 ### Alert: Intent Buildup
 
-#### Purpose of this Alert
+Bring attention to very large transactions that are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
 
-This alert brings operator's attention to very large transactions that are [locking](https://www.cockroachlabs.com/docs/v22.1/architecture/transaction-layer.html#write-intents) millions of keys (rows). A common example of such transaction is a very large scope DELETE. Transactions with an excessively large scope are often inadvertent, for example due to a non-selective filter and specific data distribution that was not anticipated by an application developer.
+Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance:
 
-Transactions that create a large number of intents could have a negative effect on the workload's performance:
-
-- By creating locking contention, thus limiting concurrency, and therefore reducing the throughput, leading to stalled workloads in extreme cases
+- By creating locking contention, thus limiting concurrency, and therefore reducing the throughput, leading to stalled workloads in extreme cases.
 - Transactions may take non-intuitively larger amount of time to complete, with significant variations in execution latency. This would be caused by an exhaustion of the memory budget to track intents.
+  
   The maximum number of bytes used to track locks in a transaction is configured with a cluster setting `kv.transaction.max_intents_bytes`. When a transaction modifies keys, it keeps track of the keys it has written, e.g. `a,d,g`. This allows intent resolution to know exactly which intents were written, providing a direct / point resolution.  However, if this list exceeds the memory budget, the point intent resolutions changes to range intent resolutions, which stores `a-g`, i.e. “I wrote some keys between `a` and `g`”. When another transaction  needs to resolve these intents, it has to scan everything in `a-g`, looking for those intents. Cleaning up range intents also takes a considerably larger amount of time and processing resources vs. the list of point intents.
+
   In v21.1 or earlier, this meant scanning all data in that range, which could take a significant amount of time, particularly when that scan encountered write intents that would block that scan.
   In v21.2, intents are stored separately from regular data, so this scan is much faster, resulting in a more limited performance overhead.
 
-------
-
-#### Monitoring Metric
-
-```
-intentcount
-```
+**Metric**
+<br>`intentcount`
 
 Operators can also create custom alerts on `intentbytes` (maximum number of bytes used to track locks in transactions) to track the memory utilization against the budget (cluster setting `kv.transaction.max_intents_bytes`).
 
@@ -253,8 +207,6 @@ Upon receiving this the alert, an operator can take any of the following actions
 
 ### Alert: Node LSM Storage Health
 
-#### Purpose of this Alert
-
 CockroachDB is using a LSM-Tree Pebble storage engine (a custom RocksDB re-write in Go). The health of an LSM tree can be measured by the *read amplification*, which is the average number of SSTables being checked per read operation.
 
 A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
@@ -269,10 +221,8 @@ Possible root causes of LSM inversion and its harmful effects are outlined in  [
 
 ------
 
-#### Monitoring Metric
-```
-rocksdb.read-amplification
-```
+#### Monitoring Metric`]
+rocksdb.read-amplification`]
 
 
 
@@ -307,17 +257,11 @@ In a severe case, a manual intervention may be required. The options are:
 
 ### Alert:  Hot CPU
 
-#### Purpose of this Alert
-
 I node with a high CPU utilization (a.k.a. an "overloaded" node) has a limited ability to process the user workload and increases the risks of cluster instability. Potential causes of node CPU overload are outlined in the "Insufficient CPU" Section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
 
-------
-
-#### Monitoring Metric
-
-```
-sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized
-```
+**Metric**
+<br>[`
+sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized`]
 
 
 
@@ -352,19 +296,13 @@ For additional insights, review the "Insufficient CPU to support the scale of th
 
 ### Alert: Hot Node (Hotspot)
 
-#### Purpose of this Alert
-
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
 
 
 
-------
-
-#### Monitoring Metric
-
-```
-sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized
-```
+**Metric**
+<br>[`
+sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized`]
 
 
 
@@ -405,21 +343,15 @@ To eliminate a Hotspot caused by a data distribution / design issue, review the 
 
 
 
-#### Purpose of this Alert
-
 Monitor the cluster health for early signs of instability.
 
 
 
 
 
-------
-
-#### Monitoring Metric
-
-```
-liveness.heartbeatlatency
-```
+**Metric**
+<br>[`
+liveness.heartbeatlatency`]
 
 If this metric exceeds 1 sec,  it's a sign of instability. The recommended alert rule: warning if 0.5 sec,  critical if 3secs
 
@@ -444,8 +376,6 @@ If this metric exceeds 1 sec,  it's a sign of instability. The recommended alert
 
 ### Alert: Live Node Count Change
 
-#### Purpose of this Alert
-
 Live node count change
 
 
@@ -458,11 +388,8 @@ Inconsistent Liveness check
 
 ------
 
-#### Alert Rule
-
-| Tier     | Definition                                                   |
-| -------- | ------------------------------------------------------------ |
-| WARNING  | max cluster (liveness.livenodes) - min (liveness.livenodes) > 0 for 2 minutes |
+**Rule**
+<br>WARNING  | max cluster (liveness.livenodes) - min (liveness.livenodes) > 0 for 2 minutes |
 | CRITICAL | max cluster (liveness.livenodes) - min (liveness.livenodes) > 0 for 5 minutes |
 
 
@@ -489,19 +416,13 @@ doing regular maintenance (upgrade, rehydrate, ...) you will also get these mess
 
 ### Alert: Node Memory Utilization
 
-#### Purpose of this Alert
-
 I node with high memory utilization is a cluster stability risk. Potential causes of high memory utilization are outlined in "Insufficient RAM" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
 
 
 
-------
-
-#### Monitoring Metric
-
-```
-sys.rss
-```
+**Metric**
+<br>[`
+sys.rss`]
 
 
 
@@ -555,17 +476,11 @@ High memory utilization is a prelude to a node's OOM (process termination by the
 
 ### Alert: Node Storage Capacity
 
-#### Purpose of this Alert
-
 CockroachDB node will not able to operate if there is no free disk space on CockroachDB store volume.
 
-------
-
-#### Monitoring Metric
-
-```
-capacity.available
-```
+**Metric**
+<br>[`
+capacity.available`]
 
 
 
@@ -589,25 +504,16 @@ Increase the size of CockroachDB node storage capacity.  CockroachDB  storage vo
 
 ### Alert: Node Storage Performance
 
-#### Purpose of this Alert
-
 Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
 
-------
-
-#### Monitoring Metric
-
-```
-sys.host.disk.iopsinprogress (storage device average queue length)
-```
+**Metric**
+<br>[`
+sys.host.disk.iopsinprogress (storage device average queue length)`]
 
 
 
-#### Alert Rule
-
-| Tier     | Definition                                                   |
-| -------- | ------------------------------------------------------------ |
-| WARNING  | Storage device average queue length is greater than 10 for 10 seconds |
+**Rule**
+<br>WARNING  | Storage device average queue length is greater than 10 for 10 seconds |
 | CRITICAL | Storage device average queue length is greater than 20       |
 
 
@@ -620,17 +526,11 @@ See Resolution in the "Insufficient Disk IO performance" Section of [the common 
 
 ### Alert: Version Mismatch
 
-#### Purpose of this Alert
-
 All CockroachDB cluster nodes are running exactly the same executable (with identical build label). This warning is a safety catch to guard against an operational error when some node(s) were not upgraded.
 
-------
-
-#### Monitoring Metric
-
-```
-build.timestamp
-```
+**Metric**
+<br>[`
+build.timestamp`]
 
 
 
@@ -652,17 +552,11 @@ Ensure all cluster nodes are running exactly the same CockroachDB version, inclu
 
 ### Alert: Major Upgrade Un-finalized
 
-#### Purpose of this Alert
-
 A major upgrade should not be left un-finalized for an extended period of time, beyond a small number of days necessary to gain confidence in the new release. This warning is a safety catch to guard against an operational error when a major upgrade is left un-finalized.
 
-------
-
-#### Monitoring Metric
-
-```
-No metric is available. Monitor via a query against system tables.
-```
+**Metric**
+<br>[`
+No metric is available. Monitor via a query against system tables.`]
 
 
 
