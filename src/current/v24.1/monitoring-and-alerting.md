@@ -978,7 +978,7 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 }
 ~~~
 
-## Store status endpoint
+### Store status endpoint
 
 The store status endpoint at `/_status/stores` provides information about the [stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) attached to each [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) of your cluster.
 
