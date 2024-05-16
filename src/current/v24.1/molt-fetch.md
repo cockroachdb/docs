@@ -39,7 +39,7 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
 
-- To enable continuous replication using [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor):
+- If you plan to use continuous replication (using either [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor)):
 
 	- If you are migrating from PostgreSQL, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
@@ -109,9 +109,9 @@ Complete the following items before using MOLT Fetch:
 
 The following subcommands are run after the `fetch` command.
 
-| Command |                                Usage                                 |
-|---------|----------------------------------------------------------------------|
-| `token` | List active [continuation tokens](#list-active-continuation-tokens). |
+|   Command    |                                Usage                                 |
+|--------------|----------------------------------------------------------------------|
+| `token list` | List active [continuation tokens](#list-active-continuation-tokens). |
 
 ## Flags
 
@@ -143,7 +143,7 @@ The following subcommands are run after the `fetch` command.
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#replication) from a source PostgreSQL database.                                                                                                                                                                                                                   |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                  |
 | `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                     |
-| `--replicator-flags`                          | If continuous [replication](#replication) is enabled with `--ongoing-replication`, specify Replicator arguments to override.                                                                                                                                                                                                                                                                                              |
+| `--replicator-flags`                          | If continuous [replication](#replication) is enabled with `--ongoing-replication`, specify Replicator flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                            |
 | `--row-batch-size`                            | Number of rows to select at a time for export from the source database.<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                      |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                       |
 | `--table-concurrency`                         | Number of tables to export at a time. **Note:** The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`. See [Best practices](#best-practices).<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. See [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                             |
@@ -153,7 +153,7 @@ The following subcommands are run after the `fetch` command.
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                    |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                        |
 
-### `token` flags
+### `token list` flags
 
 |          Flag         |                                                                 Description                                                                 |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
@@ -309,38 +309,47 @@ To drop existing tables and create new tables before loading the data, use `'dro
 --table-handling 'drop-on-target-and-recreate'
 ~~~
 
-When using the `'drop-on-target-and-recreate'` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
+When using the `'drop-on-target-and-recreate'` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
 
 #### Type mapping
 
 If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch automatically creates a CockroachDB schema that is compatible with the source data. The column types are determined as follows:
 
-- All PostgreSQL types are mapped to identical CockroachDB [types]({% link {{ page.version.version }}/data-types.md %}).
-- Some MySQL types are mapped to different CockroachDB types:
+- PostgreSQL types are mapped to existing CockroachDB [types]({% link {{ page.version.version }}/data-types.md %}) that have the same [`OID`]({% link {{ page.version.version }}/oid.md %}).
+- The following MySQL types are mapped to corresponding CockroachDB types:
 
-	|                  MySQL type                  |                                                CockroachDB type                                                |
-	|----------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-	| `CHAR`, `CHARACTER`, `NCHAR`, `NVARCHAR`     | [`VARCHAR`]({% link {{ page.version.version }}/string.md %})                                                   |
-	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT` | [`STRING`]({% link {{ page.version.version }}/string.md %})                                                    |
-	| `GEOMCOLLECTION`                             | [`GEOMETRYCOLLECTION`]({% link {{ page.version.version }}/geometrycollection.md %})                            |
-	| `JSON`                                       | [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})                                                      |
-	| `TINYINT`, `INT1`                            | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `BLOB`                                       | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `SMALLINT`                                   | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `MEDIUMINT`, `INT`, `INTEGER`                | [`INT4`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `BIGINT`, `INT8`                             | [`INT`]({% link {{ page.version.version }}/int.md %})                                                          |
-	| `FLOAT`                                      | [`FLOAT4`]({% link {{ page.version.version }}/float.md %})                                                     |
-	| `DOUBLE`                                     | [`FLOAT`]({% link {{ page.version.version }}/float.md %})                                                      |
-	| `NUMERIC`, `REAL`                            | [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) (Negative scale values are autocorrected to `0`) |
-	| `BINARY`, `VARBINARY`                        | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `DATETIME`                                   | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})                                              |
-	| `TIMESTAMP`                                  | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})                                            |
-	| `BIT`                                        | [`VARBIT`]({% link {{ page.version.version }}/bit.md %})                                                       |
-	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`         | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `BOOLEAN`                                    | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                                                        |
-	| `ENUM`                                       | [`ANY_ENUM`]({% link {{ page.version.version }}/enum.md %})                                                    |
+	|                      MySQL type                     |                                                CockroachDB type                                                |
+	|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+	| `CHAR`, `CHARACTER`, `VARCHAR`, `NCHAR`, `NVARCHAR` | [`VARCHAR`]({% link {{ page.version.version }}/string.md %})                                                   |
+	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`        | [`STRING`]({% link {{ page.version.version }}/string.md %})                                                    |
+	| `GEOMETRY`                                          | [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)                          |
+	| `LINESTRING`                                        | [`LINESTRING`]({% link {{ page.version.version }}/linestring.md %})                                            |
+	| `POINT`                                             | [`POINT`]({% link {{ page.version.version }}/point.md %})                                                      |
+	| `POLYGON`                                           | [`POLYGON`]({% link {{ page.version.version }}/polygon.md %})                                                  |
+	| `MULTIPOINT`                                        | [`MULTIPOINT`]({% link {{ page.version.version }}/multipoint.md %})                                            |
+	| `MULTILINESTRING`                                   | [`MULTILINESTRING`]({% link {{ page.version.version }}/multilinestring.md %})                                  |
+	| `MULTIPOLYGON`                                      | [`MULTIPOLYGON`]({% link {{ page.version.version }}/multipolygon.md %})                                        |
+	| `GEOMETRYCOLLECTION`, `GEOMCOLLECTION`              | [`GEOMETRYCOLLECTION`]({% link {{ page.version.version }}/geometrycollection.md %})                            |
+	| `JSON`                                              | [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})                                                      |
+	| `TINYINT`, `INT1`                                   | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `BLOB`                                              | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `SMALLINT`, `INT2`                                  | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `MEDIUMINT`, `INT`, `INTEGER`, `INT4`               | [`INT4`]({% link {{ page.version.version }}/int.md %})                                                         |
+	| `BIGINT`, `INT8`                                    | [`INT`]({% link {{ page.version.version }}/int.md %})                                                          |
+	| `FLOAT`                                             | [`FLOAT4`]({% link {{ page.version.version }}/float.md %})                                                     |
+	| `DOUBLE`                                            | [`FLOAT`]({% link {{ page.version.version }}/float.md %})                                                      |
+	| `DECIMAL`, `NUMERIC`, `REAL`                        | [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) (Negative scale values are autocorrected to `0`) |
+	| `BINARY`, `VARBINARY`                               | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `DATETIME`                                          | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})                                              |
+	| `TIMESTAMP`                                         | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})                                            |
+	| `TIME`                                              | [`TIME`]({% link {{ page.version.version }}/time.md %})                                                        |
+	| `BIT`                                               | [`VARBIT`]({% link {{ page.version.version }}/bit.md %})                                                       |
+	| `DATE`                                              | [`DATE`]({% link {{ page.version.version }}/date.md %})                                                        |
+	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`                | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
+	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                                                        |
+	| `ENUM`                                              | [`ANY_ENUM`]({% link {{ page.version.version }}/enum.md %})                                                    |
 
-- Source types can be explicitly mapped to target CockroachDB types using a JSON file, thus overriding the preceding behavior. The allowable type mappings are valid CockroachDB aliases, casts, and the following, which are specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
+- Source types can be explicitly mapped to target CockroachDB types, thus overriding the preceding default mappings for automatic schema creation. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
 
 	- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
 	- [`VARCHAR`]({% link {{ page.version.version }}/string.md %}) <> [`UUID`]({% link {{ page.version.version }}/uuid.md %})
@@ -349,14 +358,14 @@ If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch 
 	- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
 	- [`INET`]({% link {{ page.version.version }}/inet.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
 
-`--type-map-file` specifies the path to the JSON file that contains explicit type mappings. For example:
+`--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --type-map-file 'type-mappings.json'
 ~~~
 
-The JSON should be formatted as follows:
+The JSON is formatted as follows:
 
 ~~~ json
 [
@@ -382,8 +391,9 @@ The JSON should be formatted as follows:
 ]
 ~~~
 
+- `table` specifies the table that will use the custom type mappings in `column-type-map`, written as `{schema}.{table}`.
+- `column` specifies the column that will use the custom type mapping in `type-kv`. If `*` is specified, then all columns in the `table` with the matching `source-type` are converted.
 - `type-kv` specifies the `source-type` that maps to the target `crdb-type`.
-- `column` specifies the column name to convert. If `*` is specified, then all columns with the matching `source-type` are converted.
 
 ### Fetch continuation
 
@@ -395,7 +405,7 @@ Continuation is only possible under the following conditions:
 - The *initial load* of source data to the target CockroachDB database is incomplete. This means that ongoing [replication](#replication) of source data has not begun.
 
 {{site.data.alerts.callout_info}}
-Only one fetch ID and set of continuation tokens are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
+Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
 To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
@@ -417,12 +427,12 @@ This will retry only the table that corresponds to the continuation token. If th
 --continuation-token 011762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
-To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.tar.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
+To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
---continuation-file-name part_00000003.tar.gz
+--continuation-file-name part_00000003.csv.gz
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -431,11 +441,11 @@ Continuation is not possible when using [direct copy mode](#direct-copy).
 
 #### List active continuation tokens
 
-To view all active continuation tokens, issue a `molt fetch token` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
+To view all active continuation tokens, issue a `molt fetch token list` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-molt fetch token \
+molt fetch token list \
 --conn-string 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full'
 ~~~
 
@@ -443,7 +453,7 @@ molt fetch token \
 +--------------------------------------+--------------------------------------+------------------+----------------------+
 |                  ID                  |               FETCH ID               |    TABLE NAME    |      FILE NAME       |
 +--------------------------------------+--------------------------------------+------------------+----------------------+
-| f6f0284c-d9c1-43c9-8fde-af609d0dbd82 | 66443597-5689-4df3-a7b9-9fc5e27180eb | public.employees | part_00000001.tar.gz |
+| f6f0284c-d9c1-43c9-8fde-af609d0dbd82 | 66443597-5689-4df3-a7b9-9fc5e27180eb | public.employees | part_00000001.csv.gz |
 +--------------------------------------+--------------------------------------+------------------+----------------------+
 Continuation Tokens.
 ~~~
@@ -477,7 +487,7 @@ If you need to customize the Replicator behavior, use `--replicator-flags` to sp
 {% include_cached copy-clipboard.html %}
 ~~~
 --ongoing-replication
---replicator-flags '--applyTimeout 1h'
+--replicator-flags "--applyTimeout '1h' --parallelism 64"
 ~~~
 
 To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
@@ -556,7 +566,7 @@ molt fetch \
 --table-filter 'employees' \
 --bucket-path 'gs://migration/data/cockroach' \
 --use-copy \
---cleanup \
+--cleanup
 ~~~
 
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
@@ -613,7 +623,7 @@ If the fetch process encounters an error, it exits with an error message, fetch 
 To retry a specific table, reissue the initial `molt fetch` command and include the fetch ID and a continuation token:
 
 {{site.data.alerts.callout_success}}
-To list all active continuation tokens, run a `molt fetch tokens` command. See [List active continuation tokens](#list-active-continuation-tokens).
+To list all active continuation tokens, run a `molt fetch token list` command. See [List active continuation tokens](#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
