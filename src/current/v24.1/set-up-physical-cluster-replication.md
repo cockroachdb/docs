@@ -206,8 +206,6 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     --certs-dir "certs"
     ~~~
 
-    The prompt will include `system` when you are connected to the system virtual cluster.
-
 1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
