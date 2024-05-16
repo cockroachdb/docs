@@ -88,7 +88,7 @@ The node topology of the two clusters does not need to be the same. For example,
 - During a failover scenario, the standby will need to handle the full production load. However, the clusters cannot have different region topologies (refer to [Limitations](#known-limitations)).
 
 {{site.data.alerts.callout_info}}
-Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Copy certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-copy-certificates) for details.
+Every node in the standby cluster must be able to make a network connection to every node in the primary cluster to start a replication stream successfully. Refer to [Manage the cluster certificates]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-manage-the-cluster-certificates) for details.
 {{site.data.alerts.end}}
 
 ### Connect to the system virtual cluster and virtual cluster
