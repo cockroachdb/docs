@@ -358,7 +358,7 @@ Using SSO login requires that a separate SSO SQL user for your account is create
 To create a SSO SQL user:
 
 1. Connect to the cluster using the `--sso` flag.
-   
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ccloud cluster sql --sso blue-dog
@@ -366,11 +366,11 @@ To create a SSO SQL user:
 
 1. Log in to your organization when prompted by `ccloud`.
 1. Copy the command in the error message to create the SSO SQL user with the correct username.
-   
+
     You must have `admin` privileges to create the SSO SQL user.
 
 1. Create the SSO SQL user by pasting and running the command you copied.
-   
+
     For example, if the command in the error message creates a `sso_maxroach` user:
 
     {% include_cached copy-clipboard.html %}
@@ -516,3 +516,6 @@ Cockroach Labs collects anonymized telemetry events to improve the usability of 
 ccloud settings set --disable-telemetry=true
 ~~~
 
+## Limitations
+
+- {% include cockroachcloud/limitations/limitation-ccloud-folders.md %}
