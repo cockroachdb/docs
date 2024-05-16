@@ -241,7 +241,11 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to [u
 - A separate certificate and key for each node in your deployment, with the common name `node`.
 - A separate certificate and key for each client and user you want to connect to your nodes, with the common name set to the username. The default user is `root`.
 
-    Alternatively, CockroachDB supports [password authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication), although we typically recommend using client certificates instead.
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
+Alternatively, CockroachDB supports [password authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication), although we typically recommend using client certificates instead.
 
 For more information, see the [Security Overview]({% link {{ page.version.version }}/security-reference/security-overview.md %}).
 

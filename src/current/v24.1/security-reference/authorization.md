@@ -64,7 +64,7 @@ These identities are reserved within CockroachDB. These identities are created a
 
 Identity                         | Description
 ---------------------------------|-------------
-`node`                         | Used for all internode communications and for executing internal SQL operations that are run as part of regular node background processes. The `node` user does not appear when listing a cluster's users.
+<a id="node-user"></a> `node`    | Used for all internode communications and for executing internal SQL operations that are run as part of regular node background processes. The `node` user does not appear when listing a cluster's users.
 <a id="root-user"></a>`root`   | Used for administrator access in cases where it is required to manage other admins, such as when deploying a new cluster. The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.<br />For routine administration in production, Cockroach Labs recommends that you:<ul><li>Assign a password for the `root` user using the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement, and restrict access to the password.</li><li>Avoid relying on the `root` user, and instead [grant the `admin` role]({% link {{ page.version.version }}/authorization.md %}#create-and-manage-roles) to users.</li></ul>
 
 In production, access to the `node` and `root` cluster certificates must be handled with care due to the broad level of access they confer on their holders.
