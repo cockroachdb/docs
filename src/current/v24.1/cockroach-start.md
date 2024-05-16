@@ -284,6 +284,21 @@ To disable WAL failover, you must [restart the node]({% link {{ page.version.ver
 - Pass the [`--wal-failover=disabled`](#flag-wal-failover) flag to `cockroach start`, or
 - Set the environment variable `COCKROACH_WAL_FAILOVER=disabled` before restarting the node.
 
+##### Monitor WAL failover
+
+You can monitor if WAL failover occurs using the following metrics:
+
+- `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
+- `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
+- `storage.wal.failover.switch.count`: Count of the number of times WAL writing has switched from primary to secondary store, and vice versa.
+
+The `storage.wal.failover.secondary.duration` is the primary metric to monitor. You should expect this metric to be `0` unless a WAL failover occurs. If a WAL failover occurs, you probably care about how long it remains non-zero because it provides an indication of the health of the primary store.
+
+You can access these metrics via the following methods:
+
+- The [Custom Chart Debug Page](https://www.cockroachlabs.com/docs/v24.1/ui-custom-chart-debug-page) in [DB Console](https://www.cockroachlabs.com/docs/v24.1/ui-custom-chart-debug-page).
+- By [monitoring CockroachDB with Prometheus](https://www.cockroachlabs.com/docs/v24.1/monitor-cockroachdb-with-prometheus).
+
 ### Logging
 
 By [default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), `cockroach start` writes all messages to log files, and prints nothing to `stderr`. This includes events with `INFO` [severity]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) and higher. However, you can [customize the logging behavior]({% link {{ page.version.version }}/configure-logs.md %}) of this command by using the `--log` flag:
