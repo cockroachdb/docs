@@ -5,16 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-You can monitor a physical cluster replication stream using:
+You can monitor a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) on the [DB Console](#db-console).
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
-- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
 
 When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 
@@ -52,12 +47,12 @@ You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.ver
 
 ## Prometheus
 
-You can use Prometheus and Alertmanager to track and alert on physical cluster replication metrics. Refer to the [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) tutorial for steps to set up Prometheus.
+You can use Prometheus and Alertmanager to track and alert on PCR metrics. Refer to the [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) tutorial for steps to set up Prometheus.
 
 We recommend tracking the following metrics:
 
-- `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all physical cluster replication jobs.
-- `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all physical cluster replication jobs.
+- `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all PCR jobs.
+- `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all PCR jobs.
 - `physical_replication.replicated_time_seconds`: The [replicated time]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) of the physical replication stream in seconds since the Unix epoch.
 
 ## Data verification
