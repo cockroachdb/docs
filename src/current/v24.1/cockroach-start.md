@@ -256,7 +256,7 @@ To enable WAL failover, you must take one of the following actions:
 - Pass [`--wal-failover=among-stores`](#flag-wal-failover) to `cockroach start`, or
 - Set the environment variable `COCKROACH_WAL_FAILOVER=among-stores` before starting the node.
 
-If you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as described below. This is necessary because [writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). It's not enough to failover your WAL writes to another disk, you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
+[Writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). So It's not enough to failover your WAL writes to another disk, you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
 
 Therefore, if you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
 
