@@ -198,9 +198,9 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
-
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
 
 A Pub/Sub sink URI follows this example:
 
@@ -276,7 +276,27 @@ pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": 
 
 ### Pub/Sub sink messages
 
-The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
+{{site.data.alerts.callout_info}}
+In CockroachDB v23.2 and later, changefeeds will emit to Pub/Sub v2 by default.
+{{site.data.alerts.end}}
+
+When the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled, changefeeds will use Pub/Sub v2.
+
+In Pub/Sub v1, changefeeds with JSON encoders emit events with the top-level message fields all lowercase:
+
+~~~
+{key: ..., value: ..., topic: ...}
+~~~
+
+In Pub/Sub v2, the top-level fields are capitalized:
+
+~~~
+{Key: ..., Value: ..., Topic: ...}
+~~~
+
+As a result, you may need to reconfigure downstream systems to parse the new message format.
+
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub v1. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
