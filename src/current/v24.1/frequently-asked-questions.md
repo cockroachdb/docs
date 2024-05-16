@@ -76,17 +76,15 @@ In a CockroachDB cluster spread across multiple geographic regions, the round-tr
 
 For short-term failures, such as a server restart, CockroachDB uses Raft to continue seamlessly as long as a majority of replicas remain available. Raft makes sure that a new "leader" for each group of replicas is elected if the former leader fails, so that transactions can continue and affected replicas can rejoin their group once they’re back online. For longer-term failures, such as a server/rack going down for an extended period of time or a datacenter outage, CockroachDB automatically rebalances replicas from the missing nodes, using the unaffected replicas as sources. Using capacity information from the gossip network, new locations in the cluster are identified and the missing replicas are re-replicated in a distributed fashion using all available nodes and the aggregate disk and network bandwidth of the cluster.
 
-### How is CockroachDB strongly-consistent?
+### How is CockroachDB strongly consistent?
 
-CockroachDB guarantees [serializable SQL transactions]({% link {{ page.version.version }}/demo-serializable.md %}), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithms for reads.
-
-- Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks).
+By default, CockroachDB guarantees [`SERIALIZABLE` SQL transactions]({% link {{ page.version.version }}/demo-serializable.md %}), the highest isolation level defined by the SQL standard. It does so by combining the Raft consensus algorithm for writes and a custom time-based synchronization algorithm for reads.
 
 - Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
 
-  To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) which remembers when data was last read by ongoing transactions.
+- Stored data is versioned with [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc), so under `SERIALIZABLE` isolation, [reads simply limit their scope to the data visible at the time the read transaction started]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks).
 
-  This ensures that clients always observe serializable consistency with regards to other concurrent transactions.
+To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) which remembers when data was last read by an ongoing transaction. This ensures that clients can always observe `SERIALIZABLE` consistency while issuing multiple concurrent transactions.
 
 ### How is CockroachDB both highly available and strongly consistent?
 

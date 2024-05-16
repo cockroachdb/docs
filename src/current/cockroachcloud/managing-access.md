@@ -16,9 +16,9 @@ See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
 ## Manage your organizations
 
-An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization which has [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance) to map to all application clusters.
+An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization with [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance) to map to all application clusters.
 
-To switch between the organizations:
+To switch to a different organization:
 
 1. Log in to the console at `https://cockroachlabs.cloud/` or your organization's custom domain.
 1. From the drop-down box in the top-right corner, select the organization you want to access.
@@ -32,7 +32,8 @@ An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administra
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
+1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. After the user accepts the invitation, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant them additional roles.
+1. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
 It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-org-sso.md %}#autoprovisioning) for your organization, which removes the need to invite team members.
 

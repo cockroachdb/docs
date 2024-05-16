@@ -57,7 +57,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) of transactions by CockroachDB. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#actions-to-take).
+**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) of transactions by CockroachDB. This occurs under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation and only rarely under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#actions-to-take).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here]({% link {{ page.version.version }}/common-errors.md %}#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) or [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -68,7 +68,7 @@ Transactions may require retries due to [contention]({% link {{ page.version.ver
 There are two cases in which transaction retries can occur:
 
 - [Automatic retries](#automatic-retries), which CockroachDB silently processes for you.
-- [Client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
+- [Client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) under `SERIALIZABLE` isolation. Client-side retry handling is not necessary for [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions. 
 
 To reduce the need for transaction retries, see [Reduce transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention).
 
