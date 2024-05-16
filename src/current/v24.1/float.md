@@ -97,7 +97,7 @@ Type | Details
 -----|--------
 `INT` | Rounds the float to the nearest integer. If equidistant to two integers, rounds to the even integer. See [Cast `FLOAT` to `INT`](#cast-float-to-int).
 `DECIMAL` | Causes an error to be reported if the value is NaN or +/- Inf.
-`BOOL` |  **0** converts to `false`; all other values convert to `true`.
+`BOOL` |  **0** converts to `false`; any other value converts to `true`.
 `STRING` | --
 
 ### Cast `FLOAT` to `INT`
