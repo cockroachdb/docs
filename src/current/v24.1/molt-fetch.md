@@ -135,7 +135,7 @@ Cockroach Labs **strongly** recommends the following:
 ### Secure cloud storage
 
 - When using a [cloud bucket](#cloud-storage) for your intermediate store, ensure that access control is properly configured. Refer to the [GCP](https://cloud.google.com/storage/docs/access-control) or [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) documentation.
-- Do not use public cloud storage for production.
+- Do not use a public cloud storage bucket in production.
 
 ## Commands
 
@@ -605,7 +605,7 @@ The following `molt fetch` command uses `COPY FROM` to load a subset of tables f
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
---source 'mysql://root:password@localhost/molt' \
+--source 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
 --target 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
 --table-handling 'truncate-if-exists' \
 --table-filter 'employees' \
@@ -614,6 +614,7 @@ molt fetch \
 --cleanup
 ~~~
 
+- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Refer to [Best practices](#best-practices).
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
 - `--table-filter` filters for tables with the `employees` string in the name.
 - `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.
@@ -646,14 +647,16 @@ The following `molt fetch` command uses `COPY FROM` to load all tables directly 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
---source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
---target 'postgres://root@localhost:26258/defaultdb?sslmode=verify-full' \
+--source 'postgres://root@localhost:26257/defaultdb?sslmode=disable' \
+--target 'postgres://root@localhost:26258/defaultdb?sslmode=disable' \
 --table-handling 'none' \
---direct-copy
+--direct-copy \
+--allow-tls-mode-disable
 ~~~
 
 - `--table-handling` specifies that existing tables on the target CockroachDB database should not be modified before the source data is loaded.
 - `--direct-copy` specifies that `COPY FROM` is used to load the tables directly, without creating intermediate files.
+- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. This can be used for testing with the lowest guardrails, but is not recommended for production. Refer to [Security](#security).
 
 ### Continue fetch after encountering an error
 
