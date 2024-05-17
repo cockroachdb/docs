@@ -45,7 +45,7 @@ For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.
 
 Complete the following items before using MOLT Verify:
 
-- Make sure the SQL user running MOLT Verify has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB tables.
+- The SQL user running MOLT Verify must have the [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on both the source and target CockroachDB tables.
 
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 

@@ -92,7 +92,7 @@ Complete the following items before using MOLT Fetch:
 
 ## Best practices
 
-- To prevent connections from prematurely terminating during data export, set the following to high values on the source database:
+- To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
 	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
 	- **Maximum lifetime of a connection.** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
@@ -127,7 +127,7 @@ The following subcommands are run after the `fetch` command.
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                   |
 | `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                |
 | `--direct-copy`                               | Enables [direct copy mode](#fetch-mode), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                            |
-| `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. **Note:** The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`. See [Best practices](#best-practices).<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. See [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
+| `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. **Note:** The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`. See [Best practices](#best-practices).<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
 | `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                 |
 | `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                              |
 | `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                             |
@@ -349,7 +349,7 @@ If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch 
 	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                                                        |
 	| `ENUM`                                              | [`ANY_ENUM`]({% link {{ page.version.version }}/enum.md %})                                                    |
 
-- Source types can be explicitly mapped to target CockroachDB types, thus overriding the preceding default mappings for automatic schema creation. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
+- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
 
 	- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
 	- [`VARCHAR`]({% link {{ page.version.version }}/string.md %}) <> [`UUID`]({% link {{ page.version.version }}/uuid.md %})
@@ -482,7 +482,7 @@ If the source is a PostgreSQL database, you must also specify a replication slot
 --pglogical-replication-slot-name 'replication_slot'
 ~~~
 
-If you need to customize the Replicator behavior, use `--replicator-flags` to specify one or more Replicator flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override. This will only be necessary for advanced use cases.
+To customize the Replicator behavior (an advanced use case), use `--replicator-flags` to specify one or more Replicator flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -623,7 +623,7 @@ If the fetch process encounters an error, it exits with an error message, fetch 
 To retry a specific table, reissue the initial `molt fetch` command and include the fetch ID and a continuation token:
 
 {{site.data.alerts.callout_success}}
-To list all active continuation tokens, run a `molt fetch token list` command. See [List active continuation tokens](#list-active-continuation-tokens).
+You can use `molt fetch token list` to list all active continuation tokens. Refer to [List active continuation tokens](#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
