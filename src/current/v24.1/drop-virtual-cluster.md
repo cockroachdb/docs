@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -24,7 +24,7 @@ The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specifi
 `DROP VIRTUAL CLUSTER` requires one of the following privileges:
 
 - The `admin` role.
-- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for physical cluster replication.
+- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
