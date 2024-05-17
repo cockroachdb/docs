@@ -94,10 +94,10 @@ Complete the following items before using MOLT Fetch:
 
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
-	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
-	- **Maximum lifetime of a connection.** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
+	- **Maximum allowed number of connections:** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
+	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
 
-- If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This is required in order to guarantee consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
+- If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This guarantees consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
 
 ## Commands
 
@@ -107,11 +107,9 @@ Complete the following items before using MOLT Fetch:
 
 ### Subcommands
 
-The following subcommands are run after the `fetch` command.
-
 |   Command    |                                Usage                                 |
 |--------------|----------------------------------------------------------------------|
-| `token list` | List active [continuation tokens](#list-active-continuation-tokens). |
+| `tokens list` | List active [continuation tokens](#list-active-continuation-tokens). |
 
 ## Flags
 
@@ -153,7 +151,7 @@ The following subcommands are run after the `fetch` command.
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                    |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                        |
 
-### `token list` flags
+### `tokens list` flags
 
 |          Flag         |                                                                 Description                                                                 |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
@@ -397,7 +395,7 @@ The JSON is formatted as follows:
 
 ### Fetch continuation
 
-If `molt fetch` fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
+If MOLT Fetch fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
 
 Continuation is only possible under the following conditions:
 
@@ -441,11 +439,11 @@ Continuation is not possible when using [direct copy mode](#direct-copy).
 
 #### List active continuation tokens
 
-To view all active continuation tokens, issue a `molt fetch token list` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
+To view all active continuation tokens, issue a `molt fetch tokens list` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-molt fetch token list \
+molt fetch tokens list \
 --conn-string 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full'
 ~~~
 
@@ -623,7 +621,7 @@ If the fetch process encounters an error, it exits with an error message, fetch 
 To retry a specific table, reissue the initial `molt fetch` command and include the fetch ID and a continuation token:
 
 {{site.data.alerts.callout_success}}
-You can use `molt fetch token list` to list all active continuation tokens. Refer to [List active continuation tokens](#list-active-continuation-tokens).
+You can use `molt fetch tokens list` to list all active continuation tokens. Refer to [List active continuation tokens](#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
