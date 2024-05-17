@@ -95,10 +95,30 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 Type | Details
 -----|--------
-`INT` | Truncates decimal precision and requires values to be between -2^63 and 2^63-1
+`INT` | Rounds the float to the nearest integer. If equidistant to two integers, rounds to the even integer. See [Cast `FLOAT` to `INT`](#cast-float-to-int).
 `DECIMAL` | Causes an error to be reported if the value is NaN or +/- Inf.
-`BOOL` |  **0** converts to `false`; all other values convert to `true`
+`BOOL` |  **0** converts to `false`; any other value converts to `true`.
 `STRING` | --
+
+### Cast `FLOAT` to `INT`
+
+If you cast a float to an integer, it is rounded to the nearest integer. If it is equidistant to two integers, it is rounded to the even integer.
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT f::INT FROM (VALUES (-1.5::FLOAT), (-0.5::FLOAT), (0.5::FLOAT), (1.5::FLOAT)) v(f);
+~~~
+
+~~~
+  f
+------
+  -2
+   0
+   0
+   2
+~~~
 
 ## See also
 
