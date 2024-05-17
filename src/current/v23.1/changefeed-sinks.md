@@ -200,7 +200,14 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+{% include_cached new-in.html version="v23.1" %} Enable the `changefeed.new_pubsub_sink_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to improve the throughput of changefeeds emitting to Pub/Sub sinks. Enabling this setting also alters the message format to use capitalized top-level fields in changefeeds emitting JSON-encoded messages. Therefore, you may need to reconfigure downstream systems to parse the new message format before enabling this setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_pubsub_sink_enabled = true;
+~~~
+
+For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
 
 A Pub/Sub sink URI follows this example:
 
@@ -277,26 +284,28 @@ pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": 
 ### Pub/Sub sink messages
 
 {{site.data.alerts.callout_info}}
-In CockroachDB v23.2 and later, changefeeds will emit to Pub/Sub v2 by default.
+In CockroachDB v23.2 and later, changefeeds will have `changefeed.new_pubsub_sink_enabled` enabled by default.
 {{site.data.alerts.end}}
 
-When the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled, changefeeds will use Pub/Sub v2.
-
-In Pub/Sub v1, changefeeds with JSON encoders emit events with the top-level message fields all lowercase:
-
-~~~
-{key: ..., value: ..., topic: ...}
-~~~
-
-In Pub/Sub v2, the top-level fields are capitalized:
+When the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled, changefeeds will have improved throughput and the changefeed JSON-encoded message format has top-level fields that are capitalized:
 
 ~~~
 {Key: ..., Value: ..., Topic: ...}
 ~~~
 
-As a result, you may need to reconfigure downstream systems to parse the new message format.
+{{site.data.alerts.callout_danger}}
+Before enabling `changefeed.new_pubsub_sink_enabled`, you may need to reconfigure downstream systems to parse the new message format.
+{{site.data.alerts.end}}
 
-The following shows the default JSON messages for a changefeed emitting to Pub/Sub v1. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
+With `changefeed.new_pubsub_sink_enabled` set to `false`, changefeeds emit JSON messages with the top-level fields all lowercase:
+
+~~~
+{key: ..., value: ..., topic: ...}
+~~~
+
+If `changefeed.new_pubsub_sink_enabled` is set to `false`, changefeeds will not benefit from the improved throughput performance that this setting enables.
+
+The following shows the default JSON messages for a changefeed created with `changefeed.new_pubsub_sink_enabled` set to `false`. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐

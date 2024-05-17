@@ -487,6 +487,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
         ~~~
 
         For more detail on the `changefeed.new_pubsub_sink_enabled` cluster setting, refer to [Pub/Sub sink messages]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-sink-messages).
+
 ## Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
