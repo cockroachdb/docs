@@ -656,7 +656,7 @@ molt fetch \
 
 - `--table-handling` specifies that existing tables on the target CockroachDB database should not be modified before the source data is loaded.
 - `--direct-copy` specifies that `COPY FROM` is used to load the tables directly, without creating intermediate files.
-- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. This can be used for testing with the lowest guardrails, but is not recommended for production. Refer to [Security](#security).
+- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. This can be used for testing with the lowest guardrails, but is not recommended for production. Refer to [Secure connections](#secure-connections).
 
 ### Continue fetch after encountering an error
 
