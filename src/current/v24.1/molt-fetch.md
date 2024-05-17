@@ -106,7 +106,7 @@ Cockroach Labs **strongly** recommends the following:
 ### Secure connections
 
 - Use secure connections to the source and target database whenever possible.
-- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** if a secure SSL/TLS connection to the source or target database is not possible.
+- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** for testing, or if a secure SSL/TLS connection to the source or target database is not possible.
 
 ### Connection strings
 
@@ -614,7 +614,7 @@ molt fetch \
 --cleanup
 ~~~
 
-- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Refer to [Best practices](#best-practices).
+- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Secure connections should be used by default. Refer to [Best practices](#best-practices).
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
 - `--table-filter` filters for tables with the `employees` string in the name.
 - `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.
@@ -654,9 +654,10 @@ molt fetch \
 --allow-tls-mode-disable
 ~~~
 
+- `--source` specifies `sslmode=disable` to establish an insecure connection. By default, insecure connections are disallowed and should be used **only** for testing or if a secure SSL/TLS connection to the source or target database is not possible.
 - `--table-handling` specifies that existing tables on the target CockroachDB database should not be modified before the source data is loaded.
 - `--direct-copy` specifies that `COPY FROM` is used to load the tables directly, without creating intermediate files.
-- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. This can be used for testing with the lowest guardrails, but is not recommended for production. Refer to [Secure connections](#secure-connections).
+- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. Refer to [Secure connections](#secure-connections).
 
 ### Continue fetch after encountering an error
 
