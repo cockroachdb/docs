@@ -16,7 +16,7 @@ docs_area: manage
 
 {% include {{version_prefix}}ui/statistics.md %}
 
-{% include common/ui/statements-page.md %}
+{% include {{version_prefix}}ui/statement-fingerprints.md %}
 
 {% include {{version_prefix}}ui/statements-table.md %}
 

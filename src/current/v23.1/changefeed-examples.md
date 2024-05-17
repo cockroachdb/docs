@@ -435,7 +435,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?REGION=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
+    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
 
     You can include the `region` parameter for your topic, or use the [WITH `unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) page for more detail.
