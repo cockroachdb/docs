@@ -704,19 +704,26 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a [local Apache Pulsar](https://pulsar.apache.org/docs/next/getting-started-standalone/) sink. The changefeed will watch a table and send messages to the sink.
+{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to an [Apache Pulsar](https://pulsar.apache.org/docs/next/getting-started-standalone/) sink. The changefeed will watch a table and send messages to the sink.
 
 {% include {{ page.version.version }}/cdc/examples-license-workload.md %}
 
 {% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
-1. To prepare a Pulsar sink, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/next/getting-started-standalone/) to set up a cluster. This example uses a standalone local cluster.
+1. To prepare a Pulsar sink, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/next/getting-started-standalone/) for setup guides to host Pulsar on a local cluster, Docker, or a Kubernetes cluster.
 
-1. In a different terminal window, start your Pulsar cluster:
+1. In a terminal window where your Pulsar sink is hosted, start the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     bin/pulsar standalone
+    ~~~
+
+    If you're running Pulsar in a Docker container, use the `docker run` command to start the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker run -it -p 6650:6650 -p 8080:8080 --name pulsar-standalone apachepulsar/pulsar:latest bin/pulsar standalone
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -744,7 +751,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE movr.rides INTO 'pulsar://localhost:6650';
+    CREATE CHANGEFEED FOR TABLE movr.rides INTO 'pulsar://{host IP}:6650';
     ~~~
 
     By default, Apache Pulsar listens for client connections on port `:6650`. For more detail on configuration, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/2.10.x/reference-configuration).
@@ -756,6 +763,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     bin/pulsar-client consume rides -s sub1 -n 0
+    ~~~
+
+    If you're running Pulsar in a Docker container, use the `docker run` command to start a consumer:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker run -it --network="host" apachepulsar/pulsar:latest bin/pulsar-client consume rides -s sub1 -n 0
     ~~~
 
     You will receive the changefeed's messages similar to the following:
@@ -771,7 +785,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
     ~~~
 
-    For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
+    For more detail on emitted changefeed messages, refer to [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
 
 </section>
 
