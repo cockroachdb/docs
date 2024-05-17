@@ -33,7 +33,7 @@ For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.
 
 Complete the following items before using MOLT Fetch:
 
-- Follow the recommendations in [Best practices](#best-practices) and [Security](#security).
+- Follow the recommendations in [Best practices](#best-practices) and [Security recommendations](#security-recommendations).
 
 - Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option.
 
@@ -99,13 +99,13 @@ Complete the following items before using MOLT Fetch:
 
 - If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This guarantees consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
 
-## Security
+## Security recommendations
 
 Cockroach Labs **strongly** recommends the following:
 
 ### Secure connections
 
-- Use secure connections to the source and target database whenever possible.
+- Use secure connections to the source and [target CockroachDB database]({% link {{ page.version.version }}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
 - By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** for testing, or if a secure SSL/TLS connection to the source or target database is not possible.
 
 ### Connection strings
@@ -134,8 +134,8 @@ Cockroach Labs **strongly** recommends the following:
 
 ### Secure cloud storage
 
-- When using a [cloud bucket](#cloud-storage) for your intermediate store, ensure that access control is properly configured. Refer to the [GCP](https://cloud.google.com/storage/docs/access-control) or [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) documentation.
-- Do not use a public cloud storage bucket in production.
+- When using [cloud storage](#cloud-storage) for your intermediate store, ensure that access control is properly configured. Refer to the [GCP](https://cloud.google.com/storage/docs/access-control) or [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) documentation.
+- Do not use public cloud storage in production.
 
 ## Commands
 
