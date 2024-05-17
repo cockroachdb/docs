@@ -581,8 +581,7 @@ A procedure with `OUT` parameters can only be called from a PL/pgSQL routine. Fo
 
 ## Known limitations
 
-{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
-{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/plpgsql-limitations.md %}
 
 ## See also
 
