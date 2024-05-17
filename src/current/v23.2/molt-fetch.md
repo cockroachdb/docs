@@ -117,8 +117,8 @@ Cockroach Labs **strongly** recommends the following:
 	For example, to export connection strings as environment variables:
 
 	~~~ shell
-	export SOURCE="postgres://postgres:postgres@localhost:5432/molt?sslmode=disable"
-	export TARGET="postgres://root@localhost:26257/molt?sslmode=disable"
+	export SOURCE="postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full"
+	export TARGET="postgres://root@localhost:26257/molt?sslmode=verify-full"
 	~~~
 
 	Afterward, to pass the environment variables in `molt fetch` commands:
