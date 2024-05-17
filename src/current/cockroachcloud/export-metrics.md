@@ -12,7 +12,7 @@ CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% 
 To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
 {{site.data.alerts.end}}
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.dedicated }} clusters.
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. Exporting metrics to Azure Monitor is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.dedicated }} clusters.
 
 <a id="the-metricexport-endpoint"></a>
 
@@ -54,7 +54,7 @@ See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-servi
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP or Azure, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on Azure, you can export metrics to [Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
 Enabling metrics export will send around 250 metrics per node to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
@@ -507,7 +507,7 @@ Where:
 
 ## Limitations
 
-- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. Similarly, metrics export to Azure is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. Similarly, metrics export to Azure is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 - AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.dedicated }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
 ## Troubleshooting
