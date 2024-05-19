@@ -53,6 +53,7 @@ Asia Pacific    | `ap-northeast-1` | Tokyo
                 | `ap-south-1`     | Mumbai
                 | `ap-southeast-1` | Singapore
                 | `ap-southeast-2` | Sydney
+Middle East     | `me-central-1`   | United Arab Emirates
 North America   | `ca-central-1`   | Central Canada
                 | `us-east-1`      | N. Virginia
                 | `us-east-2`      | Ohio
