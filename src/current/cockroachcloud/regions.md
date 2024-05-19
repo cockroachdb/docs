@@ -100,11 +100,15 @@ Asia Pacific    | `asia-east1`              | Changhua County
                 | `asia-southeast2`         | Jakarta
                 | `australia-southeast1`    | Sydney
                 | `australia-southeast2`    | Melbourne
+Middle East     | `me-central1`             | Doha
+                | `me-west1`                | Tel Aviv
 North America   | `northamerica-northeast1` | Montréal
                 | `northamerica-northeast2` | Toronto
                 | `us-central1`             | Iowa
                 | `us-east1`                | South Carolina
                 | `us-east4`                | Virginia
+                | `us-east5`                | Columbus
+                | `us-south1`               | Dallas
                 | `us-west1`                | Oregon
                 | `us-west2`                | California
                 | `us-west3`                | Salt Lake City
@@ -112,11 +116,14 @@ North America   | `northamerica-northeast1` | Montréal
 South America   | `southamerica-east1`      | São Paulo
 Western Europe  | `europe-central2`         | Warsaw
                 | `europe-north1`           | Hamina
+                | `europe-southwest1`       | Madrid
                 | `europe-west1`            | St. Ghislain
                 | `europe-west2`            | London
                 | `europe-west3`            | Frankfurt
                 | `europe-west4`            | Eemshaven
                 | `europe-west6`            | Zürich
+                | `europe-west9`            | Paris
+                | `europe-west12`           | Turin
 
 </section>
 
