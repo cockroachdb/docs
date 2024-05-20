@@ -180,6 +180,7 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ## See also
 

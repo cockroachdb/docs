@@ -36,14 +36,6 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters cannot currentl
 
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
-CockroachDB {{ site.data.products.cloud }} clusters use the following machine and storage types:
-
-Cloud | Compute type                                                                          | Storage type
-------|---------------------------------------------------------------------------------------|-------------
-GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
-AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
-Azure | [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
-
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Configure region(s) and node(s)
@@ -66,11 +58,16 @@ Select the region(s) and number of nodes for your cluster:
 
 Click **Next: Capacity**.
 
-## Step 4. Enable VPC Peering (optional)
+<a id="step-4-enable-vpc-peering-optional"></a>
+## Step 4. Enable GCP VPC Peering (optional)
 
-You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
+You can use [GCP VPC peering]({% link cockroachcloud/network-authorization.md %}#gcp-vpc-peering) to establish a private connection between a GCP application and a CockroachDB {{ site.data.products.dedicated }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
-VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
+
+{{site.data.alerts.callout_success}}
+You can [set up GCP Private Service Connect (Preview)]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) instead of VPC peering after creating your cluster.
+{{site.data.alerts.end}}
 
 You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
 
@@ -86,9 +83,7 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 1. Click **Next: Capacity**.
 
-        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
-
-If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
+        After your cluster is created, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-vpc-peering) to finish setting up VPC Peering for your cluster.
 
 ## Step 5. Configure cluster capacity
 

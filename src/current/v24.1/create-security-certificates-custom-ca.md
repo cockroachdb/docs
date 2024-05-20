@@ -55,6 +55,10 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ## Split node certificates
 
 The node certificate discussed in the `cockroach cert` command [documentation]({% link {{ page.version.version }}/cockroach-cert.md %}) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.

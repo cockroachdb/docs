@@ -134,3 +134,12 @@ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
 
 1. Securely send each user the certificate and key that matches their username: `client.{username}.crt` and `client.{username}.key`.
+
+## See also
+
+- [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
+- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
+- [Authenticate to CockroachDB Self-Hosted Clusters]({% link {{ page.version.version }}/authentication.md %})
+- [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
+- [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
+- [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})

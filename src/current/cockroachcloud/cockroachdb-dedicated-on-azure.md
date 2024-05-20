@@ -21,11 +21,6 @@ CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the follow
 
 - Azure Private Link is not yet available. [IP Allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) allows you to restrict the IP addresses that can connect to your cluster.
 
-### Observability
-
-- Exporting metrics to Azure Monitor is not yet available. To express interest, contact your Cockroach Labs account team.
-- [Log Export]({% link cockroachcloud/export-logs.md %}) is not yet available.
-
 ### Other features
 
 [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) features are not yet available on Azure. To express interest, contact your Cockroach Labs account team.
