@@ -627,6 +627,7 @@ Changefeeds emitting to an Apache Pulsar sink support `json` and `csv` [format o
 
 For an Azure Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
 
+### Apache Pulsar sink messages
 
 ~~~
 ----- got message -----
@@ -638,7 +639,6 @@ key:[null], properties:[], content:{"Key":["amsterdam", "d119f344-318f-41c0-bfc0
 ----- got message -----
 key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
 ~~~
-
 
 ## See also
 

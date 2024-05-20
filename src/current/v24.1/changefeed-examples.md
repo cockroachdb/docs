@@ -727,7 +727,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can start a changefeed and Pulsar will automatically use the table as the topic name.
+    You can start a changefeed, and Pulsar will automatically use the table as the topic name.
 
     If you want to create a topic name first, use the [`pulsar-admin`](https://pulsar.apache.org/docs/2.10.x/reference-cli-tool) tool to specify the topic's tenant and namespace. This example uses the default namespace:
 
