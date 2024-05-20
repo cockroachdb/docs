@@ -6074,7 +6074,7 @@
   release_date: '2024-05-20'
   release_type: Production
   cloud_only: true
-  cloud_only_message_short: 'Available in CockroachDB Dedicated. Self-hosted binaries <a href="https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0">available February 5</a> per the <a href="https://www.cockroachlabs.com/docs/releases/staged-release-process">staged release process</a>.'
+  cloud_only_message_short: 'Available in CockroachDB Dedicated. Self-hosted binaries <a href="https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0">available June 3, 2024</a> per the <a href="https://www.cockroachlabs.com/docs/releases/staged-release-process">staged release process</a>.'
   cloud_only_message: >
     CockroachDB v24.1 is now generally available for CockroachDB Dedicated,
     and is scheduled to be made available for CockroachDB Self-Hosted on June 3, 2024 per the <a href="https://www.cockroachlabs.com/docs/releases/staged-release-process">staged release process</a>.
