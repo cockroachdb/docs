@@ -7,7 +7,7 @@
     ]
   },
   {% include_cached v23.2/sidebar-data/get-started.json %},
-  {% include_cached v23.2/sidebar-data/latest-releases.json %},
+  {% include_cached v23.2/sidebar-data/releases.json %},
   {% include_cached v23.2/sidebar-data/feature-overview.json %},
   {% include_cached v23.2/sidebar-data/connect-to-cockroachdb.json %},
   {% include_cached v23.2/sidebar-data/migrate.json %},
