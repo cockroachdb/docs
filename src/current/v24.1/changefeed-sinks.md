@@ -239,6 +239,10 @@ The following parameters are also needed, but are **set by default** in Cockroac
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
+{{site.data.alerts.callout_info}}
+Since CockroachDB v23.2, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. Without this cluster setting enabled, changefeeds emit JSON-encoded events with the top-level message fields all lowercase. With `changefeed.new_pubsub_sink_enabled`, the top-level fields are capitalized. For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
+{{site.data.alerts.end}}
+
 A Pub/Sub sink URI follows this example:
 
 ~~~
@@ -313,23 +317,40 @@ pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": 
 
 ### Pub/Sub sink messages
 
+The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved changefeed throughput peformance. With `changefeed.new_pubsub_sink_enabled` enabled, the changefeed JSON-encoded message format have top-level fields that are capitalized:
+
+~~~
+{Key: ..., Value: ..., Topic: ...}
+~~~
+
+{{site.data.alerts.callout_danger}}
+By default in v23.2, the capitalization of top-level fields in the message has changed. Before upgrading to CockroachDB v23.2 and later, you may need to reconfigure downstream systems to parse the new message format.
+{{site.data.alerts.end}}
+
+With `changefeed.new_pubsub_sink_enabled` set to `false`, changefeeds emit JSON messages with the top-level fields all lowercase:
+
+~~~
+{key: ..., value: ..., topic: ...}
+~~~
+
+If `changefeed.new_pubsub_sink_enabled` is set to `false`, changefeeds will not benefit from the improved throughput performance that this setting enables.
+
 The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
-│                                                                                                                                 DATA                                                                                                                                 │    MESSAGE_ID    │                       ORDERING_KEY                      │ ATTRIBUTES │ DELIVERY_ATTEMPT │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼─────────────────────────────────────────────────────────┼────────────┼──────────────────┤
-│ {"key":["boston","40ef7cfa-5e16-4bd3-9e14-2f23407a66df"],"value":{"after":{"address":"14980 Gentry Plains Apt. 64","city":"boston","credit_card":"2466765790","id":"40ef7cfa-5e16-4bd3-9e14-2f23407a66df","name":"Vickie Fitzpatrick"}},"topic":"movr-users"}         │ 4466153049158588 │ ["boston", "40ef7cfa-5e16-4bd3-9e14-2f23407a66df"]      │            │                  │
-│ {"key":["los angeles","947ae147-ae14-4800-8000-00000000001d"],"value":{"after":{"address":"35627 Chelsey Tunnel Suite 94","city":"los angeles","credit_card":"2099932769","id":"947ae147-ae14-4800-8000-00000000001d","name":"Kenneth Barnes"}},"topic":"movr-users"} │ 4466144577818136 │ ["los angeles", "947ae147-ae14-4800-8000-00000000001d"] │            │                  │
-│ {"key":["amsterdam","c28f5c28-f5c2-4000-8000-000000000026"],"value":{"after":{"address":"14729 Karen Radial","city":"amsterdam","credit_card":"5844236997","id":"c28f5c28-f5c2-4000-8000-000000000026","name":"Maria Weber"}},"topic":"movr-users"}                   │ 4466151194002912 │ ["amsterdam", "c28f5c28-f5c2-4000-8000-000000000026"]   │            │                  │
-│ {"key":["new york","6c8ab772-584a-439d-b7b4-fda37767c74c"],"value":{"after":{"address":"34196 Roger Row Suite 6","city":"new york","credit_card":"3117945420","id":"6c8ab772-584a-439d-b7b4-fda37767c74c","name":"James Lang"}},"topic":"movr-users"}                 │ 4466147099992681 │ ["new york", "6c8ab772-584a-439d-b7b4-fda37767c74c"]    │            │                  │
-│ {"key":["boston","c56dab0a-63e7-4fbb-a9af-54362c481c41"],"value":{"after":{"address":"83781 Ross Overpass","city":"boston","credit_card":"7044597874","id":"c56dab0a-63e7-4fbb-a9af-54362c481c41","name":"Mark Butler"}},"topic":"movr-users"}                        │ 4466150752442731 │ ["boston", "c56dab0a-63e7-4fbb-a9af-54362c481c41"]      │            │                  │
-│ {"key":["amsterdam","f27e09d5-d7cd-4f88-8b65-abb910036f45"],"value":{"after":{"address":"77153 Donald Road Apt. 62","city":"amsterdam","credit_card":"7531160744","id":"f27e09d5-d7cd-4f88-8b65-abb910036f45","name":"Lisa Sandoval"}},"topic":"movr-users"}          │ 4466147182359256 │ ["amsterdam", "f27e09d5-d7cd-4f88-8b65-abb910036f45"]   │            │                  │
-│ {"key":["new york","46d200c0-6924-4cc7-b3c9-3398997acb84"],"value":{"after":{"address":"92843 Carlos Grove","city":"new york","credit_card":"8822366402","id":"46d200c0-6924-4cc7-b3c9-3398997acb84","name":"Mackenzie Malone"}},"topic":"movr-users"}                │ 4466142864542016 │ ["new york", "46d200c0-6924-4cc7-b3c9-3398997acb84"]    │            │                  │
-│ {"key":["boston","52ecbb26-0eab-4e0b-a160-90caa6a7d350"],"value":{"after":{"address":"95044 Eric Corner Suite 33","city":"boston","credit_card":"3982363300","id":"52ecbb26-0eab-4e0b-a160-90caa6a7d350","name":"Brett Porter"}},"topic":"movr-users"}                │ 4466152539161631 │ ["boston", "52ecbb26-0eab-4e0b-a160-90caa6a7d350"]      │            │                  │
-│ {"key":["amsterdam","ae147ae1-47ae-4800-8000-000000000022"],"value":{"after":{"address":"88194 Angela Gardens Suite 94","city":"amsterdam","credit_card":"4443538758","id":"ae147ae1-47ae-4800-8000-000000000022","name":"Tyler Dalton"}},"topic":"movr-users"}       │ 4466151398997150 │ ["amsterdam", "ae147ae1-47ae-4800-8000-000000000022"]   │            │                  │
-│ {"key":["paris","dc28f5c2-8f5c-4800-8000-00000000002b"],"value":{"after":{"address":"2058 Rodriguez Stream","city":"paris","credit_card":"9584502537","id":"dc28f5c2-8f5c-4800-8000-00000000002b","name":"Tony Ortiz"}},"topic":"movr-users"}                         │ 4466146372222914 │ ["paris", "dc28f5c2-8f5c-4800-8000-00000000002b"]       │            │                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────────┬──────────────┬────────────┬──────────────────┬────────────┐
+│                                                                                                                                     DATA                                                                                                                                    │     MESSAGE_ID    │ ORDERING_KEY │ ATTRIBUTES │ DELIVERY_ATTEMPT │ ACK_STATUS │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────────┼──────────────┼────────────┼──────────────────┼────────────┤
+│ {"Key":["amsterdam", "09ee2856-5856-40c4-85d3-7d65bed978f0"],"Value":{"after": {"address": "84579 Peter Divide Apt. 47", "city": "amsterdam", "credit_card": "0100007510", "id": "09ee2856-5856-40c4-85d3-7d65bed978f0", "name": "Timothy Jackson"}},"Topic":"users"}       │ 11249015757941393 │              │            │                  │ SUCCESS    │
+│ {"Key":["new york", "8803ab9e-5001-4994-a2e6-68d587f95f1d"],"Value":{"after": {"address": "37546 Andrew Roads Apt. 68", "city": "new york", "credit_card": "4731676650", "id": "8803ab9e-5001-4994-a2e6-68d587f95f1d", "name": "Susan Harrington"}},"Topic":"users"}        │ 11249015757941394 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "32e27201-ca0d-4a0c-ada2-fbf47f6a4711"],"Value":{"after": {"address": "86725 Stephen Gardens", "city": "seattle", "credit_card": "3639690115", "id": "32e27201-ca0d-4a0c-ada2-fbf47f6a4711", "name": "Brad Hill"}},"Topic":"users"}                      │ 11249015757941395 │              │            │                  │ SUCCESS    │
+│ {"Key":["san francisco", "27b03637-ef9f-49a0-9b58-b16d7a9e34f4"],"Value":{"after": {"address": "85467 Tiffany Field", "city": "san francisco", "credit_card": "0016125921", "id": "27b03637-ef9f-49a0-9b58-b16d7a9e34f4", "name": "Mark Garcia"}},"Topic":"users"}          │ 11249015757941396 │              │            │                  │ SUCCESS    │
+│ {"Key":["rome", "982e1863-88d4-49cb-adee-0a35baae7e0b"],"Value":{"after": {"address": "54918 Sutton Isle Suite 74", "city": "rome", "credit_card": "6015706174", "id": "982e1863-88d4-49cb-adee-0a35baae7e0b", "name": "Kimberly Nichols"}},"Topic":"users"}                │ 11249015757941397 │              │            │                  │ SUCCESS    │
+│ {"Key":["washington dc", "7b298994-7b12-414c-90ef-353c7105f012"],"Value":{"after": {"address": "45205 Romero Ford Apt. 86", "city": "washington dc", "credit_card": "3519400314", "id": "7b298994-7b12-414c-90ef-353c7105f012", "name": "Taylor Bullock"}},"Topic":"users"} │ 11249015757941398 │              │            │                  │ SUCCESS    │
+│ {"Key":["boston", "4f012f57-577b-4853-b5ab-0d79d0df1369"],"Value":{"after": {"address": "15765 Vang Ramp", "city": "boston", "credit_card": "6747715133", "id": "4f012f57-577b-4853-b5ab-0d79d0df1369", "name": "Ryan Garcia"}},"Topic":"users"}                            │ 11249015757941399 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "9ba85917-5545-4674-8ab2-497fa47ac00f"],"Value":{"after": {"address": "24354 Whitney Lodge", "city": "seattle", "credit_card": "8642661685", "id": "9ba85917-5545-4674-8ab2-497fa47ac00f", "name": "Donald Walsh"}},"Topic":"users"}                     │ 11249015757941400 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "98312fb3-230e-412d-9b22-074ec97329ff"],"Value":{"after": {"address": "72777 Carol Shoal", "city": "seattle", "credit_card": "7789799678", "id": "98312fb3-230e-412d-9b22-074ec97329ff", "name": "Christopher Davis"}},"Topic":"users"}                  │ 11249015757941401 │              │            │                  │ SUCCESS    │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────────┴──────────────┴────────────┴──────────────────┴────────────┘
 ~~~
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
