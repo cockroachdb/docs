@@ -66,7 +66,7 @@ For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift
 
 #### Minimal downtime
 
-If your application cannot tolerate downtime, then you should aim for a *live migration*. This reduces downtime to an absolute minimum, such that users do not notice the migration.
+If your application cannot tolerate downtime, then you should aim for a "zero-downtime" approach. This reduces downtime to an absolute minimum, such that users do not notice the migration.
 
 The minimum possible downtime depends on whether you can tolerate inconsistency in the migrated data:
 
@@ -263,7 +263,7 @@ Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.v
 
 You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. You can then [validate the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
 
-Shadowing should **not** be used in production when performing a [live migration](#zero-downtime). The [CockroachDB Live Migration Service (MOLT LMS)]({% link {{ page.version.version }}/live-migration-service.md %}) can [perform shadowing]({% link {{ page.version.version }}/live-migration-service.md %}#shadowing-modes). This is intended only for [testing](#test-query-results-and-performance) or [performing a dry run](#perform-a-dry-run).
+The [CockroachDB Live Migration Service (MOLT LMS)]({% link {{ page.version.version }}/live-migration-service.md %}) can [perform shadowing]({% link {{ page.version.version }}/live-migration-service.md %}#shadowing-modes). This is intended only for [testing](#test-query-results-and-performance) or [performing a dry run](#perform-a-dry-run). Shadowing should **not** be used in production when performing a [live migration](#zero-downtime).
 
 ##### Test query results and performance
 
@@ -321,15 +321,15 @@ The following is a high-level overview of the migration steps. For consideration
 
 During a "live migration", downtime is minimized by performing the cutover while writes are still being replicated from the source database to CockroachDB. Inconsistencies are resolved through manual reconciliation.
 
-The following is a high-level overview of the migration steps. The two approaches are mutually exclusive, and each has its own advantages and disadvantages. For details, see [Minimal downtime](#minimal-downtime). {% comment %}For details on this migration strategy, see [Migration Strategy: Zero Downtime]({% link {{ page.version.version }}/migration-strategy-lift-and-shift.md %}).{% endcomment %}
+The following is a high-level overview of the migration steps. The two approaches are mutually exclusive, and each has [tradeoffs](#minimal-downtime). {% comment %}For details on this migration strategy, see [Migration Strategy: Zero Downtime]({% link {{ page.version.version }}/migration-strategy-lift-and-shift.md %}).{% endcomment %}
 
 To prioritize consistency and minimize downtime:
 
 1. Set up the [CockroachDB Live Migration Service (MOLT LMS)]({% link {{ page.version.version }}/live-migration-service.md %}) to proxy for application traffic between your source database and CockroachDB. Do **not** shadow the application traffic.
-1. Use [MOLT Fetch]({% link {{ page.version.version }}/molt-fetch.md %}) to move the source data to CockroachDB. Use the tool to **replicate ongoing changes** after performing the initial load of data into CockroachDB. 
-1. As the data is migrating, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
-1. After nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), use MOLT LMS to begin a [*consistent cutover*]({% link {{ page.version.version }}/live-migration-service.md %}#consistent-cutover) and stop application traffic to your source database. **This begins downtime.**
-1. Wait for replication to CockroachDB to complete.
+1. Use [MOLT Fetch]({% link {{ page.version.version }}/molt-fetch.md %}) to move the source data to CockroachDB. Use the tool to [**replicate ongoing changes**]({% link {{ page.version.version }}/molt-fetch.md %}#replication) after it performs the initial load of data into CockroachDB. 
+1. As the data is migrating, use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
+1. After nearly all data from your source database has been moved to CockroachDB (for example, with a <1-second delay or <1000 rows), use MOLT LMS to begin a [*consistent cutover*]({% link {{ page.version.version }}/live-migration-service.md %}#consistent-cutover) and stop application traffic to your source database. **This begins downtime.**
+1. Wait for MOLT Fetch to finish replicating changes to CockroachDB.
 1. Use MOLT LMS to commit the [consistent cutover]({% link {{ page.version.version }}/live-migration-service.md %}#consistent-cutover). This resumes application traffic, now to CockroachDB.
 
 To achieve zero downtime with inconsistency:

@@ -121,7 +121,7 @@ Credentials can be added for PostgreSQL and MySQL databases.
 1. Provide the following information:
     - A **Credential Name** to associate with the credentials.
     - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
-    - The **Host** for accessing the database. Exclude the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
+    - The **Host** (i.e., hostname or IP address) for accessing the database. Exclude the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
     - The **Port** for accessing the database.
     - A valid **Username** and **Password** for accessing the database.
     - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
