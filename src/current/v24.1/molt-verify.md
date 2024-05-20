@@ -119,7 +119,7 @@ When verification completes, the output displays a summary message like the foll
 
 ## Known limitations
 
-- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, which can lead to temporary inconsistencies in data. Enable `--live` mode to have the tool retry verification on these rows. You can also change the row batch size using the `--row_batch_size` [flag](#flags).
+- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. If `--live` mode is enabled, MOLT Verify retries verification on these rows. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
 - MOLT Verify checks for collation mismatches on [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{ page.version.version }}/collate.md %}).
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
