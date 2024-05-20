@@ -30,6 +30,8 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
 
+Before you run the examples, verify that you have the `CHANGEFEED` privilege in order to create and manage changefeed jobs. Refer to [Required privileges]({% link {{ page.version.version }}/create-changefeed.md %}#required-privileges) for more details.
+
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
 {{site.data.alerts.end}}
