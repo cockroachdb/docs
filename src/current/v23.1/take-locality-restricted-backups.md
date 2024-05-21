@@ -52,9 +52,9 @@ This section outlines some example uses of the `EXECUTION LOCALITY` option.
 
 For security or other reasons, a cluster may be subject to network rules across regions or to other locality requirements. For example, if you have a requirement that only nodes within the same region as the backup [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) location can access the storage bucket, you can configure the backup job's `EXECUTION LOCALITY` to execute only on nodes with network access to the bucket.
 
-The following diagram shows a CockroachDB cluster where each of the nodes can communicate with each other through a specific port, but any other network traffic between regions is blocked. Leaseholders in regions that do not match the cloud storage region (Node 2) cannot access the storage to [export backup data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase).
+The following diagram shows a CockroachDB cluster where each of the nodes can communicate with each other through a specific port, but any other network traffic between regions is blocked. Replicas in regions that do not match the cloud storage region (Node 2) cannot access the storage to [export backup data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase).
 
-Instead, Node 3's locality does match the backup job's `EXECUTION LOCALITY`. Leaseholders and replicas that match a backup job's locality designation and hold the backup job's row data will begin reading and exporting to cloud storage.
+Instead, Node 3's locality does match the backup job's `EXECUTION LOCALITY`. Replicas that match a backup job's locality designation and hold the backup job's row data will begin reading and exporting to cloud storage.
 
 <img src="{{ 'images/v23.1/network-restriction.png' | relative_url }}" alt="Using execution locality when there is a network restriction between locality requirements" style="border:0px solid #eee;max-width:100%" />
 
