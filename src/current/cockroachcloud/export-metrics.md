@@ -348,7 +348,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. The ID should resemble `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 
-1. Create a private key and certificate pair, using a tool such as OpenSSL. Refer to [this example]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %} #step-1-create-the-ca-key-and-certificate-pair) to create a private key file (`ca.key`) and a certificate file (`ca.crt`) that will be uploaded in Step 3.
+1. Create a private key and certificate pair, using a tool such as OpenSSL. Refer to [this example]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %}#step-1-create-the-ca-key-and-certificate-pair) to create a private key file (`ca.key`) and a certificate file (`ca.crt`) that will be uploaded in Step 3.
 
   1. Combine the certificate and key files using the following command. The string in the combined file will be used in Step 5.
 
