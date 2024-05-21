@@ -105,9 +105,9 @@ Complete the following items before using MOLT Fetch:
 
 - To prevent memory outages during data export of tables with large rows, estimate the amount of memory used to export a table: `--row-batch-size * --export-concurrency * average size of the table rows`. If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly.
 
-- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Then export the remaining tables in another task.
+- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
-- When using [`IMPORT INTO` mode](#fetch-modes) to load tables into CockroachDB, if the fetch process terminates before the import job completes, you need to manually resume or cancel the job before running `molt fetch` again. Refer to [View and control import jobs]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs).
+- When using [`IMPORT INTO` mode](#fetch-modes) to load tables into CockroachDB, if the fetch process terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the process from the beginning.
 
 ## Security recommendations
 
