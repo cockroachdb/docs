@@ -97,7 +97,7 @@ If a query contains a filter against an indexed `JSONB` or `ARRAY` column that u
 
 In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins]({% link {{ page.version.version }}/cost-based-optimizer.md %}#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can also force a query to use [a specific index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) (also known as "index hinting") or use [an inverted join hint]({% link {{ page.version.version }}/cost-based-optimizer.md %}#supported-join-algorithms).
+To override CockroachDB's index selection, you can use an index hint to force a query to use [a specific index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection), including [inverted indexes]({% link {{ page.version.version }}/table-expressions.md %}#force-inverted-index-scan) and [partial GIN indexes]({% link {{ page.version.version }}/table-expressions.md %}#force-partial-gin-index-scan); or use [an inverted join hint]({% link {{ page.version.version }}/cost-based-optimizer.md %}#supported-join-algorithms).
 
 ### Storage
 
