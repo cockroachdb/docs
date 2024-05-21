@@ -104,6 +104,8 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
+In CockroachDB v23.2 and later, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. For details on the changes to the message format, refer to [Pub/Sub sink messages]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-sink-messages).
+
 [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage

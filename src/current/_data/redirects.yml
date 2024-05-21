@@ -79,12 +79,6 @@
 
 # Pages undergoing maintenance
 
-- destination: migration-overview.md
-  sources:
-    - migrate-from-oracle.md
-  temporary: true
-  versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
-
 # Renamed pages
 
 - destination: admin-ui-overview.md
