@@ -112,7 +112,6 @@ Changefeed jobs should not be paused for a long time because the protected times
     RESUME JOB 681491311976841286;
     ```
 
-
 ## Expirations
 
 ### Enterprise License Expiration
@@ -143,7 +142,7 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 <br>[`security.certificate.expiration.node-client`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-node-client)
 
 **Rule**
-<br>Set alerts for the metric of each type of certificate.
+<br>Set alerts for each of the listed metrics:
 <br>WARNING:  Metric is greater than `0` and less than 1814400 seconds (3 weeks) until enterprise license expiry
 <br>CRITICAL:  Metric is greater than `0` and less than 259200 seconds (3 days) until enterprise license expiry
 
@@ -151,150 +150,49 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 
 [Rotate the expiring certificates]({% link {{ page.version.version }}/rotate-certificates.md %}).
 
-## Intent Buildup
-
-### Alert: Intent Buildup
-
-Bring attention to very large transactions that are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
-
-Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance:
-
-- By creating locking contention, thus limiting concurrency, and therefore reducing the throughput, leading to stalled workloads in extreme cases.
-- Transactions may take non-intuitively larger amount of time to complete, with significant variations in execution latency. This would be caused by an exhaustion of the memory budget to track intents.
-  
-  The maximum number of bytes used to track locks in a transaction is configured with a cluster setting `kv.transaction.max_intents_bytes`. When a transaction modifies keys, it keeps track of the keys it has written, e.g. `a,d,g`. This allows intent resolution to know exactly which intents were written, providing a direct / point resolution.  However, if this list exceeds the memory budget, the point intent resolutions changes to range intent resolutions, which stores `a-g`, i.e. “I wrote some keys between `a` and `g`”. When another transaction  needs to resolve these intents, it has to scan everything in `a-g`, looking for those intents. Cleaning up range intents also takes a considerably larger amount of time and processing resources vs. the list of point intents.
-
-  In v21.1 or earlier, this meant scanning all data in that range, which could take a significant amount of time, particularly when that scan encountered write intents that would block that scan.
-  In v21.2, intents are stored separately from regular data, so this scan is much faster, resulting in a more limited performance overhead.
-
-**Metric**
-<br>`intentcount`
-
-Operators can also create custom alerts on `intentbytes` (maximum number of bytes used to track locks in transactions) to track the memory utilization against the budget (cluster setting `kv.transaction.max_intents_bytes`).
-
-Related messages in the log:
-
-*`... a transaction has hit the intent tracking limit (kv.transaction.max_intents_bytes); is it a bulk operation?*`*
-
-
-
-#### Alert Rule
-
-| Tier     | Definition                                                |
-| -------- | --------------------------------------------------------- |
-| CRITICAL | Total cluster-wide intent count exceeds 10M for 5 minutes |
-| WARNING  | Total cluster-wide intent count exceeds 10M for 2 minutes |
-
-Operators may elect to lower the intent count threshold that triggers an alert, for tighter transaction scope scruitiny.
-
-
-
-#### Alert Response
-
-Upon receiving this the alert, an operator can take any of the following actions:
-
-- Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope DELETE, consider "paging" DELETEs that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring](https://www.cockroachlabs.com/docs/stable/bulk-update-data.html).
-- As a hedge against non-intuitive SQL response time variations, adjust the cluster setting `kv.transaction.max_intents_bytes`.
-  A larger value increases the memory budget for a point intent resolution list.
-  In v21.1 or earlier, the default for this setting is low and can be increased to a safe limit of 4 MB.
-  In v21.2 the default for this setting is [4 MB](https://github.com/cockroachdb/cockroach/issues/54029).
-  Increasing this setting beyond the 21.2 default may be warranted in specific circumstances, however an operator should keep in perspective that this setting is per-transaction and therefore, if set to a high value, may lead to an out-of-memory (OOM) event in high concurrency environments.
-- After reviewing the workload, an operator may conclude that a possible performance impact (discussed above) of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be material. In that case, "doing-nothing" could be a valid response to this alert.
-- An operator may enable a "circuit breaker" that would prevent any transaction exceeding the lock tracking memory budget. A cluster setting `kv.transaction.reject_over_max_intents_budget.enabled` allows an operator to control the behavior of CockroachDB when a transaction exceeds the memory budget for the point intents list.
-  If `kv.transaction.reject_over_max_intents_budget.enabled`  is true, a SQL transaction that exceeds the intent list memory budget would be rejected with an error 53400 ("configuration limit exceeded"). 
-
 ## LSM Health
 
-### Alert: Node LSM Storage Health
+### Node LSM Storage Health
 
-CockroachDB is using a LSM-Tree Pebble storage engine (a custom RocksDB re-write in Go). The health of an LSM tree can be measured by the *read amplification*, which is the average number of SSTables being checked per read operation.
+CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) storage engine that uses a [Log-structured Merge-tree (LSM tree)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) to manage data storage. The health of an LSM tree can be measured by the [*read amplification*]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms), which is the average number of [SST files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) being checked per read operation. A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
 
-A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
+**Metric**
+<br>`rocksdb.read-amplification`: A value in the single digits is characteristic of a healthy LSM tree. A value in the double, triple, or quadruple digits suggests an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
 
-A `rocksdb.read-amplification` in the single digits is characteristic of a healthy LSM tree.
+**Rule**
+<br>WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`.
+<br>CRITICAL:  `rocksdb.read-amplification` greater than `150` for `15 minutes`.
 
-A `rocksdb.read-amplification` in the double/triple/quadruple digits suggests an inverted LSM.
+**Action**
 
-Possible root causes of LSM inversion and its harmful effects are outlined in  [the common problems experienced by CockroachDB users](../most-common-problems/README.md) section.
-
-
-
-------
-
-#### Monitoring Metric`]
-rocksdb.read-amplification`]
-
-
-
-#### Alert Rule
-
-| Tier     | Definition                                    |
-| -------- | --------------------------------------------- |
-| WARNING  | Read Amplification exceeds 50 for 1 hour      |
-| CRITICAL | Read Amplification exceeds 150 for 15 minutes |
-
-
-
-#### Alert Response
-
-The actual response varies depending on the alert tier, i.e. the severity of potential consequences.
-
-- Check the history of read amplification via DB Console
-
-- Check the periodic `Compaction Stats [default]` messages in the CockroachDB logs for confirmation of the degree of the Read Amplification
-
-- Compaction may be "starved of CPU" if a high Read Amplification coincides with a high CPU utilization.  Address the high CPU utilization by reducing the workload concurrency. Compaction should "catch up" and the Read Amplification should be be gradually reduced to normal
-
-In a severe case, a manual intervention may be required. The options are:
-
-  1. [Run the offline manual compaction on the problem node](../emergency-procedures/lsm-compact.md)
-  
-  1. [Replace the problem node](../emergency-procedures/node-replace.md)
-  
-  1. [Wipe the problem node](../emergency-procedures/node-wipe.md)
+Consult the [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health) documentation.
 
 ## Node CPU
 
-### Alert:  Hot CPU
+### Hot CPU
 
-I node with a high CPU utilization (a.k.a. an "overloaded" node) has a limited ability to process the user workload and increases the risks of cluster instability. Potential causes of node CPU overload are outlined in the "Insufficient CPU" Section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
+A node with a high CPU utilization, an *overloaded* node, has a limited ability to process the user workload and increases the risks of cluster instability.
 
 **Metric**
-<br>[`
-sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized`]
+<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-combined-percent-normalized)
+<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
 
+**Alert**
+<br>Set alerts for each of the listed metrics:
+<br>WARNING:  Metric exceeds `0.80` for `4 hours`.
+<br>CRITICAL:  Metric exceeds `0.90` for `1 hour`.
 
+**Action**
 
-#### Alert Rule
+- Consult the [CPU Usage]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [Workload Concurrency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#workload-concurrency) documentation.
 
-| Tier     | Definition                                   |
-| -------- | -------------------------------------------- |
-| WARNING  | Node CPU Utilization exceeds 80% for 4 hours |
-| CRITICAL | Node CPU Utilization exceeds 90% for 1 hour  |
+- In the DB Console, navigate to **Metrics**, [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) for the cluster and check for high values on the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) and the [**Host CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#host-cpu-percent).
 
+- In the DB Console, navigate to **Metrics**, [**SQL** dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}) for the cluster and check for high values on the [**Active SQL Statements** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent). This graph shows the true concurrency of the workload, which may exceed the cluster capacity planning guidance of no more than 4 active statements per vCPU or core.
 
+- A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
 
-
-#### Alert Response
-
-Confirm the high CPU utilization of cluster nodes.  Observe the following metrics in CockroachDB Console:
-
-- Metrics --> Hardware Dashboard --> "CPU Percent" showing a high CPU utilization on cluster nodes
-- Metrics --> SQL Dashboard --> "Active SQL Statements" showing the true concurrency of the workload, possibly exceeding the cluster capacity planning guidance of no more than 4 active statements per vCPU (core)
-
-A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs/cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency.
-
-For a prompt resolution, either [add cluster nodes](../routine-maintenance/node-add.md) or throttle down the workload concurrency, for example by reducing the number of concurrent connections, to not exceed 4 active statements per vCPU/core.
-
-For more deliberate planning, review [cluster right-sizing, expansion strategy](../system-overview/_under-construction_.md).
-
-For additional insights, review the "Insufficient CPU to support the scale of the workload" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
-
-
-
-
-
-### Alert: Hot Node (Hotspot)
+### Hot Node (Hotspot)
 
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
 
@@ -357,9 +255,8 @@ If this metric exceeds 1 sec,  it's a sign of instability. The recommended alert
 
 
 
-#### Alert Rule
-
-| Tier     | Definition |
+**Alert**
+<br> |
 | -------- | ---------- |
 | WARNING  |            |
 | CRITICAL |            |
@@ -426,9 +323,8 @@ sys.rss`]
 
 
 
-#### Alert Rule
-
-| Tier     | Definition                                      |
+**Alert**
+<br>                                      |
 | -------- | ----------------------------------------------- |
 | WARNING  | Node Memory Utilization exceeds 80% for 4 hours |
 | CRITICAL | Node Memory Utilization exceeds 90% for 1 hour  |
@@ -484,9 +380,8 @@ capacity.available`]
 
 
 
-#### Alert Rule
-
-| Tier     | Definition                                         |
+**Alert**
+<br>                                         |
 | -------- | -------------------------------------------------- |
 | WARNING  | Node free disk space is less than 30% for 24 hours |
 | CRITICAL | Node free disk space is less than 10% for 1 hour   |
@@ -577,4 +472,56 @@ No metric is available. Monitor via a query against system tables.`]
 #### Alert Response
 
 Finalize the upgrade.
+
+
+## Intent Buildup
+
+### Alert: Intent Buildup
+
+Bring attention to very large transactions that are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
+
+Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance:
+
+- By creating locking contention, thus limiting concurrency, and therefore reducing the throughput, leading to stalled workloads in extreme cases.
+- Transactions may take non-intuitively larger amount of time to complete, with significant variations in execution latency. This would be caused by an exhaustion of the memory budget to track intents.
+  
+  The maximum number of bytes used to track locks in a transaction is configured with a cluster setting `kv.transaction.max_intents_bytes`. When a transaction modifies keys, it keeps track of the keys it has written, e.g. `a,d,g`. This allows intent resolution to know exactly which intents were written, providing a direct / point resolution.  However, if this list exceeds the memory budget, the point intent resolutions changes to range intent resolutions, which stores `a-g`, i.e. “I wrote some keys between `a` and `g`”. When another transaction  needs to resolve these intents, it has to scan everything in `a-g`, looking for those intents. Cleaning up range intents also takes a considerably larger amount of time and processing resources vs. the list of point intents.
+
+  In v21.1 or earlier, this meant scanning all data in that range, which could take a significant amount of time, particularly when that scan encountered write intents that would block that scan.
+  In v21.2, intents are stored separately from regular data, so this scan is much faster, resulting in a more limited performance overhead.
+
+**Metric**
+<br>`intentcount`
+
+Operators can also create custom alerts on `intentbytes` (maximum number of bytes used to track locks in transactions) to track the memory utilization against the budget (cluster setting `kv.transaction.max_intents_bytes`).
+
+Related messages in the log:
+
+*`... a transaction has hit the intent tracking limit (kv.transaction.max_intents_bytes); is it a bulk operation?*`*
+
+
+
+**Alert**
+<br>                                                |
+| -------- | --------------------------------------------------------- |
+| CRITICAL | Total cluster-wide intent count exceeds 10M for 5 minutes |
+| WARNING  | Total cluster-wide intent count exceeds 10M for 2 minutes |
+
+Operators may elect to lower the intent count threshold that triggers an alert, for tighter transaction scope scruitiny.
+
+
+
+#### Alert Response
+
+Upon receiving this the alert, an operator can take any of the following actions:
+
+- Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope DELETE, consider "paging" DELETEs that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring](https://www.cockroachlabs.com/docs/stable/bulk-update-data.html).
+- As a hedge against non-intuitive SQL response time variations, adjust the cluster setting `kv.transaction.max_intents_bytes`.
+  A larger value increases the memory budget for a point intent resolution list.
+  In v21.1 or earlier, the default for this setting is low and can be increased to a safe limit of 4 MB.
+  In v21.2 the default for this setting is [4 MB](https://github.com/cockroachdb/cockroach/issues/54029).
+  Increasing this setting beyond the 21.2 default may be warranted in specific circumstances, however an operator should keep in perspective that this setting is per-transaction and therefore, if set to a high value, may lead to an out-of-memory (OOM) event in high concurrency environments.
+- After reviewing the workload, an operator may conclude that a possible performance impact (discussed above) of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be material. In that case, "doing-nothing" could be a valid response to this alert.
+- An operator may enable a "circuit breaker" that would prevent any transaction exceeding the lock tracking memory budget. A cluster setting `kv.transaction.reject_over_max_intents_budget.enabled` allows an operator to control the behavior of CockroachDB when a transaction exceeds the memory budget for the point intents list.
+  If `kv.transaction.reject_over_max_intents_budget.enabled`  is true, a SQL transaction that exceeds the intent list memory budget would be rejected with an error 53400 ("configuration limit exceeded"). 
 
