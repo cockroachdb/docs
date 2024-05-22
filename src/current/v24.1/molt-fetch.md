@@ -27,7 +27,7 @@ To install MOLT Fetch, download the binary that matches your system. To download
 | Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
 
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
+For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
 
 {{site.data.alerts.callout_info}}
 Red Hat Enterprise Linux (RHEL) 9 and above are supported.
