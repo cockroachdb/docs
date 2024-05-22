@@ -40,6 +40,23 @@ At the highest level, a PL/pgSQL block looks like the following:
   END
 ~~~
 
+PL/pgSQL blocks can be nested. An optional label can be placed above each block. Block labels can be targeted by [`EXIT` statements](#exit-and-continue-statements).
+
+~~~ sql
+[ <<outer_block>> ]
+  [ DECLARE 
+    declarations ]
+  BEGIN
+    statements
+    [ <<inner_block>> ]
+    [ DECLARE 
+      declarations ]
+    BEGIN
+      statements
+    END;
+  END
+~~~
+
 When you create a function or procedure, you can enclose the entire PL/pgSQL block in dollar quotes (`$$`). Dollar quotes are not required, but are easier to use than single quotes, which require that you escape other single quotes that are within the function or procedure body.
 
 {% include_cached copy-clipboard.html %}
@@ -61,8 +78,7 @@ For complete examples, see [Create a user-defined function using PL/pgSQL](#crea
 
 ### Declare a variable
 
-`DECLARE` specifies all variable definitions that are used in the function or procedure body. 
-
+`DECLARE` specifies all variable definitions that are used in a block.
 ~~~ sql
 DECLARE
 	variable_name [ CONSTANT ] data_type [ := expression ];
@@ -71,7 +87,7 @@ DECLARE
 - `variable_name` is an arbitrary variable name.
 - `data_type` can be a supported [SQL data type]({% link {{ page.version.version }}/data-types.md %}), [user-defined type]({% link {{ page.version.version }}/create-type.md %}), or the PL/pgSQL `REFCURSOR` type, when declaring [cursor](#declare-cursor-variables) variables.
 - `CONSTANT` specifies that the variable cannot be [reassigned](#assign-a-result-to-a-variable), ensuring that its value remains constant within the block.
-- `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provides an optional default value for the variable.
+- `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provides an optional default value for the variable. Default values are evaluated every time a block is entered in a function or procedure.
 
 For example:
 
@@ -105,14 +121,14 @@ For information about opening and using cursors, see [Open and use cursors](#ope
 
 ### Assign a result to a variable
 
-Use the PL/pgSQL `INTO` clause to assign a result of a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) or mutation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})) statement to a specified variable:
+Use the PL/pgSQL `INTO` clause to assign a result of a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) or mutation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})) statement to a specified variable. The optional `STRICT` clause specifies that the statement must return exactly one row; otherwise, the function or procedure will error. This behavior can be enabled by default using the [`plpgsql_use_strict_into`]({% link {{ page.version.version }}/session-variables.md %}#plpgsql-use-strict-into) session setting.
 
 ~~~ sql
-SELECT expression INTO target FROM ...;
+SELECT expression INTO [ STRICT ] target FROM ...;
 ~~~
 
 ~~~ sql
-[ INSERT | UPDATE | DELETE ] ... RETURNING expression INTO target;
+[ INSERT | UPDATE | DELETE ] ... RETURNING expression INTO [ STRICT ] target;
 ~~~
 
 - `expression` is an [expression](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that defines the result to be assigned to the variable.
@@ -146,7 +162,7 @@ NOTICE: New Row: 2
 CALL
 ~~~
 
-The following [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) uses the `max()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) to find the maximum `col` value in table `t`, and assigns the result to `i`.
+The following [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) uses the `max` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) to find the maximum `col` value in table `t`, and assigns the result to `i`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -218,7 +234,7 @@ For usage examples of conditional statements, see [Examples](#examples).
 
 ### Write loops
 
-Use looping syntax to repeatedly execute statements.
+Write a loop to repeatedly execute statements.
 
 On its own, `LOOP` executes statements infinitely.
 
@@ -238,25 +254,59 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-Add an `EXIT` statement to end a `LOOP` or `WHILE` statement block. This should be combined with a [conditional statement](#write-conditional-statements).
+### `EXIT` and `CONTINUE` statements
+
+Add an `EXIT` statement to end a [loop](#write-loops). An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
 
 ~~~ sql
 LOOP
 	statements;
-	IF condition THEN
-		EXIT;
-	END IF;
+	EXIT [ WHEN condition ];
   END LOOP;
 ~~~
 
-Add a `CONTINUE` statement to end a `LOOP` or `WHILE` statement block, skipping any statements below `CONTINUE`, and begin the next iteration of the loop. This should be combined with a [conditional statement](#write-conditional-statements). In the following example, if the `IF` condition is met, then `CONTINUE` causes the loop to skip the second block of statements and begin again.
+Add a label to an `EXIT` statement to target a block that has a matching label. An `EXIT` statement with a label can target either a loop or a [block](#structure). An `EXIT` statement inside a block must have a label.
+
+The following `EXIT` statement will end the `label` block before the statements are executed.
+
+~~~ sql
+BEGIN
+	<<label>>
+	BEGIN
+	  EXIT label;
+	  statements;
+	END;
+  END
+~~~
+
+{{site.data.alerts.callout_info}}
+If more than one PL/pgSQL block has a matching label, the innermost block is chosen.
+{{site.data.alerts.end}}
+
+In the following example, `EXIT` statement in the inner block is used to exit the stored procedure.
+
+~~~ sql
+CREATE PROCEDURE p() AS $$
+  <<outer_block>>
+  BEGIN
+  	RAISE NOTICE '%', 'this is printed';
+  	<<inner_block>>
+  	BEGIN
+	  	EXIT outer_block;
+	  	RAISE NOTICE '%', 'this is not printed';
+	  END;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+Add a `CONTINUE` statement to end the current iteration of a [loop](#write-loops), skipping any statements below `CONTINUE` and beginning the next iteration of the loop. 
+
+A `CONTINUE` statement can be combined with an optional `WHEN` boolean condition. In the following example, if a `WHEN` condition is defined and met, then `CONTINUE` causes the loop to skip the second group of statements and begin again.
 
 ~~~ sql
 LOOP
 	statements;
-	IF condition THEN
-		CONTINUE;
-	END IF;
+	CONTINUE [ WHEN condition ];
 	statements;
   END LOOP;
 ~~~
@@ -409,6 +459,114 @@ BEGIN
   END
 ~~~
 
+### Control transactions
+
+Use a `COMMIT` or `ROLLBACK` statement within a PL/pgSQL [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}) to finish the current transaction and automatically start a new one. 
+
+- Any updates made within the previous transaction are either committed or rolled back, while [PL/pgSQL variables](#declare-a-variable) keep their values. 
+- Execution of the stored procedure resumes in a new transaction with the statements immediately following the `COMMIT` or `ROLLBACK` statement.
+
+~~~ sql
+BEGIN
+	statements
+	[ COMMIT | ROLLBACK ]
+~~~
+
+`COMMIT` and `ROLLBACK` statements within PL/pgSQL blocks have the following requirements:
+
+- They must be used inside a PL/pgSQL [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+{% comment %}- The procedure must be called directly in a `CALL` statement, or all of its ancestors must be stored procedures or `DO` blocks.{% endcomment %}
+- They cannot be inside a [block](#structure) with an [`EXCEPTION`](#write-exception-logic) clause.
+- The procedure must be called directly in a [`CALL`]({% link {{ page.version.version }}/call.md %}) SQL statement. It cannot be [called by another stored procedure](#call-a-procedure).
+- The procedure must be called from an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements); i.e., the call cannot be enclosed by [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) and [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) SQL statements.
+
+Statements that follow a `COMMIT` or `ROLLBACK` automatically start another PL/pgSQL transaction. If a transaction is running when the procedure ends, it is implicitly committed without having to be followed by a `COMMIT`.
+
+~~~ sql
+BEGIN
+	...
+	[ COMMIT | ROLLBACK ]
+	statements
+  END
+~~~
+
+Use one or more optional `SET TRANSACTION` statements to set the [priority, isolation level, timestamp, or read-only status]({% link {{ page.version.version }}/set-transaction.md %}#parameters) of a PL/pgSQL transaction. In PL/pgSQL, `SET TRANSACTION` statements **must** directly follow `COMMIT` or `ROLLBACK`, or another `SET TRANSACTION` statement; and must precede the other statements in the transaction.
+
+~~~ sql
+BEGIN
+	...
+	[ COMMIT | ROLLBACK ]
+	[ SET TRANSACTION mode ]
+	statements
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE PROCEDURE p() LANGUAGE PLpgSQL AS
+  $$
+  BEGIN
+    COMMIT;
+    SET TRANSACTION PRIORITY HIGH;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    RAISE NOTICE '%', current_setting('transaction_isolation');
+    RAISE NOTICE '%', current_setting('transaction_priority');
+  END
+  $$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CALL p();
+~~~
+
+~~~
+NOTICE: read committed
+NOTICE: high
+CALL
+~~~
+
+Any PL/pgSQL transaction not preceded by a `SET TRANSACTION` statement uses the default settings.
+
+### Call a procedure
+
+Use a `CALL` statement to call a procedure from within a PL/pgSQL [function]({% link {{ page.version.version }}/user-defined-functions.md %}) or [procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+
+~~~ sql
+BEGIN
+	CALL procedure(parameters);
+~~~
+
+A PL/pgSQL routine that calls a procedure should [declare a variable](#declare-a-variable) that will store the result of each of that procedure's `OUT` parameters. For example, given the procedure:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE output_one(OUT value INT) AS
+  $$
+  BEGIN
+    value := 1;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+To call `output_one` within another procedure:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE output() AS
+  $$
+  DECLARE
+    output_value INT;
+  BEGIN
+    CALL output_one(output_value);
+    RAISE NOTICE 'Output value: %', output_value;
+  END
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+A procedure with `OUT` parameters can only be called from a PL/pgSQL routine. For another example, see [Create a stored procedure that calls a procedure]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-calls-a-procedure).
+
 ## Examples
 
 ### Create a user-defined function using PL/pgSQL
@@ -423,8 +581,7 @@ BEGIN
 
 ## Known limitations
 
-{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
-{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/plpgsql-limitations.md %}
 
 ## See also
 

@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.db_console
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 The **Physical Cluster Replication** dashboard in the DB Console lets you monitor the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) streams between a primary and standby cluster.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) for your standby cluster, click **Metrics** on the left-hand navigation bar, and select **Physical Cluster Replication** from the **Dashboard** dropdown.
@@ -48,6 +44,17 @@ Hovering over the graph displays:
 
 - The date and time.
 - The number of SST bytes replicated.
+
+## Replication lag
+
+<img src="{{ 'images/v24.1/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+
+{% include_cached new-in.html version="v24.1" %} The **Replication Lag** graph displays the [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby cluster. This is the time between the most up-to-date replicated time and the actual time.
+
+Hovering over the graph displays:
+
+- The specific date and time of the replication lag.
+- The reported replication lag time.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 

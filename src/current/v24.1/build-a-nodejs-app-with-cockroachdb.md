@@ -11,6 +11,10 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [node-postgres driver](https://node-postgres.com/).
 
+{{site.data.alerts.callout_info}}
+This tutorial assumes you are running under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
+{{site.data.alerts.end}}
+
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/setup/sample-setup.md %}

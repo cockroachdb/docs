@@ -56,7 +56,7 @@ File name pattern | File usage
 File name pattern | File usage
 -------------|------------
 `ca.crt`     | CA certificate.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (e.g., `CN=marc` for `client.marc.crt`).
 `client.<user>.key` | Key for the client certificate.
 
 Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}#accessing-the-db-console-for-a-secure-cluster).
@@ -354,3 +354,7 @@ Certificate directory: certs
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
+- [Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %})
+- [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)

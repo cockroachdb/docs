@@ -39,6 +39,10 @@ A CockroachDB cluster consists of multiple nodes and clients. The nodes can comm
 - Node authentication using [TLS 1.3](https://wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}) (for Enterprise users).
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ### Node authentication
 
 To set up a secure cluster without using an existing certificate authority, you'll need to generate the following files:
@@ -131,7 +135,7 @@ A client must have the following files with file names as specified in the table
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by the CA represented by `ca.crt`.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (e.g., `CN=marc` for `client.marc.crt`) <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
@@ -320,3 +324,11 @@ The following cipher suites are rejected by default because they are not recomme
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %})
+- [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
+- [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
+- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
+- [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
+- [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
+- [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})

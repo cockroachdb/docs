@@ -5,9 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
+{% include enterprise-feature.md %}
 
 `READ COMMITTED` is one of two [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) supported on CockroachDB. By default, CockroachDB uses the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, which is the strongest [ANSI transaction isolation level](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
 
@@ -17,7 +15,7 @@ docs_area: deploy
 
 - You are [migrating an application to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
 
-Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
+Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions do **not** return [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
 If your workload is already running well under `SERIALIZABLE` isolation, Cockroach Labs does not recommend changing to `READ COMMITTED` isolation unless there is a specific need.
 
@@ -27,17 +25,10 @@ If your workload is already running well under `SERIALIZABLE` isolation, Cockroa
 
 ## Enable `READ COMMITTED` isolation
 
-To make `READ COMMITTED` isolation available to use on a cluster, enable the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) in the SQL shell:
+By default, the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is `true`, enabling `READ COMMITTED` transactions. If the cluster setting is `false`, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
-~~~
-
-After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
-
-{{site.data.alerts.callout_info}}
-If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
+{{site.data.alerts.callout_success}}
+To check whether any transactions are being upgraded to `SERIALIZABLE`, see the [**Upgrades of SQL Transaction Isolation Level**]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#upgrades-of-sql-transaction-isolation-level) graph in the DB Console.
 {{site.data.alerts.end}}
 
 ### Set the default isolation level to `READ COMMITTED`
@@ -154,17 +145,16 @@ Starting a transaction as `READ COMMITTED` does not affect the [default isolatio
 
 - You can mitigate concurrency anomalies by issuing [locking reads](#locking-reads) in `READ COMMITTED` transactions. These statements can block concurrent transactions that are issuing writes or other locking reads on the same rows.
 
-{% comment %}
-- When using `READ COMMITTED` isolation, you do not need to implement [client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) to handle `40001` errors. This is because under [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), `READ COMMITTED` transactions will **not** return [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to applications.
-{% endcomment %}
+- When using `READ COMMITTED` isolation, you do **not** need to implement [client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) to handle [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) under [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). `READ COMMITTED` transactions never return [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable) errors, and will only return `40001` errors in limited cases, as described in the following points.
 
-`READ COMMITTED` transactions can abort in the following scenarios:
+<a id="read-committed-abort"></a>
+`READ COMMITTED` transactions can abort in certain scenarios:
 
 - Transactions at all isolation levels are subject to [*lock contention*]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), where a transaction attempts to lock a row that is already locked by a [write]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking read](#locking-reads). In such cases, the later transaction is blocked until the earlier transaction commits or rolls back, thus releasing its lock on the row. Lock contention that produces a *deadlock* between two transactions will result in a transaction abort and a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted)) returned to the client.
 
 - [Constraint]({% link {{ page.version.version }}/constraints.md %}) violations will abort transactions at all isolation levels.
 
-- In rare cases under `READ COMMITTED` isolation, a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) error will be returned to the client if a statement has already begun streaming a partial result set back to the client and cannot retry transparently. By default, the result set is buffered up to 16 KiB before overflowing and being streamed to the client. You can configure the result buffer size using the [`sql.defaults.results_buffer.size`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size) cluster setting or the [`results_buffer_size`]({% link {{ page.version.version }}/session-variables.md %}#results-buffer-size) session variable.
+- In rare cases under `READ COMMITTED` isolation, a [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) error can be returned to the client if a statement has already begun streaming a partial result set back to the client and cannot retry transparently. By default, the result set is buffered up to 16 KiB before overflowing and being streamed to the client. You can configure the result buffer size using the [`sql.defaults.results_buffer.size`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size) cluster setting or the [`results_buffer_size`]({% link {{ page.version.version }}/session-variables.md %}#results-buffer-size) session variable.
 
 ### Concurrency anomalies
 
@@ -408,7 +398,7 @@ To use locking reads:
 
 - If you need to read and later update a row within a transaction, use `SELECT ... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations.
 
-- If you need to read the latest version of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads.
+- If you need to read the latest version of a row, and later update a **different** row within a transaction, use `SELECT ... FOR SHARE` to acquire a shared lock on the row. This blocks all concurrent writes on the row without unnecessarily blocking concurrent reads or other `SELECT ... FOR SHARE` queries.
 
 	{{site.data.alerts.callout_success}}
 	This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed.

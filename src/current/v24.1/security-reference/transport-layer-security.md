@@ -275,6 +275,10 @@ For a SQL client to authenticate using TLS, that client must be provisioned with
 
 These key files are used with the CockroachDB CLI by placing them in a directory and  `--certs-dir`
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{{site.data.alerts.end}}
+
 ## Revoking Certificates in CockroachDB
 
 ### CockroachDB Cloud

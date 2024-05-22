@@ -2,6 +2,7 @@
 
 Feature | Description
 --------+-------------------------
+[Read Committed isolation]({% link {{ page.version.version }}/read-committed.md %}) | Achieve predictable query performance at high workload concurrencies, but without guaranteed transaction serializability.
 [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}) | Reduce read latency in multi-region deployments by using the closest replica at the expense of reading slightly historical data.
 [Multi-Region Capabilities]({% link {{ page.version.version }}/multiregion-overview.md %}) | Row-level control over where your data is stored to help you reduce read and write latency and meet regulatory requirements.
 [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) | Use a procedural language in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) to improve performance and enable more complex queries.
@@ -26,3 +27,4 @@ Feature | Description
 [Cluster Single Sign-on (SSO)]({% link {{ page.version.version }}/sso-sql.md %}) | Grant SQL access to a cluster using JSON Web Tokens (JWTs) issued by an external identity provider (IdP) or custom JWT issuer.
 [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) | Grant access to a cluster's DB Console interface using SSO through an IdP that supports OIDC.
 [Role-based SQL Audit Logs]({% link {{ page.version.version }}/role-based-audit-logging.md %}) | Enable logging of queries being executed against your system by specific users or roles.
+[Certificate-based authentication using multiple values from the X.509 Subject field]({% link {{ page.version.version }}/certificate-based-authentication-using-the-x509-subject-field.md %}) | Map SQL user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to values in the Subject field of the [X.509 certificate](https://en.wikipedia.org/wiki/X.509) used for [TLS authentication]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#what-is-transport-layer-security-tls).

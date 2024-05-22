@@ -5,6 +5,10 @@ toc: true
 docs_area: develop
 ---
 
+{{site.data.alerts.callout_info}}
+Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
+{{site.data.alerts.end}}
+
 This page has instructions for authors of [database drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}) who would like to implement client-side retries in their database driver or ORM for maximum efficiency and ease of use by application developers.
 
 {{site.data.alerts.callout_info}}

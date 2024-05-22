@@ -202,9 +202,11 @@ The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefee
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
 
-### Physical Cluster Replication
+### Write Ahead Log (WAL) Failover
 
-[Physical cluster replication](https://www.cockroachlabs.com/docs/{{ page.version.version }}/physical-cluster-replication-overview) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only](https://www.cockroachlabs.com/docs/{{ page.version.version }}/enterprise-licensing) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+When a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) is configured to run with [multiple stores]({% link {{ page.version.version }}/cockroach-start.md %}#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory.
+
+For more information, see [Write Ahead Log (WAL Failover)]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
 
 ## See Also
 

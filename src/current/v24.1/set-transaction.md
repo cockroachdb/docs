@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SET TRANSACTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) sets the transaction priority, access mode, and "as of" timestamp after you [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) it but before executing the first statement that manipulates a database.
+The `SET TRANSACTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) sets the transaction priority, access mode, "as of" timestamp, and isolation level. These are applied after you [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) the transaction and before executing the first statement that manipulates a database.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/use-the-default-transaction-priority.md %}

@@ -6,7 +6,9 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data]({% link {{ page.version.version }}/aws-dms.md %}) from Oracle to CockroachDB. You can also [migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
+The instructions on this page are outdated. Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}) or [Qlik]({% link {{ page.version.version }}/qlik.md %}) to migrate data from Oracle to CockroachDB.
+
+Note that `IMPORT` is deprecated. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import.md %}) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
@@ -325,11 +327,11 @@ The last phase of the migration process is to change the [transactional behavior
 
 ### Transactions, locking, and concurrency control
 
-Both Oracle and CockroachDB support [multi-statement transactions]({% link {{ page.version.version }}/transactions.md %}), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement is also supported in CockroachDB.
+Both Oracle and CockroachDB support [multi-statement transactions]({% link {{ page.version.version }}/transactions.md %}), which are atomic and guarantee ACID semantics. However, CockroachDB operates under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation by default, while Oracle defaults to [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}), which can create both [non-repeatable reads and phantom reads]({% link {{ page.version.version }}/read-committed.md %}#non-repeatable-reads-and-phantom-reads) when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around `READ COMMITTED` concurrency anomalies. Both the [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation level and the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement are supported in CockroachDB.
 
 Regarding locks, Cockroach utilizes a [lightweight latch]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements]({% link {{ page.version.version }}/transactions.md %}#sql-statements).
 
-As CockroachDB does not allow serializable anomalies, [transactions]({% link {{ page.version.version }}/begin-transaction.md %}) may experience deadlocks or [read/write contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) or [client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+Because CockroachDB does not allow serializable anomalies under `SERIALIZABLE` isolation, [transactions]({% link {{ page.version.version }}/begin-transaction.md %}) may experience deadlocks or [read/write contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) or [client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 ### SQL dialect
 

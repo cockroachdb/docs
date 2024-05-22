@@ -1,6 +1,6 @@
 ---
 title: Default Value Constraint
-summary: The Default Value constraint specifies a value to populate a column with if none is provided.
+summary: The DEFAULT constraint specifies a value to populate a column with if none is provided.
 toc: true
 docs_area: reference.sql
 ---
@@ -9,7 +9,7 @@ The `DEFAULT` value [constraint]({% link {{ page.version.version }}/constraints.
 
 ## Details
 
-- The [data type]({% link {{ page.version.version }}/data-types.md %}) of the Default Value must be the same as the data type of the column.
+- The [data type]({% link {{ page.version.version }}/data-types.md %}) of the `DEFAULT` value must be the same as the data type of the column.
 - The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement. You can still insert a `NULL` into an optional (nullable) column by explicitly inserting `NULL`. For example, `INSERT INTO foo VALUES (1, NULL);`.
 
 ## Syntax

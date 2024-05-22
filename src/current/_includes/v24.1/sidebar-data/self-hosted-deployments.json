@@ -240,6 +240,12 @@
                         "urls": [
                           "/${VERSION}/manage-certs-revoke-ocsp.html"
                         ]
+                      },
+                      {
+                        "title": "Certificate-based authentication using multiple values from the X.509 SUBJECT field",
+                        "urls": [
+                          "/${VERSION}/certificate-based-authentication-using-the-x509-subject-field.html"
+                        ]
                       }
                     ]
                   },

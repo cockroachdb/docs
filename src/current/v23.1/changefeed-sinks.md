@@ -198,22 +198,29 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
-
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+
+{% include_cached new-in.html version="v23.1" %} Enable the `changefeed.new_pubsub_sink_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to improve the throughput of changefeeds emitting to Pub/Sub sinks. Enabling this setting also alters the message format to use capitalized top-level fields in changefeeds emitting JSON-encoded messages. Therefore, you may need to reconfigure downstream systems to parse the new message format before enabling this setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_pubsub_sink_enabled = true;
+~~~
+
+For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
 
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?REGION={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`PROJECT NAME`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
+`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
@@ -276,7 +283,29 @@ pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": 
 
 ### Pub/Sub sink messages
 
-The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
+{{site.data.alerts.callout_info}}
+In CockroachDB v23.2 and later, changefeeds will have `changefeed.new_pubsub_sink_enabled` enabled by default.
+{{site.data.alerts.end}}
+
+When the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled, changefeeds will have improved throughput and the changefeed JSON-encoded message format has top-level fields that are capitalized:
+
+~~~
+{Key: ..., Value: ..., Topic: ...}
+~~~
+
+{{site.data.alerts.callout_danger}}
+Before enabling `changefeed.new_pubsub_sink_enabled`, you may need to reconfigure downstream systems to parse the new message format.
+{{site.data.alerts.end}}
+
+With `changefeed.new_pubsub_sink_enabled` set to `false`, changefeeds emit JSON messages with the top-level fields all lowercase:
+
+~~~
+{key: ..., value: ..., topic: ...}
+~~~
+
+If `changefeed.new_pubsub_sink_enabled` is set to `false`, changefeeds will not benefit from the improved throughput performance that this setting enables.
+
+The following shows the default JSON messages for a changefeed created with `changefeed.new_pubsub_sink_enabled` set to `false`. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐

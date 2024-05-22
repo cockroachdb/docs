@@ -61,7 +61,15 @@ Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT ... FOR SHARE` lo
 Shared locks are not enabled by default for `SERIALIZABLE` transactions. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). To perform [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting]({% link {{ page.version.version }}/session-variables.md %}). This matches the default `READ COMMITTED` behavior.
 {{site.data.alerts.end}}
 
-#### Lock behavior under `SERIALIZABLE` isolation
+### Lock promotion
+
+A shared lock can be "promoted" to an exclusive lock.
+
+If a transaction that holds a shared lock on a row subsqeuently issues an exclusive lock on the row, this will cause the transaction to reacquire the lock, effectively "promoting" the shared lock to an exclusive lock.
+
+A shared lock cannot be promoted until all other shared locks on the row are released. If two concurrent transactions attempt to promote their shared locks on a row, this will cause *deadlock* between the transactions, causing one transaction to abort with a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#abort_reason_pusher_aborted)) returned to the client. The remaining open transaction will then promote its lock.
+
+### Lock behavior under `SERIALIZABLE` isolation
 
 {% include {{page.version.version}}/known-limitations/select-for-update-limitations.md %}
 

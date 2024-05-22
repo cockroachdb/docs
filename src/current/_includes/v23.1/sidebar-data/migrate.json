@@ -9,7 +9,7 @@
       ]
     },
     {
-      "title": "Migration Tools",
+      "title": "MOLT Tools",
       "items": [
         {
           "title": "Schema Conversion Tool",
@@ -18,7 +18,7 @@
           ]
         },
         {
-          "title": "MOLT Verify",
+          "title": "Verify",
           "urls": [
             "/${VERSION}/molt-verify.html"
           ]
@@ -28,7 +28,12 @@
           "urls": [
             "/${VERSION}/live-migration-service.html"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "Third-Party Migration Tools",
+      "items": [
         {
           "title": "AWS DMS",
           "urls": [
@@ -118,6 +123,12 @@
       "title": "Migrate from MySQL",
       "urls": [
         "/${VERSION}/migrate-from-mysql.html"
+      ]
+    },
+    {
+      "title": "Migrate from Oracle",
+      "urls": [
+        "/${VERSION}/migrate-from-oracle.html"
       ]
     },
     {
