@@ -30,7 +30,7 @@ To install MOLT Fetch, download the binary that matches your system. To download
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
 
 {{site.data.alerts.callout_info}}
-Red Hat Enterprise Linux (RHEL) 9 and above are supported.
+MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 {{site.data.alerts.end}}
 
 ## Setup
@@ -39,7 +39,7 @@ Complete the following items before using MOLT Fetch:
 
 - Follow the recommendations in [Best practices](#best-practices) and [Security recommendations](#security-recommendations).
 
-- Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option. If you are manually creating the target schema, review the behaviors in [Mismatch handling](#mismatch-handling).
+- Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling](#mismatch-handling).
 
 - Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
 
@@ -103,7 +103,13 @@ Complete the following items before using MOLT Fetch:
 
 - If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This guarantees consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
 
-- To prevent memory outages during data export of tables with large rows, estimate the amount of memory used to export a table: `--row-batch-size * --export-concurrency * average size of the table rows`. If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly.
+- To prevent memory outages during data export of tables with large rows, estimate the amount of memory used to export a table: 
+
+	~~~
+	--row-batch-size * --export-concurrency * average size of the table rows
+	~~~
+
+	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly.
 
 - If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
@@ -374,13 +380,13 @@ When using the `'drop-on-target-and-recreate'` option, MOLT Fetch creates a new 
 
 #### Mismatch handling
 
-If either [`'none'`](#target-table-handling) or [`'truncate-if-exists'`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning.
+If either [`'none'`](#target-table-handling) or [`'truncate-if-exists'`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in [certain cases](#exit-early), and will need to be re-run from the beginning.
 
 {{site.data.alerts.callout_info}}
 This does not apply when [`'drop-on-target-and-recreate'`](#target-table-handling) is specified, since this mode automatically creates a compatible CockroachDB schema.
 {{site.data.alerts.end}}
 
-`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+<a id="exit-early"></a>`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
 
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
