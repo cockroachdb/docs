@@ -359,7 +359,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 1. [Create an Entra application in Azure](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
 
-  1. Once the application is registered, upload the certificate file created in Step 2.
+  1. Once the application is registered, upload the certificate file (`ca.crt`) created in Step 2.
   1. From the **Overview** page for the Entra application, copy the values for *Display Name*, *Application (client) ID*, and the *Directory (tenant) ID* to be used in Step 5.
 
 1. [Create an Azure Monitor Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource).
