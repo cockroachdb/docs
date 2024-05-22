@@ -63,7 +63,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 {{site.data.alerts.end}}
 
 1. Navigate to your cluster's **Networking > Private endpoint** tab.
-1. Click **Add an endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
+1. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
 1. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
     - Set **Target** to **Published service**.
     - Set **Target service** to the value you copied from CockroachDB {{ site.data.products.cloud }} Console. If the endpoint's configured target service does not match, validation will fail.
