@@ -12,11 +12,8 @@ The `SHOW JOBS` [statement]({% link {{ page.version.version }}/sql-statements.md
 - Enterprise [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}).
 - [Scheduled backups]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}).
 - [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) created for use by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}). To view [automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics), use [`SHOW AUTOMATIC JOBS`](#show-automatic-jobs).
--  `SHOW JOBS` now displays newly added columns from `crdb_internal.jobs` (`last_run`, `next_run`, `num_runs`, and `execution_errors`). The columns capture state related to retries, failures, and exponential backoff.
 
-    These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
-
- Details for [enterprise changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}), including the [sink URI]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri) and full table name, are not displayed on running the `SHOW JOBS` statement. For details about [enterprise changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}), including the [sink URI]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri) and the full table name, use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
+Details for [enterprise changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}), including the [sink URI]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri) and full table name, are not displayed on running the `SHOW JOBS` statement. For details about [enterprise changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}), including the [sink URI]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri) and the full table name, use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
 
 To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use [`SHOW JOBS WHEN COMPLETE`](#show-job-when-complete). The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
 
