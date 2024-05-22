@@ -258,7 +258,7 @@ The asynchronous parallel lookup behavior does not occur if you [disable vectori
 
 Locality optimized search is supported for scans that are guaranteed to return 100,000 keys or fewer. This optimization allows the execution engine to avoid visiting remote regions if all requested keys are found in the local region, thus reducing the latency of the query.
 
-### Limitations
+### Known limitations
 
 {% include {{ page.version.version }}/known-limitations/locality-optimized-search-limited-records.md %}
 

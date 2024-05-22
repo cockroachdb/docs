@@ -65,9 +65,9 @@ For privileges required by specific statements, see the documentation for the re
 - All privileges of a role are inherited by all its members.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
-## Limitations
+## Known limitations
 
-{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
+{% include {{page.version.version}}/known-limitations/grant-revoke-schema-changes.md %}
 
 ## Examples
 

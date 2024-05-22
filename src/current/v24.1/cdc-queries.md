@@ -16,7 +16,7 @@ You can use CDC queries to do the following:
 - Modify data before it emits to reduce the time and operational burden of filtering or transforming data downstream.
 - Stabilize or customize the schema of your changefeed messages for increased compatibility with external systems.
 
-You can use any CockroachDB-supported SQL expression syntax that is not listed in [limitations](#limitations) to build a changefeed query.
+You can use any CockroachDB-supported SQL expression syntax that is not listed in [Known limitations](#known-limitations) to build a changefeed query.
 
 See the [Examples](#examples) section for further use cases.
 
@@ -49,7 +49,7 @@ To emit different properties for a row, specify the following explicitly in CDC 
 
 {% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
 
-## Limitations
+## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 
@@ -93,7 +93,7 @@ You can also use the following functions in CDC queries:
 You can **not** use the following functions with CDC queries:
 
 - Functions marked as "Volatile" on the [Functions and Operators page]({% link {{ page.version.version }}/functions-and-operators.md %}).
-- Functions listed in the [Limitations](#limitations) section on this page.
+- Functions listed in the [Known limitations](#known-limitations) section on this page.
 - Functions marked as "Stable" on the [Functions and Operators page]({% link {{ page.version.version }}/functions-and-operators.md %}), **except** for those listed previously.
 
 ## Examples
@@ -149,7 +149,7 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 ### Capture delete messages
 
-Delete changefeed messages will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}) value and all other columns will emit as `NULL` (see the [Limitations](#limitations)). To emit the deleted values, use the [`envelope=wrapped`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope), [`format=json`]({% link {{ page.version.version }}/create-changefeed.md %}#format), and [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) options:
+Delete changefeed messages will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}) value and all other columns will emit as `NULL` (see the [Known limitations](#known-limitations)). To emit the deleted values, use the [`envelope=wrapped`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope), [`format=json`]({% link {{ page.version.version }}/create-changefeed.md %}#format), and [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) options:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -89,7 +89,7 @@ SELECT * FROM pg_cursors;
 (1 row)
 ~~~
 
-## Limitations
+## Known limitations
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
