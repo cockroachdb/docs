@@ -29,7 +29,7 @@ To force a reverse scan of a specific index:
 SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
-Forcing a reverse scan is sometimes useful during [performance tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %}). For reference, the full syntax for choosing an index and its scan direction is
+Forcing a reverse scan can help with [performance tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %}). To choose an index and its scan direction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
