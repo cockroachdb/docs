@@ -25,7 +25,7 @@ The steps below demonstrate how to quickly deploy and interact with an insecure 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
 - [Kubernetes terminology](#kubernetes-terminology)
-- [Known limitations](#known-limitations)
+- [Best practices](#best-practices)
 
 ### Kubernetes terminology
 

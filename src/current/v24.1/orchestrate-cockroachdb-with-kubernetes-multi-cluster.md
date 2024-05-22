@@ -25,7 +25,7 @@ Before getting started, it's helpful to review some Kubernetes-specific terminol
 
 - [Kubernetes terminology](#kubernetes-terminology)
 - [UX differences from running in a single cluster](#ux-differences-from-running-in-a-single-cluster)
-- [Known limitations](#known-limitations)
+- [Best practices](#best-practices)
 
 ### Kubernetes terminology
 

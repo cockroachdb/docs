@@ -63,7 +63,7 @@
 ### Initialize the cluster
 
 {{site.data.alerts.callout_info}}
-After a cluster managed by the Kubernetes operator is initialized, its Kubernetes labels cannot be modified. For more details, refer to [Known limitations](#known-limitations).
+After a cluster managed by the Kubernetes operator is initialized, its Kubernetes labels cannot be modified. For more details, refer to [Best practices](#best-practices).
 {{site.data.alerts.end}}
 
 1. Download `example.yaml`, a custom resource that tells the Operator how to configure the Kubernetes cluster.
