@@ -39,7 +39,7 @@ To install MOLT Verify, download the binary that matches your system. To downloa
 | Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
 
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
+For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
 
 # Setup
 

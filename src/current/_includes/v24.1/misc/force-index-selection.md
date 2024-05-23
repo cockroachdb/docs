@@ -6,34 +6,34 @@ Index selection can impact [performance]({% link {{ page.version.version }}/perf
 
 ##### Force index scan
 
-The syntax to force a scan of a specific index is:
+To force a scan of a specific index:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM table@my_idx;
+SELECT * FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM table@{FORCE_INDEX=my_idx};
+SELECT * FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
 ##### Force reverse scan
 
-The syntax to force a reverse scan of a specific index is:
+To force a reverse scan of a specific index:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
+SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
-Forcing a reverse scan is sometimes useful during [performance tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %}). For reference, the full syntax for choosing an index and its scan direction is
+Forcing a reverse scan can help with [performance tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %}). To choose an index and its scan direction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]}
+SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]};
 ~~~
 
 where the optional `DIRECTION` is either `ASC` (ascending) or `DESC` (descending).
@@ -44,14 +44,14 @@ You can verify that the optimizer is choosing your desired scan direction using 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE kv (K INT PRIMARY KEY, v INT);
+CREATE TABLE kv (K INT PRIMARY KEY, v INT);
 ~~~
 
 you can check the scan direction with:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
+EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
 ~~~
 
 ~~~
@@ -60,6 +60,21 @@ you can check the scan direction with:
   scan users,rev
    └── flags: force-index=primary,rev
 (2 rows)
+~~~
+
+#### Force inverted index scan
+
+To force a scan of any [inverted index]({% link {{ page.version.version }}/inverted-indexes.md %}) of the hinted table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM table@{FORCE_INVERTED_INDEX};
+~~~
+
+The `FORCE_INVERTED_INDEX` hint does not allow specifying an inverted index. If no query plan can be generated, the query will result in the error:
+
+~~~
+ERROR: could not produce a query plan conforming to the FORCE_INVERTED_INDEX hint
 ~~~
 
 ##### Force partial index scan

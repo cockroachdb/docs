@@ -27,7 +27,11 @@ To install MOLT Fetch, download the binary that matches your system. To download
 | Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
 
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
+For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
+
+{{site.data.alerts.callout_info}}
+MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
+{{site.data.alerts.end}}
 
 ## Setup
 
@@ -35,7 +39,7 @@ Complete the following items before using MOLT Fetch:
 
 - Follow the recommendations in [Best practices](#best-practices) and [Security recommendations](#security-recommendations).
 
-- Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option.
+- Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling](#mismatch-handling).
 
 - Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
 
@@ -99,6 +103,18 @@ Complete the following items before using MOLT Fetch:
 
 - If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This guarantees consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
 
+- To prevent memory outages during data export of tables with large rows, estimate the amount of memory used to export a table: 
+
+	~~~
+	--row-batch-size * --export-concurrency * average size of the table rows
+	~~~
+
+	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly.
+
+- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
+
+- When using [`IMPORT INTO` mode](#fetch-mode) to load tables into CockroachDB, if the fetch process terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the process from the beginning.
+
 ## Security recommendations
 
 Cockroach Labs **strongly** recommends the following:
@@ -137,6 +153,10 @@ Cockroach Labs **strongly** recommends the following:
 - When using [cloud storage](#cloud-storage) for your intermediate store, ensure that access control is properly configured. Refer to the [GCP](https://cloud.google.com/storage/docs/access-control) or [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) documentation.
 - Do not use public cloud storage in production.
 
+### Perform a dry run
+
+To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before moving any data in production. Use a test or development environment that is as similar as possible to production.
+
 ## Commands
 
 | Command |                                               Usage                                               |
@@ -163,6 +183,8 @@ Cockroach Labs **strongly** recommends the following:
 | `--compression`                               | Compression method for data when using [`IMPORT INTO` mode](#fetch-mode) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                           |
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                        |
 | `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                     |
+| `--crdb-pts-duration`                         | The duration for which each timestamp used in data export from a CockroachDB source is protected from garbage collection. This ensures that the data snapshot remains consistent. For example, if set to `24h`, each timestamp is protected for 24 hours from the initiation of the export job. This duration is extended at regular intervals specified in `--crdb-pts-refresh-interval`.<br><br>**Default:** `24h0m0s`       |
+| `--crdb-pts-refresh-interval`                 | The frequency at which the protected timestamp's validity is extended. This interval maintains protection of the data snapshot until data export from a CockroachDB source is completed. For example, if set to `10m`, the protected timestamp's expiration will be extended by the duration specified in `--crdb-pts-duration` (e.g., `24h`) every 10 minutes while export is not complete. <br><br>**Default:** `10m0s`      |
 | `--direct-copy`                               | Enables [direct copy mode](#fetch-mode), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                                 |
 | `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. **Note:** The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`. See [Best practices](#best-practices).<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
 | `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                      |
@@ -181,7 +203,7 @@ Cockroach Labs **strongly** recommends the following:
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                       |
 | `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                          |
 | `--replicator-flags`                          | If continuous [replication](#replication) is enabled with `--ongoing-replication`, specify Replicator flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                                 |
-| `--row-batch-size`                            | Number of rows to select at a time for export from the source database.<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                           |
+| `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                              |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                            |
 | `--table-concurrency`                         | Number of tables to export at a time. **Note:** The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`. See [Best practices](#best-practices).<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. See [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                  |
 | `--table-filter`                              | Move tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                             |
@@ -232,11 +254,11 @@ MySQL:
 
 ### Fetch mode
 
-MOLT Fetch can use either [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) to move data to CockroachDB.
+MOLT Fetch can use either [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) to load data into CockroachDB.
 
 By default, MOLT Fetch uses `IMPORT INTO`:
 
-- `IMPORT INTO` mode achieves the highest throughput, but [requires taking the tables **offline**]({% link {{ page.version.version }}/import-into.md %}#considerations) to achieve its import speed.
+- `IMPORT INTO` mode achieves the highest throughput, but [requires taking the tables **offline**]({% link {{ page.version.version }}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices](#best-practices).
 - `IMPORT INTO` mode supports compression using the `--compression` flag, which reduces the amount of storage used.
 
 `--use-copy` configures MOLT Fetch to use `COPY FROM`:
@@ -355,6 +377,29 @@ To drop existing tables and create new tables before loading the data, use `'dro
 ~~~
 
 When using the `'drop-on-target-and-recreate'` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
+
+#### Mismatch handling
+
+If either [`'none'`](#target-table-handling) or [`'truncate-if-exists'`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in [certain cases](#exit-early), and will need to be re-run from the beginning.
+
+{{site.data.alerts.callout_info}}
+This does not apply when [`'drop-on-target-and-recreate'`](#target-table-handling) is specified, since this mode automatically creates a compatible CockroachDB schema.
+{{site.data.alerts.end}}
+
+<a id="exit-early"></a>`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+
+- A source table is missing a primary key.
+- A source and table primary key have mismatching types.
+- A [`STRING`]({% link {{ page.version.version }}/string.md %}) primary key has a different [collation]({% link {{ page.version.version }}/collate.md %}) on the source and target.
+- A source and target column have mismatching types that are not [allowable mappings](#type-mapping).
+- A target table is missing a column that is in the corresponding source table.
+- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
+
+`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
+
+- A target table has a column that is not in the corresponding source table.
+- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
+- A [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}), [`CHECK`]({% link {{ page.version.version }}/check.md %}), [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}), or [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint is specified on a target column and not on the source column.
 
 #### Type mapping
 
