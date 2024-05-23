@@ -6,8 +6,8 @@ toc: true
 
 Resilient deployments aim for continuity in database operation to protect from data loss and down time. To maintain resiliency, it is necessary to build deployments with _high availability_ and _disaster recovery_ coverage.
 
-- [High availability](#choose-a-high-availability-strategy): Continuous and uninterrupted access to data even in the presence of failures or disruptions to maximize uptime.
-- [Disaster recovery](#choose-a-disaster-recovery-strategy): Recovery from a major incident or disaster to minimize downtime and data loss.
+- [High availability](#choose-a-high-availability-strategy): Continuously access data without interruption even in the presence of failures or disruptions to maximize uptime.
+- [Disaster recovery](#choose-a-disaster-recovery-strategy): Recover from a major incident or disaster to minimize downtime and data loss.
 
 To build resilient cluster deployments, CockroachDB provides both [built-in replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}) for high availability and disaster recovery features for coverage during unplanned incidents.
 
@@ -19,7 +19,7 @@ For a practical guide on how CockroachDB replicates, distributes, and rebalances
 
 As you evaluate CockroachDB's disaster recovery features, consider your organization's requirements for the amount of tolerable data loss and the acceptable length of time to recover.
 
-- Recovery Point Objective (RPO): The maximum amount of time that an organization can tolerate losing data.
+- Recovery Point Objective (RPO): The maximum amount of data loss (measured by time) that an organization can tolerate losing data.
 - Recovery Time Objective (RTO): The maximum length of time it should take to restore normal operations following an outage.
 
 For example, when you use backups:
@@ -38,8 +38,8 @@ CockroachDB uses synchronous, built-in replication to create and distribute copi
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>Single-region replication</th>
-    <th>Multi-region replication</th>
+    <th>Single-region replication (synchronous)</th>
+    <th>Multi-region replication (synchronous)</th>
   </tr>
 
   <tr>
@@ -95,7 +95,7 @@ CockroachDB uses synchronous, built-in replication to create and distribute copi
       <b>Fault tolerance</b>
     </td>
     <td>Zero RPO node, availability zone failures</td>
-    <td>Zero RPO node, availability zone failures</td>
+    <td>Zero RPO node, availability zone failures, region failures</td>
   </tr>
 
 </table>
@@ -110,7 +110,7 @@ CockroachDB is designed to recover automatically, however building [backups]({% 
   <tr>
     <th></th>
     <th>Point in time backup & restore</th>
-    <th>Physical cluster replication (async)</th>
+    <th>Physical cluster replication (asynchronous)</th>
   </tr>
 
   <tr>
@@ -166,7 +166,7 @@ CockroachDB is designed to recover automatically, however building [backups]({% 
       <b>Fault tolerance</b>
     </td>
     <td>Not applicable</td>
-    <td>Zero RPO node, availability zone region failure with loss up to RPO</td>
+    <td>Zero RPO node, availability zone, region failure with loss up to RPO</td>
   </tr>
 
 </table>
