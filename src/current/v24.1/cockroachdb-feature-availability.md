@@ -31,17 +31,14 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### CockroachDB Dedicated on Azure
+### Export logs to Azure Monitor
+[Exporting logs from CockroachDB {{ site.data.products.dedicated }} to Azure Monitor]({% link cockroachcloud/export-logs.md %}?filters=azure-monitor-log-export) is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
-Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is in limited access. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+### Export metrics to Azure Monitor
+[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.dedicated }} cluster is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### AWS PrivateLink for CockroachDB Serverless
-
-[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
-
-### CockroachDB Cloud Folders
-
-[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in limited access. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Connecting privately to a multi-region CockroachDB {{ site.data.products.serverless }} cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 
@@ -49,36 +46,45 @@ Deploying [CockroachDB Dedicated clusters on Azure](https://www.cockroachlabs.co
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### `READ COMMITTED` isolation level
+### CockroachDB Cloud Folders
 
-[`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) is a weaker transaction isolation level than `SERIALIZABLE` and is the default isolation level in databases such as PostgreSQL, Oracle, and SQL Server. `READ COMMITTED` isolation allows writes to interleave without aborting transactions and prevents writes from blocking reads, thus minimizing query latency and retries caused by read/write contention.
-
-### `cockroach` commands
-
-The table below lists the [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) available in preview in CockroachDB.
-
-Command                                     | Description
---------------------------------------------+-------------
-[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
-[`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
+[Organizing CockroachDB Cloud clusters using folders](https://www.cockroachlabs.com/docs/cockroachcloud/folders) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for ea
+ch business unit in your organization, and within those folders, organize clusters by geographic loc
+ation and then by  level of maturity, such as production, staging, and testing. To express interest
+and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
-### Log SQL Statistics to Datadog
+### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
+[Exporting metrics from CockroachDB {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+
+{{site.data.alerts.callout_info}}
+Exporting metrics to Azure Monitor is in limited access. Refer to [Exporting metrics to Azure Monitor](#export-metrics-to-azure-monitor).
+{{site.data.alerts.end}}
+
+### Convert a schema from Oracle or Microsoft SQL Server
+
+Using the [Migrations page]({% link cockroachcloud/migrations-page.md %}) to convert a schema from Oracle or Microsoft SQL Server is in preview.
+
+### Schema conversion summary report
+
+The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md %}#summary-report) in the Migrations page is in preview. This report displays the results of the schema analysis and provides bulk actions you can apply to update the schema, is in preview.
+
+### SQL Shell
+
+The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL enables you to run queries on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
+
+### Restore a CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup
+
+[Restoring an entire CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) is in preview. Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
+
+### Export SQL Statistics to Datadog
 
 Configure [logging of `sampled_query` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) contain common SQL event and execution details for sessions, transactions, and statements.
 
 CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends query events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query events for greater workload observability.
-
-### Super regions
-
-[Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
-
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Role-based SQL audit logging
 
@@ -111,7 +117,7 @@ Example:
 (1 row)
 ~~~
 
-### Turn on KV event tracing
+### KV event tracing
 
 Use session tracing (via [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})) to report the replicas of all KV events that occur during its execution.
 
@@ -207,6 +213,19 @@ The multiple active portals feature of the Postgres wire protocol (pgwire) is av
 When a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) is configured to run with [multiple stores]({% link {{ page.version.version }}/cockroach-start.md %}#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory.
 
 For more information, see [Write Ahead Log (WAL Failover)]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
+
+### Super regions
+
+[Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
+
+### `cockroach` commands
+
+The table below lists the [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) available in preview in CockroachDB.
+
+Command                                     | Description
+--------------------------------------------+-------------
+[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
+[`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
 ## See Also
 
