@@ -208,6 +208,10 @@ When a CockroachDB [node]({% link {{ page.version.version }}/architecture/overvi
 
 For more information, see [Write Ahead Log (WAL Failover)]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
 
+### Physical cluster replication data verification
+
+You can verify data between a primary and standby cluster with the `SHOW EXPERIMENTAL FINGERPRINTS` statement, which uses the current replicated time in a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) job to run a point-in-time fingerprint. The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that data transmission and ingestion is working as expected while the replication stream is running. This tool is for data verification only; if you encounter a fingerprint mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us). For more information, refer to the [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}#data-verification) page.
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
