@@ -19,7 +19,7 @@ For a practical guide on how CockroachDB replicates, distributes, and rebalances
 
 As you evaluate CockroachDB's disaster recovery features, consider your organization's requirements for the amount of tolerable data loss and the acceptable length of time to recover.
 
-- Recovery Point Objective (RPO): The maximum amount of data loss (measured by time) that an organization can tolerate losing data.
+- Recovery Point Objective (RPO): The maximum amount of data loss (measured by time) that an organization can tolerate.
 - Recovery Time Objective (RTO): The maximum length of time it should take to restore normal operations following an outage.
 
 For example, when you use backups:
