@@ -2,7 +2,7 @@
 title: Known Limitations in CockroachDB v24.1
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
 docs_area: releases
 ---
 
@@ -12,9 +12,24 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
+{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
+{% endcomment %}
+
+### PL/pgSQL
+
+- It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
+- PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
+
+### UDFs and stored procedures
+
+- Routines cannot be invoked with named arguments, e.g., `SELECT foo(a => 1, b => 2);` or `SELECT foo(b := 1, a := 2);`. [#122264](https://github.com/cockroachdb/cockroach/issues/122264)
+- Routines cannot be created if they reference temporary tables. [#121375](https://github.com/cockroachdb/cockroach/issues/121375)
+- Routines cannot be created with unnamed `INOUT` parameters. For example, `CREATE PROCEDURE p(INOUT INT) AS $$ BEGIN NULL; END; $$ LANGUAGE PLpgSQL;`. [#121251](https://github.com/cockroachdb/cockroach/issues/121251)
+- Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
+- A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -98,17 +113,15 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 
 ### Functions and procedures
 
-#### PL/pgSQL feature support
+#### PL/pgSQL support
 
-{% include {{ page.version.version }}/known-limitations/plpgsql-feature-limitations.md %}
-
-#### PL/pgSQL data types
-
-{% include {{ page.version.version }}/known-limitations/plpgsql-datatype-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/plpgsql-limitations.md %}
 
 #### UDF and stored procedure support
 
-{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/stored-proc-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
 
 ### Transactions
 

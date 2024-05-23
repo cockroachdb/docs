@@ -7,7 +7,7 @@
 {% assign v_test = site.data.versions | where_exp: "v_test", "v_test.release_date == 'N/A'" | sort: "release_date" | last | map: "major_version" %}
 {% comment %} v_test iterates through the list of major versions in _data/versions.csv and returns the single latest testing version (if the release date is in the future or not otherwise specified). It's possible there is no testing release (in between GA of a version and the first alpha of the following version). {% endcomment %}
 {
-  "title": "CockroachDB Releases",
+  "title": "CockroachDB",
   "items": [
     {
       "title": "Latest Production Release",
@@ -20,7 +20,7 @@
       "urls": [
         "/releases/{{ site.versions["dev"] }}.html"
       ]
-    },{% endunless %}
+    }{% endunless %},
     {
       "title": "All Releases",
       "urls": [
@@ -35,12 +35,15 @@
         ]
       },
     {% endfor %}
+    {% if v_test[0] %} {% comment %} check if a testing version is available {% endcomment %}
     {
-      "title": "Staged Release Process",
+      "title": "Latest Testing Release",
       "urls": [
-        "/releases/staged-release-process.html"
+          {% comment %} check if a testing version is available and pull the latest testing version {% endcomment %}
+          "/releases/{{ v_test[0] }}.html"
       ]
     },
+    {% endif %}
     {
       "title": "Release Support Policy",
       "urls": [
@@ -55,6 +58,18 @@
     }
   ]
 },
+{
+  "title": "CockroachDB Cloud",
+  "urls": [
+    "/releases/cloud.html"
+  ]
+},
+{
+  "title": "CockroachDB Kubernetes Operator",
+  "urls": [
+    "/releases/kubernetes-operator.html"
+  ]
+},
 {% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != 'true'" %}
 {
  "title": "Technical Advisories",
@@ -64,16 +79,4 @@
     ,"{{ x.url }}"
    {% endfor %}
  ]
-},
-{
-  "title": "Cloud Releases",
-  "urls": [
-    "/releases/cloud.html"
-  ]
-},
-{
-  "title": "Kubernetes Operator",
-  "urls": [
-    "/releases/kubernetes-operator.html"
-  ]
 }

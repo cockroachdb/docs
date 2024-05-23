@@ -52,7 +52,8 @@ ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
 
 Stored procedures have the following limitations:
 
-{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/stored-proc-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
 
 Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).
 

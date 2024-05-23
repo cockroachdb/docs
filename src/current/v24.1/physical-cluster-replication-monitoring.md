@@ -43,7 +43,11 @@ id | name | source_tenant_name |              source_cluster_uri                
 
 ## DB Console
 
-You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor [logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes) and [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes) on the standby cluster.
+You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the standby cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor:
+
+- [Logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes)
+- [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes)
+- [Replication Lag]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#replication-lag)
 
 ## Prometheus
 
@@ -60,7 +64,7 @@ We recommend tracking the following metrics:
 {{site.data.alerts.callout_info}}
 **This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).** It is in active development and subject to change.
 
-The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that the data transmission and ingestion is working as expected while a replication stream is running. Any checksum mismatch likely represents corruption or a bug in CockroachDB. `SHOW EXPERIMENTAL_FINGERPRINTS` is **only** to verify data. Should you encounter such a mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 To verify that the data at a certain point in time is correct on the standby cluster, you can use the [current replicated time]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) from the replication job information to run a point-in-time fingerprint on both the primary and standby clusters. This will verify that the transmission and ingestion of the data on the standby cluster, at that point in time, is correct.

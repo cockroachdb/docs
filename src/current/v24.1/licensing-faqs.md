@@ -36,6 +36,8 @@ For each BSL release all associated alpha, beta, major, and minor (point) releas
 
 CockroachDB version | License | Converts to Apache 2.0
 --------------------|---------|----------------------------
+24.1 | Business Source License | May 20, 2027
+23.1 | Business Source License | Feb 5, 2027
 23.1 | Business Source License | May 16, 2026
 22.2 | Business Source License | Dec 6, 2025
 22.1 | Business Source License | May 24, 2025

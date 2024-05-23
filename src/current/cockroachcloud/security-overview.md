@@ -106,7 +106,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
     <td>Cloud Organization users with fine-grained access roles</td>
   </tr>
   <tr>
-  <td rowspan="6">Network Security</td>
+  <td rowspan="7">Network Security</td>
     <td>✓</td>
     <td>✓</td>
     <td><a href="{% link cockroachcloud/authentication.md %}">SQL-level configuration of allowed authentication attempts by IP address</a></td>
@@ -129,12 +129,17 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="{% link cockroachcloud/network-authorization.md %}#vpc-peering">VPC Peering</a> for GCP clusters</td>
+    <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-private-service-connect">Private Service Connect (PSC) (Preview)</a> for GCP clusters</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters </td>
+    <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-vpc-peering">VPC Peering</a> for GCP clusters</td>
+  </tr>
+  <tr>
+    <td>✓<a href="#privatelink-multiregion-serverless"><sup>1</sup></a></td>
+    <td>✓</td>
+    <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters. </td>
   </tr>
   <tr>
     <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
@@ -154,3 +159,5 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
     <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery">Disaster Recovery.</a></td>
   </tr>
 </table>
+
+<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless">Manage AWS PrivateLink</a>.

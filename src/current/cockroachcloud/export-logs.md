@@ -6,7 +6,7 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
+CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/), [GCP Cloud Logging](https://cloud.google.com/logging), or [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/data-platform-logs). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
 
 ## The `logexport` endpoint
 
@@ -29,7 +29,7 @@ Method | Description
 -------|------------
 `GET` | Returns the current status of the log export configuration.
 `POST` | Enables log export, or updates an existing log export configuration.
-`DELETE` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
+`DELETE` | Disables log export, halting all log export to AWS CloudWatch, GCP Cloud Logging, or Azure Monitor.
 
 ## Log name format
 
@@ -52,6 +52,7 @@ Where:
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-log-export">AWS CloudWatch</button>
   <button class="filter-button" data-scope="gcp-log-export">GCP Cloud Logging</button>
+  <button class="filter-button" data-scope="azure-monitor-log-export">Azure Monitor</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
@@ -370,6 +371,14 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="azure-monitor-log-export">
+
+{{site.data.alerts.callout_info}}
+Exporting Logs to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+{{site.data.alerts.end}}
+
+</section>
+
 {{site.data.alerts.callout_info}}
 Once log export has been enabled, logs generated going forward are sent to the specified cloud sink. Logs are not back-filled to the specified cloud sink.
 {{site.data.alerts.end}}
@@ -412,7 +421,7 @@ Where:
 
 ## Limitations
 
-- CockroachDB {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, CockroachDB {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
+- CockroachDB {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, CockroachDB {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging, and CockroachDB {{ site.data.products.dedicated }} clusters hosted on Azure can only export logs to Azure Monitor.
 
 ## CockroachDB {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)
 
@@ -426,7 +435,7 @@ Yes, use the custom log configuration step for your cloud provider, and specify 
 
 ### Is it possible to send logs from one cloud provider to another?
 
-No, if your CockroachDB {{ site.data.products.dedicated }} cluster resides on AWS, you can only export your logs to AWS CloudWatch. Similarly, if your CockroachDB {{ site.data.products.dedicated }} cluster resides on GCP, you can only export your logs to GCP Cloud Logging.
+No, if your CockroachDB {{ site.data.products.dedicated }} cluster resides on AWS, you can only export your logs to AWS CloudWatch. Similarly, if your CockroachDB {{ site.data.products.dedicated }} cluster resides on GCP, you can only export your logs to GCP Cloud Logging, and if your CockroachDB {{ site.data.products.dedicated }} cluster resides on Azure, you can only export your logs to Azure Monitor.
 
 ### For a multi-region cluster, are the logs from all regions exported to one cloud log sink region?
 
