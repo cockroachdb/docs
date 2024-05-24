@@ -79,7 +79,7 @@ For details and examples, refer to:
 When connected to a virtual cluster from the DB Console:
 
 - Most pages and views are scoped to a virtual cluster.
-- By default, the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. DB Console pages related to SQL activity and jobs are visible only from a virtual cluster and not from the system virtual cluster.
+- By default, the DB Console displays metrics across the entire cluster, including process-wide metrics, and SQL metrics from all virtual clusters are aggregated together. DB Console pages related to SQL activity and jobs are visible only from a virtual cluster and not from the system virtual cluster.
 - By default, some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
 
 For more details, including how to adjust the DB Console's behavior, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#observability).
