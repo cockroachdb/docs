@@ -80,9 +80,9 @@ The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ si
 
 [Restoring an entire CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) is in preview. Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
 
-### Export SQL Statistics to Datadog
+### Log SQL Statistics to Datadog
 
-Configure [logging of `sampled_query` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) contain common SQL event and execution details for sessions, transactions, and statements.
+You can [log `sampled_query` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) contain common SQL event and execution details for sessions, transactions, and statements.
 
 CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends query events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query events for greater workload observability.
 
