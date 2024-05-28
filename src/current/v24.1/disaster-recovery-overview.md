@@ -4,7 +4,7 @@ summary: Learn how to make your cluster resilient with high availability and dis
 toc: true
 ---
 
-Resilient deployments aim for continuity in database operation to protect from data loss and down time. To maintain resiliency, it is necessary to build deployments with _high availability_ and _disaster recovery_ coverage.
+Resilient deployments aim for continuity in database operations to protect from data loss and downtime. To maintain resiliency, it is necessary to build deployments with _high availability_ and _disaster recovery_ coverage.
 
 - [High availability](#choose-a-high-availability-strategy): Continuously access data without interruption even in the presence of failures or disruptions to maximize uptime.
 - [Disaster recovery](#choose-a-disaster-recovery-strategy): Recover from a major incident or disaster to minimize downtime and data loss.
@@ -33,7 +33,7 @@ For a comparison of CockroachDB resiliency features, refer to the following sect
 
 ### Choose a high availability strategy
 
-CockroachDB uses synchronous, built-in replication to create and distribute copies of data, ensuring consistency across the data copies. The database can tolerate nodes going offline without service interruption whether in a single-region or [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) cluster.
+CockroachDB uses synchronous, built-in replication to create and distribute copies of data, ensuring consistency across the data copies. The database can tolerate nodes going offline without service interruption, whether in a single-region or [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) cluster.
 
 <table class="comparison-chart">
   <tr>
@@ -100,11 +100,11 @@ CockroachDB uses synchronous, built-in replication to create and distribute copi
 
 </table>
 
-For detail on designing your cluster topology for high availability with replication, refer to the [Disaster Recovery Planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %}#hardware-failure) page.
+For details on designing your cluster topology for high availability with replication, refer to the [Disaster Recovery Planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %}#hardware-failure) page.
 
 ### Choose a disaster recovery strategy
 
-CockroachDB is designed to recover automatically, however building [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) into your disaster recovery planning is an important part of a resilient deployment.
+CockroachDB is designed to recover automatically; however, building [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) into your disaster recovery planning is an important part of a resilient deployment.
 
 <table class="comparison-chart">
   <tr>
