@@ -338,36 +338,36 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
-Exporting metrics to Azure Monitor is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on AWS, you can export metrics to [AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on AWS, you can export metrics to [AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
-Perform the following steps to enable metrics export from your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor.
+To enable metrics export to Azure Monitor:
 
-1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID that will be used in Step 5:
+1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID, which will be used in step 5:
 
 	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. The ID should resemble `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 
-1. Create a private key and certificate pair, using a tool such as OpenSSL. Refer to [this example]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %}#step-1-create-the-ca-key-and-certificate-pair) to create a private key file (`ca.key`) and a certificate file (`ca.crt`) that will be uploaded in Step 3.
+1. Create a private key and certificate pair, using a tool such as OpenSSL. Refer to [Create the CA key and certificate pair]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %}#step-1-create-the-ca-key-and-certificate-pair). In this example, the private key file is named `ca.key` and the certificate file is named `ca.crt`. If you use other file names, adjust the commands accordingly. The certificate file will be uploaded in step 3.
 
-  1. Combine the certificate and key files using the following command. The string in the combined file will be used in Step 5.
+  1. Concatenate the certificate and key files using the following command. The string in the concatenated file will be used in step 5.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    cat ca.crt ca.key | awk '{printf "%s\\n", $0}'  > combined.pem
+    cat ca.crt ca.key | awk '{printf "%s\\n", $0}'  > concatenated.pem
     ~~~
 
-1. [Create an Entra application in Azure](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
+1. [Create a Microsoft Entra application](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal) in your Azure tenant. When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
 
-  1. Once the application is registered, upload the certificate file (`ca.crt`) created in Step 2.
-  1. From the **Overview** page for the Entra application, copy the values for *Display Name*, *Application (client) ID*, and the *Directory (tenant) ID* to be used in Step 5.
+  1. Once the application is registered, upload the certificate file (`ca.crt`) created in step 2.
+  1. From the **Overview** page for the Entra application, note the values for **Display Name**, **Application (client) ID**, and the **Directory (tenant) ID** to be used in step 5.
 
 1. [Create an Azure Monitor Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource).
 
-  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for *Display Name* from Step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
-  1. From the **Overview** page for the Application Insights resource, from the *Connection String*, copy the values for the *InstrumentationKey* and *IngestionEndpoint* to be used in Step 5.
+  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for the *Display Name* from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
+  1. On the **Overview** page for the Application Insights resource, view the **Connection String**. Note the values for **InstrumentationKey** and **IngestionEndpoint** which will be used in step 5.
 
-1. Issue the following [Cloud API]({% link cockroachcloud/cloud-api.md %}) command to enable metrics export for your CockroachDB {{ site.data.products.dedicated }} cluster:
+1. To enable metrics export for your CockroachDB {{ site.data.products.dedicated }} cluster, issue the following [Cloud API]({% link cockroachcloud/cloud-api.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -380,11 +380,11 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     Where:
     - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID from step 1.
     - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
-    - `{application_id}` is the ID of the Entra application, *Application (client) ID* from step 3.
-    - `{tenant_id}` is the ID of the tenant where the Entra application was created, *Directory (tenant) ID* from step 3.
-    - `{ingestion_endpoint}` is the target host where the metrics are to be sent, *IngestionEndpoint* from step 4.
-    - `{instrumentation_key}` is the ID of the Azure Application Insights resource, *InstrumentationKey* from step 4.
-    - `{combined_certificate_and_key}` is the string in the combined file from step 2.
+    - `{application_id}` is the ID of the Entra application, **Application (client) ID** from step 3.
+    - `{tenant_id}` is the ID of the tenant where the Entra application was created, **Directory (tenant) ID** from step 3.
+    - `{ingestion_endpoint}` is the target host where the metrics are to be sent, **IngestionEndpoint** from step 4.
+    - `{instrumentation_key}` is the ID of the Azure Application Insights resource, **InstrumentationKey** from step 4.
+    - `{combined_certificate_and_key}` is the string in the concatenated file from step 2.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
@@ -395,9 +395,9 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
       --header "Authorization: Bearer {secret_key}"
     ~~~
 
-    Run the command periodically until the command returns a status of `ENABLED`, at which point the configuration across all nodes is complete, and metrics will begin appearing in Azure Monitor. Since the configuration is applied to cluster nodes in a rolling fashion, you may see some metrics appear even before the `GET` command returns an `ENABLED` status.
+    When the command returns a status of `ENABLED`, the configuration has been applied to all nodes, and metrics will begin appearing in Azure Monitor. Since the configuration is applied to cluster nodes one at a time, metrics may begin to appear even before the status is `ENABLED`.
 
-1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/).
+Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/).
 
 </section>
 
