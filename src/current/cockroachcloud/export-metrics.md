@@ -224,10 +224,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 <section class="filter-content" markdown="1" data-scope="prometheus-metrics-export">
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID:
 
 	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
