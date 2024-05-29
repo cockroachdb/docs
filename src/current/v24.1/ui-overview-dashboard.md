@@ -25,6 +25,18 @@ The **Overview** dashboard displays the following time series graphs. All timest
 
 See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+
+The following SQL statements update the `INSERT` metric (`sql.insert.count`):
+
+- [`INSERT ... ON CONFLICT DO UPDATE ...`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause): Even when the `DO UPDATE` clause is actually executed, the root of the [abstract syntax tree (AST)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#parsing) is used to increment the metric, rather than the actual execution details.
+
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
+
+{{site.data.alerts.callout_info}}
+[Data manipulation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) other than  `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric, which is *not* displayed on this graph.
+{{site.data.alerts.end}}
+
 ## Service Latency: SQL, 99th percentile
 
 {% include {{ page.version.version }}/ui/ui-sql-latency-99th-percentile.md %}
@@ -38,14 +50,6 @@ The statement contention metric is a counter that represents the number of state
 - In the cluster view, the graph shows the total number of SQL statements that experienced [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) across all nodes in the cluster.
 
 See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
-
-Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
-
-- [`INSERT ... ON CONFLICT DO UPDATE ...`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements update the `INSERT` metric (`sql.insert.count`) even when the `DO UPDATE` clause is actually executed. The root of the [abstract syntax tree (AST)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#parsing) is used to increment the metric, not the actual execution details.
-
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements also update the `INSERT` metric (`sql.insert.count`).
-
-- [Data manipulation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) other than  `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric. However, this metric is not displayed on this graph.
 
 ## Replicas per Node
 
