@@ -48,7 +48,7 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### CockroachDB Cloud Folders
 
-[Organizing CockroachDB Cloud clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
+[Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
