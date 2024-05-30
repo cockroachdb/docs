@@ -332,7 +332,7 @@ A local file server can be used with either the [`IMPORT INTO` or `COPY FROM` mo
 - Because the data is held in memory, the machine must have sufficient RAM for the data currently in flight: 
 
 	~~~
-	--row-batch-size * --export-concurrency * --table-concurrency
+	average size of each row * --row-batch-size * --export-concurrency * --table-concurrency
 	~~~
 
 - Direct copy mode does not support compression or [continuation](#fetch-continuation).
