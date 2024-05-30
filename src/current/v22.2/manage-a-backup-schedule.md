@@ -17,6 +17,16 @@ For detail on how the garbage collection window interacts with scheduled backups
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 
+## Considerations
+
+### Backup collection storage URI and schedule backups
+
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+{% include {{ page.version.version }}/backups/storage-collision-examples.md %}
+
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
