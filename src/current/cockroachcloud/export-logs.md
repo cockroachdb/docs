@@ -33,7 +33,7 @@ Method | Description
 
 ## Log name format
 
-When written to your chosen cloud log sink, logs have the following name format:
+When written to your chosen cloud log sink (AWS CloudWatch or GCP Cloud Logging), logs have the following name format:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -46,6 +46,8 @@ Where:
 - `{region}` is the cloud provider region where your CockroachDB {{ site.data.products.dedicated }} cluster resides.
 - `{log-channel}` is the CockroachDB [log channel](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the CockroachDB {{ site.data.products.dedicated }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
+
+For Azure Monitor, the logs have a different name format, refer to [Enable log export](#enable-log-export) instructions.
 
 ## Enable log export
 
@@ -376,6 +378,54 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 {{site.data.alerts.callout_info}}
 Exporting Logs to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
+
+Perform the following steps to enable log export from your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor.
+
+1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID:
+
+	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
+	1. Click on the name of your cluster.
+	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
+
+1. [Create a Log Analytics workspace in Azure Portal](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal).
+
+    1. Navigate to the Log Analytics workspace. Under **Settings**, click **Agents**.
+    1. Click **Log Analytics agent instructions** section header.
+    1. In that section, note the values for **Workspace ID**, **Primary key** (or **Secondary key**)
+
+1. To enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with default logging configuration, issue the following Cloud API command:
+
+     {% include_cached copy-clipboard.html %}
+     ~~~shell
+     curl --request POST \
+       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+       --header "Authorization: Bearer {secret_key}" \
+       --data '{"type": "AZURE_LOG_ANALYTICS", "log_name": "{log_prefix}", "auth_principal": "{workspace_id}", "azure_shared_key": "{primary_or_secondary_key}"}'
+     ~~~
+
+     Where:
+     - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID as determined in step 1.
+     - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+     - `{log_prefix}` is a user-specified prefix for the table that will be created in the Log Analytics workspace.
+     - `{auth_principal}` is the ID for the Log Analytics workspace, **Workspace ID** from step 2.
+     - `{azure_shared_key}` is the **Primary key** or **Secondary key** from step 2.
+
+1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+      --header "Authorization: Bearer {secret_key}"
+    ~~~
+
+    When the command returns a status of `ENABLED`, the configuration has been applied to all nodes, and logs will begin appearing in Azure Monitor. Since the configuration is applied to cluster nodes one at a time, logs may begin to appear even before the status is `ENABLED`.
+
+1. Once log export has been enabled, you can access logs from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Portal](https://portal.azure.com/#home).
+
+    1. Navigate to the Log Analytics workspace created in step 2.
+    1. In the left menu, under **Settings**, click **Tables**. In the **Table names** column, there should be a table name with the following pattern: `{log_prefix}_{region}_CL`. For example, `crl_docs_eastus_CL` where `{log_prefix}` is the string passed to `log_name` in the Cloud API command, {region} is the region of your cluster, and `CL` is the suffix for a classic custom table.
+    1. To view the logs in this table, in the left menu, click **Logs**. In a **New Query** window, enter the table name and click **Run** button.
 
 </section>
 
