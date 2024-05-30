@@ -582,7 +582,7 @@ To add or update Row-Level TTL settings on a table, you must have one of the fol
 
 If you are migrating your TTL usage from an earlier version of CockroachDB, the `ttl_expire_after` and `ttl_expiration_expression` storage parameters can co-exist where the `ttl_expire_after` creates the `crdb_internal_expiration` column and `ttl_expiration_expression` overrides the default value of `crdb_internal_expiration`.
 
-## Limitations
+## Known limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
 

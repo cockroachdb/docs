@@ -215,6 +215,10 @@ For more information, see [Write Ahead Log (WAL Failover)]({% link {{ page.versi
 
 [Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
 
+### Physical cluster replication data verification
+
+You can verify data between a primary and standby cluster with the `SHOW EXPERIMENTAL FINGERPRINTS` statement, which uses the current replicated time in a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) job to run a point-in-time fingerprint. The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that data transmission and ingestion is working as expected while the replication stream is running. This tool is for data verification only; if you encounter a fingerprint mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us). For more information, refer to the [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}#data-verification) page.
+
 ### `cockroach` commands
 
 The table below lists the [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) available in preview in CockroachDB.
@@ -223,6 +227,7 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
+
 
 ## See Also
 

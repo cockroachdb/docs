@@ -177,9 +177,9 @@ If you rely on external tools such as Datadog for storing and visualizing your c
 
 When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Datadog based on the data it is collecting from your cluster's Prometheus endpoint.
 
-## Limitations
+## Known limitations
 
-- The CockroachDB {{ site.data.products.core }} integration with Datadog only supports displaying cluster-wide averages of reported metrics. Filtering by a specific node is unsupported.
+- {% include {{ page.version.version }}/known-limitations/datadog-self-hosted-limitations.md %}
 
 ## See also
 

@@ -9,12 +9,6 @@ The `ALTER TYPE` [statement]({% link {{ page.version.version }}/sql-statements.m
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{{site.data.alerts.callout_info}}
-You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) `ALTER TYPE` [schema change jobs]({% link {{ page.version.version }}/online-schema-changes.md %}) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time.
-
-All other `ALTER TYPE` schema change jobs are non-cancellable.
-{{site.data.alerts.end}}
-
 ## Synopsis
 
 <div>
