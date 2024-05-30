@@ -260,10 +260,27 @@ To roll back an upgrade, do the following on each cluster node:
 ## Step 6. Finish the upgrade
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
+Finalization is required only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the previous binary.
+If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the previous binary. Otherwise, you must re-enable upgrade finalization to complete the upgrade to {{ page.major_version }}. Cockroach Labs recommends that you either finalize or roll back a major-version upgrade within a relative short period of time; running in a partially-upgraded state is not recommended.
+
+{{site.data.alerts.callout_danger}}
+A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.major_version }} until the {{ previous_version }} upgrade is finalized.
+{{site.data.alerts.end}}
+
+When finalization begins, a series of migration jobs run to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return `{{ previous_version }}`.
+
+{% capture previous_version_numeric %}{{ previous_version | strip_first: 'v'}}{% endcapture %}
+{% capture major_version_numeric %}{{ page.major_version | strip_first: 'v' }}{% endcapture %}
+
+You can monitor the process of the migration in the DB Console [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+Finalization is complete when all migration jobs have completed. After migration is complete, the command `SHOW CLUSTER SETTING version` will return `{{ major_version_numeric }}.
+
+{{site.data.alerts.callout_info}}
+All [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+{{site.data.alerts.end}}
 
 Once you are satisfied with the new version:
 
@@ -276,20 +293,20 @@ Once you are satisfied with the new version:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    All [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
-    {{site.data.alerts.end}}
+    The series of migration jobs for {{ page.major_version }} runs in sequence.
 
-1. Check the cluster version to confirm that the finalize step has completed:
+    When all migration jobs have completed, the upgrade is complete.
+
+1. To confirm that finalization has completed, check the cluster version:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
 
-    When the upgrade has been finalized, the cluster will report that it is on the new version. If the cluster continues to report that it is on the previous version, finalization has not completed. When finalization is in progress but has not yet finished, the output still shows the previous major version, but may include additional details about the finalization progress. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](https://www.cockroachlabs.com/docs/v23.2/node-shutdown?filters=decommission#status-change) where decommission has not finished. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
+    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
 
-After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration job within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 {{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/storage/compaction-concurrency.md %}
@@ -297,13 +314,9 @@ After the upgrade to {{ page.version.version }} is finalized, you may notice an 
 
 ## Troubleshooting
 
-After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
+After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you run the [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) command on any cluster node to capture your cluster's state, then [open a support request]({% link {{ page.version.version }}/support-resources.md %}) and share your debug zip.
 
-1. Run the [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) command against any node in the cluster to capture your cluster's state.
-
-1. [Reach out for support]({% link {{ page.version.version }}/support-resources.md %}) from Cockroach Labs, sharing your debug zip.
-
-In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade.
+In the event of catastrophic failure or corruption, it may be necessary to [restore]({% link {{ page.version.version }}/restore.md %}) from a backup to a new cluster running {{ previous_version }}.
 
 ## See also
 
