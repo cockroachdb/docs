@@ -56,7 +56,7 @@ To add custom expiration logic using `ttl_expiration_expression`, issue the foll
 CREATE TABLE ttl_test_per_row (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
-  expired_at TIMESTAMPTZ
+  expired_at TIMESTAMPTZ NOT NULL DEFAULT now() + '30 days'
 ) WITH (ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily');
 ~~~
 
@@ -80,7 +80,7 @@ SHOW CREATE TABLE ttl_test_per_row;
   ttl_test_per_row | CREATE TABLE public.ttl_test_per_row (
                    |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                    |     description STRING NULL,
-                   |     expired_at TIMESTAMPTZ NULL,
+                   |     expired_at TIMESTAMPTZ NOT NULL DEFAULT now():::TIMESTAMPTZ + '30 days':::INTERVAL,
                    |     CONSTRAINT ttl_test_per_row_pkey PRIMARY KEY (id ASC)
                    | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily')
 (1 row)
@@ -211,7 +211,7 @@ CREATE TABLE events_using_date (
   start_date DATE DEFAULT now() NOT NULL,
   end_date DATE NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date::TIMESTAMP) + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$(end_date::TIMESTAMPTZ + '30 days')$$
 );
 ~~~
 
@@ -225,7 +225,7 @@ CREATE TABLE events_using_timestamptz (
   start_date TIMESTAMPTZ DEFAULT now() NOT NULL,
   end_date TIMESTAMPTZ NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date AT TIME ZONE ''UTC'') + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$(end_date + '30 days')$$
 );
 ~~~
 
@@ -357,7 +357,7 @@ SHOW CREATE TABLE events;
   events     | CREATE TABLE public.events (
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
              |     description STRING NULL,
-             |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
+             |     inserted_at TIMESTAMPTZ NULL DEFAULT current_timestamp():::TIMESTAMPTZ,
              |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
              |     CONSTRAINT events_pkey PRIMARY KEY (id ASC)
              | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
@@ -590,7 +590,7 @@ If you are migrating your TTL usage from an earlier version of CockroachDB, the 
 - [`DELETE`]({% link {{ page.version.version }}/delete.md %})
 - [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %})
 - [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
-- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})
+- [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
 - [`INTERVAL`]({% link {{ page.version.version }}/interval.md %})
 - [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
 - [Developer Guide Overview]({% link {{ page.version.version }}/developer-guide-overview.md %})
