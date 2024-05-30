@@ -13,12 +13,11 @@ The `CANCEL JOB` [statement]({% link {{ page.version.version }}/sql-statements.m
 - [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) jobs
 - [Changefeeds]({% link {{ page.version.version }}/create-changefeed.md %})
 - [Scheduled backup]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) jobs
-- [Schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs (see [Limitations](#limitations) for exceptions)
+- [Schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs (see [Known limitations](#known-limitations) for exceptions)
 
-## Limitations
+## Known limitations
 
-- When an Enterprise [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
--  To avoid transaction states that cannot properly [roll back]({% link {{ page.version.version }}/rollback-transaction.md %}), `DROP` statements (e.g., [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`]({% link {{ page.version.version }}/alter-table.md %}#rename-to)), and [`CREATE TABLE ... AS`]({% link {{ page.version.version }}/create-table-as.md %}) statements are no longer cancellable.
+{% include {{ page.version.version }}/known-limitations/cancel-job-limitations.md %}
 
 ## Required privileges
 

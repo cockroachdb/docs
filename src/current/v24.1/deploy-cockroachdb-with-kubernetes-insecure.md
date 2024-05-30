@@ -25,7 +25,7 @@ The steps below demonstrate how to quickly deploy and interact with an insecure 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
 - [Kubernetes terminology](#kubernetes-terminology)
-- [Limitations](#limitations)
+- [Best practices](#best-practices)
 
 ### Kubernetes terminology
 
@@ -36,7 +36,7 @@ Feature | Description
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volumes](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
 
-### Limitations
+### Best practices
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
