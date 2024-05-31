@@ -5992,6 +5992,7 @@
   major_version: v23.1
   release_date: '2024-05-07'
   release_type: Production
+  lts: true
   go_version: go1.22.0
   sha: fceb4cf5c378bfb53b3cf12c672716168192f1fe
   has_sql_only: true
@@ -6107,6 +6108,7 @@
   major_version: v23.1
   release_date: '2024-05-23'
   release_type: Production
+  lts: true
   go_version: go1.22.0
   sha: 6ed4ef16634f683adfb7d77b4ebf414e0c1e42a7
   has_sql_only: true
