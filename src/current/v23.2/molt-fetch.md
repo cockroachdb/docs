@@ -45,8 +45,6 @@ Complete the following items before using MOLT Fetch:
 
 - If you plan to use continuous replication (using either [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor)):
 
-	- The source and target database names **must** be identical when using `--ongoing-replication`.
-
 	- If you are migrating from PostgreSQL, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
 	- If you are migrating from MySQL, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. In `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command, set `gtid-mode` and `enforce-gtid-consistency` to `ON` and set `binlog_row_metadata` to `full`.
@@ -192,7 +190,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                                                                      |
 | `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                   |
 | `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                  |
-| `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using the [`IMPORT INTO` mode](#fetch-mode) for loading data into the target. **Note:** Increasing this value can improve fetch performance, but very high values are not recommended. If any one file in the import batch fails, you will need to [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `10`                                                                                                                         |
+| `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using the [`IMPORT INTO` mode](#fetch-mode) for loading data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any one file in the import batch fails, you will need to [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`                                               |
 | `--local-path`                                | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                                                                             |
 | `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is reachable by CockroachDB. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment).<br><br>**Default:** Value of `--local-path-listen-addr`. `--local-path` and `--local-path-listen-addr` must be specified.                                                                                                                      |
 | `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -254,10 +252,6 @@ MySQL:
 ~~~
 --target 'postgresql://{username}:{password}@{host}:{port}/{database}
 ~~~
-
-{{site.data.alerts.callout_info}}
-If you plan to enable continuous replication with `--ongoing-replication`](#replication), the source and target database names **must** be identical.
-{{site.data.alerts.end}}
 
 ### Fetch mode
 
@@ -566,10 +560,7 @@ Continuation Tokens.
 
 When the `--ongoing-replication` flag is set, changes on the source database are continuously replicated on CockroachDB. This begins only after the fetch process succeeds—i.e., the initial source data is loaded into CockroachDB—as indicated by a `fetch complete` message in the output.
 
-Before using this feature, complete the following:
-
-- Ensure that the source and target database names are **identical**. Otherwise, replication will not work.
-- Configure the source PostgreSQL or MySQL database for continuous replication, as described in [Setup](#setup).
+Before using this feature, configure the source PostgreSQL or MySQL database for continuous replication, as described in [Setup](#setup).
 
 If the source is a PostgreSQL database, you must also specify a replication slot name:
 
