@@ -579,9 +579,9 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 ## Known limitations
 
+- {% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 - {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
-- {% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 
 ## See also
 

@@ -10,7 +10,7 @@ As you scale your usage of [multi-region clusters]({% link {{ page.version.versi
 CockroachDB has basic support for data domiciling in multi-region clusters using the [`ALTER DATABASE ... ADD SUPER REGION`]({% link {{ page.version.version }}/alter-database.md %}#add-super-region) statement.
 
 {{site.data.alerts.callout_danger}}
-Using CockroachDB as part of your approach to data domiciling has several limitations. For more information, see [Limitations](#limitations).
+Using CockroachDB as part of your approach to data domiciling has several limitations. For more information, see [Known limitations](#known-limitations).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -424,17 +424,14 @@ The output above shows that there are no replicas that do not meet the data domi
 Now that you have verified that the system is configured to meet the domiciling requirement, it's a good idea to check the [critical nodes status endpoint](monitoring-and-alerting.html#critical-nodes-endpoint) on a regular basis (via automation of some kind) to ensure that the requirement continues to be met.
 
 {{site.data.alerts.callout_info}}
-The steps above are necessary but not sufficient to accomplish a data domiciling solution using CockroachDB. Be sure to review the [limitations of CockroachDB for data domiciling](#limitations) and design your total solution with those limitations in mind.
+The steps above are necessary but not sufficient to accomplish a data domiciling solution using CockroachDB. Be sure to review the [limitations of CockroachDB for data domiciling](#known-limitations) and design your total solution with those limitations in mind.
 {{site.data.alerts.end}}
 
-## Limitations
+## Known limitations
 
 Using CockroachDB as part of your approach to data domiciling has several limitations:
 
-- When columns are [indexed]({% link {{ page.version.version }}/indexes.md %}), a subset of data from the indexed columns may appear in [meta ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements]({% link {{ page.version.version }}/multiregion-overview.md %}), or the low-level [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) mechanism.
-- [Zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be used for data placement but these features were historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#types-of-constraints).
-- If your [log files]({% link {{ page.version.version }}/logging-overview.md %}) are kept in the region where they were generated, there is some cross-region leakage (like the system tables described previously), but the majority of user data that makes it into the logs is going to be homed in that region. If that's not strong enough, you can use the [log redaction functionality]({% link {{ page.version.version }}/configure-logs.md %}#redact-logs) to strip all raw data from the logs. You can also limit your log retention entirely.
-- If you start a node with a [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag that says the node is in region _A_, but the node is actually running in some region _B_, data domiciling based on the inferred node placement will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
+{% include {{ page.version.version }}/known-limitations/data-domiciling-limitations.md %}
 
 ## See also
 

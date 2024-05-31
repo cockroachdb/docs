@@ -166,7 +166,7 @@ For more examples of schema change statements, see the [`ALTER TABLE`][alter-tab
 
 ### Run schema changes inside a transaction with `CREATE TABLE`
 
-As noted in [Limitations](#limitations), you cannot run schema changes inside transactions in general.
+As noted in [Known limitations](#known-limitations), you cannot run schema changes inside transactions in general.
 
 However, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
@@ -279,37 +279,9 @@ Prior to [garbage collection]({% link {{ page.version.version }}/architecture/st
 
 For more long-term recovery solutions, consider taking either a [full or incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) of your cluster.
 
-## Limitations
+## Known limitations
 
-### Schema changes within transactions
-
-Most schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement. There are some exceptions to this, detailed below.
-
-Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
-
-{{site.data.alerts.callout_success}}
-{% include_cached new-in.html version="v24.1" %} Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
-{{site.data.alerts.end}}
-
-Some schema change operations can be run within explicit, multiple statement transactions. `CREATE TABLE` and `CREATE INDEX` statements can be run within the same transaction with the same atomicity guarantees as other SQL statements. There are no performance or rollback issues when using these statements within a multiple statement transaction.
-
-{% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
-
-### Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed
-
-{% include {{ page.version.version }}/known-limitations/schema-change-ddl-inside-multi-statement-transactions.md %}
-
-### No online schema changes if primary key change in progress
-
-You cannot start an online schema change on a table if a [primary key change]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) is currently in progress on the same table.
-
-### No online schema changes between executions of prepared statements
-
-{% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
-
-### `ALTER TYPE` schema changes cannot be cancelled
-
-You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+{% include {{ page.version.version }}/known-limitations/online-schema-changes-limitations.md %}
 
 ## See also
 

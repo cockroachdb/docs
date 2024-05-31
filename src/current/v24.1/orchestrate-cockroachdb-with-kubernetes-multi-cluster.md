@@ -25,7 +25,7 @@ Before getting started, it's helpful to review some Kubernetes-specific terminol
 
 - [Kubernetes terminology](#kubernetes-terminology)
 - [UX differences from running in a single cluster](#ux-differences-from-running-in-a-single-cluster)
-- [Limitations](#limitations)
+- [Best practices](#best-practices)
 
 ### Kubernetes terminology
 
@@ -55,7 +55,7 @@ Because the CockroachDB pods run in a non-default namespace, client applications
 To enable the pods to communicate across regions, we peer the VPCs in all 3 regions with each other and configure a CoreDNS service in each region to route DNS traffic to the appropriate pods. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace <cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace <namespace-name>` to set the default namespace for a context.
 </section>
 
-### Limitations
+### Best practices
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 

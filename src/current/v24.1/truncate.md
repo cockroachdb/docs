@@ -9,6 +9,8 @@ The `TRUNCATE` [statement]({% link {{ page.version.version }}/sql-statements.md 
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
+
 ## Synopsis
 
 <div>
@@ -26,10 +28,6 @@ Parameter | Description
 `table_name` | The name of the table to truncate.
 `CASCADE` | Truncate all tables with [Foreign Key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies on the table being truncated.<br><br>`CASCADE` does not list dependent tables it truncates, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not truncate the table if any other tables have [Foreign Key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies on it.
-
-## Limitations
-
-`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 ## Viewing schema changes
 

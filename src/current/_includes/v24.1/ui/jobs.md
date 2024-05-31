@@ -8,9 +8,7 @@ The Jobs list is designed for you to manage pending work. It is not intended to 
 
 Use the **Jobs** table to see recently created and completed jobs.
 
-The following screenshot shows `BACKUP` jobs:
-
-<img src="{{ 'images/v24.1/ui_jobs_page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v24.1/ui-jobs-page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ### Filter jobs
 
@@ -34,10 +32,7 @@ Job ID | Unique job ID. This value is used to [pause]({{ link_prefix }}pause-job
 User Name | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
 Last Modified Time (UTC) | Date and time the job was last modified.
-Last Execution Time (UTC) | Date and time the job was last executed.
-High-water Timestamp  | A checkpoint for a [changefeed job's progress]({{ link_prefix }}monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time]({{ link_prefix }}as-of-system-time.html).
-Execution Count | Number of times the job was executed.
-Coordinator Node | ID of the coordinating node.
+Completed Time (UTC) | Date and time the job was completed.
 
 To view [job details](#job-details), click the job description.
 
@@ -56,7 +51,7 @@ Status | Description
 `REVERTING`| Job failed or was canceled and its changes are being reverted.
 `REVERT-FAILED` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 `RETRYING` | Job is retrying another job that failed.
- 
+
 ## Job details
 
 The details show:
