@@ -208,7 +208,7 @@ CREATE TABLE events_using_date (
   start_date DATE DEFAULT now() NOT NULL,
   end_date DATE NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date::TIMESTAMP) + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$((end_date::TIMESTAMP + '30 days') AT TIME ZONE 'UTC')$$
 );
 ~~~
 
@@ -222,7 +222,7 @@ CREATE TABLE events_using_timestamptz (
   start_date TIMESTAMPTZ DEFAULT now() NOT NULL,
   end_date TIMESTAMPTZ NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date AT TIME ZONE ''UTC'') + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$(((end_date AT TIME ZONE 'UTC') + '30 days') AT TIME ZONE 'UTC')$$
 );
 ~~~
 
