@@ -15,7 +15,7 @@ CockroachDB supports many [functions]({% link {{ page.version.version }}/functio
 
 A `OID` value is 32 bits in width.
 
-## Limitations
+## Best practices
 
 You **should not**:
 
