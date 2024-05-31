@@ -353,15 +353,15 @@ To enable metrics export to Azure Monitor:
     cat ca.crt ca.key | awk '{printf "%s\\n", $0}'  > concatenated.pem
     ~~~
 
-1. [Create a Microsoft Entra application](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal) in your Azure tenant. When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
+1. To give access to the CockroachDB cluster to your Azure tenant, [create a Microsoft Entra application](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
 
   1. Once the application is registered, upload the certificate file (`ca.crt`) created in step 2.
-  1. From the **Overview** page for the Entra application, note the values for **Display Name**, **Application (client) ID**, and the **Directory (tenant) ID** to be used in step 5.
+  1. From the **Overview** page for the Entra application, note the values for **Display Name**, **Application (client) ID**, and **Directory (tenant) ID**, which will be used in step 5.
 
-1. [Create an Azure Monitor Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource).
+1. To allow Azure Monitor to receive metrics, [create an Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource).
 
-  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for the *Display Name* from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
-  1. On the **Overview** page for the Application Insights resource, view the **Connection String**. Note the values for **InstrumentationKey** and **IngestionEndpoint** which will be used in step 5.
+  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for the **Display Name** from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
+  1. On the **Overview** page for the Application Insights resource, view the **Connection String**. Note the values for **InstrumentationKey** and **IngestionEndpoint**, which will be used in step 5.
 
 1. To enable metrics export for your CockroachDB {{ site.data.products.dedicated }} cluster, issue the following [Cloud API]({% link cockroachcloud/cloud-api.md %}) command:
 
@@ -393,7 +393,11 @@ To enable metrics export to Azure Monitor:
 
     When the command returns a status of `ENABLED`, the configuration has been applied to all nodes, and metrics will begin appearing in Azure Monitor. Since the configuration is applied to cluster nodes one at a time, metrics may begin to appear even before the status is `ENABLED`.
 
-Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/).
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Portal](https://portal.azure.com/#home):
+
+  1. Navigate to the Application Insights resource created in step 4.
+  1. In the left menu under **Monitoring**, click **Metrics**. In the chart options, in the **Metric** search field, enter `crdb_dedicated`. This should retrieve a dropdown list of the exported metrics. Select a metric such as `crdb_dedicated.capacity` from the dropdown list.
+  1. To further verify the metrics export, click **Apply splitting**, select **cluster** from the **Values** dropdown list. Your cluster name should appear in the legend under the chart.
 
 </section>
 
