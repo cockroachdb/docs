@@ -393,22 +393,85 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     1. Click **Log Analytics agent instructions** section header.
     1. In that section, note the values for **Workspace ID**, **Primary key** (or **Secondary key**)
 
-1. To enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with default logging configuration, issue the following Cloud API command:
+1. Use one of the following Cloud API commands to enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster. The first presents a basic configuration, where all logs are sent to Azure Monitor using the default settings. The second allows for more detailed customization of the logging configuration, such as the ability to send certain log channels to specific target log tables, or the ability to redact sensitive log entries.
 
-     {% include_cached copy-clipboard.html %}
-     ~~~shell
-     curl --request POST \
-       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
-       --header "Authorization: Bearer {secret_key}" \
-       --data '{"type": "AZURE_LOG_ANALYTICS", "log_name": "{log_prefix}", "auth_principal": "{workspace_id}", "azure_shared_key": "{primary_or_secondary_key}"}'
-     ~~~
+   1. To enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with default logging configuration, issue the following Cloud API command:
 
-     Where:
-     - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID as determined in step 1.
-     - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
-     - `{log_prefix}` is a user-specified prefix for the table that will be created in the Log Analytics workspace.
-     - `{auth_principal}` is the ID for the Log Analytics workspace, **Workspace ID** from step 2.
-     - `{azure_shared_key}` is the **Primary key** or **Secondary key** from step 2.
+        {% include_cached copy-clipboard.html %}
+        ~~~shell
+        curl --request POST \
+          --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+          --header "Authorization: Bearer {secret_key}" \
+          --data '{"type": "AZURE_LOG_ANALYTICS", "log_name": "{log_prefix}", "auth_principal": "{workspace_id}", "azure_shared_key": "{primary_or_secondary_key}"}'
+        ~~~
+
+        Where:
+        - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID as determined in step 1.
+        - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+        - `{log_prefix}` is a user-specified prefix for the table that will be created in the Log Analytics workspace.
+        - `{auth_principal}` is the ID for the Log Analytics workspace, **Workspace ID** from step 2.
+        - `{azure_shared_key}` is the **Primary key** or **Secondary key** from step 2.
+
+   1. To enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with custom logging configuration:
+
+        1. Consult the log export entry on the [CockroachDB {{ site.data.products.cloud }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
+
+            For example, consider the following configuration:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~json
+            {
+             "type": "AZURE_LOG_ANALYTICS",
+             "log_name": "default",
+             "auth_principal": "{workspace_id}",
+             "azure_shared_key": "{primary_or_secondary_key}",
+             "redact": true,
+             "region": "",
+             "omitted_channels": [ "SESSIONS", "SQL_PERF"],
+             "groups": [
+                     {
+                         "log_name": "sql",
+                         "channels": ["SQL_SCHEMA", "SQL_EXEC"],
+                         "redact": false
+                     },
+                     {
+                         "log_name": "devops",
+                         "channels": ["OPS", "HEALTH", "STORAGE"],
+                         "min_level": "WARNING"
+                     }
+             ]
+            }
+            ~~~
+
+            This configuration:
+            - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to Azure Monitor.
+            - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an Azure Monitor log table prefixed with `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an Azure Monitor log table prefixed with `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the Azure Monitor log table prefixed with `default`.
+
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~json
+            {"type":"AZURE_LOG_ANALYTICS","log_name":"default","auth_principal":"{workspace_id}","azure_shared_key":"{primary_or_secondary_key}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}
+            ~~~
+
+        1. Then, to enable log export for your CockroachDB {{ site.data.products.dedicated }} cluster with the above example custom logging configuration, issue the following Cloud API command:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~shell
+            curl --request POST \
+              --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+              --header "Authorization: Bearer {secret_key}" \
+              --data '{"type":"AZURE_LOG_ANALYTICS","log_name":"default","auth_principal":"{workspace_id}","azure_shared_key":"{primary_or_secondary_key}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
+            ~~~
+
+            Where:
+            - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID as determined in step 1.
+            - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+            - `{auth_principal}` is the ID for the Log Analytics workspace, **Workspace ID** from step 2.
+            - `{azure_shared_key}` is the **Primary key** or **Secondary key** from step 2.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
@@ -424,8 +487,8 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 1. Once log export has been enabled, you can access logs from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Portal](https://portal.azure.com/#home).
 
     1. Navigate to the Log Analytics workspace created in step 2.
-    1. In the left menu, under **Settings**, click **Tables**. In the **Table names** column, there should be a table name with the following pattern: `{log_prefix}_{region}_CL`. For example, `crl_docs_eastus_CL` where `{log_prefix}` is the string passed to `log_name` in the Cloud API command, {region} is the region of your cluster, and `CL` is the suffix for a classic custom table.
-    1. To view the logs in this table, in the left menu, click **Logs**. In a **New Query** window, enter the table name and click **Run** button.
+    1. In the left menu, under **Settings**, click **Tables**. In the **Table names** column, there should be a table name with the following pattern: `{log_prefix}_{region}_CL`. For example, `crdb_eastus_CL` where `{log_prefix}` is the string passed to `log_name` in the Cloud API command (`crdb` in this case), `{region}` is the region of your cluster (`eastus` in this case), and `CL` is the suffix for a classic custom table.
+    1. To view the logs in this table, in the left menu, click **Logs**. In a **New Query** window, enter the table name and click **Run**.
 
 </section>
 
