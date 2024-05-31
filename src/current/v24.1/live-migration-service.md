@@ -142,7 +142,7 @@ lms:
   allowTLSDisable: false
 ~~~
 
-`lms.allowTLSDisable` specifies whether insecure LMS connections to databases are allowed. This should be set to `true` **only** if secure SSL/TLS connections to the source or target database are not possible. [Secure SSL/TLS connections](#security) should be used by default.
+`lms.allowTLSDisable` enables insecure LMS connections to databases, and is disabled by default. Enable insecure connections **only** if a secure SSL/TLS connection to the source or target database is not possible. When possible, [secure SSL/TLS connections](#security) should be used.
 
 {{site.data.alerts.callout_success}}
 You can also set the `--allow-tls-mode-disable` [flag](#global-flags) to enable insecure LMS connections.
