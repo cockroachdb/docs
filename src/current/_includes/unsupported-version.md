@@ -1,34 +1,83 @@
-{% assign x = site.data.versions | where_exp: "m", "m.major_version == include.major_version" | first %}
-{% unless x.maint_supp_exp_date == "N/A" or x.asst_supp_exp_date == "N/A" %}{% comment %}Not yet GA{% endcomment %}
-  {% assign today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
-  {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
-  {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-  {% unless x.lts_maint_supp_exp_date == "N/A" or x.lts_asst_supp_exp_date == "N/A" %}{% comment %}No LTS releases{% endcomment %}
-    {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
-    {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-  {% endunless %}
+{% unless include.major_version %}
+Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-version.md major_version=page.major_version %}{% endraw %}</code>
+{% break %}
 {% endunless %}
 
-  {% if la < today %} {% comment %} If the LTS assistance support expiration date has passed, show the unsupported message. {% endcomment %}
-    {{site.data.alerts.callout_danger}}
-    CockroachDB {{ include.major_version }} (LTS) is no longer supported as of {{ x.lts_asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
-    {{site.data.alerts.end}}
-  {% elsif la >= today and lm < today %}{% comment %} If the LTS maintenance support expiration has passed but the version is still within the LTS assistance support period, show this message and pass the LTS assistance support expiration date. {% endcomment %}
-    {{site.data.alerts.callout_danger}}
-    Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
-    {{site.data.alerts.end}}
-  {% elsif a < today and lm > today %} {% comment %} If the assistance support expiration date has passed but the LTS maintenance phase has not {% endcomment %}
-    {% if la > today %}
-    {{site.data.alerts.callout_danger}}
-    GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
-    {{site.data.alerts.end}}
+{% assign today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
+
+{% assign x = site.data.versions | where_exp: "m", "m.major_version == include.major_version" | first %}
+
+{% comment %}Save the admonitions into variables {% endcomment %}
+{% capture lts_eol_message %}
+      {{site.data.alerts.callout_danger}}
+      CockroachDB {{ include.major_version }} (LTS) is no longer supported as of {{ x.lts_asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture lts_assistance_message %}
+      {{site.data.alerts.callout_danger}}
+      GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture ga_eol_message %}
+      {{site.data.alerts.callout_danger}}
+      CockroachDB {{ include.major_version }} is no longer supported as of {{ x.asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture ga_assistance_message %}
+      {{site.data.alerts.callout_danger}}
+      Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture ga_maintenance_message %}{{ ga_assistance_message }}{% endcapture %}
+
+{% comment %}Continue only if we found an entry for this major version {% endcomment %}
+
+{% comment %}Don't show admonitions on pages with no version, like releases/index.html{% endcomment %}
+{% unless x %}
+{% break %}
+{% endunless %}
+
+{% assign lts = false %}
+{% comment %}Is it an LTS?{% endcomment %}
+{% if x.initial_lts_patch != "N/A" %}
+  {% assign lts = true %}
+  {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+  {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+{% endif %}
+
+{% assign production = false %}
+{% comment %}Is it GA?{% endcomment %}
+{% if x.asst_supp_exp_date != "N/A" %}
+  {% assign production = true %}
+  {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+  {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+{% endif %}
+
+{% comment %}Show unsupported admonitions only for production releases {% endcomment %}
+{% if production == true %}
+  {% comment %}Show LTS admonitions only for versions with LTS releases {% endcomment %}
+  {% if lts == true %}
+
+    {% if la < today %} {% comment %}LTS assistance has passed, EOL{% endcomment %}
+      {{ lts_eol_message }}
+    {% elsif lm < today %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
+      {{ lts_assistance_message }}
     {% endif %}
-   {% elsif a < today %}{% comment %}show the unsupported message. {% endcomment %}
-    {{site.data.alerts.callout_danger}}
-    CockroachDB {{ include.major_version }} is no longer supported as of {{ x.asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
-    {{site.data.alerts.end}}
-  {% elsif a >= today and m < today %} {% comment %} If the maintenance support expiration has passed but the version is still within the assistance support period, show this message and pass the assistance support expiration date. {% endcomment %}
-    {{site.data.alerts.callout_danger}}
-    Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
-    {{site.data.alerts.end}}
+
+  {% comment %}Show non-LTS admonitions only releases without LTS {% endcomment %}
+  {% else %}
+
+    {% if a < today %} {% comment %}assistance has passed, EOL{% endcomment %}
+      {{ ga_eol_message }}
+    {% elsif m < today %} {% comment %}maintenance has passed{% endcomment %}
+      {{ ga_assistance_message }}
+    {% elsif m >= today %}
+      {{ ga_maintenance_message }}
+    {% endif %}
   {% endif %}
+
+{% endif %}
