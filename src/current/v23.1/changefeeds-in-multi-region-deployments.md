@@ -21,6 +21,10 @@ Defining an execution locality for a changefeed job, could be useful in the foll
 - Your cluster is [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) and you need the nodes that are physically closest to the sink to emit changefeed messages. This can avoid cross-regional traffic to reduce expense.
 - Your cluster is running through VPC peering connections and you need all the data sent through a particular locality.
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/cdc-execution-locality.md %}
+{{site.data.alerts.end}}
+
 ### Syntax
 
 To specify the locality requirements for the coordinating node, run `execution_locality` with key-value pairs that represent the [locality designations]({% link {{ page.version.version }}/cockroach-start.md %}#locality) assigned to the cluster at startup.
