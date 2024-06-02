@@ -32,52 +32,45 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
       {{site.data.alerts.end}}
 {% endcapture %}
 
-{% capture ga_maintenance_message %}{{ ga_assistance_message }}{% endcapture %}
-
 {% comment %}Continue only if we found an entry for this major version {% endcomment %}
+{% if x %}
 
-{% comment %}Don't show admonitions on pages with no version, like releases/index.html{% endcomment %}
-{% unless x %}
-{% break %}
-{% endunless %}
-
-{% assign lts = false %}
-{% comment %}Is it an LTS?{% endcomment %}
-{% if x.initial_lts_patch != "N/A" %}
-  {% assign lts = true %}
-  {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
-  {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-{% endif %}
-
-{% assign production = false %}
-{% comment %}Is it GA?{% endcomment %}
-{% if x.asst_supp_exp_date != "N/A" %}
-  {% assign production = true %}
-  {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
-  {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-{% endif %}
-
-{% comment %}Show unsupported admonitions only for production releases {% endcomment %}
-{% if production == true %}
-  {% comment %}Show LTS admonitions only for versions with LTS releases {% endcomment %}
-  {% if lts == true %}
-
-    {% if la < today %} {% comment %}LTS assistance has passed, EOL{% endcomment %}
-      {{ lts_eol_message }}
-    {% elsif lm < today %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
-      {{ lts_assistance_message }}
-    {% endif %}
-
-  {% comment %}Show non-LTS admonitions only releases without LTS {% endcomment %}
-  {% else %}
-
-    {% if a < today %} {% comment %}assistance has passed, EOL{% endcomment %}
-      {{ ga_eol_message }}
-    {% elsif m < today %} {% comment %}maintenance has passed{% endcomment %}
-      {{ ga_assistance_message }}
-    {% elsif m >= today %}
-      {{ ga_maintenance_message }}
-    {% endif %}
+  {% assign lts = false %}
+  {% comment %}Is it an LTS?{% endcomment %}
+  {% if x.initial_lts_patch != "N/A" %}
+    {% assign lts = true %}
+    {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+    {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
   {% endif %}
 
+  {% assign production = false %}
+  {% comment %}Is it GA?{% endcomment %}
+  {% if x.asst_supp_exp_date != "N/A" and x.asst_supp_exp_date != "N/A" %}
+    {% assign production = true %}
+    {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+    {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+  {% endif %}
+
+  {% comment %}Show unsupported admonitions only for production releases {% endcomment %}
+  {% if production == true %}
+    {% comment %}Show LTS admonitions only for versions with LTS releases {% endcomment %}
+    {% if lts == true %}
+
+      {% if la < today %} {% comment %}LTS assistance has passed, EOL{% endcomment %}
+        {{ lts_eol_message }}
+      {% elsif lm < today %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
+        {{ lts_assistance_message }}
+      {% endif %}
+
+    {% comment %}Show non-LTS admonitions only releases without LTS {% endcomment %}
+    {% else %}
+
+      {% if a < today %} {% comment %}assistance has passed, EOL{% endcomment %}
+        {{ ga_eol_message }}
+      {% elsif m < today %} {% comment %}maintenance has passed{% endcomment %}
+        {{ ga_assistance_message }}
+      {% endif %}
+    {% endif %}
+
+  {% endif %}
 {% endif %}
