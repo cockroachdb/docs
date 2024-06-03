@@ -304,13 +304,7 @@ This section illustrates the steps to cut back to the original primary cluster f
     SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~
 
-<<<<<<< HEAD
-At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
-
-To enable physical cluster replication again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
-=======
 At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable PCR again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
->>>>>>> c9b9928e7 (Bring physical cluster replication into GA v24.1)
 
 ## See also
 

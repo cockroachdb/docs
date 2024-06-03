@@ -23,7 +23,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-## Limitations
+## Best practices
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 

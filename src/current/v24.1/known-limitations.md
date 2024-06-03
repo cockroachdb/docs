@@ -53,6 +53,10 @@ CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ pa
 
 {% include {{ page.version.version }}/known-limitations/import-into-limitations.md %}
 
+#### `ALTER VIEW` limitations
+
+{% include {{ page.version.version }}/known-limitations/alter-view-limitations.md %}
+
 #### Row-Level TTL limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
@@ -131,6 +135,10 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 
 {% include {{ page.version.version }}/known-limitations/read-committed-limitations.md %}
 
+#### Follower reads
+
+{% include {{ page.version.version }}/known-limitations/follower-reads-limitations.md %}
+
 #### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
 
 {% include {{page.version.version}}/known-limitations/select-for-update-limitations.md %}
@@ -156,6 +164,10 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 
 [#46414](https://github.com/cockroachdb/cockroach/issues/46414)
 
+#### `CANCEL JOB` limitations
+
+{% include {{ page.version.version }}/known-limitations/cancel-job-limitations.md %}
+
 #### SQL cursor support
 
 {% include {{page.version.version}}/known-limitations/sql-cursors.md %}
@@ -166,9 +178,9 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 
 ### Schemas and indexes
 
-#### Schema changes within transactions
+#### Online schema change limitations
 
-{% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
+{% include {{ page.version.version }}/known-limitations/online-schema-changes-limitations.md %}
 
 #### Adding a column with sequence-based `DEFAULT` values
 
@@ -244,6 +256,14 @@ To reduce the chance that a column drop will roll back incorrectly:
 
 If you think a rollback of a column-dropping schema change has occurred, check the [jobs table]({% link {{ page.version.version }}/show-jobs.md %}). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
 
+#### `ALTER COLUMN` limitations
+
+{% include {{ page.version.version }}/known-limitations/alter-column-limitations.md %}
+
+#### `CREATE TABLE AS` limitations
+
+{% include {{ page.version.version }}/known-limitations/create-table-as-limitations.md %}
+
 #### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
@@ -308,6 +328,10 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 
 - {% include {{ page.version.version }}/known-limitations/srid-4326-limitations.md %}
 
+#### `OID` limitations
+
+Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#best-practices).
+
 #### Limitations for composite types
 
 - {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
@@ -326,6 +350,10 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 
 ### Security and privileges
 
+#### `GRANT`/`REVOKE` limitations
+
+{% include {{ page.version.version }}/known-limitations/grant-revoke-schema-changes.md %}
+
 #### `DROP OWNED BY` limitations
 
 {% include {{page.version.version}}/known-limitations/drop-owned-by-limitations.md %}
@@ -335,6 +363,14 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 Every [`DELETE`]({% link {{ page.version.version }}/delete.md %}) or [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
 
 ### Deployment and operations
+
+#### Admission control
+
+{% include {{ page.version.version }}/known-limitations/admission-control-limitations.md %}
+
+#### Data domiciling
+
+{% include {{ page.version.version }}/known-limitations/data-domiciling-limitations.md %}
 
 #### CockroachDB does not test for all connection failure scenarios
 
@@ -397,7 +433,19 @@ As a workaround, [execute the file from the command line]({% link {{ page.versio
 
 {% include {{ page.version.version }}/known-limitations/logging-limitations.md %}
 
+#### Per-replica circuit breaker limitations
+
+{% include {{ page.version.version }}/known-limitations/per-replica-circuit-breaker-limitations.md %}
+
+#### Kubernetes limitations
+
+Refer to [Kubernetes best practices]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#best-practices).
+
 ### Observability
+
+#### Datadog
+
+{% include {{ page.version.version }}/known-limitations/datadog-self-hosted-limitations.md %}
 
 #### DB Console may become inaccessible for secure clusters
 
@@ -414,21 +462,17 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
-#### Table-level restore will not restore user-defined functions
+#### `RESTORE` limitations
 
-{% include {{ page.version.version }}/known-limitations/restore-udf.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-udf.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
 #### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) of a table or database.
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
-
-#### Using `RESTORE` with multi-region table localities
-
-- {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
-
-- {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
 ### Change data capture
 

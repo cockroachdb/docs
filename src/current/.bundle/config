@@ -2,3 +2,5 @@
 BUNDLE_PATH: "vendor/bundle"
 BUNDLE_DEPLOYMENT: "false"
 BUNDLE_WITHOUT: "production"
+BUNDLE_BUILD__CBOR: "--with-cflags=-Wno-incompatible-function-pointer-types"
+BUNDLE_BUILD__POSIX___SPAWN: "--with-cflags=-Wno-incompatible-function-pointer-types"

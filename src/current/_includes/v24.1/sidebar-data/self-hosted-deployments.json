@@ -557,6 +557,12 @@
             "title": "Disaster Recovery",
             "items": [
               {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/disaster-recovery-overview.html"
+                ]
+              },
+              {
                 "title": "Backups and Restores",
                 "items": [
                   {
