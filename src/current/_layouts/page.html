@@ -46,8 +46,10 @@ front-matter.
   </div>
   <div id="toc" class="d-none"></div>
 {% endif %}
-{% include_cached unsupported-version.md major_version=page.version.version %}
-
+{% if page.major_version %}{% comment %}Show unsupported version details only if a page is versioned{% endcomment %}
+  {% capture majorversion %}{{ page.major_version }}{% endcapture %}
+  {% include unsupported-version.md major_version=majorversion %}
+{% endif %}
 {{content}}
 
 {% if page.feedback != false %}

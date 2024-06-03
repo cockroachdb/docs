@@ -706,4 +706,5 @@ This is because the state flip is effected by the CLI program at the end. Only t
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
