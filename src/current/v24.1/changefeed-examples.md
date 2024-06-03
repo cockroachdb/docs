@@ -575,7 +575,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 1. To send changefeed messages to your Event Hub, you will need a `shared_access_key`. Find **Shared access policies** in the left-hand navigation. Click **+ Add** and provide a name for the policy as well as confirming the permissions. Once created, click on the policy name and then copy the **Primary key** — you will need this to create your changefeed.
 
 1. Build the connection string to your Event Hub. You will need the following:
-    - The `azure-event-hub://` URI scheme.
+    - The `azure-event-hub://` or `kafka://` URI scheme.
     - The **Host name** from your Event Hubs namespace overview page. It will be something like: `{your-event-hubs-namespace}.servicebus.windows.net`.
     - The port `:9093` for the Kafka protocol.
     - The `shared_access_key_name` parameter with the name of your policy.
