@@ -14,7 +14,6 @@ docs_area: manage
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [Physical Replication dashboard](#db-console) on the DB Console.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on replication metrics.
-- [`SHOW EXPERIMENTAL_FINGERPRINTS`](#data-verification) to verify data at a point in time is correct on the standby cluster.
 
 When you complete a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 

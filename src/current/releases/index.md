@@ -109,7 +109,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     <tbody>
             {% for r in releases %}
 
-              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}{% endcapture %}
+              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -272,7 +272,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     <tbody>
         {% for r in releases %}
 
-        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}{% endcapture %}
+        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>

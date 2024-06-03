@@ -1,6 +1,6 @@
 ---
-title: Use the Schema Conversion Tool
-summary: Use the Schema Conversion Tool to begin a database migration to CockroachDB.
+title: Use the MOLT Schema Conversion Tool
+summary: Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB.
 toc: true
 cloud: true
 docs_area: migrate
@@ -8,11 +8,11 @@ docs_area: migrate
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features a **Schema Conversion Tool** that helps you:
+The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features the MOLT Schema Conversion Tool. This tool helps you:
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
-- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 - Migrate directly to a CockroachDB {{ site.data.products.cloud }} database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
+- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 
     {{site.data.alerts.callout_info}}
     The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}).
@@ -102,10 +102,6 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
 ### Use Credentials
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
 
 1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
@@ -125,7 +121,7 @@ Credentials can be added for PostgreSQL and MySQL databases.
 1. Provide the following information:
     - A **Credential Name** to associate with the credentials.
     - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
-    - The **Host** for accessing the database. For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
+    - The **Host** (i.e., hostname or IP address) for accessing the database. Exclude the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
     - The **Port** for accessing the database.
     - A valid **Username** and **Password** for accessing the database.
     - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.

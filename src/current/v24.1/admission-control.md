@@ -115,11 +115,9 @@ SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit to desired
 COMMIT;
 ~~~
 
-## Limitations
+## Known limitations
 
-Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`]({% link {{ page.version.version }}/set-vars.md %}#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
-
-Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
+{% include {{ page.version.version }}/known-limitations/admission-control-limitations.md %}
 
 ## Considerations
 

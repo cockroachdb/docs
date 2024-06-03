@@ -65,7 +65,7 @@ Try the tutorial: [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database
 
 ### How to speed up user/role management
 
-{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
+{% include {{page.version.version}}/known-limitations/grant-revoke-schema-changes.md %}
 
 ## Use Vault's Transit Secrets Engine to manage a CockroachDB {{ site.data.products.core }} cluster's {{ site.data.products.enterprise }} Encryption At Rest store key
 

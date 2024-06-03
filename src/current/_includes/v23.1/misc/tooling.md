@@ -66,8 +66,8 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | IDE | Latest tested version | Support level | Tutorial |
 |-----+-----------------------+---------------+----------|
-| [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 | Full | N/A
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB]({% link {{ page.version.version }}/intellij-idea.md %})
+| [DataGrip](https://www.jetbrains.com/datagrip/) | 2024.1 | Full | N/A
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2024.1 | Full | [Use IntelliJ IDEA with CockroachDB]({% link {{ page.version.version }}/intellij-idea.md %})
 
 ## Enhanced data security tools
 

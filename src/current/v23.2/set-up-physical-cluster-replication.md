@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -44,7 +44,7 @@ The high-level steps in this tutorial are:
 
 ### Start the primary cluster
 
-To enable physical cluster replication, it is necessary to start each node with the appropriate _configuration profile_ set with the `--config-profile` flag. A configuration profile applies a custom configuration to the server at initialization time. When using physical cluster replication, the `replication-source` and `replication-target` configuration profiles are used to create a virtualized cluster with a system virtual cluster and an application virtual cluster.
+To enable PCR, it is necessary to start each node with the appropriate _configuration profile_ set with the `--config-profile` flag. A configuration profile applies a custom configuration to the server at initialization time. When using PCR, the `replication-source` and `replication-target` configuration profiles are used to create a virtualized cluster with a system virtual cluster and an application virtual cluster.
 
 The primary cluster requires the following value:
 
@@ -67,7 +67,7 @@ cockroach start \
 --config-profile replication-source
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
 ### Connect to the primary cluster system virtual cluster
 
@@ -208,7 +208,7 @@ cockroach start \
 --config-profile replication-target
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
 ### Connect to the standby cluster system virtual cluster
 

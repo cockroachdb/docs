@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT LMS (Live Migration Service) is used to perform a [live migration]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime) to CockroachDB.
+MOLT LMS (Live Migration Service) is used during a [live migration]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime) to CockroachDB.
 
 The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
@@ -135,6 +135,25 @@ lms:
 
 `lms.replicaCount` determines the number of LMS instances created as `lms` pods on the Kubernetes cluster, across which application traffic is distributed. This defaults to `3`.
 
+#### LMS connection
+
+~~~ yaml
+lms:
+  allowTLSDisable: false
+~~~
+
+`lms.allowTLSDisable` enables insecure LMS connections to databases, and is disabled by default. Enable insecure connections **only** if a secure SSL/TLS connection to the source or target database is not possible. When possible, [secure SSL/TLS connections](#security) should be used.
+
+{{site.data.alerts.callout_success}}
+You can also set the `--allow-tls-mode-disable` [flag](#global-flags) to enable insecure LMS connections.
+{{site.data.alerts.end}}
+
+By default, `allowTLSDisable` is set to `false`, and initiating an insecure connection will return the following error:
+
+~~~
+SSL key or cert is not found. By default, secure (TLS) connections are required. If a secure connection is not possible, set the --allow-tls-mode-disable flag to skip this check.
+~~~
+
 #### Connection strings
 
 The following connection strings are specific to your configuration:
@@ -188,6 +207,8 @@ Cockroach Labs **strongly** recommends the following:
 - Manage your LMS and orchestrator configurations in [external Kubernetes secrets](#manage-external-secrets).
 - To establish secure connections between the LMS pods and with your client, generate and set up TLS certificates for the [source database and CockroachDB](#configure-an-lms-secret), [LMS](#configure-the-lms-certificates), and [orchestrator](#configure-the-orchestrator-and-client-certificates).
 {{site.data.alerts.end}}
+
+By default, initiating an insecure connection will return an error. You can override this check by setting either the `--allow-tls-mode-disable` [flag](#global-flags) or `allowTLSDisable` in the [Helm configuration](#lms-connection). Enable insecure connections **only** if secure SSL/TLS connections to the source or target database are not possible.
 
 #### Manage external secrets
 
@@ -514,12 +535,13 @@ The following subcommands are run after the `cutover consistent` command.
 
 #### Global flags
 
-|         Flag         |                                                                                                                                                Description                                                                                                                                                |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--orchestrator-url` | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is **required** unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`. |
-| `--tls-ca-cert`      | The path to the CA certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                       |
-| `--tls-client-cert`  | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_CERT="{path-to-cli-client-cert}"`.                                                                                           |
-| `--tls-client-key`   | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"`.                                                                                                     |
+|            Flag            |                                                                                                                                                          Description                                                                                                                                                          |
+|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--allow-tls-mode-disable` | Allow insecure LMS connections to databases. [Secure SSL/TLS connections](#security) should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.<br><br>Alternatively, set `lms.allowTLSDisable` in the [Helm configuration](#lms-connection). |
+| `--orchestrator-url`       | The URL for the orchestrator, using the [configured port](#service-type). Prefix the URL with `https` instead of `http` when using [certificates](#security). This flag is **required** unless the value is exported as an environment variable using `export CLI_ORCHESTRATOR_URL="{orchestrator-URL}"`.                     |
+| `--tls-ca-cert`            | The path to the CA certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CA_CERT="{path-to-cli-ca-cert}"`.                                                                                                                           |
+| `--tls-client-cert`        | The path to the client certificate. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_CERT="{path-to-cli-client-cert}"`.                                                                                                               |
+| `--tls-client-key`         | The path to the client key. This can also be [exported](#configure-the-orchestrator-and-client-certificates) as an environment variable using `export CLI_TLS_CLIENT_KEY="{path-to-cli-client-key}"`.                                                                                                                         |
 
 #### `connections list` flags
 

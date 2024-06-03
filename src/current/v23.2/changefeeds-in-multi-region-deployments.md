@@ -21,6 +21,10 @@ Defining an execution locality for a changefeed job, could be useful in the foll
 - Your cluster is [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) and you need the nodes that are physically closest to the sink to emit changefeed messages. This can avoid cross-regional traffic to reduce expense.
 - Your cluster is running through VPC peering connections and you need all the data sent through a particular locality.
 
+{{site.data.alerts.callout_info}}
+In v23.2.0, changefeeds that use the [`execution_locality` option]({% link {{ page.version.version }}/changefeeds-in-multi-region-deployments.md %}#run-a-changefeed-job-by-locality) set to a [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) could create a plan that assigns most of the ranges to an [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) on the coordinator node. This leads to an unbalanced plan and slow changefeed progress, particularly when the table is large and has many ranges. This issue is [partially mitigated](https://github.com/cockroachdb/cockroach/commit/5d7714a03a891c9fd5746fb876c39dced4f47205) in v23.2.1 and later.
+{{site.data.alerts.end}}
+
 ### Syntax
 
 To specify the locality requirements for the coordinating node, run `execution_locality` with key-value pairs that represent the [locality designations]({% link {{ page.version.version }}/cockroach-start.md %}#locality) assigned to the cluster at startup.

@@ -39,13 +39,13 @@ To install MOLT Verify, download the binary that matches your system. To downloa
 | Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
 
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). For releases v0.0.6 and earlier, see the [MOLT repository](https://github.com/cockroachdb/molt/releases).
+For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
 
 # Setup
 
 Complete the following items before using MOLT Verify:
 
-- Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
+- The SQL user running MOLT Verify must have the [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on both the source and target CockroachDB tables.
 
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
@@ -73,7 +73,7 @@ Flag | Description
 ----------|------------
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
-`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{ page.version.version }}/int.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [`FLOAT`]({% link {{ page.version.version }}/float.md %}) data types.{% endcomment %}
+`--concurrency` | Number of threads to process at a time when reading the tables. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{ page.version.version }}/int.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [`FLOAT`]({% link {{ page.version.version }}/float.md %}) data types.{% endcomment %}
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
@@ -117,14 +117,17 @@ When verification completes, the output displays a summary message like the foll
 - `num_success` is the number of rows that matched.
 - `num_conditional_success` is the number of rows that matched while having a column mismatch due to a type difference. This value indicates that all other columns that could be compared have matched successfully. You should manually review the warnings and errors in the output to determine whether the column mismatches can be ignored.
 
-## Limitations
+## Known limitations
 
-- While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change between batches, which can lead to temporary inconsistencies in data. Enable `--live` mode to have the tool retry verification on these rows. You can also change the row batch size using the `--row_batch_size` [flag](#flags).
-- MySQL enums and set types are not supported.
+- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. If `--live` mode is enabled, MOLT Verify retries verification on these rows. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
 - MOLT Verify checks for collation mismatches on [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{ page.version.version }}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{ page.version.version }}/collate.md %}).
-- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
+
+The following limitations are specific to MySQL:
+
+- MySQL enums and set types are not supported.
+- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 
 ## See also
 

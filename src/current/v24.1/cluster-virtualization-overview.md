@@ -11,7 +11,7 @@ docs_area: deploy
 
 This page gives an overview of _cluster virtualization_ in CockroachDB {{page.version.version}}. Cluster virtualization allows you to separate a cluster's _control plane_ from its _data plane_. The cluster's control plane manages cluster nodes and node-to-node traffic, while its data plane reads data from and writes data to the cluster's storage.
 
-Cluster virtualization is required for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
+Cluster virtualization is only necessary if you want to use [physical cluster replication (PCR)]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). For details on how PCR works, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
 
 When cluster virtualization is disabled, the control plane and data plane are unified, and the `cockroach` process on a node handles all system and user activity, and manages the cluster's control plane and data plane. When cluster virtualization is enabled, the `cockroach` process on a node runs both a _system virtual cluster_ and one or more _virtual clusters_.
 
@@ -19,7 +19,7 @@ When cluster virtualization is disabled, the control plane and data plane are un
 - A virtual cluster manages its own data plane. Administrative access on a virtual cluster does not grant any access to the system virtual cluster. Some settings are scoped to a virtual cluster rather than the system virtual cluster.
 
 {{site.data.alerts.callout_success}}
-Cluster virtualization is enabled automatically when you configure [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
+Cluster virtualization is enabled automatically when you configure [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
 {{site.data.alerts.end}}
 
 ## Differences when cluster virtualization is enabled
@@ -63,7 +63,7 @@ When cluster virtualization is enabled, [backup]({% link {{ page.version.version
 For more details about backing up and restoring a cluster with cluster virtualization enabled, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#disaster-recovery).
 
 {{site.data.alerts.callout_success}}
-For details about configuring and using Physical Cluster Replication for disaster recovery, refer to [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
+For details about configuring and using PCR for disaster recovery, refer to [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
 {{site.data.alerts.end}}
 
 ### Observability
@@ -109,5 +109,4 @@ When cluster virtualization is enabled, [draining a node]({% link {{ page.versio
 
 In CockroachDB {{ page.version.version }}, cluster virtualization has the following limitations:
 
-- Creating virtual clusters without the intent of using them as either a physical cluster replication source or target is not yet supported.
 - Currently, a single physical cluster can have a maximum of one system virtual cluster and one virtual cluster.

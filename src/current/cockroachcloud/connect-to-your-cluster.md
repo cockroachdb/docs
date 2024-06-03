@@ -21,8 +21,8 @@ By default, CockroachDB {{ site.data.products.dedicated }} clusters are locked d
 
 - Allowed IP address ranges on the internet.
 - Cloud-provider-specific peer networking options:
-    - Google Cloud Platform (GCP) VPC Peering
-    - Amazon Web Services (AWS) Private link
+    - Google Cloud Platform (GCP) VPC Peering or Private Service Connect (Preview)
+    - Amazon Web Services (AWS) Privatelink
 
 {{site.data.alerts.callout_info}}
 Removing or adding an authorized network on your CockroachDB {{ site.data.products.dedicated }} cluster may take a few seconds to take effect.
@@ -36,15 +36,19 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 1. Click **Apply**.
 
-### Establish GCP VPC Peering or AWS PrivateLink
+<a id="establish-gcp-vpc-peering-or-aws-privatelink"></a>
+### Establish private connectivity
 
-GCP VPC Peering and AWS PrivateLink allow customers to establish SQL access to their clusters entirely through cloud provider private infrastructure, without exposure to the public internet, affording enhanced security and performance.
+Private connectivity allows you to establish SQL access to a CockroachDB {{ site.data.products.dedicated }} cluster entirely through cloud provider private infrastructure, without exposing the cluster to the public internet, affording enhanced security and performance.
 
-VPC peering is available only for GCP clusters, and AWS PrivateLink is available for AWS clusters.
+- Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC peering](#gcp-vpc-peering). PSC allows you to selectively connect your cluster to a VPC within your Google Cloud project, while VPC Peering allows you to connect the Cockroach Cloud's VPC for your cluster to a VPC within your Google Cloud project.
+- Clusters deployed on AWS can connect privately using AWS PrivateLink, which allows you to connect Cockroach Cloud's VPC to a VPC within your AWS account.
 
-To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your VPC or private endpoint. For more information, refer to [Network Authorization for CockroachDB {{ site.data.products.dedicated }} clusters: GCP VPC Peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) and [Network Authorization for CockroachDB {{ site.data.products.dedicated }} clusters: AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
+For more information, refer to [Network authorization]({% link cockroachcloud/network-authorization.md %}).
 
-AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
+{{site.data.alerts.callout_success}}
+GCP Private Service Connect and AWS PrivateLink can be configured only after a cluster is created.
+{{site.data.alerts.end}}
 
 Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
@@ -52,7 +56,37 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 {% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
 {{site.data.alerts.end}}
 
-#### VPC Peering
+#### GCP Private Service Connect
+
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+1. Navigate to your cluster's **Networking > Private endpoint** tab.
+1. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
+1. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
+    - Set **Target** to **Published service**.
+    - Set **Target service** to the value you copied from CockroachDB {{ site.data.products.cloud }} Console. If the endpoint's configured target service does not match, validation will fail.
+    - Provide a value for **Endpoint name**. This is not used by CockroachDB {{ site.data.products.cloud }}.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access*, and create a namespace in each region where your cluster is deployed.
+    - Click **Add endpoint**.
+    - After the endpoint is created, copy the connection ID.
+1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Validate**.
+1. Enter the endpoint's ID, then click **Validate**. CockroachDB {{ site.data.products.cloud }} attempts to connect to the endpoint's VPC and verifies that the target service matches the cluster. If validation fails, verify the endpoint's configuration, then try again. After validation succeeds, click **Complete** to finish creating the connection.
+1. On the **Networking > Private endpoint** tab, verify that the connection status is **Available**.
+
+{{site.data.alerts.callout_success}}
+After validation succeeds for an endpoint, additional endpoints in the same VPC are automatically automatically accepted if they are configured with the cluster's target service ID. Additional VPCs must be added separately.
+{{site.data.alerts.end}}
+
+If you remove the endpoint from GCP or change its target service, the endpoint will be removed from the cluster automatically.
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+<a id="vpc-peering"></a>
+#### GCP VPC Peering
+
+For GKE, we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting from a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you must [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). CockroachDB {{ site.data.products.cloud }} will import your custom routes by default.
 
 1. Navigate to your cluster's **Networking > VPC Peering** tab.
 1. Click **Set up a VPC peering connection**.
@@ -63,6 +97,15 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
 1. On the **Networking** page, verify the connection status is **Available**.
 
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+{{site.data.alerts.callout_info}}
+Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+{{site.data.alerts.end}}
+
+#### AWS PrivateLink
+
+To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
 
 ## Connect to your cluster
 
@@ -70,7 +113,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 
     The **Setup** page of the **Connect to cluster** dialog displays.
 
-1. If you set up a private connection, click **AWS PrivateLink** (for clusters deployed in AWS) or **VPC Peering** (for clusters deployed in GCP) to connect privately. Otherwise, click **IP Allowlist**.
+1. If you have set up a private connection, select it to connect privately. Otherwise, click **IP Allowlist**.
 1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
 
     {{site.data.alerts.callout_info}}

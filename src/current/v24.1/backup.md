@@ -140,7 +140,7 @@ The `system.users` table stores your users and their passwords. To restore your 
 
 The backup job process minimizes its impact to the cluster's performance with:
 
-- Distribution of work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data. Refer to the [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}) page for a detailed explanation of how a backup job works.
+- Even distribution of work to a node that has a replica of the range to back up. If a locality filter is specified, work is distributed to a node from those that match the locality filter and has the most locality tiers in common with a node that has a replica. Refer to the [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}) page for a detailed explanation of how a backup job works.
 - Integration with elastic CPU limiter by default, which helps to minimize the impact backups have on foreground traffic. This integration will limit the amount of CPU time used by a backup thereby allowing foreground SQL traffic to continue largely unaffected.
 
 A backup job, like any read, cannot export a range if the range contains an [unresolved intent]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#resolving-write-intents). While it is important to minimize the impact of bulk, background jobs like `BACKUP` on your foreground traffic, it is still crucial for backups to finish (in order to maintain your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)).

@@ -22,5 +22,6 @@
   {% include_cached v23.2/sidebar-data/sql.json %},
   {% include_cached v23.2/sidebar-data/reference.json %},
   {% include_cached v23.2/sidebar-data/faqs.json %},
+  {% include_cached v23.2/sidebar-data/releases.json %},
   {% include_cached sidebar-data-cockroach-university.json %}
 ]

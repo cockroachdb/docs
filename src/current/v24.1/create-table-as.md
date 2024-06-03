@@ -11,23 +11,20 @@ The `CREATE TABLE ... AS` [statement]({% link {{ page.version.version }}/sql-sta
 
 ## Intended use
 
-Tables created with `CREATE TABLE ... AS` are intended to persist the
-result of a query for later reuse.
+Tables created with `CREATE TABLE ... AS` are intended to persist the result of a query for later reuse.
 
-This can be more efficient than a [view]({% link {{ page.version.version }}/create-view.md %}) when the
-following two conditions are met:
+This can be more efficient than a [view]({% link {{ page.version.version }}/create-view.md %}) when the following two conditions are met:
 
 - The result of the query is used as-is multiple times.
 - The copy needs not be kept up-to-date with the original table over time.
 
-When the results of a query are reused multiple times within a larger
-query, a view is advisable instead. The query optimizer can "peek"
-into the view and optimize the surrounding query using the primary key
-and indices of the tables mentioned in the view query.
+When the results of a query are reused multiple times within a larger query, a view is advisable instead. The query optimizer can "peek"into the view and optimize the surrounding query using the primary key and indices of the tables mentioned in the view query.
 
-A view is also advisable when the results must be up-to-date; a view
-always retrieves the current data from the tables that the view query
-mentions.
+A view is also advisable when the results must be up-to-date; a view always retrieves the current data from the tables that the view query mentions.
+
+{{site.data.alerts.callout_info}}
+The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -84,11 +81,9 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
  `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
  `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
-## Limitations
+## Known limitations
 
-The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
-
-The [primary key]({% link {{ page.version.version }}/primary-key.md %}) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key]({% link {{ page.version.version }}/create-table-as.md %}#specify-a-primary-key).
+{% include {{ page.version.version }}/known-limitations/create-table-as-limitations.md %}
 
 ## Examples
 

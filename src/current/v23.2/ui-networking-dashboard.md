@@ -19,19 +19,67 @@ The **Networking** dashboard displays the following time series graphs:
 
 ## Network Bytes Received
 
-- In the node view, the graph shows the 10-second average of the number of network bytes received per second for all processes, including CockroachDB, for the node.
+- In the node view, the graph shows the 10-second average of the number of network bytes received per second for all processes, including `cockroach`, on the node.
 
-- In the cluster view, the graph shows the 10-second average of the number of network bytes received for all processes, including CockroachDB, per second across all nodes.
+- In the cluster view, the graph shows the 10-second average of the number of network bytes received for all processes, including `cockroach`, per second across all nodes.
 
-Metric: [`sys.host.net.recv.bytes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-net-recv-bytes) Bytes received on all network interfaces since this process started
+Metric: [`sys.host.net.recv.bytes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-net-recv-bytes) Bytes received on all network interfaces since the `cockroach` process started
+
+## Network Packets Received
+
+- In the node view, the graph shows the packets received on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view, the graph shows the packets received on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.recv.packets`
+
+## Network Packet Errors on Receive
+
+- In the node view, the graph shows the errors on receiving packets on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view, the graph shows the errors on receiving packets on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.recv.err`
+
+## Network Packet Drops on Receive
+
+- In the node view, the graph shows received packets that were dropped on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view, the graph shows received packets that were dropped on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.recv.drop`
 
 ## Network Bytes Sent
 
-- In the node view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including CockroachDB, for the node.
+- In the node view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including `cockroach`, on the node.
 
-- In the cluster view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including CockroachDB, across all nodes.
+- In the cluster view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including `cockroach`, across all nodes.
 
-Metric: [`sys.host.net.send.bytes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-net-send-bytes) Bytes sent on all network interfaces since this process started
+Metric: [`sys.host.net.send.bytes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-net-send-bytes) Bytes sent on all network interfaces since the `cockroach` process started
+
+## Network Packets Sent
+
+- In the node view, the graph shows packets sent on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view,the graph shows packets sent on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.send.packets`
+
+## Network Packet Errors on Send
+
+- In the node view, the graph shows the errors on sending packets on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view,the graph shows the errors on sending packets on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.send.err`
+
+## Network Packet Drops on Send
+
+- In the node view, the graph shows sent packets that were dropped on all network interfaces since the `cockroach` process started on the node.
+
+- In the cluster view,the graph shows sent packets that were dropped on all network interfaces since the `cockroach` process started on each node in the cluster.
+
+Metric: `sys.host.net.send.drop`
 
 ## RPC Heartbeat Latency: 50th percentile
 

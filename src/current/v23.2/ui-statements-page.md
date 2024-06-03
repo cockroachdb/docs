@@ -15,7 +15,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/statistics.md %}
 
-{% include common/ui/statements-page.md %}
+{% include {{ page.version.version }}/ui/statement-fingerprints.md %}
 
 {% include {{ page.version.version }}/ui/statements-table.md %}
 

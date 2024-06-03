@@ -296,7 +296,8 @@ For a deep-dive demo on UDFs, watch the following video:
 
 User-defined functions have the following limitations:
 
-{% include {{ page.version.version }}/known-limitations/udf-stored-proc-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
 
 Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).
 
