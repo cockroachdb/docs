@@ -194,9 +194,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 ### Hot Node (Hotspot)
 
-Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
-
-
+Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 **Metric**
 <br>[`
@@ -220,8 +218,7 @@ Confirm the Hotspot by observing the graphs in the CockroachDB Console and ident
 - Metrics --> SQL Dashboard --> "Active SQL Statements" showing the true concurrency of the workload exceeding the cluster sizing guidance (no more than 4 active statements per vCPU). In combination with a possible connection distribution skew, this may be a lead to investigate.
 - Advanced Debug --> Hot Ranges --> "All Nodes" may show the most active ranges in the cluster concentrated on a Hot node. This would suggest either an application processing hotspot or a schema design choice leading to poor data distribution across ranges.
 
-To eliminate a Hotspot caused by a data distribution / design issue, review the Hotspot Prevention/Resolution section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
-
+To eliminate a Hotspot caused by a data distribution / design issue, review the Hotspot Prevention/Resolution section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 ## Node Health
 
@@ -313,9 +310,7 @@ doing regular maintenance (upgrade, rehydrate, ...) you will also get these mess
 
 ### Alert: Node Memory Utilization
 
-I node with high memory utilization is a cluster stability risk. Potential causes of high memory utilization are outlined in "Insufficient RAM" section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
-
-
+I node with high memory utilization is a cluster stability risk. Potential causes of high memory utilization are outlined in "Insufficient RAM" section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 **Metric**
 <br>[`
@@ -362,7 +357,7 @@ High memory utilization is a prelude to a node's OOM (process termination by the
 >
 > `disk stall` is a condition that occurs when a disk IO system call time takes more than a configurable time deadline. The deadline for CockroachDB data IO is configurable via a cluster setting `storage.max_sync_duration` for the max allowable time an IO operation can be waiting in the storage layer. `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable (there is no equivalent cluster setting) sets the max allowable time an IO operation can be waiting in the message logging framework.
 >
-> Disk stalls are covered in the broader [data availability](../system-overview/data-availability.md#disk-stalls) article.
+> Disk stalls are covered in the broader [data availability](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/system-overview/data-availability.md#disk-stalls) article.
 >
 > 
 
@@ -399,7 +394,7 @@ Increase the size of CockroachDB node storage capacity.  CockroachDB  storage vo
 
 ### Alert: Node Storage Performance
 
-Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
+Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 **Metric**
 <br>[`
@@ -415,7 +410,7 @@ sys.host.disk.iopsinprogress (storage device average queue length)`]
 
 #### Alert Response
 
-See Resolution in the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](../most-common-problems/README.md).
+See Resolution in the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 ## Version Mismatch
 
@@ -457,7 +452,7 @@ No metric is available. Monitor via a query against system tables.`]
 
 #### Monitoring Result of SQL Query
 
-*Run the check query provided* in the [CockroachDB version upgrade article](../routine-maintenance/release-upgrade.md#finalizing-a-major-release-upgrade). If the query returns `false`, the last major upgrade has not been finalized.
+*Run the check query provided* in the [CockroachDB version upgrade article](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/routine-maintenance/release-upgrade.md#finalizing-a-major-release-upgrade). If the query returns `false`, the last major upgrade has not been finalized.
 
 
 
