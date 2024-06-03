@@ -3,7 +3,7 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
 {% break %}
 {% endunless %}
 
-{% assign today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
+{% assign today = '2025-11-14' | date: '%Y-%m-%d' %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
 
 {% assign x = site.data.versions | where_exp: "m", "m.major_version == include.major_version" | first %}
 
