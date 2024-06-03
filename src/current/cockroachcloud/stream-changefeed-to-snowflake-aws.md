@@ -27,6 +27,7 @@ Before you begin, make sure you have:
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
+- {% include cockroachcloud/cdc/tutorial-privilege-check.md %}
 
 ## Step 1. Create a cluster
 
