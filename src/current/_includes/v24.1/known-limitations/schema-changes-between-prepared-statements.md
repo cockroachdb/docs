@@ -1,30 +1,30 @@
-When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
+When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema.
 
-When object definitions referenced in a prepared statement are altered after the prepared statement is created, future executions of the prepared statement could result in an error. For example, adding a column to a table referenced in a prepared statement with a `SELECT *` clause will result in an error:
+When the schema of a table targeted by a prepared statement changes **after** the prepared statement is created, future executions of the prepared statement could result in an error. For example, adding a column to a table referenced in a prepared statement with a `SELECT *` clause will result in an error:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE users (id INT PRIMARY KEY);
+CREATE TABLE users (id INT PRIMARY KEY);
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> PREPARE prep1 AS SELECT * FROM users;
+PREPARE prep1 AS SELECT * FROM users;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE users ADD COLUMN name STRING;
+ALTER TABLE users ADD COLUMN name STRING;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users VALUES (1, 'Max Roach');
+INSERT INTO users VALUES (1, 'Max Roach');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXECUTE prep1;
+EXECUTE prep1;
 ~~~
 
 ~~~
