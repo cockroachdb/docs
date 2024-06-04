@@ -93,7 +93,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`;
+BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`;
 ~~~
 
 ### Set up Amazon S3 assume role
@@ -437,7 +437,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com';
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com';
 ~~~
 
 Replace:
