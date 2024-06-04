@@ -40,7 +40,7 @@ At the highest level, a PL/pgSQL block looks like the following:
   END
 ~~~
 
-PL/pgSQL blocks can be nested. An optional label can be placed above each block. Block labels can be targeted by [`EXIT` statements](#exit-and-continue-statements).
+PL/pgSQL blocks can be nested. An optional label can be placed above each block. Block labels can be targeted by [`EXIT` statements](#exit).
 
 ~~~ sql
 [ <<outer_block>> ]
@@ -254,7 +254,9 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-### `EXIT` and `CONTINUE` statements
+### Add exit and continue logic
+
+#### `EXIT`
 
 Add an `EXIT` statement to end a [loop](#write-loops). An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
 
@@ -298,6 +300,18 @@ CREATE PROCEDURE p() AS $$
   END
   $$ LANGUAGE PLpgSQL;
 ~~~
+
+#### `RETURN`
+
+Add a `RETURN` statement to a routine with an `OUT` parameter or `VOID` return type to exit the routine immediately.
+
+~~~ sql
+BEGIN
+	...
+	RETURN;
+~~~
+
+#### `CONTINUE`
 
 Add a `CONTINUE` statement to end the current iteration of a [loop](#write-loops), skipping any statements below `CONTINUE` and beginning the next iteration of the loop. 
 

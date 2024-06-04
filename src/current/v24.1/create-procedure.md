@@ -29,8 +29,8 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 |       Parameter       |                                                                   Description                                                                   |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | `routine_create_name` | The name of the procedure.                                                                                                                      |
-| `routine_param`       | A comma-separated list of procedure parameters.                                                                                                                          |
-| `routine_body_str`   | The body of the procedure. For allowed contents, see [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %}#structure). |
+| `routine_param`       | A comma-separated list of procedure parameters, specifying the mode, name, and type.                                                            |
+| `routine_body_str`    | The body of the procedure. For allowed contents, see [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %}#structure). |
 
 ## Examples
 
