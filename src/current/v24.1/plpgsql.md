@@ -217,7 +217,6 @@ IF condition THEN
 
 `IF ... THEN ... ELSIF` executes statements if a boolean condition is true. If the condition is false, each `ELSIF` condition is evaluated until one is true. The corresponding `ELSIF` statements are executed. If no `ELSIF` conditions are true, no statements are executed unless an `ELSE` clause is included, in which case the `ELSE` statements are executed.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IF condition THEN
 	statements;
@@ -227,6 +226,14 @@ IF condition THEN
 	elsif_statements_n; ]
   [ ELSE
 	else_statements; ]
+  END IF;
+~~~
+
+`IF`, `ELSE`, and `ELSIF` conditions are not required to execute statements. You can exclude any statements or add a placeholder `NULL` statement.
+
+~~~ sql
+IF condition THEN
+	NULL;
   END IF;
 ~~~
 
@@ -471,6 +478,14 @@ BEGIN
     WHEN OTHERS THEN
       RETURN others;
   END
+~~~
+
+`WHEN` conditions are not required to execute statements. You can exclude any statements or add a placeholder `NULL` statement.
+
+~~~ sql
+EXCEPTION
+	WHEN error THEN
+		NULL;
 ~~~
 
 ### Control transactions
