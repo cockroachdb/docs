@@ -17,6 +17,12 @@ function build {
 	fi;
 }
 
+# Handle Rust dependencies
+rustup default stable
+if [ ! -f /opt/buildhome/.cargo/bin/svgbob_cli ]; then
+	cargo install svgbob_cli
+	ln -s /opt/buildhome/.cargo/bin/svgbob_cli /opt/buildhome/.cargo/bin/svgbob
+fi;
 gem install bundler --silent
 bundle install --quiet
 build _config_cockroachdb.yml,_config_url.yml

@@ -72,8 +72,12 @@ plugins:
 - jekyll-last-modified-at
 - jekyll-minifier
 - jekyll-get-json
+- jekyll-diagrams
 sass:
   quiet_deps: 'true'
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
+jekyll-diagrams:
+  font-family: 'Source Sans Pro'
+  font-size: '14'

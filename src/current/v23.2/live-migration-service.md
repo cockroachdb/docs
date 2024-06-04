@@ -13,6 +13,55 @@ MOLT LMS (Live Migration Service) is used during a [live migration]({% link {{ p
 
 The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
+{% svgbob %}
+
+ Using MOLT LMS
+ 
+                     .--------------.
+                     |              |
+                     | CockroachDB  |
+                     | {t}          |
+                     '--------------'
+                            ^
+                            |
+
+                           ____
++--------------+         .'    `.
+|              |        /        \
+| Application  | <-->  (   LMS    )
+|{a}           |        \ {lms}  /
++--------------+         `.____.'
+
+                            |
+                            V
+                     .--------------.
+                     |              |
+                     |  Source DB.  |
+                     | {s}          |
+                     '--------------'
+
+# Legend:
+t = {
+    stroke: #6933ff;
+    fill: #b59cf9;
+}
+s = {
+    stroke: green;
+    fill: lightgreen;
+}
+a = {
+    fill: lightblue;
+}
+lms = {
+    fill: #afc8fb;
+    stroke: #05f;
+}
+crdb = {
+    fill: #6933ff;
+    color: white;
+}
+{% endsvgbob %}
+
 MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured using Helm](#configuration). At a high level, the LMS consists of the following:
 
 - A number of proxy [instances](#lms-instances) (running in separate Kubernetes pods) across which application traffic is distributed and routed to the source and target databases.
