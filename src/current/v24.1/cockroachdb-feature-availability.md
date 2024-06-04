@@ -210,7 +210,7 @@ pulsar://localhost:6650
 
 {% include {{ page.version.version }}/cdc/apache-pulsar-unsupported.md %}
 
-For an Azure Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
+For an Apache Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
 
 ### Core implementation of changefeeds
 
