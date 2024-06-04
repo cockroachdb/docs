@@ -350,6 +350,7 @@ To force the use of a specific join algorithm even if the optimizer determines t
 - `CROSS HASH JOIN`
 - `INNER INVERTED JOIN`
 - `LEFT INVERTED JOIN`
+- `INNER STRAIGHT JOIN`
 
 {{site.data.alerts.callout_info}}
 Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the join algorithm keyword (e.g., `MERGE`). For example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is equivalent to `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. The correct syntax is `a INNER MERGE JOIN b`.
@@ -365,11 +366,13 @@ For a join hint example, see [Use the right join type]({% link {{ page.version.v
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
-- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
+- `INVERTED`: Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
 
     {{site.data.alerts.callout_info}}
     You cannot use inverted joins on [partial GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}#partial-gin-indexes).
     {{site.data.alerts.end}}
+
+- `STRAIGHT`: Forces a straight `INNER`, `LEFT`, or `RIGHT` join in the order specified in the query. This is used to hint the join order without hinting a join algorithm, but can potentially override a more efficient query plan.
 
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
