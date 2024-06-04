@@ -53,8 +53,8 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 <br>[`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
 
 **Rule**
-<br>WARNING:  Max end-to-end lag for any changefeed is greater than `10 minutes`.
-<br>CRITICAL:  Max end-to-end lag for any changefeed is greater than `15 minutes`.
+<br>WARNING:  `changefeed.commit_latency` is greater than `10 minutes`.
+<br>CRITICAL:  `changefeed.commit_latency` is greater than `15 minutes`.
 
 **Action**
 
@@ -143,8 +143,8 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
-<br>WARNING:  Metric is greater than `0` and less than 1814400 seconds (3 weeks) until enterprise license expiry
-<br>CRITICAL:  Metric is greater than `0` and less than 259200 seconds (3 days) until enterprise license expiry
+<br>WARNING:  Metric is greater than `0` and less than `1814400` seconds (3 weeks) until enterprise license expiry
+<br>CRITICAL:  Metric is greater than `0` and less than `259200` seconds (3 days) until enterprise license expiry
 
 **Action**
 
@@ -154,10 +154,10 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 
 ### Node LSM Storage Health
 
-CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) storage engine that uses a [Log-structured Merge-tree (LSM tree)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) to manage data storage. The health of an LSM tree can be measured by the [*read amplification*]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms), which is the average number of [SST files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) being checked per read operation. A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
+CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) storage engine that uses a [Log-structured Merge-tree (LSM tree)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) to manage data storage. The health of an LSM tree can be measured by the [*read amplification*]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms), which is the average number of [SST files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) being checked per read operation. A value in the single digits is characteristic of a healthy LSM tree. A value in the double, triple, or quadruple digits suggests an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms). A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
 
 **Metric**
-<br>`rocksdb.read-amplification`: A value in the single digits is characteristic of a healthy LSM tree. A value in the double, triple, or quadruple digits suggests an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
+<br>`rocksdb.read-amplification`
 
 **Rule**
 <br>WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`.
@@ -177,7 +177,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 <br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-combined-percent-normalized)
 <br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
 
-**Alert**
+**Rule**
 <br>Set alerts for each of the listed metrics:
 <br>WARNING:  Metric exceeds `0.80` for `4 hours`.
 <br>CRITICAL:  Metric exceeds `0.90` for `1 hour`.
@@ -192,269 +192,144 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 - A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
 
-### Hot Node (Hotspot)
+### Hot Node (Hot spot)
 
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
 
 **Metric**
-<br>[`
-sys.cpu.combined.percent-normalized, sys.cpu.host.combined.percent-normalized`]
+<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
+<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
 
+**Rule**
+<br>Set alerts for each of the listed metrics:
+<br>WARNING: The max CPU utilization across all nodes exceeds the cluster's median CPU utilization by `30` for `2 hours`.
 
+**Action**
 
-#### Alert Rule
-
-| Tier    | Definition                                                   |
-| ------- | ------------------------------------------------------------ |
-| WARNING | The MAX CPU utilization across nodes exceeds the cluster's MEDIAN CPU utilization by 30 for 2 hours |
-
-
-#### Alert Response
-
-Confirm the Hotspot by observing the graphs in the CockroachDB Console and identify the likely cause. It could be application processing dynamic (spot processing of a high volume of activity for some key, e.g. user id, account number), or uneven distribution of data across ranges, or a skew in connection load balancing, etc.  Observe the following metrics in CockroachDB Console:
-
-- Metrics --> Hardware Dashboard --> "CPU Percent" showing a significantly higher CPU utilization on an small number of nodes relatively to the cluster median. This would confirm a hotspot/overloaded node.
-- Metrics --> SQL Dashboard --> "Open SQL Sessions" showing an uneven distribution of connections (sessions). If a Hot node has significantly more connections vs other nodes, this may explain the cause of the Hotspot. This would be a probably cause yet not a proof since connections could be idling.
-- Metrics --> SQL Dashboard --> "Active SQL Statements" showing the true concurrency of the workload exceeding the cluster sizing guidance (no more than 4 active statements per vCPU). In combination with a possible connection distribution skew, this may be a lead to investigate.
-- Advanced Debug --> Hot Ranges --> "All Nodes" may show the most active ranges in the cluster concentrated on a Hot node. This would suggest either an application processing hotspot or a schema design choice leading to poor data distribution across ranges.
-
-To eliminate a Hotspot caused by a data distribution / design issue, review the Hotspot Prevention/Resolution section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
+- Consult the [hot spots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots) documentation.
 
 ## Node Health
 
-### UNDER CONSTRUCTION
+{{site.data.alerts.callout_info}}
+During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) or planned cluster resizing, the nodes' state and count will be changing. **Mute alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
+{{site.data.alerts.end}}
 
-> 
->
-> ✅  During rolling maintenance and/or planned cluster resizing, the nodes' state and count will be changing. 
->
-> Operators can mute alerts described below during routine maintenance procedures to avoid unnecessary distractions.
->
-> 
+### Heartbeat Latency
 
-
-
-### Alert: Heartbeat Latency
-
-
-
-Monitor the cluster health for early signs of instability.
-
-
-
-
+Monitor the cluster health for early signs of instability. If this metric exceeds 1 second, it is a sign of instability. 
 
 **Metric**
-<br>[`
-liveness.heartbeatlatency`]
-
-If this metric exceeds 1 sec,  it's a sign of instability. The recommended alert rule: warning if 0.5 sec,  critical if 3secs
-
-
-
-**Alert**
-<br> |
-| -------- | ---------- |
-| WARNING  |            |
-| CRITICAL |            |
-
-#### Alert Response
-
-< TODO >
-
-
-
---------------------
-
-
-
-### Alert: Live Node Count Change
-
-Live node count change
-
-
-
-The liveness checks reported by a node is inconsistent with the rest of the cluster.
-
-Inconsistent Liveness check
-
-
-
-------
+<br>[`liveness.heartbeatlatency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#liveness-heartbeatlatency)
 
 **Rule**
-<br>WARNING  | max cluster (liveness.livenodes) - min (liveness.livenodes) > 0 for 2 minutes |
-| CRITICAL | max cluster (liveness.livenodes) - min (liveness.livenodes) > 0 for 5 minutes |
+<br>WARNING: `liveness.heartbeatlatency` greater than `0.5s`
+<br>CRITICAL: `liveness.heartbeatlatency` greater than `3s`
 
+**Action**
 
+*TODO*
 
-#### Alert Response
+### Live Node Count Change
 
-The actual response varies depending on the alert tier, i.e. the severity of potential consequences.
+The liveness checks reported by a node is inconsistent with the rest of the cluster. Number of live nodes in the cluster (will be 0 if this node is not itself live). This is a critical metric that tracks the live nodes in the cluster.
 
-- Check ....
+**Metric**
+<br>[`liveness.livenodes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#liveness-livenodes)
 
-- 
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING: max(`liveness.livenodes`) for the cluster - min(`liveness.livenodes`) for node > `0` for `2 minutes`
+<br>CRITICAL: max(`liveness.livenodes`) for the cluster - min(`liveness.livenodes`) for node > `0` for `5 minutes`
 
+**Action**
 
-
-
-
-
-
-
-
-doing regular maintenance (upgrade, rehydrate, ...) you will also get these messages, so you need to control your monitoring alarms during maintenance.
+*TODO*
 
 ## Node Memory
 
-### Alert: Node Memory Utilization
+### Node Memory Utilization
 
-I node with high memory utilization is a cluster stability risk. Potential causes of high memory utilization are outlined in "Insufficient RAM" section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
+One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) -- the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory-planning).
 
 **Metric**
-<br>[`
-sys.rss`]
+<br>[`sys.rss`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-rss)
 
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `sys.rss` exceeds `0.80` for `4 hours`.
+<br>CRITICAL:  `sys.rss` exceeds `0.90` for `1 hour`.
 
+**Action**
 
-**Alert**
-<br>                                      |
-| -------- | ----------------------------------------------- |
-| WARNING  | Node Memory Utilization exceeds 80% for 4 hours |
-| CRITICAL | Node Memory Utilization exceeds 90% for 1 hour  |
-
-
-
-
-#### Alert Response
-
-High memory utilization is a prelude to a node's OOM (process termination by the OS when the system is critically low on memory). OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per Cockroach Labs guidance:
-
-- All CockroachDB VMs are provisioned with [sufficient RAM](https://www.cockroachlabs.com/docs/stable/recommended-production-settings#memory).
+- Provision all CockroachDB VMs or machines with [sufficient RAM]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory).
 
 ## Node Storage
 
-> 
->
-> ✅  **Clarification about `write stall` and `disk stall` conditions**
->
-> There are 2 distinctly different conditions referring to "stalls" in I/O operations. Operators don't need to create alerts for either condition, in spite of their alarming names.
->
-> ----
->
-> `write stall` is an internal Pebble concept caused by too many memtables' flushes, which usually indicates an excessive write rate by a client. `write stall` messages in logs do not require operator's immediate attention. CockroachDB node can log write stall messages when the disk is churning through a large amount of data ingestion (flushing memtables).
->
-> Examples when high write rates can cause `write stall` log messages:
->
-> \- A sharp increase (spike) in insert throughput from user workload or some job
->
-> \- A large scope delete, such as a TTL job running on a very large set of data or on a large table, triggering a large influx of memtable flushes
->
-> A slow disk is less often the culprit. However, if potential causes above pointing to behavior within the database causing the `write stall`s are ruled out, the customer may want to investigate the health and IO capacity of their disks.
->
-> ----
->
-> `disk stall` is a condition that occurs when a disk IO system call time takes more than a configurable time deadline. The deadline for CockroachDB data IO is configurable via a cluster setting `storage.max_sync_duration` for the max allowable time an IO operation can be waiting in the storage layer. `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable (there is no equivalent cluster setting) sets the max allowable time an IO operation can be waiting in the message logging framework.
->
-> Disk stalls are covered in the broader [data availability](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/system-overview/data-availability.md#disk-stalls) article.
->
-> 
+### Node Storage Capacity
 
-
-
----
-
-### Alert: Node Storage Capacity
-
-CockroachDB node will not able to operate if there is no free disk space on CockroachDB store volume.
+A CockroachDB node will not able to operate if there is no free disk space on a CockroachDB [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) volume.
 
 **Metric**
-<br>[`
-capacity.available`]
-
-
-
-**Alert**
-<br>                                         |
-| -------- | -------------------------------------------------- |
-| WARNING  | Node free disk space is less than 30% for 24 hours |
-| CRITICAL | Node free disk space is less than 10% for 1 hour   |
-
-
-
-
-#### Alert Response
-
-Increase the size of CockroachDB node storage capacity.  CockroachDB  storage volumes should not be utilized more than 60% (40% free space). In an "disk full" situation, operator may be able to get a node "unstuck" by removing the [ballast file](https://www.cockroachlabs.com/docs/stable/cluster-setup-troubleshooting#automatic-ballast-files).
-
-
-
------
-
-### Alert: Node Storage Performance
-
-Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
-
-**Metric**
-<br>[`
-sys.host.disk.iopsinprogress (storage device average queue length)`]
-
-
+<br>[`capacity`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#capacity)
+<br>[`capacity.available`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#capacity-available)
 
 **Rule**
-<br>WARNING  | Storage device average queue length is greater than 10 for 10 seconds |
-| CRITICAL | Storage device average queue length is greater than 20       |
+<br>Set alerts for each node:
+<br>WARNING:  `capacity.available`/`capacity` is less than `0.30` for `24 hours`.
+<br>CRITICAL:  `capacity.available`/`capacity` is less than `0.10` for `1 hour`.
 
+**Action**
 
+- Increase the size of CockroachDB node storage capacity.  CockroachDB  storage volumes should not be utilized more than 60% (40% free space).
+- In a "disk full" situation, you may be able to get a node "unstuck" by removing the [automatically created emergency ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).
 
-#### Alert Response
+### Node Storage Performance
 
-See Resolution in the "Insufficient Disk IO performance" Section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
+Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the [Disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) documentation.
+
+**Metric**
+<br>[`sys.host.disk.iopsinprogress`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-disk-iopsinprogress)
+
+**Rule**
+<br>WARNING:  `sys.host.disk.iopsinprogress` is greater than `10` for `10 seconds`.
+<br>CRITICAL:  `sys.host.disk.iopsinprogress` is greater than `20` for `10 seconds`.
+
+**Action**
+
+- Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O. Consult the [Storage and disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o) documentation.
 
 ## Version Mismatch
 
-### Alert: Version Mismatch
+### Version Mismatch
 
-All CockroachDB cluster nodes are running exactly the same executable (with identical build label). This warning is a safety catch to guard against an operational error when some node(s) were not upgraded.
-
-**Metric**
-<br>[`
-build.timestamp`]
-
-
-
-#### Alert Rule
-
-| Tier    | Definition                                                   |
-| ------- | ------------------------------------------------------------ |
-| WARNING | Non-uniform executable Build version across cluster nodes for more than 4 hours. |
-
-
-
-#### Alert Response
-
-Ensure all cluster nodes are running exactly the same CockroachDB version, including the patch release version number.
-
-
-
------
-
-### Alert: Major Upgrade Un-finalized
-
-A major upgrade should not be left un-finalized for an extended period of time, beyond a small number of days necessary to gain confidence in the new release. This warning is a safety catch to guard against an operational error when a major upgrade is left un-finalized.
+All CockroachDB cluster nodes should be running the same exact executable (with identical build label). This warning guards against an operational error where some nodes were not upgraded.
 
 **Metric**
-<br>[`
-No metric is available. Monitor via a query against system tables.`]
+<br>`build.timestamp`
 
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `build.timestamp` not equal across cluster nodes for more than `4 hours`. |
 
+**Action**
 
-#### Monitoring Result of SQL Query
+- Ensure all cluster nodes are running exactly the same CockroachDB version, including the patch release version number.
+
+### Major Upgrade Un-finalized
+
+A major upgrade should not be left un-finalized for an extended period of time after upgrade, beyond a small number of days necessary to gain confidence in the new release. This warning is guards against an operational error where a major upgrade is left un-finalized.
+
+**Metric**
+<br>No metric is available. Monitor via a query against system tables.
+
+**Rule**
+<br>Not applicable
+
+**Action**
+
+- Monitor result of SQL query against system tables.
 
 *Run the check query provided* in the [CockroachDB version upgrade article](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/routine-maintenance/release-upgrade.md#finalizing-a-major-release-upgrade). If the query returns `false`, the last major upgrade has not been finalized.
-
-
 
 #### Alert Rule
 
