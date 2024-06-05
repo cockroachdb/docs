@@ -28,6 +28,8 @@ The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts, including 
 - [Locking reads]({% link {{ page.version.version }}/select-for-update.md %}) (`SELECT ... FOR UPDATE`).
 - [Mutation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) (such as [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %})).
 
+The preceding statements return an error: `cannot execute {SQL STATEMENT} in a read-only transaction`.
+
 ## Parameters
 
 The `timestamp` argument supports the following formats:
