@@ -118,7 +118,7 @@ Flag | Description
 `--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br /><br />`--nodes=1,10,13-15`
 `--redact` | Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated `--redact-logs` flag, which only applied to log messages contained within `.zip`. See [Redact sensitive information](#redact-sensitive-information) for an example.
 `--redact-logs` | **Deprecated** Redact sensitive data from collected log files only. Use the `--redact` flag instead, which redacts sensitive data across the entire generated `.zip` as well as the collected log files. Passing the `--redact-logs` flag will be interpreted as the `--redact` flag.
-`--timeout` | Return an error if the command does not conclude within a specified nonzero value. The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours). For example:<br /><br />`--timeout=2m`
+`--timeout` | In the process of generating a debug zip, many internal requests are made. Each request is allowed the maximum duration specified by the timeout. If an internal request does not complete within the timeout duration, an error is displayed for that request and its artifact is not included in the zip file.<br /><br />The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours).<br /><br />**Default:** `60s`
 
 ### Client connection
 
