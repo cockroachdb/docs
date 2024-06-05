@@ -15,14 +15,20 @@ Historical data is available only within the garbage collection window, which is
 
 ## Synopsis
 
-The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts,
-including but not limited to:
+The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts, including but not limited to:
 
-- In [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}), at the very end of the `FROM` sub-clause.
+- In [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}), at the very end of the `FROM` sub-clause. The [`FOR`]({% link {{ page.version.version }}/select-for-update.md %}) locking clause is **not** allowed with `AS OF SYSTEM TIME`.
 - In [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), after the parameters of the `FROM` sub-clause.
 - In [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), after the `BEGIN` keyword.
 - In [`SET`]({% link {{ page.version.version }}/set-transaction.md %}), after the `SET TRANSACTION` keyword.
+
+`AS OF SYSTEM TIME` cannot be used with:
+
+- [Locking reads]({% link {{ page.version.version }}/select-for-update.md %}) (`SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE`).
+- [Mutation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) (such as [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %})).
+
+The preceding statements return an error: `cannot execute {SQL STATEMENT} in a read-only transaction`.
 
 ## Parameters
 
