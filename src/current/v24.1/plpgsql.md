@@ -261,7 +261,7 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-### Add exit and continue logic
+### Control execution flow
 
 #### `EXIT`
 
