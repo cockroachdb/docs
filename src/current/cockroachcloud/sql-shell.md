@@ -19,7 +19,7 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 - All statements in the SQL Shell are executed within a transaction, so you cannot use the [SET CLUSTER SETTING](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/set-cluster-setting) statement to configure cluster settings.
 - The SQL Shell does not yet support sessions.
 - The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
-- The SQL Shell is not available by default for CockroachDB {{ site.data.products.dedicated }} advanced clusters. To get access to the SQL shell for your CockroachDB {{ site.data.products.dedicated }} advanced cluster, [contact us](https://support.cockroachlabs.com/hc/en-us).
+- The SQL Shell is not available by default for CockroachDB {{ site.data.products.dedicated }} advanced clusters. To get access to the SQL Shell for your CockroachDB {{ site.data.products.dedicated }} advanced cluster, [contact us](https://support.cockroachlabs.com/hc/en-us).
 
 ## Overview
 
