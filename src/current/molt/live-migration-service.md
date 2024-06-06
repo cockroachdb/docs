@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT LMS (Live Migration Service) is used during a [live migration]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime) to CockroachDB.
+MOLT LMS (Live Migration Service) is used during a [live migration]({% link {{site.current_cloud_version}}/migration-overview.md %}#minimal-downtime) to CockroachDB.
 
 The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
@@ -18,7 +18,7 @@ MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured 
 - A number of proxy [instances](#lms-instances) (running in separate Kubernetes pods) across which application traffic is distributed and routed to the source and target databases.
 - An "orchestrator" service (running in a single Kubernetes pod) that coordinates the proxy instances and sends the cutover commands.
 
-This page describes how to [install](#installation), [configure](#configuration), [secure](#security), and [use the LMS](#molt-lms-cli) to perform a live migration. {% comment %}For more information, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).{% endcomment %}
+This page describes how to [install](#installation), [configure](#configuration), [secure](#security), and [use the LMS](#molt-lms-cli) to perform a live migration. {% comment %}For more information, see [Migration Strategy: Live Migration]({% link {{site.current_cloud_version}}/migration-strategy-live-migration.md %}).{% endcomment %}
 
 For a demo of the Live Migration Service in action, watch the following video:
 
@@ -37,8 +37,8 @@ For a demo of the Live Migration Service in action, watch the following video:
 
 #### Supported database technologies
 
-- [PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}) (source)
-- [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}) (source)
+- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %}) (source)
+- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %}) (source)
 - CockroachDB (source and target)
 
 ## Installation
@@ -261,7 +261,7 @@ spec:
 The connection strings are specified with the following keys inside `config.json`:
 
 - `INIT_SOURCE`: External connection string for the source database, including the paths to your client certificate and keys.
-- `INIT_TARGET`: External [connection string for the CockroachDB database]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url), including the paths to your client certificate and keys.
+- `INIT_TARGET`: External [connection string for the CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url), including the paths to your client certificate and keys.
 
 The remote secret `lms-secret` will contain the full connection strings and paths, such that the `config.json` keys resolve to:
 
@@ -326,7 +326,7 @@ The connection strings are specified with the following keys inside `config.json
     If you named the release `lms` during [installation](#installation), exclude `{releasename}-` from the LMS connection string.
     {{site.data.alerts.end}}
 
-- `CRDB_URL`: External [connection string for the CockroachDB database]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url), including the paths to your client certificate and keys.
+- `CRDB_URL`: External [connection string for the CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url), including the paths to your client certificate and keys.
 
 The remote secret `orch-secret` will contain the full connection strings, such that the `config.json` keys resolve to:
 
@@ -585,7 +585,7 @@ The LMS can be configured to shadow production traffic from the source database 
 
 ### `none`
 
-<img src="{{ 'images/v23.2/migrations/lms_none.svg' | relative_url }}" alt="MOLT LMS shadowing mode - none" />
+<img src="{{ 'images/v24.1/migrations/lms_none.svg' | relative_url }}" alt="MOLT LMS shadowing mode - none" />
 
 `shadowMode: none` disables shadowing.
 
@@ -597,7 +597,7 @@ You **must** use the `none` shadowing mode to perform a [consistent cutover](#co
 
 ### `async`
 
-<img src="{{ 'images/v23.2/migrations/lms_async.svg' | relative_url }}" alt="MOLT LMS shadowing mode - async" />
+<img src="{{ 'images/v24.1/migrations/lms_async.svg' | relative_url }}" alt="MOLT LMS shadowing mode - async" />
 
 `shadowMode: async` writes to both databases.
 
@@ -613,7 +613,7 @@ You can use this mode to confirm that your queries succeed on CockroachDB withou
 
 ### `sync`
 
-<img src="{{ 'images/v23.2/migrations/lms_sync.svg' | relative_url }}" alt="MOLT LMS shadowing mode - sync" />
+<img src="{{ 'images/v24.1/migrations/lms_sync.svg' | relative_url }}" alt="MOLT LMS shadowing mode - sync" />
 
 `shadowMode: sync` writes to both databases.
 
@@ -627,7 +627,7 @@ You can use this mode to perform an [immediate cutover](#immediate-cutover).
 
 ### `strict-sync`
 
-<img src="{{ 'images/v23.2/migrations/lms_strict-sync.svg' | relative_url }}" alt="MOLT LMS shadowing mode - strict-sync" />
+<img src="{{ 'images/v24.1/migrations/lms_strict-sync.svg' | relative_url }}" alt="MOLT LMS shadowing mode - strict-sync" />
 
 `shadowMode: strict-sync` writes to both databases and enforces correctness on both databases.
 
@@ -644,16 +644,16 @@ You can use this mode to perform an [immediate cutover](#immediate-cutover).
 
 ### Consistent cutover
 
-A consistent cutover maintains data consistency with [minimal downtime]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime). The goal of consistent cutover is to stop application traffic long enough for replication to catch up and ensure that the cutover achieves consistency across the two databases.
+A consistent cutover maintains data consistency with [minimal downtime]({% link {{site.current_cloud_version}}/migration-overview.md %}#minimal-downtime). The goal of consistent cutover is to stop application traffic long enough for replication to catch up and ensure that the cutover achieves consistency across the two databases.
 
 When using the LMS, consistent cutover is handled using the [`molt-lms-cli`](#molt-lms-cli) commands `cutover consistent begin` and `cutover consistent commit`, during which application requests are queued and will be responded to after cutover. This delay in response time is related to the maximum duration of any transactions and queries that need to complete, and the time it takes for replication to catch up from the source to the target database.
 
 {% comment %}
-For more information about the consistent cutover approach, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).
+For more information about the consistent cutover approach, see [Migration Strategy: Live Migration]({% link {{site.current_cloud_version}}/migration-strategy-live-migration.md %}).
 {% endcomment %}
 
 {{site.data.alerts.callout_info}}
-These steps assume you have already followed the overall steps to [prepare for migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration). In particular, [update your schema and application queries]({% link {{ page.version.version }}/migration-overview.md %}#update-the-schema-and-queries) to work with CockroachDB.
+These steps assume you have already followed the overall steps to [prepare for migration]({% link {{site.current_cloud_version}}/migration-overview.md %}#prepare-for-migration). In particular, [update your schema and application queries]({% link {{site.current_cloud_version}}/migration-overview.md %}#update-the-schema-and-queries) to work with CockroachDB.
 {{site.data.alerts.end}}
 
 To perform a consistent cutover with the LMS:
@@ -672,7 +672,7 @@ To perform a consistent cutover with the LMS:
 
 1. Send application requests to the LMS, which routes the traffic to the source database. The source database is designated the source of truth.
 
-1. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
+1. Use [MOLT Verify]({% link molt/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
 
 1. Begin the consistent cutover. **Requests are now queued in the LMS**, including queries from existing connections and new connection requests to the LMS:
 
@@ -720,7 +720,7 @@ To perform a consistent cutover with the LMS:
 
     To verify that CockroachDB is now the source of truth, you can run `molt-lms-cli status`.
 
-1. Again, use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the data on the source database and CockroachDB are consistent.
+1. Again, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate that the data on the source database and CockroachDB are consistent.
 
 If any problems arise during a consistent cutover:
 
@@ -740,14 +740,14 @@ If any problems arise during a consistent cutover:
 {% comment %}
 ### Immediate cutover
 
-An immediate cutover can potentially [reduce downtime to zero]({% link {{ page.version.version }}/migration-overview.md %}#minimal-downtime), at the likely risk of introducing data inconsistencies between the source and target databases. The LMS is configured to dual write to the source and target databases, while the [`molt-lms-cli`](#molt-lms-cli) command `cutover immediate` initiates cutover.
+An immediate cutover can potentially [reduce downtime to zero]({% link {{site.current_cloud_version}}/migration-overview.md %}#minimal-downtime), at the likely risk of introducing data inconsistencies between the source and target databases. The LMS is configured to dual write to the source and target databases, while the [`molt-lms-cli`](#molt-lms-cli) command `cutover immediate` initiates cutover.
 
-For more information about the immediate cutover approach, see [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}).
+For more information about the immediate cutover approach, see [Migration Strategy: Live Migration]({% link {{site.current_cloud_version}}/migration-strategy-live-migration.md %}).
 
 To perform an immediate cutover with the LMS:
 
 {{site.data.alerts.callout_info}}
-These steps assume you have already followed the overall steps to [prepare for migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration). In particular, [update your schema and application queries]({% link {{ page.version.version }}/migration-overview.md %}#update-the-schema-and-queries) to work with CockroachDB.
+These steps assume you have already followed the overall steps to [prepare for migration]({% link {{site.current_cloud_version}}/migration-overview.md %}#prepare-for-migration). In particular, [update your schema and application queries]({% link {{site.current_cloud_version}}/migration-overview.md %}#update-the-schema-and-queries) to work with CockroachDB.
 {{site.data.alerts.end}}
 
 1. [Configure the LMS](#configuration) with your deployment details, and follow our [security recommendations](#security).
@@ -756,9 +756,9 @@ These steps assume you have already followed the overall steps to [prepare for m
 
 1. Send application requests to the LMS, which routes the traffic to the source database and to CockroachDB. The source database is designated the source of truth.
 
-1. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
+1. Use [MOLT Verify]({% link molt/molt-verify.md %}) to validate that the replicated data on CockroachDB is consistent with the source of truth.
 
-    To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
+    To ensure data integrity, shadowing must be enabled for a sufficient duration with a low error rate. All LMS instances should have been continuously shadowing your workload for the past **seven days** at minimum, with only transient inconsistencies caused by events such as [transaction retry errors]({% link {{site.current_cloud_version}}/transaction-retry-error-reference.md %}). The longer shadowing has been enabled, the better this allows you to evaluate consistency.
 
 1. Once nearly all data from the source database is replicated to CockroachDB (for example, with a <1 second delay or <1000 rows), initiate the cutover:
 
@@ -769,7 +769,7 @@ These steps assume you have already followed the overall steps to [prepare for m
 
     This command tells the LMS to switch the source of truth to CockroachDB. Application traffic is immediately directed to CockroachDB.
 
-1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
+1. Any writes that were made during the cutover will have been missed on CockroachDB. Use [MOLT Verify]({% link molt/molt-verify.md %}) to identify the inconsistencies. These will need to be manually reconciled.
 {% endcomment %}
 
 ### Monitor cutover
@@ -884,9 +884,9 @@ Individual LMS Proxy Status.
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-{% comment %}- [Migration Strategy: Live Migration]({% link {{ page.version.version }}/migration-strategy-live-migration.md %}){% endcomment %}
+- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+{% comment %}- [Migration Strategy: Live Migration]({% link {{site.current_cloud_version}}/migration-strategy-live-migration.md %}){% endcomment %}
 - [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
-- [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})
+- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
+- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})

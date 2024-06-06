@@ -77,7 +77,22 @@
 - destination: advisories/index.md
   sources: ['advisories/advisories.md']
 
-# Pages undergoing maintenance
+- destination: molt/molt-fetch.md
+  sources:
+    - v23.2/molt-fetch.md
+    - v24.1/molt-fetch.md
+
+- destination: molt/molt-verify.md
+  sources:
+    - v23.1/molt-verify.md
+    - v23.2/molt-verify.md
+    - v24.1/molt-verify.md
+
+- destination: molt/live-migration-service.md
+  sources:
+    - v23.1/live-migration-service.md
+    - v23.2/live-migration-service.md
+    - v24.1/live-migration-service.md
 
 # Renamed pages
 
