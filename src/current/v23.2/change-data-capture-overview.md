@@ -19,7 +19,7 @@ The main feature of CockroachDB CDC is the _changefeed_, which targets an allowl
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
+Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. The first emission of a row's change event to the sink is subject to an at-least-once delivery guarantee and ordered by timestamp.
 
 CockroachDB has two implementations of changefeeds:
 
