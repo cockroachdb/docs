@@ -18,7 +18,7 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ pag
 <br>[`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-failures)
 
 **Rule**
-<br>CRITICAL:  If `changefeed.failures` is greater than `0`. 
+<br>CRITICAL:  If `changefeed.failures` is greater than `0`
 
 **Action**
 
@@ -39,7 +39,7 @@ Changefeeds automatically restart in case of transient errors. However "too many
 <br>[`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-error-retries)
 
 **Rule**
-<br>WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`.
+<br>WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`
 
 **Action**
 
@@ -53,8 +53,8 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 <br>[`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
 
 **Rule**
-<br>WARNING:  `changefeed.commit_latency` is greater than `10 minutes`.
-<br>CRITICAL:  `changefeed.commit_latency` is greater than `15 minutes`.
+<br>WARNING:  `changefeed.commit_latency` is greater than `10 minutes`
+<br>CRITICAL:  `changefeed.commit_latency` is greater than `15 minutes`
 
 **Action**
 
@@ -91,8 +91,8 @@ Changefeed jobs should not be paused for a long time because the protected times
 <br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-currently-paused)
 
 **Rule**
-<br>WARNING:  `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`.
-<br>CRITICAL:  `jobs.changefeed.currently_paused` is greater than `0` for more than `60 minutes`.
+<br>WARNING:  `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`
+<br>CRITICAL:  `jobs.changefeed.currently_paused` is greater than `0` for more than `60 minutes`
 
 **Action**
 
@@ -112,6 +112,20 @@ Changefeed jobs should not be paused for a long time because the protected times
     RESUME JOB 681491311976841286;
     ```
 
+### Changefeed experiencing high latency
+
+Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) variable set in the cluster.
+
+**Metric**
+<br>changefeed.max_behind_nanos
+
+**Rule**
+<br>WARNING:  `changefeed.max_behind_nanos` greater than a threshold (that is less than `gc.ttlseconds` variable)
+
+**Action**
+
+*TODO*
+
 ## Expirations
 
 ### Enterprise License Expiration
@@ -122,8 +136,8 @@ Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensi
 <br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#seconds-until-enterprise-license-expiry)
 
 **Rule**
-<br>WARNING:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `1814400` seconds (3 weeks).
-<br>CRITICAL:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `259200` seconds (3 days).
+<br>WARNING:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `1814400` seconds (3 weeks)
+<br>CRITICAL:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `259200` seconds (3 days)
 
 **Action**
 
@@ -150,6 +164,27 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 
 [Rotate the expiring certificates]({% link {{ page.version.version }}/rotate-certificates.md %}).
 
+## Intent Buildup
+
+### Intent Buildup
+
+Send an alert when very large transactions are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
+
+Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance. These transactions may create locking contention, thus limiting concurrency. This would reduce throughput, and in extreme cases, lead to stalled workloads.
+
+**Metric**
+<br>`intentcount`
+
+**Rule**
+<br>WARNING:  `intentcount` greater than 10,000,000 for 2 minutes
+<br>CRITICAL:  `intentcount` greater than 10,000,000 for 5 minutes
+<br>For tighter transaction scope scrutiny, lower the `intentcount` threshold that triggers an alert.
+
+**Action**
+
+- Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope `DELETE`, consider "paging" `DELETE`s that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring]({% link {{ page.version.version }}/bulk-update-data.md %}).
+- After reviewing the workload, an operator may conclude that a possible performance impact (discussed above) of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be material. In that case, "doing-nothing" could be a valid response to this alert.
+
 ## LSM Health
 
 ### Node LSM Storage Health
@@ -160,8 +195,8 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 <br>`rocksdb.read-amplification`
 
 **Rule**
-<br>WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`.
-<br>CRITICAL:  `rocksdb.read-amplification` greater than `150` for `15 minutes`.
+<br>WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`
+<br>CRITICAL:  `rocksdb.read-amplification` greater than `150` for `15 minutes`
 
 **Action**
 
@@ -179,8 +214,8 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
-<br>WARNING:  Metric exceeds `0.80` for `4 hours`.
-<br>CRITICAL:  Metric exceeds `0.90` for `1 hour`.
+<br>WARNING:  Metric greater than `0.80` for `4 hours`
+<br>CRITICAL:  Metric greater than `0.90` for `1 hour`
 
 **Action**
 
@@ -202,7 +237,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
-<br>WARNING: The max CPU utilization across all nodes exceeds the cluster's median CPU utilization by `30` for `2 hours`.
+<br>WARNING: The max CPU utilization across all nodes exceeds the cluster's median CPU utilization by `30` for `2 hours`
 
 **Action**
 
@@ -256,8 +291,8 @@ One node with high memory utilization is a cluster stability risk. High memory u
 
 **Rule**
 <br>Set alerts for each node:
-<br>WARNING:  `sys.rss` exceeds `0.80` for `4 hours`.
-<br>CRITICAL:  `sys.rss` exceeds `0.90` for `1 hour`.
+<br>WARNING:  `sys.rss` greater than `0.80` for `4 hours`
+<br>CRITICAL:  `sys.rss` greater than `0.90` for `1 hour`
 
 **Action**
 
@@ -275,8 +310,8 @@ A CockroachDB node will not able to operate if there is no free disk space on a 
 
 **Rule**
 <br>Set alerts for each node:
-<br>WARNING:  `capacity.available`/`capacity` is less than `0.30` for `24 hours`.
-<br>CRITICAL:  `capacity.available`/`capacity` is less than `0.10` for `1 hour`.
+<br>WARNING:  `capacity.available`/`capacity` is less than `0.30` for `24 hours`
+<br>CRITICAL:  `capacity.available`/`capacity` is less than `0.10` for `1 hour`
 
 **Action**
 
@@ -291,8 +326,8 @@ Under-configured or under-provisioned disk storage is a common root cause of inc
 <br>[`sys.host.disk.iopsinprogress`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-disk-iopsinprogress)
 
 **Rule**
-<br>WARNING:  `sys.host.disk.iopsinprogress` is greater than `10` for `10 seconds`.
-<br>CRITICAL:  `sys.host.disk.iopsinprogress` is greater than `20` for `10 seconds`.
+<br>WARNING:  `sys.host.disk.iopsinprogress` greater than `10` for `10 seconds`
+<br>CRITICAL:  `sys.host.disk.iopsinprogress` greater than `20` for `10 seconds`
 
 **Action**
 
@@ -309,29 +344,117 @@ All CockroachDB cluster nodes should be running the same exact executable (with 
 
 **Rule**
 <br>Set alerts for each node:
-<br>WARNING:  `build.timestamp` not the same across cluster nodes for more than `4 hours`.
+<br>WARNING:  `build.timestamp` not the same across cluster nodes for more than `4 hours`
 
 **Action**
 
 - Ensure all cluster nodes are running exactly the same CockroachDB version, including the patch release version number.
 
-## Intent Buildup
+## Health
 
-### Intent Buildup
+### Node restarting too frequently
 
-Send an alert when very large transactions are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
-
-Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance. These transactions may create locking contention, thus limiting concurrency. This would reduce throughput, and in extreme cases, lead to stalled workloads.
+Send an alert if a node has restarted more than once in the last 10 minutes. Calculate this using the number of times the sys.uptime metric was reset back to zero.
 
 **Metric**
-<br>`intentcount`
+<br>[`sys.uptime`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-uptime)
 
 **Rule**
-<br>CRITICAL:  `intentcount` greater than 10,000,000 for 5 minutes.
-<br>WARNING:  `intentcount` greater than 10,000,000 for 2 minutes.
-<br>For tighter transaction scope scrutiny, lower the `intentcount` threshold that triggers an alert.
+<br>Set alerts for each node:
+<br>WARNING:  `sys.uptime` resets greater than `1` in the last `10 minutes`
 
 **Action**
 
-- Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope `DELETE`, consider "paging" `DELETE`s that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring]({% link {{ page.version.version }}/bulk-update-data.md %}).
-- After reviewing the workload, an operator may conclude that a possible performance impact (discussed above) of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be material. In that case, "doing-nothing" could be a valid response to this alert.
+*TODO*
+
+### High open file descriptor count
+
+Send an alert when a cluster is getting close to the open file descriptor limit.
+
+**Metric**
+<br>`sys.fd.open`
+<br>`sys.fd.softlimit`
+
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `sys_fd_open` / `sys_fd_softlimit` greater than `0.8` for `10 minutes`
+
+**Action**
+
+*TODO*
+
+## SQL 
+
+### Node not executing SQL
+
+Send an alert when a node is not executing SQL despite having connections.
+
+**Metric**
+<br>[`sql.conns`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-conns)
+<br>`sql.query.count`
+
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `sql.conns` greater than `0` while `sql.query.count` equals `0`
+
+**Action**
+
+*TODO*
+
+## KV replication
+
+### Unavailable ranges
+
+Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
+
+**Metric**
+<br>[`ranges.unavailable`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#ranges-unavailable)
+
+**Rule**
+<br>WARNING:  `ranges.unavailable` greater than `0` for `10 minutes`
+
+**Action**
+
+*TODO*
+
+### Tripped replica circuit breakers
+
+Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
+
+**Metric**
+<br>`kv.replica_circuit_breaker.num_tripped_replicas`
+
+**Rule**
+<br>WARNING:  `kv.replica_circuit_breaker_num_tripped_replicas` greater than `0` for `10 minutes`
+
+**Action**
+
+*TODO*
+
+### Under-replicated ranges
+
+Send an alert when the number of ranges with replication below the replication factor is non-zero for too long.
+
+**Metric**
+<br>[`ranges.underreplicated`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#ranges-underreplicated)
+
+**Rule**
+<br>WARNING:  `ranges.underreplicated` greater than `0` for `1 hour`
+
+**Action**
+
+*TODO*
+
+### Requests stuck in Raft
+
+Send an alert when requests are taking a very long time in replication.
+
+**Metric**
+<br>`requests.slow.raft`
+
+**Rule**
+<br>WARNING:  `requests_slow_raft` greater than `0` for `10 minutes`
+
+**Action**
+
+*TODO*
