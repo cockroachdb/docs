@@ -21,7 +21,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 **Action**
 
-- Consult the [CPU Usage]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [Workload Concurrency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#workload-concurrency) documentation.
+- Refer to [CPU Usage]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [Workload Concurrency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#workload-concurrency).
 
 - In the DB Console, navigate to **Metrics**, [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) for the cluster and check for high values on the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) and the [**Host CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#host-cpu-percent).
 
@@ -43,7 +43,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 
 **Action**
 
-- Consult the [hot spots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots) documentation.
+- Refer to [Hot spots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots).
 
 ### Node Memory Utilization
 
@@ -63,7 +63,7 @@ One node with high memory utilization is a cluster stability risk. High memory u
 
 ### Node Storage Performance
 
-Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Review the [Disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) documentation.
+Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Refer to [Disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops).
 
 **Metric**
 <br>[`sys.host.disk.iopsinprogress`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-disk-iopsinprogress)
@@ -74,7 +74,7 @@ Under-configured or under-provisioned disk storage is a common root cause of inc
 
 **Action**
 
-- Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O. Consult the [Storage and disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o) documentation.
+- Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O. Refer to [Storage and disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o).
 
 ### Version Mismatch
 
@@ -105,7 +105,7 @@ Send an alert when a cluster is getting close to the open file descriptor limit.
 
 **Action**
 
-*TODO*
+- Refer to [File descriptors limit]({% link {{ page.version.version }}/recommended-production-settings.md %}#file-descriptors-limit).
 
 ## Storage
 
@@ -142,7 +142,7 @@ Send an alert if a node has restarted more than once in the last 10 minutes. Cal
 
 **Action**
 
-*TODO*
+- Refer to [Node process restarts]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#node-process-restarts).
 
 ### Node LSM Storage Health
 
@@ -157,7 +157,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 
 **Action**
 
-Consult the [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health) documentation.
+- Refer to [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health).
 
 ## Expiration of license and certificates
 
@@ -216,7 +216,7 @@ Monitor the cluster health for early signs of instability. If this metric exceed
 
 **Action**
 
-*TODO*
+- Refer to [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 
 ### Live Node Count Change
 
@@ -232,7 +232,7 @@ The liveness checks reported by a node is inconsistent with the rest of the clus
 
 **Action**
 
-*TODO*
+- Refer to [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 
 ### Intent Buildup
 
@@ -267,7 +267,7 @@ Send an alert when the number of ranges with fewer live replicas than needed for
 
 **Action**
 
-*TODO*
+- Refer to [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
 ### Tripped replica circuit breakers
 
@@ -281,7 +281,7 @@ Send an alert when a replica stops serving traffic due to other replicas being o
 
 **Action**
 
-*TODO*
+- Refer to [Per-replica circuit breakers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breakers) and [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
 ### Under-replicated ranges
 
@@ -295,27 +295,27 @@ Send an alert when the number of ranges with replication below the replication f
 
 **Action**
 
-*TODO*
+- Refer to [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
 ### Requests stuck in Raft
 
-Send an alert when requests are taking a very long time in replication.
+Send an alert when requests are taking a very long time in replication. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
 
 **Metric**
 <br>`requests.slow.raft`
 
 **Rule**
-<br>WARNING:  `requests_slow_raft` greater than `0` for `10 minutes`
+<br>WARNING:  `requests.slow.raft` greater than `0` for `10 minutes`
 
 **Action**
 
-*TODO*
+- Refer to [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
 ## SQL 
 
 ### Node not executing SQL
 
-Send an alert when a node is not executing SQL despite having connections.
+Send an alert when a node is not executing SQL despite having connections. `sql.conns` shows the number of connections as well as the distribution, or balancing, of connections across cluster nodes. An imbalance can lead to nodes becoming overloaded.
 
 **Metric**
 <br>[`sql.conns`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-conns)
@@ -327,7 +327,7 @@ Send an alert when a node is not executing SQL despite having connections.
 
 **Action**
 
-*TODO*
+- Refer to [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Changefeeds
 
@@ -368,7 +368,7 @@ Changefeeds automatically restart in case of transient errors. However "too many
 
 **Action**
 
-Follow the action for a [changefeed failure](#changefeed-failure).
+- Follow the action for a [changefeed failure](#changefeed-failure).
 
 ### Changefeed Falling Behind
 
@@ -449,4 +449,4 @@ Send an alert when the latency of any changefeed running on any node is higher t
 
 **Action**
 
-*TODO*
+- Refer to [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#recommended-changefeed-metrics-to-track).
