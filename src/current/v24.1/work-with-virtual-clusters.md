@@ -112,13 +112,7 @@ sql_txn_commit_count{tenant="system"} 0
 sql_txn_commit_count{tenant="demo"} 0
 ~~~
 
-When connected to a virtual cluster from the DB Console:
-
-- Most pages and views are scoped to a virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
-
-- DB Console pages related to SQL activity and jobs are visible only from a virtual cluster.
-
-- Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
+When connected to a virtual cluster from the DB Console, metrics which measure SQL and related activity show data scoped to the virtual cluster. All other metrics are collected system-wide and display the same data on all virtual clusters including the system virtual cluster.
 
 ## Disaster recovery
 
