@@ -47,22 +47,28 @@ CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the f
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
-Asia Pacific    | `ap-northeast-1` | Tokyo
+Asia Pacific    | `ap-east1`       | Hong Kong
+                | `ap-southeast-3` | Jakarta
+                | `ap-northeast-1` | Tokyo
                 | `ap-northeast-2` | Seoul
                 | `ap-northeast-3` | Osaka
                 | `ap-south-1`     | Mumbai
                 | `ap-southeast-1` | Singapore
                 | `ap-southeast-2` | Sydney
-Middle East     | `me-central-1`   | United Arab Emirates
-North America   | `ca-central-1`   | Central Canada
+Middle East     | `me-south-1`     | Bahrain
+                | `il-central-1`   | Tel Aviv
+                | `me-central-1`   | United Arab Emirates
+North America   | `ca-west-1`      | Calgary
+                | `ca-central-1`   | Central Canada
                 | `us-east-1`      | N. Virginia
                 | `us-east-2`      | Ohio
                 | `us-west-2`      | Oregon
 South America   | `sa-east-1`      | Sao Paolo
 Western Europe  | `eu-central-1`   | Frankfurt
-                | `eu-north-1`     | Stockholm
                 | `eu-west-1`      | Ireland
                 | `eu-west-2`      | London
+                | `eu-south-1`     | Milan
+                | `eu-north-1`     | Stockholm
                 | `eu-west-3`      | Paris
 
 </section>
