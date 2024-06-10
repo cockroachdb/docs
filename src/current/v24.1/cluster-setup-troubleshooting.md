@@ -567,9 +567,9 @@ To identify under-replicated/unavailable ranges:
 
 1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
-1.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
+1.  On the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-1. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), check the network matrix, if there are nodes with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections) which may indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 **Add nodes to the cluster:**
 
@@ -578,8 +578,7 @@ On the DB Console’s Cluster Overview page, check if any nodes are down. If the
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
 1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access)
-1.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-1.  Click **Problem Ranges**.
+1.  On the [**Advanced Debug** page]({% link {{ page.version.version }}/ui-debug-pages.md %}), click **Problem Ranges**.
 1.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
