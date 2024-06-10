@@ -5,7 +5,10 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
 {% endunless %}
 
 {% assign actual_today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
-{% assign today = '2025-11-14' | date: "%s" %} {% comment %} Simulate future date and format it in seconds. {% endcomment %}
+{% comment %}Test 23.1 LTS EOL{% endcomment %}
+{% comment %}{% assign today = '2025-11-14' | date: "%s" %}{% endcomment %} {% comment %} Simulate future date and format it in seconds. {% endcomment %}
+{% comment %}Test 23.1 LTS Assistance{% endcomment %}
+{% assign today = '2025-11-13' | date: "%s" %}
 
 {% if DEBUG %}
 Actual today: {{ actual_today }}<br />
