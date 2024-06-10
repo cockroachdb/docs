@@ -362,7 +362,7 @@ For a join hint example, see [Use the right join type]({% link {{ page.version.v
 
 ### Supported join algorithms
 
-- `HASH`: Forces a hash join; in other words, it disables merge and lookup joins. A hash join is always possible, even if there are no equality columns: CockroachDB considers the nested loop join with no index a degenerate case of the hash join (i.e., a hash table with one bucket).
+- `HASH`: Forces a hash join; in other words, it disables merge and lookup joins. A hash join is always possible, even if there are no equality columns: CockroachDB treats a nested loop join without an index as a special case of a hash join, where the hash table effectively has one bucket.
 
 - `MERGE`: Forces a merge join, even if it requires re-sorting both sides of the join.
 
