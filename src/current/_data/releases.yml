@@ -6130,7 +6130,7 @@
   release_date: '2024-06-06'
   release_type: Production
   go_version: go1.22.0
-  sha: cda52ed461cb75e95cb296116a542d687dc66773
+  sha: 212dffab088f28ff592219b98869bc34f8691ecc
   has_sql_only: true
   has_sha256sum: true
   mac:
