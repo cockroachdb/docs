@@ -5,16 +5,16 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
+MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{site.current_cloud_version}}/migration-overview.md %}).
 
-MOLT Fetch uses [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data onto a target CockroachDB database. For details, see [Usage](#usage).
+MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data onto a target CockroachDB database. For details, see [Usage](#usage).
 
 ## Supported databases
 
 The following source databases are currently supported:
 
-- [PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
+- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
 - CockroachDB
 
 ## Installation
@@ -41,7 +41,7 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`'drop-on-target-and-recreate'`](#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling](#mismatch-handling).
 
-- Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
+- Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}#required-privileges) (depending on the [fetch mode](#fetch-mode)) on CockroachDB, as described on their respective pages.
 
 - If you plan to use continuous replication (using either [`--ongoing-replication`](#replication) or the [CDC cursor](#cdc-cursor)):
 
@@ -49,7 +49,7 @@ Complete the following items before using MOLT Fetch:
 
 	- If you are migrating from MySQL, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. In `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command, set `gtid-mode` and `enforce-gtid-consistency` to `ON` and set `binlog_row_metadata` to `full`.
 
-- Percent-encode the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
+- Percent-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
 	- Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
 
@@ -113,7 +113,7 @@ Complete the following items before using MOLT Fetch:
 
 - If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
-- When using [`IMPORT INTO` mode](#fetch-mode) to load tables into CockroachDB, if the fetch process terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the process from the beginning.
+- When using [`IMPORT INTO` mode](#fetch-mode) to load tables into CockroachDB, if the fetch process terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the process from the beginning.
 
 ## Security recommendations
 
@@ -121,7 +121,7 @@ Cockroach Labs **strongly** recommends the following:
 
 ### Secure connections
 
-- Use secure connections to the source and [target CockroachDB database]({% link {{ page.version.version }}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
+- Use secure connections to the source and [target CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
 - By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** for testing, or if a secure SSL/TLS connection to the source or target database is not possible.
 
 ### Connection strings
@@ -246,7 +246,7 @@ MySQL:
 --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
-`--target` specifies the [CockroachDB connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url):
+`--target` specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -255,16 +255,16 @@ MySQL:
 
 ### Fetch mode
 
-MOLT Fetch can use either [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) to load data into CockroachDB.
+MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}) to load data into CockroachDB.
 
 By default, MOLT Fetch uses `IMPORT INTO`:
 
-- `IMPORT INTO` mode achieves the highest throughput, but [requires taking the tables **offline**]({% link {{ page.version.version }}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{ page.version.version }}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices](#best-practices).
+- `IMPORT INTO` mode achieves the highest throughput, but [requires taking the tables **offline**]({% link {{site.current_cloud_version}}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices](#best-practices).
 - `IMPORT INTO` mode supports compression using the `--compression` flag, which reduces the amount of storage used.
 
 `--use-copy` configures MOLT Fetch to use `COPY FROM`:
 
-- `COPY FROM` mode enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
+- `COPY FROM` mode enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}).
 - `COPY FROM` mode does not support compression.
 
 {{site.data.alerts.callout_info}}
@@ -301,7 +301,7 @@ Cloud storage can be used with either the [`IMPORT INTO` or `COPY FROM` modes](#
 
 #### Local file server
 
-`--local-path` specifies that MOLT Fetch should write intermediate files to a path within a [local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
+`--local-path` specifies that MOLT Fetch should write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -368,7 +368,7 @@ To load the data without changing the existing data in the tables, use `'none'`:
 --table-handling 'none'
 ~~~
 
-To [truncate]({% link {{ page.version.version }}/truncate.md %}) tables before loading the data, use `'truncate-if-exists'`:
+To [truncate]({% link {{site.current_cloud_version}}/truncate.md %}) tables before loading the data, use `'truncate-if-exists'`:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -396,7 +396,7 @@ This does not apply when [`'drop-on-target-and-recreate'`](#target-table-handlin
 
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
-- A [`STRING`]({% link {{ page.version.version }}/string.md %}) primary key has a different [collation]({% link {{ page.version.version }}/collate.md %}) on the source and target.
+- A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
 - A source and target column have mismatching types that are not [allowable mappings](#type-mapping).
 - A target table is missing a column that is in the corresponding source table.
 - A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
@@ -405,54 +405,54 @@ This does not apply when [`'drop-on-target-and-recreate'`](#target-table-handlin
 
 - A target table has a column that is not in the corresponding source table.
 - A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
-- A [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}), [`CHECK`]({% link {{ page.version.version }}/check.md %}), [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}), or [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint is specified on a target column and not on the source column.
+- A [`DEFAULT`]({% link {{site.current_cloud_version}}/default-value.md %}), [`CHECK`]({% link {{site.current_cloud_version}}/check.md %}), [`FOREIGN KEY`]({% link {{site.current_cloud_version}}/foreign-key.md %}), or [`UNIQUE`]({% link {{site.current_cloud_version}}/unique.md %}) constraint is specified on a target column and not on the source column.
 
 #### Type mapping
 
 If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch automatically creates a CockroachDB schema that is compatible with the source data. The column types are determined as follows:
 
-- PostgreSQL types are mapped to existing CockroachDB [types]({% link {{ page.version.version }}/data-types.md %}) that have the same [`OID`]({% link {{ page.version.version }}/oid.md %}).
+- PostgreSQL types are mapped to existing CockroachDB [types]({% link {{site.current_cloud_version}}/data-types.md %}) that have the same [`OID`]({% link {{site.current_cloud_version}}/oid.md %}).
 - The following MySQL types are mapped to corresponding CockroachDB types:
 
 	|                      MySQL type                     |                                                CockroachDB type                                                |
 	|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-	| `CHAR`, `CHARACTER`, `VARCHAR`, `NCHAR`, `NVARCHAR` | [`VARCHAR`]({% link {{ page.version.version }}/string.md %})                                                   |
-	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`        | [`STRING`]({% link {{ page.version.version }}/string.md %})                                                    |
-	| `GEOMETRY`                                          | [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)                          |
-	| `LINESTRING`                                        | [`LINESTRING`]({% link {{ page.version.version }}/linestring.md %})                                            |
-	| `POINT`                                             | [`POINT`]({% link {{ page.version.version }}/point.md %})                                                      |
-	| `POLYGON`                                           | [`POLYGON`]({% link {{ page.version.version }}/polygon.md %})                                                  |
-	| `MULTIPOINT`                                        | [`MULTIPOINT`]({% link {{ page.version.version }}/multipoint.md %})                                            |
-	| `MULTILINESTRING`                                   | [`MULTILINESTRING`]({% link {{ page.version.version }}/multilinestring.md %})                                  |
-	| `MULTIPOLYGON`                                      | [`MULTIPOLYGON`]({% link {{ page.version.version }}/multipolygon.md %})                                        |
-	| `GEOMETRYCOLLECTION`, `GEOMCOLLECTION`              | [`GEOMETRYCOLLECTION`]({% link {{ page.version.version }}/geometrycollection.md %})                            |
-	| `JSON`                                              | [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})                                                      |
-	| `TINYINT`, `INT1`                                   | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `BLOB`                                              | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `SMALLINT`, `INT2`                                  | [`INT2`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `MEDIUMINT`, `INT`, `INTEGER`, `INT4`               | [`INT4`]({% link {{ page.version.version }}/int.md %})                                                         |
-	| `BIGINT`, `INT8`                                    | [`INT`]({% link {{ page.version.version }}/int.md %})                                                          |
-	| `FLOAT`                                             | [`FLOAT4`]({% link {{ page.version.version }}/float.md %})                                                     |
-	| `DOUBLE`                                            | [`FLOAT`]({% link {{ page.version.version }}/float.md %})                                                      |
-	| `DECIMAL`, `NUMERIC`, `REAL`                        | [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) (Negative scale values are autocorrected to `0`) |
-	| `BINARY`, `VARBINARY`                               | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `DATETIME`                                          | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})                                              |
-	| `TIMESTAMP`                                         | [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})                                            |
-	| `TIME`                                              | [`TIME`]({% link {{ page.version.version }}/time.md %})                                                        |
-	| `BIT`                                               | [`VARBIT`]({% link {{ page.version.version }}/bit.md %})                                                       |
-	| `DATE`                                              | [`DATE`]({% link {{ page.version.version }}/date.md %})                                                        |
-	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`                | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})                                                      |
-	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{ page.version.version }}/bool.md %})                                                        |
-	| `ENUM`                                              | [`ANY_ENUM`]({% link {{ page.version.version }}/enum.md %})                                                    |
+	| `CHAR`, `CHARACTER`, `VARCHAR`, `NCHAR`, `NVARCHAR` | [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %})                                                   |
+	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`        | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                    |
+	| `GEOMETRY`                                          | [`GEOMETRY`]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#geometry)                          |
+	| `LINESTRING`                                        | [`LINESTRING`]({% link {{site.current_cloud_version}}/linestring.md %})                                            |
+	| `POINT`                                             | [`POINT`]({% link {{site.current_cloud_version}}/point.md %})                                                      |
+	| `POLYGON`                                           | [`POLYGON`]({% link {{site.current_cloud_version}}/polygon.md %})                                                  |
+	| `MULTIPOINT`                                        | [`MULTIPOINT`]({% link {{site.current_cloud_version}}/multipoint.md %})                                            |
+	| `MULTILINESTRING`                                   | [`MULTILINESTRING`]({% link {{site.current_cloud_version}}/multilinestring.md %})                                  |
+	| `MULTIPOLYGON`                                      | [`MULTIPOLYGON`]({% link {{site.current_cloud_version}}/multipolygon.md %})                                        |
+	| `GEOMETRYCOLLECTION`, `GEOMCOLLECTION`              | [`GEOMETRYCOLLECTION`]({% link {{site.current_cloud_version}}/geometrycollection.md %})                            |
+	| `JSON`                                              | [`JSONB`]({% link {{site.current_cloud_version}}/jsonb.md %})                                                      |
+	| `TINYINT`, `INT1`                                   | [`INT2`]({% link {{site.current_cloud_version}}/int.md %})                                                         |
+	| `BLOB`                                              | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                                                      |
+	| `SMALLINT`, `INT2`                                  | [`INT2`]({% link {{site.current_cloud_version}}/int.md %})                                                         |
+	| `MEDIUMINT`, `INT`, `INTEGER`, `INT4`               | [`INT4`]({% link {{site.current_cloud_version}}/int.md %})                                                         |
+	| `BIGINT`, `INT8`                                    | [`INT`]({% link {{site.current_cloud_version}}/int.md %})                                                          |
+	| `FLOAT`                                             | [`FLOAT4`]({% link {{site.current_cloud_version}}/float.md %})                                                     |
+	| `DOUBLE`                                            | [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %})                                                      |
+	| `DECIMAL`, `NUMERIC`, `REAL`                        | [`DECIMAL`]({% link {{site.current_cloud_version}}/decimal.md %}) (Negative scale values are autocorrected to `0`) |
+	| `BINARY`, `VARBINARY`                               | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                                                      |
+	| `DATETIME`                                          | [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %})                                              |
+	| `TIMESTAMP`                                         | [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %})                                            |
+	| `TIME`                                              | [`TIME`]({% link {{site.current_cloud_version}}/time.md %})                                                        |
+	| `BIT`                                               | [`VARBIT`]({% link {{site.current_cloud_version}}/bit.md %})                                                       |
+	| `DATE`                                              | [`DATE`]({% link {{site.current_cloud_version}}/date.md %})                                                        |
+	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`                | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                                                      |
+	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{site.current_cloud_version}}/bool.md %})                                                        |
+	| `ENUM`                                              | [`ANY_ENUM`]({% link {{site.current_cloud_version}}/enum.md %})                                                    |
 
-- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link {{ page.version.version }}/molt-verify.md %}):
+- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link molt/molt-verify.md %}):
 
-	- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
-	- [`VARCHAR`]({% link {{ page.version.version }}/string.md %}) <> [`UUID`]({% link {{ page.version.version }}/uuid.md %})
-	- [`BOOL`]({% link {{ page.version.version }}/bool.md %}) <> [`INT2`]({% link {{ page.version.version }}/int.md %})
-	- [`VARBIT`]({% link {{ page.version.version }}/bit.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
-	- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
-	- [`INET`]({% link {{ page.version.version }}/inet.md %}) <> [`TEXT`]({% link {{ page.version.version }}/string.md %})
+	- [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %})
+	- [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %}) <> [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %})
+	- [`BOOL`]({% link {{site.current_cloud_version}}/bool.md %}) <> [`INT2`]({% link {{site.current_cloud_version}}/int.md %})
+	- [`VARBIT`]({% link {{site.current_cloud_version}}/bit.md %}) <> [`TEXT`]({% link {{site.current_cloud_version}}/string.md %})
+	- [`JSONB`]({% link {{site.current_cloud_version}}/jsonb.md %}) <> [`TEXT`]({% link {{site.current_cloud_version}}/string.md %})
+	- [`INET`]({% link {{site.current_cloud_version}}/inet.md %}) <> [`TEXT`]({% link {{site.current_cloud_version}}/string.md %})
 
 `--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
 
@@ -537,7 +537,7 @@ Continuation is not possible when using [direct copy mode](#direct-copy).
 
 #### List active continuation tokens
 
-To view all active continuation tokens, issue a `molt fetch tokens list` command along with `--conn-string`, which specifies the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
+To view all active continuation tokens, issue a `molt fetch tokens list` command along with `--conn-string`, which specifies the [connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -600,7 +600,7 @@ You can use the `cdc_cursor` value with an external change data capture (CDC) to
 The following examples demonstrate how to issue `molt fetch` commands to load data into CockroachDB. These examples assume that [secure connections](#secure-connections) to the source and target database are used.
 
 {{site.data.alerts.callout_success}}
-After successfully running MOLT Fetch, you can run [`molt verify`]({% link {{ page.version.version }}/molt-verify.md %}) to confirm that replication worked successfully without missing or mismatched rows.
+After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/molt-verify.md %}) to confirm that replication worked successfully without missing or mismatched rows.
 {{site.data.alerts.end}}
 
 ### Load PostgreSQL data via S3 with ongoing replication
@@ -743,8 +743,8 @@ molt fetch \
 
 ## See also
 
-- [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
-- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})
+- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
+- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
+- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
