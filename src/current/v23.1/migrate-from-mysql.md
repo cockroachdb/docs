@@ -34,7 +34,7 @@ Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB]({%
 The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences]({% link {{ page.version.version }}/create-sequence.md %}), `UUID` values with [`gen_random_uuid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions), or unique `INT8` values using [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
 {{site.data.alerts.callout_info}}
-Changing a column type during schema conversion will cause [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to identify a type mismatch during [data validation](#step-3-validate-the-migrated-data). This is expected behavior.
+Changing a column type during schema conversion will cause [MOLT Verify]({% link molt/molt-verify.md %}) to identify a type mismatch during [data validation](#step-3-validate-the-migrated-data). This is expected behavior.
 {{site.data.alerts.end}}
 
 #### `ENUM` type
@@ -158,7 +158,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        Click **Save**.
 
-       This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link {{ page.version.version }}/molt-verify.md %}#limitations) documentation.
+       This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link molt/molt-verify.md %}#known-limitations) documentation.
        
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
 
@@ -358,9 +358,9 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
 
 ### Step 3. Validate the migrated data
 
-Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check that the data on MySQL and CockroachDB are consistent.
+Use [MOLT Verify]({% link molt/molt-verify.md %}) to check that the data on MySQL and CockroachDB are consistent.
 
-1. [Install MOLT Verify.]({% link {{ page.version.version }}/molt-verify.md %})
+1. [Install MOLT Verify.]({% link molt/molt-verify.md %})
 
 1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) with `--source` and the SQL connection string for CockroachDB with `--target`:
 
@@ -403,7 +403,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 - [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
-- [Use the MOLT Verify tool]({% link {{ page.version.version }}/molt-verify.md %})
+- [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
 - [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
