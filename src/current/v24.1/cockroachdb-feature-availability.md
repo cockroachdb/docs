@@ -205,6 +205,21 @@ $ cockroach sql --user=jpointsman --insecure
   Enter password:
 ~~~
 
+### Apache Pulsar changefeed sink
+
+Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+
+A Pulsar sink URI:
+
+{% include_cached copy-clipboard.html %}
+~~~
+pulsar://localhost:6650
+~~~
+
+{% include {{ page.version.version }}/cdc/apache-pulsar-unsupported.md %}
+
+For an Apache Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
+
 ### Core implementation of changefeeds
 
 The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
