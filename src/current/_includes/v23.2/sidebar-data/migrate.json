@@ -20,19 +20,19 @@
         {
           "title": "Fetch",
           "urls": [
-            "/${VERSION}/molt-fetch.html"
+            "/molt/molt-fetch.html"
           ]
         },
         {
           "title": "Verify",
           "urls": [
-            "/${VERSION}/molt-verify.html"
+            "/molt/molt-verify.html"
           ]
         },
         {
           "title": "Live Migration Service",
           "urls": [
-            "/${VERSION}/live-migration-service.html"
+            "/molt/live-migration-service.html"
           ]
         }
       ]

@@ -216,7 +216,7 @@ In the following order:
 You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify these steps:
 
 - [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
-- [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})
 
 #### Convert the schema
 
@@ -255,7 +255,7 @@ After you [load the test data](#load-test-data), validate your queries on Cockro
 
 ##### Shadowing
 
-You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. [MOLT LMS (Live Migration Service)]({% link {{ page.version.version }}/live-migration-service.md %}) can perform shadowing. You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. [MOLT LMS (Live Migration Service)]({% link molt/live-migration-service.md %}) can perform shadowing. You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
 
 Shadowing may not be necessary or practical for your workload. For example, because transactions are serialized on CockroachDB, this will limit your ability to validate the performance of high-throughput workloads.
 
@@ -265,7 +265,7 @@ You can manually validate your queries by testing a subset of "critical queries"
 
 - Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/statements-page) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
 
-- Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}).
+- Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link molt/molt-verify.md %}).
 
 Test performance on a CockroachDB cluster that is appropriately [sized](#capacity-planning) for your workload:
 
@@ -310,7 +310,7 @@ The following is a high-level overview of the migration steps. For consideration
 	- {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 	- {% include {{ page.version.version }}/migration/load-data-third-party.md %}
 	- {% include {{ page.version.version }}/migration/load-data-copy-from.md %}
-1. After the data is migrated, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
+1. After the data is migrated, you can use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
 {% comment %}1. If you want the ability to [roll back](#all-at-once-rollback) the migration, replicate data back to the source database.{% endcomment %}
 
@@ -325,7 +325,7 @@ The following is a high-level overview of the migration steps. {% comment %}For 
 To prioritize consistency and minimize downtime:
 
 1. {% include {{ page.version.version }}/migration/load-data-third-party.md %} Select the tool's option to **replicate ongoing changes** after performing the initial load of data into CockroachDB. 
-1. As the data is migrating, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
+1. As the data is migrating, you can use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for replication to CockroachDB to complete.
 1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
@@ -333,7 +333,7 @@ To prioritize consistency and minimize downtime:
 To achieve zero downtime with inconsistency:
 
 1. {% include {{ page.version.version }}/migration/load-data-third-party.md %} Select the tool's option to replicate ongoing changes after performing the initial load of data into CockroachDB.
-1. As the data is migrating, you can use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
+1. As the data is migrating, you can use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), perform a [cutover](#cutover-strategy) by pointing application traffic to CockroachDB.
 1. Manually reconcile any inconsistencies caused by writes that were not replicated during the cutover.
 1. Close the connection to the source database when you are ready to finish the migration.
