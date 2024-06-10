@@ -4,11 +4,18 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
 {% break %}
 {% endunless %}
 
+{% comment %} Some dates to test:
+
+2025-11-14: 23.1 LTS EOL (LTS EOL message)
+2025-11-13: 23.1 LTS Assistance (LTS Assistance message)
+2024-11-13: 23.1 LTS Maintenance (LTS Assistance message)
+2024-11-12: 23.1 LTS GA (no message)
+{% endcomment %}
+
+{% comment %}Uncomment the following two lines and comment the third to test a specific date{% endcomment %}
+{% assign today = '2024-11-12' | date: "%s" %}{% comment %} Simulate future date and format it in seconds. {% endcomment %}
 {% assign actual_today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
-{% comment %}Test 23.1 LTS EOL{% endcomment %}
-{% comment %}{% assign today = '2025-11-14' | date: "%s" %}{% endcomment %} {% comment %} Simulate future date and format it in seconds. {% endcomment %}
-{% comment %}Test 23.1 LTS Assistance{% endcomment %}
-{% assign today = '2025-11-13' | date: "%s" %}
+{% comment %}{% assign today = "today" | date: "%s" %}{% endcomment %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
 
 {% if DEBUG %}
 Actual today: {{ actual_today }}<br />
@@ -46,30 +53,20 @@ Today: {{ today }}<br />
 {% if x %}
 
   {% assign production = false %}
+  {% assign lts = false %}
   {% comment %}Is it GA?{% endcomment %}
   {% if x.asst_supp_exp_date != "N/A" and x.asst_supp_exp_date != "N/A" %}
     {% assign production = true %}
     {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
     {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-    {% if DEBUG %}
-    production: {{ production }}<br />
-    m: {{ m }}<br />
-    a: {{ a }}<br />
-    {% endif %}
   {% endif %}
 
   {% if production == true %}
-    {% assign lts = false %}
     {% comment %}Is it an LTS?{% endcomment %}
     {% if x.initial_lts_patch != "N/A" %}
       {% assign lts = true %}
       {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
       {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
-      {% if DEBUG %}
-      lts: {{ lts }}<br />
-      lm: {{ lm }}<br />
-      la: {{ la }}<br />
-      {% endif %}
     {% endif %}
   {% endif %}
 
@@ -88,7 +85,7 @@ Today: {{ today }}<br />
     {% endif %}
       {% if la < today %} {% comment %}LTS assistance has passed, EOL{% endcomment %}
         {{ lts_eol_message }}
-      {% elsif lm < today %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
+      {% elsif lm <= today %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
         {{ lts_assistance_message }}
       {% endif %}
 
