@@ -366,9 +366,9 @@ For a join hint example, see [Use the right join type]({% link {{ page.version.v
 
 - `MERGE`: Forces a merge join, even if it requires re-sorting both sides of the join.
 
-- `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. `LOOKUP` can only be used with `INNER` and `LEFT` joins.
+- `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. `LOOKUP` can be used only with `INNER` and `LEFT` joins.
 
-- `INVERTED`: Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). `INVERTED` can only be used with `INNER` and `LEFT` joins.
+- `INVERTED`: Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}). `INVERTED` can be used only with `INNER` and `LEFT` joins.
 
     {{site.data.alerts.callout_info}}
     You cannot use inverted joins on [partial GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}#partial-gin-indexes).
