@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT LMS (Live Migration Service) is used during a [live migration]({% link {{site.current_cloud_version}}/migration-overview.md %}#minimal-downtime) to CockroachDB.
+MOLT Live Migration Service (LMS) is used during a [live migration]({% link {{site.current_cloud_version}}/migration-overview.md %}#minimal-downtime) to CockroachDB.
 
 The LMS is a self-hosted, horizontally scalable proxy that routes traffic between an application, a source database, and a target CockroachDB database. You use the LMS to control which database, as the "source of truth", is serving reads and writes to an application. You can optionally configure the LMS to [shadow production traffic](#shadowing-modes) from the source database and validate the query results on CockroachDB. When you have sufficiently tested your application and are confident with its consistency and performance on CockroachDB, you use the LMS to [perform the cutover](#perform-a-cutover) to CockroachDB.
 
@@ -20,7 +20,7 @@ MOLT LMS is self-hosted on [Kubernetes](https://kubernetes.io/) and [configured 
 
 This page describes how to [install](#installation), [configure](#configuration), [secure](#security), and [use the LMS](#molt-lms-cli) to perform a live migration. {% comment %}For more information, see [Migration Strategy: Live Migration]({% link {{site.current_cloud_version}}/migration-strategy-live-migration.md %}).{% endcomment %}
 
-For a demo of the Live Migration Service in action, watch the following video:
+Watch a demo of the Live Migration Service in action:
 
 {% include_cached youtube.html video_id="HA8ec9e_a-s" %}
 
