@@ -6,7 +6,7 @@ toc: true
 
 ## Platform
 
-### Hot CPU
+### High CPU
 
 A node with a high CPU utilization, an *overloaded* node, has a limited ability to process the user workload and increases the risks of cluster instability.
 
@@ -15,7 +15,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 <br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
 
 **Rule**
-<br>Set alerts for each of the listed metrics:
+<br>Set alerts for each node for each of the listed metrics:
 <br>WARNING:  Metric greater than `0.80` for `4 hours`
 <br>CRITICAL:  Metric greater than `0.90` for `1 hour`
 
@@ -25,13 +25,13 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 - In the DB Console, navigate to **Metrics**, [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) for the cluster and check for high values on the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) and the [**Host CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#host-cpu-percent).
 
-- In the DB Console, navigate to **Metrics**, [**SQL** dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}) for the cluster and check for high values on the [**Active SQL Statements** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent). This graph shows the true concurrency of the workload, which may exceed the cluster capacity planning guidance of no more than 4 active statements per vCPU or core.
+- In the DB Console, navigate to **Metrics**, [**SQL** dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}) for the cluster and check for high values on the [**Active SQL Statements** graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements). This graph shows the true concurrency of the workload, which may exceed the cluster capacity planning guidance of no more than 4 active statements per vCPU or core.
 
 - A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
 
 ### Hot Node (Hot spot)
 
-Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized. Potential causes of node hotspots are outlined in the "Hotspots" section of [the common problems experienced by CockroachDB users](https://github.com/cockroachlabs/cockroachdb-runbook-template/blob/main/most-common-problems/README.md).
+Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized.
 
 **Metric**
 <br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
@@ -124,6 +124,7 @@ A CockroachDB node will not able to operate if there is no free disk space on a 
 
 **Action**
 
+- Refer to [Storage Capacity]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-capacity).
 - Increase the size of CockroachDB node storage capacity.  CockroachDB  storage volumes should not be utilized more than 60% (40% free space).
 - In a "disk full" situation, you may be able to get a node "unstuck" by removing the [automatically created emergency ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).
 
@@ -152,6 +153,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 <br>`rocksdb.read-amplification`
 
 **Rule**
+<br>Set alerts for each node:
 <br>WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`
 <br>CRITICAL:  `rocksdb.read-amplification` greater than `150` for `15 minutes`
 
