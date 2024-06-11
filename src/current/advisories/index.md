@@ -6,11 +6,9 @@ index: true
 docs_area: releases
 ---
 
-Technical advisories report major issues with CockroachDB or the Cockroach Cloud platform that may impact security or stability in production environments.
+Technical advisories report major issues with CockroachDB or the CockroachDB {{ site.data.products.cloud }} platform that may impact security or stability in production environments.
 
 Users are invited to evaluate advisories and consider the recommended mitigation actions independently from their version upgrade schedule.
-
-Sign up to receive technical advisories on the [CockroachDB Email Preferences](https://www.cockroachlabs.com/email-preferences/) page.
 
 {% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.url != page.url" | sort: "advisory_date" | reverse %}
 
