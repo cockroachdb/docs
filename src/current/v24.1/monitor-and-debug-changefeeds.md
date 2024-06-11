@@ -133,25 +133,26 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 
 #### Metrics
 
-| Metric           |  Description | Unit
--------------------+--------------+---------------------------------------------------
-`changefeed_running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds
-`emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages
-`emitted_bytes`    | Number of bytes emitted, which increments as messages are flushed. | Bytes
-`flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`]({% link {{ page.version.version }}/create-changefeed.md %}#compression-opt) is enabled. | Bytes
-`changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
-`aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress. | Timestamp
-`checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted). | Timestamp
-`admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
-`commit_latency`   | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
-<a name="lagging-ranges-metric"></a>`lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul><br>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds
-`backfill_count`   | Number of changefeeds currently executing a backfill ([schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes) or initial scan). | Changefeeds
-`sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
-`flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
-`checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
-`error_retries` | Total retryable errors encountered by changefeeds. | Errors
-`backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
-`message_size_hist` | Distribution in the size of emitted messages. | Bytes
+| Metric           |  Description | Unit | Type
+-------------------+--------------+------+--------------------------------------------
+`changefeed.admit_latency` | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds | Histogram
+`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress. | Timestamp | Gauge
+`changefeed.backfill_count` | Number of changefeeds currently executing a backfill ([schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes) or initial scan). | Changefeeds | Gauge
+`changefeed.backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges | Gauge
+`changefeed.checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds | Histogram
+`changefeed.checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted). | Timestamp | Histogram
+`changefeed.commit_latency` | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds | Histogram
+<span class="version-tag">New in v24.1:</span> `changefeed.emitted_batch_sizes` | Size of batches emitted to the sink by all changefeeds. | Messages | Histogram
+`changefeed.emitted_bytes` | Number of bytes emitted, which increments as messages are flushed. | Bytes | Counter
+`changefeed.emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages | Counter
+`changefeed.error_retries` | Total retryable errors encountered by changefeeds. | Errors | Counter
+`changefeed.flushed_bytes` | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`]({% link {{ page.version.version }}/create-changefeed.md %}#compression-opt) is enabled. | Bytes | Counter
+`changefeed.flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds | Histograms
+`changefeed.flushes` | Total number of flushes for a changefeed. | Flushes | Counter
+<a name="lagging-ranges-metric"></a>`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul><br>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds | Gauge
+`changefeed.message_size_hist` | Distribution in the size of emitted messages. | Bytes | Histogram
+`changefeed.running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds | Gauge
+`changefeed.sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds | Histogram
 
 ### Monitoring and measuring changefeed latency
 
