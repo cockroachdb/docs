@@ -30,6 +30,7 @@ Users are invited to evaluate advisories and consider the recommended mitigation
 <tbody>
 
 {% for advisory in advisories %}
+{% if advisory.summary and advisory.affected_versions and advisory.advisory_date %}
 <tr>
 	<td>
 		<a href="/docs{{ advisory.url }}">{{ advisory.advisory }}</a>
@@ -38,6 +39,7 @@ Users are invited to evaluate advisories and consider the recommended mitigation
 	<td>{{ advisory.affected_versions }}</td>
 	<td>{{ advisory.advisory_date | date: "%B %e, %Y" }}</td>
 </tr>
+{% endif %}
 {% endfor %}
 </tbody>
 </table>
