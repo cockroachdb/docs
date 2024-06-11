@@ -47,7 +47,7 @@ CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the f
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
-Asia Pacific    | `ap-east-1`       | Hong Kong
+Asia Pacific    | `ap-east-1`      | Hong Kong
                 | `ap-southeast-3` | Jakarta
                 | `ap-northeast-1` | Tokyo
                 | `ap-northeast-2` | Seoul
