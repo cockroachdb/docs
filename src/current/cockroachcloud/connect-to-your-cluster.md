@@ -118,9 +118,17 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
     - Set the connection method to “by resource ID or alias”.
     - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com//azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
 
-    After the private endpoint is created, copy its Resource ID. Do not close this browser window.
+    After the private endpoint is created, open it, click **Properties**, and copy its Resource ID.
+
+    {{site.data.alerts.callout_info}}
+    Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
+    {{site.data.alerts.end}}
+
+    Do not close this browser window.
 1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Next**.
-1. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. Otherwise, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
+1. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. If you encounter the error `This resource is invalid`, be sure that you are using the resource ID for the Azure private endpoint, rather than the resource ID for Azure Private Link itself.
+
+    When validation succeeds, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
 1. Return to the Azure Console. Go to the **Private DNS Zone** page and create private DNS records for your cluster in the` region where you will connect privately.
     - Create a private DNS zone named with the Internal DNS Name you previously copied. Refer to [Quickstart: Create an Azure private DNS zone using the Azure portal](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal).
     - In the new DNS zone, create an `@` record with the Internal DNS Name you previously copied.
