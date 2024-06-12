@@ -118,7 +118,7 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
     - Set the connection method to “by resource ID or alias”.
     - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com//azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
 
-    After the private endpoint is created, open it, click **Properties**, and copy its Resource ID.
+    After the private endpoint is created, view it, then click **Properties** and copy its Resource ID.
 
     {{site.data.alerts.callout_info}}
     Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
