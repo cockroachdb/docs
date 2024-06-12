@@ -17,10 +17,6 @@ CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the follow
 - A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported.
 - After it is created, a cluster's storage can be increased in place, but cannot subsequently be decreased or removed.
 
-### Networking
-
-- Azure Private Link is not yet available. [IP Allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) allows you to restrict the IP addresses that can connect to your cluster.
-
 ### Other features
 
 [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) features are not yet available on Azure. To express interest, contact your Cockroach Labs account team.
@@ -69,7 +65,7 @@ Application users can connect using [JWT tokens](https://www.cockroachlabs.com/d
 
 ### Can we use private connectivity methods, such as Private Link, to securely connect to a cluster on Azure?
 
-You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.dedicated }} cluster on Azure. [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) is not yet available. To express interest, contact your Cockroach Labs account team.
+You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.dedicated }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).
 
 ### How are clusters on Azure isolated from each other? Do they follow a similar approach as on AWS and GCP?
 
