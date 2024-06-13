@@ -242,8 +242,8 @@ Send an alert when very large transactions are [locking]({% link {{ page.version
 Transactions that create a large number of [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) could have a negative effect on the workload's performance. These transactions may create locking contention, thus limiting concurrency. This would reduce throughput, and in extreme cases, lead to stalled workloads.
 
 **Metric**
-
 <br>`intentcount`
+
 **Rule**
 <br>WARNING:  `intentcount` greater than 10,000,000 for 2 minutes
 <br>CRITICAL:  `intentcount` greater than 10,000,000 for 5 minutes
