@@ -110,6 +110,13 @@ Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-bac
 
 You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
 
+## Enable deletion protection
+
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before a cluster with deletion protection enabled can be deleted, deletion protection must be disabled. A user with permission to delete a cluster can enable deletion protection on the same cluster.
+
+1. Navigate to the **Overview** page for the cluster you want to protect.
+1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
+
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
@@ -123,6 +130,7 @@ Free CockroachDB {{ site.data.products.serverless }} clusters are subject to del
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
 1. Navigate to the **Overview** page for the cluster you want to delete.
+1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 1. Click the **Actions** button in the top right corner.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.

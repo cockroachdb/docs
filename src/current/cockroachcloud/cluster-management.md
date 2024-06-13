@@ -192,6 +192,12 @@ CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI re
 
 You can also check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
 
+## Enable deletion protection
+
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before a cluster with deletion protection enabled can be deleted, deletion protection must be disabled. A user with permission to delete a cluster can enable deletion protection on the same cluster.
+
+1. Navigate to the **Overview** page for the cluster you want to protect.
+1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
@@ -206,6 +212,7 @@ You will only be billed for a CockroachDB {{ site.data.products.dedicated }} clu
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
 1. Navigate to the **Overview** page for the cluster you want to delete.
+1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 1. Click the **Actions** button in the top right corner.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.
