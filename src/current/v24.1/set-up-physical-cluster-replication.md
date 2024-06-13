@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{% include enterprise-feature.md %}
+
 In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
 The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
@@ -27,14 +29,16 @@ The high-level steps in this tutorial are:
 
 ## Before you begin
 
-{% include enterprise-feature.md %}
-
 - Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized` or `--virtualized-empty` flag. Refer to the cluster creation steps for the [primary cluster](#initialize-the-primary-cluster) and for the [standby cluster](#initialize-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage the cluster certificates](#step-3-manage-the-cluster-certificates).
 - An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system virtual cluster on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
 - The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v24.1" %} To set up PCR from an existing CockroachDB cluster, which will serve as the primary cluster, refer to [Set up PCR from an existing cluster](#set-up-pcr-from-an-existing-cluster).
+{{site.data.alerts.end}}
 
 ## Step 1. Create the primary cluster
 
@@ -224,8 +228,6 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
-    {% comment %}While not strictly needed, it is necessary if a user then replicates from the promoted standby to the original primary. Add a note on this once the fast cutback work is published.{% endcomment %}
-
 1. Confirm the status of your virtual cluster:
 
     {% include_cached copy-clipboard.html %}
@@ -366,6 +368,89 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     ~~~
 
     With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+
+## Set up PCR from an existing cluster
+
+{% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster, which serves application traffic.
+
+Before you begin, you will need:
+
+- An existing primary cluster that is running {{page.version.version}}. If you need to upgrade your existing cluster, refer to [Upgrade to CockroachDB v24.1]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
+- A v24.1 standby cluster. To set up the cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized-empty` flag. For details, refer to the cluster creation steps for the [standby cluster](#initialize-the-standby-cluster).
+- Review the remaining [prerequisites](#before-you-begin) at the start of this page, which also apply to running PCR from an existing cluster.
+
+### Example
+
+1. To configure the standby cluster ready for PCR, follow the steps outlined in [Connect to the standby cluster system virtual cluster](#connect-to-the-standby-cluster-system-virtual-cluster) that include enabling the necessary cluster settings.
+
+1. Create a user on **both** clusters and grant the `SYSTEM REPLICATION` privilege to the created user on each cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE USER {your username} WITH PASSWORD '{your password}';
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    GRANT SYSTEM REPLICATION TO {your username};
+    ~~~
+
+1. View the virtual clusters on **both** clusters:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW VIRTUAL CLUSTERS;
+    ~~~
+
+    You will find that both clusters only have the `system` virtual cluster:
+
+    ~~~
+      id |  name  | data_state | service_mode
+    -----+--------+------------+---------------
+    1    | system | ready      | shared
+    (1 row)
+    ~~~
+
+1. To create the replication job, you will need a connection string for the **primary cluster** containing its CA certificate. For steps to generate a connection string with `cockroach encode-uri`, refer to [Step 3. Manage the cluster certificates](#step-3-manage-the-cluster-certificates).
+
+1. If you would like to run a test workload on your existing **primary cluster**, you can use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) like the following:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload init movr 'postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
+    ~~~
+
+1. To start the replication, you will need to replicate `system` from the existing primary cluster in order to create a new virtual cluster on the standby cluster (`main` in this example).
+
+    On the **standby cluster**, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE VIRTUAL CLUSTER main FROM REPLICATION OF system ON '{postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A}';
+    ~~~
+
+    This statement includes:
+    - `main`: The name of the virtual cluster to create on the standby cluster.
+    - `system`: The system virtual cluster on the existing primary cluster.
+    - The connection string for the existing primary cluster.
+
+1. View the virtual clusters on the **standby cluster**:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW VIRTUAL CLUSTERS;
+    ~~~
+
+    The output shows the newly created `main` virtual cluster and that the replication job is [`initializing`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#data-state):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+      id |  name  |        data_state        | service_mode
+    -----+--------+--------------------------+---------------
+    1    | system | ready                    | shared
+    3    | main   | initializing replication | none
+    (2 rows)
+    ~~~
 
 ## Connection reference
 
