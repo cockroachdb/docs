@@ -5469,7 +5469,7 @@
       This version is currently available only to select
       CockroachDB Cloud clusters. To request to upgrade
       a CockroachDB Self-Hosted cluster to this version,
-      [contact Support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+      [contact Support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v23.1.15
   major_version: v23.1
