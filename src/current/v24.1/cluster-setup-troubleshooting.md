@@ -569,7 +569,7 @@ To identify under-replicated/unavailable ranges:
 
 1.  On the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), check the network matrix, if there are nodes with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections) which may indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), if there are nodes in the network matrix with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections), this may indicate a network partition. If there is no partition and still no upreplication after 5 minutes, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 **Add nodes to the cluster:**
 
