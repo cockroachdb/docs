@@ -194,7 +194,7 @@ You can also check the status of these features on the [**PCI ready**]({% link c
 
 ## Enable deletion protection
 
-To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before a cluster with deletion protection enabled can be deleted, deletion protection must be disabled. A user with permission to delete a cluster can enable deletion protection on the same cluster.
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
 
 1. Navigate to the **Overview** page for the cluster you want to protect.
 1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
