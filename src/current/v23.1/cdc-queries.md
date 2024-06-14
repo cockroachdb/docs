@@ -54,6 +54,7 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`]({% link
 ## Limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## CDC query function support
 

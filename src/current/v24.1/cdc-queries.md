@@ -52,6 +52,7 @@ To emit different properties for a row, specify the following explicitly in CDC 
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## CDC query function support
 
