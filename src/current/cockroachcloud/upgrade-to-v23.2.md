@@ -86,15 +86,6 @@ Review the backward-incompatible changes and deprecated features announced in ea
 Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
 {% endif %}
 
-### Reset SQL statistics
-
-Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.page_version }}/cost-based-optimizer.md %}#table-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT crdb_internal.reset_sql_stats();
-~~~
-
 ## Step 5. Start the upgrade
 
 To start the upgrade process:
