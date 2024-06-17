@@ -142,7 +142,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed.checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds | Histogram
 `changefeed.checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted). | Timestamp | Histogram
 `changefeed.commit_latency` | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds | Histogram
-<span class="version-tag">New in v24.1:</span> `changefeed.emitted_batch_sizes` | Size of batches emitted to the sink by all changefeeds. | Messages | Histogram
+<span class="version-tag">New in v24.1:</span> `changefeed.emitted_batch_sizes` | Size of batches emitted to the sink by all changefeeds. If changefeeds have the [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) option enabled, this metric will include resolved timestamp messages, which emit in a batch size of 1 message. | Messages | Histogram
 `changefeed.emitted_bytes` | Number of bytes emitted, which increments as messages are flushed. | Bytes | Counter
 `changefeed.emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages | Counter
 `changefeed.error_retries` | Total retryable errors encountered by changefeeds. | Errors | Counter
