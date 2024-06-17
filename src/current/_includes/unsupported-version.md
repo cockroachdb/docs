@@ -31,6 +31,37 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
 
 {% assign x = site.data.versions | where_exp: "m", "m.major_version == include.major_version" | first %}
 
+{% comment %}Save the admonitions into variables {% endcomment %}
+{% capture lts_eol_message %}
+      {{site.data.alerts.callout_danger}}
+      CockroachDB {{ include.major_version }} (LTS) is no longer supported as of {{ x.lts_asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture lts_assistance_message %}
+      {{site.data.alerts.callout_danger}}
+      GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture lts_maintenance_message %}
+      {{site.data.alerts.callout_info}}
+      GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture ga_eol_message %}
+      {{site.data.alerts.callout_danger}}
+      CockroachDB {{ include.major_version }} is no longer supported as of {{ x.asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
+{% capture ga_assistance_message %}
+      {{site.data.alerts.callout_danger}}
+      Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
 {% comment %}Continue only if we found an entry for this major version {% endcomment %}
 {% if x %}
 
