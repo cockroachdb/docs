@@ -181,7 +181,7 @@ To configure a custom OIDC authentication method:
 
 ### SAML
 
-To configure a custom SAML authentication method using the service provider-initiated flow, follow these steps. If you need to use the identity provider-initiated flow instead, contact [Cockroach Labs support](https://support.cockroachlabs.com/hc).
+To configure a custom SAML authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
 1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
@@ -204,7 +204,12 @@ To configure a custom SAML authentication method using the service provider-init
     Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. To configure the SAML assertion, refer to the documentation for your IdP.
 
     In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
-1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+1. (Optional) [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+
+After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console in two different ways:
+
+- **Service provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console directly, using your custom sign-in URL.
+- **Identity provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console from within your IdP (for example, by accessing its tile in Okta).
 
 ## Require SSO
 

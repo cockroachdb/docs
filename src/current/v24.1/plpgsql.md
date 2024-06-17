@@ -40,7 +40,7 @@ At the highest level, a PL/pgSQL block looks like the following:
   END
 ~~~
 
-PL/pgSQL blocks can be nested. An optional label can be placed above each block. Block labels can be targeted by [`EXIT` statements](#exit-and-continue-statements).
+PL/pgSQL blocks can be nested. An optional label can be placed above each block. Block labels can be targeted by [`EXIT` statements](#exit).
 
 ~~~ sql
 [ <<outer_block>> ]
@@ -217,7 +217,6 @@ IF condition THEN
 
 `IF ... THEN ... ELSIF` executes statements if a boolean condition is true. If the condition is false, each `ELSIF` condition is evaluated until one is true. The corresponding `ELSIF` statements are executed. If no `ELSIF` conditions are true, no statements are executed unless an `ELSE` clause is included, in which case the `ELSE` statements are executed.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IF condition THEN
 	statements;
@@ -227,6 +226,14 @@ IF condition THEN
 	elsif_statements_n; ]
   [ ELSE
 	else_statements; ]
+  END IF;
+~~~
+
+`IF`, `ELSE`, and `ELSIF` conditions are not required to execute statements. You can exclude any statements or add a placeholder `NULL` statement.
+
+~~~ sql
+IF condition THEN
+	NULL;
   END IF;
 ~~~
 
@@ -254,7 +261,9 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
-### `EXIT` and `CONTINUE` statements
+### Control execution flow
+
+#### `EXIT`
 
 Add an `EXIT` statement to end a [loop](#write-loops). An `EXIT` statement can be combined with an optional `WHEN` boolean condition. 
 
@@ -298,6 +307,18 @@ CREATE PROCEDURE p() AS $$
   END
   $$ LANGUAGE PLpgSQL;
 ~~~
+
+#### `RETURN`
+
+Add a `RETURN` statement to a routine with an `OUT` parameter or `VOID` return type to exit the routine immediately.
+
+~~~ sql
+BEGIN
+	...
+	RETURN;
+~~~
+
+#### `CONTINUE`
 
 Add a `CONTINUE` statement to end the current iteration of a [loop](#write-loops), skipping any statements below `CONTINUE` and beginning the next iteration of the loop. 
 
@@ -457,6 +478,14 @@ BEGIN
     WHEN OTHERS THEN
       RETURN others;
   END
+~~~
+
+`WHEN` conditions are not required to execute statements. You can exclude any statements or add a placeholder `NULL` statement.
+
+~~~ sql
+EXCEPTION
+	WHEN error THEN
+		NULL;
 ~~~
 
 ### Control transactions
