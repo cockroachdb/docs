@@ -110,7 +110,7 @@ Yes. When Cloud Organization SSO is enabled for your CockroachDB {{ site.data.pr
 
 #### Which SAML-based authentication flows are supported with Cloud Organization SSO?
 
-After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console two different ways:
+After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console in two different ways:
 
 - **Service provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console directly, using your custom sign-in URL.
 - **Identity provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console from within your IdP (for example, by accessing its tile in Okta).
