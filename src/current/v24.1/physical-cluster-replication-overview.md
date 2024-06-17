@@ -9,9 +9,9 @@ CockroachDB **physical cluster replication (PCR)** continuously sends all data a
 
 In a disaster recovery scenario, you can [_cut over_]({% link {{ page.version.version }}/cutover-replication.md %}) from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
-Physical cluster replication is supported on CockroachDB {{ site.data.products.core }} in new clusters on v23.2 or above.
-
 {% include enterprise-feature.md %}
+
+For a list of requirements for PCR, refer to the [Before you begin]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#before-you-begin) section of the [setup tutorial]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 ## Use cases
 
@@ -39,6 +39,7 @@ You can use PCR in a disaster recovery plan to:
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
+- {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
 
 ## Performance
 
@@ -68,6 +69,14 @@ For more comprehensive guides, refer to:
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}): for a tutorial on how to start a replication stream.
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}): for detail on metrics and observability into a replication stream.
 - [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %}): for a guide on how to complete a replication stream and cut over to the standby cluster.
+
+### Cluster versions and upgrades
+
+The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's virtual cluster at the time of [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
+
+To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
+
+When PCR is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
 
 ### Start clusters
 
@@ -134,14 +143,6 @@ Statement | Action
 [`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-a-virtual-cluster) | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
 [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show all virtual clusters.
 [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
-
-### Cluster versions and upgrades
-
-The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's virtual cluster at the time of cutover.
-
-To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
-
-When PCR is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
 
 ## Demo video
 
