@@ -386,7 +386,7 @@ In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-You can use the following authentication options for Google Cloud Storage buckets:
+You can use the following authentication options for Google Cloud Storage buckets and [Google Cloud Pub/Sub changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub):
 
 - [Specified](#google-cloud-storage-specified): You specify the Google Cloud credentials key in the URI when connecting.
 - [Implicit](#google-cloud-storage-implicit): You store the needed Google Cloud credentials as environment variables, and may omit them when connecting. As an alternative, you can use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.dedicated }} cluster to avoid storing any credentials in your cluster.
