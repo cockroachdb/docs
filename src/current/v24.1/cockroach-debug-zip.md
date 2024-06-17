@@ -105,7 +105,7 @@ The `debug zip` subcommand supports the following [general-use](#general), [clie
 
 Flag | Description
 -----|-----------
-`--cpu-profile-duration` | Fetch CPU profiles from the cluster with the specified sample duration in seconds. The `debug zip` command will block for the duration specified. A value of `0` disables this feature.<br /><br />**Default:** `5`
+`--cpu-profile-duration` | Fetch CPU profiles from the cluster with the specified sample duration in seconds. The `debug zip` command will block for the duration specified. A value of `0` disables this feature.<br /><br />**Default:** `5s`
 `--concurrency` | The maximum number of nodes to concurrently poll for data. This can be any value between `1` and `15`.
 `--exclude-files` | [Files](#files) to exclude from the generated `.zip`. This can be used to limit the size of the generated `.zip`, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of [glob patterns](https://wikipedia.org/wiki/Glob_(programming)). For example:<br /><br />`--exclude-files=*.log`<br /><br />Note that this flag is applied _after_ `--include_files`. Use [`cockroach debug list-files`]({% link {{ page.version.version }}/cockroach-debug-list-files.md %}) with this flag to see a list of files that will be contained in the `.zip`.
 `--exclude-nodes` | Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br /><br />`--exclude-nodes=1,10,13-15`
@@ -118,7 +118,7 @@ Flag | Description
 `--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br /><br />`--nodes=1,10,13-15`
 `--redact` | Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated `--redact-logs` flag, which only applied to log messages contained within `.zip`. See [Redact sensitive information](#redact-sensitive-information) for an example.
 `--redact-logs` | **Deprecated** Redact sensitive data from collected log files only. Use the `--redact` flag instead, which redacts sensitive data across the entire generated `.zip` as well as the collected log files. Passing the `--redact-logs` flag will be interpreted as the `--redact` flag.
-`--timeout` | Return an error if the command does not conclude within a specified nonzero value. The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours). For example:<br /><br />`--timeout=2m`
+`--timeout` | In the process of generating a debug zip, many internal requests are made. Each request is allowed the maximum duration specified by the timeout. If an internal request does not complete within the timeout duration, an error is displayed for that request and its artifact is not included in the zip file.<br /><br />The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours).<br /><br />**Default:** `60s`
 
 ### Client connection
 

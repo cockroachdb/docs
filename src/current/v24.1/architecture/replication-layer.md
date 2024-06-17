@@ -95,12 +95,9 @@ The circuit breaker timeout value is controlled by the `kv.replica_circuit_break
 
 <a name="per-replica-circuit-breaker-limitations"></a>
 
-##### Limitations
+##### Known limitations
 
-Per-replica circuit breakers have the following limitations:
-
-- They cannot prevent requests from hanging when the node's [liveness range](#epoch-based-leases-table-data) is unavailable. For more information about troubleshooting a cluster that's having node liveness issues, see [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
-- They are not tripped if _all_ replicas of a range [become unavailable]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#db-console-shows-under-replicated-unavailable-ranges), because the circuit breaker mechanism operates per-replica. This means at least one replica needs to be available to receive the request in order for the breaker to trip.
+{% include {{ page.version.version }}/known-limitations/per-replica-circuit-breaker-limitations.md %}
 
 ### Snapshots
 

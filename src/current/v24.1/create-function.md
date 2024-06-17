@@ -31,7 +31,7 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 Parameter | Description
 ----------|------------
 `routine_create_name` | The name of the function.
-`routine_param` | A comma-separated list of function parameters.
+`routine_param` | A comma-separated list of function parameters, specifying the mode, name, and type.
 `routine_return_type` | The type returned by the function. 
 `routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
