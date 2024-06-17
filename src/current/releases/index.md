@@ -8,6 +8,9 @@ pre_production_preview: true
 pre_production_preview_version: v24.1.0-beta.1
 ---
 
+{% comment %}Enable debug to print debug messages {% endcomment %}
+{% assign DEBUG = false %}
+
 {% comment %}
 NOTE TO WRITERS: This file contains interleaved HTML and Liquid. To ease maintenance and readability
 of this file, block-level HTML is indented in relation to the other HTML, and block-level Liquid is
@@ -50,7 +53,16 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
+{% assign is_lts_version = false %}
+{% if v.release_date != "N/A" and v.initial_lts_patch != "N/A" %}
+    {% assign is_lts_version = true %}
+{% endif %}
+
 ## {{ v.major_version }}
+
+{% if DEBUG %}
+LTS? {{ is_lts_version }}
+{% endif %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -109,7 +121,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     <tbody>
             {% for r in releases %}
 
-              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+              {% capture lts_link_linux %}{% if is_lts_version != "N/A" %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -272,7 +284,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     <tbody>
         {% for r in releases %}
 
-        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+        {% capture lts_link_docker %}{% if is_lts_version %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -325,6 +337,8 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+        R: <br />{{ r }}<br />
+        V: <br />{{ v }}</br>
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -378,5 +392,5 @@ During development of a major version of CockroachDB, releases are produced acco
 ## Licenses
 
 Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
- 
+
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license/) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
