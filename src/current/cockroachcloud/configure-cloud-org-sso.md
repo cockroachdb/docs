@@ -204,7 +204,7 @@ To configure a custom SAML authentication method:
     Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. To configure the SAML assertion, refer to the documentation for your IdP.
 
     In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
-1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+1. (Optional) [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console two different ways:
 

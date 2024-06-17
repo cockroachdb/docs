@@ -117,7 +117,7 @@ After SAML is configured, your users can sign in to the CockroachDB {{ site.data
 
 #### What default role is assigned to users when autoprovisioning is enabled in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator role]({% link cockroachcloud/authorization.md %}#org-administrator).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator).
 
 ## What's next?
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
