@@ -67,7 +67,7 @@ GCP Private Service Connect, AWS PrivateLink, and Azure Private Link can be conf
     - Set **Target** to **Published service**.
     - Set **Target service** to the value you copied from CockroachDB {{ site.data.products.cloud }} Console. If the endpoint's configured target service does not match, validation will fail.
     - Provide a value for **Endpoint name**. This is not used by CockroachDB {{ site.data.products.cloud }}.
-    - If it is not enabled, enable the Service Directory API, click **Enable global access*, and create a namespace in each region where your cluster is deployed.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
     - Click **Add endpoint**.
     - After the endpoint is created, copy the connection ID.
 1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Validate**.
