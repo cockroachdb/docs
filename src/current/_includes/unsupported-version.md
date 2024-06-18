@@ -40,6 +40,12 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {{site.data.alerts.end}}
 {% endcapture %}
 
+{% capture lts_maintenance_message %}
+      {{site.data.alerts.callout_danger}}
+      GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+      {{site.data.alerts.end}}
+{% endcapture %}
+
 {% capture ga_eol_message %}
       {{site.data.alerts.callout_danger}}
       CockroachDB {{ include.major_version }} is no longer supported as of {{ x.asst_supp_exp_date | date: "%B %e, %Y"}}. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
@@ -55,9 +61,7 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
 {% comment %}Continue only if we found an entry for this major version {% endcomment %}
 {% if x %}
 
-  {% if DEBUG %}
-  Major version object: {{ x }}<br />
-  {% endif %}
+  {% if DEBUG %}Major version object: {{ x }}<br />{% endif %}
 
   {% assign production = false %}
   {% assign lts = false %}
@@ -87,14 +91,7 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
     {% comment %}Show LTS admonitions only for versions with LTS releases {% endcomment %}
     {% if lts == true %}
 
-      {% if DEBUG %}
-    lts: {{ lts }}<br />
-    production: {{ production }}<br />
-    lm: {{ lm }}<br />
-    la: {{ la }}<br />
-    m: {{ m }}<br />
-    a: {{ a }}<br />
-      {% endif %}
+      {% if DEBUG %}lts: {{ lts }}<br />production: {{ production }}<br />lm: {{ lm }}<br />la: {{ la }}<br />m: {{ m }}<br />a: {{ a }}<br />{% endif %}
 
       {% comment %} LTS date validation will stop processing the include early {% endcomment %}
       {% if la <= lm %}
@@ -109,12 +106,11 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% comment %}Show LTS Assistance message from the start of LTS maintance until EOL{% endcomment %}
       {% if today > la %} {% comment %}LTS assistance has passed, EOL{% endcomment %}
           {{ lts_eol_message }}
-      {% elsif today <= la %}
-        {% if today >= lm %} {% comment %}LTS maintenance has passed, in LTS assistance{% endcomment %}
+      {% elsif today <= la %}{% comment %}LTS assistance has not passed {% endcomment %}
+        {% if today > lm %} {% comment %}In LTS maintenance{% endcomment %}
           {{ lts_assistance_message }}
-          {% break %}
-        {% else %}
-          {{ lts_assistance_message }}
+        {% else %}{% comment %}In LTS GA, where only LTS patches are supported{% endcomment %}
+          {{ lts_maintenance_message }}
         {% endif %}
       {% endif %}
 
@@ -131,7 +127,6 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% comment %}Show Assistance message from the start of maintance until EOL{% endcomment %}
       {% if today > a %} {% comment %}assistance has passed, EOL{% endcomment %}
         {{ ga_eol_message }}
-        {% break %}
       {% elsif today <= a %}
         {% if today >= m %} {% comment %}maintenance has begun{% endcomment %}
         {{ ga_assistance_message }}
@@ -140,8 +135,6 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
           {% if DEBUG %}As of today {{ today }}, release is GA{% endif %}
         {% endif %}
       {% endif %}
-
-      {
     {% endif %}
 
   {% endif %}
