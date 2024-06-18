@@ -27,7 +27,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.v
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) command.
 
-No special privilege is required for: 
+No special privilege is required for:
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) storage.
@@ -48,8 +48,12 @@ Parameter | Description
 `SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
 `SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
+`SHOW BACKUP CONNECTION collectionURI` | Test the connection of each node to your cloud storage location. Refer to [Test the connection to cloud storage](#test-the-connection-to-cloud-storage) for an example.
+`connection_options_list` | Control the parameters for testing the connection to your cloud storage location. Refer to [Show backup connection options](#show-backup-connection-options) for a list.
 
 ### Options
+
+#### Show backup options
 
 Option        | Value | Description
 --------------+-------+-----------------------------------------------------
@@ -57,9 +61,19 @@ Option        | Value | Description
 `check_files` |  N/A  | Validate that all files belonging to a backup are in the expected location in storage. See [Validate a backup's files](#validate-a-backups-files) for an example.
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The passphrase used to [encrypt the files]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
-`kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats). 
+`kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats).
 `incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location).
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
+
+#### Show backup connection options
+
+Option  | Value | Description
+--------+-------+------------
+`concurrently` | `INT` | Run multiple connection tests concurrently. If you also set the `time` option, it will run the specified number of concurrent tests until the time has elapsed. By default, only `1` connection test will run.
+`time` | `STRING` | Run the test repeatedly until the duration has elapsed.
+`transfer` | `STRING` | The size of the file that is written and read during each iteration of the connection test. By default, this will transfer a `32MiB` file.
+
+Refer to [Test the connection to cloud storage](#test-the-connection-to-cloud-storage) for an example.
 
 ## Response
 
@@ -84,13 +98,26 @@ Field | Value | Description
 
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 
+### Show backup connection responses
+
+Field | Value | Description
+------|-------|------------
+`node` | `INT` | The node ID.
+`locality` | `STRING` | The locality of the node.
+`ok` | `BOOL` | The success of the test run.
+`error` | `STRING` | Errors encountered during the test run.
+`transferred` | `STRING` | The size of the file transferred during the test.
+`read_speed` | `STRING` | The speed at which the node read the test file.
+`write_speed` | `STRING` | The speed at which the node wrote the test file.
+`can_delete` | `BOOL` | The success of file deletion.
+
 ## Examples
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 ### View a list of the available full backup subdirectories
 
-<a name="show-backups-in"></a>To view a list of the available [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) subdirectories, use the following command: 
+<a name="show-backups-in"></a>To view a list of the available [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) subdirectories, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -300,6 +327,51 @@ SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?
   defaultdb     | NULL               | org_one                    | schema      | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
 (20 rows)
 ~~~
+
+### Test the connection to cloud storage
+
+Test the connection to a cloud storage location from each node in your cluster. `SHOW BACKUP CONNECTION` will measure the time it takes each node to write a file, read it, and delete it from the specified cloud storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP CONNECTION 'external://cloud_storage';
+~~~
+
+~~~
+  node |                 locality                  | ok | error | transferred | read_speed  | write_speed | can_delete
+-------+-------------------------------------------+----+-------+-------------+-------------+-------------+-------------
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 66.17 MiB/s | 37.52 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 41.77 MiB/s | 33.55 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 14.23 MiB/s | 37.12 MiB/s |     t
+~~~
+
+To modify the testing parameters, use one or a combination of the options: `concurrently`, `time`, and `transfer`. For details on each, refer to [Show backup connection options](#show-backup-connection-options).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP CONNECTION 'external://cloud_storage' WITH transfer = '50MiB', concurrently = 5, time = '1ms';
+~~~
+~~~
+  node |                 locality                  | ok | error | transferred | read_speed  | write_speed | can_delete
+-------+-------------------------------------------+----+-------+-------------+-------------+-------------+-------------
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 59.85 MiB/s | 34.99 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 58.26 MiB/s | 34.91 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.69 MiB/s | 32.30 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.51 MiB/s | 33.02 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 59.29 MiB/s | 31.45 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.61 MiB/s | 32.58 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 61.04 MiB/s | 29.63 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 47.69 MiB/s | 34.04 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.66 MiB/s | 30.39 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.77 MiB/s | 29.64 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 44.95 MiB/s | 34.41 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 46.77 MiB/s | 33.31 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.64 MiB/s | 28.96 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 58.99 MiB/s | 26.65 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 15.14 MiB/s | 33.45 MiB/s |     t
+~~~
+
+For details on the output columns, refer to [Show backup connection responses](#show-backup-connection-responses).
 
 ### Show a backup with descriptor IDs
 
