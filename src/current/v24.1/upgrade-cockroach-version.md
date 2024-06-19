@@ -262,32 +262,19 @@ To roll back an upgrade, do the following on each cluster node:
 
 ## Step 6. Finish the upgrade
 
+Because a finalized major-version upgrade cannot be rolled back, Cockroach Labs recommends that you monitor the stability and performance of your cluster with the upgraded binary for at least a day before deciding to finalize the upgrade.
+
 {{site.data.alerts.callout_info}}
 Finalization is required only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for at least a day. If you decide to roll back the upgrade, repeat the [rolling restart procedure](#step-4-perform-the-rolling-upgrade) with the previous binary. Otherwise, you must re-enable upgrade finalization to complete the upgrade to {{ page. version.version }}. Cockroach Labs recommends that you either finalize or roll back a major-version upgrade within a relative short period of time; running in a partially-upgraded state is not recommended.
+1. If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for at least a day. If you decide to roll back the upgrade, repeat the [rolling restart procedure](#step-4-perform-the-rolling-upgrade) with the previous binary. Otherwise, you must re-enable upgrade finalization to complete the upgrade to {{ page. version.version }}. Cockroach Labs recommends that you either finalize or roll back a major-version upgrade within a relative short period of time; running in a partially-upgraded state is not recommended.
 
-{{site.data.alerts.callout_danger}}
-A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.major_version }} until the {{ previous_version }} upgrade is finalized.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.major_version }} until the {{ previous_version }} upgrade is finalized.
+    {{site.data.alerts.end}}
 
-When finalization begins, a series of migration jobs run to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return `{{ previous_version_numeric }}`.
-
-{% capture previous_version_numeric %}{{ previous_version | strip_first: 'v'}}{% endcapture %}
-{% capture major_version_numeric %}{{ page.major_version | strip_first: 'v' }}{% endcapture %}
-
-You can monitor the process of the migration in the DB Console [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
-
-Finalization is complete when all migration jobs have completed. After migration is complete, the command `SHOW CLUSTER SETTING version` will return `{{ major_version_numeric }}`.
-
-{{site.data.alerts.callout_info}}
-All [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
-{{site.data.alerts.end}}
-
-Once you are satisfied with the new version:
-
-1. Run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell.
+1. Once you are satisfied with the new version, run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell.
 
 1. Re-enable auto-finalization:
 
@@ -296,7 +283,13 @@ Once you are satisfied with the new version:
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-    The series of migration jobs for {{ page.major_version }} runs in sequence.
+    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return `{{ previous_version_numeric }}`.
+
+    You can monitor the process of the migration in the DB Console [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+    {{site.data.alerts.callout_info}}
+    All [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as the process runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+    {{site.data.alerts.end}}
 
     When all migration jobs have completed, the upgrade is complete.
 
