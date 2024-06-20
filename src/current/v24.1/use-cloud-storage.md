@@ -10,7 +10,7 @@ CockroachDB constructs a secure API call to the cloud storage specified in a URL
 
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 
@@ -70,7 +70,7 @@ NFS/Local | `nodelocal://1/path/employees`
 
 For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page.
 
-Example URLs for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) and given a bucket or container name of `acme-co` and a filename of `employees`:
+Example URLs for [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) and given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example
 -------------+----------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ Example URLs for [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create
 {% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
 
 {{site.data.alerts.callout_info}}
-HTTP storage can only be used for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) and [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}).
+HTTP storage can only be used for [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) and [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}).
 {{site.data.alerts.end}}
 
 ## Encryption
@@ -316,7 +316,7 @@ For a specific operation, see the following examples:
 
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %})

@@ -7,7 +7,7 @@ docs_area: migrate
 
  CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
+This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}).
 
 In the example below we will import a data set with <a href="https://gisdata.mn.gov/dataset/env-mn-springs-inventory" data-proofer-ignore>the locations of natural springs in the state of Minnesota (USA)<a/> that is made available via <a href="https://gisdata.mn.gov" data-proofer-ignore>gisdata.mn.gov</a>.
 
@@ -56,7 +56,7 @@ Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04,
 
 ## Step 3. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations]({% link {{ page.version.version }}/import.md %}#import-file-location).
+Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see [import file locations]({% link {{ page.version.version }}/import.md %}#import-file-location).
 
 For local testing, you can [start a local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}).  The following command will start a local file server listening on port 3000:
 
@@ -98,7 +98,7 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
@@ -116,4 +116,3 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html

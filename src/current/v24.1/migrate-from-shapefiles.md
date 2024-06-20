@@ -106,7 +106,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
@@ -125,4 +125,3 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html

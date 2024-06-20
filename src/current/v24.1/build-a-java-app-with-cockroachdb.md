@@ -265,9 +265,9 @@ props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30")
 
 </section>
 
-### Use `IMPORT` to read in large data sets
+### Use `IMPORT INTO` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
 For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
 

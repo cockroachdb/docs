@@ -8,7 +8,7 @@ docs_area: reference.db_console
 The **Jobs** page of the DB Console provides details about long-running tasks performed by your cluster. These can include:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}.
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}).
+- [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}).
 - {{ site.data.products.enterprise }} [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}).
 - [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) created for use by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 - [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics).

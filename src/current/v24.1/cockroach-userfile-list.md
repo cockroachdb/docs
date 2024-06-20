@@ -104,5 +104,4 @@ cockroach userfile list userfile://testdb.public.uploads
 - [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %})
 - [Use `userfile` storage]({% link {{ page.version.version }}/use-userfile-storage.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})

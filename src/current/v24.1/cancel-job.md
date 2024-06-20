@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 The `CANCEL JOB` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lets you stop long-running jobs, which include:
 
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) jobs
+- [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}) jobs
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) jobs
 - [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) jobs
 - [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) jobs
@@ -122,5 +122,5 @@ CANCEL JOBS FOR SCHEDULES 2
 - [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})

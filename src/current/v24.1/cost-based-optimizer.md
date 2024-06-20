@@ -42,7 +42,7 @@ Statistics are refreshed in the following cases:
 
 - When there are no statistics.
 - When it has been a long time since the last refresh, where "long time" is based on a moving average of the time across the last several refreshes.
-- After a successful [`IMPORT`]({% link {{ page.version.version }}/import.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) into the table.
+- After a successful [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) into the table.
 - After any schema change affecting the table.
 - After each mutation operation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), or [`DELETE`]({% link {{ page.version.version }}/delete.md %})), the probability of a refresh is calculated using a formula that takes the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) shown in the following table as inputs. These settings define the target number of rows in a table that must be stale before statistics on that table are refreshed. Increasing either setting will reduce the frequency of refreshes. In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
 

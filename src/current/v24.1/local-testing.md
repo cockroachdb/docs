@@ -76,7 +76,7 @@ For more information about logging, see [Configure logs]({% link {{ page.version
 
 ## Use a local file server for bulk operations
 
-To test bulk operations like [`IMPORT`]({% link {{ page.version.version }}/import.md %}), [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), we recommend using a local file server.
+To test bulk operations like [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), we recommend using a local file server.
 
 For more details, see [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %}).
 
