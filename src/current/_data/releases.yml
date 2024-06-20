@@ -6205,3 +6205,4 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.22
+  lts: true
