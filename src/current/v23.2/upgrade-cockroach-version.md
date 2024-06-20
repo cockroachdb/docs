@@ -269,6 +269,8 @@ To roll back an upgrade, do the following on each cluster node:
 1. Restart the `cockroach` process on the node and verify that it has rejoined the cluster before rolling back the upgrade on the next node.
 1. After all nodes have been rolled back and rejoined the cluster, [finalize the rollback](#step-6-finish-the-upgrade) in the same way as you would finalize an upgrade, as described in the next section.
 
+## Step 6. Finish the upgrade
+
 Because a finalized major-version upgrade cannot be rolled back, Cockroach Labs recommends that you monitor the stability and performance of your cluster with the upgraded binary for at least a day before deciding to finalize the upgrade.
 
 {{site.data.alerts.callout_info}}
