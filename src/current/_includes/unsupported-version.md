@@ -41,7 +41,7 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
 {% endcapture %}
 
 {% capture lts_maintenance_message %}
-      {{site.data.alerts.callout_success}}
+      {{site.data.alerts.callout_info}}
       GA releases for CockroachDB {{ include.major_version }} are no longer supported. Cockroach Labs will stop providing <strong>LTS Assistance Support</strong> for {{ include.major_version }} LTS releases on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
       {{site.data.alerts.end}}
 {% endcapture %}
