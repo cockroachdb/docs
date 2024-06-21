@@ -205,10 +205,7 @@ To configure changefeeds emitting to [cloud storage sinks]({% link {{ page.versi
 
 ### Configuring for tables with many ranges
 
-If you have a table with 10,000 or more [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range), you should consider increasing the following two [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). We strongly recommend increasing these settings slowly. That is, increase the setting and then [monitor]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) its impact before adjusting further:
-
-- `kv.rangefeed.catchup_scan_concurrency`: The number of catchups a [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) can execute concurrently. The default is `8`.
-- `kv.rangefeed.concurrent_catchup_iterators`: The number of [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) catchup iterators a store will allow concurrently before queuing. The default is `16`.
+If you have a table with 10,000 or more [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range), you should consider increasing the `kv.rangefeed.concurrent_catchup_iterators` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). This changes the number of [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) catchup iterators a store will allow concurrently before queuing. The default is `16`. We strongly recommend increasing this setting slowly. That is, increase the setting and then [monitor]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) its impact before adjusting further.
 
 ### Adjusting concurrent changefeed work
 

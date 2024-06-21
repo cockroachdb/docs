@@ -112,7 +112,7 @@ See our [support policy for restoring backups across versions]({% link {{ page.v
 
 ### Reset SQL statistics
 
-Before upgrading to CockroachDB v23.1, it is recommended to reset the cluster's SQL statistics. Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
+Before upgrading to CockroachDB v23.1, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.version.version }}/crdb-internal.md %}#statement-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
