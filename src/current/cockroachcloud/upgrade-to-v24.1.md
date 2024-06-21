@@ -9,8 +9,8 @@ pre_production_preview: false
 pre_production_preview_version: v24.1.0-rc.1
 ---
 
-{% capture previous_version_numeric %}{{ page.prev_version | strip_first: 'v'}}{% endcapture %}
-{% capture major_version_numeric %}{{ page.page_version | strip_first: 'v' }}{% endcapture %}
+{% capture previous_version_numeric %}{{ page.prev_version | remove_first: 'v' }}{% endcapture %}
+{% capture major_version_numeric %}{{ page.page_version | remove_first: 'v' }}{% endcapture %}
 
 {% if page.pre_production_preview == true %}
 [CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation.

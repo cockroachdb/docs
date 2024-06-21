@@ -7,8 +7,8 @@ page_version: v22.2
 prev_version: v22.1
 ---
 
-{% capture previous_version_numeric %}{{ page.prev_version | strip_first: 'v'}}{% endcapture %}
-{% capture major_version_numeric %}{{ page.page_version | strip_first: 'v' }}{% endcapture %}
+{% capture previous_version_numeric %}{{ page.prev_version | remove_first: 'v' }}{% endcapture %}
+{% capture major_version_numeric %}{{ page.page_version | remove_first: 'v' }}{% endcapture %}
 
 Now that [CockroachDB v22.2](https://www.cockroachlabs.com/docs/releases/v22.2) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 

@@ -12,8 +12,8 @@ docs_area: manage
 {% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
 {% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
-{% capture previous_version_numeric %}{{ previous_version | strip_first: 'v'}}{% endcapture %}
-{% capture major_version_numeric %}{% assign local_major_version = page.major_version %}{{ local_major_version | strip_first: 'v' }}{% endcapture %}
+{% capture previous_version_numeric %}{{ previous_version | remove_first: 'v'}}{% endcapture %}
+{% capture major_version_numeric %}{{ page.version.version | remove_first: 'v' }}{% endcapture %}
 
 Because of CockroachDB's [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
@@ -281,7 +281,7 @@ Finalization is required only when upgrading from {{ previous_version }}.x to {{
 1. If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for at least a day. If you decide to roll back the upgrade, repeat the [rolling restart procedure](#step-4-perform-the-rolling-upgrade) with the previous binary. Otherwise, you must re-enable upgrade finalization to complete the upgrade to {{ page.version.version }}. Cockroach Labs recommends that you either finalize or roll back a major-version upgrade within a relative short period of time; running in a partially-upgraded state is not recommended.
 
     {{site.data.alerts.callout_danger}}
-    A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.major_version }} until the {{ previous_version }} upgrade is finalized.
+    A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.version.version }} until the {{ previous_version }} upgrade is finalized.
     {{site.data.alerts.end}}
 
 1. Once you are satisfied with the new version, run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell.
