@@ -264,7 +264,7 @@ As an example, you run the following sequence of SQL statements to create a chan
     {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
     ~~~
 
-    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, re-emitted messages (duplicates) may not be in the correct timestamp order. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
+    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, re-emitted messages (duplicates) may not contain all row updates after the changefeed checkpoints. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
 
     The `updated` option adds an `updated` timestamp to each emitted row. You can also use the [`resolved` option](#resolved-messages) to emit a `resolved` timestamp message to each Kafka partition, or to a separate file at a cloud storage sink. A `resolved` timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
@@ -288,7 +288,7 @@ CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
 
 ### At-least-once delivery
 
-Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit all messages starting from the previous checkpoint to ensure every message is delivered at least once, but could be emitted more than once.
+Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit messages starting from the previous checkpoint to ensure every message is delivered at least once, but may be emitted more than once.
 
 Refer to [Duplicate messages](#duplicate-messages) for causes of messages repeating at the sink.
 
@@ -323,7 +323,7 @@ For example, the checkpoints and changefeed pauses marked in this output show ho
 In this example, with duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. (Refer to [Per-key ordering](#per-key-ordering).)
 
 {{site.data.alerts.callout_danger}}
-The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, [duplicate messages](#duplicate-messages) for an individual row may **not** be in the correct timestamp order.
+The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, it is not possible to order duplicate messages.
 {{site.data.alerts.end}}
 
 To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.).
@@ -369,7 +369,7 @@ Under some circumstances, changefeeds will emit duplicate messages to ensure the
 
 A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
 
-When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint. The re-emitted messages may **not** be in [order](#per-key-ordering) by timestamp.
+When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
 
 <img src="{{ 'images/v24.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
 
