@@ -12,7 +12,7 @@ docs_area: manage
 {% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
 {% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
-{% capture previous_version_numeric %}{{ previous_version | remove_first: 'v'}}{% endcapture %}
+{% capture previous_version_numeric %}{{ previous_version | remove_first: 'v' }}{% endcapture %}
 {% capture major_version_numeric %}{{ page.version.version | remove_first: 'v' }}{% endcapture %}
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
