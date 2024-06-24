@@ -44,9 +44,9 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
 - You can set a different [sink URI]({% link {{ page.version.version }}/changefeed-sinks.md %}#sink-uri) for an existing changefeed with the `sink` option. It is **not** possible to change the sink type. For example, you can use `SET sink = 'gs://{BUCKET NAME}?AUTH=IMPLICIT'` to use a different Google Cloud Storage bucket. However, you cannot use the `sink` option to move to Amazon S3 (`s3://`) or Kafka (`kafka://`). See the [Set options on a changefeed](#set-options-on-a-changefeed) example.
 
 - <a name="option-exceptions"></a> The majority of [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
-  - [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor-option)
+  - [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor)
   - [`end_time`]({% link {{ page.version.version }}/create-changefeed.md %}#end-time)
-  - [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option): This option will not apply to existing tables. To use the fully qualified table name, it is necessary to create a new changefeed.
+  - [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-name): This option will not apply to existing tables. To use the fully qualified table name, it is necessary to create a new changefeed.
   - [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan)
 
 - <a name="scan-details"></a> To use [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
@@ -71,7 +71,7 @@ To use the `ALTER CHANGEFEED` statement to modify a changefeed, it is necessary 
 For more information on enabling changefeeds, see [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 {{site.data.alerts.end}}
 
-1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), [`updated`]({% link {{ page.version.version }}/create-changefeed.md %}#updated-option), and [`schema_change_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-policy) options:
+1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved), [`updated`]({% link {{ page.version.version }}/create-changefeed.md %}#updated), and [`schema_change_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-policy) options:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
