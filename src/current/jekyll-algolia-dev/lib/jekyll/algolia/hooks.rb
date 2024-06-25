@@ -52,6 +52,7 @@ module Jekyll
         return false if filepath.start_with?('cockroachcloud')
         return false if filepath.start_with?('api')
         return false if filepath.start_with?('advisories')
+        return false if filepath.start_with?('molt')
 
         # Exclude from index if files are not part of stable version.
         # If valid stable version does not exist, index dev version.

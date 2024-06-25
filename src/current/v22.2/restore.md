@@ -340,6 +340,8 @@ RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+
 ### Restore a database
 
 To restore a database:
