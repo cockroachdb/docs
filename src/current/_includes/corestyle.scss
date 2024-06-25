@@ -471,6 +471,9 @@ section table tr.warning, table tr.testing, table tr.testing > td.sorting_1  {
 section table tr.danger, table tr.preference, table tr.preference > td.sorting_1  {
   background-color: #f2dede !important;
 }
+section table tr.version {
+  background-color: rgba(105, 51, 255, 0.2);
+}
 
 .orange {
   color: orange;
