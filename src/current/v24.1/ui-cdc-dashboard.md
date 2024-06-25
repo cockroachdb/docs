@@ -33,7 +33,7 @@ Metric | Description
 
 Refer to [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}) and [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}) to manage a changefeed.
 
-In the case of a failed changefeed, you may want to use the [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor-option) option to restart the changefeed. Refer to the [Start a new changefeed where the previous failed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended) example.
+In the case of a failed changefeed, you may want to use the [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor) option to restart the changefeed. Refer to the [Start a new changefeed where the previous failed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended) example.
 
 ## Commit Latency
 

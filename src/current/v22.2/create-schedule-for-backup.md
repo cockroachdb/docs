@@ -10,7 +10,7 @@ docs_area: reference.sql
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule](manage-a-backup-schedule.html).
 
 {{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
+Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
 
 To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
@@ -86,7 +86,7 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 - The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 
-### Protected timestamps and scheduled backups 
+### Protected timestamps and scheduled backups
 
 {% include_cached new-in.html version="v22.2" %} Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](architecture/storage-layer.html#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](configure-replication-zones.html#gc-ttlseconds) of the data. This is unlike non-scheduled backups that are tightly coupled to the GC TTL. See [Garbage collection and backups](take-full-and-incremental-backups.html#garbage-collection-and-backups) for more detail.
 
@@ -187,6 +187,10 @@ This example creates a schedule for a backup of the database `movr` with revisio
 ~~~
 
 Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+{{site.data.alerts.end}}
 
 ### Create a scheduled backup for a table
 

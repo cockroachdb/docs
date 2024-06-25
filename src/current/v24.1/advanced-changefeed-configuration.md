@@ -129,9 +129,9 @@ To balance protecting change data and prevent the over-accumulation of garbage, 
 
 [Create changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}) with the following options so that your changefeed protects data when it is [paused]({% link {{ page.version.version }}/pause-job.md %}):
 
-- [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause): to protect changes while the changefeed is paused until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
+- [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-data-from-gc-on-pause): to protect changes while the changefeed is paused until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
 - [`on_error=pause`]({% link {{ page.version.version }}/create-changefeed.md %}#on-error): to pause the changefeed when it encounters an error. By default, changefeeds treat errors as retryable apart from some [exceptions]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors).
-- [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire): to automatically expire the [protected timestamp records]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) that are older than your defined duration and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed job.
+- [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expires-after): to automatically expire the [protected timestamp records]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) that are older than your defined duration and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed job.
 
 #### Monitoring protected timestamp records
 
@@ -159,7 +159,7 @@ Use [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or 
 
 ### Defining schema change behavior
 
-Ensure that data is ingested downstream in its new format after a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) by using the [`schema_change_events`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-events) and [`schema_schange_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-policy) options. For example, setting `schema_change_events=column_changes` and `schema_change_policy=stop` will trigger an error to the `cockroach.log` file on a [schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill) and the changefeed to fail.
+Ensure that data is ingested downstream in its new format after a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) by using the [`schema_change_events`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-events) and [`schema_schange_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-policy) options. For example, setting `schema_change_events=column_changes` and `schema_change_policy=stop` will trigger an error to the `cockroach.log` file on a [schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill) and the changefeed to fail.
 
 ## Tuning for high throughput
 
@@ -173,7 +173,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 
 ### Setting the `resolved` option
 
-When a changefeed emits a [resolved]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) message, it force flushes all outstanding messages that have buffered, which will diminish your changefeed's throughput while the flush completes. Therefore, if you are aiming for higher throughput, we suggest setting the duration higher (e.g., 10 minutes), or **not** using the `resolved` option.
+When a changefeed emits a [resolved]({% link {{ page.version.version }}/create-changefeed.md %}#resolved) message, it force flushes all outstanding messages that have buffered, which will diminish your changefeed's throughput while the flush completes. Therefore, if you are aiming for higher throughput, we suggest setting the duration higher (e.g., 10 minutes), or **not** using the `resolved` option.
 
 If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
 
@@ -191,7 +191,7 @@ If you are setting the `resolved` option when you are aiming for high throughput
 
 #### Compression
 
-- Use the [`compression` option]({% link {{ page.version.version }}/create-changefeed.md %}#compression-opt) when you create a changefeed emitting data files to a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink). For larger files, set `compression` to the `zstd` format.
+- Use the [`compression` option]({% link {{ page.version.version }}/create-changefeed.md %}#compression) when you create a changefeed emitting data files to a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink). For larger files, set `compression` to the `zstd` format.
 - Use the `snappy` compression format to emit messages to a [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-compression) sink. If you're intending to do large batching for Kafka, use the `lz4` compression format.
 
 #### File size

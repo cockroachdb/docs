@@ -343,7 +343,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. From the **Overview** page, click on **API Keys** in the navigation menu. Click **Create key** and select the scope for this API key. **Global access** is sufficient for this example. **Granular access** is more suitable for production. Copy or download the key and secret.
 
-1. Create a topic in Confluent Cloud. Under **Topics** select **Add topic**. Add a topic name and define the number of partitions and then **Create**. CockroachDB defaults to using the table name as the topic name. If you would like to send messages to an alternate topic, you can specify the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter.
+1. Create a topic in Confluent Cloud. Under **Topics** select **Add topic**. Add a topic name and define the number of partitions and then **Create**. CockroachDB defaults to using the table name as the topic name. If you would like to send messages to an alternate topic, you can specify the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name) parameter.
 
     {{site.data.alerts.callout_info}}
     You can enable [auto topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html) for Confluent Cloud Dedicated clusters under **Cluster Settings** in the console.
@@ -584,7 +584,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
 
-    You can include the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) or [`topic_prefix`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix-param) parameters to create and name an Event Hub for emitted messages.
+    You can include the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name) or [`topic_prefix`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix) parameters to create and name an Event Hub for emitted messages.
 
 1. Create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to store your connection string:
 

@@ -82,7 +82,7 @@ Option | Value | Description
 
 #### Avro limitations
 
-Creating a changefeed using Avro is available in Core and [{{ site.data.products.enterprise }} changefeeds](create-changefeed.html) with the [`confluent_schema_registry`](create-changefeed.html#confluent-registry) option.
+Creating a changefeed using Avro is available in Core and [{{ site.data.products.enterprise }} changefeeds](create-changefeed.html) with the [`confluent_schema_registry`](create-changefeed.html#confluent-schema-registry) option.
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
