@@ -68,7 +68,7 @@ To ensure optimal SQL performance for your CockroachDB {{ site.data.products.clo
 
 ## Configure node shutdown settings
 
-Clusters in CockroachDB {{ site.data.products.cloud }} have the following default values for [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) that relate to [node shutdown](../stable/node-shutdown) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify `server.shutdown.connections.timeout` or `server.shutdown.transactions.timeout`.
+Clusters in CockroachDB {{ site.data.products.cloud }} have the following default values for [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) that relate to [node shutdown]({% link {{ site.current_cloud_version }}/node-shutdown.md %}) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify `server.shutdown.connections.timeout` or `server.shutdown.transactions.timeout`.
 
 Cluster setting | Default | Details
 ----------------|---------|---------
