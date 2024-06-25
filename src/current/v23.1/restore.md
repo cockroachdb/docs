@@ -366,6 +366,8 @@ RESTORE FROM LATEST IN 'external://backup_s3';
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+
 ### Restore a database
 
 To restore a database:
