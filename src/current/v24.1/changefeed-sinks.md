@@ -93,7 +93,7 @@ URI Parameter      | Description
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-To modify the default topic naming, you can specify a [topic prefix]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix-param), [an arbitrary topic name]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param), or use the [`full_table_name` option]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option). Using the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix), [an arbitrary topic name]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name), or use the [`full_table_name` option]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-name). Using the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -284,10 +284,10 @@ You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emu
 
 When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the following regarding topic names:
 
-- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name.
+- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name) parameter, the changefeed will use the table name to create the topic name.
 - If the topic already exists in your Pub/Sub sink, the changefeed will write to it.
 - Changefeeds watching multiple tables will write to multiple topics corresponding to those table names.
-- The [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option) option will create a topic using the fully qualified table name for each table the changefeed is watching.
+- The [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-name) option will create a topic using the fully qualified table name for each table the changefeed is watching.
 - The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) to which the changefeed will emit.
 
 You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
@@ -493,7 +493,7 @@ URI Parameter      | Description
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
 * There is no concurrency configurability.
 
