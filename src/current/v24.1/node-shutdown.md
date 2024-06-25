@@ -224,7 +224,7 @@ Since [decommissioning](#decommissioning) a node rebalances all of its range rep
 </section>
 
 {{site.data.alerts.callout_info}}
-The sum of [`server.shutdown.initial_wait`](#server-shutdown-drain_wait), [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout), [`server.shutdown.transactions.timeout`](#server-shutdown-transactions-timeout) times two, and [`server.shutdown.lease_transfer_iteration.timeout`](#server-shutdown-iteration-timeout) should not be greater than the configured [drain timeout](#drain-timeout).
+The sum of [`server.shutdown.initial_wait`](#server-shutdown-connections-timeout), [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout), [`server.shutdown.transactions.timeout`](#server-shutdown-transactions-timeout) times two, and [`server.shutdown.lease_transfer_iteration.timeout`](#server-shutdown-lease_transfer_iteration-timeout) should not be greater than the configured [drain timeout](#drain-timeout).
 {{site.data.alerts.end}}
 
 #### `kv.allocator.recovery_store_selector`
@@ -266,7 +266,7 @@ A very long drain may indicate an anomaly, and you should manually inspect the s
 
 CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of `node drain`. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.
 
-`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.initial_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.initial_wait`](#server-shutdown-drain_wait), [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout), [`server.shutdown.transactions.timeout`](#server-shutdown-transactions-timeout) times two, and [`server.shutdown.lease_transfer_iteration.timeout`](#server-shutdown-lease_transfer_iteration-timeout).
+`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.initial_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.initial_wait`](#server-shutdown-connections-timeout), [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout), [`server.shutdown.transactions.timeout`](#server-shutdown-transactions-timeout) times two, and [`server.shutdown.lease_transfer_iteration.timeout`](#server-shutdown-lease_transfer_iteration-timeout).
 
 ### Termination grace period
 
@@ -849,7 +849,7 @@ For clusters deployed using the CockroachDB Helm chart or a manual StatefulSet, 
 Cockroach Labs recommends that you:
 
 - Set `terminationGracePeriodSeconds` to no shorter than 300 seconds (5 minutes). This recommendation has been validated over time for many production workloads. In most cases, a value higher than 300 seconds (5 minutes) is not required. If CockroachDB takes longer than 5 minutes to gracefully stop, this may indicate an underlying configuration problem. Test the value you select against representative workloads before rolling out the change to production clusters.
-- Set `terminationGracePeriodSeconds` to be at least 5 seconds longer than the configured [drain timeout](#server-shutdown-drain_wait), to allow the node to complete draining before Kubernetes removes the Kubernetes pod for the CockroachDB node.
+- Set `terminationGracePeriodSeconds` to be at least 5 seconds longer than the configured [drain timeout](#server-shutdown-connections-timeout), to allow the node to complete draining before Kubernetes removes the Kubernetes pod for the CockroachDB node.
 - Ensure that the **sum** of the following `server.shutdown.*` settings for the CockroachDB cluster do not exceed the deployment's `terminationGracePeriodSeconds`, to reduce the likelihood that a node must be terminated forcibly.
 
   - [`server.shutdown.initial_wait`](#server-shutdown-initial_wait)
