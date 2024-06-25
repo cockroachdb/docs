@@ -52,6 +52,7 @@ To emit different properties for a row, specify the following explicitly in CDC 
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## CDC query function support
 
@@ -60,7 +61,7 @@ The following table outlines functions that are useful with CDC queries:
 Function                  | Description
 --------------------------+----------------------
 `changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
-`event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
+`event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
 `event_schema_timestamp()` | Returns the timestamp of the [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) event.
 
 You can also use the following functions in CDC queries:
@@ -149,7 +150,7 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 ### Capture delete messages
 
-Delete changefeed messages will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}) value and all other columns will emit as `NULL` (see the [Known limitations](#known-limitations)). To emit the deleted values, use the [`envelope=wrapped`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope), [`format=json`]({% link {{ page.version.version }}/create-changefeed.md %}#format), and [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) options:
+Delete changefeed messages will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}) value and all other columns will emit as `NULL` (see the [Known limitations](#known-limitations)). To emit the deleted values, use the [`envelope=wrapped`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope), [`format=json`]({% link {{ page.version.version }}/create-changefeed.md %}#format), and [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff) options:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -185,7 +186,7 @@ CREATE CHANGEFEED INTO 'external://sink' AS SELECT owner_id, (cdc_prev).current_
 For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`.
 
 {{site.data.alerts.callout_info}}
-If you do not need to select specific columns in a table or filter rows from a changefeed, you can instead create a changefeed using the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) to emit a `before` field with each message. This field includes the value of the row before the update was applied.
+If you do not need to select specific columns in a table or filter rows from a changefeed, you can instead create a changefeed using the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff) to emit a `before` field with each message. This field includes the value of the row before the update was applied.
 {{site.data.alerts.end}}
 
 ### Reference TTL in a CDC query
@@ -301,7 +302,7 @@ WHERE left(ride_id::string, 1) IN ('c','d','e','f');
 
 You can use CDC queries as a tool for debugging or investigating issues from the SQL shell.
 
-For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell.
+For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell.
 
 1. Find the start time. Use the [`cluster_logical_timestamp()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
@@ -502,7 +503,7 @@ CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides
 
 ### Video Demo
 
-For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video: 
+For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video:
 
 {% include_cached youtube.html video_id="mea4czXi7tI" %}
 

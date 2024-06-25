@@ -1,5 +1,4 @@
 - It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement. [#77171](https://github.com/cockroachdb/cockroach/issues/77171)
-- You cannot alter a changefeed that uses [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}). [#83033](https://github.com/cockroachdb/cockroach/issues/83033)
 - CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
     ~~~ sql
