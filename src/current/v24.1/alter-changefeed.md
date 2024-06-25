@@ -233,6 +233,7 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## See also
 
