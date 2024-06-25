@@ -66,6 +66,20 @@ When several transactions try to modify the same underlying data concurrently, t
 
 To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
 
+## Configure node shutdown settings
+
+Clusters in CockroachDB {{ site.data.products.cloud }} have the following default values for [cluster settings](../stable/cluster-settings) that relate to [node shutdown](../stable/node-shutdown) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify `server.shutdown.connections.timeout` or `server.shutdown.transactions.timeout`.
+
+Cluster setting | Default | Details
+----------------|---------|---------
+[`server.shutdown.initial_wait`](../stable/cluster-settings#setting-server-shutdown-drain-wait)<br />Alias: `server.shutdown.drain_wait` | 3 minutes | How long to wait before redirecting new client requests to non-draining nodes. After this duration has elapsed, the node no longer accepts new client connections. This setting cannot be changed for clusters in CockroachDB {{ site.data.products.cloud }}.
+[`server.shutdown.connections.timeout`](../stable/cluster-settings#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds | How long after `server.shutdown.initial_wait` completes to wait for client connections to drain before forcibly disconnecting them from the node. Can be set to a value between 0 and 30 minutes (1800 seconds).
+[`server.shutdown.transactions.timeout`](../stable/cluster-settings#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait` | 90 seconds | How long to wait for transactions on the node to complete before rolling them back. The default value is appropriate for most deployments. If this is set too low, transactions will be rolled back unnecessarily during node shutdown, and if it is set too high, node shutdown may take longer.
+
+If node termination takes longer than 45 minutes, regardless of the cluster's settings, the node is forcibly terminated and restarted.
+
+After a node is terminated, if it takes longer than 5 minutes to rejoin the cluster (known as the _termination grace period_), its replicas will be moved to other nodes and it will join as a new node.
+
 ## Use a pool of persistent connections
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
