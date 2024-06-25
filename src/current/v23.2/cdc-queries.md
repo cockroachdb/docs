@@ -52,6 +52,7 @@ To emit different properties for a row, specify the following explicitly in CDC 
 ## Limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## CDC query function support
 
@@ -502,7 +503,7 @@ CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides
 
 ### Video Demo
 
-For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video: 
+For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video:
 
 {% include_cached youtube.html video_id="mea4czXi7tI" %}
 

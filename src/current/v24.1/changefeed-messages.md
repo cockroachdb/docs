@@ -32,9 +32,9 @@ By default, changefeed messages emitted to a [sink]({% link {{ page.version.vers
 - **Value**:
     - One of four possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
-        - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated-option) timestamp.
+        - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated) timestamp.
         - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
-        - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
+        - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
     - For [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}), the current state of the row inserted or updated.
     - For [`DELETE`]({% link {{ page.version.version }}/delete.md %}), `null`.
 
@@ -338,7 +338,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 ## Resolved messages
 
-When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
+When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
 
 When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
 
@@ -473,7 +473,7 @@ If the schema change does **not** use the declarative schema changer by default,
 
 To prevent the changefeed from emitting a copy of the table with the new schema, use the `schema_change_policy = nobackfill` option. In the preceding two output blocks, the new schema messages that include the `"likes_treats"` column will not emit.
 
-Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version }}/create-changefeed.md %}#schema-events) for detail on the `schema_change_policy` option. You can also use the `schema_change_events` option to define the type of schema change event that triggers the behavior specified in `schema_change_policy`.
+Refer to the [`CREATE CHANGEFEED` option table]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-events) for detail on the `schema_change_policy` option. You can also use the `schema_change_events` option to define the type of schema change event that triggers the behavior specified in `schema_change_policy`.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -516,7 +516,7 @@ The following sections outline the limitations and type mapping for relevant for
 
 ### Avro
 
-The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds with the [`confluent_schema_registry`](create-changefeed.html#confluent-registry) option.
+The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds with the [`confluent_schema_registry`](create-changefeed.html#confluent-schema-registry) option.
 
 #### Avro limitations
 
@@ -561,7 +561,7 @@ The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
 
 - It **only** works in combination with the [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option.
-- It does **not** work when used with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) or [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) options.
+- It does **not** work when used with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff) or [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved) options.
 - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
