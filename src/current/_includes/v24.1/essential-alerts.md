@@ -333,6 +333,35 @@ Send an alert when a node is not executing SQL despite having connections. `sql.
 
 - Refer to [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
+### SQL queries failing
+
+Send an alert when the query failure count exceeds a user-determined threshold based on their application's SLA.
+
+**Metric**
+<br>[`sql.failure.count`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-failure-count)
+
+**Rule**
+<br>WARNING:  `sql.failure.count` is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+-  Use the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}) to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error.
+
+### SQL queries experiencing high latency
+
+Send an alert when the query latency exceeds a user-determined threshold based on their application’s SLA.
+
+**Metric**
+<br>[`sql.service.latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-service-latency)
+<br>[`sql.conn.latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-conn-latency)
+
+**Rule**
+<br>WARNING:  (p99 or p90 of `sql.service.latency` plus average of `sql.conn.latency`) is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+- Apply the time range of the alert to the [**SQL Activity** pages]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#sql-activity-pages) to investigate. Use the [**Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %}) P90 Latency and P99 latency columns to correlate [statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) with this alert.
+
 ## Changefeeds
 
 {{site.data.alerts.callout_info}}
@@ -443,13 +472,13 @@ Changefeed jobs should not be paused for a long time because the protected times
 
 ### Changefeed experiencing high latency
 
-Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) variable set in the cluster.
+Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) variable set in the cluster. This alert will ensure that the changefeed is progressing quicker than the garbage collection ttl. 
 
 **Metric**
-<br>changefeed.max_behind_nanos
+<br>[`changefeed.checkpoint_progress`]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#metrics)
 
 **Rule**
-<br>WARNING:  `changefeed.max_behind_nanos` greater than a threshold (that is less than `gc.ttlseconds` variable)
+<br>WARNING: (current time minus `changefeed.checkpoint_progress`) is greater than a threshold (that is less than `gc.ttlseconds` variable)
 
 **Action**
 
