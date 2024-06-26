@@ -1,4 +1,4 @@
-{% assign DEBUG=false %}
+{% assign DEBUG=true %}
 {% unless include.major_version %}
 Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-version.md major_version=page.major_version %}{% endraw %}</code>
 {% break %}
@@ -6,7 +6,7 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
 {% if DEBUG %}Major version: {{ include.major_version }}<br />{% endif %}
 
 {% comment %}To test, comment this line and uncomment the today and actual_today variables below{% endcomment %}
-{% assign today = "today" | date: "%s" %}{% comment %} Simulate future date and format it in seconds. {% endcomment %}
+{% comment %}{% assign today = "today" | date: "%s" %}{% endcomment %}{% comment %} Simulate future date and format it in seconds. {% endcomment %}
 
 {% comment %} Some dates to test:
 2025-11-14: 23.1 LTS EOL (LTS EOL message)
@@ -16,8 +16,8 @@ Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-vers
 {% endcomment %}
 
 {% comment %}Uncomment the following two lines and comment the third to test a specific date{% endcomment %}
-{% comment %}{% assign today = '2024-11-12' | date: "%s" %}{% endcomment %}
-{% comment %}{% assign actual_today = "today" | date: "%s" %}{% endcomment %}
+{% assign today = '2024-11-12' | date: "%s" %}
+{% assign actual_today = "today" | date: "%s" %}
 
 {% if DEBUG %}
   {% if actual_today %}Actual today: {{ actual_today }}<br />{% endif %}
