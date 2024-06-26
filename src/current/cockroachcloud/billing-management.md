@@ -7,9 +7,20 @@ docs_area:
 
 The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
-Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization.
-
 ## Set up billing for an organization
+
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization. 
+
+You can manage your CockroachDB {{ site.data.products.cloud }} payments by using a credit card or through an [AWS Marketplace](https://aws.amazon.com/marketplace) subscription for easy integration with your existing AWS billing.
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="credit-card">Credit card</button>
+    <button class="filter-button page-level" data-scope="marketplace">AWS Marketplace</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="credit-card">
+
+## Add a credit card
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click **Add a credit card** in the **Payment method** field.
@@ -50,6 +61,30 @@ If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [c
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
 {{site.data.alerts.end}}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="marketplace">
+
+## Subscribe through AWS Marketplace
+
+To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marketplace:
+
+1. Navigate to the [CockroachDB product page](https://aws.amazon.com/marketplace/pp/prodview-3zbkzekdohwly) on the AWS Marketplace and click **View purchase options**.
+1. On the **Subscribe to CockroachDB Cloud** page, click **Subscribe** and then click **Set up your account**. You will be directed to the CockroachDB {{ site.data.products.cloud }} console.
+1. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
+1. Select the organization CockroachDB {{ site.data.products.cloud }} you want to subscribe through the AWS Marketplace and click **Subscribe to AWS Marketplace**.
+
+## Unsubscribe from CockroachDB {{ site.data.products.cloud }}
+
+Before you unsubscribe from CockroachDB {{ site.data.products.cloud }}, [add a credit card](#add-a-credit-card) as a backup payment method to avoid cluster deletion.
+
+To unsubscribe from CockroachDB {{ site.data.products.cloud }}:
+
+1. Navigate to the [AWS Marketplace](https://aws.amazon.com/marketplace) and then to the **Manage Subscriptions** page. From the list of subscriptions, select **CockroachDB Cloud**.
+1. Click **Actions** in the Agreement section. From the dropdown, click **Cancel Subscription**.
+
+</section>
 
 ## View Credits balance
 
