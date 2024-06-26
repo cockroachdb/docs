@@ -88,8 +88,7 @@ Asia Pacific    | `australiaeast`      | New South Wales
                 | `centralindia`       | Pune
                 | `eastasia`           | Hong Kong
                 | `southeastasia`      | Singapore
-Middle East     | `qatarcentral`       | Doha
-                | `uaenorth`           | Dubai
+Middle East     | `uaenorth`           | Dubai
 North America   | `canadacentral`      | Toronto
                 | `centralus`          | Iowa
                 | `eastus`             | Virginia
