@@ -73,6 +73,42 @@ Western Europe  | `eu-central-1`   | Frankfurt
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Azure regions
+
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
+
+Geographic Area | Region Name          | Location
+----------------|----------------------|---------
+Africa          | `southafricanorth`   | Johannesburg
+Asia Pacific    | `australiaeast`      | New South Wales
+                | `japaneast`          | Tokyo
+                | `koreacentral`       | Seoul
+                | `centralindia`       | Pune
+                | `eastasia`           | Hong Kong
+                | `southeastasia`      | Singapore
+Middle East     | `qatarcentral`       | Doha
+                | `uaenorth`           | Dubai
+North America   | `canadacentral`      | Toronto
+                | `centralus`          | Iowa
+                | `eastus`             | Virginia
+                | `eastus2`            | Virginia
+                | `southcentralus`     | Texas
+                | `westus2`            | Washington
+                | `westus3`            | Washington
+Western Europe  | `francecentral`      | Paris
+                | `germanywestcentral` | Frankfurt
+                | `northeurope`        | Ireland
+                | `norwayeast`         | Oslo
+                | `polandcentral`      | Warsaw
+                | `swedencentral`      | Gävle
+                | `switzerlandnorth`   | Zürich
+                | `uksouth`            | London
+                | `westeurope`         | Netherlands
+
+</section>
+
 ## GCP regions
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -131,41 +167,5 @@ Western Europe  | `europe-central2`         | Warsaw
                 | `europe-west6`            | Zürich
                 | `europe-west9`            | Paris
                 | `europe-west12`           | Turin
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-## Azure regions
-
-CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
-
-Geographic Area | Region Name          | Location
-----------------|----------------------|---------
-Africa          | `southafricanorth`   | Johannesburg
-Asia Pacific    | `australiaeast`      | New South Wales
-                | `japaneast`          | Tokyo
-                | `koreacentral`       | Seoul
-                | `centralindia`       | Pune
-                | `eastasia`           | Hong Kong
-                | `southeastasia`      | Singapore
-Middle East     | `qatarcentral`       | Doha
-                | `uaenorth`           | Dubai
-North America   | `canadacentral`      | Toronto
-                | `centralus`          | Iowa
-                | `eastus`             | Virginia
-                | `eastus2`            | Virginia
-                | `southcentralus`     | Texas
-                | `westus2`            | Washington
-                | `westus3`            | Washington
-Western Europe  | `francecentral`      | Paris
-                | `germanywestcentral` | Frankfurt
-                | `northeurope`        | Ireland
-                | `norwayeast`         | Oslo
-                | `polandcentral`      | Warsaw
-                | `swedencentral`      | Gävle
-                | `switzerlandnorth`   | Zürich
-                | `uksouth`            | London
-                | `westeurope`         | Netherlands
 
 </section>
