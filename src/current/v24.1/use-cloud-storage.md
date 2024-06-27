@@ -144,7 +144,7 @@ This table outlines the actions that each operation performs against the storage
             <td>Restores need list access to the files already in the bucket to find other backups in the <a href="take-full-and-incremental-backups.html#backup-collections">backup collection</a>. This contains metadata files that describe the backup, the <code>LATEST</code> file, and other versioned subdirectories and files.</td>
         </tr>
         <tr>
-            <td><a href="import.html">Import</a></td>
+            <td><a href="import-into.html">Import</a></td>
             <td>Get</td>
             <td>Imports read the requested file(s) from the storage bucket.</td>
         </tr>
