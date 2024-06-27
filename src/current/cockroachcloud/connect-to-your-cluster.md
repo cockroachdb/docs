@@ -41,16 +41,15 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 Private connectivity allows you to establish SQL access to a CockroachDB {{ site.data.products.dedicated }} cluster entirely through cloud provider private infrastructure, without exposing the cluster to the public internet, affording enhanced security and performance.
 
-- Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC peering](#gcp-vpc-peering). PSC allows you to selectively connect your cluster to a VPC within your Google Cloud project, while VPC Peering allows you to connect the Cockroach Cloud's VPC for your cluster to a VPC within your Google Cloud project.
-- Clusters deployed on AWS can connect privately using AWS PrivateLink, which allows you to connect Cockroach Cloud's VPC to a VPC within your AWS account.
+- Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC peering](#gcp-vpc-peering). PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB {{ site.data.products.cloud }} to a VPC within your Google Cloud project.
+- Clusters deployed on AWS can connect privately using [AWS PrivateLink](#aws-privatelink), which allows you to connect your cluster to a VPC within your AWS account.
+- Clusters deployed on Azure can connect privately using [Azure Private Link](#azure-private-link), which allows you to connect your cluster to a virtual network within your Azure tenant.
 
 For more information, refer to [Network authorization]({% link cockroachcloud/network-authorization.md %}).
 
 {{site.data.alerts.callout_success}}
-GCP Private Service Connect and AWS PrivateLink can be configured only after a cluster is created.
+GCP Private Service Connect, AWS PrivateLink, and Azure Private Link can be configured only after a cluster is created.
 {{site.data.alerts.end}}
-
-Azure Private Link is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 {{site.data.alerts.callout_info}}
 {% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
@@ -68,7 +67,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
     - Set **Target** to **Published service**.
     - Set **Target service** to the value you copied from CockroachDB {{ site.data.products.cloud }} Console. If the endpoint's configured target service does not match, validation will fail.
     - Provide a value for **Endpoint name**. This is not used by CockroachDB {{ site.data.products.cloud }}.
-    - If it is not enabled, enable the Service Directory API, click **Enable global access*, and create a namespace in each region where your cluster is deployed.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
     - Click **Add endpoint**.
     - After the endpoint is created, copy the connection ID.
 1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Validate**.
@@ -106,6 +105,42 @@ Self-service VPC peering setup is not supported for CockroachDB {{ site.data.pro
 #### AWS PrivateLink
 
 To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### Azure Private Link
+
+{{site.data.alerts.callout_success}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+1. Navigate to your cluster's **Networking > Private endpoint** tab.
+1. Click **Add a private endpoint**. Copy the value provided for **Alias**. Do not close this browser window.
+1. In a new browser window, log in to Azure Console and create a new private endpoint for your cluster.
+    - Set the connection method to “by resource ID or alias”.
+    - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com//azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
+
+    After the private endpoint is created, view it, then click **Properties** and copy its Resource ID.
+
+    {{site.data.alerts.callout_info}}
+    Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
+    {{site.data.alerts.end}}
+
+    Do not close this browser window.
+1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Next**.
+1. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. If you encounter the error `This resource is invalid`, be sure that you are using the resource ID for the Azure private endpoint, rather than the resource ID for Azure Private Link itself.
+
+    When validation succeeds, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
+1. Return to the Azure Console. Go to the **Private DNS Zone** page and create private DNS records for your cluster in the` region where you will connect privately.
+    - Create a private DNS zone named with the Internal DNS Name you previously copied. Refer to [Quickstart: Create an Azure private DNS zone using the Azure portal](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal).
+    - In the new DNS zone, create an `@` record with the Internal DNS Name you previously copied.
+    - Click **Complete** to finish creating the DNS records.
+1. Associate the new DNS zone with the private endpoint's virtual network. View the private endpoint's configuration, click **Virtual network links**, then click **Add**.
+    - Name the link, then select the resource group and select the DNS zone you just created.
+    - Enable auto-registration.
+    - Click **OK**.
+
+    For details, refer to [Link the virtual network](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
+1. Return to the CockroachDB {{ site.data.products.cloud }} Console browser tab and click **Complete**.
+1. On the **Networking** page, verify the connection status is **Available**.
 
 ## Connect to your cluster
 

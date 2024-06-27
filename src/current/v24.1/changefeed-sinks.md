@@ -15,6 +15,7 @@ CockroachDB supports the following sinks:
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 - {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
+- {% include_cached new-in.html version="v24.1" %} [Apache Pulsar](#apache-pulsar) (in Preview)
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -92,7 +93,7 @@ URI Parameter      | Description
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-To modify the default topic naming, you can specify a [topic prefix]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix-param), [an arbitrary topic name]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param), or use the [`full_table_name` option]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option). Using the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix), [an arbitrary topic name]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name), or use the [`full_table_name` option]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-name). Using the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -116,7 +117,7 @@ Each of the following settings have significant impact on a changefeed's behavio
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "kafka_client_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "kafka_client_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE", "Compression": "GZIP" }'
 ~~~
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
@@ -256,9 +257,9 @@ URI Parameter      | Description
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
-`ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
+`ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -283,10 +284,10 @@ You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emu
 
 When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the following regarding topic names:
 
-- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name.
+- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name) parameter, the changefeed will use the table name to create the topic name.
 - If the topic already exists in your Pub/Sub sink, the changefeed will write to it.
 - Changefeeds watching multiple tables will write to multiple topics corresponding to those table names.
-- The [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option) option will create a topic using the fully qualified table name for each table the changefeed is watching.
+- The [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-name) option will create a topic using the fully qualified table name for each table the changefeed is watching.
 - The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) to which the changefeed will emit.
 
 You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
@@ -492,7 +493,7 @@ URI Parameter      | Description
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
 * There is no concurrency configurability.
 
@@ -607,6 +608,37 @@ The following parameters are also needed, but are **set by default** in Cockroac
 - `sasl_enabled=true`
 - `sasl_handshake=true`
 - `sasl_mechanism=PLAIN`
+
+## Apache Pulsar
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+
+A Pulsar sink URI:
+
+{% include {{ page.version.version }}/cdc/apache-pulsar-uri.md %}
+
+Changefeeds emitting to an Apache Pulsar sink support `json` and `csv` [format options]({% link {{ page.version.version }}/create-changefeed.md %}#format).
+
+{% include {{ page.version.version }}/cdc/apache-pulsar-unsupported.md %}
+
+For an Apache Pulsar setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
+
+### Apache Pulsar sink messages
+
+~~~
+----- got message -----
+key:[null], properties:[], content:{"Key":["seattle", "09265ab7-5f3a-40cb-a543-d37c8c893793"],"Value":{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "09265ab7-5f3a-40cb-a543-d37c8c893793", "revenue": 53.00, "rider_id": "44576296-d4a7-4e79-add9-f880dd951064", "start_address": "25795 Alyssa Extensions", "start_time": "2024-05-09T12:18:42.022952", "vehicle_city": "seattle", "vehicle_id": "a0c935f6-8872-408e-bc12-4d0b5a85fa71"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["amsterdam", "b3548485-9475-44cf-9769-66617b9cb151"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "b3548485-9475-44cf-9769-66617b9cb151", "revenue": 25.00, "rider_id": "adf4656f-6a0d-4315-b035-eaf7fa6b85eb", "start_address": "49614 Victoria Cliff Apt. 25", "start_time": "2024-05-09T12:18:42.763718", "vehicle_city": "amsterdam", "vehicle_id": "eb1d1d2c-865e-4a40-a7d7-8f396c1c063f"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["amsterdam", "d119f344-318f-41c0-bfc0-b778e6e38f9a"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "d119f344-318f-41c0-bfc0-b778e6e38f9a", "revenue": 24.00, "rider_id": "1a242414-f704-4e1f-9f5e-2b468af0c2d1", "start_address": "54909 Douglas Street Suite 51", "start_time": "2024-05-09T12:18:42.369755", "vehicle_city": "amsterdam", "vehicle_id": "99d98e05-3114-460e-bb02-828bcd745d44"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
+~~~
 
 ## See also
 
