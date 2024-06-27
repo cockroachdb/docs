@@ -6,7 +6,7 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page are outdated. Use the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and [MOLT Fetch]({% link molt/molt-fetch.md %}) to move data from Oracle to CockroachDB.
+The instructions on this page are outdated. Use the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}) or [Qlik]({% link {{ page.version.version }}/qlik.md %}) to migrate data from Oracle to CockroachDB.
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import-into.md %}) CSV files.
