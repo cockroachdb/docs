@@ -24,7 +24,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 - A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
 
-### Hot Node (Hot spot)
+### Hot node (hot spot)
 
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized.
 
@@ -40,7 +40,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 
 - Refer to [Hot spots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots).
 
-### Node Memory Utilization
+### Node memory utilization
 
 One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) -- the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory-planning).
 
@@ -56,7 +56,7 @@ One node with high memory utilization is a cluster stability risk. High memory u
 
 - Provision all CockroachDB VMs or machines with [sufficient RAM]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory).
 
-### Node Storage Performance
+### Node storage performance
 
 Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Refer to [Disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops).
 
@@ -71,7 +71,7 @@ Under-configured or under-provisioned disk storage is a common root cause of inc
 
 - Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O. Refer to [Storage and disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o).
 
-### Version Mismatch
+### Version mismatch
 
 All CockroachDB cluster nodes should be running the same exact executable (with identical build label). This warning guards against an operational error where some nodes were not upgraded.
 
@@ -105,7 +105,7 @@ Send an alert when a cluster is getting close to the open file descriptor limit.
 
 ## Storage
 
-### Node Storage Capacity
+### Node storage capacity
 
 A CockroachDB node will not able to operate if there is no free disk space on a CockroachDB [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) volume.
 
@@ -125,6 +125,24 @@ A CockroachDB node will not able to operate if there is no free disk space on a 
 - In a "disk full" situation, you may be able to get a node "unstuck" by removing the [automatically created emergency ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).
 
 {% if include.deployment == 'self-hosted' %}
+### Write stalls
+
+A high `write-stalls` value means CockroachDB is unable to write to a disk in an acceptable time, resulting in CockroachDB facing a disk latency issue and not responding to writes.
+
+**Metric**
+<br>[`storage.write-stalls`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#storage-write-stalls)
+
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `storage.write-stalls` per minute is greater than or equal to `1` per minute
+<br>CRITICAL:  `storage.write-stalls` per second is greater than or equal to `1` per second
+
+**Action**
+
+- Refer to [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls).
+{% endif %}
+
+{% if include.deployment == 'self-hosted' %}
 ## Health
 
 ### Node restarting too frequently
@@ -142,7 +160,7 @@ Send an alert if a node has restarted more than once in the last 10 minutes. Cal
 
 - Refer to [Node process restarts]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#node-process-restarts).
 
-### Node LSM Storage Health
+### Node LSM storage health
 
 CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) storage engine that uses a [Log-structured Merge-tree (LSM tree)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) to manage data storage. The health of an LSM tree can be measured by the [*read amplification*]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms), which is the average number of [SST files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) being checked per read operation. A value in the single digits is characteristic of a healthy LSM tree. A value in the double, triple, or quadruple digits suggests an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms). A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
 
@@ -160,7 +178,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 
 ## Expiration of license and certificates
 
-### Enterprise License Expiration
+### Enterprise license expiration
 
 Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration.
 
@@ -175,7 +193,7 @@ Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensi
 
 [Renew the enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#renew-an-expired-license).
 
-### Security Certificate Expiration
+### Security certificate expiration
 
 Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.md %}) expiration.
 
@@ -204,7 +222,7 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) or planned cluster resizing, the nodes' state and count will be changing. **Mute KV distributed alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
 {{site.data.alerts.end}}
 
-### Heartbeat Latency
+### Heartbeat latency
 
 Monitor the cluster health for early signs of instability. If this metric exceeds 1 second, it is a sign of instability. 
 
@@ -219,7 +237,7 @@ Monitor the cluster health for early signs of instability. If this metric exceed
 
 - Refer to [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 
-### Live Node Count Change
+### Live node count change
 
 The liveness checks reported by a node is inconsistent with the rest of the cluster. Number of live nodes in the cluster (will be 0 if this node is not itself live). This is a critical metric that tracks the live nodes in the cluster.
 
@@ -235,7 +253,7 @@ The liveness checks reported by a node is inconsistent with the rest of the clus
 
 - Refer to [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
 
-### Intent Buildup
+### Intent buildup
 
 Send an alert when very large transactions are [locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`]({% link {{ page.version.version }}/delete.md %}) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
 
@@ -300,7 +318,7 @@ Send an alert when the number of ranges with replication below the replication f
 
 - Refer to [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
-### Requests stuck in Raft
+### Requests stuck in raft
 
 Send an alert when requests are taking a very long time in replication. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
 
@@ -333,7 +351,7 @@ Send an alert when a node is not executing SQL despite having connections. `sql.
 
 - Refer to [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
-### SQL queries failing
+### SQL query failure
 
 Send an alert when the query failure count exceeds a user-determined threshold based on their application's SLA.
 
@@ -362,13 +380,32 @@ Send an alert when the query latency exceeds a user-determined threshold based o
 
 - Apply the time range of the alert to the [**SQL Activity** pages]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#sql-activity-pages) to investigate. Use the [**Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %}) P90 Latency and P99 latency columns to correlate [statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) with this alert.
 
+{% if include.deployment == 'self-hosted' %}
+## Backup
+
+### Backup failure
+
+While CockroachDB is a distributed product, there is always a need to ensure backups complete.
+
+**Metric**
+<br>[`schedules.BACKUP.failed`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#schedules-BACKUP-failed)
+
+**Rule**
+<br>Set alerts for each node:
+<br>WARNING:  `schedules.BACKUP.failed` is greater than `0`
+
+**Action**
+
+- Refer to [Backup and Restore Monitoring]({% link {{ page.version.version }}/backup-and-restore-monitoring.md %}).
+{% endif %}
+
 ## Changefeeds
 
 {{site.data.alerts.callout_info}}
 During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), the [changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) restart following node restarts. **Mute changefeed alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
 {{site.data.alerts.end}}
 
-### Changefeed Failure
+### Changefeed failure
 
 Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) will not try to restart). Any increase in this metric counter should prompt investigative action.
 
@@ -389,7 +426,7 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ pag
 
 2. If the cluster is not undergoing maintenance, check the health of [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) endpoints. If the sink is [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), check for sink connection errors such as `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`.
 
-### Frequent Changefeed Restarts
+### Frequent changefeed restarts
 
 Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
 
@@ -403,7 +440,7 @@ Changefeeds automatically restart in case of transient errors. However "too many
 
 - Follow the action for a [changefeed failure](#changefeed-failure).
 
-### Changefeed Falling Behind
+### Changefeed falling behind
 
 Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
 
