@@ -7,7 +7,7 @@ docs_area: migrate
 
 CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}).
+This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
 In the following example, you will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96).
 
@@ -34,7 +34,7 @@ Convert the GeoJSON data to CSV using the following `ogr2ogr` command:
 ogr2ogr -f CSV tanks.csv -lco GEOMETRY=AS_WKT tanks.geojson
 ~~~
 
-You will import the CSV data into the CockroachDB table.
+You will import the CSV data into a CockroachDB table.
 
 ## Step 2. Host the file where the cluster can access it
 

@@ -7,7 +7,7 @@ docs_area: migrate
 
  CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}).
+This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
 In the following example, you will import a data set with the locations of bus stops in the cities of Minneapolis and St. Paul, MN (USA) that is made available via [gisdata.mn.gov](https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-better-bus-stops).
 
@@ -34,7 +34,7 @@ Convert the GeoPackage data to CSV using the following `ogr2ogr` command:
 ogr2ogr -f CSV busstops.CSV -lco GEOMETRY=AS_WKT trans_better_bus_stops.gpkg
 ~~~
 
-You will import the CSV data into the CockroachDB table.
+You will import the CSV data into a CockroachDB table.
 
 ## Step 2. Host the file where the cluster can access it
 

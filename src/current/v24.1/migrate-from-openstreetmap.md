@@ -7,11 +7,11 @@ docs_area: migrate
 
  CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from [OpenStreetMap](https://www.openstreetmap.org) `.pbf` data files into CockroachDB using [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/) and [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}).
+This page has instructions for migrating data from [OpenStreetMap](https://www.openstreetmap.org) `.pbf` data files into CockroachDB using [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/).
 
 In the example below we will import the [OSM data for Australia](https://download.geofabrik.de/australia-oceania/australia.html) that is available from [GeoFabrik GmbH](http://www.geofabrik.de/data/shapefiles.html).
 
-## Before You Begin
+## Before you begin
 
 To follow along with the example below, you will need the following prerequisites:
 
@@ -122,7 +122,6 @@ Osm2pgsql took 2879s overall
 
 ## See also
 
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
