@@ -47,23 +47,64 @@ CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the f
 
 Geographic Area | Region Name      | Location
 ----------------|------------------|---------
-Asia Pacific    | `ap-northeast-1` | Tokyo
+Asia Pacific    | `ap-east-1`      | Hong Kong
+                | `ap-southeast-3` | Jakarta
+                | `ap-northeast-1` | Tokyo
                 | `ap-northeast-2` | Seoul
                 | `ap-northeast-3` | Osaka
                 | `ap-south-1`     | Mumbai
                 | `ap-southeast-1` | Singapore
                 | `ap-southeast-2` | Sydney
-Middle East     | `me-central-1`   | United Arab Emirates
-North America   | `ca-central-1`   | Central Canada
+Middle East     | `me-south-1`     | Bahrain
+                | `il-central-1`   | Tel Aviv
+                | `me-central-1`   | United Arab Emirates
+North America   | `ca-west-1`      | Calgary
+                | `ca-central-1`   | Central Canada
                 | `us-east-1`      | N. Virginia
                 | `us-east-2`      | Ohio
                 | `us-west-2`      | Oregon
 South America   | `sa-east-1`      | Sao Paolo
 Western Europe  | `eu-central-1`   | Frankfurt
-                | `eu-north-1`     | Stockholm
                 | `eu-west-1`      | Ireland
                 | `eu-west-2`      | London
+                | `eu-south-1`     | Milan
+                | `eu-north-1`     | Stockholm
                 | `eu-west-3`      | Paris
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Azure regions
+
+CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
+
+Geographic Area | Region Name          | Location
+----------------|----------------------|---------
+Africa          | `southafricanorth`   | Johannesburg
+Asia Pacific    | `australiaeast`      | New South Wales
+                | `japaneast`          | Tokyo
+                | `koreacentral`       | Seoul
+                | `centralindia`       | Pune
+                | `eastasia`           | Hong Kong
+                | `southeastasia`      | Singapore
+Middle East     | `uaenorth`           | Dubai
+North America   | `canadacentral`      | Toronto
+                | `centralus`          | Iowa
+                | `eastus`             | Virginia
+                | `eastus2`            | Virginia
+                | `southcentralus`     | Texas
+                | `westus2`            | Washington
+                | `westus3`            | Washington
+Western Europe  | `francecentral`      | Paris
+                | `germanywestcentral` | Frankfurt
+                | `northeurope`        | Ireland
+                | `norwayeast`         | Oslo
+                | `polandcentral`      | Warsaw
+                | `swedencentral`      | Gävle
+                | `switzerlandnorth`   | Zürich
+                | `uksouth`            | London
+                | `westeurope`         | Netherlands
 
 </section>
 
@@ -125,41 +166,5 @@ Western Europe  | `europe-central2`         | Warsaw
                 | `europe-west6`            | Zürich
                 | `europe-west9`            | Paris
                 | `europe-west12`           | Turin
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-## Azure regions
-
-CockroachDB {{ site.data.products.dedicated }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
-
-Geographic Area | Region Name          | Location
-----------------|----------------------|---------
-Africa          | `southafricanorth`   | Johannesburg
-Asia Pacific    | `australiaeast`      | New South Wales
-                | `japaneast`          | Tokyo
-                | `koreacentral`       | Seoul
-                | `centralindia`       | Pune
-                | `eastasia`           | Hong Kong
-                | `southeastasia`      | Singapore
-Middle East     | `qatarcentral`       | Doha
-                | `uaenorth`           | Dubai
-North America   | `canadacentral`      | Toronto
-                | `centralus`          | Iowa
-                | `eastus`             | Virginia
-                | `eastus2`            | Virginia
-                | `southcentralus`     | Texas
-                | `westus2`            | Washington
-                | `westus3`            | Washington
-Western Europe  | `francecentral`      | Paris
-                | `germanywestcentral` | Frankfurt
-                | `northeurope`        | Ireland
-                | `norwayeast`         | Oslo
-                | `polandcentral`      | Warsaw
-                | `swedencentral`      | Gävle
-                | `switzerlandnorth`   | Zürich
-                | `uksouth`            | London
-                | `westeurope`         | Netherlands
 
 </section>

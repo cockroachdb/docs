@@ -10,7 +10,7 @@ By default, [protected timestamps]({% link {{ page.version.version }}/architectu
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) is unavailable. Protected timestamps will protect changes until you either [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed or the sink becomes available once again.
-- (**deprecated**) You [pause]({% link {{ page.version.version }}/pause-job.md %}) a changefeed with the [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors). Protected timestamps will protect changes until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
+- (**deprecated**) You [pause]({% link {{ page.version.version }}/pause-job.md %}) a changefeed with the [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-data-from-gc-on-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors). Protected timestamps will protect changes until you [resume]({% link {{ page.version.version }}/resume-job.md %}) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads.
 
@@ -39,12 +39,12 @@ SET CLUSTER SETTING changefeed.protect_timestamp.max_age = '120h';
 {{site.data.alerts.callout_info}}
 `changefeed.protect_timestamp.max_age` applies only to **newly created changefeeds in v23.2**.
 
-If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), we recommend setting [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
+If you are [upgrading to v23.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), we recommend setting [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-data-from-gc-on-pause) on any existing changefeeds to ensure that it does not enter a situation of infinite retries, which could prevent garbage collection. You can use the [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement to add `protect_data_from_gc_on_pause` to existing changefeeds.
 {{site.data.alerts.end}}
 
 ### `gc_protect_expires_after`
 
-The [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire) option automatically expires the protected timestamp records that are older than the defined duration and cancels a changefeed job.
+The [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expires-after) option automatically expires the protected timestamp records that are older than the defined duration and cancels a changefeed job.
 
 For example:
 

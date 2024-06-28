@@ -10,7 +10,7 @@ docs_area: reference.sql
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}).
 
 {{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
+Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
 
 To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 {{site.data.alerts.end}}
@@ -63,7 +63,7 @@ Targets:
 `WITH SCHEDULE OPTIONS schedule_option` | Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}
-For schedules that include both [full and incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}), CockroachDB will create two schedules (one for each type). See [Incremental backup schedules](#incremental-backup-schedules) for more information. 
+For schedules that include both [full and incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}), CockroachDB will create two schedules (one for each type). See [Incremental backup schedules](#incremental-backup-schedules) for more information.
 {{site.data.alerts.end}}
 
 ### Backup options
@@ -82,11 +82,11 @@ For schedules that include both [full and incremental backups]({% link {{ page.v
 - The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 
-### Protected timestamps and scheduled backups 
+### Protected timestamps and scheduled backups
 
 {% include {{ page.version.version }}/backups/protected-timestamps.md %}
 
-We recommend monitoring your backup schedule to alert for failed backups: 
+We recommend monitoring your backup schedule to alert for failed backups:
 
 - See the [Backup and Restore Monitoring]({% link {{ page.version.version }}/backup-and-restore-monitoring.md %}) page for a general overview and list of metrics available for backup, scheduled backup, and restore jobs.
 - See [Set up monitoring for the backup schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}#set-up-monitoring-for-the-backup-schedule) for metrics and monitoring backup schedules specifically.
@@ -168,6 +168,10 @@ This example creates a schedule for a cluster backup with revision history that'
 ~~~
 
 Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+{{site.data.alerts.end}}
 
 ### Create a scheduled backup for a database
 
@@ -256,7 +260,7 @@ This example creates a schedule for a cluster backup with the `on_previous_runni
 (2 rows)
 ~~~
 
-The schedule starts a new backup, even if the previous one is still running because the user specified option for `on_previous_running = 'start'`. The [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete. 
+The schedule starts a new backup, even if the previous one is still running because the user specified option for `on_previous_running = 'start'`. The [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete.
 
 Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also schedules a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
