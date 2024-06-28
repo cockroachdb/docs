@@ -1,0 +1,5 @@
+
+- Read queries are not supported on the standby cluster before [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
+- The primary and standby cluster **cannot have different [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported. [#119934](https://github.com/cockroachdb/cockroach/issues/119934)
+- Before cutover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
+- Large data imports, such as those produced by [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) or [`IMPORT`]({% link {{ page.version.version }}/import.md %}), may dramatically increase [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process).
