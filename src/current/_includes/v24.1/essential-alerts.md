@@ -509,7 +509,7 @@ Changefeed jobs should not be paused for a long time because the protected times
 
 ### Changefeed experiencing high latency
 
-Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) variable set in the cluster. This alert will ensure that the changefeed is progressing quicker than the garbage collection ttl. 
+Send an alert when the maximum latency of any running changefeed exceeds a specified threshold, which is less than the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) variable set in the cluster. This alert ensures that the changefeed progresses faster than the garbage collection TTL, preventing a changefeed's protected timestamp from delaying garbage collection.
 
 **Metric**
 <br>[`changefeed.checkpoint_progress`]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#metrics)
