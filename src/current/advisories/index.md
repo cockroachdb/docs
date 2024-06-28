@@ -10,7 +10,7 @@ Technical advisories report major issues with CockroachDB or the CockroachDB {{ 
 
 Users are invited to evaluate advisories and consider the recommended mitigation actions independently from their version upgrade schedule.
 
-Get future advisories emailed to you:
+Get future technical advisories emailed to you:
 
 {% include_cached marketo.html %}
 
