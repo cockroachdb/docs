@@ -1,5 +1,5 @@
 ---
-title: Use the Live Migration Service
+title: MOLT Live Migration Service
 summary: Learn how to use the Live Migration Service to shadow application traffic, perform cutover, and migrate a database to CockroachDB.
 toc: true
 docs_area: migrate
