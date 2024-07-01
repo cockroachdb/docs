@@ -490,6 +490,7 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 #### `ALTER CHANGEFEED` limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ### Physical cluster replication
 
