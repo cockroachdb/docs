@@ -369,7 +369,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
     {% include_cached copy-clipboard.html %}
     ```shell
     # for example...
-    openssl x509 -in "${secrets_dir}/node1/ca.crt" -text | less
+    openssl x509 -in "${secrets_dir}/node1/certs/ca.crt" -text | less
     ```
     ~~~txt
     Certificate:
