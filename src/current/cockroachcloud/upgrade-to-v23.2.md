@@ -31,7 +31,7 @@ Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/doc
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
-If you previously upgraded to a Pre-Production Preview of {{ page.page_version }}, your cluster will be upgraded to this version automatically, and no further action is required.
+If you previously upgraded to a Pre-Production Preview of {{ page.page_version }}, your cluster will be upgraded to {{ page.version.version }} automatically, and no further action is required.
 {% endif %}
 
 ## Step 1. Verify that you can upgrade
