@@ -45,8 +45,8 @@ system visible: Can be set / modified only from the system virtual cluster, but 
 - `changefeed.aggregator.flush_jitter`
 - `changefeed.backfill.concurrent_scan_requests`
 - `changefeed.backfill.scan_request_size`
-- `changefeed.balance_range_distribution.enabled`
 - `changefeed.batch_reduction_retry.enabled`
+- `changefeed.default_range_distribution_strategy`
 - `changefeed.event_consumer_worker_queue_size`
 - `changefeed.event_consumer_workers`
 - `changefeed.fast_gzip.enabled`
