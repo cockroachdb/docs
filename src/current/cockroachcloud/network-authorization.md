@@ -60,7 +60,7 @@ Authorized network access can be managed from the CockroachDB {{ site.data.produ
 
 Cluster Type                | IP allowlist rule max
 ----------------------------|------------
-Dedicated (AWS)             | 7
+Dedicated (AWS)             | 20
 Dedicated (GCP and Azure)   | 200
 Serverless                  | 50
 
