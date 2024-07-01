@@ -29,13 +29,39 @@ This is faster than using `LIMIT`/`OFFSET` because, instead of doing a full tabl
 
 ## Examples
 
-The examples in this section use the [employees data set](https://github.com/datacharmer/test_db), which you can load into CockroachDB as follows:
+The examples in this section use the [employees data set](https://github.com/datacharmer/test_db). 
+
+You will need to write a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement that matches the schema of the table data you're importing.
+
+For example, to import the data from `employees.csv` into an `employees` table, issue the following statement to create the table:
 
 {% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE DATABASE IF NOT EXISTS employees;
-USE employees;
-IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
+~~~sql
+CREATE TABLE employees (
+  emp_no INT PRIMARY KEY,
+  birth_date DATE NOT NULL,
+  first_name STRING NOT NULL,
+  last_name STRING NOT NULL,
+  gender STRING NOT NULL,
+  hire_date DATE NOT NULL
+      );
+~~~
+
+Next, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import the data into the new table:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
+     CSV DATA (
+       'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/csv/employees.csv.gz'
+     );
+~~~
+
+~~~
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+--------------------+-----------+--------------------+--------+---------------+----------------+----------
+ 381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
+(1 row)
 ~~~
 
 To get the first page of results using keyset pagination, run the statement below.

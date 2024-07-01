@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 Use the `CREATE STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to generate table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
 
-Once you [create a table]({% link {{ page.version.version }}/create-table.md %}) and load data into it (e.g., [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`IMPORT`]({% link {{ page.version.version }}/import.md %})), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
+Once you [create a table]({% link {{ page.version.version }}/create-table.md %}) and load data into it (e.g., [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
 For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` statement as an alias for `CREATE STATISTICS`. For syntax, see [Aliases](#aliases).
 
@@ -219,6 +219,6 @@ To view statistics jobs, there are two options:
 - [`SHOW STATISTICS`]({% link {{ page.version.version }}/show-statistics.md %})
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

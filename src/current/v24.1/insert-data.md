@@ -99,10 +99,6 @@ conn.commit()
 
 </section>
 
-## Bulk insert
-
-If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead of sending SQL [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
-
 {% include {{page.version.version}}/sql/limit-row-size.md %}
 
 ## See also
@@ -110,8 +106,6 @@ If you need to get a lot of data into a CockroachDB cluster quickly, use the [`I
 Reference information related to this task:
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
-- [Import performance]({% link {{ page.version.version }}/import.md %}#performance)
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 - [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
 - [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)

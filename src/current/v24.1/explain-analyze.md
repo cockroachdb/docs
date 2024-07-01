@@ -523,7 +523,6 @@ In the preceding output, the `revenue` comparison value is redacted as `‹×›
 - [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
 - [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
 - [`EXECUTE`]({% link {{ page.version.version }}/sql-grammar.md %}#execute_stmt)
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [Indexes]({% link {{ page.version.version }}/indexes.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 - [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
