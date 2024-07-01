@@ -82,6 +82,10 @@ Explicit Incrementals URI
 
 In the examples on this page, `{collectionURI}` is a placeholder for the storage location that will contain the example backup.
 
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+{% include {{ page.version.version }}/backups/storage-collision-examples.md %}
+
 ## Full backups
 
 Full backups are now available to both core and Enterprise users.
