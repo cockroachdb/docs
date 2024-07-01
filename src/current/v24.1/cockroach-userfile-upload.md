@@ -13,10 +13,6 @@ This command takes in a source file to upload and a destination filename. It wil
 A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommended using `cockroach userfile upload` for quick uploads from your client (about 15MB or smaller).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}
-If you would like to upload and import data from a dump file, consider using [`cockroach import`]({% link {{ page.version.version }}/cockroach-import.md %}) instead.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
@@ -105,7 +101,7 @@ $ cockroach userfile upload /Users/maxroach/Desktop/test-data2.csv --certs-dir=c
 successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data2.csv
 ~~~
 
-Then, you can use the file to [`IMPORT`]({% link {{ page.version.version }}/import.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
 
 ### Upload a file to a specific directory
 
@@ -120,7 +116,7 @@ $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-upload/t
 successfully uploaded to userfile://defaultdb.public.userfiles_root/test-upload/test-data.csv
 ~~~
 
-Then, you can use the file to [`IMPORT`]({% link {{ page.version.version }}/import.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
 
 ### Upload a directory recursively
 
@@ -172,5 +168,4 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 - [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %})
 - [Use `userfile` storage]({% link {{ page.version.version }}/use-userfile-storage.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})

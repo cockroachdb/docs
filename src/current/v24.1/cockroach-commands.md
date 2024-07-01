@@ -39,7 +39,6 @@ Command | Usage
 [`cockroach userfile delete`]({% link {{ page.version.version }}/cockroach-userfile-delete.md %}) | Delete the files stored in the user-scoped file storage.
 [`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}) | Output CockroachDB version details.
 [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) | Run a built-in load generator against a cluster.
-[`cockroach import`]({% link {{ page.version.version }}/cockroach-import.md %}) | Import a table or database from a local dump file into a running cluster. Supported file formats are `PGDUMP` and `MYSQLDUMP`.
 
 ## Environment variables
 
