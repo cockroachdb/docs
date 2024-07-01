@@ -17,7 +17,6 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
       <td><ul>
         <li>Lightweight applications, starter projects, development environments, and proofs of concept.</li>
         <li>Applications with unpredictable scale or regular peaks and troughs of activity.</li>
-        <li>Applications that will only need to be deployed in a single region.</li>
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td>
