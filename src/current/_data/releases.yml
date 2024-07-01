@@ -6027,7 +6027,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -6054,7 +6054,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -6163,7 +6163,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -6259,3 +6259,4 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.6
+  lts: true
