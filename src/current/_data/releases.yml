@@ -5060,7 +5060,6 @@
   major_version: v23.1
   release_date: '2023-11-13'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: d7e9824b4cd6ebf7a8548156f2a772ae6648257d
   has_sql_only: true
@@ -5250,7 +5249,6 @@
   major_version: v23.1
   release_date: '2023-12-11'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 8d065df26e25a762a1abbbf2b1e475456b341a00
   has_sql_only: true
@@ -5359,7 +5357,6 @@
   major_version: v23.1
   release_date: '2024-01-17'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: b95f2225b09cf25f9f2be31ef6a6f65c73a1b081
   has_sql_only: true
@@ -5475,7 +5472,6 @@
   major_version: v23.1
   release_date: '2024-02-20'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 69a32fafce429e5b75dba8f339ea15922286a0ba
   has_sql_only: true
@@ -5530,7 +5526,6 @@
   major_version: v23.1
   release_date: '2024-02-27'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 37f75744ac468fe5a97b343a188ea248bce8fb4a
   has_sql_only: true
@@ -5664,7 +5659,6 @@
   major_version: v23.1
   release_date: '2024-03-19'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: d50ccb5a52cdf5a1f41cbb2fa61ef971c65e1346
   has_sql_only: true
@@ -5773,7 +5767,6 @@
   major_version: v23.1
   release_date: '2024-04-09'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 84cf36a2a05dcfcf6dfccf4014aad8f703ff6cef
   has_sql_only: true
@@ -5855,7 +5848,6 @@
   major_version: v23.1
   release_date: '2024-04-18'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 1bca2adcbc1deb23067e28369f8b24c99194f2bb
   has_sql_only: true
@@ -5937,7 +5929,6 @@
   major_version: v23.1
   release_date: '2024-05-01'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 93a67980ee45391b8ef02d40a6d50ddb0245817b
   has_sql_only: true
@@ -5992,7 +5983,6 @@
   major_version: v23.1
   release_date: '2024-05-07'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: fceb4cf5c378bfb53b3cf12c672716168192f1fe
   has_sql_only: true
@@ -6101,7 +6091,6 @@
   major_version: v23.1
   release_date: '2024-05-23'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 6ed4ef16634f683adfb7d77b4ebf414e0c1e42a7
   has_sql_only: true
