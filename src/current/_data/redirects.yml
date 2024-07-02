@@ -925,6 +925,12 @@
   sources: ['orchestrate-cockroachdb-with-kubernetes-insecure.md']
   versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
 
+- destination: import-into.md
+  sources:
+    - import.md
+    - cockroach-import.md
+  versions: ['v24.1']
+
 - destination: kubernetes-overview.md
   sources: ['orchestration.md']
   versions: ['v21.1', 'v21.2', 'v22.1']

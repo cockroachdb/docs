@@ -180,10 +180,6 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 To import into a new table, use [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) followed by `IMPORT INTO`.
 
-{{site.data.alerts.callout_info}}
- Certain [`IMPORT TABLE`]({% link {{ page.version.version }}/import.md %}) statements that defined the table schema inline are **not** supported in v22.1+. We recommend using the following example to import data into a new table.
-{{site.data.alerts.end}}
-
 1. Create the new table with the necessary columns and data types:
 
     {% include_cached copy-clipboard.html %}

@@ -407,12 +407,6 @@
               ]
             },
             {
-              "title": "<code>IMPORT</code>",
-              "urls": [
-                "/${VERSION}/import.html"
-              ]
-            },
-            {
               "title": "<code>IMPORT INTO</code>",
               "urls": [
                 "/${VERSION}/import-into.html"
