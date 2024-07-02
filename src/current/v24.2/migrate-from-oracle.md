@@ -6,12 +6,10 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page are outdated. Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}) or [Qlik]({% link {{ page.version.version }}/qlik.md %}) to migrate data from Oracle to CockroachDB.
-
-Note that `IMPORT` is deprecated. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
+The instructions on this page are outdated. Use the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}) or [Qlik]({% link {{ page.version.version }}/qlik.md %}) to migrate data from Oracle to CockroachDB.
 {{site.data.alerts.end}}
 
-This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import.md %}) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
+This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import-into.md %}) CSV files.
 
 To illustrate this process, we use the following sample data and tools:
 
@@ -77,7 +75,7 @@ SET TERMOUT ON
 ~~~
 
 {{site.data.alerts.callout_info}}
-In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT`]({% link {{ page.version.version }}/import.md %}#delimiter).
+In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#delimited-data-files).
 {{site.data.alerts.end}}
 
 To extract the data, we ran the script for each table in SQL*Plus:
@@ -156,7 +154,7 @@ You will need to export one CSV file per table, with the following requirements:
 
 ### CSV configuration options
 
-The following options are available to [`IMPORT ... CSV`]({% link {{ page.version.version }}/import.md %}):
+The following options are available to [`IMPORT INTO ... CSV DATA`]({% link {{ page.version.version }}/import-into.md %}):
 
 - [Column delimiter]({% link {{ page.version.version }}/migrate-from-csv.md %}#column-delimiter)
 - [Comment syntax]({% link {{ page.version.version }}/migrate-from-csv.md %}#comment-syntax)
@@ -179,7 +177,7 @@ These compressed CSV files will be used to import your data into CockroachDB.
 
 ## Step 6. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`]({% link {{ page.version.version }}/import.md %}) can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see the following:
 
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
@@ -190,9 +188,38 @@ We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to h
 
 ## Step 7. Map Oracle to CockroachDB data types
 
-Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql), write [`IMPORT TABLE`]({% link {{ page.version.version }}/import.md %}) statements that match the schemas of the table data you're importing.
+Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql), write [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statements that match the schemas of the table data you're importing. Remove all Oracle-specific attributes and remap all Oracle data types.
 
-Remove all Oracle-specific attributes, remap all Oracle data types, refactor all [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statements to include [primary keys]({% link {{ page.version.version }}/primary-key.md %}).
+For example, to create a `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE customers (
+  customer_id       DECIMAL
+                    NOT NULL
+                    PRIMARY KEY,
+  cust_first_name   VARCHAR(40) NOT NULL,
+  cust_last_name    VARCHAR(40) NOT NULL,
+  nls_language      VARCHAR(3),
+  nls_territory     VARCHAR(30),
+  credit_limit      DECIMAL(9,2),
+  cust_email        VARCHAR(100),
+  account_mgr_id    DECIMAL,
+  customer_since    DATE,
+  customer_class    VARCHAR(40),
+  suggestions       VARCHAR(40),
+  dob               DATE,
+  mailshot          VARCHAR(1),
+  partner_mailshot  VARCHAR(1),
+  preferred_address DECIMAL,
+  preferred_card    DECIMAL,
+  INDEX cust_email_ix (cust_email),
+  INDEX cust_dob_ix (dob),
+  INDEX cust_account_manager_ix (
+      account_mgr_id
+  )
+ );
+~~~
 
 ### Data type mapping
 
@@ -259,44 +286,19 @@ For more information and examples, refer to the following:
 
 The Oracle privileges for [users]({% link {{ page.version.version }}/create-user.md %}) and [roles]({% link {{ page.version.version }}/create-role.md %}) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured]({% link {{ page.version.version }}/security-reference/security-overview.md %}), CockroachDB follows the same [role-based access control]({% link {{ page.version.version }}/authorization.md %}) methodology as Oracle.
 
-
 ## Step 8. Import the CSV
 
-For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
+Use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import data into each table created in [Step 7](#step-7-map-oracle-to-cockroachdb-data-types).
+
+For example, to import the data from `CUSTOMERS.csv.gz` into an existing `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE customers (
-        customer_id       DECIMAL
-                          NOT NULL
-                          PRIMARY KEY,
-        cust_first_name   VARCHAR(40) NOT NULL,
-        cust_last_name    VARCHAR(40) NOT NULL,
-        nls_language      VARCHAR(3),
-        nls_territory     VARCHAR(30),
-        credit_limit      DECIMAL(9,2),
-        cust_email        VARCHAR(100),
-        account_mgr_id    DECIMAL,
-        customer_since    DATE,
-        customer_class    VARCHAR(40),
-        suggestions       VARCHAR(40),
-        dob               DATE,
-        mailshot          VARCHAR(1),
-        partner_mailshot  VARCHAR(1),
-        preferred_address DECIMAL,
-        preferred_card    DECIMAL,
-        INDEX cust_email_ix (cust_email),
-        INDEX cust_dob_ix (dob),
-        INDEX cust_account_manager_ix (
-            account_mgr_id
-        )
-       )
-   CSV DATA (
-        'https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz'
-       )
+IMPORT INTO CUSTOMERS
+  CSV DATA ('https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz')
   WITH delimiter = e'\t',
-       "nullif" = '',
-       decompress = 'gzip';
+   "nullif" = '',
+   decompress = 'gzip';
 ~~~
 
 ~~~
@@ -305,8 +307,6 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
  381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
 (1 row)
 ~~~
-
-{% include {{ page.version.version }}/sql/use-import-into.md %}
 
 Then add the [computed columns]({% link {{ page.version.version }}/computed-columns.md %}), [constraints]({% link {{ page.version.version }}/alter-table.md %}#add-constraint), and [function-based indexes]({% link {{ page.version.version }}/create-index.md %}). For example:
 
@@ -319,7 +319,7 @@ Then add the [computed columns]({% link {{ page.version.version }}/computed-colu
   CREATE INDEX CUST_FUNC_LOWER_NAME_IX on CUSTOMERS (LOW_CUST_LAST_NAME,CUST_FIRST_NAME);
 ~~~
 
-Repeat the above for each CSV file you want to import.
+Repeat the preceding steps for each CSV file you want to import.
 
 ## Step 9. Refactor application SQL
 
@@ -387,7 +387,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 
 ## See also
 
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
 - [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})

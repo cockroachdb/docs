@@ -158,5 +158,4 @@ The following example shows 3 historical statistics collections and the subseque
 - [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %})
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

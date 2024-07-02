@@ -243,6 +243,5 @@ RESUME JOB 27536791415282;
 - [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})
 - [Take Backups with Revision History and Restore from a Point-in-time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/migration-overview.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

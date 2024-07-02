@@ -6,7 +6,7 @@ key: use-a-local-file-server-for-bulk-operations.html
 docs_area: manage
 ---
 
-If you need a location to store files for the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) process, but do not have access to (or cannot use) [cloud storage providers]({% link {{ page.version.version }}/use-cloud-storage.md %}), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
+If you need a location to store files for the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) process, but do not have access to (or cannot use) [cloud storage providers]({% link {{ page.version.version }}/use-cloud-storage.md %}), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
 
 This is especially useful for:
 
@@ -19,7 +19,7 @@ HTTP file servers are not supported as storage for [backups]({% link {{ page.ver
 
 ## HTTP export storage API
 
-A CockroachDB [`IMPORT`]({% link {{ page.version.version }}/import.md %}) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
+A CockroachDB [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
@@ -36,7 +36,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 ### Using PHP with `IMPORT`
 
-The PHP language has an HTTP server built in.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
+The PHP language has an HTTP server built in.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -46,7 +46,7 @@ $ php -S 127.0.0.1:3000 # files available at e.g., 'http://localhost:3000/data.s
 
 ### Using Python with `IMPORT`
 
-The Python language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
+The Python language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -64,7 +64,7 @@ $ python -m http.server 3000
 
 ### Using Ruby with `IMPORT`
 
-The Ruby language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
+The Ruby language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -98,9 +98,5 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
-
-{% comment %} Reference Links {% endcomment %}
-
-[import]: {% link {{ page.version.version }}/import.md %}
