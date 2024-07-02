@@ -13,11 +13,9 @@ docs_area: manage
 - [`cockroach userfile get`](#get-files)
 - [`cockroach userfile delete`](#delete-files)
 
-Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
+Once a userfile is uploaded, you can run [`IMPORT INTO`](#import-from-userfile).
 
- For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
-
- {% include {{ page.version.version }}/misc/external-connection-note.md %}
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 ## Upload a file
 
@@ -72,23 +70,6 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 For more information, see [`cockroach userfile delete`]({% link {{ page.version.version }}/cockroach-userfile-delete.md %}).
 
-## Upload and import from a dump file
-
-{{site.data.alerts.callout_info}}
-We recommend using [`cockroach import`]({% link {{ page.version.version }}/cockroach-import.md %}) for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT]({% link {{ page.version.version }}/import.md %}) statement.
-{{site.data.alerts.end}}
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
-~~~
-
-~~~
-successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
-~~~
-
-For more information, see [`cockroach import`]({% link {{ page.version.version }}/cockroach-import.md %}).
-
 ## Import from `userfile`
 
 {% include {{ page.version.version }}/userfile-examples/import-into-userfile.md %}
@@ -104,5 +85,4 @@ For more information, see [`cockroach import`]({% link {{ page.version.version }
 - [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %})
 - [`cockroach userfile delete`]({% link {{ page.version.version }}/cockroach-userfile-delete.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})

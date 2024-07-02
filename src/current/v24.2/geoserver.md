@@ -19,14 +19,13 @@ Many of the instructions on this page come from the following GeoServer document
 
 You must have the following set up before proceeding with this tutorial:
 
-1. CockroachDB [installed on the local machine]({% link {{ page.version.version }}/install-cockroachdb.md %})
-1. GeoServer [installed on the local machine](https://docs.geoserver.org/stable/en/user/installation/index.html#installation).
+- CockroachDB [installed on the local machine]({% link {{ page.version.version }}/install-cockroachdb.md %})
+- GeoServer [installed on the local machine](https://docs.geoserver.org/stable/en/user/installation/index.html#installation).
+    {{site.data.alerts.callout_success}}
+    Mac users who use [Homebrew](https://brew.sh) can install GeoServer by typing `brew install geoserver`.
+    {{site.data.alerts.end}}
 
 These instructions assume you are running on a UNIX-like system.
-
-{{site.data.alerts.callout_success}}
-Mac users who use [Homebrew](https://brew.sh) can install GeoServer by typing `brew install geoserver`.
-{{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB and connect to your cluster
 
@@ -50,12 +49,21 @@ Connect to the running cluster from the [SQL client]({% link {{ page.version.ver
     USE tutorial;
     ~~~
 
-1. Load the spatial data set:
+1. In a separate terminal, download the spatial data set:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql') WITH ignore_unsupported_statements;
+    ~~~ shell
+    curl -o bookstores-and-roads.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql
     ~~~
+
+1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url {"CONNECTION STRING"} < bookstores-and-roads.sql
+    ~~~
+
+    The SQL execution will take some time to complete.
 
 ## Step 3. Turn on CockroachDB's experimental box comparison operators
 

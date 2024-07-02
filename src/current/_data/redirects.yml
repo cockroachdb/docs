@@ -929,7 +929,7 @@
   sources:
     - import.md
     - cockroach-import.md
-  versions: ['v24.1']
+  versions: ['v24.1', 'v24.2']
 
 - destination: kubernetes-overview.md
   sources: ['orchestration.md']
