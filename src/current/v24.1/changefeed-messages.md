@@ -6,7 +6,7 @@ docs_area: stream_data
 key: use-changefeeds.html
 ---
 
-Changefeeds emit messages per row as change events happen to watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
+Changefeeds generate and emit messages (on a per-key basis) as changes happen to the rows in watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
 
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
@@ -209,7 +209,7 @@ Changefeeds provide a _per-key ordering guarantee_ for the **first emission** of
 
 For example, a changefeed can emit updates to rows `A` at timestamp `T1`, `B` at `T2`, and `C` at `T3` in any order.
 
-When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` **after** `A` at `T1`. However, `A` at `T3` could precede or follow `B` at `T2`, because there is no timestamp ordering between keys.
+When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` (for the first time) **after** emitting `A` at `T1` (for the first time). However, `A` at `T3` could precede or follow `B` at `T2`, because there is no timestamp ordering between keys.
 
 Under some circumstances, a changefeed will emit [duplicate messages](#duplicate-messages) of row updates. Changefeeds can emit duplicate messages in any order.
 
@@ -288,7 +288,7 @@ CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
 
 ### At-least-once delivery
 
-Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit messages starting from the previous checkpoint to ensure every message is delivered at least once, but may be emitted more than once.
+Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it may re-emit some or all of the messages starting from the previous checkpoint to ensure that every message is delivered at least once, which could lead to some messages being delivered more than once.
 
 Refer to [Duplicate messages](#duplicate-messages) for causes of messages repeating at the sink.
 
@@ -323,7 +323,7 @@ For example, the checkpoints and changefeed pauses marked in this output show ho
 In this example, with duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. (Refer to [Per-key ordering](#per-key-ordering).)
 
 {{site.data.alerts.callout_danger}}
-The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, it is not possible to order duplicate messages.
+The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, there may be gaps in a sequence of duplicate messages for a key.
 {{site.data.alerts.end}}
 
 To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.).
@@ -369,7 +369,7 @@ Under some circumstances, changefeeds will emit duplicate messages to ensure the
 
 A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
 
-When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
+When a changefeed must pause and then resume, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
 
 <img src="{{ 'images/v24.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
 
