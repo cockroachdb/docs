@@ -69,13 +69,13 @@ SST files are immutable; they are never modified, even during the [compaction pr
 
 ##### LSM levels
 
-The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g., using [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`IMPORT`]({% link {{ page.version.version }}/import.md %})) and then merged down into lower levels over time.
+The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g., using [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})) and then merged down into lower levels over time.
 
 The diagram below shows what an LSM looks like at a high level. Each level is associated with a set of SSTs. Each SST is immutable and has a unique, monotonically increasing number.
 
 The SSTs within each level are guaranteed to be non-overlapping: for example, if one SST contains the keys `[A-F)` (noninclusive), the next will contain keys `[F-R)`, and so on. The L0 level is a special case: it is the only level of the tree that is allowed to contain SSTs with overlapping keys. This exception to the rule is necessary for the following reasons:
 
-- To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement.
+- To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 - To allow for easier and more efficient flushes of [memtables](#memtable-and-write-ahead-log).
 
 <img src="{{ 'images/v21.2/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
@@ -106,7 +106,7 @@ An inverted LSM will have degraded read performance.
 
 Read amplification is high when the LSM is inverted. In the inverted LSM state, reads need to start in higher levels and "look down" through a lot of SSTs to read a key's correct (freshest) value. When the storage engine needs to read from multiple SST files in order to service a single logical read, this state is known as _read amplification_.
 
-Read amplification can be especially bad if a large [`IMPORT`]({% link {{ page.version.version }}/import.md %}) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})).
+Read amplification can be especially bad if a large [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})).
 
 A certain amount of read amplification is expected in a normally functioning CockroachDB cluster. For example, a read amplification factor less than 10 as shown in the [**Read Amplification** graph on the **Storage** dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}#other-graphs) is considered healthy.
 

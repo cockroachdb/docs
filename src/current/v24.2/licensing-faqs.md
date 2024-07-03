@@ -56,7 +56,7 @@ The table below shows how certain core and Enterprise features are licensed:
 
 Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
-**[Import]({% link {{ page.version.version }}/import.md %})** | ✓ | |
+**[Import]({% link {{ page.version.version }}/import-into.md %})** | ✓ | |
 **[Export]({% link {{ page.version.version }}/export.md %})** | ✓ | |
 **[Restore]({% link {{ page.version.version }}/restore.md %})** | | ✓ |
 **[Full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)** | | ✓ |

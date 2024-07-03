@@ -13,8 +13,6 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 ## Step 1. Export data to CSV
 
 Please refer to the documentation of your database for instructions on exporting data to CSV.
@@ -176,7 +174,7 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
@@ -188,4 +186,3 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html

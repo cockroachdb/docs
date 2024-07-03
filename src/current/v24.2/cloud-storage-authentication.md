@@ -261,7 +261,7 @@ You can use workload identities with assume role authentication to run the follo
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 To use assume role authentication, you will need at least two IAM roles:
@@ -556,7 +556,7 @@ You can use workload identities with assume role authentication to run the follo
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 {{site.data.alerts.callout_info}}

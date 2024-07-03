@@ -13,7 +13,6 @@ docs_area: get_started
     {{site.data.alerts.callout_info}}
     You can also use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement to bulk-insert CSV data into an existing table.
     {{site.data.alerts.end}}
-- To bulk-insert data into a new table, the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases]({% link {{ page.version.version }}/migration-overview.md %}) like MySQL, Oracle, and PostgreSQL.
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 

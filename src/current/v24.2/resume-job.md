@@ -7,7 +7,7 @@ docs_area: reference.sql
 
  The `RESUME JOB` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lets you resume the following types of jobs:
 
- - [`IMPORT`]({% link {{ page.version.version }}/import.md %}) jobs
+ - [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}) jobs
  - [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) jobs
  - [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) jobs
  - [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) jobs
@@ -120,5 +120,5 @@ RESUME JOBS FOR SCHEDULES 2
 - [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %})
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})

@@ -86,8 +86,6 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
     - You can also use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement to bulk-insert CSV data.
 
-- **New table**: Cockroach Labs recommends that you use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement, as it performs better than `INSERT`.
-
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -198,10 +196,6 @@ See [bulk inserts](#bulk-inserts) for best practices.
   8a3d70a3-d70a-4000-8000-00000000001b | seattle  | Eric             | 400 Broad St                  | 0987654321
 (12 rows)
 ~~~
-
-### Insert multiple rows into a new table
-
-See [bulk inserts](#bulk-inserts) for best practices.
 
 ### Insert from a `SELECT` statement
 

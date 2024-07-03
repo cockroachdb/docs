@@ -9,8 +9,6 @@ This page has instructions for migrating data from Avro files into CockroachDB u
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 ## Step 1. Export data to Avro
 
 Please refer to the documentation of your database for instructions on exporting data to Avro.
@@ -49,7 +47,7 @@ CockroachDB will attempt to convert the Avro data type to the CockroachDB data t
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`][import] can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see the following:
 
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
@@ -73,7 +71,7 @@ An [object container file (OCF)](https://avro.apache.org/docs/current/spec.html#
 The following example uses [sample data from Teradata](https://github.com/Teradata/kylo/tree/master/samples/sample-data/avro).
 {{site.data.alerts.end}}
 
-For example, to import the data from `userdata1.avro` into an `employees` table, issue the following [`IMPORT`][import] statement:
+For example, to import the data from `userdata1.avro` into an `employees` table, issue the following [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -215,7 +213,7 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
@@ -229,6 +227,5 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.
 [csv]: migrate-from-csv.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html
 [option]: {% link {{ page.version.version }}/import-into.md %}#import-options
 [datatypes]: migrate-from-avro.html#data-type-mapping
