@@ -51,6 +51,7 @@ It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-or
 An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke that role from their own user, but cannot subsequently re-grant the administrator role to themselves.
 {{site.data.alerts.end}}
 
+
 ### Remove a team member
 
 1. On the **Access Management** page, locate the team member you want to remove.
