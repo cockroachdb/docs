@@ -18,7 +18,7 @@ The MOLT tools can be used when:
 
 <img src="{{ 'images/molt/molt_tools.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
 
-|                        Tool                       |            Source databases           |                   Usage                   |                                      Release status                                      |
+|                        Tool                       |          Supported databases          |                   Usage                   |                                      Release status                                      |
 |---------------------------------------------------|---------------------------------------|-------------------------------------------|------------------------------------------------------------------------------------------|
 | [Schema Conversion Tool](#schema-conversion-tool) | PostgreSQL, MySQL, Oracle, SQL Server | Schema conversion                         | GA                                                                                       |
 | [Fetch](#fetch)                                   | PostgreSQL, MySQL, CockroachDB        | Initial data load; continuous replication | GA                                                                                       |
@@ -29,7 +29,7 @@ The MOLT tools can be used when:
 
 The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) [converts a source database schema]({% link {{site.current_cloud_version}}/migration-overview.md %}#convert-the-schema) to a CockroachDB-compatible schema. The supported Schema Conversion Tool sources are PostgreSQL, MySQL, Oracle, and SQL Server.
 
-The tool will convert the syntax, identify [unimplemented features and syntax incompatibilities]({% link {{site.current_cloud_version}}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{site.current_cloud_version}}/migration-overview.md %}#schema-design-best-practices).
+The tool will convert [data definition (DDL) syntax]({% link {{site.current_cloud_version}}/sql-statements.md %}#data-definition-statements) (while ignoring destructive statements such as `DROP`), identify [unimplemented features and syntax incompatibilities]({% link {{site.current_cloud_version}}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{site.current_cloud_version}}/migration-overview.md %}#schema-design-best-practices).
 
 ### Fetch
 
