@@ -15,13 +15,14 @@ STORAGE,addsstable.proposals,Number of SSTable ingestions proposed (i.e. sent to
 STORAGE,admission.admitted.elastic-cpu,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.elastic-cpu.bulk-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.elastic-cpu.normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.admitted.elastic-stores,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.admitted.elastic-stores.bulk-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.admitted.elastic-stores.ttl-low-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.admitted.kv-stores.bulk-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores.high-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores.locking-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores.normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.admitted.kv-stores.ttl-low-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv.high-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv.locking-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv.normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -49,13 +50,14 @@ STORAGE,admission.elastic_cpu.utilization_limit,Utilization limit set for the el
 STORAGE,admission.errored.elastic-cpu,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.elastic-cpu.bulk-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.elastic-cpu.normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.errored.elastic-stores,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.errored.elastic-stores.bulk-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.errored.elastic-stores.ttl-low-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.errored.kv-stores.bulk-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores.high-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores.locking-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores.normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.errored.kv-stores.ttl-low-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv.high-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv.locking-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv.normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -74,6 +76,7 @@ STORAGE,admission.errored.sql-sql-response.normal-pri,Number of requests not adm
 STORAGE,admission.granter.cpu_load_long_period_duration.kv,"Total duration when CPULoad was being called with a long period, in micros",Microseconds,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.granter.cpu_load_short_period_duration.kv,"Total duration when CPULoad was being called with a short period, in micros",Microseconds,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.granter.elastic_io_tokens_available.kv,Number of tokens available,Tokens,GAUGE,COUNT,AVG,NONE
+STORAGE,admission.granter.elastic_io_tokens_exhausted_duration.kv,"Total duration when Elastic IO tokens were exhausted, in micros",Microseconds,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.granter.io_tokens_available.kv,Number of tokens available,Tokens,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.granter.io_tokens_bypassed.kv,"Total number of tokens taken by work bypassing admission control (for example, follower writes without flow control)",Tokens,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.granter.io_tokens_exhausted_duration.kv,"Total duration when IO tokens were exhausted, in micros",Microseconds,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -102,13 +105,14 @@ The messages are dropped to help these replicas to recover from I/O overload.",M
 STORAGE,admission.requested.elastic-cpu,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.elastic-cpu.bulk-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.elastic-cpu.normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.requested.elastic-stores,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.requested.elastic-stores.bulk-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.requested.elastic-stores.ttl-low-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.requested.kv-stores.bulk-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores.high-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores.locking-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores.normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.requested.kv-stores.ttl-low-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv.high-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv.locking-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv.normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -128,13 +132,14 @@ STORAGE,admission.scheduler_latency_listener.p99_nanos,The scheduling latency at
 STORAGE,admission.wait_durations.elastic-cpu,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.elastic-cpu.bulk-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.elastic-cpu.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,admission.wait_durations.elastic-stores,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,admission.wait_durations.elastic-stores.bulk-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,admission.wait_durations.elastic-stores.ttl-low-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
-STORAGE,admission.wait_durations.kv-stores.bulk-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores.high-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores.locking-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
-STORAGE,admission.wait_durations.kv-stores.ttl-low-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv.high-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv.locking-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
@@ -153,13 +158,14 @@ STORAGE,admission.wait_durations.sql-sql-response.normal-pri,Wait time durations
 STORAGE,admission.wait_queue_length.elastic-cpu,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.elastic-cpu.bulk-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.elastic-cpu.normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,admission.wait_queue_length.elastic-stores,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,admission.wait_queue_length.elastic-stores.bulk-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,admission.wait_queue_length.elastic-stores.ttl-low-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
-STORAGE,admission.wait_queue_length.kv-stores.bulk-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores.high-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores.locking-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores.normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
-STORAGE,admission.wait_queue_length.kv-stores.ttl-low-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv.high-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv.locking-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv.normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
@@ -901,6 +907,8 @@ STORAGE,storage.batch-commit.mem-stall.duration,"Cumulative time spent in a writ
 STORAGE,storage.batch-commit.sem-wait.duration,"Cumulative time spent in semaphore wait, for batch commit. See storage.AggregatedBatchCommitStats for details.",Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 STORAGE,storage.batch-commit.wal-queue-wait.duration,"Cumulative time spent waiting for memory blocks in the WAL queue, for batch commit. See storage.AggregatedBatchCommitStats for details.",Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 STORAGE,storage.batch-commit.wal-rotation.duration,"Cumulative time spent waiting for WAL rotation, for batch commit. See storage.AggregatedBatchCommitStats for details.",Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
+STORAGE,storage.block-load.active,The number of sstable block loads currently in progress,Block loads,GAUGE,COUNT,AVG,NONE
+STORAGE,storage.block-load.queued,The cumulative number of SSTable block loads that were delayed because too many loads were active (see also: `storage.block_load.node_max_active`),Block loads,GAUGE,COUNT,AVG,NONE
 STORAGE,storage.checkpoints,"The number of checkpoint directories found in storage.
 
 This is the number of directories found in the auxiliary/checkpoints directory.
@@ -2285,6 +2293,7 @@ APPLICATION,sql.optimizer.plan_cache.hits,Number of non-prepared statements for 
 APPLICATION,sql.optimizer.plan_cache.hits.internal,Number of non-prepared statements for which a cached plan was used (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.optimizer.plan_cache.misses,Number of non-prepared statements for which a cached plan was not used,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.optimizer.plan_cache.misses.internal,Number of non-prepared statements for which a cached plan was not used (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.pgwire.pipeline.count,Number of pgwire commands received by the server that have not yet begun processing,Commands,GAUGE,COUNT,AVG,NONE
 APPLICATION,sql.pgwire_cancel.ignored,Number of pgwire query cancel requests that were ignored due to rate limiting,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.pgwire_cancel.successful,Number of pgwire query cancel requests that were successful,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.pgwire_cancel.total,Number of pgwire query cancel requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE

@@ -1,20 +1,13 @@
----
-title: Child Metrics
-summary: Learn about high-cardinality child metrics enabled by the cluster setting server.child_metrics.enabled.
-toc: false
-docs_area: reference.metrics
----
+{% assign metrics = site.data.child-metrics | where_exp: "metrics", "metrics.feature contains feature" | sort: "child_metric_id" %} 
+{% comment %} Fetch child-metrics for given feature. {% endcomment %}
 
-The following is a list of high-cardinality child metrics enabled by the [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled).
-
-{% assign metrics = site.data.child-metrics %}
-{% comment %} Fetch all child-metrics. {% endcomment %}
+Following is a list of the metrics that have child metrics:
 
 <table>
     <thead>
         <tr>
             <td><b>CockroachDB Metric Name</b></td>
-            <td><b>Description</b></td>
+            <td><b>Description When Aggregated</b></td>
             <td><b>Type</b></td>
             <td><b>Unit</b></td>
         </tr>
@@ -32,4 +25,3 @@ The following is a list of high-cardinality child metrics enabled by the [cluste
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
 </table>
-

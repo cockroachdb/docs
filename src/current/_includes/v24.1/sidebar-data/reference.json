@@ -283,19 +283,8 @@
       },
       {
         "title": "Metrics",
-        "items": [
-          {
-            "title": "Available Metrics",
-            "urls": [
-              "/${VERSION}/metrics.html"
-            ]
-          },
-          {
-            "title": "Child Metrics",
-            "urls": [
-              "/${VERSION}/child-metrics.html"
-            ]
-          }
+        "urls": [
+          "/${VERSION}/metrics.html"        
         ]
       },
       {
