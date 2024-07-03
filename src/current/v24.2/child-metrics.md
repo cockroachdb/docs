@@ -11,7 +11,7 @@ This page provides details on various metrics and their potential child metrics,
 
 ## Enable child metrics
 
-`server.child_metrics.enabled`]is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement:
+`server.child_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
