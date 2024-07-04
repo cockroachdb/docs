@@ -63,7 +63,7 @@ $ cockroach nodelocal upload ./grants.csv test/grants.csv --certs-dir=certs
 successfully uploaded to nodelocal://1/test/grants.csv
 ~~~
 
-Then, you can use the file to [`IMPORT`]({% link {{ page.version.version }}/import.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
 
 ### Upload a file to a specific node
 
@@ -89,12 +89,10 @@ $ cockroach nodelocal upload ./grants.csv grants.csv --url=postgresql://root@loc
 successfully uploaded to nodelocal://3/grants.csv
 ~~~
 
-Then, you can use the file to [`IMPORT`]({% link {{ page.version.version }}/import.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
 
 ## See also
 
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Import Data]({% link {{ page.version.version }}/migration-overview.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})

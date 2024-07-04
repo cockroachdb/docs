@@ -40,10 +40,6 @@ For more information, see [Insert Multiple Rows]({% link {{ page.version.version
 Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). If a multi-row `INSERT` query results in an error code [`40001` with the message `transaction deadline exceeded`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
 {{site.data.alerts.end}}
 
-### Use `IMPORT` instead of `INSERT` for bulk-inserts into new tables
-
-To bulk-insert data into a brand new table, the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement performs better than `INSERT`.
-
 ## Bulk-delete best practices
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table

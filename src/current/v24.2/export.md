@@ -34,7 +34,7 @@ The `EXPORT` statement cannot be used within a [transaction]({% link {{ page.ver
 
 ## Required privileges
 
- The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges]({% link {{ page.version.version }}/import.md %}#source-privileges).
+ The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges]({% link {{ page.version.version }}/import-into.md %}#source-privileges).
 
 ### Destination privileges
 
@@ -307,7 +307,6 @@ For detail on handling partially complete exports at the destination, refer to [
 
 ## See also
 
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})

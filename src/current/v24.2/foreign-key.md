@@ -121,12 +121,6 @@ To improve query performance, we recommend doing the following:
 
 - Create a secondary index on all referencing foreign key columns that are not already indexed.
 
-- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead of [`INSERT`]({% link {{ page.version.version }}/insert.md %}).
-
-    {{site.data.alerts.callout_danger}}
-    Using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint) statement.
-    {{site.data.alerts.end}}
-
 ## Syntax
 
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).

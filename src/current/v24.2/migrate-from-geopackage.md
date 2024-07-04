@@ -7,56 +7,38 @@ docs_area: migrate
 
  CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
+This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
-In the example below we will import a data set with <a href="https://gisdata.mn.gov/dataset/env-mn-springs-inventory" data-proofer-ignore>the locations of natural springs in the state of Minnesota (USA)<a/> that is made available via <a href="https://gisdata.mn.gov" data-proofer-ignore>gisdata.mn.gov</a>.
+In the following example, you will import a data set with the locations of bus stops in the cities of Minneapolis and St. Paul, MN (USA) that is made available via [gisdata.mn.gov](https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-better-bus-stops).
 
-## Before You Begin
+## Before you begin
 
 To follow along with the example below, you will need the following prerequisites:
 
 - CockroachDB [installed]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [running]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
+    {% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 - [Python 3](https://www.python.org)
-
-{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
-
-## Step 1. Download the GeoPackage data
-
-1. Download the zip file containing the spring location data:
-
+- The bus-stop GeoPackage data:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o gpkg_env_mn_springs_inventory.zip https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
+    curl -o gpkg_trans_better_bus_stops.zip https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_metc/trans_better_bus_stops/gpkg_trans_better_bus_stops.zip && unzip gpkg_trans_better_bus_stops.zip
     ~~~
 
-1. Unzip the file:
+## Step 1. Convert the GeoPackage data to CSV
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    unzip gpkg_env_mn_springs_inventory.zip
-    ~~~
-
-## Step 2. Convert the GeoPackage data to SQL
-
-To load the GeoPackage into CockroachDB, we must first convert it to SQL using the `ogr2ogr` tool.
+Convert the GeoPackage data to CSV using the following `ogr2ogr` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ogr2ogr -f PGDUMP springs.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF env_mn_springs_inventory.gpkg
+ogr2ogr -f CSV busstops.CSV -lco GEOMETRY=AS_WKT trans_better_bus_stops.gpkg
 ~~~
 
-This particular data set emits a warning  due to some date formatting.
+You will import the CSV data into a CockroachDB table.
 
-~~~
-Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04, successfully parsed
-~~~
+## Step 2. Host the file where the cluster can access it
 
-{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
-
-## Step 3. Host the files where the cluster can access them
-
-Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations]({% link {{ page.version.version }}/import.md %}#import-file-location).
+Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see [Import file location]({% link {{ page.version.version }}/import-into.md %}#import-file-location).
 
 For local testing, you can [start a local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}).  The following command will start a local file server listening on port 3000:
 
@@ -65,9 +47,9 @@ For local testing, you can [start a local file server]({% link {{ page.version.v
 python3 -m http.server 3000
 ~~~
 
-## Step 4. Prepare the database
+## Step 3. Prepare the CockroachDB database
 
-Next, create a database to hold the natural spring location data:
+Create a database to hold the bus-stop data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -76,29 +58,57 @@ cockroach sql --insecure
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE DATABASE springs;
-USE springs;
+CREATE DATABASE busstops;
+USE busstops;
 ~~~
 
-## Step 5. Import the SQL
+## Step 4. Create a CockroachDB table
 
-Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`]({% link {{ page.version.version }}/import.md %}#import-a-postgresql-database-dump) statement:
+To import the CSV data, you need to create a table with the necessary columns and data types.
+
+Convert the GeoPackage data to SQL using the following `ogr2ogr` command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ogr2ogr -f PGDUMP busstops.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF trans_better_bus_stops.gpkg
+~~~
+
+Create a CockroachDB table that corresponds to the DDL statements in `busstops.sql`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-IMPORT PGDUMP ('http://localhost:3000/springs.sql');
+CREATE TABLE busstops (
+    geom GEOMETRY(POINT) NULL,
+    site_ID INT8 NULL,
+    site_on VARCHAR NULL,
+    site_at VARCHAR NULL,
+    corn_desc VARCHAR NULL,
+    Completion INT8 NULL,
+    Improvemen VARCHAR NULL,
+    Improvem_1 VARCHAR NULL,
+    Public_Com VARCHAR NULL,
+    Project_Na VARCHAR NULL
+);
+~~~
+
+## Step 5. Import the CSV
+
+Since the file is being served from a local server and is formatted as CSV, you can import the data using the following [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+IMPORT INTO busstops CSV DATA ('http://localhost:3000/busstops.csv') WITH skip = '1';
 ~~~
 
 ~~~
-        job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+----------
-  589053379352526849 | succeeded |                  1 | 5124 |          5124 | 2449139
-(1 row)
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  980669141570682881 | succeeded |                  1 |  945 |             0 | 173351
 ~~~
 
 ## See also
 
-- [`IMPORT`][import]
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
@@ -116,4 +126,3 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[import]: import.html
