@@ -261,7 +261,7 @@ You can use workload identities with assume role authentication to run the follo
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 To use assume role authentication, you will need at least two IAM roles:
@@ -556,7 +556,7 @@ You can use workload identities with assume role authentication to run the follo
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 {{site.data.alerts.callout_info}}
@@ -718,7 +718,9 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 ## Azure Blob Storage implicit authentication
 
@@ -803,7 +805,9 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 </section>
 
