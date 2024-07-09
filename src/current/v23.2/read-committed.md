@@ -34,11 +34,13 @@ To make `READ COMMITTED` isolation available to use on a cluster, enable the fol
 SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 ~~~
 
-After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
+In v23.2, `sql.txn.read_committed_isolation.enabled` is `false` by default. As a result, `READ COMMITTED` transactions are [automatically upgraded to `SERIALIZABLE`]({% link {{ page.version.version }}/transactions.md %}#aliases) unless this setting is enabled. **This differs in v24.1 and later**, where `sql.txn.read_committed_isolation.enabled` is `true` by default.
 
-{{site.data.alerts.callout_info}}
-If the cluster setting is not enabled, `READ COMMITTED` transactions will run as `SERIALIZABLE`.
+{{site.data.alerts.callout_success}}
+Because of this change, upgrading to a later CockroachDB version may affect your application behavior. Check the [**Upgrades of SQL Transaction Isolation Level**]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#upgrades-of-sql-transaction-isolation-level) graph in the DB Console to see whether any transactions are being upgraded to `SERIALIZABLE`. On v24.1 and later, `READ COMMITTED` transactions will run as `READ COMMITTED` unless you set `sql.txn.read_committed_isolation.enabled` explicitly to `false`.
 {{site.data.alerts.end}}
+
+After you enable the cluster setting, you can set `READ COMMITTED` as the [default isolation level](#set-the-default-isolation-level-to-read-committed) or [begin a transaction](#set-the-current-transaction-to-read-committed) as `READ COMMITTED`.
 
 ### Set the default isolation level to `READ COMMITTED`
 

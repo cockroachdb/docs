@@ -6,17 +6,13 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/), [Datadog](https://www.datadoghq.com/), or [Prometheus](https://prometheus.io/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/), [Datadog](https://www.datadoghq.com/), [Prometheus](https://prometheus.io/), or [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/data-platform-metrics). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
 To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
 {{site.data.alerts.end}}
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.dedicated }} clusters.
-
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. Exporting metrics to Azure Monitor is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.dedicated }} clusters.
 
 <a id="the-metricexport-endpoint"></a>
 
@@ -26,9 +22,10 @@ To configure and manage metrics export for your CockroachDB {{ site.data.product
 
 Cloud metrics sink | Metrics export endpoint
 ------------------ | ----------------------------------------------------
-AWS Cloudwatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
+AWS CloudWatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
 Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
 Prometheus         | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/prometheus`
+Azure Monitor      | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/azuremonitor`
 
 Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege, Cluster Administrator role, or Cluster Operator role).
 
@@ -38,7 +35,7 @@ Method | Required permissions | Description
 --- | --- | ---
 `GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the metrics export configuration.
 `POST` | `ADMIN` or `EDIT` | Enables metrics export, or updates an existing metrics export configuration.
-`DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to AWS CloudWatch, Datadog, or Prometheus.
+`DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to AWS CloudWatch, Datadog, Prometheus, or Azure Monitor.
 
 See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) for instructions on configuring a service account with these required permissions.
 
@@ -48,11 +45,16 @@ See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-servi
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
+  <button class="filter-button" data-scope="azure-monitor-metrics-export">Azure Monitor</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP or Azure, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on Azure, you can export metrics to [Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
 Enabling metrics export will send around 250 metrics per node to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
@@ -165,6 +167,10 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 </section>
 
 <section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
+
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 To enable metrics export for your CockroachDB {{ site.data.products.dedicated }} cluster to Datadog, you can either enable the Datadog integration in your CockroachDB {{ site.data.products.dedicated }} Cloud Console, or on the command line via the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
@@ -322,12 +328,86 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="azure-monitor-metrics-export">
+
+{{site.data.alerts.callout_info}}
+Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+{{site.data.alerts.end}}
+
+Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on AWS, you can export metrics to [AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+
+To enable metrics export to Azure Monitor:
+
+1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID, which will be used in step 5:
+
+	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
+	1. Click on the name of your cluster.
+	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. The ID should resemble `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+
+1. Create a private key and certificate pair, using a tool such as OpenSSL. Refer to [Create the CA key and certificate pair]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %}#step-1-create-the-ca-key-and-certificate-pair). In this example, the private key file is named `ca.key` and the certificate file is named `ca.crt`. If you use other file names, adjust the commands accordingly. The certificate file will be uploaded in step 3.
+
+  1. Concatenate the certificate and key files using the following command. The string in the concatenated file will be used in step 5.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cat ca.crt ca.key | awk '{printf "%s\\n", $0}'  > concatenated.pem
+    ~~~
+
+1. To give access to the CockroachDB cluster to your Azure tenant, [create a Microsoft Entra application](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
+
+  1. Once the application is registered, upload the certificate file (`ca.crt`) created in step 2.
+  1. From the **Overview** page for the Entra application, note the values for **Display Name**, **Application (client) ID**, and **Directory (tenant) ID**, which will be used in step 5.
+
+1. To allow Azure Monitor to receive metrics, [create an Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource).
+
+  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for the **Display Name** from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
+  1. On the **Overview** page for the Application Insights resource, view the **Connection String**. Note the values for **InstrumentationKey** and **IngestionEndpoint**, which will be used in step 5.
+
+1. To enable metrics export for your CockroachDB {{ site.data.products.dedicated }} cluster, issue the following [Cloud API]({% link cockroachcloud/cloud-api.md %}) command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request POST \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/azuremonitor \
+      --header "Authorization: Bearer {secret_key}" \
+      --data '{ "application_id": "{application_id}", "tenant_id": "{tenant_id}", "ingestion_endpoint": "{ingestion_endpoint}", "instrumentation_key": "{instrumentation_key}", "certificate": "{combined_certificate_and_key}" }'
+    ~~~
+
+    Where:
+    - `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster ID from step 1.
+    - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+    - `{application_id}` is the ID of the Entra application, **Application (client) ID** from step 3.
+    - `{tenant_id}` is the ID of the tenant where the Entra application was created, **Directory (tenant) ID** from step 3.
+    - `{ingestion_endpoint}` is the target host where the metrics are to be sent, **IngestionEndpoint** from step 4.
+    - `{instrumentation_key}` is the ID of the Azure Application Insights resource, **InstrumentationKey** from step 4.
+    - `{combined_certificate_and_key}` is the string in the concatenated file from step 2.
+
+1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/azuremonitor \
+      --header "Authorization: Bearer {secret_key}"
+    ~~~
+
+    When the command returns a status of `ENABLED`, the configuration has been applied to all nodes, and metrics will begin appearing in Azure Monitor. Since the configuration is applied to cluster nodes one at a time, metrics may begin to appear even before the status is `ENABLED`.
+
+1. Once metrics export has been enabled, you can access metrics from your CockroachDB {{ site.data.products.dedicated }} cluster directly in [Azure Portal](https://portal.azure.com/#home):
+
+  1. Navigate to the Application Insights resource created in step 4.
+  1. In the left menu under **Monitoring**, click **Metrics**. In the chart options, in the **Metric** search field, enter `crdb_dedicated`. This should retrieve a dropdown list of the exported metrics. Select a metric such as `crdb_dedicated.capacity` from the dropdown list.
+  1. To further verify the metrics export, click **Apply splitting**, select **cluster** from the **Values** dropdown list. Your cluster name should appear in the legend under the chart.
+
+</section>
+
 ## Monitor the status of a metrics export configuration
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
+  <button class="filter-button" data-scope="azure-monitor-metrics-export">Azure Monitor</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
@@ -384,6 +464,24 @@ Where:
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="azure-monitor-metrics-export">
+
+To check the status of an existing Azure Monitor metrics export configuration, use the following Cloud API command:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/azuremonitor \
+  --header "Authorization: Bearer {secret_key}"
+~~~
+
+Where:
+
+- `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+
+</section>
+
 ## Update an existing metrics export configuration
 
 To update an existing CockroachDB {{ site.data.products.dedicated }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch, Datadog, or Prometheus), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
@@ -394,6 +492,7 @@ To update an existing CockroachDB {{ site.data.products.dedicated }} metrics exp
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
   <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
   <button class="filter-button" data-scope="prometheus-metrics-export">Prometheus</button>
+  <button class="filter-button" data-scope="azure-monitor-metrics-export">Azure Monitor</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
@@ -450,9 +549,26 @@ Where:
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="azure-monitor-metrics-export">
+
+To disable an existing Azure Monitor metrics export configuration, and stop sending metrics to Azure Monitor, use the following Cloud API command:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/azuremonitor \
+  --header "Authorization: Bearer {secret_key}"
+~~~
+
+Where:
+
+- `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
+</section>
+
 ## Limitations
 
-- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP or Azure, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+- Metrics export to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. Similarly, metrics export to Azure is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 - AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.dedicated }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
 ## Troubleshooting
@@ -463,7 +579,7 @@ Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM p
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
-Your CockroachDB {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP or Azure) to make use of metrics export to AWS CloudWatch. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP or Azure, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
+Your CockroachDB {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP or Azure) to make use of metrics export to AWS CloudWatch. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on Azure, you can export metrics to [Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.
 
 ## See Also
 

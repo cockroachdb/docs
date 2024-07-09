@@ -105,6 +105,10 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
 
+### Execution locality in changefeeds
+
+- {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
@@ -713,3 +717,4 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}

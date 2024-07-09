@@ -54,7 +54,7 @@ To add custom expiration logic using `ttl_expiration_expression`, issue the foll
 CREATE TABLE ttl_test_per_row (
   id UUID PRIMARY KEY default gen_random_uuid(),
   description TEXT,
-  expired_at TIMESTAMPTZ
+  expired_at TIMESTAMPTZ NOT NULL DEFAULT now() + '30 days'
 ) WITH (ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily');
 ~~~
 
@@ -78,7 +78,7 @@ SHOW CREATE TABLE ttl_test_per_row;
   ttl_test_per_row | CREATE TABLE public.ttl_test_per_row (
                    |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                    |     description STRING NULL,
-                   |     expired_at TIMESTAMPTZ NULL,
+                   |     expired_at TIMESTAMPTZ NOT NULL DEFAULT now():::TIMESTAMPTZ + '30 days':::INTERVAL,
                    |     CONSTRAINT ttl_test_per_row_pkey PRIMARY KEY (id ASC)
                    | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily')
 (1 row)
@@ -140,7 +140,7 @@ The settings that control the behavior of Row-Level TTL are provided using [stor
 | `ttl` <a name="param-ttl"></a>                                             | Signifies if a TTL is active. Automatically set.                                                                                                                                                                                                                                                                                                                                                                                        | N/A                                 |
 | `ttl_select_batch_size`                                                    | How many rows to [select]({% link {{ page.version.version }}/select-clause.md %}) at one time during the row expiration check. Default: 500. Minimum: 1.                                                                                                                                                                                                                                                                                                                    | `sql.ttl.default_select_batch_size` |
 | `ttl_delete_batch_size` <a name="param-ttl-delete-batch-size"></a>                                                    | How many rows to [delete]({% link {{ page.version.version }}/delete.md %}) at a time. Default: 100. Minimum: 1.                                                                                                                                                                                                                                                                                                                                                             | `sql.ttl.default_delete_batch_size` |
-| `ttl_delete_rate_limit` | Maximum number of rows to be deleted per second (rate limit). Default: 0 (no limit). <br/><br/> Note: The rate limit is applied per leaseholder per table. In practice, it will vary based on the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) and [leaseholders]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder). <br/> For example, if this variable is set to 500, and a table `public.foo` has its ranges spread across 3 leaseholders, then the cluster-wide rate limit for `public.foo` is 500 x 3 = 1500. <br/> To determine the number of leaseholders for some table `public.bar` on CockroachDB v23.1+, issue the following query against the output of [`SHOW RANGES ... WITH DETAILS`]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-table-with-details): <br/> `SELECT count(DISTINCT lease_holder) FROM [SHOW RANGES FROM TABLE public.bar WITH DETAILS];` | `sql.ttl.default_delete_rate_limit` |
+| `ttl_delete_rate_limit` | Maximum number of rows to be deleted per second (rate limit). Default: 100 (set to 0 for no limit). <br/><br/> Note: The rate limit is applied per leaseholder per table. In practice, it will vary based on the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) and [leaseholders]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder). <br/> For example, if this variable is set to 500, and a table `public.foo` has its ranges spread across 3 leaseholders, then the cluster-wide rate limit for `public.foo` is 500 x 3 = 1500. <br/> To determine the number of leaseholders for some table `public.bar` on CockroachDB v23.1+, issue the following query against the output of [`SHOW RANGES ... WITH DETAILS`]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-table-with-details): <br/> `SELECT count(DISTINCT lease_holder) FROM [SHOW RANGES FROM TABLE public.bar WITH DETAILS];` | `sql.ttl.default_delete_rate_limit` |
 | `ttl_row_stats_poll_interval`                                              | If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported.                                                                                                                                                                                                                                                            | N/A                                 |
 | `ttl_pause` <a name="param-ttl-pause"></a>                                 | If set, stops the TTL job from executing.                                                                                                                                                                                                                                                                                                                                                                                               | N/A                                 |
 | `ttl_job_cron` <a name="param-ttl-job-cron"></a>                           | Frequency at which the TTL job runs, specified using [CRON syntax](https://cron.help). Default: `'@hourly'`.                                                                                                                                                                                                                                                                                                                            | N/A                                 |
@@ -208,7 +208,7 @@ CREATE TABLE events_using_date (
   start_date DATE DEFAULT now() NOT NULL,
   end_date DATE NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date::TIMESTAMP) + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$((end_date::TIMESTAMP + '30 days') AT TIME ZONE 'UTC')$$
 );
 ~~~
 
@@ -222,7 +222,7 @@ CREATE TABLE events_using_timestamptz (
   start_date TIMESTAMPTZ DEFAULT now() NOT NULL,
   end_date TIMESTAMPTZ NOT NULL
 ) WITH (
-  ttl_expiration_expression = '((end_date AT TIME ZONE ''UTC'') + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+  ttl_expiration_expression = $$(((end_date AT TIME ZONE 'UTC') + '30 days') AT TIME ZONE 'UTC')$$
 );
 ~~~
 
@@ -354,7 +354,7 @@ SHOW CREATE TABLE events;
   events     | CREATE TABLE public.events (
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
              |     description STRING NULL,
-             |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
+             |     inserted_at TIMESTAMPTZ NULL DEFAULT current_timestamp():::TIMESTAMPTZ,
              |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
              |     CONSTRAINT events_pkey PRIMARY KEY (id ASC)
              | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
@@ -515,7 +515,7 @@ WITH x AS (SHOW CLUSTER SETTINGS) SELECT * FROM x WHERE variable LIKE 'sql.ttl.%
               variable              | value | setting_type |                                 description
 ------------------------------------+-------+--------------+------------------------------------------------------------------------------
   sql.ttl.default_delete_batch_size | 100   | i            | default amount of rows to delete in a single query during a TTL job
-  sql.ttl.default_delete_rate_limit | 0     | i            | default delete rate limit for all TTL jobs. Use 0 to signify no rate limit.
+  sql.ttl.default_delete_rate_limit | 100   | i            | default delete rate limit for all TTL jobs. Use 0 to signify no rate limit.
   sql.ttl.default_select_batch_size | 500   | i            | default amount of rows to select in a single query during a TTL job
   sql.ttl.job.enabled               | false | b            | whether the TTL job is enabled
 (5 rows)
@@ -585,7 +585,7 @@ If you are migrating your TTL usage from an earlier version of CockroachDB, the 
 - [`DELETE`]({% link {{ page.version.version }}/delete.md %})
 - [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %})
 - [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
-- [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %})
+- [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %})
 - [`INTERVAL`]({% link {{ page.version.version }}/interval.md %})
 - [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
 - [Developer Guide Overview]({% link {{ page.version.version }}/developer-guide-overview.md %})

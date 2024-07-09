@@ -20,7 +20,7 @@ After downloading a supported CockroachDB binary, learn how to [install Cockroac
 - **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments. Testing releases allow you to begin testing and validating the next major version of CockroachDB early.
 - **Experimental** binaries allow you to deploy and develop with CockroachDB on architectures that are not yet qualified for production use. Experimental binaries are not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
-For more details, refer to [Release Naming](#release-naming).
+For more details, refer to [Release Naming](#release-naming). For information about applicable software licenses, refer to [Licenses](#licenses).
 
 {{site.data.alerts.callout_danger}}
 In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
@@ -109,7 +109,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     <tbody>
             {% for r in releases %}
 
-              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}{% endcapture %}
+              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -272,7 +272,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     <tbody>
         {% for r in releases %}
 
-        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}{% endcapture %}
+        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
@@ -374,3 +374,9 @@ During development of a major version of CockroachDB, releases are produced acco
 - Release candidates are produced after the series of beta releases and are nearly identical to what will become the initial generally available (GA) release. Release candidates have `rc` in the version name. Example: `v23.1.0-rc.1`.
 - A major version's initial GA release is produced after the series of release candidates for a major version, and ends with `0`. Example: `v23.1.0`. GA releases are validated and suitable for production environments.
 - Patch (maintenance) releases are produced after a major version's GA release, and are numbered sequentially. Example: `v23.1.13`.
+
+## Licenses
+
+Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
+ 
+To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license/) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.

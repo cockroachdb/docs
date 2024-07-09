@@ -545,5 +545,5 @@ Explore other core CockroachDB benefits and features:
 You might also want to learn more about how transactions work in CockroachDB and in general:
 
 - [Transactions Overview]({% link {{ page.version.version }}/transactions.md %})
-- [Real Transactions are Serializable](https://www.cockroachlabs.com/blog/acid-rain/)
 - [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/)
+- [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %})

@@ -5,9 +5,12 @@ toc: true
 docs_area: manage
 page_version: v24.1
 prev_version: v23.2
-pre_production_preview: true
-pre_production_preview_version: v24.1.0-beta.1
+pre_production_preview: false
+pre_production_preview_version: v24.1.0-rc.1
 ---
+
+{% capture previous_version_numeric %}{{ page.prev_version | remove_first: 'v' }}{% endcapture %}
+{% capture major_version_numeric %}{{ page.page_version | remove_first: 'v' }}{% endcapture %}
 
 {% if page.pre_production_preview == true %}
 [CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters for testing and experimentation.
@@ -48,19 +51,23 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. CockroachDB {{ site.data.products.cloud }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multi-active-availability) design.
-
-Approximately 72 hours after all nodes are running {{ page.page_version }}, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in {{ page.page_version }}](#expect-temporary-limitations). Finalization also removes the ability to roll back to {{ page.prev_version }}, so it's important to monitor your applications during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with {{ page.page_version }}.
-
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in {{ page.page_version }}](#expect-temporary-limitations). Finalization also removes the ability to roll back to {{ page.prev_version }}, so it's important to monitor your applications during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console.
 </section>
 
-{{site.data.alerts.callout_danger}}
+Approximately 72 hours after all nodes are running {{ page.page_version }}, the upgrade will be automatically [finalized]({% link {{ page.page_version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade). It's important to monitor your cluster and applications during this 72-hour window, so that you can [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console if you see unexpected behavior. Finalization enables certain [features and performance improvements introduced in {{ page.page_version }}](#expect-temporary-limitations). When finalization is complete, it is no longer possible to roll back to {{ page.prev_version }}.
+
+{{site.data.alerts.callout_info}}
 If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of {{ page.prev_version }}, which may differ from the patch release you were running before you initiated the upgrade. To learn more, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
+
+When finalization begins, a series of migration jobs run to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and [enabling certain types of improvements and new features](#expect-temporary-limitations). Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return `{{ previous_version_numeric }}`.
+
+You can monitor the process of the migration in the CockroachDB {{ site.data.products.cloud }} [**Jobs** page]({% link cockroachcloud/jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+Finalization is complete when all migration jobs have completed. After migration is complete, the command `SHOW CLUSTER SETTING version` will return `{{ major_version_numeric }}`.
 
 ## Step 4. Prepare to upgrade
 
@@ -86,15 +93,6 @@ Review the backward-incompatible changes and deprecated features announced in ea
 {% else %}
 Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
 {% endif %}
-
-### Reset SQL statistics
-
-Before upgrading to CockroachDB {{ page.page_version }}, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.page_version }}/cost-based-optimizer.md %}#table-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT crdb_internal.reset_sql_stats();
-~~~
 
 ## Step 5. Start the upgrade
 
@@ -134,9 +132,11 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 ### Expect temporary limitations
 
-Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors. {% comment %}TODO: List of temporary limitations for GA{% endcomment %}
+Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors.
 
-For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
+- {% include v24.1/finalization-required/119894.md version="v24.1" %}
+
+For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
 ### Roll back the upgrade
 

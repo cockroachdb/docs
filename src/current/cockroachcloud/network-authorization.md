@@ -16,7 +16,12 @@ You can authorize network access to your cluster by:
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
 - Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
 
-    For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
+    - <a id="gcp-private-service-connect"></a><a id="gcp-vpc-peering"></a><a id="vpc-peering"></a>CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP can connect privately using GCP Private Service Connect (PSC) (Preview) or GCP VPC peering. PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB {{ site.data.products.cloud }} to a VPC within your Google Cloud project.
+    - <a id="aws-privatelink"></a>CockroachDB {{ site.data.products.dedicated }} clusters deployed on AWS, as well as multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, can connect privately using AWS PrivateLink, which allows you to connect your cluster to a VPC within your AWS account.
+    - <a id="azure-private-link"></a>CockroachDB {{ site.data.products.dedicated }} clusters deployed on Azure can connect privately using Azure Private Link, which allows you to connect your cluster to a virtual network within your Azure tenant.
+
+    For detailed instructions, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
+
 
 {{site.data.alerts.callout_info}}
 {% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
@@ -24,11 +29,11 @@ You can authorize network access to your cluster by:
 
 **Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
-Use GCP VPC Peering or AWS PrivateLink if:
+Use private connectivity if:
 
 - You need to allowlist more defined IP address ranges than the [default maximum](#ip-allowlisting).
 - Your servers’ IP addresses are not static.
-- You want to avoid exposing your cluster to the public internet.
+- You have a requirement to avoid exposing your cluster to the public internet.
 
 Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 
@@ -71,29 +76,6 @@ Refer to:
 
 - [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#authorize-your-network).
 - [Connect to a CockroachDB {{ site.data.products.dedicated }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
-
-## VPC peering
-
-If you select GCP as your cloud provider while [creating your CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your CockroachDB {{ site.data.products.dedicated }} cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
-
-GKE users should note that we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting from a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you will have to [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). CockroachDB {{ site.data.products.cloud }} will import your custom routes by default.
-
-Setting up a VPC peering connection between your CockroachDB {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
-
-1. [Configure the IP range and size while creating the CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}#step-4-enable-vpc-peering-optional)
-1. [Establish a VPC Peering connection after creating the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
-
-{{site.data.alerts.callout_info}}
-Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
-{{site.data.alerts.end}}
-
-## AWS PrivateLink
-
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.dedicated }} or multi-region CockroachDB {{ site.data.products.serverless }} clusters using private endpoints. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency.
-
-Refer to:
-- [Managing AWS PrivateLink for a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/aws-privatelink.md %})
-- [Managing AWS PrivateLink for a multi-region CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/aws-privatelink.md %}?filters=serverless)
 
 ## DB Console
 

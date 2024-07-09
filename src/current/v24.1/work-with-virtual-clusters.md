@@ -9,14 +9,14 @@ docs_area: deploy
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
+{% include_cached new-in.html version="v23.2" %} Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
 
 ## Connect to a virtual cluster
 
 This section shows how to use [SQL clients](#sql-clients) or the [DB Console](#db-console) to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
-When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `main`.
+When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `main`.
 {% endcapture %}
 
 {{ pcr_application_cluster_note }}
@@ -25,7 +25,7 @@ When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-
 
 This section shows how to connect using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`.
+Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the connection URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster. You must use `--url` rather than `--host`.
 
@@ -48,7 +48,7 @@ Replace:
 #### Connect to the system virtual cluster
 
 {{site.data.alerts.callout_info}}
-You should only connect to the system virtual cluster for cluster administration and to manage physical cluster replication. To work with databases, tables, or workloads, connect to a virtual cluster.
+You should only connect to the system virtual cluster for cluster administration and to manage PCR. To work with databases, tables, or workloads, connect to a virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL. You must have the `admin` role on the system virtual cluster.
@@ -66,7 +66,7 @@ cockroach sql --url \
 
 This section shows how to connect using the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `application`.
+Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`. In order to view metrics on [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for a PCR job, connect to the standby cluster's DB Console.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
@@ -112,13 +112,7 @@ sql_txn_commit_count{tenant="system"} 0
 sql_txn_commit_count{tenant="demo"} 0
 ~~~
 
-When connected to a virtual cluster from the DB Console:
-
-- Most pages and views are scoped to a virtual cluster. By default the DB Console displays only metrics about that virtual cluster, and excludes metrics for other virtual clusters and the system virtual cluster. To allow the DB Console to display system-level metrics from within a virtual cluster, you can grant the virtual cluster the `can_view_node_info` permission.
-
-- DB Console pages related to SQL activity and jobs are visible only from a virtual cluster.
-
-- Some pages and views are by default viewable only from the system virtual cluster, including those pertaining to overall cluster health.
+When connected to a virtual cluster from the DB Console, metrics which measure SQL and related activity show data scoped to the virtual cluster. All other metrics are collected system-wide and display the same data on all virtual clusters including the system virtual cluster.
 
 ## Disaster recovery
 

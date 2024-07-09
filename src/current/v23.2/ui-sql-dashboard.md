@@ -33,6 +33,14 @@ The **SQL Connection Rate** is an average of the number of connection attempts p
 
 - In the cluster view, the graph shows the rate of SQL connection attempts to all nodes, with lines for each node.
 
+## Upgrades of SQL Transaction Isolation Level
+
+- In the node view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level on the selected node.
+
+- In the cluster view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level across all nodes.
+
+If this metric is non-zero, then transactions at weaker isolation levels (such as [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %})) are being upgraded to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) instead. To ensure that `READ COMMITTED` transactions run as `READ COMMITTED`, see [Enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+
 ## Open SQL Transactions
 
 - In the node view, the graph shows the total number of open SQL transactions on the node.
@@ -62,6 +70,20 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current statement load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
+
+See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
+
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+
+The following SQL statements update the `INSERT` metric (`sql.insert.count`):
+
+- [`INSERT ... ON CONFLICT DO UPDATE ...`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause): Even when the `DO UPDATE` clause is actually executed, the root of the [abstract syntax tree (AST)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#parsing) is used to increment the metric, rather than the actual execution details.
+
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
+
+{{site.data.alerts.callout_info}}
+[Data manipulation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) other than  `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric, which is *not* displayed on this graph.
+{{site.data.alerts.end}}
 
 ## SQL Statement Errors
 
