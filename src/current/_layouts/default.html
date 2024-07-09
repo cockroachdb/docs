@@ -88,6 +88,34 @@
 {% if page.twitter == true %}
   {% include_cached twitter_analytics.html %}
 {% endif %}
+<script>
+  // Ensure Kapa script is loaded before attaching event listeners
+  window.onload = function() {
+    console.log("Kapa Loaded");
 
+    // Adding an event listener for modal open
+    Kapa("onModalOpen", function({ mode }) {
+      analytics.track('Kapa Modal Opened', {
+        mode: mode
+      });
+    });
+
+    // Adding an event listener for modal close
+    Kapa("onModalClose", function({ mode }) {
+      analytics.track('Kapa Modal Closed', {
+        mode: mode
+      });
+    });
+
+    // Adding an event listener for Ask AI query submission
+    Kapa("onAskAIQuerySubmit", function({ threadId, questionAnswerId, question }) {
+      analytics.track('Kapa AI Query Submitted', {
+        threadId: threadId,
+        questionAnswerId: questionAnswerId,
+        question: question
+      });
+    });
+  };
+</script>
   </body>
 </html>
