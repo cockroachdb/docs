@@ -39,6 +39,7 @@ Parameter | Description
 `RECURRING crontab` | Specify when the backup should be taken. By default, these are incremental backups. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with `ALTER BACKUP SCHEDULE`. Define the schedule as a `STRING` in [crontab format](https://wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 `FULL BACKUP crontab / ALWAYS` | Specify when to take a new full backup. Define the schedule as a `STRING` in [crontab format](https://wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>`FULL BACKUP ALWAYS` will trigger `RECURRING` to always take full backups. <br>**Note:** If you do not have an Enterprise license then you can only take full backups. `ALWAYS` is the only accepted value of `FULL BACKUP`. <br><br>If you omit the `FULL BACKUP` clause, the default backup schedule will be as follows: <ul><li>If `RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>If `RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `schedule_option` | Control the schedule behavior with a comma-separated list of these [schedule options](#schedule-options).
+`EXECUTE [FULL] IMMEDIATELY` | <span class="version-tag">New in v24.1:</span> Update the schedule to run immediately (at the current time). With `ALTER BACKUP SCHEDULE ... EXECUTE IMMEDIATELY` if the schedule includes full and incremental backups, regardless of which ID is specified, the incremental schedule will run. To run the full backup schedule instead, use `ALTER BACKUP SCHEDULE ... EXECUTE FULL IMMEDIATELY`. You can only use `EXECUTE [FULL] IMMEDIATELY` with active schedules. You need to [resume]({% link {{ page.version.version }}/resume-schedules.md %}) a paused schedule before it will execute. Use [`PAUSE SCHEDULE`]({% link {{ page.version.version }}/pause-schedules.md %}) following the schedule run to pause the schedule once again.
 
 ### Backup options
 
@@ -177,6 +178,24 @@ The incremental backup schedule's `BACKUP` statement shows that it will read fil
   814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached, incremental_location = 'external://gcs_incremental_storage'
 (2 rows)
 ~~~
+
+### Execute a schedule immediately
+
+{% include_cached new-in.html version="v24.1" %} You can alter an active schedule to run an incremental schedule immediately with `EXECUTE IMMEDIATELY`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE IMMEDIATELY;
+~~~
+
+To run the full backup schedule instead, specify `FULL`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE FULL IMMEDIATELY;
+~~~
+
+The schedule must be active to use `EXECUTE [FULL] IMMEDIATELY`. You need to [resume]({% link {{ page.version.version }}/resume-schedules.md %}) a paused schedule before it will execute. Use [`PAUSE SCHEDULE`]({% link {{ page.version.version }}/pause-schedules.md %}) following the schedule run to pause the schedule once again.
 
 ## See also
 

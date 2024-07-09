@@ -20,6 +20,13 @@ The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Consol
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
 
+## Required privileges
+
+To access the **Migrations** page, as user must have either of the following roles:
+
+- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
+
 ## Convert a schema
 
 The steps to convert your schema depend on your source dialect.
@@ -121,7 +128,9 @@ Credentials can be added for PostgreSQL and MySQL databases.
 1. Provide the following information:
     - A **Credential Name** to associate with the credentials.
     - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
-    - The **Host** (i.e., hostname or IP address) for accessing the database. Exclude the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
+    - The **Host** (i.e., hostname or IP address) for accessing the database, excluding the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. The following are not allowed:
+        - Local hosts such as `localhost` and `127.0.0.1`.
+        - Private IPs, including `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `::1/128`, `fe80::/10`, and `fc00::/7`.
     - The **Port** for accessing the database.
     - A valid **Username** and **Password** for accessing the database.
     - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
