@@ -7,12 +7,12 @@ docs_area: migrate
 
 This page describes the MOLT (Migrate Off Legacy Technology) tools. For more information about migrating to CockroachDB, see [Migration Overview]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
 
-The MOLT tools can be used when:
+Use the MOLT tools to:
 
-- Converting a schema for compatibility with CockroachDB.
-- Loading test and production data into CockroachDB.
-- Validating queries on CockroachDB.
-- Performing a cutover to finalize the migration to CockroachDB.
+- Convert a schema for compatibility with CockroachDB.
+- Load test and production data into CockroachDB.
+- Validate queries on CockroachDB.
+- Perform a cutover to finalize the migration to CockroachDB.
 
 ## MOLT tools
 
@@ -29,7 +29,7 @@ The MOLT tools can be used when:
 
 The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema [to a CockroachDB-compatible schema]({% link {{ site.current_cloud_version }}/migration-overview.md %}#convert-the-schema). The supported Schema Conversion Tool sources are PostgreSQL, MySQL, Oracle, and SQL Server.
 
-The tool will convert [data definition (DDL) syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) (while ignoring destructive statements such as `DROP`), identify [unimplemented features and syntax incompatibilities]({% link {{ site.current_cloud_version }}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{ site.current_cloud_version }}/migration-overview.md %}#schema-design-best-practices).
+The tool will convert [data definition (DDL) syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) (excluding destructive statements such as `DROP`), identify [unimplemented features and syntax incompatibilities]({% link {{ site.current_cloud_version }}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{ site.current_cloud_version }}/migration-overview.md %}#schema-design-best-practices).
 
 ### Fetch
 
@@ -39,15 +39,15 @@ You can use MOLT Fetch to [load test data]({% link {{ site.current_cloud_version
 
 ### Verify
 
-[MOLT Verify]({% link molt/molt-verify.md %}) checks for discrepancies between the source and target schemas and data. This involves verifying that table structures, column definitions, and row values match between the source and target. The supported Verify sources are PostgreSQL, MySQL, and CockroachDB.
+[MOLT Verify]({% link molt/molt-verify.md %}) checks for discrepancies between the source and target schemas and data. It verifies that table structures, column definitions, and row values match between the source and target. The supported Verify sources are PostgreSQL, MySQL, and CockroachDB.
 
 Use MOLT Verify after loading data with [MOLT Fetch](#fetch) to confirm that the CockroachDB data matches the source.
 
 ### Live Migration Service
 
-The [MOLT Live Migration Service (LMS)]({% link molt/live-migration-service.md %}) routes traffic between an application, a source database, and a target CockroachDB database. You can use the LMS to control which database, as the "source of truth", is serving reads and writes to an application.
+The [MOLT Live Migration Service (LMS)]({% link molt/live-migration-service.md %}) routes traffic among an application, a source database, and a target CockroachDB database. You can use the LMS to control which database acts as the "source of truth", serving reads and writes to an application.
 
-When you have sufficiently tested your application on CockroachDB, you use the LMS to perform a transactionally consistent [cutover]({% link {{ site.current_cloud_version }}/migration-overview.md %}#cutover-strategy), thus switching the source of truth to CockroachDB. The supported LMS sources are PostgreSQL, MySQL, and CockroachDB.
+When you have sufficiently tested your application on CockroachDB, use the LMS to perform a transactionally consistent [cutover]({% link {{ site.current_cloud_version }}/migration-overview.md %}#cutover-strategy), thus switching the source of truth to CockroachDB. The supported LMS sources are PostgreSQL, MySQL, and CockroachDB.
 
 ## See also
 
