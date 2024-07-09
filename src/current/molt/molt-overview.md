@@ -33,7 +33,7 @@ The tool will convert [data definition (DDL) syntax]({% link {{ site.current_clo
 
 ### Fetch
 
-[MOLT Fetch]({% link molt/molt-fetch.md %}) moves data from a source database into CockroachDB. Data is moved via one-time bulk ingestion, which is optionally followed by continuously streaming ingestion. The supported Fetch sources are PostgreSQL, MySQL, and CockroachDB.
+[MOLT Fetch]({% link molt/molt-fetch.md %}) moves data from a source database into CockroachDB. Data is moved via one-time bulk ingestion, which is optionally followed by continuously streaming replication. The supported Fetch sources are PostgreSQL, MySQL, and CockroachDB.
 
 You can use MOLT Fetch to [load test data]({% link {{ site.current_cloud_version }}/migration-overview.md %}#load-test-data) into CockroachDB, enabling you to [test your application queries]({% link {{ site.current_cloud_version }}/migration-overview.md %}#validate-queries) on CockroachDB. When you're ready to [conduct the migration]({% link {{ site.current_cloud_version }}/migration-overview.md %}#conduct-the-migration) in a production environment, use MOLT Fetch to move your source data to CockroachDB. You can also enable continuous replication of any changes on the source database to CockroachDB.
 
