@@ -25,6 +25,7 @@ You will need the following set up before starting this tutorial:
     - If you are using CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or {{ site.data.products.basic }}, refer to the [Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) guide. For CockroachDB {{ site.data.products.core }} clusters, refer to the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
 - The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
+- {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}
 
 This tutorial uses the Cockroach Labs [`movr`]({% link {{ page.version.version }}/movr.md %}) workload as an example database.
 

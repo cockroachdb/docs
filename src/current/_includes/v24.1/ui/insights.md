@@ -67,7 +67,7 @@ Additional information is displayed for the following insight types:
 All transaction executions flagged with this insight type will display a **Transaction with ID {transaction ID} waited on** section which provides details of the blocking transaction execution.
 1. [**Failed Execution**](#failed-execution):
 Certain transaction executions flagged with this insight type will display a **Failed Execution** section with **Conflicting Transaction** and **Conflicting Location** information. The following 3 conditions are required:
-  - The `sql.contention.record_serialization_conflicts.enabled` [cluster setting]({{ link_prefix }}cluster-settings.html) is set to `true`. By default, this is set to `false`.
+  - The [`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) cluster setting is set to `true` (default).
   - **Error Code** is `40001`, a `serialization_failure`.
   - **Error Message** includes [`RETRY_SERIALIZABLE`]({{ link_prefix }}transaction-retry-error-reference.html#retry_serializable)` - failed preemptive refresh due to conflicting locks`.
 
@@ -199,7 +199,7 @@ The following screenshot shows the conditional details of the preceding failed t
 
 <img src="{{ 'images/v24.1/transaction_execution_details_failed_conditional.png' | relative_url }}" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
 
-To capture more information in the event of a failed transaction execution due to a serialization conflict, set the `sql.contention.record_serialization_conflicts.enabled` [cluster setting]({{ link_prefix }}cluster-settings.html) to `true` (default is `false`). With this setting enabled, when the **Error Code** is `40001` and the **Error Message** specifically has [`RETRY_SERIALIZABLE - failed preemptive refresh`]({{ link_prefix }}transaction-retry-error-reference.html#failed_preemptive_refresh)` due to conflicting locks`, a conditional **Failed Execution** section is displayed with **Conflicting Transaction** and **Conflicting Location** information.
+To capture more information in the event of a failed transaction execution due to a serialization conflict, set the [`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) cluster setting to `true` (default). With this setting enabled, when the **Error Code** is `40001` and the **Error Message** specifically has [`RETRY_SERIALIZABLE - failed preemptive refresh`]({{ link_prefix }}transaction-retry-error-reference.html#failed_preemptive_refresh)` due to conflicting locks`, a conditional **Failed Execution** section is displayed with **Conflicting Transaction** and **Conflicting Location** information.
 
 To troubleshoot, refer to the performance tuning recipe for [transaction retry errors]({{ link_prefix }}performance-recipes.html#transaction-retry-error).
 
@@ -313,7 +313,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings]({{ link_prefix }}cluster-settings.html):
+You can configure [**Workload Insights**](#workload-insights-tab) with the following [cluster settings]({{ link_prefix }}cluster-settings.html):
 
 | Setting                                                                | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
@@ -325,7 +325,7 @@ You can configure [**Workload Insights**](#workload-insights-tab) with the follo
 |[`sql.insights.execution_insights_capacity`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity)                              | The maximum number of execution insights stored in each node.                                                                                                                                 | [Statement executions](#statement-executions-view)                 |
 |[`sql.contention.event_store.capacity`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-event-store-capacity)                                   | The in-memory storage capacity of the contention event store in each nodes.                                                                                                                   | [Transaction executions](#transaction-executions-view)               |
 |[`sql.contention.event_store.duration_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-event-store-duration-threshold)                         | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                                                      | [Transaction executions](#transaction-executions-view)               |
-|`sql.contention.record_serialization_conflicts.enabled` | enables recording `40001` errors with conflicting txn meta as `SERIALIZATION_CONFLICT` contention events into `crdb_internal.transaction_contention_events` | [Transaction executions](#transaction-executions-view)               |
+|[`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) | enables recording `40001` errors, along with metadata about conflicting transactions, as `SERIALIZATION_CONFLICT` contention events into `crdb_internal.transaction_contention_events`<br><br>**Default**: `true` | [Transaction executions](#transaction-executions-view)               |
 
 #### Detect slow executions
 

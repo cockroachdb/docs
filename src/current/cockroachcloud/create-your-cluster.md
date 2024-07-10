@@ -30,13 +30,13 @@ On the **Cloud & Regions page**, in the **Cloud provider** section, select your 
 
 You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.standard }} cluster with data or services in a cloud tenant that you manage, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
-Pricing depends on your cloud provider and region selections. 
+Pricing depends on your cloud provider and region selections.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Configure region(s)
 
-In the **Regions** section, select at least one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.standard }} clusters can be deployed. 
+In the **Regions** section, select at least one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.standard }} clusters can be deployed.
 
 For optimal performance, select the cloud provider region nearest to the region where you are running your application. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB {{ site.data.products.standard }} cluster.
 
@@ -56,7 +56,25 @@ Click **Next: Capacity**.
 
 Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
-You will be charged only for the storage you use. Storage starts at $0.75/GiB hour and the cost varies by region.
+{{site.data.alerts.callout_success}}
+You can [set up private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) after creating your cluster.
+{{site.data.alerts.end}}
+
+You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
+
+1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
+
+1. Enter the IP range and size (in CIDR format) for the CockroachDB {{ site.data.products.cloud }} network based on the following considerations:
+      -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
+      - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
+
+        {{site.data.alerts.callout_info}}
+        Custom IP ranges are temporarily unavailable for multi-region clusters.
+        {{site.data.alerts.end}}
+
+1. Click **Next: Capacity**.
+
+        After your cluster is created, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-vpc-peering) to finish setting up VPC Peering for your cluster.
 
 Click **Next: Finalize**.
 
@@ -67,7 +85,7 @@ Click **Next: Finalize**.
 
     You will be billed monthly.
 
-1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
+1. If you have not yet configured billing for your CockroachDB {{ site.data.products.cloud }} organization, add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
 1. If applicable, the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.

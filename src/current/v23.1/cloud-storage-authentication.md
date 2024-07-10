@@ -8,7 +8,7 @@ docs_area: manage
 Cockroach Labs supports different levels of authentication to cloud storage. When running disaster recovery or change data capture operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. Select the tab appropriate to your cloud storage provider to see the available authentication options for your platform.
 
 {{site.data.alerts.callout_info}}
-We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#set-up-google-cloud-storage-assume-role).
+We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3](#set-up-amazon-s3-assume-role) and [Google Cloud Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}?filters=gcs#set-up-google-cloud-storage-assume-role).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -93,7 +93,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`;
+BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`;
 ~~~
 
 ### Set up Amazon S3 assume role
@@ -437,7 +437,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com';
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com';
 ~~~
 
 Replace:
@@ -702,7 +702,9 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 ## Azure Blob Storage implicit authentication
 
@@ -787,7 +789,9 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 </section>
 

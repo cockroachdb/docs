@@ -1,11 +1,11 @@
 ---
 title: Releases
-summary: Release notes for older versions of CockroachDB.
+summary: Information about CockroachDB releases with an index of available releases and their release notes and binaries.
 toc: true
 docs_area: releases
 toc_not_nested: true
-pre_production_preview: false
-pre_production_preview_version: v23.2.0-beta.3
+pre_production_preview: true
+pre_production_preview_version: v24.1.0-beta.1
 ---
 
 {% comment %}
@@ -14,14 +14,13 @@ of this file, block-level HTML is indented in relation to the other HTML, and bl
 indented in relation to the other Liquid. Please try to keep the indentation consistent. Thank you!
 {% endcomment %}
 
-After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
+After downloading a supported CockroachDB binary, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
 
-- **Generally Available (GA)** releases are qualified for production environments.
-- **Limited Access** binaries allow you to validate CockroachDB on architectures that will soon become generally available. In certain cases, limited access binaries are available only to enrolled organizations. To enroll your organization, contact your account representative.
-- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments. Testing releases allow you to begin testing and validating the next major version of CockroachDB early. Testing releases are not eligible for support or uptime SLA commitments.
+- **Generally Available (GA)** releases (also known as Production releases) are qualified for production environments. These may have either a default GA support type or an extended LTS (Long-Term Support) designation. Refer to [Release Support Policy]({% link releases/release-support-policy.md %}) for more information.
+- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments. Testing releases allow you to begin testing and validating the next major version of CockroachDB early.
 - **Experimental** binaries allow you to deploy and develop with CockroachDB on architectures that are not yet qualified for production use. Experimental binaries are not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
-For more details, refer to [Release Naming](#release-naming).
+For more details, refer to [Release Naming](#release-naming). For information about applicable software licenses, refer to [Licenses](#licenses).
 
 {{site.data.alerts.callout_danger}}
 In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
@@ -29,7 +28,7 @@ In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary 
 
 ## Staged release process
 
-As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for CockroachDB Cloud clusters for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
 
 {{ experimental_js_warning }}
 
@@ -109,9 +108,12 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     </thead>
     <tbody>
             {% for r in releases %}
+
+              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{{ lts_link_linux }}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -138,7 +140,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
                         {% if r.linux.linux_arm_experimental == true %}<b>Experimental:</b>{% endif %}
                     <div><a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-arm64.tgz" class="binary-link">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-arm64.tgz.sha256sum" class="binary-link">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% if r.has_sql_only == true %}
-                    <div><a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-arm64.tgz" class="binary-link">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-arm64.tgz.sha256sum" class="binary-link">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    <div><a {% if r.linux.linux_arm_experimental == true %}{{ onclick_string }}{% endif %} href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-arm64.tgz" class="binary-link">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-arm64.tgz.sha256sum" class="binary-link">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% endif %}
                 </td>
                     {% endif %}
@@ -192,9 +194,9 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
                     {% break %}
                 {% else %}
             <td>
-                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz" class="binary-link">Full Binary</a>(<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum" class="binary-link">SHA256</a>)</div>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz" class="binary-link">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum" class="binary-link">SHA256</a>){% endif %}</div>
                     {% if r.has_sql_only == true %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz" class="binary-link">SQL shell Binary</a>(<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum" class="binary-link">SHA256</a>)</div>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz" class="binary-link">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.darwin-11.0-arm64.tgz.sha256sum" class="binary-link">SHA256</a>){% endif %}</div>
                     {% endif %}
             </td>
                 {% endif %}
@@ -269,9 +271,14 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
+        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
+".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r.
+{% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -297,7 +304,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% elsif r.docker.docker_arm_experimental == true %}
               **Intel**: GA<br />**ARM**: Experimental
             {% else %}
-              GA
+              GA{{ lts_link_docker }}
             {% endif %}
             </td>
         </tr>
@@ -318,9 +325,10 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% comment %} Add link to each release r {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -353,7 +361,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 ## Release naming
 
-Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (“1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
+Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (historically “1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
 
 A major release is typically produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
 
@@ -364,5 +372,11 @@ During development of a major version of CockroachDB, releases are produced acco
 - Alpha releases are the earliest testing releases leading up to a major version's initial GA (generally available) release, and have `alpha` in the version name. Example: `v23.1.0-alpha.1`.
 - Beta releases are produced after the series of alpha releases leading up to a major version's initial GA release, and tend to be more stable and introduce fewer changes than alpha releases. They have `beta` in the version name. Example: `v23.1.0-beta.1`.
 - Release candidates are produced after the series of beta releases and are nearly identical to what will become the initial generally available (GA) release. Release candidates have `rc` in the version name. Example: `v23.1.0-rc.1`.
-- A major version's GA release is produced after the series of release candidates for a major version, and ends with `0`. Example: `v23.1.0`. GA releases are validated and suitable for production environments.
+- A major version's initial GA release is produced after the series of release candidates for a major version, and ends with `0`. Example: `v23.1.0`. GA releases are validated and suitable for production environments.
 - Patch (maintenance) releases are produced after a major version's GA release, and are numbered sequentially. Example: `v23.1.13`.
+
+## Licenses
+
+Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
+ 
+To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license/) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.

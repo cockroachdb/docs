@@ -86,7 +86,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </tgroup>
 </table>
 
-CockroachDB {{ site.data.products.dedicated }} advanced is certified by a PCI QSA to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional outlines outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.dedicated }} clusters for cardholder data or other sensitive data.
+CockroachDB {{ site.data.products.dedicated }} advanced is certified by a PCI QSA to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.dedicated }} clusters for cardholder data or other sensitive data.
 
 ## Responsibilities of Cockroach Labs
 

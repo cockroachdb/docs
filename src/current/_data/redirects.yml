@@ -77,14 +77,6 @@
 - destination: advisories/index.md
   sources: ['advisories/advisories.md']
 
-# Pages undergoing maintenance
-
-- destination: migration-overview.md
-  sources:
-    - migrate-from-oracle.md
-  temporary: true
-  versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
-
 # Renamed pages
 
 - destination: admin-ui-overview.md
@@ -247,6 +239,12 @@
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
+- destination: molt/live-migration-service.md
+  sources:
+    - v23.1/live-migration-service.md
+    - v23.2/live-migration-service.md
+    - v24.1/live-migration-service.md
+
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
   versions: ['v21.1']
@@ -268,6 +266,17 @@
 - destination: migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+    
+- destination: molt/molt-fetch.md
+  sources:
+    - v23.2/molt-fetch.md
+    - v24.1/molt-fetch.md
+
+- destination: molt/molt-verify.md
+  sources:
+    - v23.1/molt-verify.md
+    - v23.2/molt-verify.md
+    - v24.1/molt-verify.md
 
 - destination: node-shutdown.md
   sources: ['cockroach-quit.md']
@@ -935,6 +944,12 @@
 - destination: deploy-cockroachdb-with-kubernetes-insecure.md
   sources: ['orchestrate-cockroachdb-with-kubernetes-insecure.md']
   versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+
+- destination: import-into.md
+  sources:
+    - import.md
+    - cockroach-import.md
+  versions: ['v24.1', 'v24.2']
 
 - destination: kubernetes-overview.md
   sources: ['orchestration.md']

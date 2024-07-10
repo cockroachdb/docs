@@ -239,12 +239,6 @@
             ]
           },
           {
-            "title": "<code>cockroach import</code>",
-            "urls": [
-              "/${VERSION}/cockroach-import.html"
-            ]
-          },
-          {
             "title": "The <code>cockroach-sql</code> command",
             "urls": [
               "/${VERSION}/cockroach-sql-binary.html"

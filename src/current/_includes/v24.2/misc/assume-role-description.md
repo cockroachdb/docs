@@ -1,0 +1,1 @@
+Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`. <br>`external_id`: Use as a value to `ASSUME_ROLE` to specify the [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for third-party access to your S3 bucket.

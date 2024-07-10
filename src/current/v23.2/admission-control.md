@@ -46,6 +46,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
+- [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Follower replication work]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
@@ -80,7 +81,7 @@ The transaction start time is used within the priority queue and gives preferenc
 
 ### Set quality of service level for a session
 
-In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the [`default_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) session variable. The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase the priority of subsequent SQL requests, run:
 
@@ -103,14 +104,26 @@ To reset the priority to the default session setting (in between background and 
 SET default_transaction_quality_of_service=regular;
 ~~~
 
+<a id="copy-qos"></a>
+
+The quality of service for [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
+
+To increase the priority of subsequent `COPY` statements, run:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET copy_transaction_quality_of_service=critical;
+~~~
+
 ### Set quality of service level for a transaction
 
-To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service` session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block as shown below. The valid values are `critical`, `background`, and `regular`.
+To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) and/or [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block, as shown in the following example. The valid values are `critical`, `background`, and `regular`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
-SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit to desired level
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit transaction QoS to desired level
+SET LOCAL copy_transaction_quality_of_service = 'regular'; -- Edit COPY QoS to desired level
 -- Statements to run in this transaction go here
 COMMIT;
 ~~~

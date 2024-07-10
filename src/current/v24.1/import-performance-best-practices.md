@@ -28,8 +28,6 @@ Different import file formats do not have the same performance due to the way th
 
 We recommend formatting your import files as `CSV` or `AVRO`. These formats can be processed in parallel by all the nodes in the cluster, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 ### Import the schema separately from the data
 
 When importing into a new table, split your dump data into two files:

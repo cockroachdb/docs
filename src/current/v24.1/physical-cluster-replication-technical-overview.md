@@ -5,11 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-Physical cluster replication automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
+[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
@@ -31,7 +27,6 @@ The stream initialization proceeds as follows:
 1. The initial scan runs on the primary and backfills all data from the primary virtual cluster as of the starting timestamp of the replication stream.
 1. Once the initial scan is complete, the primary then begins streaming all changes from the point of the starting timestamp.
 
-{% comment %}TODO Kathryn to update this graphic {% endcomment%}
 <img src="{{ 'images/v24.1/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 ### During the replication stream
@@ -41,7 +36,7 @@ The replication happens at the byte level, which means that the job is unaware o
 During the job, [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) are periodically emitting resolved timestamps, which is the time where the ingested data is known to be consistent. Resolved timestamps provide a guarantee that there are no new writes from before that timestamp. This allows the standby cluster to move the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) forward as the replicated timestamp advances. This information is sent to the primary cluster, which allows for [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) to continue as the replication stream on the standby cluster advances.
 
 {{site.data.alerts.callout_info}}
-If the primary cluster does not receive replicated time information from the standby after 3 days, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection. The time at which the job is removed is configurable via the `stream_replication.job_liveness_timeout` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+If the primary cluster does not receive replicated time information from the standby after 24 hours, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection. The time at which the job is removed is configurable with [`ALTER VIRTUAL CLUSTER virtual_cluster EXPIRATION WINDOW = duration`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax.
 {{site.data.alerts.end}}
 
 ### Cutover and promotion process

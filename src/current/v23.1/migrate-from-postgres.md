@@ -247,9 +247,9 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
 
 ### Step 3. Validate the migrated data
 
-Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to check that the data on PostgreSQL and CockroachDB are consistent.
+Use [MOLT Verify]({% link molt/molt-verify.md %}) to check that the data on PostgreSQL and CockroachDB are consistent.
 
-1. [Install MOLT Verify.]({% link {{ page.version.version }}/molt-verify.md %})
+1. [Install MOLT Verify.]({% link molt/molt-verify.md %})
 
 1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the PostgreSQL connection string with `--source` and the CockroachDB connection string with `--target`:
 
@@ -288,7 +288,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 - [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
-- [Use the MOLT Verify tool]({% link {{ page.version.version }}/molt-verify.md %})
+- [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
 - [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})

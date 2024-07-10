@@ -27,6 +27,7 @@ Before you begin, make sure you have:
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
+- {% include cockroachcloud/cdc/tutorial-privilege-check.md %}
 
 ## Step 1. Create a cluster
 
@@ -239,7 +240,7 @@ The following points outline two potential workarounds. For detailed instruction
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
 Refer to the [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#known-limitations) page for more general changefeed known limitations.

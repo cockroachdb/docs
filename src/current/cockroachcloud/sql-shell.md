@@ -90,7 +90,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
       3  | 3 | Blue
       4  | 4 | Clifford
     ~~~
-    
+
     Note that each line of a query's results will be numbered independently of the output. This is for readability and will not be shown in any exported data.
 
 1. Click **Export results** to download a CSV file of the output.

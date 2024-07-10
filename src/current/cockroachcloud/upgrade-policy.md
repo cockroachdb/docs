@@ -1,22 +1,22 @@
 ---
-title: CockroachDB Cloud Upgrade Policy
+title: CockroachDB Cloud Support and Upgrade Policy
 summary: Learn about the upgrade policy for clusters deployed in CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---
 
-This page describes the upgrade policy for CockroachDB {{ site.data.products.cloud }}. For self-hosted clusters, see the CockroachDB [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
+This page describes the support and upgrade policy for clusters deployed in CockroachDB {{ site.data.products.cloud }}. For CockroachDB Self-Hosted, refer to the CockroachDB  [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
 
-Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (“1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1. For more details, refer to [Release Naming](https://cockroachlabs.com/docs/releases/index#release-naming).
+Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (historically “1” or “2”, representing a biannual cycle), and `PP` indicates the patch release version. For example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1. For more details, refer to [Release Naming](https://cockroachlabs.com/docs/releases/index#release-naming).
 
-CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the major version immediately preceding it. Support for these versions includes patch version upgrades and security patches.
+CockroachDB {{ site.data.products.cloud }} provides support for the latest major version of CockroachDB and the major version immediately preceding it.
+
+CockroachDB Dedicated clusters are automatically upgraded to the latest patch of the cluster’s current major version of CockroachDB, but an account administrator must initiate an upgrade to a new major version.
+
+CockroachDB Serverless clusters are upgraded to the latest major version and each patch automatically.
 
 {{site.data.alerts.callout_success}}
-Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.advanced }} clusters can optionally be upgraded to a [Pre-Production Preview](#pre-production-preview-upgrades) release—a beta or release candidate (RC) testing release for testing and validation of that next major version. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_danger}}
-CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters are subject to automatic upgrades for both major and patch releases.
+Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.dedicated }} clusters can optionally be upgraded to a [Pre-Production Preview](#pre-production-preview-upgrades) release—a beta or release candidate (RC) testing release for testing and validation of that next major version. To learn more, refer to [Upgrade to v24.1 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v24.1.md %}).
 {{site.data.alerts.end}}
 
 ## Patch version upgrades
@@ -27,20 +27,18 @@ For CockroachDB {{ site.data.products.advanced }} clusters, [Org Administrators]
 
 CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters are subject to automatic upgrades to the latest supported patch version.
 
-**To minimize disruption to clients during cluster upgrades, it's important to use [connection retry logic]({% link cockroachcloud/production-checklist.md %}#keeping-connections-current) in your application.**
-
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
 {{site.data.alerts.end}}
 
 ## Major version upgrades
 
-Major version [releases](https://www.cockroachlabs.com/docs/releases) (for example, v23.1.0 and v23.2.0) contain new functionality and potentially backward-incompatible changes to CockroachDB.
+Major version [releases](https://www.cockroachlabs.com/docs/releases) (for example, v23.1.0 and v23.2.0) contain new functionality and may include backward-incompatible changes to CockroachDB.
 
 Major version upgrades are automatic for CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters and opt-in for CockroachDB {{ site.data.products.advanced }} clusters. [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) must initiate major version upgrades for CockroachDB {{ site.data.products.advanced }} clusters. When a new major version is available, Admins will be able to [start an upgrade]({% link cockroachcloud/upgrade-to-v24.1.md %}) from the CockroachDB {{ site.data.products.cloud }} Console for clusters using the paid version of CockroachDB {{ site.data.products.advanced }}. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well.
 
 ### Pre-production preview upgrades
-Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.cloud }} organizations can create new clusters or upgrade existing clusters to a Pre-Production Preview release for testing and experimentation using a beta or release candidate (RC) of that next major version. Upgrading to a Pre-Production Preview is a major-version upgrade. After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as [patch version upgrades](#patch-version-upgrades). To learn more, refer to [Upgrade to v23.2 Pre-Production Preview](https://cockroachlabs.com/docs/cockroachcloud/upgrade-to-v24.1).
+Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data.products.cloud }} organizations can create new clusters or upgrade existing clusters to a Pre-Production Preview release for testing and experimentation using a beta or release candidate (RC) of that next major version. Upgrading to a Pre-Production Preview is a major-version upgrade. After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as [patch version upgrades](#patch-version-upgrades). To learn more, refer to [Upgrade to v24.1](https://cockroachlabs.com/docs/cockroachcloud/upgrade-to-v24.1).
 
 ### Rollback support
 
@@ -52,18 +50,18 @@ To stop the upgrade and roll back to the latest patch release of the previous ma
 If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of the previous major version, which may differ from the patch release you were running before you initiated the upgrade.
 {{site.data.alerts.end}}
 
-During rollback, nodes are reverted to that prior version one at a time, without interrupting the cluster's health and availability.
+During rollback, nodes are reverted to that prior major version's latest patch one at a time, without interrupting the cluster's health and availability.
 
-If you see problems after a major version upgrade has been finalized, it will not be possible to roll back via the CockroachDB {{ site.data.products.cloud }} Console. For assistance, [contact support](https://support.cockroachlabs.com/hc/requests/new).
+If you notice problems after a major version upgrade has been finalized, it will not be possible to roll back via the CockroachDB {{ site.data.products.cloud }} Console. For assistance, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
-### End of Support for older CockroachDB versions
+### End of Support for CockroachDB versions
 
 As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on CockroachDB {{ site.data.products.cloud }}. A CockroachDB version reaches EOS when it is two major versions behind the latest version. For example, when CockroachDB v21.2 was released, CockroachDB v20.2 reached EOS.
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
 
-If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. A Org Administrator can [upgrade your cluster]({% link cockroachcloud/upgrade-to-v24.1.md %}) directly from the CockroachDB {{ site.data.products.cloud }} Console.
+If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. An Org Administrator can [upgrade your cluster]({% link cockroachcloud/upgrade-to-v24.1.md %}) directly from the CockroachDB {{ site.data.products.cloud }} Console.
 
-## See also
+## Additional information
 
 For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](https://cockroachlabs.com/docs/cockroachcloud/upgrade-to-v23.1).

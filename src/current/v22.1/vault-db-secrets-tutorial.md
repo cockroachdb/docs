@@ -84,7 +84,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
         1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
 
         ~~~shell
-        curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
+        curl --create-dirs -o root.crt -O https://cockroachlabs.cloud/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
         ~~~
 
 1. Prove that your connection works by executing a SQL statement.

@@ -93,7 +93,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`
+BACKUP INTO 's3://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{AWS_ACCOUNT_ID}:role/crl-dr-store-user-{CLUSTER_ID_SUFFIX}`
 ~~~
 
 ## Amazon S3 assume role
@@ -108,7 +108,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}'
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}'
 ~~~
 
 Replace `{CLUSTER_ID_SUFFIX}` with the last 12 digits of the cluster's ID.
@@ -386,7 +386,7 @@ In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-You can use the following authentication options for Google Cloud Storage buckets:
+You can use the following authentication options for Google Cloud Storage buckets and [Google Cloud Pub/Sub changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub):
 
 - [Specified](#google-cloud-storage-specified): You specify the Google Cloud credentials key in the URI when connecting.
 - [Implicit](#google-cloud-storage-implicit): You store the needed Google Cloud credentials as environment variables, and may omit them when connecting. As an alternative, you can use implicit authentication with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates and manages for each CockroachDB {{ site.data.products.advanced }} cluster to avoid storing any credentials in your cluster.
@@ -465,7 +465,7 @@ For example, to initiate a manual backup on a CockroachDB {{ site.data.products.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&IAM_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com'
+BACKUP INTO 'gs://{bucket name}/{path}?&AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{CLUSTER_ID_SUFFIX}@{PROJECT_ID}.iam.gserviceaccount.com'
 ~~~
 
 Replace:
@@ -718,7 +718,9 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 ## Azure Blob Storage implicit authentication
 
@@ -803,7 +805,9 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 </section>
 

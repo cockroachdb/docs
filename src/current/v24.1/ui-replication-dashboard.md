@@ -5,9 +5,13 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster.
+The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster, such as range status, replicas per store, and replica quiescence.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
+
+{{site.data.alerts.callout_info}}
+The **Replication** dashboard is distinct from the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}), which tracks metrics related to physical cluster replication jobs.
+{{site.data.alerts.end}}
 
 ## Review of CockroachDB terminology
 

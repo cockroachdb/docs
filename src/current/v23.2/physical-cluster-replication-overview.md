@@ -33,7 +33,6 @@ You can use physical cluster replication in a disaster recovery plan to:
 - **Maintained/improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The cutover process from the primary cluster to the standby should typically happen within five minutes when completing a cutover to the latest replicated time using `LATEST`.
 - **Cutover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the [`WITH RETENTION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#set-a-retention-window) option to control how far in the past you can cut over to. Furthermore, you can plan a cutover by specifying a timestamp in the future.
 - **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
-- **Data verification on standby**: You can verify that the data on the standby cluster matches that on the primary by checking the fingerprint of the data on each cluster. We recommend running data verification checks regularly as part of your monitoring processes. Refer to [Data verification]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}#data-verification) page for a guide and considerations.
 
 {{site.data.alerts.callout_info}}
 [Cutting over to a timestamp in the past]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) involves reverting data on the standby cluster. As a result, this type of cutover takes longer to complete than cutover to the [latest replicated time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time). The increase in cutover time will correlate to how much data you are reverting from the standby. For more detail, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) page for physical cluster replication.
@@ -42,6 +41,7 @@ You can use physical cluster replication in a disaster recovery plan to:
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
+- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ## Get started
 
@@ -91,14 +91,14 @@ To connect to a virtualized cluster using the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
 - For the application virtual cluster, include the `options=-ccluster=application` parameter in the `postgresql` connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "postgresql://root@{your IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
+    cockroach sql --url "postgresql://root@{your IP or hostname}:26257?options=-ccluster=application&sslmode=verify-full" --certs-dir "certs"
     ~~~
 
 {{site.data.alerts.callout_info}}

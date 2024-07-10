@@ -1,6 +1,6 @@
 ---
 title: Cluster Overview Page
-summary: How to use the Cluster Overview page to view cluster details on CockroachDB {{ site.data.products.cloud }}.
+summary: How to use the Cluster Overview page to view cluster details on CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---
