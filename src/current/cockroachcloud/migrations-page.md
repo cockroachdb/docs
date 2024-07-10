@@ -1,5 +1,5 @@
 ---
-title: Use the MOLT Schema Conversion Tool
+title: MOLT Schema Conversion Tool
 summary: Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB.
 toc: true
 cloud: true

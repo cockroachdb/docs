@@ -595,6 +595,48 @@ a3081762-9841-4275-ad7a-75a7e8d5f69d,washington dc,Preston Fisher,5603 David Mis
 aebb80a6-eceb-4d10-9d9a-f26270188114,washington dc,Kenneth Miller,52393 Stephen Mill Apt. 7,3966083325
 ~~~
 
+### JSON
+
+{% include_cached new-in.html version="v24.2" %} To distinguish between JSON `NULL` values and SQL `NULL` values in changefeed messages, you can use the [`encode_json_value_null_as_object` option]({% link {{ page.version.version }}/create-changefeed.md %}#encode-json-value-null-as-object) with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}). When you enable `encode_json_value_null_as_object`, JSON `NULL` values will emit as `{"__crdb_json_null__": true}`.
+
+For example, the following `test` table has a primary key column and a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column. The `INSERT` adds `NULL` values in each column. A changefeed without the option enabled will not distinguish between the SQL and JSON `NULL` values. With the `encode_json_value_null_as_object` option enabled, the changefeed emits the JSON `NULL` as `{"__crdb_json_null__": true}`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE test (id INT PRIMARY KEY, data JSONB);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO test VALUES (1, NULL), (2, 'null'::JSONB);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE test INTO 'external://sink';
+~~~
+
+Without the option enabled, it is not possible to distinguish the SQL and JSON `NULL` values in the emitted changefeed messages:
+
+~~~
+{"after": {"data": null, "id": 1}, "key": [1]}
+{"after": {"data": null, "id": 2}, "key": [2]}
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE test INTO 'external://sink' WITH encode_json_value_null_as_object;
+~~~
+
+With `encode_json_value_null_as_object` enabled, the changefeed will encode the JSON `NULL` value in the emitted messages:
+
+~~~
+{"after": {"data": null, "id": 1}, "key": [1]}
+{"after": {"data": {"__crdb_json_null__": true}, "id": 2}, "key": [2]}
+~~~
+
+When `encode_json_value_null_as_object` is enabled, if the changefeed encounters the literal value `{"__crdb_json_null__": true}` in JSON, it will have the same representation as a JSON `NULL` value and a warning will be printed to the [`DEV` logging channel]({% link {{ page.version.version }}/logging.md %}#dev).
+
 ## See also
 
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
