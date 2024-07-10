@@ -94,7 +94,7 @@ In the context of a full migration, these steps ensure that MySQL data can be pr
 
 ### Before you begin
 
-The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-other.html) and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
+The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-other.html) and demonstrates how to migrate the schema and data to a CockroachDB {{ site.data.products.standard }} cluster. To follow along with these steps:
 
 1. Download the [`world` data set](https://dev.mysql.com/doc/index-other.html).
 
@@ -105,7 +105,7 @@ The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-ot
        mysqlsh -uroot --sql --file {path}/world-db/world.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -136,7 +136,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        You can also [add your MySQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
        {{site.data.alerts.end}}
 
-       This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
+       This example migrates directly to a CockroachDB {{ site.data.products.standard }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 1. Before you migrate the converted schema, click the **Statements** tab to view the [Statements list](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#statements-list). Scroll down to the `CREATE TABLE countrylanguage` statement and edit the statement to add a [collation]({% link {{ page.version.version }}/collate.md %}) (`COLLATE en_US`) on the `language` column:
 
@@ -160,7 +160,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link molt/molt-verify.md %}#known-limitations) documentation.
        
-1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
+1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new CockroachDB {{ site.data.products.standard }} cluster with the converted schema. Name the database `world`.
 
        You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
        

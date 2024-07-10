@@ -21,13 +21,13 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
 
 {{site.data.alerts.callout_info}}
 You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
-### Create a multi-region CockroachDB {{ site.data.products.dedicated }} cluster
+### Create a multi-region CockroachDB {{ site.data.products.standard }} cluster
 
 1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_movr_global" rel="noopener" target="_blank">Sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 
@@ -36,7 +36,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 1. On the **Overview** page, select **Create Cluster**.
 
 1. On the **Create new cluster** page:
-    - For **Plan**, select CockroachDB {{ site.data.products.cloud }}. You won't be charged for the first 30 days of service.
+    - For **Plan**, select CockroachDB {{ site.data.products.standard }}. You won't be charged for the first 30 days of service.
     - For **Cloud Provider**, select Google Cloud.
     - For **Regions & nodes**, add "us-east1", "us-west1", and "europe-west1", with 3 nodes in each region.
     - Leave the **Hardware** and **Cluster name** as their default values.
@@ -49,8 +49,6 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
     {{site.data.alerts.end}}
 
 1. Select **Create cluster**.
-
-    Your cluster will be created in approximately 20-30 minutes. Watch [this video](https://www.youtube.com/watch?v=XJZD1rorEQE) while you wait to get a preview of how you'll connect to your cluster.
 
     Once your cluster is created, you will be redirected to the **Cluster Overview** page.
 
@@ -82,7 +80,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
     $ cockroach sql --url 'postgresql://user:password@cluster.gcp-us-east1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/root.crt' -f dbinit.sql
     ~~~
 
-    This command will initialize the `movr` database on your CockroachDB {{ site.data.products.dedicated }} cluster.
+    This command will initialize the `movr` database on your CockroachDB {{ site.data.products.standard }} cluster.
 
 ## Global application deployment
 
@@ -187,7 +185,7 @@ We do not recommend deploying insecure web applications on public networks.
 1. Create a [Google Cloud Run](https://console.cloud.google.com/run/) service for the application, in one of the regions in which the database is deployed (e.g., `gcp-us-east1`):
     - Select the container image URL for the image that you just pushed to the container registry.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
-        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachDB {{ site.data.products.dedicated }} cluster, in the region in which this first Cloud Run service is located.    
+        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachDB {{ site.data.products.standard }} cluster, in the region in which this first Cloud Run service is located.    
 
             Verify that the `DB_URI` value:
             1. Specifies `cockroachdb` as the database protocol.

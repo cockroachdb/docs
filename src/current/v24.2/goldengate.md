@@ -49,7 +49,7 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
 
 ## Configure Oracle GoldenGate for PostgreSQL
 
-This section describes how to configure Oracle GoldenGate for PostgreSQL to work with CockroachDB. Oracle GoldenGate for PostgreSQL is the process that pulls data from [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) over to CockroachDB. This is a separate installation from Oracle GoldenGate for Oracle, which will be used to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html). For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html). The following example uses a [CockroachDB {{ site.data.products.serverless }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster).
+This section describes how to configure Oracle GoldenGate for PostgreSQL to work with CockroachDB. Oracle GoldenGate for PostgreSQL is the process that pulls data from [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html) over to CockroachDB. This is a separate installation from Oracle GoldenGate for Oracle, which will be used to pull source data and route it to proper [trail files](https://docs.oracle.com/goldengate/c1230/gg-winux/GGCON/processes-and-terminology.html). For more information, refer to the [Oracle GoldenGate for PostgreSQL documentation](https://docs.oracle.com/en/middleware/goldengate/core/19.1/gghdb/preparing-database-oracle-goldengate-postgresql.html). The following example uses a [CockroachDB {{ site.data.products.standard }} cluster](https://cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
 
 1. Edit the `ODBC.ini` file to set up the ODBC data sources and configuration:
 
@@ -87,13 +87,13 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
     
     To make this change permanent, you must also add the command to your shell's configuration file, such as `~/.zshrc`.
             
-1. In the `ODBC.ini` file, set up the CockroachDB {{ site.data.products.serverless }} parameters:
+1. In the `ODBC.ini` file, set up the CockroachDB {{ site.data.products.standard }} parameters:
     - Replace the login details with your own. Be sure to prefix the database name with `{hostname}`.
-    - Make sure your {{ site.data.products.serverless }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster#connect-to-your-cluster) is in the `TrustStore` path.
+    - Make sure your CockroachDB {{ site.data.products.standard }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#connect-to-your-cluster) is in the `TrustStore` path.
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    [CRDBSERVERLESS]
+    [CRDBSTANDARD]
     # The following driver will always point to your Oracle GoldenGate for PostgreSQL installation
     Driver=/u01/ggs-pg/lib/GGpsql25.so
     Description=DataDirect 7.1 PostgreSQL Wire Protocol
@@ -118,8 +118,8 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
     # To log into the local database
     DBLOGIN SOURCEDB CRDBLOCAL
 
-    # To log into the serverless database and then enter your password
-    DBLOGIN SOURCEDB CRDBSERVERLESS
+    # To log into the CockroachDB Standard database and then enter your password
+    DBLOGIN SOURCEDB CRDBSTANDARD
     ~~~     
 
 ## Set up Extract to capture data from a source database
@@ -297,7 +297,7 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
     COMMIT;
     ~~~
 
-1. [Connect to the target {{ site.data.products.serverless }} cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}) and check that the data was delivered to `public.testtable`:
+1. [Connect to the target CockroachDB {{ site.data.products.standard }} cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}) and check that the data was delivered to `public.testtable`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

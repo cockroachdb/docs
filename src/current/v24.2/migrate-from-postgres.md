@@ -47,7 +47,7 @@ In the context of a full migration, these steps ensure that PostgreSQL data can 
 
 ### Before you begin
 
-The example uses a modified version of the PostgreSQL `french-towns-communes-francais` data set and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
+The example uses a modified version of the PostgreSQL `french-towns-communes-francais` data set and demonstrates how to migrate the schema and data to a CockroachDB {{ site.data.products.standard }} cluster. To follow along with these steps:
 
 1. Download the `frenchtowns` data set:
 
@@ -70,7 +70,7 @@ The example uses a modified version of the PostgreSQL `french-towns-communes-fra
        psql frenchtowns -a -f frenchtowns.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -105,9 +105,9 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
 1. Click **Retry Migration**. The **Summary Report** now shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
-       This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
+       This example migrates directly to a CockroachDB {{ site.data.products.standard }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
+1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema) to create a new CockroachDB {{ site.data.products.standard }} cluster with the converted schema. Name the database `frenchtowns`.
 
        You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
 
