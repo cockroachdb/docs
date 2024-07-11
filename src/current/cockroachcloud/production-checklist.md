@@ -46,7 +46,19 @@ When planning your deployment, it is important to carefully review and choose th
 
 You can create and manage CockroachDB {{ site.data.products.cloud }} clusters using the [Cloud Console](http://cockroachlabs.cloud), [Cloud API]({% link cockroachcloud/cloud-api.md %}), [ccloud CLI]({% link cockroachcloud/ccloud-get-started.md %}), or the [Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}).
 
-## Network authorization
+## Transaction retries
+
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+
+## SQL best practices
+
+To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+
+## Networking considerations
+
+Consider the following guidelines when configuring your cluster's networking behaviors.
+
+### Network authorization
 
 CockroachDB {{ site.data.products.cloud }} requires you to authorize the networks that can access the cluster in order to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your the networks used by your application servers.
 
@@ -58,39 +70,27 @@ Production clusters should not authorize `0.0.0.0/0`, which allows all networks.
 
 For enhanced network security and reduced network latency, you can set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet. For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
-## Transaction retries
-
-When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
-
-## SQL Best Practices
-
-To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
-
-## Configure node shutdown settings
-
-Clusters in CockroachDB {{ site.data.products.cloud }} have the following default values for [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) that relate to [node shutdown]({% link {{ site.current_cloud_version }}/node-shutdown.md %}) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify `server.shutdown.connections.timeout` or `server.shutdown.transactions.timeout`.
-
-Cluster setting | Default | Details
-----------------|---------|---------
-[`server.shutdown.initial_wait`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-drain-wait)<br />Alias: `server.shutdown.drain_wait` | 3 minutes | How long to wait before redirecting new client requests to non-draining nodes. After this duration has elapsed, the node no longer accepts new client connections. This setting cannot be changed for clusters in CockroachDB {{ site.data.products.cloud }}.
-[`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds | How long after `server.shutdown.initial_wait` completes to wait for client connections to drain before forcibly disconnecting them from the node. Can be set to a value between 0 and 30 minutes (1800 seconds).
-[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait` | 90 seconds | How long to wait for transactions on the node to complete before rolling them back. The default value is appropriate for most deployments. If this is set too low, transactions will be rolled back unnecessarily during node shutdown, and if it is set too high, node shutdown may take longer.
-
-If node termination takes longer than 45 minutes, regardless of the cluster's settings, the node is forcibly terminated and restarted.
-
-After a node is terminated, if it takes longer than 5 minutes to rejoin the cluster (known as the _termination grace period_), its replicas will be moved to other nodes and it will join as a new node.
-
-## Use a pool of persistent connections
+### Use a pool of persistent connections
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
 For guidance on sizing, validating, and using connection pools with CockroachDB, refer to [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
 
-## Keeping connections current
+<a id="keeping-connections-current"></a>
+### Keep connections current
 
-After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
+After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, the connection may become invalid. This could be due to a variety of factors, such as a change in the cluster topography, a rolling [upgrade]({% link cockroachcloud/upgrade-policy.md %}), cluster or hardware maintenance, network disruption, or cloud infrastructure unavailability.
 
 Set the maximum lifetime of a connection to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+
+If node termination takes longer than the sum of `server.shutdown.connections.timeout` and `server.shutdown.transactions.timeout`, regardless of the cluster's settings, the node is forcibly terminated and restarted.
+
+Clusters in CockroachDB {{ site.data.products.cloud }} have the following default values for [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) that relate to [node shutdown]({% link {{ site.current_cloud_version }}/node-shutdown.md %}) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify `server.shutdown.connections.timeout` or `server.shutdown.transactions.timeout`.
+
+Cluster setting | Default | Details
+----------------|---------|---------
+[`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds | How long to wait for client connections to drain before forcibly disconnecting them from the node. Can be set to a value between 0 and 30 minutes (1800 seconds).
+[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait` | 90 seconds | The longest expected duration for an incomplete transaction to complete if it is still running after `server.shutdown.connections.timeout` elapses during node shutdown. After this interval, the transaction will be rolled back to allow the node to restart. Can be set to a maximum of 90 seconds.
 
 ## Monitoring and alerting
 
