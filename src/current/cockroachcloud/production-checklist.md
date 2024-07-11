@@ -90,7 +90,7 @@ Clusters in CockroachDB {{ site.data.products.cloud }} have the following defaul
 Cluster setting | Default | Details
 ----------------|---------|---------
 [`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds | How long to wait for client connections to drain before forcibly disconnecting them from the node. Can be set to a value between 0 and 30 minutes (1800 seconds).
-[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait` | 90 seconds | The longest expected duration for an incomplete transaction to complete if it is still running after `server.shutdown.connections.timeout` elapses during node shutdown. After this interval, the transaction will be rolled back to allow the node to restart. Can be set to a maximum of 90 seconds.
+[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait` | 90 seconds | The longest expected duration for an incomplete transaction to complete if it is still running after `server.shutdown.connections.timeout` elapses during node shutdown. After this interval, the transaction will be rolled back to allow the node to restart. A higher value will result in slower cluster operations such as upgrades and scaling events. Consider increasing this value if you experience connection disruptions during these maintenance events. Can be set to a maximum of 90 seconds.
 
 ## Monitoring and alerting
 
