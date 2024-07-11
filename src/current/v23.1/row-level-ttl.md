@@ -41,7 +41,9 @@ TTLs are defined using either the `ttl_expiration_expression` or `ttl_expire_aft
 - [Using `ttl_expiration_expression`](#using-ttl_expiration_expression) is useful for customizing expiration logic by providing an expression. For example, you could get the same behavior as `ttl_expire_after` by creating a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) column with a default value and having the `ttl_expiration_expression` reference that column.
 - [Using `ttl_expire_after`](#using-ttl_expire_after) is a convenient way of setting rows to expire a fixed amount of time after they are created or updated.
 
+{{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+{{site.data.alerts.end}}
 
 ### Using `ttl_expiration_expression`
 
@@ -84,7 +86,9 @@ SHOW CREATE TABLE ttl_test_per_row;
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+{{site.data.alerts.end}}
 
 ### Using `ttl_expire_after`
 
@@ -135,12 +139,12 @@ The settings that control the behavior of Row-Level TTL are provided using [stor
 
 | Description                                                                | Option                                                                                                                                                                                                                                                                                                                                                                                                                                  | Associated cluster setting          |
 |----------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------|
-| `ttl_expiration_expression` <a name="param-ttl-expiration-expression"></a> | **Recommended in v22.2+**. SQL expression that defines the TTL expiration. Must evaluate to a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}). This and/or [`ttl_expire_after`](#param-ttl-expire-after) are required to enable TTL. This parameter is useful when you want to set the TTL for individual rows in the table. For an example, see [Create a table with a `ttl_expiration_expression`](#create-a-table-with-a-ttl_expiration_expression). | N/A                                 |
+| `ttl_expiration_expression` <a name="param-ttl-expiration-expression"></a> | **Recommended**. SQL expression that defines the TTL expiration. Must evaluate to a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}). This and/or [`ttl_expire_after`](#param-ttl-expire-after) are required to enable TTL. This parameter is useful when you want to set the TTL for individual rows in the table. For an example, see [Create a table with a `ttl_expiration_expression`](#create-a-table-with-a-ttl_expiration_expression). | N/A                                 |
 | `ttl_expire_after` <a name="param-ttl-expire-after"></a>                   | The [interval]({% link {{ page.version.version }}/interval.md %}) when a TTL will expire. This and/or [`ttl_expiration_expression`](#param-ttl-expiration-expression) are required to enable TTL. Minimum value: `'1 microsecond'`.                                                                                                                                                                                                                                         | N/A                                 |
 | `ttl` <a name="param-ttl"></a>                                             | Signifies if a TTL is active. Automatically set.                                                                                                                                                                                                                                                                                                                                                                                        | N/A                                 |
 | `ttl_select_batch_size`                                                    | How many rows to [select]({% link {{ page.version.version }}/select-clause.md %}) at one time during the row expiration check. Default: 500. Minimum: 1.                                                                                                                                                                                                                                                                                                                    | `sql.ttl.default_select_batch_size` |
 | `ttl_delete_batch_size` <a name="param-ttl-delete-batch-size"></a>                                                    | How many rows to [delete]({% link {{ page.version.version }}/delete.md %}) at a time. Default: 100. Minimum: 1.                                                                                                                                                                                                                                                                                                                                                             | `sql.ttl.default_delete_batch_size` |
-| `ttl_delete_rate_limit` | Maximum number of rows to be deleted per second (rate limit). Default: 0 (no limit). <br/><br/> Note: The rate limit is applied per leaseholder per table. In practice, it will vary based on the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) and [leaseholders]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder). <br/> For example, if this variable is set to 500, and a table `public.foo` has its ranges spread across 3 leaseholders, then the cluster-wide rate limit for `public.foo` is 500 x 3 = 1500. <br/> To determine the number of leaseholders for some table `public.bar` on CockroachDB v23.1+, issue the following query against the output of [`SHOW RANGES ... WITH DETAILS`]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-table-with-details): <br/> `SELECT count(DISTINCT lease_holder) FROM [SHOW RANGES FROM TABLE public.bar WITH DETAILS];` | `sql.ttl.default_delete_rate_limit` |
+| `ttl_delete_rate_limit` | Maximum number of rows to be deleted per second (rate limit). Default: 100 (set to 0 for no limit). <br/><br/> Note: The rate limit is applied per leaseholder per table. In practice, it will vary based on the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) and [leaseholders]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder). <br/> For example, if this variable is set to 500, and a table `public.foo` has its ranges spread across 3 leaseholders, then the cluster-wide rate limit for `public.foo` is 500 x 3 = 1500. <br/> To determine the number of leaseholders for some table `public.bar` on CockroachDB v23.1+, issue the following query against the output of [`SHOW RANGES ... WITH DETAILS`]({% link {{ page.version.version }}/show-ranges.md %}#show-ranges-for-a-table-with-details): <br/> `SELECT count(DISTINCT lease_holder) FROM [SHOW RANGES FROM TABLE public.bar WITH DETAILS];` | `sql.ttl.default_delete_rate_limit` |
 | `ttl_row_stats_poll_interval`                                              | If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported.                                                                                                                                                                                                                                                            | N/A                                 |
 | `ttl_pause` <a name="param-ttl-pause"></a>                                 | If set, stops the TTL job from executing.                                                                                                                                                                                                                                                                                                                                                                                               | N/A                                 |
 | `ttl_job_cron` <a name="param-ttl-job-cron"></a>                           | Frequency at which the TTL job runs, specified using [CRON syntax](https://cron.help). Default: `'@hourly'`.                                                                                                                                                                                                                                                                                                                            | N/A                                 |
@@ -274,27 +278,16 @@ SELECT *, crdb_internal_expiration FROM events;
 
 ### Add or update the row-level TTL for an existing table
 
-To add or change the row-level TTL expiration for an existing table, use the SQL syntax shown below.
+To add or change the row-level TTL expiration for an existing table, use [`ALTER TABLE`]({% link {{page.version.version}}/alter-table.md %}) as shown in the following example. This example assumes you have an existing [`TIMESTAMPTZ`]({% link {{page.version.version}}/timestamp.md %}) or [`DATE`]({% link {{page.version.version}}/date.md %}) column you can use for the [`ttl_expiration_expression`](#param-ttl-expiration-expression).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE events SET (ttl_expire_after = '1 year');
+ALTER TABLE events_using_date SET (ttl_expiration_expression = $$(end_date::TIMESTAMPTZ + '90 days')$$);
 ~~~
 
 ~~~
 ALTER TABLE
 ~~~
-
-<a name="ttl-existing-table-performance-note"></a>
-
-{{site.data.alerts.callout_danger}}
-Adding or changing the Row-Level TTL settings for an existing table [with a table-wide TTL](#create-a-table-with-ttl_expire_after) will result in a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) that performs the following changes:
-
-- Creates a new [`crdb_internal_expiration`](#crdb-internal-expiration) column for all rows.
-- Backfills the value of the new [`crdb_internal_expiration`](#crdb-internal-expiration) column to `now()` + [`ttl_expire_after`](#param-ttl-expire-after).
-
-Depending on the table size, this can negatively affect performance.
-{{site.data.alerts.end}}
 
 ### View scheduled TTL jobs
 
@@ -515,7 +508,7 @@ WITH x AS (SHOW CLUSTER SETTINGS) SELECT * FROM x WHERE variable LIKE 'sql.ttl.%
               variable              | value | setting_type |                                 description
 ------------------------------------+-------+--------------+------------------------------------------------------------------------------
   sql.ttl.default_delete_batch_size | 100   | i            | default amount of rows to delete in a single query during a TTL job
-  sql.ttl.default_delete_rate_limit | 0     | i            | default delete rate limit for all TTL jobs. Use 0 to signify no rate limit.
+  sql.ttl.default_delete_rate_limit | 100   | i            | default delete rate limit for all TTL jobs. Use 0 to signify no rate limit.
   sql.ttl.default_select_batch_size | 500   | i            | default amount of rows to select in a single query during a TTL job
   sql.ttl.job.enabled               | false | b            | whether the TTL job is enabled
 (5 rows)

@@ -1,3 +1,1 @@
-{{site.data.alerts.callout_info}}
-For backward compatibility, schemes `azure://` and `azure-storage://` are also supported, though `azure-blob://` is recommended.
-{{site.data.alerts.end}}
+For [changefeeds]({% link {{ page.version.version }}/changefeed-sinks.md %}), you must use the `azure://` scheme. For all other jobs,  the `azure://` and `azure-storage://` schemes are also supported for backward compatibility, though `azure-blob://` is recommended.

@@ -65,7 +65,7 @@ If possible configure your connection pool to avoid periodic spikes in new conne
 
 ### Validate connections in a pool
 
-After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions.
+After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topology, or rolling upgrades and restarts, or network disruptions.
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the [`keepaliveTime` property](https://github.com/brettwooldridge/HikariCP#frequently-used) allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
 

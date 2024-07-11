@@ -1050,7 +1050,6 @@ By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `
 - [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
 - [`EXECUTE`]({% link {{ page.version.version }}/sql-grammar.md %}#execute_stmt)
 - [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [Indexes]({% link {{ page.version.version }}/indexes.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 - [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
