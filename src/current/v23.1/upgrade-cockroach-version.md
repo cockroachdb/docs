@@ -113,6 +113,28 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 {% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
 See our [support policy for restoring backups across versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
+### Pause changefeed jobs
+
+[Pause]({% link {{ page.version.version }}/pause-job.md %}) running [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) jobs before starting the rolling upgrade process:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+PAUSE JOB {changefeed_job_ID};
+~~~
+
+Or, pause all changefeed jobs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+PAUSE ALL CHANGEFEED JOBS;
+~~~
+
+{{site.data.alerts.callout_danger}}
+During a rolling upgrade, running changefeed jobs can slow down as more of the nodes move to the later version of CockroachDB. We recommend pausing changefeed jobs before upgrading and [resuming]({% link {{ page.version.version }}/resume-job.md %}) changefeeds once the upgrade is finalized.
+{{site.data.alerts.end}}
+
+For more details on the potential impacts of node restarts, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}#node-restarts) page.
+
 ### Reset SQL statistics
 
 Before upgrading to CockroachDB v23.1, it is recommended to reset the cluster's [SQL statistics]({% link {{ page.version.version }}/crdb-internal.md %}#statement-statistics). Otherwise, it may take longer for the upgrade to complete on a cluster with large statement or transaction statistics tables. This is due to the addition of a new column and a new index to these tables. To reset SQL statistics, issue the following SQL command:
@@ -311,6 +333,27 @@ Finalization is required only when upgrading from {{ previous_version }}.x to {{
     ~~~
 
     If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
+
+1. If you paused [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) jobs before starting the upgrade process, you can now [resume]({% link {{ page.version.version }}/resume-job.md %}) the jobs:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESUME JOB {changefeed_job_ID};
+    ~~~
+
+    Or, pause all changefeed jobs:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESUME ALL CHANGEFEED JOBS;
+    ~~~
+
+    Check that changefeeds are running:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CHANGEFEED JOBS;
+    ~~~
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration job within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
