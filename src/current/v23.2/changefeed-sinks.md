@@ -485,11 +485,11 @@ The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
-* There is no concurrency configurability.
+* Supports concurrency configuration. Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a webhook sink.
 
 ### Webhook sink configuration
 
- The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
+The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
 
 The following details the configurable fields:
 
