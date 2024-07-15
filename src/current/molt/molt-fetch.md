@@ -142,7 +142,7 @@ Cockroach Labs **strongly** recommends the following:
 
 		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
 
-		- Ensure the S3 bucket is created and accessible to CockroachDB.
+		- Ensure the S3 bucket is created and accessible by CockroachDB.
 
 	- If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#cloud-storage):
 
@@ -165,7 +165,7 @@ Cockroach Labs **strongly** recommends the following:
 
 		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
 
-		- Ensure the Google Cloud Storage bucket is created and accessible to CockroachDB.
+		- Ensure the Google Cloud Storage bucket is created and accessible by CockroachDB.
 
 - Do not use public cloud storage in production.
 
