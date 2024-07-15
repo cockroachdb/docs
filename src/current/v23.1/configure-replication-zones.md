@@ -132,7 +132,7 @@ Constraint Scope | Description | Syntax
 
 ### Node/replica recommendations
 
-See [Cluster Topography]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology) recommendations for production deployments.
+See [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology) recommendations for production deployments.
 
 ### Troubleshooting zone constraint violations
 
