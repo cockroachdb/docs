@@ -63,30 +63,7 @@ Complete the following items before using MOLT Fetch:
 		postgres://postgres:a%2452%26@localhost:5432/replicationload
 		~~~
 
-	- If you are using Amazon S3 for [cloud storage](#cloud-storage):
-
-		- Ensure that the environment variable and access tokens are set appropriately in the terminal running `molt fetch`. For example:
-
-			{% include_cached copy-clipboard.html %}
-			~~~ shell
-			export AWS_REGION='us-east-1'
-			export AWS_SECRET_ACCESS_KEY='key'
-			export AWS_ACCESS_KEY_ID='id'
-			~~~
-
-		- Ensure the S3 bucket is created and accessible to CockroachDB.
-
-	- If you are using Google Cloud Storage for [cloud storage](#cloud-storage):
-
-		- Ensure that your local environment is authenticated using [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login):
-
-			{% include_cached copy-clipboard.html %}
-			~~~ shell
-			gcloud init
-			gcloud auth application-default login
-			~~~
-
-		- Ensure the Google Cloud Storage bucket is created and accessible to CockroachDB.
+- If you plan to use cloud storage for the data migration, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 
 ## Best practices
 
@@ -144,7 +121,46 @@ Cockroach Labs **strongly** recommends the following:
 
 ### Secure cloud storage
 
-- When using [cloud storage](#cloud-storage) for your intermediate store, ensure that access control is properly configured. Refer to the [GCP](https://cloud.google.com/storage/docs/access-control) or [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) documentation.
+- When using [cloud storage](#cloud-storage) for your intermediate store, ensure that access control is properly configured. 
+
+	- If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#cloud-storage):
+
+		- Ensure that the environment variable and access tokens are set appropriately in the terminal running `molt fetch`. For example:
+
+			{% include_cached copy-clipboard.html %}
+			~~~ shell
+			export AWS_REGION='us-east-1'
+			export AWS_SECRET_ACCESS_KEY='key'
+			export AWS_ACCESS_KEY_ID='id'
+			~~~
+
+		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
+
+		- Ensure the S3 bucket is created and accessible by CockroachDB.
+
+	- If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#cloud-storage):
+
+		- Ensure that your local environment is authenticated using [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials):
+
+			Using `gcloud`:
+
+			{% include_cached copy-clipboard.html %}
+			~~~ shell
+			gcloud init
+			gcloud auth application-default login
+			~~~
+
+			Using the environment variable:
+
+			{% include_cached copy-clipboard.html %}
+			~~~ shell
+			export GOOGLE_APPLICATION_CREDENTIALS={path_to_cred_json}
+			~~~
+
+		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
+
+		- Ensure the Google Cloud Storage bucket is created and accessible by CockroachDB.
+
 - Do not use public cloud storage in production.
 
 ### Perform a dry run
@@ -172,7 +188,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--source`                                    | (Required) Connection string for the source database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                             |
 | `--target`                                    | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                             |
 | `--allow-tls-mode-disable`                    | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                                 |
-| `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`).                                                                                                                                                                                                                                                                                                                                           |
+| `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the path is used; query parameters (e.g., credentials) are ignored.                                                                                                                                                                                                                                                                  |
 | `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                     |
 | `--compression`                               | Compression method for data when using [`IMPORT INTO` mode](#fetch-mode) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                            |
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                         |
@@ -206,6 +222,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling 'drop-on-target-and-recreate'`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                                                                                          |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                          |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                                                                                              |
+| `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                                              |
 
 ### `tokens list` flags
 
@@ -272,7 +289,7 @@ MOLT Fetch can move the source data to CockroachDB via [cloud storage](#cloud-st
 #### Cloud storage
 
 {{site.data.alerts.callout_success}}
-Follow the recommendations in [Secure cloud storage](#secure-cloud-storage).
+Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 {{site.data.alerts.end}}
 
 `--bucket-path` specifies that MOLT Fetch should write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. For example:
