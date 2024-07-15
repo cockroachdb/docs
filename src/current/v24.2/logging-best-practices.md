@@ -12,7 +12,7 @@ This page provides guidance and best practices for consuming CockroachDB logs fo
 Output different [logging channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) over the network to third-party log aggregators:
 
  - [Output to Fluentd-compatible network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors), such as Elasticsearch, Splunk.
- - [Output to HTTP network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectorsgit add .), such as Datadog. 
+ - [Output to HTTP network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors), such as Datadog. 
 
 ## Use `json` format
 
