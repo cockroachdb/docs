@@ -43,7 +43,9 @@ TTLs are defined using either the `ttl_expiration_expression` or `ttl_expire_aft
 - [Using `ttl_expiration_expression`](#using-ttl_expiration_expression) is useful for customizing expiration logic by providing an expression. For example, you could get the same behavior as `ttl_expire_after` by creating a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) column with a default value and having the `ttl_expiration_expression` reference that column.
 - [Using `ttl_expire_after`](#using-ttl_expire_after) is a convenient way of setting rows to expire a fixed amount of time after they are created or updated.
 
+{{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+{{site.data.alerts.end}}
 
 ### Using `ttl_expiration_expression`
 
@@ -86,7 +88,9 @@ SHOW CREATE TABLE ttl_test_per_row;
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+{{site.data.alerts.end}}
 
 ### Using `ttl_expire_after`
 
@@ -129,15 +133,18 @@ SHOW CREATE TABLE ttl_test_per_table;
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/sql/row-level-ttl-prefer-ttl-expiration-expressions.md %}
+{{site.data.alerts.end}}
 
 ## TTL storage parameters
 
 The settings that control the behavior of Row-Level TTL are provided using [storage parameters]({% link {{ page.version.version }}/sql-grammar.md %}#opt_with_storage_parameter_list). These parameters can be set during table creation using [`CREATE TABLE`](#create-a-table-with-a-ttl_expiration_expression), added to an existing table using the [`ALTER TABLE`](#add-or-update-the-row-level-ttl-for-an-existing-table) statement, or [reset to default values](#reset-a-storage-parameter-to-its-default-value).
 
-| Option                                                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                  | Associated cluster setting          |
+
+| Option                                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                  | Associated cluster setting          |
 |----------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------|
-| `ttl_expiration_expression` <a name="param-ttl-expiration-expression"></a> | **Recommended in v22.2+**. SQL expression that defines the TTL expiration. Must evaluate to a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}). This and/or [`ttl_expire_after`](#param-ttl-expire-after) are required to enable TTL. This parameter is useful when you want to set the TTL for individual rows in the table. For an example, see [Create a table with a `ttl_expiration_expression`](#create-a-table-with-a-ttl_expiration_expression). | N/A                                 |
+| `ttl_expiration_expression` <a name="param-ttl-expiration-expression"></a> | **Recommended**. SQL expression that defines the TTL expiration. Must evaluate to a [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}). This and/or [`ttl_expire_after`](#param-ttl-expire-after) are required to enable TTL. This parameter is useful when you want to set the TTL for individual rows in the table. For an example, see [Create a table with a `ttl_expiration_expression`](#create-a-table-with-a-ttl_expiration_expression). | N/A                                 |
 | `ttl_expire_after` <a name="param-ttl-expire-after"></a>                   | The [interval]({% link {{ page.version.version }}/interval.md %}) when a TTL will expire. This and/or [`ttl_expiration_expression`](#param-ttl-expiration-expression) are required to enable TTL. Minimum value: `'1 microsecond'`.                                                                                                                                                                                                                                         | N/A                                 |
 | `ttl` <a name="param-ttl"></a>                                             | Signifies if a TTL is active. Automatically set.                                                                                                                                                                                                                                                                                                                                                                                        | N/A                                 |
 | `ttl_select_batch_size`                                                    | How many rows to [select]({% link {{ page.version.version }}/select-clause.md %}) at one time during the row expiration check. Default: 500. Minimum: 1.                                                                                                                                                                                                                                                                                                                    | `sql.ttl.default_select_batch_size` |
@@ -277,27 +284,16 @@ SELECT *, crdb_internal_expiration FROM events;
 
 ### Add or update the row-level TTL for an existing table
 
-To add or change the row-level TTL expiration for an existing table, use the SQL syntax shown below.
+To add or change the row-level TTL expiration for an existing table, use [`ALTER TABLE`]({% link {{page.version.version}}/alter-table.md %}) as shown in the following example. This example assumes you have an existing [`TIMESTAMPTZ`]({% link {{page.version.version}}/timestamp.md %}) or [`DATE`]({% link {{page.version.version}}/date.md %}) column you can use for the [`ttl_expiration_expression`](#param-ttl-expiration-expression).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE events SET (ttl_expire_after = '1 year');
+ALTER TABLE events_using_date SET (ttl_expiration_expression = $$(end_date::TIMESTAMPTZ + '90 days')$$);
 ~~~
 
 ~~~
 ALTER TABLE
 ~~~
-
-<a name="ttl-existing-table-performance-note"></a>
-
-{{site.data.alerts.callout_danger}}
-Adding or changing the Row-Level TTL settings for an existing table [with a table-wide TTL](#create-a-table-with-ttl_expire_after) will result in a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) that performs the following changes:
-
-- Creates a new [`crdb_internal_expiration`](#crdb-internal-expiration) column for all rows.
-- Backfills the value of the new [`crdb_internal_expiration`](#crdb-internal-expiration) column to `now()` + [`ttl_expire_after`](#param-ttl-expire-after).
-
-Depending on the table size, this can negatively affect performance.
-{{site.data.alerts.end}}
 
 ### View scheduled TTL jobs
 
