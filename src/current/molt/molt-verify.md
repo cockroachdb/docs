@@ -35,10 +35,6 @@ To install MOLT Verify, download the binary that matches your system. To downloa
 
 {% include molt/molt-install.md %}
 
-{{site.data.alerts.callout_success}}
-For release details, see the [MOLT changelog]({% link releases/molt.md %}).
-{{site.data.alerts.end}}
-
 # Setup
 
 Complete the following items before using MOLT Verify:
