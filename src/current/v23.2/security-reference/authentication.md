@@ -37,7 +37,7 @@ GSS                   |      &nbsp;         |           &nbsp;               |  
 All options also support the following no-op 'authentication methods' (authentication is not actually performed):
 
 - `reject`: unconditionally rejects the connection attempt.
-- `trust`: unconditionally rejects the connection attempt.
+- `trust`: unconditionally allows the connection attempt.
 
 ### HBA configuration syntax
 
