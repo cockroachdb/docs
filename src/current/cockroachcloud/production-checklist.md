@@ -54,13 +54,6 @@ When several transactions try to modify the same underlying data concurrently, t
 
 To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
 
-<a id="use-a-pool-of-persistent-connections"></a>
-### SQL connection handling
-
-Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
-
-For guidance on sizing, validating, and using connection pools with CockroachDB, refer to [Use Connection Pools]({% link {{site.current_cloud_version}}/connection-pooling.md %}).
-
 ## Networking considerations
 
 Consider the following guidelines when configuring your cluster's networking behaviors.
@@ -77,22 +70,26 @@ Production clusters should not authorize `0.0.0.0/0`, which allows all networks.
 
 For enhanced network security and reduced network latency, you can set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet. For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
-<a id="keeping-connections-current"></a>
+<a id="keeping-connections-current"></a><a id="sql-connection-handling"></a>
 ### Keep connections current
 
 After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, the connection may become invalid. This could be due to a variety of factors, such as a change in the cluster topography, a rolling [upgrade]({% link cockroachcloud/upgrade-policy.md %}), cluster or hardware maintenance, network disruption, or cloud infrastructure unavailability.
 
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. The best pool size depends upon the workload and the resources available to the cluster. Too few connections in the pool can increase latency if an operation must wait for a connection to open up, while too many connections can increase latency if the system is overloaded running too many connections in parallel. It can take more time and resources for many connections to complete in parallel than for a smaller number of connections to run sequentially.
+
+For guidance on sizing, validating, and using connection pools with CockroachDB, refer to the following sections and to [Use Connection Pools]({% link {{site.current_cloud_version}}/connection-pooling.md %}).
+
 #### CockroachDB {{ site.data.products.serverless }}
 #### CockroachDB {{ site.data.products.dedicated }}
 
-In your application server, set the maximum lifetime of a connection to between 5 and 30 minutes. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+In your application server, set the maximum lifetime of a connection to between 5 and 30 minutes, and `server.shutdown.connections.timeout` equal to the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
 The following [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) relate to [node shutdown]({% link {{ site.current_cloud_version }}/node-shutdown.md %}) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify them.
 
 Cluster setting | Default | Maximum | Details
 ----------------|---------|---------|-------------
-[`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds  | 3 minutes (1800 seconds) | How long to wait for client connections to drain before forcibly disconnecting them from the node.
-[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait`          | 90 seconds | 90 seconds               | The longest expected duration for an incomplete transaction to complete if it is still running after `server.shutdown.connections.timeout` elapses during node shutdown. After this interval, the transaction will be rolled back to allow the node to restart. A higher value will result in slower cluster operations such as upgrades and scaling events. Decreasing this value reduces node shutdown time at the expense of running transactions during maintenance events.
+[`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds  | 3 minutes (1800 seconds) | How long to wait for client connections to drain before forcibly disconnecting them from the node. A connection with a lifetime that exceeds `server.shutdown.connections.timeout` may be interrupted during node restarts.
+[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait`          | 90 seconds | 90 seconds               | The maximum duration after `server.shutdown.connections.timeout` elapses to wait for incomplete transactions to complete. Transactions lasting longer than `server.shutdown.transactions.timeout` may be canceled to allow the node to restart. Cockroach Labs recommends lowering `server.shutdown.transactions.timeout` if the duration of your workload's longest-running transaction is typically shorter than 90 seconds. A higher value will result in slower cluster operations such as upgrades and scaling events. Decreasing this value reduces node shutdown time at the expense of running transactions being cancelled during node restarts.
 
 ## Monitoring and alerting
 
