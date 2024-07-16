@@ -48,8 +48,8 @@ Parameter | Description
 `SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
 `SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
-`SHOW BACKUP CONNECTION collectionURI` | Test the connection of each node to your cloud storage location. Refer to [Test the connection to cloud storage](#test-the-connection-to-cloud-storage) for an example.
-`connection_options_list` | Control the parameters for testing the connection to your cloud storage location. Refer to [Show backup connection options](#show-backup-connection-options) for a list.
+`SHOW BACKUP CONNECTION collectionURI` | [(Preview)]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) Test the connection of each node to your cloud storage location. Refer to [Test the connection to cloud storage](#test-the-connection-to-cloud-storage) for an example.
+`connection_options_list` | [(Preview)]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) Control the parameters for testing the connection to your cloud storage location. Refer to [Show backup connection options](#show-backup-connection-options) for a list.
 
 ### Options
 
@@ -66,6 +66,10 @@ Option        | Value | Description
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 
 #### Show backup connection options
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 Option  | Value | Description
 --------+-------+------------
@@ -99,6 +103,10 @@ Field | Value | Description
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 
 ### Show backup connection responses
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 Field | Value | Description
 ------|-------|------------
@@ -329,6 +337,10 @@ SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?
 ~~~
 
 ### Test the connection to cloud storage
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 Test the connection to a cloud storage location from each node in your cluster. `SHOW BACKUP CONNECTION` will measure the time it takes each node to write a file, read it, and delete it from the specified cloud storage location:
 

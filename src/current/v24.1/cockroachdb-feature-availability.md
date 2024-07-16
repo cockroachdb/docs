@@ -251,6 +251,9 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
+### Test the connection to cloud storage
+
+Test the connection to a cloud storage location from each node in your cluster. [`SHOW BACKUP CONNECTION`]({% link {{ page.version.version }}/show-backup.md %}#test-the-connection-to-cloud-storage) will measure the time it takes each node to write a file, read it, and delete it from the specified cloud storage location.
 
 ## See Also
 
