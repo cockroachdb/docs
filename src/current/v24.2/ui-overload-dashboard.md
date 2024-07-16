@@ -65,43 +65,11 @@ This graph shows the 75th [percentile](https://wikipedia.org/wiki/Percentile#The
 - In the node view, the graph shows the 75th percentile of latency for regular requests and elastic requests spent waiting for flow tokens on the selected node.
 - In the cluster view, the graph shows the 75th percentile of latency for regular requests and elastic requests spent waiting for flow tokens across all nodes in the cluster.
 
-## Requests Waiting For Flow Tokens
-
-This graph shows the number of regular requests and elastic requests waiting for flow tokens, as tracked respectively by the `cr.node.kvadmission.flow_controller.regular_requests_waiting` and the `cr.node.kvadmission.flow_controller.elastic_requests_waiting` metrics. There are separate lines for regular requests waiting and elastic requests waiting.
-
-- In the node view, the graph shows the number of regular requests and elastic requests waiting for flow tokens on the selected node.
-- In the cluster view, the graph shows the number of regular requests and elastic requests waiting for flow tokens across all nodes in the cluster.
-
 ## Blocked Replication Streams
 
 This graph shows the number of replication streams with no flow tokens available for regular requests and elastic requests, as tracked respectively by the `cr.node.kvadmission.flow_controller.regular_blocked_stream_count` and the `cr.node.kvadmission.flow_controller.elastic_blocked_stream_count` metrics. There are separate lines for blocked regular streams and blocked elastic streams.
  
 - In the node view, the graph shows the number of replication streams with no flow tokens available for regular requests and elastic requests on the selected node.
 - In the cluster view, the graph shows the number of replication streams with no flow tokens available for regular requests and elastic requests across all nodes in the cluster.
-
-## Admission Work Rate
-
-This graph shows the rate that operations within the admission control system are processed. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
-
-- In the node view, the graph shows the rate of operations within the work queues on the selected node.
-- In the cluster view, the graph shows the rate of operations within the work queues across all nodes in the cluster.
-
-## Admission Delay Rate
-
-This graph shows the latency when admitting operations to the work queues within the admission control system. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
-
-This sums up the delay experienced by operations of each kind, and takes the rate per second. Dividing this rate by the rate observed in the Admission Work Rate graph gives the mean delay experienced per operation.
-
-- In the node view, the graph shows the rate of latency within the work queues on the selected node.
-- In the cluster view, the graph shows the rate of latency within the work queues across all nodes in the cluster.
-
-## Admission Delay: 75th percentile
-
-This graph shows the 75th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of latency when admitting operations to the work queues within the admission control system. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
-
-This 75th percentile is computed over requests that waited in the admission queue. Work that did not wait is not represented on the graph.
-
-- In the node view, the graph shows the 75th percentile of latency within the work queues on the selected node. Over the last minute the admission control system admitted 75% of operations within this time.
-- In the cluster view, the graph shows the 75th percentile of latency within the work queues across all nodes in the cluster. Over the last minute the admission control system admitted 75% of operations within this time.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
