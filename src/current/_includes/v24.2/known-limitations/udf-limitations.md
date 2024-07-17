@@ -1,6 +1,6 @@
-{% if page.name != "known-limitations.md" # New limitations in v24.1 %}
-- A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
+{% if page.name != "known-limitations.md" # New limitations in v24.2 %}
 {% endif %}
+- A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
 - User-defined functions are not currently supported in:
     - Expressions (column, index, constraint) in tables. [#87699](https://github.com/cockroachdb/cockroach/issues/87699)
     - Views. [#87699](https://github.com/cockroachdb/cockroach/issues/87699)
