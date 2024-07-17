@@ -1,7 +1,7 @@
-{% if page.name != "known-limitations.md" # New limitations in v24.1 %}
+{% if page.name != "known-limitations.md" # New limitations in v24.2 %}
+{% endif %}
 - It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
 - PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
-{% endif %}
 - PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [#114701](https://github.com/cockroachdb/cockroach/issues/114701)
 - The following statements are not supported:
 	- `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
