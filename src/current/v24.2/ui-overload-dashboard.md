@@ -7,6 +7,12 @@ docs_area: reference.db_console
 
 The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system]({% link {{ page.version.version }}/admission-control.md %}). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
 
+The charts allow you to monitor:
+
+- Metrics that help determine which resource is constrained, such as I/O and CPU
+- Metrics that narrow down which admission control queues have requests waiting
+- More advanced metrics about the system health, such as the goroutine scheduler and L0 sub-levels
+
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Overload**.
 
 ## Dashboard navigation
@@ -15,21 +21,29 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 The **Overload** dashboard displays the following time series graphs:
 
-## CPU percent
+## CPU Utilization
 
 {% include {{ page.version.version }}/ui/cpu-percent-graph.md %}
 
-## Goroutine Scheduling Latency: 99th percentile
+{% comment %}TODO
+Remove image and remove mention of CPU Percent 
+{% endcomment %}
 
-This graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines/) as tracked by the `cr.node.go.scheduler_latency-p99` metric.
+## KV Admission CPU Slots Exhausted Duration Per Second
 
-- In the node view, the graph shows the 99th percentile of scheduling latency for Goroutines on the selected node.
+This graph shows the total duration when KV admission slots were exhausted, in microseconds, as tracked by the `cr.node.admission.granter.slots_exhausted_duration.kv` metric.
 
-- In the cluster view, the graph shows the 99th percentile of scheduling latency for Goroutines across all nodes in the cluster.
+KV admission slots are an internal aspect of the admission control system, and are dynamically adjusted to allow for high CPU utilization, but without causing CPU overload. If the used slots are often equal to the available slots, then the admission control system is queueing work in order to prevent overload. A shortage of KV slots will cause queuing not only at the KV layer, but also at the SQL layer, since both layers can be significant consumers of CPU.
 
-## Runnable Goroutines per CPU
+- In the node view, the graph shows the total duration when KV slots were exhausted on the selected node.
+- In the cluster view, the graph shows the total duration when KV slots were exhausted across all nodes in the cluster.
 
-{% include {{ page.version.version }}/ui/runnable-goroutines-graph.md %}
+## Admission IO Tokens Exhausted Duration Per Second
+
+This graph indicates write I/O overload, which affects KV write operations to storage. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
+
+- In the node view, the graph shows the number of microseconds per second that there were no write tokens on the selected node.
+- In the cluster view, the graph shows the number of microseconds per second that there were no write tokens across all nodes in the cluster.
 
 ## IO Overload
 
@@ -42,21 +56,25 @@ This graph specifically shows the number of sub-levels and files in Level 0 norm
 
 {% include {{ page.version.version }}/prod-deployment/healthy-lsm.md %}
 
-## KV Admission Slots Exhausted
+## Elastic CPU Tokens Exhausted Duration Per Second
 
-This graph shows the total duration when KV admission slots were exhausted, in microseconds, as tracked by the `cr.node.admission.granter.slots_exhausted_duration.kv` metric.
+{% comment %}TODO{% endcomment %}
 
-KV admission slots are an internal aspect of the admission control system, and are dynamically adjusted to allow for high CPU utilization, but without causing CPU overload. If the used slots are often equal to the available slots, then the admission control system is queueing work in order to prevent overload. A shortage of KV slots will cause queuing not only at the KV layer, but also at the SQL layer, since both layers can be significant consumers of CPU.
+## Admission Queueing Delay p99 – Foreground (Regular) CPU
 
-- In the node view, the graph shows the total duration when KV slots were exhausted on the selected node.
-- In the cluster view, the graph shows the total duration when KV slots were exhausted across all nodes in the cluster.
+{% comment %}TODO{% endcomment %}
 
-## KV Admission IO Tokens Exhausted Duration Per Second
+## Admission Queueing Delay p99 – Store
 
-This graph indicates write I/O overload, which affects KV write operations to storage. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
+{% comment %}TODO{% endcomment %}
 
-- In the node view, the graph shows the number of microseconds per second that there were no write tokens on the selected node.
-- In the cluster view, the graph shows the number of microseconds per second that there were no write tokens across all nodes in the cluster.
+## Admission Queueing Delay p99 – Background (Elastic) CPU
+
+{% comment %}TODO{% endcomment %}
+
+## Admission Queueing Delay p99 – Replication Admission Control
+
+{% comment %}TODO
 
 ## Flow Tokens Wait Time: 75th percentile
 
@@ -64,6 +82,7 @@ This graph shows the 75th [percentile](https://wikipedia.org/wiki/Percentile#The
 
 - In the node view, the graph shows the 75th percentile of latency for regular requests and elastic requests spent waiting for flow tokens on the selected node.
 - In the cluster view, the graph shows the 75th percentile of latency for regular requests and elastic requests spent waiting for flow tokens across all nodes in the cluster.
+{% endcomment %}
 
 ## Blocked Replication Streams
 
@@ -71,5 +90,29 @@ This graph shows the number of replication streams with no flow tokens available
  
 - In the node view, the graph shows the number of replication streams with no flow tokens available for regular requests and elastic requests on the selected node.
 - In the cluster view, the graph shows the number of replication streams with no flow tokens available for regular requests and elastic requests across all nodes in the cluster.
+
+## Elastic CPU Utilization
+
+{% comment %}TODO{% endcomment %}
+
+## Goroutine Scheduling Latency: 99th percentile
+
+This graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines/) as tracked by the `cr.node.go.scheduler_latency-p99` metric.
+
+- In the node view, the graph shows the 99th percentile of scheduling latency for Goroutines on the selected node.
+
+- In the cluster view, the graph shows the 99th percentile of scheduling latency for Goroutines across all nodes in the cluster.
+
+## Goroutine Scheduling Latency: 99.9th percentile
+
+{% comment %}TODO{% endcomment %}
+
+## Runnable Goroutines per CPU
+
+{% include {{ page.version.version }}/ui/runnable-goroutines-graph.md %}
+
+## LSM L0 Sublevels
+
+{% comment %}TODO{% endcomment %}
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
