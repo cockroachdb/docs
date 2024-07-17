@@ -6335,3 +6335,30 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.7
+
+- release_name: v24.2.0-beta.1
+  major_version: v24.2
+  release_date: '2024-07-18'
+  release_type: Testing
+  go_version: go1.22.5
+  sha: 4483498612573da6df27124a0b39dc66a285114d
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.2.0-alpha.2
