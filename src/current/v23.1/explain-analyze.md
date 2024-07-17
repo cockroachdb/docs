@@ -33,7 +33,16 @@ Parameter          | Description
 
 ## Required privileges
 
-The user requires the appropriate [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) for the statement being explained.
+To generate a statement bundle, you must have the [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to execute the SQL statement, as well as the privileges required to collect the statement bundle.
+
+To find the minimum required privileges for a SQL statement, refer to the [SQL reference documentation]({% link {{ page.version.version}}/sql-statements.md %}) for the statement.
+
+A user with the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can generate a bundle for any statement. To grant this privilege, issue the following SQL commands. Replace `{user}` with the user's ID.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER USER {user} WITH VIEWACTIVITY;
+~~~
 
 ## Success responses
 
@@ -172,7 +181,7 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## `REDACT` option
 
-`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the output. 
+`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the output.
 
 You can use the `REDACT` flag in combination with the [`PLAN`](#plan-option) option (including the `VERBOSE` and `TYPES` [suboptions](#plan-suboptions)) to redact sensitive values in the physical statement plan, and with the [`DEBUG`](#debug-option) option to redact values in the statement bundle.
 
