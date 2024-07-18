@@ -821,6 +821,17 @@ Highlight shell and SQL commands where appropriate using the following info:
 
 Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`. For multi-line shell commands, use a backslash (`\`) at the end of each line to indicate a line break.
 
+In an example command to download an artifact using the command line, `curl` is preferred over `wget` because it is included in Linux, macOS, and recent builds of Windows. Use syntax like:
+
+```
+curl -o {optional_output_path}/{output_file_name} [-H {header_keys_and_values}] {url} 
+```
+
+- In general, always specify `-o` or `--output` to a path and filename, or omit the path to save the file to the current working directory.
+
+  Omit `-o` to print the response to standard output. Printing a binary file can corrupt the terminal session or lead to unintended results, and is generally useful only when piping or redirecting the output to another command or a file.
+- Headers are optional, but certain APIs such as the CockroachDB Cloud API require certain header fields to be set.
+
 **SQL code samples**
 
 SQL code samples are broken into two sections: commands and responses.
