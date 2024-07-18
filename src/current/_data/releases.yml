@@ -5585,7 +5585,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5611,7 +5611,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5637,7 +5637,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5719,7 +5719,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5746,7 +5746,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5828,7 +5828,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5883,7 +5883,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -5910,7 +5910,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -6265,7 +6265,7 @@
   mac:
     mac_arm: true
     mac_arm_experimental: true
-    mac_arm_limited_access: true
+    mac_arm_limited_access: false
   windows: true
   linux:
     linux_arm: true
@@ -6280,3 +6280,85 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.1
+
+- release_name: v24.2.0-alpha.2
+  major_version: v24.2
+  release_date: '2024-07-10'
+  release_type: Testing
+  go_version: go1.22.3
+  sha: ed3109a3d4ccb94e68bc46142ba275d4bbd8ee88
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.2.0-alpha.1
+
+- release_name: v23.2.8
+  lts: true
+  major_version: v23.2
+  release_date: '2024-07-15'
+  release_type: Production
+  go_version: go1.22.5
+  sha: e003de1d4ce4f9817d62e53b5af9961bdd4f2571
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v23.2.7
+
+- release_name: v24.2.0-beta.1
+  major_version: v24.2
+  release_date: '2024-07-18'
+  release_type: Testing
+  go_version: go1.22.5
+  sha: 4483498612573da6df27124a0b39dc66a285114d
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.2.0-alpha.2
