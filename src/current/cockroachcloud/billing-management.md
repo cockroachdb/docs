@@ -70,19 +70,29 @@ Your credit card will be charged after the trial ends.
 
 To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marketplace:
 
-1. Navigate to the [CockroachDB product page](https://aws.amazon.com/marketplace/pp/prodview-3zbkzekdohwly) on the AWS Marketplace and click **View purchase options**.
+1. Open to the [CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du) page on the AWS Marketplace and click **View purchase options**.
 1. On the **Subscribe to CockroachDB Cloud** page, click **Subscribe** and then click **Set up your account**. You will be directed to the CockroachDB {{ site.data.products.cloud }} console.
 1. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
-1. Select the organization CockroachDB {{ site.data.products.cloud }} you want to subscribe through the AWS Marketplace and click **Subscribe to AWS Marketplace**.
+1. Select the CockroachDB {{ site.data.products.cloud }} organization that you want to subscribe through the AWS Marketplace and click **Subscribe to AWS Marketplace**.
+
+{{site.data.alerts.callout_info}}
+Only eligible CockroachDB {{ site.data.products.cloud }} organizations are listed. To be eligible, the org cannot already be:
+- Linked to a marketplace subscription.
+- Configured for invoice billing.
+{{site.data.alerts.end}}
 
 ## Unsubscribe from CockroachDB {{ site.data.products.cloud }}
 
-Before you unsubscribe from CockroachDB {{ site.data.products.cloud }}, [add a credit card](#add-a-credit-card) as a backup payment method to avoid cluster deletion.
+Before you unsubscribe from CockroachDB {{ site.data.products.cloud }}, if you wish to retain the subscribed org's clusters, be prepared to [add a credit card](#add-a-credit-card) immediately after you unsubscribe, to avoid cluster deletion.
+
+{{ site.data.alerts.callout_danger }}
+If no alternate payment method is specified within 6 hours of unsubscribing through the marketplace, your clusters will be deleted, terminating service.
+{{ site.data.alerts.end }}
 
 To unsubscribe from CockroachDB {{ site.data.products.cloud }}:
 
-1. Navigate to the [AWS Marketplace](https://aws.amazon.com/marketplace) and then to the **Manage Subscriptions** page. From the list of subscriptions, select **CockroachDB Cloud**.
-1. Click **Actions** in the Agreement section. From the dropdown, click **Cancel Subscription**.
+1. Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and then open the **Manage Subscriptions** page. From the list of subscriptions, select **CockroachDB (pay-as-you-go)**.
+1. In the **Agreement** section, click **Actions**, then click **Cancel Subscription**. Review and accept the confirmation dialog to complete the cancellation.
 
 </section>
 
