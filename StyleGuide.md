@@ -827,9 +827,10 @@ In an example command to download an artifact using the command line, `curl` is 
 curl -o {optional_output_path}/{output_file_name} [-H {header_keys_and_values}] {url} 
 ```
 
-- If you do not specify `-o` or `--output`, the URL's contents are printed to standard output, even if it is a binary file. This can corrupt your terminal session and is useful only when piping or redirecting the output to a subsequent command.
-- If you do not include a path in your output file name, the file is saved to the current working directory.
-- Headers are optional, but certain APIs such as the CockroachDB Cloud API require  certain header fields to be set.
+- In general, always specify `-o` or `--output` to a path and filename, or omit the path to save the file to the current working directory.
+
+  Omit `-o` to print the response to standard output. Printing a binary file can corrupt the terminal session or lead to unintended results, and is generally useful only when piping or redirecting the output to another command or a file.
+- Headers are optional, but certain APIs such as the CockroachDB Cloud API require certain header fields to be set.
 
 **SQL code samples**
 
