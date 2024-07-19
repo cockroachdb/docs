@@ -85,7 +85,7 @@ When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virt
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER application START SHARED SERVICE;
+ALTER VIRTUAL CLUSTER application START SERVICE SHARED;
 ~~~
 
 To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
