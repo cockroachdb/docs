@@ -86,21 +86,21 @@ This graph shows the 99th percentile latency of requests waiting in the Admissio
 
 ## Admission Queueing Delay p99 – Replication Admission Control
 
-This graph shows the 99th percentile latency of requests waiting in the Replication Admission Control queue, as tracked by the `kvadmission.flow_controller.regular_wait_duration-p99` and the `kvadmission.flow_controller.elastic_wait_duration-p99` metrics. There are separate lines for regular flow token wait time and elastic flow token wait time. These metrics are indicative of store overload on replicas.
+This graph shows the 99th percentile latency of requests waiting in the Replication Admission Control queue, as tracked by the `kvadmission.flow_controller.regular_wait_duration-p99` and the `kvadmission.flow_controller.elastic_wait_duration-p99` metrics. There are separate lines for regular flow token wait time and elastic (background) flow token wait time. These metrics are indicative of store overload on replicas.
 
 - In the node view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time on the selected node.
 - In the cluster view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time across all nodes in the cluster.
 
 ## Blocked Replication Streams
 
-This graph shows the blocked replication streams per node in Replication Admission Control, separated by admission priority {regular, elastic}, as tracked by the `kvadmission.flow_controller.regular_blocked_stream_count` and the `kvadmission.flow_controller.elastic_blocked_stream_count` metrics. There are separate lines for blocked regular streams and blocked elastic streams.
+This graph shows the blocked replication streams per node in Replication Admission Control, separated by admission priority {regular, elastic}, as tracked by the `kvadmission.flow_controller.regular_blocked_stream_count` and the `kvadmission.flow_controller.elastic_blocked_stream_count` metrics. There are separate lines for blocked regular streams and blocked elastic (background) streams.
  
 - In the node view, the graph shows the number of blocked regular streams and blocked elastic streams on the selected node.
 - In the cluster view, the graph shows the number of blocked regular streams and blocked elastic streams across all nodes in the cluster.
 
 ## Elastic CPU Utilization
 
-This graph shows the CPU utilization by elastic work, compared to the limit set for elastic work, as tracked by the `admission.elastic_cpu.utilization` and the `admission.elastic_cpu.utilization_limit` metrics.
+This graph shows the CPU utilization by elastic (background) work, compared to the limit set for elastic work, as tracked by the `admission.elastic_cpu.utilization` and the `admission.elastic_cpu.utilization_limit` metrics.
 
 - In the node view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages on the selected node.
 - In the cluster view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages across all nodes in the cluster.
