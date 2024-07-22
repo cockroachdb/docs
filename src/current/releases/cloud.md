@@ -395,7 +395,7 @@ In addition to many of the Feature Highlights in the [CockroachDB v23.1.0 Releas
 
 - [Creating CockroachDB {{ site.data.products.dedicated }} clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is now available in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability). To enroll your organization and begin testing this feature, contact your Cockroach Labs account team.
 
-<h3 id="2023-05-15-console-changes> Console changes </h3>
+<h3 id="2023-05-15-console-changes"> Console changes </h3>
 
 - CockroachDB {{ site.data.products.dedicated }} users can now [restore clusters from the Cloud console](https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-customer-owned-backups).
 
