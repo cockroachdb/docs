@@ -1048,7 +1048,7 @@ New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB
 
 - You can now update your email address and password in your profile.
 
-<h3 id="2020-07-06-console-changes">
+<h3 id="2020-07-06-console-changes">Console changes</h3>
 You can now [add or remove nodes](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management#add-or-remove-nodes-from-a-cluster) from your cluster through the Console.
 
 {{site.data.alerts.callout_info}}
