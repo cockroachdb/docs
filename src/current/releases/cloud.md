@@ -2,7 +2,7 @@
 title: CockroachDB Cloud Releases
 summary: Changelog for CockroachDB Cloud.
 toc: true
-toc_levels: 2
+toc_levels: 1
 docs_area: releases
 ---
 
