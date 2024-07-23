@@ -18,7 +18,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-07-23-general-updates"> General updates </h3>
 
-- When creating a new CockroachDB {{ site.data.products.dedicated }} cluster, you can now [select the cluster's major version]({% link cockroachcloud/create-your-cluster.md %}#step-8-select-the-cockroachdb-version), which defaults to the latest stable version. At any given time, you may be able to choose from additional stable releases or experimental [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Patch releases within a major version, including subsequent patches after a Pre-Production Preview, are applied automatically.
+- When creating a new CockroachDB {{ site.data.products.dedicated }} cluster, you can now [select the cluster's major version]({% link cockroachcloud/create-your-cluster.md %}#step-8-select-the-cockroachdb-version). The default option is the latest stable version. At any given time, you may be able to choose from additional stable releases or experimental [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Patch releases within a major version are applied automatically.
 
 ## July 19, 2024
 

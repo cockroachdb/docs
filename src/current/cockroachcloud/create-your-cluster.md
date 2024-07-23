@@ -162,7 +162,7 @@ When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it
 Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
-After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to the [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
 
