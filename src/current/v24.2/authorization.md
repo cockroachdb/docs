@@ -7,7 +7,7 @@ docs_area: manage
 
 This page documents procedures for managing the lifecycle of SQL users and roles on CockroachDB clusters.
 
-For clusters in CockroachDB {{ site.data.products.cloud }}, refer to [Managing Access in CockroachDB {{ site.data.products.cloud }}](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access).
+Procedures for managing access are covered in [Managing Access in CockroachDB {{ site.data.products.cloud }}](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access).
 
 {{site.data.alerts.callout_info}}
 The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users within CockroachDB {{ site.data.products.cloud }} organizations.
@@ -15,8 +15,8 @@ The concept of *Organization user* is distinct from Authorization of *SQL user/r
 Learn more: [Overview of the CockroachDB Cloud authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 {{site.data.alerts.end}}
 
-For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}).
 
+For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}).
 ## Create CockroachDB users
 
 Use the [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) statements to create and remove users, the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement to add or change a user's password and role options, the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage the user’s privileges, and the [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) statement to list users.
@@ -26,6 +26,7 @@ A new user must be granted the required privileges for each database and table t
 {{site.data.alerts.callout_info}}
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
+
 
 ## Create and manage roles
 
@@ -39,6 +40,19 @@ Statement | Description
 [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) | Revoke privileges from users and/or roles, or revoke a role or user's membership to a role.
 [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}) | List the roles for all databases.
 [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) | List the privileges granted to users.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 For example, suppose a cluster contains a role named `cockroachlabs`, and a user named `max` is a member of the `cockroachlabs` role:
 
@@ -85,6 +99,10 @@ max@localhost:26257/db> SHOW CREATE TABLE albums;
              | )
 (1 row)
 ~~~
+
+
+
+
 
 ## Example
 
