@@ -32,7 +32,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 ### Step 1. Authorize your local workstation's network
 
-Before you connect to your CockroachDB {{ site.data.products.standard }} cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
+Before you connect to your CockroachDB {{ site.data.products.standard }} cluster, you need to authorize your network by adding the public IP address of the workstation to the allowlist. Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
