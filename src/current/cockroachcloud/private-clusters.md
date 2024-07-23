@@ -22,7 +22,7 @@ Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across
 This page shows how to create a private cluster.
 
 {{site.data.alerts.callout_info}}
-Private clusters are not available for [CockroachDB {{ site.data.products.standard }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Private clusters are not available for [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Create a private cluster
