@@ -132,6 +132,7 @@ Flag | Description
 -----|------------
 `--drain-wait` | Amount of time to wait for the node to drain before returning to the client. If draining fails to complete within this duration, you must re-initiate the command to continue the drain. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.<br><br>CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of `node drain`. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.<br><br>**Default:** `10m`
 `--self` | Applies the operation to the node against which the command was run (e.g., via `--host`).
+`--shutdown` | After draining completes, the `cockroach` process shuts down automatically on the node.
 
 The `node recommission` subcommand also supports the following general flag:
 
