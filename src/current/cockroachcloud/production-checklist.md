@@ -46,6 +46,14 @@ When planning your deployment, it is important to carefully review and choose th
 
 You can create and manage CockroachDB {{ site.data.products.cloud }} clusters using the [Cloud Console](http://cockroachlabs.cloud), [Cloud API]({% link cockroachcloud/cloud-api.md %}), [ccloud CLI]({% link cockroachcloud/ccloud-get-started.md %}), or the [Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}).
 
+## Transaction retries
+
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+
+## SQL best practices
+
+To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+
 ## Network authorization
 
 CockroachDB {{ site.data.products.cloud }} requires you to authorize the networks that can access the cluster in order to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your the networks used by your application servers.
@@ -58,25 +66,35 @@ Production clusters should not authorize `0.0.0.0/0`, which allows all networks.
 
 For enhanced network security and reduced network latency, you can set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet. For CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering). For CockroachDB {{ site.data.products.dedicated }} clusters or multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
-## Transaction retries
+## SQL connection handling
 
-When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+The following guidelines can help you to configure your cluster and application server to mitigate against connection disruptions.
 
-## SQL Best Practices
+<a id="keeping-connections-current"></a>
+### Keep connections current
 
-To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, the connection may become invalid. This could be due to a variety of factors, such as a change in the cluster topography, a rolling [upgrade]({% link cockroachcloud/upgrade-policy.md %}), cluster or hardware maintenance, network disruption, or cloud infrastructure unavailability.
 
-## Use a pool of persistent connections
+#### CockroachDB {{ site.data.products.serverless }}
 
-Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
+In your application server, set the maximum lifetime of a connection to between 5 and 30 minutes. Clients connected for a longer duration may be reset during maintenance, with the potential to disrupt applications.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, refer to [Use Connection Pools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling).
+#### CockroachDB {{ site.data.products.dedicated }}
 
-## Keeping connections current
+In your application server, set the maximum lifetime of a connection to between 5 and 30 minutes, and `server.shutdown.connections.timeout` equal to the maximum connection lifetime. When a node is shut down or restarted, clients connected after `server.shutdown.connections.timeout` elapses may be reset, with the potential to disrupt applications.
 
-After an application establishes a connection to CockroachDB {{ site.data.products.cloud }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades]({% link cockroachcloud/upgrade-policy.md %}) and restarts, network disruptions, or cloud infrastructure unavailability.
+The following [cluster settings]({% link {{ site.current_cloud_version }}/cluster-settings.md %}) relate to [node shutdown]({% link {{ site.current_cloud_version }}/node-shutdown.md %}) for maintenance, upgrades, or scaling. Depending on the requirements of your applications and workloads, you may need to modify them.
 
-Set the maximum lifetime of a connection to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+Cluster setting | Default | Maximum | Details
+----------------|---------|---------|-------------
+[`server.shutdown.connections.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-connection-wait)<br />Alias: `server.shutdown.connection_wait` | 0 seconds  | 30 minutes (1800 seconds) | How long to wait for client connections to drain before forcibly disconnecting them from the node. A connection with a lifetime that exceeds `server.shutdown.connections.timeout` may be interrupted during node restarts.
+[`server.shutdown.transactions.timeout`]({% link {{ site.current_cloud_version }}/cluster-settings.md %}#setting-server-shutdown-query-wait)<br />Alias: `server.shutdown.query_wait`          | 90 seconds | 90 seconds               | The maximum duration after `server.shutdown.connections.timeout` elapses to wait for incomplete transactions to complete. Transactions lasting longer than `server.shutdown.transactions.timeout` may be canceled to allow the node to restart. Cockroach Labs recommends lowering `server.shutdown.transactions.timeout` if the duration of your workload's longest-running transaction is typically shorter than 90 seconds. A higher value will result in slower cluster operations such as upgrades and scaling events. Decreasing this value reduces node shutdown time at the expense of running transactions being cancelled during node restarts.
+
+### Connection pooling
+
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. The best pool size depends upon the workload and the resources available to the cluster. Too few connections in the pool can increase latency if an operation must wait for a connection to open up, while too many connections can increase latency if the system is overloaded running too many connections in parallel. It can take more time and resources for many connections to complete in parallel than for a smaller number of connections to run sequentially.
+
+For guidance on sizing, validating, and using connection pools with CockroachDB, refer to the following sections and to [Use Connection Pools]({% link {{site.current_cloud_version}}/connection-pooling.md %}).
 
 ## Monitoring and alerting
 
