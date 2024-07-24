@@ -17,7 +17,14 @@ export default async (request) => {
     });
   }
 
-  return fetch(request);
+  console.log(`Request URL: ${url.href}`);
+
+  // Process and forward the request
+  const response = await fetch(request);
+  console.log(`Response Status: ${response.status}`);
+
+  return response;
+
 };
 
 
