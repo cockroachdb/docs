@@ -7,6 +7,10 @@ docs_area: manage
 
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
+{{site.data.alerts.callout_success}}
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Prometheus. For the CockroachDB {{ site.data.products.dedicated }} integration with Prometheus, refer to [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead of this page.
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 - Make sure you have already started a CockroachDB cluster, either [locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or in a [production environment]({% link {{ page.version.version }}/manual-deployment.md %}).
@@ -39,8 +43,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml \
-    -O prometheus.yml
+    curl -o prometheus.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml
     ~~~
 
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
@@ -61,22 +64,22 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ mkdir rules
+    mkdir rules
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd rules
+    cd rules
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
+    curl -o rules/aggregation.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
+    curl -o rules/alerts-rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
     ~~~
 
 ## Step 3. Start Prometheus
@@ -174,25 +177,25 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/runtime.json
+    curl -o runtime.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/runtime.json
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/storage.json
+    curl -o storage.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/storage.json
     # storage dashboard: storage availability.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/sql.json
+    curl -o sql.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/sql.json
     # sql dashboard: sql queries/transactions.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/replication.json
+    curl -o replication.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/replication.json
     # replicas dashboard: replica information and operations.
     ~~~
 
@@ -210,3 +213,4 @@ When storage of time-series metrics is disabled, the cluster continues to expose
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
 - [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
 - [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})

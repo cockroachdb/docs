@@ -41,7 +41,7 @@ AWS PrivateLink can be configured only after the cluster is created. For detaile
 Private connectivity is not available for CockroachDB {{ site.data.products.serverless }} clusters on GCP.
 {{site.data.alerts.end}}
 
-## Select a connection method
+## Connect to your cluster
 
 1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
 
@@ -53,9 +53,7 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
 
-## Connect to your cluster
-
-1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
+1. Select a connection method from the **Select option / Language** dropdown (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
@@ -65,7 +63,7 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
 
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
-1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. In the **Download CA Cert** section of the dialog, you can optionally download the CA certificate. The CA certificate is signed by Let's Encrypt, which may already be trusted by your local system. However, some use cases, such as developing with Python, do not use the operating system's local certificate store and require the CA certificate to be available locally. When developing with Javascript or Node, you do not need to download the CA certificate locally. To download the CA certificate, select your operating system, then use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to CockroachDB {{ site.data.products.serverless }}.
 1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.serverless }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
@@ -73,7 +71,7 @@ Private connectivity is not available for CockroachDB {{ site.data.products.serv
 {% include cockroachcloud/postgresql-special-characters.md %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 For connection examples and code snippets in your language, see the following:
@@ -87,10 +85,9 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
-1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. In the **Download CA Cert** section of the dialog, you can optionally download the CA certificate. The CA certificate is signed by Let's Encrypt, which may already be trusted by your local system. However, some use cases, such as developing with Python, do not use the operating system's local certificate store and require the CA certificate to be available locally. When developing with Javascript or Node, you do not need to download the CA certificate locally. To download the CA certificate, select your operating system, then use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Select the **Parameters only** option of the **Select option** dropdown.
-
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
 
     Parameter | Description
@@ -104,9 +101,11 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="command-line">
 
+You can connect to your cluster with any [supported version](https://www.cockroachlabs.com/docs/releases/release-support-policy#current-supported-releases) of the full CockroachDB binary or the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql). To download the full binary and connect to a CockroachDB {{ site.data.products.serverless }} cluster, follow these steps.
+
 1. Select **CockroachDB Client** from the **Select option/language** dropdown.
-1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
-1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
+1. In the **Download CA Cert** section of the dialog, you can optionally download the CA certificate. The CA certificate is signed by Let's Encrypt, which may already be trusted by your local system. However, some use cases, such as developing with Python, do not use the operating system's local certificate store and require the CA certificate to be available locally. When developing with Javascript or Node, you do not need to download the CA certificate locally. To download the CA certificate, select your operating system, then use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).

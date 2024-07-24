@@ -76,8 +76,7 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     --store=node1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     You'll see a message like the following:
@@ -98,9 +97,8 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     - The `--join` flag specifies the addresses and ports of the nodes that will initially comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
         {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
-    - The `--background` flag starts the `cockroach` process in the background so you can continue using the same terminal for other operations.
 
-1. Start two more nodes:
+1. In separate terminal windows, start two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -109,8 +107,7 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -120,8 +117,7 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
@@ -364,15 +360,14 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 ## Step 7. Scale the cluster
 
 Adding capacity is as simple as starting more nodes with `cockroach start`.
 
-1. Start 2 more nodes:
+1. In separate terminal windows, start 2 more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -381,8 +376,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --store=node4 \
     --listen-addr=localhost:26260 \
     --http-addr=localhost:8083 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -392,8 +386,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --store=node5 \
     --listen-addr=localhost:26261 \
     --http-addr=localhost:8084 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     Again, these commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
@@ -441,7 +434,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     ~~~
 
     {{site.data.alerts.callout_info}}
-    For nodes 4 and 5, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
+    For `node4` and `node5`, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. Because only two of the five nodes are now running, the cluster has lost quorum and is no longer operational.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
@@ -456,7 +449,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 1. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
-    If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the certificate directories:
+1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the certificate directories:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

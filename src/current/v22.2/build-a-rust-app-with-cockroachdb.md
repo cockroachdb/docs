@@ -78,7 +78,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
 
     </section>

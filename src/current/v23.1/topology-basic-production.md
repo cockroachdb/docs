@@ -35,8 +35,7 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
     --advertise-addr=<node1 internal address> \
     --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
     --cache=.25 \
-    --max-sql-memory=.25 \
-    --background
+    --max-sql-memory=.25
     ~~~
 
 With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-system-range) as a whole.

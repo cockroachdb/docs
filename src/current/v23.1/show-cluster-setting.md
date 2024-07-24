@@ -74,7 +74,9 @@ Field | Description
 `value` | The value of the cluster setting.
 `setting_type` | The type of the cluster setting.<br>Possible values for `setting_type` include:<ul><li>`b` (`true` or `false`)</li><li>`z` (size, in bytes)</li><li>`d` (duration)</li><li>`e` (one of a set of possible values)</li><li>`f` (floating-point value)</li><li>`i` (integer)</li><li>`s` (string)</li></ul>
 `description` | A brief description of the cluster setting, including possible values.
-`public` | `true` if the cluster setting is public.<br>This field is only included only if all cluster settings are displayed.
+`public` | `true` if the cluster setting is public.<br>This field is only included if all cluster settings are displayed.
+`default_value` | The default value of the cluster setting.
+`origin` | The origin of the current value of the cluster setting.<br>Possible values for `origin` include:<ul><li>`default` (The current value has not been changed from the default value.)</li><li>`override` (The current value has been changed from the default value.)</li></ul>
 
 ## Examples
 

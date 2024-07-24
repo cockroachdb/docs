@@ -33,12 +33,47 @@ kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 
 For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
+### MuxRangefeed
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. It significantly reduces the overhead of running [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). Without `MuxRangefeed` enabled the number of RPC streams is proportional with the number of ranges in a table. For example, a large table could have tens of thousands of ranges. With `MuxRangefeed` enabled, this proportion improves so that the number of RPC streams is relative to the number of nodes in a cluster.
+
+You can enable its functionality with the `changefeed.mux_rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+
+Use the following workflow to enable `MuxRangefeed`:
+
+1. Enable the cluster setting:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING changefeed.mux_rangefeed.enabled = true;
+    ~~~
+
+1. After enabling the setting, pause the changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    PAUSE JOB {job ID};
+    ~~~
+
+    You can use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to retrieve the job ID.
+
+1. Resume the changefeed for the cluster setting to take effect:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESUME JOB {job ID};
+    ~~~
+
 ### Latency in changefeeds
 
-When you are running large workloads, changefeeds can encounter or cause latency in a cluster in the following ways:
+When you are running large workloads, changefeeds can **encounter** or **cause** latency in a cluster in the following ways:
 
 - Changefeeds can have an impact on SQL latency in the cluster generally.
-- Changefeeds can encounter latency in **events** emitting. This latency is the total time CockroachDB takes to:
+- Changefeeds can encounter latency in events emitting. This latency is the total time CockroachDB takes to:
     - Commit writes to the database.
     - Encode [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
     - Deliver the message to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
@@ -46,20 +81,47 @@ When you are running large workloads, changefeeds can encounter or cause latency
 The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) reduce bursts of [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) work so that updates are paced steadily over time.
 
 {{site.data.alerts.callout_danger}}
-We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html).
+We do **not** recommend adjusting these settings unless you are running a large workload, or are working with the Cockroach Labs [support team]({{ link_prefix }}support-resources.html). Thoroughly test different cluster setting configurations before deploying to production.
 {{site.data.alerts.end}}
 
-#### `kv.closed_timestamp_target_duration`
+#### `kv.closed_timestamp.target_duration`
 
 **Default:** `3s`
 
-This setting controls the frequency of checkpoints for each [range]({% link {{ page.version.version }}/architecture/overview.md %}#range). A changefeed aggregates these checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). As a result, the higher the value of this setting the longer it can take for a changefeed to checkpoint. It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds.
-
-In clusters running large-scale workloads, increasing this setting can help to lower the potential impact of changefeeds on SQL latency. That is, an increase in the setting could lower the load on the cluster. This is important for workloads with tables in the TB range of data. However, for most workloads, we recommend leaving this setting at the default of `3s`.
-
-{{site.data.alerts.callout_danger}}
-Thoroughly test any adjustment in cluster settings before deploying the change in production.
+{{site.data.alerts.callout_info}}
+Adjusting `kv.closed_timestamp.target_duration` could have a detrimental impact on [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). If you are using follower reads, refer to the [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) cluster setting instead to ease changefeed impact on foreground SQL latency.
 {{site.data.alerts.end}}
+
+`kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value of `3s`, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by possibly retrying or aborting ongoing writes that are below this time.
+
+A changefeed aggregates checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). In the context of changefeeds, `kv.closed_timestamp.target_duration` affects how old the checkpoints will be, which will determine the latency before changefeeds can consider the history of an event complete.
+
+#### `kv.rangefeed.closed_timestamp_refresh_interval`
+
+**Default:** `0s`
+
+This setting controls the interval at which [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) updates are delivered to [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) and in turn emitted as a [changefeed checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
+
+At the `0s` interval default for this setting, every range with a rangefeed will emit a checkpoint event based on the [`kv.closed_timestamp.side_transport_interval`](#kv-closed_timestamp-side_transport_interval) value (default `200ms`). Increasing the interval value for `kv.rangefeed.closed_timestamp_refresh_interval` will lengthen the delay between each checkpoint, which will increase the latency of changefeed checkpoints, but reduce the impact on SQL latency due to [overload]({% link {{ page.version.version }}/admission-control.md %}#use-cases-for-admission-control) on the cluster.
+
+If you are running changefeeds at a large scale and notice foreground SQL latency, we recommend increasing this setting.
+
+As a result, adjusting `kv.rangefeed.closed_timestamp_refresh_interval` can affect changefeeds encountering latency **and** changefeeds causing foreground SQL latency. In clusters running large-scale workloads, it may be helpful to:
+
+- **Decrease** the value for a lower changefeed emission latency — that is, how often a client can confirm that all relevant events up to a certain timestamp have been emitted.
+- **Increase** the value to reduce the potential impact of changefeeds on SQL latency. This will lower the resource cost of changefeeds, which can be especially important for workloads with tables in the TB range of data.
+
+It is important to note that a changefeed at default configuration does not checkpoint more often than once every 30 seconds. When you create a changefeed with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}), you can adjust this with the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option.
+
+#### `kv.closed_timestamp.side_transport_interval`
+
+**Default:** `200ms`
+
+The `kv.closed_timestamp.side_transport_interval` cluster setting controls how often the closed timestamp is updated. Although the closed timestamp is updated every `200ms` by default, CockroachDB will emit an event across the rangefeed containing the closed timestamp value as per the cluster's [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) setting, which by default is `0s`.
+
+`kv.closed_timestamp.side_transport_interval` is helpful when ranges are inactive. The closed timestamp subsystem usually propagates [closed timestamps via Raft commands]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps). However, an idle range that does not see any writes does not receive any Raft commands, so it would stall. This setting is an efficient mechanism to broadcast closed timestamp updates for all idle ranges between nodes.
+
+Adjusting `kv.closed_timestamp.side_transport_interval` will affect both [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) and changefeeds. While you can use `kv.closed_timestamp.side_transport_interval` to tune the checkpointing interval, we recommend `kv.rangefeed.closed_timestamp_refresh_interval` if you are using follower reads.
 
 #### `kv.rangefeed.closed_timestamp_smear_interval`
 
@@ -67,7 +129,15 @@ Thoroughly test any adjustment in cluster settings before deploying the change i
 
 This setting provides a mechanism to pace the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) notifications to follower replicas. At the default, the closed timestamp smear interval makes rangefeed closed timestamp delivery less spiky, which can reduce its impact on foreground SQL query latency.
 
-For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every `kv.closed_timestamp_target_duration` (default `3s`) and every 3 seconds it will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `3s` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for 2 ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
+For example, if you have a large table, and one of the nodes in the cluster is hosting 6000 ranges from this table. Normally, the rangefeed system will wake up every [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) setting and will publish checkpoints for all 6000 ranges. In this scenario, the `kv.rangefeed.closed_timestamp_smear_interval` setting takes the `kv.rangefeed.closed_timestamp_refresh_interval` frequency and divides it into `1ms` chunks. Instead of publishing checkpoints for all 6000 ranges, it will publish checkpoints for the calculated ranges every `1ms`. This produces a more predictable and level load, rather than spiky, large bursts of workload.
+
+{{site.data.alerts.callout_info}}
+The default of [`kv.rangefeed.closed_timestamp_refresh_interval`](#kv-rangefeed-closed_timestamp_refresh_interval) is `0s`, so the event emission will fall back to [`kv.closed_timestamp.side_transport_interval`](#kv-closed_timestamp-side_transport_interval), which updates the closed timestamp (default `200ms`).
+{{site.data.alerts.end}}
+
+### Lagging ranges
+
+{% include {{ page.version.version }}/cdc/lagging-ranges.md %}
 
 ## Tuning for high durability delivery
 
@@ -78,7 +148,7 @@ When designing a system that relies on high durability message delivery—that i
 - [Choosing changefeed sinks](#choosing-changefeed-sinks)
 - [Defining schema change behavior](#defining-schema-change-behavior)
 
-Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees).
+Before tuning these settings, we recommend reading details on our [changefeed at-least-once-delivery guarantee]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees).
 
 ### Pausing changefeeds and garbage collection
 
@@ -104,7 +174,7 @@ To balance protecting change data and prevent the over-accumulation of garbage, 
 
 ### Defining Kafka message acknowledgment
 
-To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
+To determine what a successful write to Kafka is, you can configure the [`kafka_sink_config` option]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration). The `'RequiredAcks'` field specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees)—the `'RequiredAcks'` value defines the **delivery**.
 
 For high durability delivery, Cockroach Labs recommends setting:
 

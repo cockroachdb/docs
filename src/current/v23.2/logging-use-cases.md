@@ -321,6 +321,10 @@ To log cluster-wide executions, enable the `sql.trace.log_statement_execute` [cl
 
 Each node of the cluster will write all SQL queries it executes to the `SQL_EXEC` channel. These are recorded as [`query_execute`]({% link {{ page.version.version }}/eventlog.md %}#query_execute) events.
 
+{{site.data.alerts.callout_danger}}
+Logging cluster-wide executions by enabling the `sql.trace.log_statement_execute` cluster setting will incur considerable overhead and may have a negative performance impact.
+{{site.data.alerts.end}}
+
 #### Example: SQL query
 
 This event details a `SELECT` statement that was issued by user `root`:

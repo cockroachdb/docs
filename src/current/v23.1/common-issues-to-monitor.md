@@ -128,19 +128,23 @@ CockroachDB is [resilient]({% link {{ page.version.version }}/demo-fault-toleran
 
 Provision enough memory and allocate an appropriate portion for data caching:
 
-| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory).</li> |
+- Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.
+
+- {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
+
+- {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
+
+For additional memory recommendations, refer to [Recommended Production Settings: Memory]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory) and [Recommended Production Setting: Cache and SQL memory size]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
 
 ### Memory monitoring
 
 Monitor memory usage and node behavior for [OOM errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash):
 
-| Metric or event                                 | Description                                 |
-|-------------------------------------------------|---------------------------------------------|
-| [Node process restarts](#node-process-restarts) | Nodes restarting after crashes.             |
-| [SQL memory usage](#sql-memory-usage)           | The memory allocated to the SQL layer.      |
-| [Database memory usage](#database-memory-usage) | The memory in use by CockroachDB processes. |
+ Metric or event                                    | Description
+----------------------------------------------------|--------------------------------------
+ [Node process restarts](#node-process-restarts) | Nodes restarting after crashes
+ [SQL memory usage](#sql-memory-usage)           | The memory allocated to the SQL layer
+ [Database memory usage](#database-memory-usage) | The memory in use by CockroachDB processes
 
 #### Node process restarts
 
@@ -276,6 +280,8 @@ CockroachDB requires disk space in order to accept writes and report node livene
 {{site.data.alerts.callout_success}}
 Ensure that you [provision sufficient storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If storage is correctly provisioned and is running low, CockroachDB automatically creates an emergency ballast file that can free up space. For details, see [Disks filling up]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up).
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
 #### Disk IOPS
 

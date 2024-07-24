@@ -1,0 +1,49 @@
+{% comment %}Early in development, a new major-version directory may not
+             yet exist. Adapt some links in this situation.{% endcomment %}
+{% assign branched = false %}
+{% assign ancient = false %}
+{% assign install_links = '' %}
+
+{% for file in site.pages %}
+  {% unless branched == true %}
+    {% capture fpath %}{{ file.dir | remove:'/' }}{% endcapture %}
+    {% if fpath == page.major_version %}
+      {% assign branched = true %}
+    {% endif %}
+  {% endunless %}
+{% endfor %}
+
+{% comment %}Some old pages need different links to install and upgrade pages{% endcomment %}
+{% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
+  {% assign branched = true %}
+  {% assign ancient = true %}
+  {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
+  {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }}.{% endcapture %}
+{% elsif page.major_version == 'v19.1' or page.major_version == 'v19.2' or page.major_version == 'v20.1' or page.major_version == 'v20.2' %}
+  {% assign branched = true %}
+  {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
+  {% capture upgrade_link %}[upgrade your cluster](https://cockroachlabs.com/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
+  {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
+{% else %}
+  {% if branched %}
+    {% capture install_link %}[install CockroachDB](/docs/{{ page.major_version }}/install-cockroachdb.html){% endcapture %}
+    {% capture upgrade_link %}[upgrade your cluster](/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
+  {% else %}
+    {% capture install_link %}[install CockroachDB](/docs/dev/install-cockroachdb.html){% endcapture %}
+    {% capture upgrade_link %}[upgrade your cluster](/docs/dev/upgrade-cockroach-version.html){% endcapture %}
+  {% endif %}
+  {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
+{% endif %}
+
+On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}.
+
+{% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
+- For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
+- For details about release types, naming, and licensing, refer to the [Releases]({% link releases/index.md %}) page.
+- Be sure to also review the [Release Support Policy]({% link releases/release-support-policy.md %}).
+- {{ install_sentence | strip_newlines }}
+
+{% comment %}The strip_newlines is needed here because otherwise Jekyll inserts <p> tags around the install and ugrade links{% endcomment %}
+Get future release notes emailed to you:
+
+{% include_cached marketo.html formId=1083 %}

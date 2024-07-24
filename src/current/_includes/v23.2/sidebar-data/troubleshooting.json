@@ -45,6 +45,12 @@
         ]
       },
       {
+        "title": "Differences in Metrics between Third-Party Monitoring Integrations and DB Console",
+        "urls": [
+          "/${VERSION}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.html"
+        ]
+      },
+      {
         "title": "Replication Reports",
         "urls": [
           "/${VERSION}/query-replication-reports.html"

@@ -5,24 +5,34 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to use [managed-service backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
+This page describes how to use [_managed-service backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters.
 
-To access your managed-service backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left side navigation.
+Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
+
+{{site.data.alerts.callout_info}}
+In addition to managed-service backups, you can configure manual backups to your own storage bucket with customer-owned backups. Refer to the [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) page.
+{{site.data.alerts.end}}
+
+This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
+
+{% include cockroachcloud/backups/managed-service-backups-frequency.md %}
+
+To access your managed-service backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left-side navigation.
+
+Select one of the following filters for your deployment:
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
 </div>
 
-
-This page describes the **Backup and Restore** page and how to restore your data.
-
 <section class="filter-content" markdown="1" data-scope="serverless">
-Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) hourly for every CockroachDB {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days.
-</section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
-Cockroach Labs runs [full cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. Backups are stored in the same region that a [single-region cluster]({% link cockroachcloud/plan-your-cluster.md %}#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
+
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+
+Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -30,23 +40,44 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 </section>
 
-## Backups tab
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup and Restore** page.
+
+Consider the following as you use managed-service backups:
+
+- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
+- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
+
+{{site.data.alerts.callout_info}}
+You cannot restore a backup of a multi-region database into a single-region database.
+{{site.data.alerts.end}}
+
+</section>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
+
+## Backups tab
+
 The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
 - **Data From**: The date and time the backup was taken.
 - **Type**: Whether the backup is a [full](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) or [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) backup.
-- **Size**: The size of the backup, measured in `KiB`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
+
+To [restore a particular cluster backup](#restore-a-cluster), click **Restore** in the corresponding row.
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-The **Backups** tab displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+## Backup Recovery page
+
+The **Backup Recovery** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
@@ -65,12 +96,6 @@ To view the databases included in the backup, click the number in the **Database
 For each database in the backup, the following details display:
 
 - The **Name** of the database.
-- The **Size** of the database data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a database in an incremental backup is **0 B**, it means no changes were made in the database since the last full backup.
-    {{site.data.alerts.end}}
-
 - The number of [**Tables**](#tables) in the database.
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
@@ -85,16 +110,9 @@ If a database does not contain tables, it will not display in the Databases view
 
 To view the tables in a database, click the number in the **Tables** column on the [**Databases**](#databases) page.
 
-For each table in the database, the following details display:
+For each table in the database, the **Name** of the table displays.
 
-- The **Name** of the table.
-- The **Size** of the table data captured in the backup.
-
-    {{site.data.alerts.callout_info}}
-    If the **Size** listed for a table in an incremental backup is **0.00 B**, it means no changes were made in the table since the last full backup.
-    {{site.data.alerts.end}}
-
-- The number of **Rows** captured in the backup.
+To [restore a table](#restore-a-table), click **Restore** in the corresponding row.
 
 ### Incomplete Backups
 
@@ -109,7 +127,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) roles can perform the following from the Console:
+Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)

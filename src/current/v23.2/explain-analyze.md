@@ -33,7 +33,17 @@ Parameter          | Description
 
 ## Required privileges
 
-The user requires the appropriate [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) for the statement being explained.
+To generate a statement bundle, you must have the [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to execute the SQL statement, as well as the privileges required to collect the statement bundle.
+
+To find the minimum required privileges for a SQL statement, refer to the [SQL reference documentation]({% link {{ page.version.version}}/sql-statements.md %}) for the statement.
+
+A user with the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can generate a bundle for any statement. To grant this privilege, issue the following SQL commands. Replace `{user}` with the user's ID.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER USER {user} WITH VIEWACTIVITY;
+GRANT SYSTEM VIEWSYSTEMTABLE TO {user};
+~~~
 
 ## Success responses
 
@@ -172,7 +182,7 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## `REDACT` option
 
-`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the output. 
+`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the output.
 
 You can use the `REDACT` flag in combination with the [`PLAN`](#plan-option) option (including the `VERBOSE` and `TYPES` [suboptions](#plan-suboptions)) to redact sensitive values in the physical statement plan, and with the [`DEBUG`](#debug-option) option to redact values in the statement bundle.
 
@@ -196,37 +206,47 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-  planning time: 604µs
-  execution time: 51ms
+                                         info
+--------------------------------------------------------------------------------------
+  planning time: 899µs
+  execution time: 8ms
   distribution: full
   vectorized: true
-  rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 106ms
-  maximum memory usage: 5.0 MiB
-  network usage: 2.6 KiB (24 messages)
+  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 6ms
+  maximum memory usage: 240 KiB
+  network usage: 0 B (0 messages)
   regions: us-east1
+  sql cpu time: 2ms
+  estimated RUs consumed: 0
+  isolation level: serializable
+  priority: normal
+  quality of service: regular
 
   • group (streaming)
-  │ nodes: n1, n2, n3
+  │ nodes: n1
   │ regions: us-east1
   │ actual row count: 9
+  │ sql cpu time: 1ms
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        nodes: n1, n2, n3
+        nodes: n1
         regions: us-east1
-        actual row count: 125,000
-        KV time: 106ms
+        actual row count: 500
+        KV time: 6ms
         KV contention time: 0µs
-        KV rows read: 125,000
-        KV bytes read: 21 MiB
-        estimated max memory allocated: 21 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 1 hour ago)
+        KV rows decoded: 500
+        KV bytes read: 88 KiB
+        KV gRPC calls: 1
+        estimated max memory allocated: 130 KiB
+        sql cpu time: 469µs
+        estimated row count: 500 (100% of the table; stats collected 35 minutes ago)
         table: rides@rides_pkey
         spans: FULL SCAN
-(30 rows)
+(38 rows)
 ~~~
 
 If you perform a join, the estimated max memory allocation is also reported for the join. For example:
@@ -236,42 +256,67 @@ If you perform a join, the estimated max memory allocation is also reported for 
 EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
 ~~~
 ~~~
-                        info
------------------------------------------------------
+                                           info
+------------------------------------------------------------------------------------------
   planning time: 1ms
-  execution time: 18ms
-  distribution: full
+  execution time: 5ms
+  distribution: local
   vectorized: true
-  rows read from KV: 3,173 (543 KiB)
-  cumulative time spent in KV: 37ms
-  maximum memory usage: 820 KiB
-  network usage: 3.3 KiB (2 messages)
+  rows decoded from KV: 515 (90 KiB, 2 gRPC calls)
+  cumulative time spent in KV: 4ms
+  maximum memory usage: 580 KiB
+  network usage: 0 B (0 messages)
   regions: us-east1
+  sql cpu time: 729µs
+  estimated RUs consumed: 0
+  isolation level: serializable
+  priority: normal
+  quality of service: regular
 
   • limit
-  │ nodes: n1
-  │ regions: us-east1
-  │ actual row count: 100
-  │ estimated row count: 100
   │ count: 100
   │
-  └── • lookup join
-      │ nodes: n1, n2, n3
+  └── • hash join
+      │ nodes: n1
       │ regions: us-east1
-      │ actual row count: 194
-      │ KV time: 31ms
-      │ KV contention time: 0µs
-      │ KV rows read: 173
-      │ KV bytes read: 25 KiB
-      │ estimated max memory allocated: 300 KiB
-      │ estimated row count: 13,837
-      │ table: vehicles@vehicles_pkey
-      │ equality: (city, vehicle_id) = (city,id)
-      │ equality cols are key
+      │ actual row count: 100
+      │ estimated max memory allocated: 310 KiB
+      │ estimated max sql temp disk usage: 0 B
+      │ sql cpu time: 223µs
+      │ estimated row count: 56
+      │ equality: (vehicle_id, city) = (id, city)
+      │ right cols are key
+      │
+      ├── • scan
+      │     nodes: n1
+      │     regions: us-east1
+      │     actual row count: 500
+      │     KV time: 2ms
+      │     KV contention time: 0µs
+      │     KV rows decoded: 500
+      │     KV bytes read: 88 KiB
+      │     KV gRPC calls: 1
+      │     estimated max memory allocated: 250 KiB
+      │     sql cpu time: 467µs
+      │     estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
+      │     table: rides@rides_pkey
+      │     spans: FULL SCAN
       │
       └── • scan
-  ...
-(41 rows)
+            nodes: n1
+            regions: us-east1
+            actual row count: 15
+            KV time: 2ms
+            KV contention time: 0µs
+            KV rows decoded: 15
+            KV bytes read: 2.4 KiB
+            KV gRPC calls: 1
+            estimated max memory allocated: 20 KiB
+            sql cpu time: 40µs
+            estimated row count: 15 (100% of the table; stats collected 36 minutes ago)
+            table: vehicles@vehicles_pkey
+            spans: FULL SCAN
+(58 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (VERBOSE)`
@@ -286,22 +331,28 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
                                          info
 --------------------------------------------------------------------------------------
-  planning time: 5ms
-  execution time: 65ms
+  planning time: 1ms
+  execution time: 5ms
   distribution: full
   vectorized: true
-  rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 114ms
-  maximum memory usage: 5.0 MiB
-  network usage: 2.6 KiB (24 messages)
+  rows decoded from KV: 500 (88 KiB, 500 KVs, 1 gRPC calls)
+  cumulative time spent in KV: 4ms
+  maximum memory usage: 240 KiB
+  network usage: 0 B (0 messages)
   regions: us-east1
+  sql cpu time: 622µs
+  estimated RUs consumed: 0
+  isolation level: serializable
+  priority: normal
+  quality of service: regular
 
   • group (streaming)
   │ columns: (city, avg)
-  │ nodes: n1, n2, n3
+  │ nodes: n1
   │ regions: us-east1
   │ actual row count: 9
-  │ vectorized batch count: 4
+  │ vectorized batch count: 1
+  │ sql cpu time: 137µs
   │ estimated row count: 9
   │ aggregate 0: avg(revenue)
   │ group by: city
@@ -310,21 +361,24 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   └── • scan
         columns: (city, revenue)
         ordering: +city
-        nodes: n1, n2, n3
+        nodes: n1
         regions: us-east1
-        actual row count: 125,000
-        vectorized batch count: 124
-        KV time: 114ms
+        actual row count: 500
+        vectorized batch count: 1
+        KV time: 4ms
         KV contention time: 0µs
-        KV rows read: 125,000
-        KV bytes read: 21 MiB
-        estimated max memory allocated: 21 MiB
-        MVCC step count (ext/int): 125,000/125,000
-        MVCC seek count (ext/int): 18/18
-        estimated row count: 125,000 (100% of the table; stats collected 1 hour ago)
+        KV rows decoded: 500
+        KV pairs read: 500
+        KV bytes read: 88 KiB
+        KV gRPC calls: 1
+        estimated max memory allocated: 130 KiB
+        sql cpu time: 485µs
+        MVCC step count (ext/int): 500/500
+        MVCC seek count (ext/int): 9/9
+        estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
         table: rides@rides_pkey
         spans: FULL SCAN
-(38 rows)
+(47 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`
@@ -337,41 +391,49 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                          info
-----------------------------------------------------------------------------------------------------
-  planning time: 638µs
-  execution time: 132ms
+   info
+------------------------------------------------------------------------------------
+  planning time: 822µs
+  execution time: 4ms
   distribution: full
   vectorized: true
-  rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 228ms
-  maximum memory usage: 7.5 MiB
-  network usage: 2.5 KiB (24 messages)
+  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 3ms
+  maximum memory usage: 240 KiB
+  network usage: 0 B (0 messages)
   regions: us-east1
+  sql cpu time: 407µs
+  estimated RUs consumed: 0
+  isolation level: serializable
+  priority: normal
+  quality of service: regular
 
   • group (streaming)
-  │ nodes: n1, n2, n3
+  │ nodes: n1
   │ regions: us-east1
   │ actual row count: 9
+  │ sql cpu time: 82µs
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        nodes: n1, n2, n3
+        nodes: n1
         regions: us-east1
-        actual row count: 125,000
-        KV time: 228ms
+        actual row count: 500
+        KV time: 3ms
         KV contention time: 0µs
-        KV rows read: 125,000
-        KV bytes read: 21 MiB
-        estimated max memory allocated: 20 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 1 second ago)
+        KV rows decoded: 500
+        KV bytes read: 88 KiB
+        KV gRPC calls: 1
+        estimated max memory allocated: 130 KiB
+        sql cpu time: 324µs
+        estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
         table: rides@rides_pkey
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzUmF9u47YTx99_pyD4lMVPuxIpWZb8...
-(32 rows)
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJyUk99O4zoQxu...
+(40 rows)
 ~~~
 
 To view the [DistSQL plan diagram](#distsql-plan-diagram), open the URL following **Diagram**. For an example, see [`DISTSQL` option]({% link {{ page.version.version }}/explain.md %}#distsql-option).
@@ -386,19 +448,16 @@ EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                      info
---------------------------------------------------------------------------------
-  Statement diagnostics bundle generated. Download from the DB Console (Advanced
-  Debug -> Statement Diagnostics History), via the direct link below, or using
-  the SQL shell or command line.
-  Admin UI: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for CockroachDB {{ site.data.products.serverless }} clusters.)
-  SQL shell: \statement-diag download 765493679630483457
-  Command line: cockroach statement-diag download 765493679630483457
-(7 rows)
+                                       info
+-----------------------------------------------------------------------------------
+  Statement diagnostics bundle generated. Download using the SQL shell or command
+  line.
+  SQL shell: \statement-diag download 938793171367755777
+  Command line: cockroach statement-diag download 938793171367755777
+(4 rows)
 ~~~
 
-To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**, run the `\statement-diag download` command, or run `cockroach statement-diag download`. You can also obtain the bundle by activating [statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) in the DB Console.
+To download the ZIP file containing the statement diagnostics, run the `\statement-diag download` or `cockroach statement-diag download` commands. You can also obtain the bundle by activating [statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) in the DB Console.
 
 ### `EXPLAIN ANALYZE (REDACT)`
 
@@ -410,49 +469,56 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
 ~~~
 
 ~~~
-                                             info
-----------------------------------------------------------------------------------------------
-  planning time: 836µs
-  execution time: 148ms
+                                           info
+------------------------------------------------------------------------------------------
+  planning time: 872µs
+  execution time: 6ms
   distribution: full
   vectorized: true
-  rows read from KV: 125,000 (21 MiB, 3 gRPC calls)
-  cumulative time spent in KV: 125ms
-  maximum memory usage: 14 MiB
+  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 4ms
+  maximum memory usage: 280 KiB
   network usage: 0 B (0 messages)
-  sql cpu time: 85ms
+  regions: us-east1
+  sql cpu time: 2ms
   estimated RUs consumed: 0
+  isolation level: serializable
+  priority: normal
+  quality of service: regular
 
   • sort
   │ nodes: n1
-  │ actual row count: 11,105
-  │ estimated max memory allocated: 4.0 MiB
+  │ regions: us-east1
+  │ actual row count: 36
+  │ estimated max memory allocated: 30 KiB
   │ estimated max sql temp disk usage: 0 B
-  │ sql cpu time: 8ms
-  │ estimated row count: 12,156
+  │ sql cpu time: 89µs
+  │ estimated row count: 52
   │ order: +revenue
   │
   └── • filter
       │ nodes: n1
-      │ actual row count: 11,105
-      │ sql cpu time: 9ms
-      │ estimated row count: 12,156
+      │ regions: us-east1
+      │ actual row count: 36
+      │ sql cpu time: 1ms
+      │ estimated row count: 52
       │ filter: revenue > ‹×›
       │
       └── • scan
             nodes: n1
-            actual row count: 125,000
-            KV time: 125ms
+            regions: us-east1
+            actual row count: 500
+            KV time: 4ms
             KV contention time: 0µs
-            KV rows read: 125,000
-            KV bytes read: 21 MiB
-            KV gRPC calls: 3
-            estimated max memory allocated: 10 MiB
-            sql cpu time: 68ms
-            estimated row count: 125,000 (100% of the table; stats collected 16 minutes ago)
+            KV rows decoded: 500
+            KV bytes read: 88 KiB
+            KV gRPC calls: 1
+            estimated max memory allocated: 250 KiB
+            sql cpu time: 653µs
+            estimated row count: 500 (100% of the table; stats collected 38 minutes ago)
             table: rides@rides_pkey
             spans: FULL SCAN
-(40 rows)
+(47 rows)
 ~~~
 
 In the preceding output, the `revenue` comparison value is redacted as `‹×›`.

@@ -33,6 +33,12 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/pause_job.html %}
 </div>
 
+### Pause all jobs by type
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/pause_all_jobs.html %}
+</div>
+
 ## Parameters
 
 Parameter | Description
@@ -41,6 +47,7 @@ Parameter | Description
 `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to pause.
 `for_schedules_clause` |  The schedule you want to pause jobs for. You can pause jobs for a specific schedule (`FOR SCHEDULE id`) or pause jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#pause-jobs-for-a-schedule) below.
 `WITH REASON = ...` |  The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.
+`BACKUP`, `CHANGEFEED`, `RESTORE`, `IMPORT` | The job type to pause.
 
 ## Monitoring paused jobs
 
@@ -74,9 +81,9 @@ See the following pages for details on metrics:
 ~~~
 
 ~~~
-      job_id     |  job_type |               description                 |...
------------------+-----------+-------------------------------------------+...
-  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+      job_id     |  job_type |                  description                   |...
+-----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -95,6 +102,15 @@ To pause multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version
 ~~~
 
 All jobs created by `maxroach` will be paused.
+
+### Pause by job type
+
+To pause all jobs by the type of job, use the `PAUSE ALL {job} JOBS` statement. You can pause all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+PAUSE ALL BACKUP JOBS;
+~~~
 
 ### Pause automatic table statistics jobs
 

@@ -1,6 +1,6 @@
 ---
 title: Egress Perimeter Controls for CockroachDB Dedicated
-summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a CockroachDB {{ site.data.products.dedicated }} cluster.
+summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a CockroachDB Cloud cluster.
 toc: true
 toc_not_nested: true
 docs_area: security
@@ -15,7 +15,7 @@ Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.pr
 
 ## Why use Egress Perimeter Controls
 
-CockroachDB {{ site.data.products.dedicated }} clusters must access external resources for many purposes:
+CockroachDB {{ site.data.products.dedicated }} clusters access external resources for many purposes:
 
 - Managing [backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview) as part of a disaster recovery plan
 - Using [Change data capture (CDC) changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/change-data-capture-overview)
@@ -34,12 +34,15 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 
 ## Before you begin
 
-- You need a CockroachDB {{ site.data.products.dedicated }} cluster. Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.serverless }} clusters.
-- Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters]({% link cockroachcloud/private-clusters.md %}).
-- You need a service account with `admin` privilege or Cluster Admin role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+- Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
+    - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management#configure-pci-ready-features-dedicated-advanced).
+    - CockroachDB {{ site.data.products.dedicated }} [Private Cluster]({% link cockroachcloud/private-clusters.md %}).
+
+    Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.dedicated }} on Azure or for CockroachDB {{ site.data.products.serverless }}.
+- You need a service account with the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}
-The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
+The operations described in this page require an API key with very broad permissions, such as the potential to modify a cluster's configuration to add malicious egress rules that could allow the type of attack that Egress Perimeter Controls are meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
 {{site.data.alerts.end}}
 
 ## Initialize your shell with your API key and Cluster id
@@ -64,7 +67,7 @@ The operations described in this page require an API key with very broad permiss
     ~~~shell
     curl --request GET \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID"
+    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID"
     ~~~
 
     ~~~json
@@ -106,17 +109,17 @@ The operations described in this page require an API key with very broad permiss
 ## Use a deny-by-default egress traffic policy
 
 {{site.data.alerts.callout_info}}
-Essential external traffic destined to resources managed by Cockroach Labs will always be allowed regardless of user-specified egress policy.
+Essential external traffic destined to resources managed by Cockroach Labs is always allowed, regardless of user-specified egress policy.
 {{site.data.alerts.end}}
 
-1. Make a `POST` request ordering the API to update your cluster's egress policy from default allow-all to deny-all. This is needed before you can add egress rules to allowed external destinations.
+1. Make a `POST` request ordering the API to update your cluster's egress policy from default allow-all to deny-all. This allows you to add egress rules to explicitly allow egress traffic from the cluster to certain external destinations.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --header 'Cc-Version: 2022-09-20' \
-    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
+    --header 'Cc-Version: latest' \
+    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
     --data '{"allow_all":false}'
     ~~~
 
@@ -135,12 +138,12 @@ An egress rule is created with the following attributes:
     {{site.data.alerts.callout_danger}}
     By default, all ports are allowed.
     {{site.data.alerts.end}}
-- `paths`: An array of allowed destination paths, for example `[ "/docsrule/secretdocsdata/*", "/specialdata/superimportant/*" ]`.
+- `paths`: **Deprecated**. This field is ignored and will be removed in the future. An egress rule applies to all paths.
 - `description`: The intended purpose of egress to the destination.
 
 The following steps create one FQDN rule and one CIDR rule.
 
-1. First, create a YAML manifest for a FQDN-based rule. This example adds egress to a couple of Google Cloud Platform (GCP) storage buckets.
+1. First, create a YAML manifest for a FQDN-based rule. This example allows egress traffic from the cluster to `storage.googleapis.com` (the Google Cloud Platform (GCP) storage API) on ports 80 and 443.
 
     {% include_cached copy-clipboard.html %}
     ~~~yaml
@@ -148,14 +151,11 @@ The following steps create one FQDN rule and one CIDR rule.
     name: "roach-buckets"
     type: "FQDN"
     destination: "storage.googleapis.com"
-    ports: [443, 80]
-    paths:
-        - "/customer-manged-bucket-1/*" # replace with bucket path
-        - "/customer-manged-bucket-2/*" # replace with bucket path
-    description: 'egress for GCP storage buckets'
+    ports: [80, 443]
+    description: 'egress for GCP storage API'
     ~~~
 
-1. Next, create a YAML manifest for a CIDR-based rule. This example adds egress to a self-managed Kafka cluster.
+1. Next, create a YAML manifest for a CIDR-based rule. This example adds egress traffic from the cluster to the IPv4 subnet `123.34.62.123/32` (which matches a single IPv4 address) on port 443, which may be, for example, the load balancer for a Kafka cluster running in your organization's internal network or private cloud.
 
     {% include_cached copy-clipboard.html %}
     ~~~yaml
@@ -164,7 +164,6 @@ The following steps create one FQDN rule and one CIDR rule.
     type: "CIDR"
     destination: "123.34.62.123/32" # replace with Kafka cluster CIDR range
     ports: [443]
-    paths: []
     description: 'egress for Kafka'
     ~~~
 
@@ -197,11 +196,7 @@ The following steps create one FQDN rule and one CIDR rule.
         443,
         80
       ],
-      "paths": [
-        "/customer-manged-bucket-1/*",
-        "/customer-manged-bucket-2/*"
-      ],
-      "description": "egress for GCP storage buckets"
+      "description": "egress for GCP storage API"
     }
     {
       "name": "roach-kafka",
@@ -210,23 +205,22 @@ The following steps create one FQDN rule and one CIDR rule.
       "ports": [
         443
       ],
-      "paths": [],
       "description": "egress for Kafka"
     }
     ~~~
 
-1. Make a `POST` request to create each rule from the JSON payload.
+1. Make a `POST` request to create each rule from its JSON payload.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
+    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
     --data "@egress-rule1.json"
 
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
+    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
     --data "@egress-rule2.json"
     ~~~
 
@@ -244,11 +238,7 @@ The following steps create one FQDN rule and one CIDR rule.
           443,
           80
         ],
-        "paths": [
-          "/customer-manged-bucket-1/*",
-          "/customer-manged-bucket-2/*"
-        ],
-        "description": "egress for GCP storage buckets",
+        "description": "egress for GCP storage API",
         "created_at": "2022-10-27T19:35:51.435571Z"
       }
     }
@@ -264,7 +254,6 @@ The following steps create one FQDN rule and one CIDR rule.
         "ports": [
           443
         ],
-        "paths": [],
         "description": "egress for Kafka",
         "created_at": "2022-10-27T19:36:25.670162Z"
       }
@@ -286,7 +275,7 @@ Refer to the list of [rule statuses](#rule-statuses).
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
---url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
+--url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
 ~~~
 
 ~~~txt
@@ -302,7 +291,6 @@ curl --request GET \
     "ports": [
       443
     ],
-    "paths": [],
     "description": "egress for Kafka",
     "created_at": "2022-10-27T19:36:25.670162Z"
   }
@@ -319,7 +307,7 @@ Consult the glossary of [rule statuses](#rule-statuses).
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
---url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules"
+--url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules"
 
 ~~~
 
@@ -338,11 +326,7 @@ curl --request GET \
         443,
         80
       ],
-      "paths": [
-        "/customer-manged-bucket-1/*",
-        "/customer-manged-bucket-2/*"
-      ],
-      "description": "egress for GCP storage buckets",
+      "description": "egress for GCP storage API",
       "created_at": "2022-10-27T19:35:51.435571Z"
     },
     {
@@ -356,7 +340,6 @@ curl --request GET \
       "ports": [
         443
       ],
-      "paths": [],
       "description": "egress for Kafka",
       "created_at": "2022-10-27T19:36:25.670162Z"
     }
@@ -378,7 +361,7 @@ Your cluster's firewall behavior is enforced asynchronously after the API respon
 curl --request DELETE \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
---url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
+--url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
 ~~~
 
 ~~~txt
@@ -394,7 +377,6 @@ curl --request DELETE \
     "ports": [
       443
     ],
-    "paths": [],
     "description": "egress for Kafka",
     "created_at": "2022-10-27T19:36:25.670162Z"
   }

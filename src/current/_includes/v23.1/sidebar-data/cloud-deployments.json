@@ -420,9 +420,15 @@
                 "title": "Upgrade",
                 "items": [
                     {
-                        "title": "Upgrade Policy",
+                        "title": "CockroachDB Cloud Upgrade Policy",
                         "urls": [
                             "/cockroachcloud/upgrade-policy.html"
+                        ]
+                    },
+                    {
+                        "title": "Upgrade to v23.2 Pre-Production Preview",
+                        "urls": [
+                            "/cockroachcloud/upgrade-to-v23.2.html"
                         ]
                     },
                     {

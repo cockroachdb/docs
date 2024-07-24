@@ -4,8 +4,6 @@ We recommend starting backups from a time at least 10 seconds in the past using 
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
 {{site.data.alerts.end}}
 
-#### Database and table
-
 When working on the same cluster, `userfile` storage allows for database and table-level backups.
 
 First, run the following statement to backup a database to a directory in the default `userfile` space:

@@ -18,7 +18,7 @@ These details let you monitor the overall state of client connections and identi
 
 ## Required privileges
 
-All users can see their own currently active sessions. All users belonging to the `admin` role can view see all users' currently active sessions. To view other non-admin users' sessions, the non-admin user must have the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy [`VIEWACTIVITY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
+All users can see their own currently active sessions. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can view see all users' currently active sessions. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
 
 ## Synopsis
 
@@ -37,14 +37,15 @@ Field | Description
 ------|------------
 `node_id` | The ID of the node connected to.
 `session_id` | The ID of the connected session.
+`status` | The session's status.
 `user_name` | The username of the connected user.
 `client_address` | The address and port of the connected client.
 `application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
-`session_start` | The timestamp at which the session started.
-`oldest_query_start` | The timestamp at which the oldest currently active SQL query in the session started.
-`kv_txn` | The ID of the current key-value transaction for the session.
+`session_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the session was started.
+`active_query_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the current active query in the session was started.
+`num_txns_executed` | The number of [transactions]({% link {{ page.version.version }}/transactions.md %}) that have been opened in this session. This count includes transactions that are open.
 
 ## Examples
 

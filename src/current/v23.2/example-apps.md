@@ -67,7 +67,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                           |
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [Npgsql](https://www.npgsql.org/)                         | Partial           | [Simple CRUD]({% link {{ page.version.version }}/build-a-csharp-app-with-cockroachdb.md %})
+| [Npgsql](https://www.npgsql.org/)                         | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-csharp-app-with-cockroachdb.md %})
 
 ## Rust
 

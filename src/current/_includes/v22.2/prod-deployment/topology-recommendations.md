@@ -1,6 +1,13 @@
-- Run each node on a separate machine. Since CockroachDB replicates across nodes, running more than one node per machine increases the risk of data loss if a machine fails. Likewise, if a machine has multiple disks or SSDs, run one node with multiple `--store` flags and not one node per disk. For more details about stores, see [Start a Node](cockroach-start.html#store).
+- Do not run multiple node processes on the same VM or machine. This defeats CockroachDB's replication and causes the system to be a single point of failure. Instead, start each node on a separate VM or machine.
+- To start a node with multiple disks or SSDs, you can use either of these approaches:
+  - Configure the disks or SSDs as a single RAID volume, then pass the RAID volume to the `--store` flag when starting the `cockroach` process on the node.
+  - Provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
 
-- When starting each node, use the [`--locality`](cockroach-start.html#locality) flag to describe the node's location, for example, `--locality=region=west,zone=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
+      {{site.data.alerts.callout_danger}}
+      If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
+      {{site.data.alerts.end}}
+
+- When starting each node, use the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to describe the node's location, for example, `--locality=region=west,zone=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
 
 - When deploying in a single availability zone:
 

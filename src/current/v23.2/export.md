@@ -18,13 +18,11 @@ Using the [CockroachDB distributed execution engine]({% link {{ page.version.ver
 
 If you do not need distributed exports, you can [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
 
-{{site.data.alerts.callout_info}}
-`EXPORT` no longer requires an {{ site.data.products.enterprise }} license.
-{{site.data.alerts.end}}
-
 ## Cancelling export
 
 After the export has been initiated, you can cancel it with [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}).
+
+For detail on handling partially complete exports at the destination, refer to [Export File URL](#export-file-url).
 
 ## Synopsis
 
@@ -49,7 +47,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.v
 - Using the [`cockroach nodelocal upload`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) command.
 - Using [HTTP]({% link {{ page.version.version }}/use-a-local-file-server.md %}) or HTTPS.
 
-No special privilege is required for: 
+No special privilege is required for:
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) storage.
@@ -60,18 +58,24 @@ No special privilege is required for:
 
 ## Parameters
 
- Parameter | Description
+Parameter | Description
 -----------|-------------
- `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported data.<br><br>Note: It is best practice to use a unique destination for each export, to avoid mixing files from different exports in one directory.
- `opt_with_options` | Control your export's behavior with [these options](#export-options).
- `select_stmt` | Specify the query whose result you want to export.
- `table_name` | Specify the name of the table you want to export.
+`file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported data.<br><br>Note: It is best practice to use a unique destination for each export, to avoid mixing files from different exports in one directory.
+`opt_with_options` | Control your export's behavior with [these options](#export-options).
+`select_stmt` | Specify the query whose result you want to export.
+`table_name` | Specify the name of the table you want to export.
 
 ### Export file URL
 
 You can specify the base directory where you want to store the exported files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., `exportabc123-n1.1.csv`, `exportabc123-n1.2.csv`, `exportabc123-n2.1.csv`, ...). Each export should use a unique destination directory to avoid collision with other exports.
 
 The `EXPORT` command [returns](#success-responses) the list of files to which the data was exported. You may wish to record these for use in subsequent imports.
+
+If an export encounters some kind of failure or [cancellation](#cancel-a-running-export), it will leave any written files behind in the destination. To run a new export and avoid collision with previously written export files, consider doing the following:
+
+- Change the destination (or destination prefix) that you are exporting to.
+- Remove the partial results at the destination from any previously attempted exports.
+- Use a [changefeed export]({% link {{ page.version.version }}/export-data-with-changefeeds.md %}) instead because it operates as a job, offering more observability into failures.
 
 {{site.data.alerts.callout_info}}
 A hexadecimal hash code (`abc123...` in the file names) uniquely identifies each export **run**; files sharing the same hash are part of the same export. If you see multiple hash codes within a single destination directory, then the directory contains multiple exports, which will likely cause confusion (duplication) on import. We recommend that you manually clean up the directory, to ensure that it contains only a single export run.
@@ -108,7 +112,7 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Parquet types
 
-CockroachDB types map to [Parquet types](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) as per the following:
+CockroachDB types map to [Parquet types](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) listed in the following table. All columns witten to Parquet files will be nullable, therefore the Parquet repetition level is `optional`.
 
 | CockroachDB Type    | Parquet Type | Parquet Logical Type |
 --------------------|--------------|----------------------
@@ -294,6 +298,8 @@ Use [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
+
+For detail on handling partially complete exports at the destination, refer to [Export File URL](#export-file-url).
 
 ## Known limitation
 

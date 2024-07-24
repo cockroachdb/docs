@@ -8,7 +8,7 @@ cloud: true
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Note that only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+This page guides you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
 ## Before you begin
 
@@ -22,10 +22,11 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 {% include cockroachcloud/prefer-sso.md %}
 1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
+1. On the **Select a plan** page, select **Serverless**.
 
 ## Step 2. Select the cloud provider
 
-Select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
+On the **Cloud & Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
 
 {{site.data.alerts.callout_info}}
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your CockroachDB {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
@@ -47,9 +48,11 @@ After creating a multi-region cluster deployed on AWS, you can optionally [set u
 
 Private connectivity is not available for {{ site.data.products.serverless }} clusters on GCP.
 
-## Step 4. Set resource limits
+Click **Next: Capacity**.
 
-Your cluster's [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+## Step 4. Configure cluster capacity
+
+Your cluster's capacity dictates its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits), which are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
 All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.serverless }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
@@ -62,45 +65,49 @@ All CockroachDB {{ site.data.products.cloud }} organizations get 50M RUs and 10 
 
 <section class="filter-content" markdown="1" data-scope="free">
 
-1. Select the **Start for free** option.
+1. On the **Capacity** page, select the **Start for free** option.
 
     {{site.data.alerts.callout_info}}
     This will only be available if you haven't already created a free CockroachDB {{ site.data.products.serverless }} cluster or set up billing information.
     {{site.data.alerts.end}}
 
+1. Click **Next: Finalize**.
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
-1. If the option to **Start for free** is still available to you, select **Upgrade your resources** instead.
+1. On the **Capacity** page, if the option to **Start for free** is still available to you, select **Upgrade your capacity** instead.
 
-1. Enter your **Resource limits**.
-    - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
+1. Configure **On-Demand capacity**.
     - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
+    - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
+
+1. Click **Next: Finalize**.
 
 </section>
 
-## Step 5. Name the cluster
+## Step 5. Enter billing details
+
+1. On the **Finalize** page, verify your cluster and capacity [capacity](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) configuration.
+
+    {{site.data.alerts.callout_info}}
+    The cost displayed does not include taxes and provides a maximum cost estimate. Your final bill will reflect your actual usage.
+    {{site.data.alerts.end}}
+
+1. If you haven't already, add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
+
+## Step 6. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
-If you're creating a free cluster or you've already set up your billing information, click **Create cluster**. Your cluster will be created in a few seconds.
+Click **Create cluster**. Your cluster will be created in a few seconds.
 
-If you still need to set up billing information, click **Next: Payment**.
+## Video demo
 
-## Step 6. Enter billing details
+To learn the basics of multi-region Serverless clusters, watch the following video:
 
-1. On the **Summary** page, verify your cluster configuration and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
-
-    {{site.data.alerts.callout_info}}
-    The cost displayed does not include taxes.
-    {{site.data.alerts.end}}
-
-1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
-
-1. Click **Create cluster**.
-
-Your cluster will be created in a few seconds.
+{% include_cached youtube.html video_id="qoexXvuHNfI" %}
 
 ## What's next
 

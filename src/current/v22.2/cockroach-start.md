@@ -192,6 +192,17 @@ The `--storage-engine` flag is used to choose the storage engine used by the nod
 
 #### Store
 
+The `--store` flag allows you to specify details about a node's storage.
+
+To start a node with multiple disks or SSDs, you can use either of these approaches:
+
+- Configure the disks or SSDs as a single RAID volume, then pass the RAID volume to the `--store` flag when starting the `cockroach` process on the node.
+- Provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+
+  {{site.data.alerts.callout_danger}}
+  If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
+  {{site.data.alerts.end}}
+
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
 {{site.data.alerts.callout_info}}

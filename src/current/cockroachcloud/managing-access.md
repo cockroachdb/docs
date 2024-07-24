@@ -16,9 +16,9 @@ See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
 ## Manage your organizations
 
-An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization which has [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance) to map to all application clusters.
+An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization with [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance) to map to all application clusters.
 
-To switch between the organizations:
+To switch to a different organization:
 
 1. Log in to the console at `https://cockroachlabs.cloud/` or your organization's custom domain.
 1. From the drop-down box in the top-right corner, select the organization you want to access.
@@ -28,18 +28,19 @@ The settings and information about the organization are found on the **Informati
 ## Manage an organization's users
 ### Invite team members to an organization
 
-As an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
+1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. After the user accepts the invitation, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant them additional roles.
+1. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
 It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-org-sso.md %}#autoprovisioning) for your organization, which removes the need to invite team members.
 
 ### Change a team member's role
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
-1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
+1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     {{site.data.alerts.callout_info}}
@@ -47,8 +48,9 @@ It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-or
     {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-As an [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke that role from their own user, but cannot subsequently re-grant the administrator role to themselves.
 {{site.data.alerts.end}}
+
 
 ### Remove a team member
 
@@ -84,10 +86,6 @@ If you are sure you want to delete the organization, proceed with the following 
 ## Manage service accounts
 
 The access management model for service accounts is unified with the [user model](#manage-an-organizations-users). This means that service accounts may have all of the same [access roles]({% link cockroachcloud/authorization.md %}#organization-user-roles). However, service accounts and users still differ in the actions they can perform: only users can access the console, and only service accounts can access the API. The console and API differ in functionality.
-
-Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts]({% link cockroachcloud/authorization.md %}#service-accounts).
-
-It is recommended to update service accounts to roles in the new authorization model, by [editing their roles](#edit-roles-on-a-service-account).
 
 ### Create a service account
 
@@ -173,13 +171,11 @@ To change the API key name for an existing API key:
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
-1. Click the **Add User** button in the top right corner.
-
-    The **Create SQL user** modal displays.
-
-1. Enter a **Username**.
-1. Click **Generate & save password**.
-1. Copy the generated password and save it in a secure location.
+1. In the left navigation bar, click **SQL Users**.
+1. Click **Add User**. The **Add User** dialog displays.
+1. Enter a username and click **Generate & Save Password**.
+1. Copy the generated password to a secure location, such as a password manager.
+1. Click **Close**.
 
     Currently, all new users are created with SQL admin privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
 </section>
@@ -238,7 +234,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](https://www.cockro
 <section class="filter-content" markdown="1" data-scope="console">
 
 {{site.data.alerts.callout_info}}
-Only users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or Org Administrator to change the password.
+Only users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) can change a user's password. If you do not have the required permissions, ask a user with one of the required roles to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:

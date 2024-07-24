@@ -2,22 +2,36 @@
 
 ## Statement Fingerprint page
 
-The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page.
+The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page and the application name and database specified in the selected row of the [Statements table](#statements-table).
 
 ### Overview
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
-- **Regions**: The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
-- **Database**: The database on which the statements executed.
-- **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
-- **Failed?**: Whether the statement failed to execute.
-- **Full scan?**: Whether the execution performed a full scan of the table.
-- **Vectorized execution?**: Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
-- **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
-- **Last execution time**: The timestamp when the statement was last executed.
-- **Fingerprint ID**: The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
+ Attribute | Description
+-----------|-------------
+**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+**Database** | The database on which the statements executed.
+**Application Name** | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
+**Fingerprint ID** | The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
+**Failed?** | Whether the statement failed to execute.
+**Full scan?** | Whether the execution performed a full scan of the table.
+**Vectorized execution?** | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+**Transaction type** | The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
+**Last execution time** | The timestamp when the statement was last executed.
+
+The **Overview** section also displays the SQL statement fingerprint statistics that correspond to the [charts](#charts) below:
+
+|<div style="width:150px">Statistic</div>| Description |
+|-----------|-------------|
+|**Statement Time** | The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements. |
+|**Rows Processed** | The total number of rows read and written. |
+|**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
+|**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
+|**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
+|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
@@ -26,6 +40,7 @@ The following screenshot shows the statement fingerprint of the query described 
 #### Insights
 
 The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
+
 - **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
 - **Details**: Provides a description and possible recommendation.
 - **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution]({{ link_prefix }}ui-insights-page.html#statement-execution-details), click the ID.
@@ -38,13 +53,15 @@ The following screenshot shows the insights of the statement fingerprint illustr
 
 Charts following the execution attributes display statement fingerprint statistics:
 
-- **Statement Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
-- **Rows Processed**: The total number of rows read and written.
-- **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
-- **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
-- **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
-- **Client Wait Time**: The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements).
+|<div style="width:150px">Statistic</div>| Description |
+|-----------|-------------|
+|**Statement Time** | The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements. |
+|**Rows Processed** | The total number of rows read and written. |
+|**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
+|**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
+|**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
+|**CPU Time** | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. |
+|**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
@@ -70,6 +87,11 @@ Average Execution Time | The average execution time for all the executions of th
 Execution Count | The number of times the plan was executed.
 Average Rows Read | The average number of rows read when the plan was executed.
 Full Scan | Whether the execution performed a full scan of the table.
+Min Latency | The lowest latency value for all statement executions with this Explain Plan.
+Max Latency | The highest latency value for all statement executions with this Explain Plan.
+P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.
+P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.
+P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.
 Distributed | Whether the execution was distributed.
 Vectorized | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 

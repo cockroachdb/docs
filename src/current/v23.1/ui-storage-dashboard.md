@@ -27,6 +27,8 @@ Metric | Description
 
 {% include {{ page.version.version }}/prod-deployment/healthy-storage-capacity.md %}
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 ### Capacity metrics
 
 The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store]({% link {{ page.version.version }}/architecture/storage-layer.md %}) size, which is determined as follows:

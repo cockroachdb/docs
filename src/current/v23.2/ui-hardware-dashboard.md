@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory.
+The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, storage capacity, and memory.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
@@ -112,21 +112,7 @@ The disk usage of the Cockroach binary, operating system, and other system files
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 {{site.data.alerts.end}}
 
-## Network Bytes Received
-
-<img src="{{ 'images/v23.2/ui_network_bytes_received.png' | relative_url }}" alt="DB Console Network Bytes Received graph" style="border:1px solid #eee;max-width:100%" />
-
-- In the node view, the graph shows the 10-second average of the number of network bytes received per second for all processes, including CockroachDB, for the node.
-
-- In the cluster view, the graph shows the 10-second average of the number of network bytes received for all processes, including CockroachDB, per second across all nodes.
-
-## Network Bytes Sent
-
-<img src="{{ 'images/v23.2/ui_network_bytes_sent.png' | relative_url }}" alt="DB Console Network Bytes Sent graph" style="border:1px solid #eee;max-width:100%" />
-
-- In the node view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including CockroachDB, for the node.
-
-- In the cluster view, the graph shows the 10-second average of the number of network bytes sent per second by all processes, including CockroachDB, across all nodes.
+{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 

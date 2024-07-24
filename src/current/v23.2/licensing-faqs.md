@@ -66,6 +66,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Multi-region capabilities]({% link {{ page.version.version }}/multiregion-overview.md %})** | | | ✓
 **[Follower reads]({% link {{ page.version.version }}/follower-reads.md %})** | | | ✓
 **[Bounded staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads)** | | | ✓
+**[PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})** | | | ✓
 **[Node map]({% link {{ page.version.version }}/enable-node-map.md %})** | | | ✓
 **[Encryption at rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-at-rest-enterprise)** | | | ✓
 **[Role-based access management]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles)** | ✓ | |

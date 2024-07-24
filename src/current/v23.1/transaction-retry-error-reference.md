@@ -161,7 +161,7 @@ TransactionRetryWithProtoRefreshError: ... RETRY_ASYNC_WRITE_FAILURE ...
 
 **Description:**
 
-The `RETRY_ASYNC_WRITE_FAILURE` error occurs when some kind of problem with your cluster's operation occurs at the moment of a previous write in the transaction, causing CockroachDB to fail to replicate one of the transaction's writes. For example, this can happen if you have a networking partition that cuts off access to some nodes in your cluster.
+The `RETRY_ASYNC_WRITE_FAILURE` error occurs when some kind of problem with your cluster's operation occurs at the moment of a previous write in the transaction, causing CockroachDB to fail to replicate one of the transaction's writes. This can happen if a [lease transfer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data) occurs while the transaction is executing, or less commonly if you have a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) that cuts off access to some nodes in your cluster.
 
 **Action:**
 

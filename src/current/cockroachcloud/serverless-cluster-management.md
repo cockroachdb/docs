@@ -22,8 +22,10 @@ For each cluster, the following details display:
 - The cluster's cloud provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Edit resource limits**](#edit-your-resource-limits)
+    - [**Edit cluster**](#edit-cluster-capacity)
+    - [**Move cluster**](https://www.cockroachlabs.com/docs/cockroachcloud/folders#move-a-cluster-into-or-out-of-a-folder)
     - [**Delete cluster**](#delete-cluster)
+    - **Get support**
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
@@ -32,9 +34,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 The **Overview** page displays details about the selected CockroachDB {{ site.data.products.serverless }} cluster:
 
 - The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Regions**
-- The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
+- The **Capacity used this month** section, including **Request Units** and **Storage**
 - The cluster's **Current activity**
-- Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
+- Time-series graphs of the cluster's **Request Units**, **Storage usage**, and **SQL statements**
 
 For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
 
@@ -46,23 +48,19 @@ This feature is not available if your organization is billed through [Credits]({
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
-1. In the **Usage this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Estimate usage cost**.
-1. Select a time period in which your workload was active.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
+1. On the **Edit cluster** page, navigate to **Capacity**.
+1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
-    Your used [RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrused costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
 
-## Edit your resource limits
+## Edit cluster capacity
 
 On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
 
-1. Navigate to the **Overview** page for the cluster you want to edit.
-1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 
-    You will be taken to the **Edit cluster** page, which shows a graph of your cluster's **Recommended budget** compared to your current budget.
-
-1. Enter new **Resource limits**.
-
-1. Click **Update**.
+1. On the **Capacity** page, set the configure the new resource limits. In the sidebar, click **Update cluster**.
 
 ## Edit regions
 
@@ -83,8 +81,8 @@ To add regions to your cluster:
 
 1. Click **Add region**.
 1. Choose the region you want to add or use the suggested one.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then click **Update cluster**.
 
 ### Edit the primary region
 
@@ -96,13 +94,28 @@ To set the primary region:
     The **Edit cluster** page displays.
 
 1. Select **Set primary region** next to your preferred region.
-1. Click **Update**.
+1. Click **Next: Capacity** and then click **Update cluster**.
+
+### Move cluster to a new region
+
+A CockroachDB {{ site.data.products.serverless }} cluster cannot be moved from one region to another directly. Instead, you must restore the cluster's data from a backup to a new CockroachDB {{ site.data.products.serverless }} cluster with the desired region configuration:
+
+1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+1. [Create a new CockroachDB Serverless cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) in the desired region.
+1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) from the backup into the new cluster.
 
 ## Restore data from a backup
 
 Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+
+## Enable deletion protection
+
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
+
+1. Navigate to the **Overview** page for the cluster you want to protect.
+1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
@@ -117,6 +130,7 @@ Free CockroachDB {{ site.data.products.serverless }} clusters are subject to del
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
 1. Navigate to the **Overview** page for the cluster you want to delete.
+1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 1. Click the **Actions** button in the top right corner.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.

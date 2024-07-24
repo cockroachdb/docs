@@ -18,22 +18,14 @@ You can configure automatic CPU profile capture with the following [cluster sett
 
 Cluster Setting | Description | Default Value | Recommended Value
 ----------------|-------------|---------------|------------------
-`server.cpu_profile.enabled` | Indicates if the Automatic CPU Profiler is on or off. | `false` | 
-`server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when CPU profiles should be taken. Collect profiles from each node that meets threshold. | MAX integer, such as `9223372036854775807` | `80`
+`server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when CPU profiles should be taken. Collect profiles from each node that meets threshold. This setting enables and disables automatic cpu profiling.<ul><li>If a value of 0 is set, a profile will be taken every time the `server.cpu_profile.interval` has passed or the provided usage is increasing.</li><li>If a value greater than 0 and less than or equal to 100 is set, the profiler is enabled.</li><li>If a value over 100 is set, the profiler is disabled.</li></ul> | MAX integer, such as `9223372036854775807` | `80`
 `server.cpu_profile.interval` | The period of time after which the [high-water mark](#high-water-mark-threshold) resets to the baseline value. | `5m0s` (5 minutes) | `1m40s` (100 seconds)
 `server.cpu_profile.duration` | The length of time a CPU profile is taken. | `10s` (10 seconds) | `1s` or `2s`
 `server.cpu_profile.total_dump_size_limit` | Maximum combined disk size for preserving CPU profiles. | `128 MiB` (128 Mebibytes) |
 
 ### Enabling automatic CPU profile capture
 
-To enable automatic CPU profile capture, you must [set]({% link {{ page.version.version }}/set-cluster-setting.md %}) both of the following cluster settings:
-
-- Set `server.cpu_profile.enabled` to `true`
-- Set `server.cpu_profile.cpu_usage_combined_threshold` to a value between `0` and `100`. Preferably, use the [recommended value](#recommended-values).
-
-{{site.data.alerts.callout_info}}
-Only setting `server.cpu_profile.enabled` to `true` will not generate a CPU profile.
-{{site.data.alerts.end}}
+To enable automatic CPU profile capture, you must [set]({% link {{ page.version.version }}/set-cluster-setting.md %}) `server.cpu_profile.cpu_usage_combined_threshold` to a value between `0` and `100`. Preferably, use the [recommended value](#recommended-values).
 
 ### Recommended values
 

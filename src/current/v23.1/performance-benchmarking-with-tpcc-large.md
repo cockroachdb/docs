@@ -111,8 +111,7 @@ CockroachDB requires TCP communication on two ports:
     --advertise-addr=<node1 internal address> \
     --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
     --cache=.25 \
-    --locality=rack=0 \
-    --background
+    --locality=rack=0
     ~~~
 
     Each node will start with a [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 81 racks for 81 nodes so that 1 node will be assigned to each rack.

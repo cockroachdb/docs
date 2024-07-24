@@ -9,6 +9,10 @@ docs_area: manage
 
 This tutorial shows you how to provision a CockroachDB Cloud cluster using the CockroachDB Cloud Terraform provider.
 
+Watch a demo where we use Terraform to create a CockroachDB Serverless cluster here:
+
+{% include_cached youtube.html video_id="LEytD1eld8M" %}
+
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
@@ -19,7 +23,6 @@ This tutorial shows you how to provision a CockroachDB Cloud cluster using the C
 Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-- Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
 - Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
 
 ## Create the Terraform configuration files
@@ -30,11 +33,11 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
@@ -75,11 +78,11 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.serverless
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated }} cluster
 
-1. In a terminal create a new directory and use `wget` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
+1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
+    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
@@ -93,7 +96,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     cloud_provider_regions = ["{cloud provider region}"]
     cluster_node_count = {number of nodes}
     storage_gib = {storage in GiB}
-    machine_type = "{cloud provider machine type}"
     allow_list_name = "{allow list name}"
     cidr_ip = "{allow list CIDR IP}"
     cidr_mask = {allow list CIDR mask}
@@ -107,7 +109,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
-       - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
        - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
@@ -123,7 +124,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     cloud_provider_regions = ["us-west2"]
     cluster_node_count = 3
     storage_gib = 15
-    machine_type = "n1-standard-2"
     allow_list_name = "Max's home network"
     cidr_ip = "1.2.3.4"
     cidr_mask = 32
@@ -248,7 +248,6 @@ Terraform will perform the following actions:
       + creator_id        = (known after apply)
       + dedicated         = {
           + disk_iops        = (known after apply)
-          + machine_type     = (known after apply)
           + memory_gib       = (known after apply)
           + num_virtual_cpus = (known after apply)
           + storage_gib      = (known after apply)
@@ -285,7 +284,6 @@ Terraform will perform the following actions:
       + creator_id        = (known after apply)
       + dedicated         = {
           + disk_iops        = (known after apply)
-          + machine_type     = "n1-standard-2"
           + memory_gib       = (known after apply)
           + num_virtual_cpus = (known after apply)
           + storage_gib      = 15
@@ -359,7 +357,6 @@ cluster = {
   "creator_id" = tostring(null)
   "dedicated" = {
     "disk_iops" = 450
-    "machine_type" = "n1-standard-2"
     "memory_gib" = 7.5
     "num_virtual_cpus" = 2
     "storage_gib" = 15
@@ -449,7 +446,6 @@ resource "cockroach_cluster" "example" {
     creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
@@ -478,7 +474,6 @@ data "cockroach_cluster" "example" {
     cockroach_version = "v22.2.0"
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
@@ -503,7 +498,6 @@ cluster = {
     creator_id        = null
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15

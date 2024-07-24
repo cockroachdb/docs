@@ -124,11 +124,11 @@ Other general guidance about language and tone:
 
     **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
 
-- Recommended usage of the personal pronoun "we": 
+- Recommended usage of the personal pronoun "we":
 
     - "We" can be used to describe the group of people developing CockroachDB, instead of "Cockroach Labs," only when it is clear who "we" is referring to.
     - Do not use "we" in place of "CockroachDB" for when you are talking about something the _product_ does or supports.
-    - Do not use "we" in tutorials. See the next bullet for more on tutorials and examples. 
+    - Do not use "we" in tutorials. See the next bullet for more on tutorials and examples.
 
 - For [tutorials and examples](#tutorials-and-examples), we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
@@ -510,7 +510,7 @@ Enter a line break between a heading and its content.
 Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
 Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
-  
+
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
 **Examples:**
@@ -591,7 +591,7 @@ To link to a page outside of the current folder (e.g., a link from `v23.1` to `c
 
 #### Links to a specific location on a page that is not a heading
 
-To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `name` parameter:
+To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
 
 **Example:**
 
@@ -696,7 +696,7 @@ Sometimes CockroachDB does not behave the way that users expect it to behave. Th
 - A difference in syntax between CockroachDB and [SQL Standard](https://blog.ansi.org/2018/10/sql-standard-iso-iec-9075-2016-ansi-x3-135)
 - A difference in the behavior of CockroachDB and PostgreSQL
 - A feature that is functional, but not yet fully implemented
-- A feature that is fully implemented, but has some **long-standing** bugs (i.e., bugs that have existed across minor and/or major releases)
+- A feature that is fully implemented, but has some **long-standing** bugs (i.e., bugs that have existed across patch and/or major releases)
 - A feature that limits performance
 
 We list the general differences between CockroachDB and the SQL Standard on our [SQL Feature Support](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html) page, and we provide more details on the differences between CockroachDB and PostgreSQL on our [PostgreSQL Compatibility](https://www.cockroachlabs.com/docs/stable/postgresql-compatibility.html). All other instances of known, but possibly unexpected, database behavior are known as **known limitations**.
@@ -821,6 +821,17 @@ Highlight shell and SQL commands where appropriate using the following info:
 
 Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`. For multi-line shell commands, use a backslash (`\`) at the end of each line to indicate a line break.
 
+In an example command to download an artifact using the command line, `curl` is preferred over `wget` because it is included in Linux, macOS, and recent builds of Windows. Use syntax like:
+
+```
+curl -o {optional_output_path}/{output_file_name} [-H {header_keys_and_values}] {url} 
+```
+
+- In general, always specify `-o` or `--output` to a path and filename, or omit the path to save the file to the current working directory.
+
+  Omit `-o` to print the response to standard output. Printing a binary file can corrupt the terminal session or lead to unintended results, and is generally useful only when piping or redirecting the output to another command or a file.
+- Headers are optional, but certain APIs such as the CockroachDB Cloud API require certain header fields to be set.
+
 **SQL code samples**
 
 SQL code samples are broken into two sections: commands and responses.
@@ -843,8 +854,8 @@ $ go get -u github.com/lib/pq
 ```
 
 Notes for usage:
-  
-- **Copy to Clipboard** should be used for every code block that can be **executed**. 
+
+- **Copy to Clipboard** should be used for every code block that can be **executed**.
 - There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
 #### Placeholders
@@ -958,13 +969,13 @@ To dynamically refer to the stable version of CockroachDB, as determined each ti
 
 **Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
 
-Pages that document CockroachDB itself exist within subdirectories that represent minor versions. To refer to a page's minor version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
+Pages that document CockroachDB itself exist within subdirectories that represent major versions. To refer to a page's major version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
 
 ~~~
 {{page.version.version}}
 ~~~
 
-A minor version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
+A patch release version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
 
 ~~~
 {{ page.release_info.name }}
@@ -1262,17 +1273,17 @@ CREATE DATABASE movr PRIMARY REGION "gcp-us-east1" REGIONS "gcp-us-east1", "gcp-
 ```
 
 For more information about the `remote_include` tag, see the README in the [jekyll-remote-include](https://github.com/cockroachdb/jekyll-remote-include) repo.
-  
+
 #### Filter tabs
-  
+
 On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
-  
+
 Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
 
 **Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
 
 The general process to follow and use this is as follows:
-  
+
 1. Identify each page to be linked from a filter tab.
     - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
     - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
@@ -1287,7 +1298,7 @@ The general process to follow and use this is as follows:
     - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
 3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
-  
+
 #### Technical limitations of include files
 
 Include files have the following technical limitations:
@@ -1299,7 +1310,7 @@ Include files have the following technical limitations:
 <a name="tabs"></a>
 
 ### Tabs
-  
+
 To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
   - Install procedurals with different steps for the different supported platforms (like macOS, Windows, Linux).
   - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
@@ -1319,7 +1330,7 @@ To define the tabset:
 This example defines two tabs (named `macOS` and `Windows`) and defines a unique `data-scope` for each (`macos-install-steps` and `windows-install-steps` respectively).
 
 Then, to declare the content within each tab:
-  
+
 ```
 <section class="filter-content" markdown="1" data-scope="macos-install-steps">
 
@@ -1337,7 +1348,7 @@ Then, to declare the content within each tab:
 
 ```
 
-Now the user can freely switch between the `macOS` and `Windows` tabs as needed. 
+Now the user can freely switch between the `macOS` and `Windows` tabs as needed.
 
 Tip: Do your tabs share a lot of common content betwen them? Tabs are often a great place to make use of [include files](#include-files)!
 
@@ -1352,13 +1363,13 @@ To link to content that is contained within a tab, add the `filter` component to
   ```
 
   This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected. See [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/stable/create-and-configure-changefeeds.html?filters=core) to see this in action.
- 
+
 - For linking to a header contained within a tabset:
 
   ```
   [Create with column families](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families)
   ```
-  
+
   This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab. See [Create a Core changefeed on a table with column families](https://www.cockroachlabs.com/docs/stable/changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families) to see this in action.
 
 Considerations:
@@ -1397,7 +1408,7 @@ Examples:
 
 ```
 {% comment %}
-TODO clean up SQL diagrams 
+TODO clean up SQL diagrams
 {% endcomment %}
 ```
 

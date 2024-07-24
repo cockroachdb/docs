@@ -13,9 +13,9 @@ If you haven't already, we recommend reading the [Architecture Overview]({% link
 
 ## Overview
 
-Above all else, CockroachDB believes consistency is the most important feature of a database––without it, developers cannot build reliable tools, and businesses suffer from potentially subtle and hard to detect anomalies.
+Above all else, CockroachDB believes consistency is the most important feature of a database—without it, developers cannot build reliable tools, and businesses suffer from potentially subtle and hard to detect anomalies.
 
-To provide consistency, CockroachDB implements full support for ACID transaction semantics in the transaction layer. However, it's important to realize that *all* statements are handled as transactions, including single statements––this is sometimes referred to as "autocommit mode" because it behaves as if every statement is followed by a `COMMIT`.
+To provide consistency, CockroachDB implements full support for ACID transaction semantics in the transaction layer. However, it's important to realize that *all* statements are handled as transactions, including single statements—this is sometimes referred to as "autocommit mode" because it behaves as if every statement is followed by a `COMMIT`.
 
 For code samples of using transactions in CockroachDB, see our documentation on [transactions]({% link {{ page.version.version }}/transactions.md %}#sql-statements).
 
@@ -27,26 +27,30 @@ Because CockroachDB enables transactions that can span your entire cluster (incl
 
 When the transaction layer executes write operations, it doesn't directly write values to disk. Instead, it creates several things that help it mediate a distributed transaction:
 
-- **Locks** for all of a transaction’s writes, which represent a provisional, uncommitted state. CockroachDB has several different types of locking:
+- **Write intents** are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), and act as a combination of a provisional value and an [exclusive lock](#reading). They are essentially the same as standard [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster. For more details, see [Write intents](#write-intents).
 
-  - **Unreplicated Locks** are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery. These locks are not replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
-
-  - **Replicated Locks** (also known as [write intents](#write-intents)) are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), and act as a combination of a provisional value and an exclusive lock. They are essentially the same as standard [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster.
+- **Unreplicated locks** for a transaction's writes, which represent a provisional, uncommitted state. These locks are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery.
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
-As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents for the same keys exist, it is resolved as a [transaction conflict](#transaction-conflicts).
+As write intents are created, CockroachDB checks for newer committed values. If newer committed values exist, the transaction may be restarted. If existing write intents or [locks](#reading) exist on the same keys, it is resolved as a [transaction conflict](#transaction-conflicts).
 
 If transactions fail for other reasons, such as failing to pass a SQL constraint, the transaction is aborted.
 
 #### Reading
 
-If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if it encounters any write intents, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
+If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if a [locking read]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) encounters any existing locks, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
 
 CockroachDB provides the following types of reads:
 
-- Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and see all writes performed by writers that committed before the reading transaction started. They always return data that is correct and up-to-date.
+- Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and see all writes performed by writers that committed before the reading transaction (under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation) or statement (under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation) started. They always return data that is correct and up-to-date.
 - Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}).
+
+Reads can optionally [acquire the following locks]({% link {{ page.version.version }}/read-committed.md %}#locking-reads):
+
+- **Exclusive locks** block concurrent [writes](#writing) and [locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) on a row. Only one transaction can hold an exclusive lock on a row at a time, and only the transaction holding the exclusive lock can write to the row. By default under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, exclusive locks are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
+
+- **Shared locks** block concurrent [writes](#writing) and **exclusive** [locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) on a row. Multiple transactions can hold a shared lock on a row at the same time. When multiple transactions hold a shared lock on a row, none can write to the row. A shared lock grants transactions mutual read-only access to a row, and ensures that they read the latest value of the row. By default under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, exclusive locks are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 
 ### Commits (phase 2)
 
@@ -60,13 +64,13 @@ For a more detailed tutorial of the commit protocol, see [Parallel Commits](#par
 
 ### Cleanup (asynchronous phase 3)
 
-After the transaction has been committed, it should be marked as such, and all of the write intents should be resolved. To do this, the coordinating node––which kept a track of all of the keys it wrote––reaches out and:
+After the transaction has been committed, it should be marked as such, and all of the write intents should be resolved. To do this, the coordinating node—which kept a track of all of the keys it wrote—reaches out and:
 
 - Moves the state of the transaction record from `STAGING` to `COMMITTED`.
 - Resolves the transaction's write intents to MVCC values by removing the element that points it to the transaction record.
 - Deletes the write intents.
 
-This is simply an optimization, though. If operations in the future encounter write intents, they always check their transaction records––any operation can resolve or remove write intents by checking the transaction record's status.
+This is simply an optimization, though. If operations in the future encounter write intents, they always check their transaction records—any operation can resolve or remove write intents by checking the transaction record's status.
 
 ### Interactions with other layers
 
@@ -97,11 +101,23 @@ For more detail about the risks that large clock offsets can cause, see [What ha
 
 ### Timestamp cache
 
-As part of providing serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
+Whenever an operation reads a value, CockroachDB stores the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
 The timestamp cache is a data structure used to store information about the reads performed by [leaseholders]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). This is used to ensure that once some transaction *t1* reads a row, another transaction *t2* that comes along and tries to write to that row will be ordered after *t1*, thus ensuring a serial order of transactions, aka serializability.
 
 Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is earlier than the timestamp cache's latest value, CockroachDB will attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart [during the commit time](#commits-phase-2) of the transaction (see [read refreshing](#read-refreshing)).
+
+#### Read snapshots
+
+All transactions operate on a *read snapshot*, which defines which committed data they observe. Under both [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) and [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation levels, transactions use globally consistent read snapshots.
+
+`SERIALIZABLE` transactions maintain per-transaction read snapshots via [read refreshing](#read-refreshing), while `READ COMMITTED` transactions use per-statement read snapshots that advance with each statement in the transaction.
+
+When each statement in a `READ COMMITTED` transaction begins, it establishes a new read snapshot by selecting a new [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp from the [hybrid-logical clock](#time-and-hybrid-logical-clocks), capturing the writes previously committed by transactions. This means that a `READ COMMITTED` transaction can operate across multiple read snapshots, and guarantees that when each statement in `READ COMMITTED` transaction begins, it will only read the latest value of each row it retrieves. Because each subsequent statement uses a new read snapshot, reads in a `READ COMMITTED` transaction can [return different results]({% link {{ page.version.version }}/read-committed.md %}#non-repeatable-reads-and-phantom-reads).
+
+{{site.data.alerts.callout_info}}
+Per-statement read snapshots enable `READ COMMITTED` transactions to resolve [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) by retrying individual statements rather than entire transactions. Statement-level retries are automatically performed without involving the client, whereas transaction-level retries (as required with `SERIALIZABLE` isolation) usually require [client-side logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For more details on how transactions handle conflicts, see [Transaction conflicts](#transaction-conflicts).
+{{site.data.alerts.end}}
 
 ### Closed timestamps
 
@@ -120,7 +136,7 @@ Closed timestamps provide the guarantees that are used to provide support for lo
 The timestamp for any transaction, especially a long-running transaction, could be [pushed](#timestamp-cache). An example is when a transaction encounters a key written at a higher timestamp. When this kind of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp **may** provide some mitigation. Increasing the closed timestamp interval may reduce the likelihood that a long-running transaction's timestamp is pushed and must be retried. Thoroughly test any adjustment to the closed timestamp interval before deploying the change in production, because such an adjustment can have an impact on:
 
 - [Follower reads]({% link {{ page.version.version }}/follower-reads.md %}): Latency or throughput may be increased, because reads are served only by the leaseholder.
-- [Change data capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}): Latency of changefeed messages may be increased.
+- [Change data capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}): Latency of changefeed messages may be increased. For more information on how you can adjust closed timestamp durations, updates, and emission, refer to [Latency in changefeeds]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#latency-in-changefeeds).
 - [Statistics collection]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics): Load placed on the leaseholder may increase during collection.
 
 While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. Consider an example where:
@@ -141,7 +157,7 @@ For more information about the implementation of closed timestamps and Follower 
 
 As we mentioned in the SQL layer's architectural overview, CockroachDB converts all SQL statements into key-value (KV) operations, which is how data is ultimately stored and accessed.
 
-All of the KV operations generated from the SQL layer use `client.Txn`, which is the transactional interface for the CockroachDB KV layer––but, as we discussed above, all statements are treated as transactions, so all statements use this interface.
+All of the KV operations generated from the SQL layer use `client.Txn`, which is the transactional interface for the CockroachDB KV layer—but, as we discussed above, all statements are treated as transactions, so all statements use this interface.
 
 However, `client.Txn` is actually just a wrapper around `TxnCoordSender`, which plays a crucial role in our code base by:
 
@@ -177,7 +193,7 @@ Values in CockroachDB are not written directly to the storage layer; instead val
 
 Whenever an operation encounters a write intent (instead of an MVCC value), it looks up the status of the transaction record to understand how it should treat the write intent value. If the transaction record is missing, the operation checks the write intent's timestamp and evaluates whether or not it is considered expired.
 
- CockroachDB manages concurrency control using a per-node, in-memory lock table. This table holds a collection of locks acquired by in-progress transactions, and incorporates information about write intents as they are discovered during evaluation. For more information, see the section below on [Concurrency control](#concurrency-control).
+CockroachDB manages concurrency control using a per-node, in-memory lock table. This table holds a collection of locks acquired by in-progress transactions, and incorporates information about write intents as they are discovered during evaluation. For more information, see the section below on [Concurrency control](#concurrency-control).
 
 #### Resolving write intents
 
@@ -186,7 +202,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 - `COMMITTED`: The operation reads the write intent and converts it to an MVCC value by removing the write intent's pointer to the transaction record.
 - `ABORTED`: The write intent is ignored and deleted.
 - `PENDING`: This signals there is a [transaction conflict](#transaction-conflicts), which must be resolved.
-- `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction’s record. If the coordinator is still heartbeating the record, the operation should wait. For more information, see [Parallel Commits](#parallel-commits).
+- `STAGING`: This signals that the operation should check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating the staging transaction's record. If the coordinator is still heartbeating the record, the operation should wait. For more information, see [Parallel Commits](#parallel-commits).
 - _Record does not exist_: If the write intent was created within the transaction liveness threshold, it's the same as `PENDING`, otherwise it's treated as `ABORTED`.
 
 ### Concurrency control
@@ -196,9 +212,9 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 The concurrency manager combines the tasks of a *latch manager* and a *lock table* to accomplish this work:
 
 - The *latch manager* sequences the incoming requests and provides isolation between those requests.
-- The *lock table* provides both locking and sequencing of requests (in concert with the latch manager). It is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. To ensure compatibility with the existing system of [write intents](#write-intents) (a.k.a. replicated, exclusive locks), it pulls in information about these external locks as necessary when they are discovered in the course of evaluating requests.
+- The *lock table* provides both locking and sequencing of requests (in concert with the latch manager). It is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. To ensure compatibility with the existing system of [write intents](#write-intents) (which act as replicated, [exclusive locks]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths)), it pulls in information about these external locks as necessary when they are discovered in the course of evaluating requests.
 
-The concurrency manager enables support for pessimistic locking via [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) using the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement. This statement can be used to increase throughput and decrease tail latency for contended operations.
+The concurrency manager enables support for pessimistic locking via [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) using the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) and [`SELECT FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) statements.
 
 For more details about how the concurrency manager works with the latch manager and lock table, see the sections below:
 
@@ -214,30 +230,30 @@ Each request in a transaction should be isolated from other requests, both durin
 
 The manager accommodates this by allowing transactional requests to acquire locks, which outlive the requests themselves. Locks extend the duration of the isolation provided over specific keys to the lifetime of the lock-holder transaction itself. They are (typically) only released when the transaction commits or aborts. Other requests that find these locks while being sequenced wait on them to be released in a queue before proceeding. Because locks are checked during sequencing, locks do not need to be checked again during evaluation.
 
-However, not all locks are stored directly under the manager's control, so not all locks are discoverable during sequencing. Specifically, write intents (replicated, exclusive locks) are stored inline in the MVCC keyspace, so they are not detectable until request evaluation time. To accommodate this form of lock storage, the manager integrates information about external locks with the concurrency manager structure.
+However, not all locks are stored directly under the manager's control, so not all locks are discoverable during sequencing. Specifically, write intents (which act as replicated, [exclusive locks]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths)) are stored inline in the MVCC keyspace, so they are not detectable until request evaluation time. To accommodate this form of lock storage, the manager integrates information about external locks with the concurrency manager structure.
 
 <a name="unreplicated-locks"></a>
 
 {{site.data.alerts.callout_info}}
-The concurrency manager operates on an unreplicated lock table structure. Unreplicated locks are held only on a single replica in a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), which is typically the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). They are very fast to acquire and release, but provide no guarantee of survivability across [lease transfers or leaseholder crashes]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
+The concurrency manager operates on an unreplicated lock table structure. Unreplicated locks are held only on a single replica in a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), which is typically the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). They are very fast to acquire and release, but provide no guarantee of survivability across [lease transfers or leaseholder crashes]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). They should be thought of as best-effort, and should not be relied upon for correctness.
 
-This lack of survivability for unreplicated locks affects SQL statements implemented using them, such as [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#known-limitations).
+By default under `SERIALIZABLE` isolation, [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-behavior-under-serializable-isolation) and `SELECT ... FOR SHARE` locks are affected by this lack of survivability, although serializable isolation is always preserved. However, by setting the `enable_durable_locking_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}#enable-durable-locking-for-serializable) to `true`, these locks will be replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), allowing locks to be preserved when leases are transferred. This matches the default [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) behavior.
 
-In the future, we intend to pull all locks, including those associated with [write intents](#write-intents), into the concurrency manager directly through a replicated lock table structure.
+By default under `READ COMMITTED` isolation, locks are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft). This allows locks to be preserved even if the [leaseholder node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) serving a locking read dies and its [lease is transferred to another node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 {{site.data.alerts.end}}
 
 Fairness is ensured between requests. In general, if any two requests conflict then the request that arrived first will be sequenced first. As such, sequencing guarantees first-in, first-out (FIFO) semantics. The primary exception to this is that a request that is part of a transaction which has already acquired a lock does not need to wait on that lock during sequencing, and can therefore ignore any queue that has formed on the lock. For other exceptions to this sequencing guarantee, see the [lock table](#lock-table) section below.
 
 #### Lock table
 
- The lock table is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. Each lock in the table has a possibly-empty lock wait-queue associated with it, where conflicting transactions can queue while waiting for the lock to be released.  Items in the locally stored lock wait-queue are propagated as necessary (via RPC) to the existing [`TxnWaitQueue`](#txnwaitqueue), which is stored on the leader of the range's Raft group that contains the [transaction record](#transaction-records).
+The lock table is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. Each lock in the table has a possibly-empty lock wait-queue associated with it, where conflicting transactions can queue while waiting for the lock to be released.  Items in the locally stored lock wait-queue are propagated as necessary (via RPC) to the existing [`TxnWaitQueue`](#txnwaitqueue), which is stored on the leader of the range's Raft group that contains the [transaction record](#transaction-records).
 
 The database is read and written using "requests". Transactions are composed of one or more requests. Isolation is needed across requests. Additionally, since transactions represent a group of requests, isolation is needed across such groups. Part of this isolation is accomplished by maintaining multiple versions and part by allowing requests to acquire locks. Even the isolation based on multiple versions requires some form of mutual exclusion to ensure that a read and a conflicting lock acquisition do not happen concurrently. The lock table provides both locking and sequencing of requests (in concert with the use of latches).
 
 Locks outlive the requests themselves and thereby extend the duration of the isolation provided over specific keys to the lifetime of the lock-holder transaction itself. They are (typically) only released when the transaction commits or aborts. Other requests that find these locks while being sequenced wait on them to be released in a queue before proceeding. Because locks are checked during sequencing, requests are guaranteed access to all declared keys after they have been sequenced. In other words, locks do not need to be checked again during evaluation.
 
 {{site.data.alerts.callout_info}}
-Currently, not all locks are stored directly under lock table control. Some locks are stored as [write intents](#write-intents) in the MVCC layer, and are thus not discoverable during sequencing. Specifically, write intents (replicated, exclusive locks) are stored inline in the MVCC keyspace, so they are often not detectable until request evaluation time. To accommodate this form of lock storage, the lock table adds information about these locks as they are encountered during evaluation. In the future, we intend to pull all locks, including those associated with write intents, into the lock table directly.
+Currently, not all locks are stored directly under lock table control. Some locks are stored in the [LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) and are thus not discoverable during sequencing. Specifically, [write intents](#write-intents) and other forms of replicated locks are stored in a portion of the LSM called the "lock table keyspace". To accommodate this form of lock storage, the lock table keyspace is scanned during evaluation and conflicting locks that are encountered are placed in the lock table control.
 {{site.data.alerts.end}}
 
 The lock table also provides fairness between requests. If two requests conflict then the request that arrived first will typically be sequenced first. There are some exceptions:
@@ -262,26 +278,23 @@ Another way to think of a latch is like a [mutex](https://wikipedia.org/wiki/Loc
 
 ### Isolation levels
 
-Isolation is an element of [ACID transactions](https://en.wikipedia.org/wiki/ACID), which determines how concurrency is controlled, and ultimately guarantees consistency.
-
-CockroachDB executes all transactions at the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
-
-CockroachDB now only supports `SERIALIZABLE` isolation. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.
-
-`SERIALIZABLE` isolation does not allow any anomalies in your data, and is enforced by requiring the client to retry transactions if serializability violations are possible.
+{% include {{ page.version.version }}/sql/isolation-levels.md %}
 
 ### Transaction conflicts
 
-CockroachDB's transactions allow the following types of conflicts that involve running into an intent:
+CockroachDB's transactions allow the following types of conflicts that involve running into a [write intent](#write-intents):
 
-- **Write/write**, where two `PENDING` transactions create write intents for the same key.
-- **Write/read**, when a read encounters an existing write intent with a timestamp less than its own.
+- **Write-write**, where two transactions create write intents or acquire a lock on the same key.
+- **Write-read**, when a read encounters an existing write intent with a timestamp less than its own.
+    {{site.data.alerts.callout_info}}
+    Writes can only block reads under the default [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level.
+    {{site.data.alerts.end}}
 
 To make this simpler to understand, we'll call the first transaction `TxnA` and the transaction that encounters its write intents `TxnB`.
 
 CockroachDB proceeds through the following steps:
 
-1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp [pushed](#timestamp-cache) (in the write/read case).
+1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted with a [serialization error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) (in the write-write case) or has its timestamp [pushed](#timestamp-cache) (in the write-read case).
 
 1. If the encountered transaction is expired, it's `ABORTED` and conflict resolution succeeds. We consider a write intent expired if:
 	- It doesn't have a transaction record and its timestamp is outside of the transaction liveness threshold.
@@ -307,7 +320,7 @@ txnB -> txn3, txn4, txn5
 
 Importantly, all of this activity happens on a single node, which is the leader of the range's Raft group that contains the transaction record.
 
-Once the transaction does resolve––by committing or aborting––a signal is sent to the `TxnWaitQueue`, which lets all transactions that were blocked by the resolved transaction begin executing.
+Once the transaction does resolve—by committing or aborting—a signal is sent to the `TxnWaitQueue`, which lets all transactions that were blocked by the resolved transaction begin executing.
 
 Blocked transactions also check the status of their own transaction to ensure they're still active. If the blocked transaction was aborted, it's simply removed.
 
@@ -315,9 +328,13 @@ If there is a deadlock between transactions (i.e., they're each blocked by each 
 
 ### Read refreshing
 
-Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation.
+Whenever a `SERIALIZABLE` transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation.
 
 The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
+
+{{site.data.alerts.callout_info}}
+<a name="write-skew-tolerance"></a> [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions do **not** perform read refreshing before commit. Instead, they permit their [read timestamps](#read-snapshots) and write timestamps to skew at commit time. This makes it possible for statements in concurrent `READ COMMITTED` transactions to interleave without aborting transactions, and enables potential [concurrency anomalies]({% link {{ page.version.version }}/read-committed.md %}#concurrency-anomalies).
+{{site.data.alerts.end}}
 
 ### Transaction pipelining
 
@@ -413,7 +430,7 @@ The transaction is now considered atomically committed, even though the state of
 
 Despite their logical equivalence, the transaction coordinator now works as quickly as possible to move the transaction record from the `STAGING` to the `COMMITTED` state so that other transactions do not encounter a possibly conflicting transaction in the `STAGING` state and then have to do the work of verifying that the staging transaction's list of pending writes has succeeded. Doing that verification (also known as the "transaction status recovery process") would be slow.
 
-Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
+Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction's record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
 
 ## Non-blocking transactions
 

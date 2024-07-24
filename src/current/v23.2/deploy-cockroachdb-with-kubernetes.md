@@ -9,7 +9,7 @@ docs_area:
 
 {% include {{ page.version.version }}/filter-tabs/crdb-single-kubernetes.md %}
 
-This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
+This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster. You can use any of the following approaches:
 
 - [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator)
 

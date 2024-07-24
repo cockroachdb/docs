@@ -1,18 +1,10 @@
-{% if page.cloud == true %}
-  {% capture link_prefix %}../{{site.current_cloud_version}}/{% endcapture %}
-  {% assign page_prefix = "" %}
-{% else %}
-  {% assign link_prefix = "" %}
-  {% assign page_prefix = "ui-" %}
-{% endif %}
-
 ## Statement Fingerprints results
 
 The statement fingerprints returned are determined by the selected **Search Criteria**.
 
 ### Search Criteria ###
 
-By default, the **Top** `100` statement fingerprints **By** `% of All Runtime` for the `Past Hour` are returned.
+By default, the **Top** `100` statement fingerprints **By** [`% of All Runtime`](#percent-of-all-runtime) for the `Past Hour` are returned.
 
 1. To change the number of results returned, select `25`, `50`, `100`, or `500` from the **Top** dropdown. To return a larger number, select `More` and choose an option: `1000`, `5000`, `10000`.
 1. To change the sort column, from the **By** dropdown, select a commonly sorted column: `% of All Runtime`, `CPU Time`, `Contention Time`, `Execution Count`, `P99 Latency`, `Statement Time`. To sort by other columns, select `More` from the dropdown and choose an option: `Last Execution Time`, `Max Latency`,`Max Memory`, `Min Latency`, `Network`, `P50 Latency`, `P90 Latency`, `Retries`, `Rows Processed`.

@@ -32,10 +32,11 @@ We strongly recommend that most users use the [default multi-region SQL abstract
 Zone Config Extensions are a property of a [database region](multiregion-overview.html#database-regions), *not* any particular [schema object](schema-design-overview.html). This differs from raw [zone configurations](configure-replication-zones.html), which may need to be assigned (and reassigned) to 10s or 100s of different schema objects on every configuration change.
 {{site.data.alerts.end}}
 
-For instructions showing how to use Zone Config Extensions, see [`ALTER DATABASE ... ALTER LOCALITY`](alter-database.html#alter-locality).
+For instructions showing how to use Zone Config Extensions, see [Use Zone Config Extensions]({% link {{ page.version.version }}/alter-database.md %}#use-zone-config-extensions).
 
 ## See also
 
+- [Use Zone Config Extensions]({% link {{ page.version.version }}/alter-database.md %}#use-zone-config-extensions)
 - [`ALTER DATABASE ... ALTER LOCALITY`](alter-database.html#alter-locality)
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Data Domiciling](data-domiciling.html)

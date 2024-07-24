@@ -55,7 +55,7 @@ Many flags have useful defaults that can be overridden by specifying the flags e
 Flag | Description
 -----|-----------
 `--attrs` | Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) for full details.
-`--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal.  Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead.
+`--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead. If you use `--background`, using `--pid-file` is also recommended. To gracefully stop the `cockroach` process, send the `SIGTERM` signal to the process ID in the PID file. To gracefully restart the process, send the `SIGHUP` signal.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit; for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br>**Note:** If you use the `%` notation, you might need to escape the `%` sign (for instance, while configuring CockroachDB through `systemd` service files). For this reason, it's recommended to use the decimal notation instead.<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. Increasing the cache size will generally improve the node's read performance. For more details, see [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
 `--clock-device` | Enable CockroachDB to use a [PTP hardware clock](https://www.kernel.org/doc/html/latest/driver-api/ptp.html) when querying the current time. The value is a string that specifies the clock device to use. For example: `--clock-device=/dev/ptp0`<br><br>**Note:** This is supported on Linux only and may be needed in cases where the host clock is unreliable or prone to large jumps (e.g., when using vMotion).
 `--cluster-name` | <a name="flags-cluster-name"></a> A string that specifies a cluster name. This is used together with `--join` to ensure that all newly created nodes join the intended cluster when you are running multiple clusters.<br><br>**Note:** If this is set, [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}), [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}), [`cockroach node recommission`]({% link {{ page.version.version }}/cockroach-node.md %}), and the `cockroach debug` commands must specify either `--cluster-name` or `--disable-cluster-name-verification` in order to work.
@@ -79,10 +79,10 @@ Flag | Description
 -----|-----------
 `--experimental-dns-srv` | When this flag is included, the node will first attempt to fetch SRV records from DNS for every name specified with `--join`. If a valid SRV record is found, that information is used instead of regular DNS A/AAAA lookups. This feature is experimental and may be removed or modified in a later version.
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking]({% link {{ page.version.version }}/recommended-production-settings.md %}#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
-`--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking]({% link {{ page.version.version }}/recommended-production-settings.md %}#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
+`--advertise-addr` | <a name="flags-advert-addr"></a> The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking]({% link {{ page.version.version }}/recommended-production-settings.md %}#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
 `--advertise-http-addr` | The IP address/hostname and port to advertise for DB Console HTTP requests when [proxying connections to the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#proxy-db-console). If omitted, the hostname is inherited from the operating system hostname or the hostname from `--advertise-addr`. If the port is omitted, it defaults to `8080` and is never inherited from `--advertise-addr`.
 `--http-addr` | <a name="flags-http-addr"></a> The IP address/hostname and port on which to listen for DB Console HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address specified in `--listen-addr` and on port `8080`
-`--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
+`--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use to connect to this node. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them. However, **do not** include addresses or hostnames that do not resolve to this node, because this will cause connection failures when other nodes attempt to connect to this node. <br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>For more details, refer to the [Start a multi-node cluster across private networks](#start-a-multi-node-cluster-across-private-networks) example.
 `--sql-addr` | <a name="flags-sql-addr"></a> The IP address/hostname and port on which to listen for SQL connections from clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-sql-addr`. For example, the node will also advertise itself to clients using this value if `--advertise-sql-addr` is not specified. <br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257` <br><br>For an example, see [Start a cluster with separate RPC and SQL networks](#start-a-cluster-with-separate-rpc-and-sql-networks)
 `--advertise-sql-addr` | The IP address/hostname and port to tell clients to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--sql-addr`. For example, if the port number is different than the one used in `--sql-addr`, port forwarding is required. <br><br>**Default:** The value of `--sql-addr`; if `--sql-addr` is not specified, advertises the value of `--listen-addr`
 `--join`<br>`-j` | The host addresses that connect nodes to the cluster and distribute the rest of the node addresses. These can be IP addresses or DNS aliases of nodes.<br><br>When starting a cluster in a single region, specify the addresses of 3-5 initial nodes. When starting a cluster in multiple regions, specify more than 1 address per region, and select nodes that are spread across failure domains. Then run the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command against any of these nodes to complete cluster startup. See the [example](#start-a-multi-node-cluster) below for more details.<br><br>Use the same `--join` list for all nodes to ensure that the cluster can stabilize. Do not list every node in the cluster, because this increases the time for a new cluster to stabilize. Note that these are best practices; it is not required to restart an existing node to update its `--join` flag.<br><br>`cockroach start` must be run with the `--join` flag. To start a single-node cluster, use `cockroach start-single-node` instead.
@@ -193,6 +193,17 @@ The `--storage-engine` flag is used to choose the storage engine used by the nod
  As of v21.1 and later, CockroachDB always uses the [Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
 #### Store
+
+The `--store` flag allows you to specify details about a node's storage.
+
+To start a node with multiple disks or SSDs, you can use either of these approaches:
+
+- Configure the disks or SSDs as a single RAID volume, then pass the RAID volume to the `--store` flag when starting the `cockroach` process on the node.
+- Provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+
+  {{site.data.alerts.callout_danger}}
+  If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
+  {{site.data.alerts.end}}
 
 The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
 
@@ -384,21 +395,35 @@ In this example we will start a multi-node [local cluster]({% link {{ page.versi
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    cockroach start --locality=region=us-east1,zone=us-east-1a \
+                      --insecure --store=/tmp/node0 \
+                      --listen-addr=localhost:26257 \
+                      --http-port=8888 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Start a node in the `us-west1` region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    cockroach start --locality=region=us-west1,zone=us-west-1a \
+                      --insecure \
+                      --store=/tmp/node2 \
+                      --listen-addr=localhost:26259 \
+                      --http-port=8890 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Start a node in the `europe-west1` region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    cockroach start --locality=region=europe-west1,zone=europe-west-1a \
+                      --insecure \
+                      --store=/tmp/node1 \
+                      --listen-addr=localhost:26258 \
+                      --http-port=8889 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Initialize the cluster:

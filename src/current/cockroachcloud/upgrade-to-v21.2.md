@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v21.2](https://www.cockroachlabs.com/docs/releases/v21.2) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v21.2](https://www.cockroachlabs.com/docs/releases/v21.2) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [upgrade policy]({% link cockroachcloud/upgrade-policy.md %}).

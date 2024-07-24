@@ -10,6 +10,7 @@ docs_area: stream_data
 CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
+- {% include_cached new-in.html version="v23.2" %} [Confluent Cloud](#confluent-cloud)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
@@ -114,7 +115,7 @@ Each of the following settings have significant impact on a changefeed's behavio
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "GZIP" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE", "Compression": "GZIP" }'
 ~~~
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
@@ -130,7 +131,7 @@ Field              | Type                | Description      | Default
 `Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `Flush.Frequency`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
-<a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. {% include {{ page.version.version }}/cdc/kafka-acks.md %} | `"ONE"`
+<a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. {% include {{ page.version.version }}/cdc/kafka-acks.md %} | `"ONE"`
 <a name="kafka-compression"></a>`"Compression"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"NONE"`, `"GZIP"`, `"SNAPPY"`, `"LZ4"`, `"ZSTD"`. | `"NONE"`
 
 ### Kafka sink messages
@@ -192,6 +193,35 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
+## Confluent Cloud
+
+{% include_cached new-in.html version="v23.2" %} Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
+
+A Confluent Cloud sink connection URI must include the following:
+
+~~~
+'confluent-cloud://{bootstrap server}:9092?api_key={key}&api_secret={secret}'
+~~~
+
+The `api_key` and `api_secret` are the required parameters for the Confluent Cloud sink connection URI.
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`bootstrap server` | The bootstrap server listed for your Kafka cluster in the Confluent Cloud console.
+`api_key` | The API key created for the cluster in Confluent Cloud.
+`api_secret` | The API key's secret generated in Confluent Cloud. **Note:** This must be [URL-encoded](https://www.urlencoder.org/) before passing into the connection string.
+
+Changefeeds emitting to a Confluent Cloud Kafka cluster support the standard [Kafka parameters](#kafka-parameters), such as `topic_name` and `topic_prefix`. Confluent Cloud sinks also support the standard Kafka [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For a Confluent Cloud setup example, refer to the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-confluent-cloud-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
+
 ## Google Cloud Pub/Sub
 
 {{site.data.alerts.callout_info}}
@@ -200,22 +230,26 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. Without this cluster setting enabled, changefeeds emit JSON-encoded events with the top-level message fields all lowercase. With `changefeed.new_pubsub_sink_enabled`, the top-level fields are capitalized. For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
+{{site.data.alerts.end}}
+
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?REGION={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`PROJECT NAME`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
+`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
-`ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
+`ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -250,25 +284,64 @@ You can manually create a topic in your Pub/Sub sink before starting the changef
 
 For a list of compatible parameters and options, refer to [Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) on the `CREATE CHANGEFEED` page.
 
+### Pub/Sub sink configuration
+
+The `pubsub_sink_config` option allows the changefeed flushing and retry behavior of your Pub/Sub sink to be configured.
+
+You can configure the following fields:
+
+Field              | Type                | Description      | Default
+-------------------+---------------------+------------------+-------------------
+`Flush.Messages`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
+`Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
+`Flush.Frequency`  | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`Retry.Max`        | [`INT`]({% link {{ page.version.version }}/int.md %}) | The maximum number of attempted batch emit retries after sending a message batch in a request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects batch emit retries, not other causes of [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages). Note that setting this field will not prevent the whole changefeed job from retrying indefinitely. | `3`
+`Retry.Backoff`    | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
+
+For example:
+
+~~~
+pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
+~~~
+
+{% include {{ page.version.version }}/cdc/sink-configuration-detail.md %}
+
 ### Pub/Sub sink messages
+
+{% include_cached new-in.html version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved changefeed throughput peformance. With `changefeed.new_pubsub_sink_enabled` enabled, the changefeed JSON-encoded message format have top-level fields that are capitalized:
+
+~~~
+{Key: ..., Value: ..., Topic: ...}
+~~~
+
+{{site.data.alerts.callout_danger}}
+By default in v23.2, the capitalization of top-level fields in the message has changed. Before upgrading to CockroachDB v23.2 and later, you may need to reconfigure downstream systems to parse the new message format.
+{{site.data.alerts.end}}
+
+With `changefeed.new_pubsub_sink_enabled` set to `false`, changefeeds emit JSON messages with the top-level fields all lowercase:
+
+~~~
+{key: ..., value: ..., topic: ...}
+~~~
+
+If `changefeed.new_pubsub_sink_enabled` is set to `false`, changefeeds will not benefit from the improved throughput performance that this setting enables.
 
 The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
-│                                                                                                                                 DATA                                                                                                                                 │    MESSAGE_ID    │                       ORDERING_KEY                      │ ATTRIBUTES │ DELIVERY_ATTEMPT │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼─────────────────────────────────────────────────────────┼────────────┼──────────────────┤
-│ {"key":["boston","40ef7cfa-5e16-4bd3-9e14-2f23407a66df"],"value":{"after":{"address":"14980 Gentry Plains Apt. 64","city":"boston","credit_card":"2466765790","id":"40ef7cfa-5e16-4bd3-9e14-2f23407a66df","name":"Vickie Fitzpatrick"}},"topic":"movr-users"}         │ 4466153049158588 │ ["boston", "40ef7cfa-5e16-4bd3-9e14-2f23407a66df"]      │            │                  │
-│ {"key":["los angeles","947ae147-ae14-4800-8000-00000000001d"],"value":{"after":{"address":"35627 Chelsey Tunnel Suite 94","city":"los angeles","credit_card":"2099932769","id":"947ae147-ae14-4800-8000-00000000001d","name":"Kenneth Barnes"}},"topic":"movr-users"} │ 4466144577818136 │ ["los angeles", "947ae147-ae14-4800-8000-00000000001d"] │            │                  │
-│ {"key":["amsterdam","c28f5c28-f5c2-4000-8000-000000000026"],"value":{"after":{"address":"14729 Karen Radial","city":"amsterdam","credit_card":"5844236997","id":"c28f5c28-f5c2-4000-8000-000000000026","name":"Maria Weber"}},"topic":"movr-users"}                   │ 4466151194002912 │ ["amsterdam", "c28f5c28-f5c2-4000-8000-000000000026"]   │            │                  │
-│ {"key":["new york","6c8ab772-584a-439d-b7b4-fda37767c74c"],"value":{"after":{"address":"34196 Roger Row Suite 6","city":"new york","credit_card":"3117945420","id":"6c8ab772-584a-439d-b7b4-fda37767c74c","name":"James Lang"}},"topic":"movr-users"}                 │ 4466147099992681 │ ["new york", "6c8ab772-584a-439d-b7b4-fda37767c74c"]    │            │                  │
-│ {"key":["boston","c56dab0a-63e7-4fbb-a9af-54362c481c41"],"value":{"after":{"address":"83781 Ross Overpass","city":"boston","credit_card":"7044597874","id":"c56dab0a-63e7-4fbb-a9af-54362c481c41","name":"Mark Butler"}},"topic":"movr-users"}                        │ 4466150752442731 │ ["boston", "c56dab0a-63e7-4fbb-a9af-54362c481c41"]      │            │                  │
-│ {"key":["amsterdam","f27e09d5-d7cd-4f88-8b65-abb910036f45"],"value":{"after":{"address":"77153 Donald Road Apt. 62","city":"amsterdam","credit_card":"7531160744","id":"f27e09d5-d7cd-4f88-8b65-abb910036f45","name":"Lisa Sandoval"}},"topic":"movr-users"}          │ 4466147182359256 │ ["amsterdam", "f27e09d5-d7cd-4f88-8b65-abb910036f45"]   │            │                  │
-│ {"key":["new york","46d200c0-6924-4cc7-b3c9-3398997acb84"],"value":{"after":{"address":"92843 Carlos Grove","city":"new york","credit_card":"8822366402","id":"46d200c0-6924-4cc7-b3c9-3398997acb84","name":"Mackenzie Malone"}},"topic":"movr-users"}                │ 4466142864542016 │ ["new york", "46d200c0-6924-4cc7-b3c9-3398997acb84"]    │            │                  │
-│ {"key":["boston","52ecbb26-0eab-4e0b-a160-90caa6a7d350"],"value":{"after":{"address":"95044 Eric Corner Suite 33","city":"boston","credit_card":"3982363300","id":"52ecbb26-0eab-4e0b-a160-90caa6a7d350","name":"Brett Porter"}},"topic":"movr-users"}                │ 4466152539161631 │ ["boston", "52ecbb26-0eab-4e0b-a160-90caa6a7d350"]      │            │                  │
-│ {"key":["amsterdam","ae147ae1-47ae-4800-8000-000000000022"],"value":{"after":{"address":"88194 Angela Gardens Suite 94","city":"amsterdam","credit_card":"4443538758","id":"ae147ae1-47ae-4800-8000-000000000022","name":"Tyler Dalton"}},"topic":"movr-users"}       │ 4466151398997150 │ ["amsterdam", "ae147ae1-47ae-4800-8000-000000000022"]   │            │                  │
-│ {"key":["paris","dc28f5c2-8f5c-4800-8000-00000000002b"],"value":{"after":{"address":"2058 Rodriguez Stream","city":"paris","credit_card":"9584502537","id":"dc28f5c2-8f5c-4800-8000-00000000002b","name":"Tony Ortiz"}},"topic":"movr-users"}                         │ 4466146372222914 │ ["paris", "dc28f5c2-8f5c-4800-8000-00000000002b"]       │            │                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────────┬──────────────┬────────────┬──────────────────┬────────────┐
+│                                                                                                                                     DATA                                                                                                                                    │     MESSAGE_ID    │ ORDERING_KEY │ ATTRIBUTES │ DELIVERY_ATTEMPT │ ACK_STATUS │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────────┼──────────────┼────────────┼──────────────────┼────────────┤
+│ {"Key":["amsterdam", "09ee2856-5856-40c4-85d3-7d65bed978f0"],"Value":{"after": {"address": "84579 Peter Divide Apt. 47", "city": "amsterdam", "credit_card": "0100007510", "id": "09ee2856-5856-40c4-85d3-7d65bed978f0", "name": "Timothy Jackson"}},"Topic":"users"}       │ 11249015757941393 │              │            │                  │ SUCCESS    │
+│ {"Key":["new york", "8803ab9e-5001-4994-a2e6-68d587f95f1d"],"Value":{"after": {"address": "37546 Andrew Roads Apt. 68", "city": "new york", "credit_card": "4731676650", "id": "8803ab9e-5001-4994-a2e6-68d587f95f1d", "name": "Susan Harrington"}},"Topic":"users"}        │ 11249015757941394 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "32e27201-ca0d-4a0c-ada2-fbf47f6a4711"],"Value":{"after": {"address": "86725 Stephen Gardens", "city": "seattle", "credit_card": "3639690115", "id": "32e27201-ca0d-4a0c-ada2-fbf47f6a4711", "name": "Brad Hill"}},"Topic":"users"}                      │ 11249015757941395 │              │            │                  │ SUCCESS    │
+│ {"Key":["san francisco", "27b03637-ef9f-49a0-9b58-b16d7a9e34f4"],"Value":{"after": {"address": "85467 Tiffany Field", "city": "san francisco", "credit_card": "0016125921", "id": "27b03637-ef9f-49a0-9b58-b16d7a9e34f4", "name": "Mark Garcia"}},"Topic":"users"}          │ 11249015757941396 │              │            │                  │ SUCCESS    │
+│ {"Key":["rome", "982e1863-88d4-49cb-adee-0a35baae7e0b"],"Value":{"after": {"address": "54918 Sutton Isle Suite 74", "city": "rome", "credit_card": "6015706174", "id": "982e1863-88d4-49cb-adee-0a35baae7e0b", "name": "Kimberly Nichols"}},"Topic":"users"}                │ 11249015757941397 │              │            │                  │ SUCCESS    │
+│ {"Key":["washington dc", "7b298994-7b12-414c-90ef-353c7105f012"],"Value":{"after": {"address": "45205 Romero Ford Apt. 86", "city": "washington dc", "credit_card": "3519400314", "id": "7b298994-7b12-414c-90ef-353c7105f012", "name": "Taylor Bullock"}},"Topic":"users"} │ 11249015757941398 │              │            │                  │ SUCCESS    │
+│ {"Key":["boston", "4f012f57-577b-4853-b5ab-0d79d0df1369"],"Value":{"after": {"address": "15765 Vang Ramp", "city": "boston", "credit_card": "6747715133", "id": "4f012f57-577b-4853-b5ab-0d79d0df1369", "name": "Ryan Garcia"}},"Topic":"users"}                            │ 11249015757941399 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "9ba85917-5545-4674-8ab2-497fa47ac00f"],"Value":{"after": {"address": "24354 Whitney Lodge", "city": "seattle", "credit_card": "8642661685", "id": "9ba85917-5545-4674-8ab2-497fa47ac00f", "name": "Donald Walsh"}},"Topic":"users"}                     │ 11249015757941400 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "98312fb3-230e-412d-9b22-074ec97329ff"],"Value":{"after": {"address": "72777 Carol Shoal", "city": "seattle", "credit_card": "7789799678", "id": "98312fb3-230e-412d-9b22-074ec97329ff", "name": "Christopher Davis"}},"Topic":"users"}                  │ 11249015757941401 │              │            │                  │ SUCCESS    │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────────┴──────────────┴────────────┴──────────────────┴────────────┘
 ~~~
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
@@ -320,7 +393,7 @@ URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
 `AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
-`ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
+`ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>AWS S3 only: Use `external_id` with `ASSUME_ROLE` to specify a third-party assigned external ID as part of the role. Refer to [Amazon S3 assume role]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) for setup details.
 `AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure Blob Storage | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure Blob Storage | The URL-encoded account key for your Azure account.
@@ -434,34 +507,7 @@ For example:
 webhook_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
 ~~~
 
-{{site.data.alerts.callout_danger}}
-Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
-{{site.data.alerts.end}}
-
-Some complexities to consider when setting `Flush` fields for batching:
-
-- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
-
-~~~
-{
-  "Flush": {
-    "Messages": 0,
-    "Bytes": 0,
-    "Frequency": "0s"
-  }
-}
-~~~
-
-- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` defaults to `0` in this case, so a batch will never trigger due to a configured byte size:
-
-~~~
-{
-  "Flush": {
-    "Messages": 100,
-    "Frequency": "5s"
-  }
-}
-~~~
+{% include {{ page.version.version }}/cdc/sink-configuration-detail.md %}
 
 ### Webhook sink messages
 

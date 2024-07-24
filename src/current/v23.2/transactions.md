@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
+CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. By default, CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with `SERIALIZABLE` [isolation](#isolation-levels).
 
 For a detailed discussion of CockroachDB transaction semantics, see [How CockroachDB Does Distributed Atomic Transactions](https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/) and [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/). The explanation of the transaction model described in this blog post is slightly out of date. See the [Transaction Retries](#transaction-retries) section for more details.
 
@@ -13,16 +13,16 @@ For a detailed discussion of CockroachDB transaction semantics, see [How Cockroa
 
 The following SQL statements control transactions.
 
-| Statement                                            | Description                                                                                                                                                              |
-|------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})                    | Initiate a transaction, as well as control its [priority](#transaction-priorities).                                                                                      |
-| [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})            | Control a transaction's [priority](#transaction-priorities).                                                                                                             |
+|                                        Statement                                         |                                                                                                 Description                                                                                                  |
+|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})                    | Initiate a transaction and optionally set its [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                |
 | [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}). |
-| [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                |
-| [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})                             | Display the current transaction settings.                                                                                                                                |
-| [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %})                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).  |
 | [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).                              |
+| [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                                                    |
 | [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).               |
+| [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %})                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).  |
+| [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})            | Set a transaction's [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                                          |
+| [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})                             | Display the current transaction settings.                                                                                                                                                                    |
 
 {{site.data.alerts.callout_info}}
 If you are using a framework or library that does not have [advanced retry logic]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
@@ -156,7 +156,9 @@ Every transaction in CockroachDB is assigned an initial **priority**. By default
 
 ### Set transaction priority
 
-For transactions that should be given higher or lower preference in [high-contention scenarios]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can set the priority in the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement:
+{% include {{ page.version.version }}/sql/use-the-default-transaction-priority.md %}
+
+For transactions that you are absolutely sure should be given higher or lower priority, you can set the priority in the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
@@ -171,12 +173,8 @@ You can also set the priority immediately after a transaction is started:
 To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable]({% link {{ page.version.version }}/set-vars.md %}). For example:
 
 ~~~ sql
-> SET default_transaction_priority = 'high';
+> SET default_transaction_priority = 'low';
 ~~~
-
-{{site.data.alerts.callout_info}}
-When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
-{{site.data.alerts.end}}
 
 ### View transaction priority
 
@@ -191,7 +189,7 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 ~~~
   transaction_priority
 ------------------------
-  high
+  low
 ~~~
 
 ~~~ sql
@@ -201,25 +199,12 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 ~~~
   transaction_priority
 ------------------------
-  high
+  low
 ~~~
 
 ## Isolation levels
 
-CockroachDB executes all transactions at the strongest ANSI transaction isolation level:
-`SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`,
-`READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker
-isolation levels have historically been used to maximize transaction throughput. However,
-[ACIDRain: Concurrency-Related Attacks on Database-Backed Web Applications](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use
-of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
-
-For a detailed discussion of isolation in CockroachDB transactions, see [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/).
-
-#### Serializable isolation
-
-With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default.
-
-`SERIALIZABLE` isolation permits no anomalies. To prevent [write skew](https://wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts. For a demonstration of `SERIALIZABLE` preventing write skew, see [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %}).
+{% include {{ page.version.version }}/sql/isolation-levels.md %}
 
 ### Comparison to ANSI SQL isolation levels
 
@@ -229,9 +214,13 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
 
+{% include_cached new-in.html version="v23.2" %} If [`READ COMMITTED` isolation is enabled]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `READ COMMITTED` is no longer an alias for `SERIALIZABLE`, and `READ UNCOMMITTED` becomes an alias for `READ COMMITTED`.
+
 #### Comparison
 
-The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
+The CockroachDB `SERIALIZABLE` isolation level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
+
+The CockroachDB `READ COMMITTED` isolation level is stronger than the PostgreSQL `READ COMMITTED` isolation level, and is the strongest isolation level that does not experience [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require [client-side handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
@@ -239,26 +228,13 @@ For more information about the relationship between these levels, see [A Critiqu
 
 You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
-Use the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.defaults.transaction_rows_written_log`,
-`sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
-`sql.defaults.transaction_rows_read_err` and [session settings]({% link {{ page.version.version }}/set-vars.md %}) `transaction_rows_written_log`,
-`transaction_rows_written_err`, `transaction_rows_read_log`, and
-`transaction_rows_read_err` to limit the number of rows written or read in a
-transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
-When the `err` limit is reached, the transaction is rejected. The limits are enforced after each
-statement of a transaction has been fully executed.
+{% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
-The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
-and `DELETE` SQL statements. The "read" limits apply to the `SELECT`
-statement in addition to the statements subject to the "write" limits. The limits **do not**
-apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`,
-`RESTORE`, or `CREATE STATISTICS` statements.
+The limits are enforced after each statement of a transaction has been fully executed. The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`, and `DELETE` SQL statements. The "read" limits apply to the `SELECT` statement in addition to the statements subject to the "write" limits. The limits **do not** apply to `CREATE TABLE AS`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`, `RESTORE`, or `CREATE STATISTICS` statements.
 
 {{site.data.alerts.callout_info}}
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
-
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## See also
 

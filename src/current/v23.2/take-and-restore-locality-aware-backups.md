@@ -9,12 +9,11 @@ docs_area: manage
 Locality-aware [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
 {{site.data.alerts.end}}
 
-Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
+Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-This is useful for:
-
-- Reducing cloud storage data transfer costs by keeping data within cloud regions.
-- Helping you comply with data domiciling requirements.
+{{site.data.alerts.callout_danger}}
+While a locality-aware backup will always match the node locality and storage bucket locality, a [range's]({% link {{ page.version.version }}/architecture/overview.md %}#range) locality will not necessarily match the node's locality. The backup job will attempt to back up ranges through nodes matching that range's locality, however this is not always possible. As a result, **Cockroach Labs cannot guarantee that all ranges will be backed up to a cloud storage bucket with the same locality.** You should consider this as you plan a backup strategy that must comply with [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) requirements.
+{{site.data.alerts.end}}
 
 A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. [Restore jobs can read from a locality-aware backup](#restore-from-a-locality-aware-backup) when you provide the list of URIs that together contain the locations of all of the files for a single locality-aware backup.
 
@@ -24,11 +23,15 @@ A locality-aware backup is specified by a list of URIs, each of which has a `COC
 
 For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-and-export-of-locality-aware-backups).
 
-{% include {{ page.version.version }}/backups/support-products.md %}
+## Supported products
+
+Locality-aware backups are available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [customer-owned backups](https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-customer-owned-backups). For a full list of features on CockroachDB Cloud, refer to [Backup and Restore Overview](https://www.cockroachlabs.com/docs/cockroachcloud/backup-and-restore-overview).
 
 {{site.data.alerts.callout_info}}
-CockroachDB also supports _locality-restricted backup execution_, which allow you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) for more detail.
+{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
 {{site.data.alerts.end}}
+
+CockroachDB also supports _locality-restricted backup execution_, which allows you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This allows only nodes to execute a backup that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) for more detail.
 
 ## Create a locality-aware backup
 
@@ -55,7 +58,7 @@ RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup)
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup)
 
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
@@ -123,7 +126,7 @@ Restore a locality-aware backup with:
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 {{site.data.alerts.callout_info}}
 [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) was not of a [full cluster]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
@@ -186,7 +189,7 @@ can be restored by running:
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 {{site.data.alerts.callout_info}}
 When [restoring from an incremental locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
@@ -208,7 +211,7 @@ The `system.zones` table stores your cluster's [zone configurations]({% link {{ 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE TABLE system.zones FROM '2021/03/23-213101.37' IN
-	'azure://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+	'azure-blob://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
 	WITH into_db = 'newdb';
 ~~~
 

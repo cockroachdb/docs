@@ -6,13 +6,13 @@ docs_area: stream_data
 key: use-changefeeds.html
 ---
 
-Changefeeds emit messages as changes happen to watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
+Changefeeds generate and emit messages (on a per-key basis) as changes happen to the rows in watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
 
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
 - [Message envelopes](#message-envelopes): The structure of the changefeed message.
-- [Ordering guarantees](#ordering-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
+- [Ordering and delivery guarantees](#ordering-and-delivery-guarantees): CockroachDB's guarantees for a changefeed's message ordering and delivery.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
 - [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
 - [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
@@ -59,7 +59,7 @@ For [webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#we
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
-[Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
+[Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-and-delivery-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
 
 Refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
@@ -194,70 +194,143 @@ CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wr
     {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "85551 Moore Mountains Apt. 47", "ext": {"color": "red"}, "id": "d3b37607-1e9f-4e25-b772-efb9374b08e3", "owner_id": "4f26b516-f13f-4136-83e1-2ea1ae151c20", "status": "available", "type": "skateboard"}
     ~~~
 
-## Ordering guarantees
+## Ordering and delivery guarantees
 
-- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
+Changefeeds provide the following guarantees for message delivery to changefeed sinks:
 
-- Once a row has been emitted with some timestamp, no previously unseen versions of that row will be emitted with a lower timestamp. That is, you will never see a _new_ change for that row at an earlier timestamp.
+- [Per-key ordering](#per-key-ordering) for the first emission of an event's message.
+- [At-least-once delivery](#at-least-once-delivery) per event message.
 
-    For example, if you ran the following:
+{{site.data.alerts.callout_info}}
+Changefeeds do not support total message ordering or transactional ordering of messages.
+{{site.data.alerts.end}}
 
+### Per-key ordering
+
+Changefeeds provide a _per-key ordering guarantee_ for the **first emission** of a message to the sink. Once the changefeed has emitted a row with a timestamp, the changefeed will not emit any previously unseen versions of that row with a lower timestamp. Therefore, you will never receive a new change for that row at an earlier timestamp.
+
+For example, a changefeed can emit updates to rows `A` at timestamp `T1`, `B` at `T2`, and `C` at `T3` in any order.
+
+When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` (for the first time) **after** emitting `A` at `T1` (for the first time). However, `A` at `T3` could precede or follow `B` at `T2`, because there is no timestamp ordering between keys.
+
+Under some circumstances, a changefeed will emit [duplicate messages](#duplicate-messages) of row updates. Changefeeds can emit duplicate messages in any order.
+
+As an example, you run the following sequence of SQL statements to create a changefeed:
+
+1. Create a table:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE foo (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
-    > CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://localhost:9092' WITH UPDATED;
-    > INSERT INTO foo VALUES (1, 'Carl');
-    > UPDATE foo SET name = 'Petee' WHERE id = 1;
+    CREATE TABLE employees (
+        id INT PRIMARY KEY,
+        name STRING,
+        office STRING
+    );
     ~~~
 
-    You'd expect the changefeed to emit:
+1. Create a changefeed targeting the `employees` table:
 
-    ~~~json
-    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
-    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE employees INTO 'external://sink' WITH updated;
     ~~~
 
-    It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
+1. Insert and update values in `employees`:
 
-    ~~~json
-    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
-    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
-    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    INSERT INTO employees VALUES (1, 'Terry', 'new york city');
+    INSERT INTO employees VALUES (2, 'Alex', 'los angeles');
+    UPDATE employees SET name = 'Terri' WHERE id = 1;
+    INSERT INTO employees VALUES (3, 'Ash', 'london');
+    UPDATE employees SET name = 'Terrence' WHERE id = 1;
+    UPDATE employees SET office = 'new york city' WHERE id = 2;
+    INSERT INTO employees VALUES (4, 'Danny', 'los angeles');
+    INSERT INTO employees VALUES (5, 'Robbie', 'london');
     ~~~
 
-    However, you will **never** see an output like the following (i.e., an out of order row that you've never seen before):
+    {{site.data.alerts.callout_info}}
+    In a [transaction]({% link {{ page.version.version }}/transactions.md %}), if a row is modified more than once in the same transaction, the changefeed will only emit the last change.
+    {{site.data.alerts.end}}
 
-    ~~~json
-    [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
-    [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
+1. The sink will receive messages of the inserted rows emitted per timestamp:
+
+    ~~~
+    {"after": {"id": 1, "name": "Terry", "office": "new york city"}, "key": [1], "updated": "1701102296662969433.0000000000"}
+    {"after": {"id": 1, "name": "Terri", "office": "new york city"}, "key": [1], "updated": "1701102311425045162.0000000000"}
+    {"after": {"id": 2, "name": "Alex", "office": "los angeles"}, "key": [2], "updated": "1701102305519323705.0000000000"}
+    {"after": {"id": 3, "name": "Ash", "office": "london"}, "key": [3], "updated": "1701102316388801052.0000000000"}
+    {"after": {"id": 1, "name": "Terrence", "office": "new york city"}, "key": [1], "updated": "1701102320607990564.0000000000"}
+    {"after": {"id": 2, "name": "Alex", "office": "new york city"}, "key": [2], "updated": "1701102325724272373.0000000000"}
+    {"after": {"id": 5, "name": "Robbie", "office": "london"}, "key": [5], "updated": "1701102330377135318.0000000000"}
+    {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
     ~~~
 
-- If a row is modified more than once in the same transaction, only the last change will be emitted.
+    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, if a changefeed starts to re-emit messages after the last [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}), it may not emit all duplicate messages between the first duplicate message and new updates to the table. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
 
-- Rows are sharded between Kafka partitions by the row’s [primary key]({% link {{ page.version.version }}/primary-key.md %}). To define another key to determine the partition for your messages, use the [`key_column`]({% link {{ page.version.version }}/create-changefeed.md %}#key-column) option.
+    The `updated` option adds an `updated` timestamp to each emitted row. You can also use the [`resolved` option](#resolved-messages) to emit a `resolved` timestamp message to each Kafka partition, or to a separate file at a cloud storage sink. A `resolved` timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
-- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) to emit a "resolved" timestamp message to each Kafka partition. A "resolved" timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+    {{site.data.alerts.callout_info}}
+    Depending on the workload, you can use resolved timestamp notifications on every Kafka partition to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the `resolved` timestamp to see every row that changed at a certain time.
+    {{site.data.alerts.end}}
 
-    For example:
+#### Define a key column
 
-    ~~~json
-    {"__crdb__": {"updated": "1532377312562986715.0000000000"}, "id": 1, "name": "Petee H"}
-    {"__crdb__": {"updated": "1532377306108205142.0000000000"}, "id": 2, "name": "Carl"}
-    {"__crdb__": {"updated": "1532377358501715562.0000000000"}, "id": 3, "name": "Ernie"}
-    {"__crdb__":{"resolved":"1532379887442299001.0000000000"}}
-    {"__crdb__":{"resolved":"1532379888444290910.0000000000"}}
-    {"__crdb__":{"resolved":"1532379889448662988.0000000000"}}
-    ...
-    {"__crdb__":{"resolved":"1532379922512859361.0000000000"}}
-    {"__crdb__": {"updated": "1532379923319195777.0000000000"}, "id": 4, "name": "Lucky"}
-    ~~~
+Typically, changefeeds that emit to Kafka sinks shard rows between Kafka partitions using the row's primary key, which is hashed. The resulting hash remains the same and ensures a row will always emit to the same Kafka partition.
 
-- With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table.
+In some cases, you may want to specify another column in a table as the key by using the [`key_column`]({% link {{ page.version.version }}/create-changefeed.md %}#key-column) option, which will determine the partition your messages will emit to. However, if you implement `key_column` with a changefeed, consider that other columns may have arbitrary values that change. As a result, the same row (i.e., by primary key) may emit to any partition at the sink based upon the column value. A changefeed with a `key_column` specified will still maintain per-key and at-least-once delivery guarantees.
 
-    To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
+To confirm that messages may emit the same row to different partitions when an arbitrary column is used, you must include the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option:
 
-    Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
+    WITH key_column='office', unordered;
+~~~
 
-    The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
+### At-least-once delivery
+
+Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it may re-emit some or all of the messages starting from the previous checkpoint to ensure that every message is delivered at least once, which could lead to some messages being delivered more than once.
+
+Refer to [Duplicate messages](#duplicate-messages) for causes of messages repeating at the sink.
+
+For example, the checkpoints and changefeed pauses marked in this output show how messages may be duplicated, but always delivered:
+
+~~~
+{"after": {"id": 1, "name": "Terry", "office": "new york city"}, "key": [1], "updated": "1701102296662969433.0000000000"}
+{"after": {"id": 1, "name": "Terri", "office": "new york city"}, "key": [1], "updated": "1701102311425045162.0000000000"}
+{"after": {"id": 2, "name": "Alex", "office": "los angeles"}, "key": [2], "updated": "1701102305519323705.0000000000"}
+
+[checkpoint]
+
+{"after": {"id": 3, "name": "Ash", "office": "london"}, "key": [3], "updated": "1701102316388801052.0000000000"}
+{"after": {"id": 1, "name": "Terrence", "office": "new york city"}, "key": [1], "updated": "1701102320607990564.0000000000"}
+
+[changefeed pauses before the next checkpoint was reached]
+
+[changefeed resumes and re-emits the messages after the previous checkpoint to ensure the sink received the messages]
+
+{"after": {"id": 3, "name": "Ash", "office": "london"}, "key": [3], "updated": "1701102316388801052.0000000000"}
+{"after": {"id": 1, "name": "Terrence", "office": "new york city"}, "key": [1], "updated": "1701102320607990564.0000000000"}
+{"after": {"id": 2, "name": "Alex", "office": "new york city"}, "key": [2], "updated": "1701102325724272373.0000000000"}
+
+[changefeed continues to emit new events]
+
+{"after": {"id": 5, "name": "Robbie", "office": "london"}, "key": [5], "updated": "1701102330377135318.0000000000"}
+{"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
+
+[checkpoint]
+~~~
+
+In this example, with duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. (Refer to [Per-key ordering](#per-key-ordering).)
+
+{{site.data.alerts.callout_danger}}
+The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, there may be gaps in a sequence of duplicate messages for a key.
+{{site.data.alerts.end}}
+
+To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.).
+
+The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
 {% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
 
@@ -273,7 +346,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 ## Resolved messages
 
-When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
+When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
 
 When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
 
@@ -298,7 +371,7 @@ Under some circumstances, changefeeds will emit duplicate messages to ensure the
 
 A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
 
-When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+When a changefeed must pause and then resume, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
 
 <img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
 
@@ -330,9 +403,13 @@ In v22.1, CockroachDB introduced the [declarative schema changer]({% link {{ pag
 
 ### Avro schema changes
 
-To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, since the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
+To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, because the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
 
-Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+The original CockroachDB column definition is also included within a doc field `__crdb__` in the schema. This allows CockroachDB to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+
+{{site.data.alerts.callout_danger}}
+Schema validation tools should ignore the `__crdb__` field. This is an internal CockroachDB schema type description that may change between CockroachDB versions.
+{{site.data.alerts.end}}
 
 ### Schema changes with column backfill
 

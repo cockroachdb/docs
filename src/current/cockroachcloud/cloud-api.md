@@ -81,7 +81,7 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `CREATE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -219,7 +219,7 @@ Where:
 To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `Read` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -290,7 +290,7 @@ Where:
 To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 
@@ -343,7 +343,7 @@ Where:
 To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 The service account associated with the secret key must have `ADMIN` or `EDIT` [permission]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) to retrieve information about an organization's clusters.
@@ -392,7 +392,7 @@ If the request was successful, the client will not receive a response payload.
 To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `DELETE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
@@ -425,7 +425,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -471,7 +471,7 @@ Where:
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -551,7 +551,7 @@ Where:
 To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -586,7 +586,7 @@ Where:
 To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -623,7 +623,7 @@ Where `{user name}` is the SQL username of the user.
 To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
@@ -663,7 +663,7 @@ Where `{sql_username}` is the username of the newly created SQL user.
 To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -695,7 +695,7 @@ Where `{sql_username}` is the username of the deleted SQL user.
 To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

@@ -52,6 +52,7 @@ To emit different properties for a row, specify the following explicitly in CDC 
 ## Limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ## CDC query function support
 
@@ -380,7 +381,7 @@ The changefeed will return messages for the specified rows:
 {"city": "washington dc", "lat": 83, "long": 84, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:38.026542"}
 ~~~
 
-The output will only include the row's history that has been changed within the [garbage collection window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). If the change occurred outside of the garbage collection window, it will not be returned as part of this output. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for more detail on how the garbage collection window interacts with changefeeds.
+The output will only include the row's history that has been changed within the [garbage collection window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). If the change occurred outside of the garbage collection window, it will not be returned as part of this output. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on how the garbage collection window interacts with changefeeds.
 
 ### Customize changefeed messages
 
@@ -499,6 +500,12 @@ You can then use this function within a CDC query tagetting a table in the same 
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides.revenue::int) FROM rides WHERE revenue < 30;
 ~~~
+
+### Video Demo
+
+For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video:
+
+{% include_cached youtube.html video_id="mea4czXi7tI" %}
 
 ## See also
 

@@ -9,14 +9,19 @@ A node **shutdown** terminates the `cockroach` process on the node.
 
 There are two ways to handle node shutdown:
 
-- To temporarily stop a node and restart it later, **drain** the node and terminate the `cockroach` process. This is done when [upgrading the cluster version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) or performing cluster maintenance (e.g., upgrading system software). With a drain, the data stored on the node is preserved, and will be reused if the node restarts within a reasonable timeframe. There is little node-to-node traffic involved, which makes a drain lightweight.
+- **Drain a node** to temporarily stop it when you plan to restart it later, such as during cluster maintenance. When you drain a node:
+    - Clients are disconnected, and subsequent connection requests are sent to other nodes.
+    - The node's [data store]({% link {{ page.version.version }}/cockroach-start.md %}#store) is preserved and will be reused as long as the node restarts in a short time. Otherwise, the node's data is moved to other nodes.
 
-- To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
+    After the node is drained, you can terminate the `cockroach` process, perform maintenance, then restart it. CockroachDB automatically drains a node when [upgrading its cluster version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). Draining a node is lightweight because it generates little node-to-node traffic across the cluster.
+- **Decommission a node** to permanently remove it from the cluster, such as when scaling down the cluster or to replace the node due to hardware failure. During decommission:
+    - The node is drained automatically if you have not manually drained it.
+    - The node's data is moved off the node to other nodes. This [replica rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) generates a large amount of node-to-node network traffic, so decommissioning a node is considered a heavyweight operation.
 
 This page describes:
 
 - The details of the [node shutdown sequence](#node-shutdown-sequence) from the point of view of the `cockroach` process on a CockroachDB node.
-- How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on CockroachDB {{ site.data.products.core }} clusters by implementing connection retry logic and coordinating load balancer, client application server, process manager, and cluster settings.
+- How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on CockroachDB {{ site.data.products.core }} clusters by coordinating load balancer, client application server, process manager, and cluster settings.
 - How to [perform node shutdown](#perform-node-shutdown) on CockroachDB {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
 - How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [CockroachDB {{ site.data.products.dedicated }} cluster](#decommissioning-and-draining-on-cockroachdb-dedicated).
 
@@ -49,14 +54,22 @@ The node's [`is_decommissioning`]({% link {{ page.version.version }}/cockroach-n
 The node's [`/health?ready=1` endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
 
 {{site.data.alerts.callout_info}}
-After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
+After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, you can manually drain the node before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
 {{site.data.alerts.end}}
 </section>
 
 #### Draining
 
 <section class="filter-content" markdown="1" data-scope="drain">
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node.
+
+An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any [range leases]{% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to other nodes, but does not move replicas or data off of the node. When draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down, perform the required maintenance, and then restart the `cockroach` process on the node.
+
+{% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
+
+{{site.data.alerts.callout_danger}}
+{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.drain_wait`](#server-shutdown-drain_wait) cluster setting and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
+{{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -76,31 +89,35 @@ Node drain consists of the following consecutive phases:
 1. **Lease transfer phase:** The node's [`is_draining`]({% link {{ page.version.version }}/cockroach-node.md %}#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) or [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) must be transferred to other nodes. This phase completes when all range leases and Raft leaderships have been transferred.
 
     <section class="filter-content" markdown="1" data-scope="decommission">
-    Since all range replicas were already removed from the node during the [decommissioning](#decommissioning) stage, this step immediately resolves.
+    Since all [range replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) were already removed from the node during the [draining](#draining) stage, this step immediately resolves.
     </section>
 
 <section class="filter-content" markdown="1" data-scope="drain">
-When [draining manually](#drain-a-node-manually), if the above steps have not completed after 10 minutes by default, node draining will stop and must be restarted to continue. For more information, see [Drain timeout](#drain-timeout).
+When [draining manually](#drain-a-node-manually), if the above steps have not completed after [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), node draining will stop and must be restarted manually to continue. For more information, see [Drain timeout](#drain-timeout).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
 #### Status change
 
-After decommissioning and draining are both complete, the node membership changes from `decommissioning` to `decommissioned`.
+After the node is drained and decommissioned, the node membership status changes from `decommissioning` to `decommissioned`.
 
-This node is now cut off from communicating with the rest of the cluster. A client attempting to connect to a `decommissioned` node and run a query will get an error.
+This node is now prevented from communicating with the rest of the cluster, and client connection attempts to the node will result in an error.
 </section>
 
-At this point, the `cockroach` process is still running. It is only stopped by process termination.
+At this point, it is safe to terminate the `cockroach` process manually or using your process manager or other deployment tooling (such as Kubernetes, Nomad, or Docker).
 
 #### Process termination
 
 <section class="filter-content" markdown="1" data-scope="decommission">
-An operator [terminates the node process](#terminate-the-node-process).
+After draining and decommissioning are complete, an operator [terminates the node process](#terminate-the-node-process).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="drain">
-After draining completes, the node process is automatically terminated (unless the [node was manually drained](#drain-a-node-manually)).
+After draining is complete:
+
+- If the node was drained automatically because the `cockroach` process received a `SIGTERM` signal, the `cockroach` process is automatically terminated when draining is complete.
+- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
+
 </section>
 
 A node **process termination** stops the `cockroach` process on the node. The node will stop updating its liveness record.
@@ -128,8 +145,7 @@ Before you [perform node shutdown](#perform-node-shutdown), review the following
 <ul>
 <li>Configure your <a href="#load-balancing">load balancer</a> to monitor node health.</li>
 <li>Review and adjust <a href="#cluster-settings">cluster settings</a> and <a href="#drain-timeout">drain timeout</a> as needed for your deployment.</li>
-<li>Implement <a href="#connection-retry-loop">connection retry logic</a> to handle closed connections.</li>
-<li>Configure the <a href="#termination-grace-period">termination grace period</a> of your process manager or orchestration system.</li>
+<li>Configure the <a href="#termination-grace-period">termination grace period</a> and if necessary, adjust the configuration of your process manager, orchestration system, or deployment tooling accordingly.</li>
 <section class="filter-content" markdown="1" data-scope="decommission">
 <li>Ensure that the <a href="#size-and-replication-factor">size and replication factor</a> of your cluster are sufficient to handle decommissioning.</li>
 </section>
@@ -160,14 +176,10 @@ SET CLUSTER SETTING server.shutdown.drain_wait = '8s';
 
 `server.shutdown.connection_wait` sets the **maximum** duration for the ["connection phase"](#draining) of node drain. SQL client connections are allowed to close or time out within this duration (`0s` by default). This setting presents an option to gracefully close the connections before CockroachDB forcibly closes those that remain after the ["SQL drain phase"](#draining).
 
-Change this setting **only** if you cannot tolerate connection errors during node drain and will not implement a [connection retry loop](#connection-retry-loop) for your application. We suggest setting `server.shutdown.connection_wait` in accordance with the maximum lifetime of a SQL client connection, which is usually configurable via a [connection pool]({% link {{ page.version.version }}/connection-pooling.md %}#about-connection-pools). Depending on your requirements:
+Change this setting **only** if you cannot tolerate connection errors during node drain and cannot configure the maximum lifetime of SQL client connections, which is usually configurable via a [connection pool]({% link {{ page.version.version }}/connection-pooling.md %}#about-connection-pools). Depending on your requirements:
 
 - Lower the maximum lifetime of a SQL client connection in the pool. This will cause more frequent reconnections. Set `server.shutdown.connection_wait` above this value.
 - If you cannot tolerate more frequent reconnections, do not change the SQL client connection lifetime. Instead, use a longer `server.shutdown.connection_wait`. This will cause a longer draining process.
-
-{{site.data.alerts.callout_success}}
-If you do not change `server.shutdown.connection_wait`, you should use a [connection retry loop](#connection-retry-loop) to handle connection errors during node drain.
-{{site.data.alerts.end}}
 
 #### `server.shutdown.query_wait`
 
@@ -182,14 +194,14 @@ Ensure that `server.shutdown.query_wait` is greater than:
 `server.shutdown.query_wait` defines the upper bound of the duration, meaning that node drain proceeds to the next phase as soon as the last open transaction completes.
 
 {{site.data.alerts.callout_success}}
-If there are still open transactions on the draining node when the server closes its connections, you will encounter errors. Your application should handle these errors with a [connection retry loop](#connection-retry-loop).
+If there are still open transactions on the draining node when the server closes its connections, you will encounter errors. You may need to adjust your application server's [connection pool]({% link {{ page.version.version }}/connection-pooling.md %}#about-connection-pools) settings.
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 #### `server.shutdown.lease_transfer_wait`
 
-In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this phase does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
+In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all [range leases]{% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) from the draining node. [`server.shutdown.lease_transfer_wait`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-shutdown-lease-transfer-wait) sets the maximum duration of each iteration of this attempt. Because this phase does not exit until all transfers are completed, changing this value affects only the frequency at which drain progress messages are printed.
 
 <section class="filter-content" markdown="1" data-scope="drain">
 In most cases, the default value is suitable. Do **not** set `server.shutdown.lease_transfer_wait` to a value lower than `5s`. In this case, leases can fail to transfer and node drain will not be able to complete.
@@ -244,33 +256,15 @@ CockroachDB automatically increases the verbosity of logging when it detects a s
 
 `--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
-### Connection retry loop
-
-At the end of the ["SQL drain phase"](#draining) of node drain, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with either a generic TCP-level client error or one of the following errors:
-
-- `57P01 server is shutting down` indicates that the server is not accepting new transactions on existing connections.
-- `08006 An I/O error occurred while sending to the backend` indicates that the current connection was broken (closed by the server).
-
-These errors are an expected occurrence during node shutdown. To be resilient to such errors, **your application should use a reconnection and retry loop** to reissue transactions that were open when a connection was closed or the server stopped accepting transactions. This allows procedures such as [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to complete without interrupting your service.
-
-{{site.data.alerts.callout_success}}
-If you cannot tolerate connection errors during node drain, then instead of using a connection retry loop, [configure `server.shutdown.connection_wait`](#server-shutdown-connection_wait) to allow SQL client connections to close gracefully. This will require making additional trade-offs.
-{{site.data.alerts.end}}
-
-Upon receiving a connection error, your application must handle the result of a previously open transaction as unknown.
-
-A connection retry loop should:
-
-1. Close the current connection.
-1. Open a new connection. This will be routed to a non-draining node.
-1. Reissue the transaction on the new connection.
-1. Repeat while the connection error persists and the retry count has not exceeded a configured maximum.
-
 ### Termination grace period
 
 On production deployments, a process manager or orchestration system can disrupt graceful node shutdown if its termination grace period is too short.
 
-If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure until up-replication completes, which could cause loss of [quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview).
+{{site.data.alerts.callout_danger}}
+{{ drain_early_termination_warning }}
+{{site.data.alerts.end}}
+
+If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process.
 
 - When using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/) to run CockroachDB as a service, set the termination grace period with [`TimeoutStopSec`](https://www.freedesktop.org/software/systemd/man/systemd.service.html#TimeoutStopSec=) setting in the service file.
 
@@ -280,9 +274,9 @@ To determine an appropriate termination grace period:
 
 - [Run `cockroach node drain` with `--drain-wait`](#drain-a-node-manually) and observe the amount of time it takes node drain to successfully complete.
 
-- In general, we recommend setting the termination grace period **between 5 and 10 minutes**. If a node requires more than 10 minutes to drain successfully, this may indicate a technical issue such as inadequate [cluster sizing]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing).
+- In general, we recommend setting the termination grace period to the sum of all `server.shutdown.*` settings. If a node requires more time than this to drain successfully, this may indicate a technical issue such as inadequate [cluster sizing]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing).
 
-- Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck".
+- Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, as this can mask an underlying hardware or software issue that is causing node shutdown to become "stuck".
 
 <section class="filter-content" markdown="1" data-scope="decommission">
 
@@ -842,7 +836,7 @@ For clusters deployed using the CockroachDB Helm chart or a manual StatefulSet, 
 
 Cockroach Labs recommends that you:
 
-- Set `terminationGracePeriodSeconds` to no shorter than 300 seconds (5 minutes). This recommendation has been validated over time for many production workloads. In most cases, a value higher than 600 seconds (10 minutes) is not required. If CockroachDB takes longer than 10 minutes to gracefully stop, this may indicate an underlying configuration problem. Test the value you select against representative workloads before rolling out the change to production clusters.
+- Set `terminationGracePeriodSeconds` to no shorter than 300 seconds (5 minutes). This recommendation has been validated over time for many production workloads. In most cases, a value higher than 300 seconds (5 minutes) is not required. If CockroachDB takes longer than 5 minutes to gracefully stop, this may indicate an underlying configuration problem. Test the value you select against representative workloads before rolling out the change to production clusters.
 - Set `terminationGracePeriodSeconds` to be at least 5 seconds longer than the configured [drain timeout](#server-shutdown-drain_wait), to allow the node to complete draining before Kubernetes removes the Kubernetes pod for the CockroachDB node.
 - Ensure that the **sum** of the following `server.shutdown.*` settings for the CockroachDB cluster do not exceed the deployment's `terminationGracePeriodSeconds`, to reduce the likelihood that a node must be terminated forcibly.
 
@@ -853,21 +847,15 @@ Cockroach Labs recommends that you:
 
     For more information about these settings, refer to [Cluster settings](#cluster-settings). Refer also to the [Kubernetes documentation about pod termination](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination).
 
-- Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
-
-  - A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's `terminationGracePeriodSeconds` setting. Cockroach Labs recommends aligning the value for [server.shutdown.connection_wait](#server-shutdown-connection_wait) with the connection pool's maximum lifetime.
-  - If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection retry loop](#connection-retry-loop).
+  A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's [`server.shutdown.connection_wait`](#server-shutdown-connection_wait) setting.
 
 <a id="decommissioning-and-draining-on-cockroachdb-dedicated"></a>
 
 ## Decommissioning and draining on CockroachDB {{ site.data.products.dedicated }}
 
-Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.dedicated }} cluster. CockroachDB {{ site.data.products.dedicated }} clusters have a termination grace period of 300 seconds (5 minutes). This setting is not configurable.
+Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.dedicated }} cluster. CockroachDB {{ site.data.products.dedicated }} clusters have a `server.shutdown.connection_wait` of 1800 seconds (30 minutes) and a termination grace period that is slightly longer. The termination grace period is not configurable, and adjusting `server.shutdown.connection_wait` is generally not recommended.
 
-Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
-
-- Client applications that connect to CockroachDB {{ site.data.products.dedicated }} should use connection pools that have a maximum lifetime that is shorter than 300 seconds (5 minutes).
-- If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection retry loop](#connection-retry-loop).
+Client applications or application servers that connect to CockroachDB {{ site.data.products.dedicated }} clusters should use connection pools that have a maximum lifetime that is shorter than the [`server.shutdown.connection_wait`](#server-shutdown-connection_wait) setting.
 
 ## See also
 

@@ -19,7 +19,7 @@ The main feature of CockroachDB CDC is the _changefeed_, which targets an allowl
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable _jobs_ that track row-level changes and send data in real time in a preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
+Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. Every row change will be emitted at least once and the first emit of every event for the same key will be ordered by timestamp.
 
 CockroachDB has two implementations of changefeeds:
 
@@ -43,7 +43,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.dedicated }} or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.serverless }}.</td>
+    <td>CockroachDB {{ site.data.products.dedicated }}, CockroachDB {{ site.data.products.serverless }}, or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
   </tr>
 
   <tr>
@@ -140,7 +140,7 @@ Sink | Authentication page
 Cloud Storage | Refer to [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for detail on setting up:<ul><li>IAM roles with assume role authentication.</li><li>Workload identity authentication.</li><li>Implicit authentication.</li><li>Specified authentication.</li></ul>
 Kafka | Refer to:<ul><li>[Connect to a Changefeed Kafka Sink with OAuth Using Okta]({% link {{ page.version.version }}/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.md %}) to connect to your Kafka sink using OAuth authentication.</li><li>[Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}) to authenticate to a Confluent Cloud Kafka cluster with a Confluent Schema Registry.</li><li>[Query parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) to supply your own certificate credentials.</li></ul>
 Webhook | Refer to:<ul><li>[Query parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) to supply your own certificate credentials.</li></ul>
-Google Cloud Pub/Sub | Refer to:<ul><li>[Query parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for a general list of the supported query parameters.</li><li>[Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}?filters=gcs#google-cloud-storage-assume-role) for detail on IAM roles with assume role authentication.</li></ul>
+Google Cloud Pub/Sub | Refer to:<ul><li>[Query parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for a general list of the supported query parameters.</li><li>[Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}?filters=gcs#set-up-google-cloud-storage-assume-role) for detail on IAM roles with assume role authentication.</li></ul>
 
 ## Monitor your changefeed job
 

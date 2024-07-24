@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include {{ page.version.version }}/ui/admin-access-only.md %}
-
 The **Node Map** is useful for:
 
 - Visualizing the geographic configuration of a multi-region cluster on a world map.

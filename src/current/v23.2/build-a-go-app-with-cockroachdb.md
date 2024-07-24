@@ -57,7 +57,7 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
 
     </section>
@@ -79,7 +79,7 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ go mod init basic-sample && go mod tidy
+    $ go mod tidy
     ~~~
 
 1. Run the code:

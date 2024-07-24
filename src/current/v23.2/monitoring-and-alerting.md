@@ -107,7 +107,7 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 - The node is in the [wait phase of the node shutdown sequence]({% link {{ page.version.version }}/node-shutdown.md %}#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 
     {{site.data.alerts.callout_success}}
-    If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
+    If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.initial_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (previously named `server.shutdown.drain_wait`) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
     {{site.data.alerts.end}}
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
@@ -256,12 +256,22 @@ Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, 
 
 ##### Replication status - normal
 
-The following example assumes you are running a newly started, local [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach demo --geo-partitioned-replicas --insecure
+cockroach demo --global --nodes 9 --insecure
 ~~~
+
+Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+~~~
+
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -288,23 +298,32 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~
 
 {{site.data.alerts.callout_info}}
-You may have to wait a few minutes after starting the demo cluster before getting the 'all clear' output above. This can happen because it takes time for [replica movement]({% link {{ page.version.version }}/architecture/replication-layer.md %}) to occur in order to meet the constraints given by the [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) set by the [`--geo-partitioned-replicas` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#geo-partitioned-replicas).
+You may have to wait a few minutes after setting the database regions before getting the 'all clear' output above. This can happen because it takes time for [replica movement]({% link {{ page.version.version }}/architecture/replication-layer.md %}) to occur in order to meet the constraints given by the [multi-region SQL abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}).
 {{site.data.alerts.end}}
 
 ##### Replication status - constraint violation
 
-The following example assumes you are running a newly started, local [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach demo --geo-partitioned-replicas --insecure
+cockroach demo --global --nodes 9 --insecure
 ~~~
 
-By default, this geo-distributed demo cluster will not have any constraint violations.
+Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-To introduce a violation that you can then query for, you'll modify the [zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}) of the [`movr.users`]({% link {{ page.version.version }}/movr.md %}#the-movr-database) table.
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+~~~
 
-You can use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to see what existing zone configurations are attached to the `users` table, so you know what to modify.
+By default, this multi-region demo cluster will not have any constraint violations.
+
+To introduce a violation that you can then query for, you'll [set the table locality to `REGIONAL BY TABLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-table) for the [`movr.users`]({% link {{ page.version.version }}/movr.md %}#the-movr-database) table.
+
+You can use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to see what existing [table locality]({% link {{ page.version.version }}/table-localities.md %}) is attached to the `users` table, so you know what to modify.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -312,8 +331,8 @@ SHOW CREATE TABLE users;
 ~~~
 
 ~~~
-  table_name |                                    create_statement
--------------+-----------------------------------------------------------------------------------------
+  table_name |                     create_statement
+-------------+-----------------------------------------------------------
   users      | CREATE TABLE public.users (
              |     id UUID NOT NULL,
              |     city VARCHAR NOT NULL,
@@ -321,30 +340,20 @@ SHOW CREATE TABLE users;
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
              |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
-             | ) PARTITION BY LIST (city) (
-             |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-             |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-             |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-             | );
-             | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=europe-west1]';
-             | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=us-east1]';
-             | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=us-west1]'
+             | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
 (1 row)
 ~~~
 
-To create a constraint violation, use the [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) statement to tell the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in the `europe_west` partition that they are explicitly supposed to *not* be in the `region=europe-west1` locality:
+To create a constraint violation, use the [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-table) statement to tell the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in the `PRIMARY REGION` (`us-east1`) that they are supposed to be in the `europe-west1` locality:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER PARTITION europe_west of INDEX movr.public.users@users_pkey CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
+ALTER TABLE users SET LOCALITY REGIONAL BY TABLE IN "europe-west1";
 ~~~
 
-Once the statement above executes, the ranges currently stored in that locality will now be in a state where they are explicitly not supposed to be in that locality, and are thus in violation of a constraint.
+Once the statement above executes, the ranges currently stored in the `us-east1` locality will now be in a state where they are explicitly now supposed to be in the `europe-west1` locality, and are thus in violation of a constraint.
 
-In other words, this tells the ranges that "where you are now is exactly where you are *not* supposed to be". This will cause the cluster to rebalance the ranges, which will take some time. During the time it takes for the rebalancing to occur, the ranges will be in violation of a constraint.
+In other words, this tells the ranges that "where you are now is *not* where you are supposed to be". This will cause the cluster to rebalance the ranges, which will take some time. During the time it takes for the rebalancing to occur, the ranges will be in violation of a constraint.
 
 The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
 
@@ -369,34 +378,46 @@ curl -X POST http://localhost:8080/_status/critical_nodes
     "violatingConstraints": [
       {
         "rangeDescriptor": {
-          "rangeId": "89",
-          "startKey": "8okSYW1zdGVyZGFtAAE=",
-          "endKey": "8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ==",
+          "rangeId": "71",
+          "startKey": "8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ==",
+          "endKey": "8okSYm9zdG9uAAESMzMzMzMzRAD/gAD/AP8A/wD/AP8A/woAAQ==",
           "internalReplicas": [
             {
               "nodeId": 8,
               "storeId": 8,
+              "replicaId": 9,
+              "type": 0
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 8,
+              "type": 0
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 7,
+              "type": 5
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
               "replicaId": 5,
               "type": 0
             },
             {
-              "nodeId": 4,
-              "storeId": 4,
-              "replicaId": 7,
-              "type": 0
-            },
-            {
-              "nodeId": 3,
-              "storeId": 3,
+              "nodeId": 6,
+              "storeId": 6,
               "replicaId": 6,
-              "type": 0
+              "type": 5
             }
           ],
-          "nextReplicaId": 8,
-          "generation": "40",
+          "nextReplicaId": 10,
+          "generation": "32",
           "stickyBit": {
-            "wallTime": "0",
-            "logical": 0,
+            "wallTime": "9223372036854775807",
+            "logical": 2147483647,
             "synthetic": false
           }
         },
@@ -410,23 +431,62 @@ curl -X POST http://localhost:8080/_status/critical_nodes
             "ignoreStrictEnforcement": false
           },
           "globalReads": false,
-          "numReplicas": 3,
-          "numVoters": 0,
+          "numReplicas": 5,
+          "numVoters": 3,
           "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
             {
               "numReplicas": 0,
               "constraints": [
                 {
-                  "type": 1,
+                  "type": 0,
                   "key": "region",
                   "value": "europe-west1"
                 }
               ]
             }
           ],
-          "voterConstraints": [
-          ],
           "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
           ],
           "rangefeedEnabled": false,
           "excludeDataFromBackup": false
@@ -444,25 +504,34 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 
 ##### Replication status - under-replicated ranges
 
-The following example assumes you are running a newly started, local [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach demo --geo-partitioned-replicas --insecure
+cockroach demo --global --nodes 9 --insecure
 ~~~
 
-By default, this geo-distributed demo cluster will not have any [under-replicated ranges]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#under-replicated-ranges).
-
-To put the cluster into a state where some [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) are under-replicated, issue the following [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) statement, which tells it to store 9 copies of each range underlying the `rides` table.
+Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE rides CONFIGURE ZONE USING num_replicas=9;
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
 ~~~
 
-Once the statement above executes, the cluster will rebalance so that it's storing 9 copies of each range underlying the `rides` table. During the time it takes for the rebalancing to occur, these ranges will be considered under-replicated, since there are not yet as many copies (9) of each range as you have just specified.
+By default, this multi-region demo cluster will not have any [under-replicated ranges]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#under-replicated-ranges).
 
-The critical nodes endpoint should now report a constraint violation in the `underReplicated` field of the response.
+To put the cluster into a state where some [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) are under-replicated, issue the following [`ALTER DATABASE ... ALTER LOCALITY ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#alter-locality) statement, which tells it to store 9 copies of each range underlying the `movr` database.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 9;
+~~~
+
+Once the statement above executes, the cluster will rebalance so that it's storing 9 copies of each range underlying the `movr` database. During the time it takes for the rebalancing to occur, these ranges will be considered under-replicated, since there are not yet as many copies (9) of each range as you have just specified.
+
+The critical nodes endpoint should now report ranges in the `underReplicated` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
 You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the under-replicated ranges.
@@ -477,10 +546,10 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 {
   "criticalNodes": [
     {
-      "nodeId": 2,
+      "nodeId": 3,
       "address": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:26358"
+        "addressField": "127.0.0.1:26359"
       },
       "attrs": {
         "attrs": [
@@ -494,28 +563,28 @@ curl -X POST http://localhost:8080/_status/critical_nodes
           },
           {
             "key": "az",
-            "value": "c"
+            "value": "d"
           }
         ]
       },
       "ServerVersion": {
         "majorVal": 23,
-        "minorVal": 1,
+        "minorVal": 2,
         "patch": 0,
         "internal": 0
       },
-      "buildTag": "v23.1.0-rc.2",
-      "startedAt": "1683655799845426000",
+      "buildTag": "v23.2.0-rc.2",
+      "startedAt": "1705098699112441000",
       "localityAddress": [
       ],
       "clusterName": "",
       "sqlAddress": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:26258"
+        "addressField": "127.0.0.1:26259"
       },
       "httpAddress": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:8081"
+        "addressField": "127.0.0.1:8082"
       }
     },
     ...
@@ -524,34 +593,64 @@ curl -X POST http://localhost:8080/_status/critical_nodes
     "underReplicated": [
       {
         "rangeDescriptor": {
-          "rangeId": "76",
-          "startKey": "9A==",
-          "endKey": "9IkSYW1zdGVyZGFtAAE=",
+          "rangeId": "74",
+          "startKey": "84kSc2FuIGZyYW5jaXNjbwABEnd3d3d3d0gA/4AA/wD/AP8A/wD/AP8HAAE=",
+          "endKey": "84kSc2FuIGZyYW5jaXNjbwABEoiIiIiIiEgA/4AA/wD/AP8A/wD/AP8IAAE=",
           "internalReplicas": [
             {
               "nodeId": 3,
               "storeId": 3,
-              "replicaId": 4,
+              "replicaId": 1,
+              "type": 0
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 6,
+              "type": 0
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
+              "replicaId": 7,
               "type": 0
             },
             {
               "nodeId": 4,
               "storeId": 4,
-              "replicaId": 2,
-              "type": 0
+              "replicaId": 4,
+              "type": 5
             },
             {
               "nodeId": 8,
               "storeId": 8,
-              "replicaId": 3,
-              "type": 0
+              "replicaId": 5,
+              "type": 5
+            },
+            {
+              "nodeId": 5,
+              "storeId": 5,
+              "replicaId": 8,
+              "type": 5
+            },
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 9,
+              "type": 5
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 10,
+              "type": 5
             }
           ],
-          "nextReplicaId": 5,
-          "generation": "44",
+          "nextReplicaId": 11,
+          "generation": "43",
           "stickyBit": {
-            "wallTime": "0",
-            "logical": 0,
+            "wallTime": "9223372036854775807",
+            "logical": 2147483647,
             "synthetic": false
           }
         },
@@ -566,12 +665,61 @@ curl -X POST http://localhost:8080/_status/critical_nodes
           },
           "globalReads": false,
           "numReplicas": 9,
-          "numVoters": 0,
+          "numVoters": 3,
           "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
           ],
           "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
           ],
           "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
           ],
           "rangefeedEnabled": false,
           "excludeDataFromBackup": false
@@ -582,72 +730,6 @@ curl -X POST http://localhost:8080/_status/critical_nodes
     "overReplicated": [
     ],
     "violatingConstraints": [
-      {
-        "rangeDescriptor": {
-          "rangeId": "238",
-          "startKey": "9IkSYW1zdGVyZGFtAAE=",
-          "endKey": "9IkSYW1zdGVyZGFtAAESxR64UeuFQAD/gAD/AP8A/wD/AP8BgQAB",
-          "internalReplicas": [
-            {
-              "nodeId": 9,
-              "storeId": 9,
-              "replicaId": 5,
-              "type": 0
-            },
-            {
-              "nodeId": 7,
-              "storeId": 7,
-              "replicaId": 4,
-              "type": 0
-            },
-            {
-              "nodeId": 8,
-              "storeId": 8,
-              "replicaId": 3,
-              "type": 0
-            }
-          ],
-          "nextReplicaId": 6,
-          "generation": "48",
-          "stickyBit": {
-            "wallTime": "0",
-            "logical": 0,
-            "synthetic": false
-          }
-        },
-        "config": {
-          "rangeMinBytes": "134217728",
-          "rangeMaxBytes": "536870912",
-          "gcPolicy": {
-            "ttlSeconds": 14400,
-            "protectionPolicies": [
-            ],
-            "ignoreStrictEnforcement": false
-          },
-          "globalReads": false,
-          "numReplicas": 9,
-          "numVoters": 0,
-          "constraints": [
-            {
-              "numReplicas": 0,
-              "constraints": [
-                {
-                  "type": 0,
-                  "key": "region",
-                  "value": "europe-west1"
-                }
-              ]
-            }
-          ],
-          "voterConstraints": [
-          ],
-          "leasePreferences": [
-          ],
-          "rangefeedEnabled": false,
-          "excludeDataFromBackup": false
-        }
-      },
-      ...
     ],
     "unavailable": [
     ],
@@ -659,22 +741,31 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 
 ##### Replication status - ranges in critical localities
 
-The following example assumes you are running a newly started, local [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach demo --geo-partitioned-replicas --insecure
+cockroach demo --global --nodes 9 --insecure
 ~~~
 
-By default, this geo-distributed demo cluster will not have any [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node) in a critical state. A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
-
-The status endpoint describes which of your nodes (if any) are critical via the `criticalNodes` field in the response.
-
-To artificially put the nodes in this demo cluster in "critical" status, we can issue the following SQL statement, which uses [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) to tell the cluster to store more copies of each range underlying the `rides` table than there are nodes in the cluster.
+Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE rides CONFIGURE ZONE USING num_replicas=128;
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+~~~
+
+By default, this multi-region demo cluster will not have any [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node) in a critical state. A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
+
+The status endpoint describes which of your nodes (if any) are critical via the `criticalNodes` field in the response.
+
+To artificially put the nodes in this demo cluster in "critical" status, we can issue the following SQL statement, which uses [`ALTER DATABASE ... ALTER LOCALITY ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#alter-locality) to tell the cluster to store more copies of each range underlying the `movr` database than there are nodes in the cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 128;
 ~~~
 
 The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
@@ -688,10 +779,10 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 {
   "criticalNodes": [
     {
-      "nodeId": 4,
+      "nodeId": 3,
       "address": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:26360"
+        "addressField": "127.0.0.1:26359"
       },
       "attrs": {
         "attrs": [
@@ -701,32 +792,32 @@ curl -X POST http://localhost:8080/_status/critical_nodes
         "tiers": [
           {
             "key": "region",
-            "value": "us-west1"
+            "value": "us-east1"
           },
           {
             "key": "az",
-            "value": "a"
+            "value": "d"
           }
         ]
       },
       "ServerVersion": {
         "majorVal": 23,
-        "minorVal": 1,
+        "minorVal": 2,
         "patch": 0,
         "internal": 0
       },
-      "buildTag": "v23.1.0-rc.2",
-      "startedAt": "1683656700210217000",
+      "buildTag": "v23.2.0-rc.2",
+      "startedAt": "1705098699112441000",
       "localityAddress": [
       ],
       "clusterName": "",
       "sqlAddress": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:26260"
+        "addressField": "127.0.0.1:26259"
       },
       "httpAddress": {
         "networkField": "tcp",
-        "addressField": "127.0.0.1:8083"
+        "addressField": "127.0.0.1:8082"
       }
     },
     ...
@@ -735,31 +826,67 @@ curl -X POST http://localhost:8080/_status/critical_nodes
     "underReplicated": [
       {
         "rangeDescriptor": {
-          "rangeId": "133",
-          "startKey": "9A==",
-          "endKey": "9IkSYW1zdGVyZGFtAAE=",
+          "rangeId": "100",
+          "startKey": "8w==",
+          "endKey": "84kSYm9zdG9uAAESIiIiIiIiQgD/gAD/AP8A/wD/AP8A/wIAAQ==",
           "internalReplicas": [
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 1,
+              "type": 0
+            },
+            {
+              "nodeId": 5,
+              "storeId": 5,
+              "replicaId": 2,
+              "type": 5
+            },
             {
               "nodeId": 1,
               "storeId": 1,
-              "replicaId": 5,
+              "replicaId": 3,
               "type": 0
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
+              "replicaId": 4,
+              "type": 0
+            },
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 5,
+              "type": 5
             },
             {
               "nodeId": 4,
               "storeId": 4,
               "replicaId": 6,
-              "type": 0
+              "type": 5
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 7,
+              "type": 5
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 8,
+              "type": 5
             },
             {
               "nodeId": 8,
               "storeId": 8,
-              "replicaId": 3,
-              "type": 0
+              "replicaId": 9,
+              "type": 5
             }
           ],
-          "nextReplicaId": 7,
-          "generation": "52",
+          "nextReplicaId": 10,
+          "generation": "38",
           "stickyBit": {
             "wallTime": "0",
             "logical": 0,
@@ -777,12 +904,61 @@ curl -X POST http://localhost:8080/_status/critical_nodes
           },
           "globalReads": false,
           "numReplicas": 128,
-          "numVoters": 0,
+          "numVoters": 3,
           "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
           ],
           "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
           ],
           "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
           ],
           "rangefeedEnabled": false,
           "excludeDataFromBackup": false
@@ -793,72 +969,6 @@ curl -X POST http://localhost:8080/_status/critical_nodes
     "overReplicated": [
     ],
     "violatingConstraints": [
-      {
-        "rangeDescriptor": {
-          "rangeId": "186",
-          "startKey": "9IkSYW1zdGVyZGFtAAE=",
-          "endKey": "9IkSYW1zdGVyZGFtAAESxR64UeuFQAD/gAD/AP8A/wD/AP8BgQAB",
-          "internalReplicas": [
-            {
-              "nodeId": 7,
-              "storeId": 7,
-              "replicaId": 5,
-              "type": 0
-            },
-            {
-              "nodeId": 9,
-              "storeId": 9,
-              "replicaId": 4,
-              "type": 0
-            },
-            {
-              "nodeId": 8,
-              "storeId": 8,
-              "replicaId": 3,
-              "type": 0
-            }
-          ],
-          "nextReplicaId": 6,
-          "generation": "52",
-          "stickyBit": {
-            "wallTime": "0",
-            "logical": 0,
-            "synthetic": false
-          }
-        },
-        "config": {
-          "rangeMinBytes": "134217728",
-          "rangeMaxBytes": "536870912",
-          "gcPolicy": {
-            "ttlSeconds": 14400,
-            "protectionPolicies": [
-            ],
-            "ignoreStrictEnforcement": false
-          },
-          "globalReads": false,
-          "numReplicas": 128,
-          "numVoters": 0,
-          "constraints": [
-            {
-              "numReplicas": 0,
-              "constraints": [
-                {
-                  "type": 0,
-                  "key": "region",
-                  "value": "europe-west1"
-                }
-              ]
-            }
-          ],
-          "voterConstraints": [
-          ],
-          "leasePreferences": [
-          ],
-          "rangefeedEnabled": false,
-          "excludeDataFromBackup": false
-        }
-      },
-      ...
     ],
     "unavailable": [
     ],
@@ -984,6 +1094,8 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.
 
 - **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
 #### Node is not executing SQL
 

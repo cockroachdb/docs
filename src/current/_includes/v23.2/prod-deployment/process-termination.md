@@ -1,13 +1,11 @@
 {{site.data.alerts.callout_danger}}
-We do not recommend sending `SIGKILL` to perform a "hard" shutdown, which bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure, causing [quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview) loss in the window before up-replication completes.
+Cockroach Labs does not recommend terminating the `cockroach` process by sending a `SIGKILL` signal, because it bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and degrades the cluster's health. From the point of view of other cluster nodes, the node will be suddenly unavailable.
+
+- If a decommissioning node is forcibly terminated before decommission completes, [ranges will be under-replicated]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint) and the cluster is at risk of [loss of quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview) if an additional node experiences an outage in the window before up-replication completes.
+- If a draining or decommissioning node is forcibly terminated before the operation completes, it can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, [uncertainty errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror), [ambiguous commit errors]({% link {{ page.version.version }}/common-errors.md %}#result-is-ambiguous), or query timeouts.
+
 {{site.data.alerts.end}}
 
-- On production deployments, use the process manager to send `SIGTERM` to the process. 
+- On production deployments, use the process manager, orchestration system, or other deployment tooling to send `SIGTERM` to the process. For example, with [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), run `systemctl stop {systemd config filename}`.
 
-	- For example, with [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), run `systemctl stop {systemd config filename}`.
-
-- When using CockroachDB for local testing:
-  
-  - When running a server on the foreground, use `ctrl-c` in the terminal to send `SIGINT` to the process.
-
-  - When running with the [`--background` flag]({% link {{ page.version.version }}/cockroach-start.md %}#general), use `pkill`, `kill`, or look up the process ID with `ps -ef | grep cockroach | grep -v grep` and then run `kill -TERM {process ID}`.
+- If you run CockroachDB in the foreground for local testing, you can use `ctrl-c` in the terminal to terminate the process.

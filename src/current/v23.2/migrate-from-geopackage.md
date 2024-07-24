@@ -27,7 +27,7 @@ To follow along with the example below, you will need the following prerequisite
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
+    curl -o gpkg_env_mn_springs_inventory.zip https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
     ~~~
 
 1. Unzip the file:

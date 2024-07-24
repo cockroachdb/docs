@@ -19,6 +19,41 @@ Some options for the `kafka_sink_config` and `webhook_sink_config` parameters ar
 - [Kafka sinks](changefeed-sinks.html#kafka-sink-configuration)
 - [Webhook sinks](changefeed-sinks.html#webhook-sink-configuration)
 
+## MuxRangefeed
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. It significantly reduces the overhead of running [rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds). Without `MuxRangefeed` enabled the number of RPC streams is proportional with the number of ranges in a table. For example, a large table could have tens of thousands of ranges. With `MuxRangefeed` enabled, this proportion improves so that the number of RPC streams is relative to the number of nodes in a cluster.
+
+You can enable its functionality with the `changefeed.mux_rangefeed.enabled` [cluster setting](cluster-settings.html).
+
+Use the following workflow to enable `MuxRangefeed`:
+
+1. Enable the cluster setting:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING changefeed.mux_rangefeed.enabled = true;
+    ~~~
+
+1. After enabling the setting, pause the changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    PAUSE JOB {job ID};
+    ~~~
+
+    You can use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to retrieve the job ID.
+
+1. Resume the changefeed for the cluster setting to take effect:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESUME JOB {job ID};
+    ~~~
+
 ## Tuning for high durability delivery
 
 When designing a system that relies on high durability message delivery—that is, not missing any message acknowledgement at the downstream sink—consider the following settings and configuration in this section:
@@ -119,6 +154,19 @@ If you have a table with 10,000 or more [ranges](architecture/overview.html#arch
 
 - Increase the [`changefeed.backfill.concurrent_scan_requests` setting](cluster-settings.html), which controls the number of concurrent scan requests per node issued during a [backfill event](changefeed-messages.html#schema-changes-with-column-backfill). The default behavior, when this setting is at `0`, is that the number of scan requests will be 3 times the number of nodes in the cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase the cluster load overall**, including CPU and IO usage.
 - The [`kv.rangefeed.catchup_scan_iterator_optimization.enabled` setting](cluster-settings.html) is `on` by default. This causes [rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds) to use time-bound iterators for catch-up scans when possible. Catch-up scans are run for each rangefeed request. This setting improves the performance of changefeeds during some [range-split operations](architecture/distribution-layer.html#range-splits).
+
+## Lagging ranges
+
+{% include_cached new-in.html version="v22.2.15" %} Use the `changefeed.lagging_ranges` metric to track the number of ranges that are behind in a changefeed. This is calculated based on the [cluster settings](cluster-settings.html):
+
+- `changefeed.lagging_ranges_threshold` sets a duration from the present that determines the length of time a range is considered to be lagging behind, which will then track in the [`lagging_ranges`](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels) metric. Note that ranges undergoing an [initial scan](create-changefeed.html#initial-scan) for longer than the threshold duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease.
+    - **Default:** `3m`
+- `changefeed.lagging_ranges_polling_interval` sets the interval rate for when lagging ranges are checked and the `lagging_ranges` metric is updated. Polling adds latency to the `lagging_ranges` metric being updated. For example, if a range falls behind by 3 minutes, the metric may not update until an additional minute afterward.
+    - **Default:** `1m`
+
+{{site.data.alerts.callout_success}}
+You can use the [`metrics_label`](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels) option to track the `lagging_ranges` metric per changefeed.
+{{site.data.alerts.end}}
 
 ## See also
 

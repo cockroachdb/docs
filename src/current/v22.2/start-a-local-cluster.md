@@ -16,7 +16,13 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html), and review the [Production Checklist](recommended-production-settings.html).
+- Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, refer to [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html), and review the [Production Checklist](recommended-production-settings.html).
+
+{{site.data.alerts.callout_danger}}
+Reusing a previously initialized store when starting a new cluster is not recommended. If the store is incompatible with either the new CockroachDB binary or the new cluster configuration, this can lead to panics or other problems when starting a cluster. Instead, either move or delete the previous store directory before starting the `cockroach` process. An example of an incompatible configuration is if the new cluster is started with the `--start-single-node` flag, which disables replication, when the cluster configuration in the store has replication enabled.
+
+The store directory is `cockroach-data/` in the same directory as the `cockroach` command by default, or the location passed to the `--store` flag otherwise. For details about configuring the store location, refer to [cockroach start]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+{{site.data.alerts.end}}
 
 ## Step 1. Start the cluster
 

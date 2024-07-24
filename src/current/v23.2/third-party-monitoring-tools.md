@@ -21,3 +21,4 @@ CockroachDB is officially integrated with the following third-party monitoring p
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})

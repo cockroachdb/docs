@@ -9,7 +9,7 @@ Use the `cockroach statement-diag` [command]({% link {{ page.version.version }}/
 
 ## Required privileges
 
-Only members of the `admin` role can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
+Only members of the `admin` role and users with the `VIEWSYSTEMTABLE` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges), which provides read-only access to system tables, can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
 
 ## Subcommands
 

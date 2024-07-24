@@ -99,8 +99,7 @@ CockroachDB requires TCP communication on two ports:
     --insecure \
     --advertise-addr=<node1 internal address> \
     --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
-    --cache=.25 \
-    --background
+    --cache=.25
     ~~~
 
 1. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.

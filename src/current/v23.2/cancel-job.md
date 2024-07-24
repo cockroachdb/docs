@@ -32,6 +32,12 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_job.html %}
 </div>
 
+### Cancel all jobs by type
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_all_jobs.html %}
+</div>
+
 ## Parameters
 
 Parameter | Description
@@ -39,6 +45,7 @@ Parameter | Description
 `job_id` | The ID of the job you want to cancel, which can be found with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
 `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to cancel.
 `for_schedules_clause` |  The schedule you want to cancel jobs for. You can cancel jobs for a specific schedule (`FOR SCHEDULE id`) or cancel jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#cancel-jobs-for-a-schedule) below.
+`BACKUP`, `CHANGEFEED`, `RESTORE`, `IMPORT` | The job type to cancel.
 
 ## Examples
 
@@ -48,11 +55,11 @@ Parameter | Description
 > SHOW JOBS;
 ~~~
 ~~~
-+----------------+---------+-------------------------------------------+...
-|       id       |  type   |               description                 |...
-+----------------+---------+-------------------------------------------+...
-| 27536791415282 | RESTORE | RESTORE db.* FROM 'azure://backup/db/tbl' |...
-+----------------+---------+-------------------------------------------+...
++----------------+---------+------------------------------------------------+...
+|       id       |  type   |               description                      |...
++----------------+---------+------------------------------------------------+...
+| 27536791415282 | RESTORE | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
++----------------+---------+------------------------------------------------+...
 ~~~
 ~~~ sql
 > CANCEL JOB 27536791415282;
@@ -69,6 +76,15 @@ To cancel multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.versio
 ~~~
 
 All jobs created by `maxroach` will be cancelled.
+
+### Cancel by job type
+
+To cancel all jobs by the type of job, use the `CANCEL ALL {job} JOBS` statement. You can cancel all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CANCEL ALL BACKUP JOBS;
+~~~
 
 ### Cancel automatic table statistics jobs
 

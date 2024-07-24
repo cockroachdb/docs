@@ -144,6 +144,10 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 - When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) of older client or server versions.
 - Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
 
+    {{site.data.alerts.callout_info}}
+    For clusters deployed in CockroachDB {{ site.data.products.cloud }}, do not use the cluster ID printed in the welcome message to verify the cluster your client is connected to. Instead, use the `ccloud cluster list` command to list the ID of each cluster in your CockroachDB {{ site.data.products.cloud }} organization to which you have access. To learn more about the `ccloud` command, refer to [Get Started with the `ccloud` CLI]({% link cockroachcloud/ccloud-get-started.md %}).
+    {{site.data.alerts.end}}
+
 ### Commands
 
 {% include {{ page.version.version }}/sql/shell-commands.md %}

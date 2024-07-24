@@ -417,7 +417,7 @@ Different filesystems may treat the ballast file differently. Make sure to test 
 
 #### Disk stalls
 
-A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
+A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 20 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
 
 Symptoms of disk stalls include:
 
@@ -435,7 +435,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
 - Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
-- Every time the storage engine writes to the main [`cockroach.log` file]({% link {{ page.version.version }}/logging.md %}#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
+- Every time the storage engine writes to the main [`cockroach.log` file]({% link {{ page.version.version }}/logging.md %}#dev), the engine waits 20 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
 
     - `file write stall detected: %s`
 
@@ -508,10 +508,7 @@ CockroachDB memory usage has the following components:
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-    If you observe any of the following, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}):
-      - CGo Allocated is larger than the configured `--cache` size.
-      - RSS minus Go Total and CGo Total is larger than 100 MiB.
-      - Go Total or CGo Total fluctuates or grows steadily over time.
+    If you observe values not within the expected range for a healthy cluster, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 #### Out-of-memory (OOM) crash
 

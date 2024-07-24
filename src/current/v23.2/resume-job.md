@@ -27,6 +27,12 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/resume_job.html %}
 </div>
 
+### Resume all jobs by type
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/resume_all_jobs.html %}
+</div>
+
 ## Parameters
 
 Parameter | Description
@@ -34,6 +40,7 @@ Parameter | Description
 `job_id` | The ID of the job you want to resume, which can be found with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
 `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to resume.
 `for_schedules_clause` |  The schedule you want to resume jobs for. You can resume jobs for a specific schedule (`FOR SCHEDULE id`) or resume jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#resume-jobs-for-a-schedule) below.
+`BACKUP`, `CHANGEFEED`, `RESTORE`, `IMPORT` | The job type to resume.
 
 ## Examples
 
@@ -45,9 +52,9 @@ Parameter | Description
 ~~~
 
 ~~~
-      job_id     |  job_type |               description                 |...
------------------+-----------+-------------------------------------------+...
-  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+      job_id     |  job_type |               description                      |...
+-----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -73,6 +80,15 @@ To resume multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.versio
 ~~~
 
 All jobs created by `maxroach` will be resumed.
+
+### Resume by job type
+
+To resume all jobs by the type of job, use the `RESUME ALL {job} JOBS` statement. You can resume all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESUME ALL BACKUP JOBS;
+~~~
 
 ### Resume jobs for a schedule
 

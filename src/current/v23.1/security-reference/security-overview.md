@@ -165,11 +165,11 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
    <td>Network-level Configuration of allowed IP addresses</td>
  </tr>
  <tr>
-  <td>&nbsp;</td>
+  <td>✓<a href="#privatelink-multiregion-serverless"><sup>1</sup></a></td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
+  <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster.html#private-service-connect">Private Service Connect (PSC) (Preview)</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster.html#vpc-peering">VPC Peering</a> for GCP clusters and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink">AWS PrivateLink</a> for AWS clusters </td>
  </tr>
  <tr>
   <td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
@@ -188,3 +188,5 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
   <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}">Disaster Recovery.</a></td>
  </tr>
 </table>
+
+<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless">Manage AWS PrivateLink</a>.

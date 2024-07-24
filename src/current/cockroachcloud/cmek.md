@@ -1,6 +1,6 @@
 ---
 title: Customer-Managed Encryption Keys (CMEK) Overview
-summary: Use cryptographic keys that you manage to protect data at rest in a CockroachDB {{ site.data.products.dedicated }} cluster.
+summary: Use cryptographic keys that you manage to protect data at rest in a CockroachDB Cloud cluster.
 toc: true
 docs_area: manage.security
 cloud: true

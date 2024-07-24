@@ -15,6 +15,10 @@ You can validate a [cluster](backup.html#backup-a-cluster), [database](backup.ht
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
+{{site.data.alerts.callout_info}}
+You do **not** need an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to run any of the backup validation tools described on this page.
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Validate backup files
@@ -50,6 +54,8 @@ Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST a
 To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any rows. This process is significantly faster than running a [regular restore](restore.html#examples) for the purposes of validation.
 
 A `schema_only` restore produces close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up rows. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these SST files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable).
+
+{% include {{ page.version.version }}/backups/full-cluster-restore-validation.md %}
 
 Run `RESTORE` with the `schema_only` option, specifying either `LATEST` or the specific backup you would like to restore:
 
@@ -103,12 +109,6 @@ Once you have successfully validated the restore, you can revert the cluster to 
 DROP DATABASE movr CASCADE;
 ~~~
 
-### Cluster-level backup validation
-
-It is important to note that [full cluster restores](restore.html#full-cluster) with `schema_only` will write the system tables to disk. This provides important coverage for validation at the cluster level. Writing the system tables should not have a notable impact on the runtime of this process.
-
-Once you have successfully validated a cluster-level restore, the restored system tables cannot be reverted. However, you can drop the databases and tables, as shown in the previous command.
-
 ## Validate backup table data is restorable
 
 A restore with the `verify_backup_table_data` option will perform a [`schema_only` restore](#validate-a-backup-is-restorable), and:
@@ -118,6 +118,8 @@ A restore with the `verify_backup_table_data` option will perform a [`schema_onl
 1. Discard the rows before they are written to disk.
 
 Similarly, to just `schema_only` restores, you'll find the table schemas restored. If a file is not present or unreadable in the backup, you'll receive an error.
+
+{% include {{ page.version.version }}/backups/full-cluster-restore-validation.md %}
 
 Unlike a `schema_only` restore, a `verify_backup_table_data` restore also reads and checksums the rows to validate the backup.
 

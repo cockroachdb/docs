@@ -5,11 +5,9 @@ toc: true
 docs_area: develop
 ---
 
-Before you start using CockroachDB, you should understand a couple important mechanics of the database:
+Before you start using CockroachDB, you should understand the following important mechanics of the database:
 
-- [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
-  - [Serializability and transaction contention](#serializability-and-transaction-contention)
-  - [Transaction retries](#transaction-retries)
+- [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb), including [serializability](#serializability-and-transaction-contention) and [transaction retries](#transaction-retries)
 - [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
 
 Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation]({% link {{ page.version.version }}/architecture/overview.md %}).
@@ -24,13 +22,17 @@ Managing transactions is an important part of CockroachDB application developmen
 
 #### Serializability and transaction contention
 
-CockroachDB guarantees [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) transaction [isolation](https://wikipedia.org/wiki/Isolation_(database_systems)) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
+By default, CockroachDB uses [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) transaction [isolation](https://wikipedia.org/wiki/Isolation_(database_systems)) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
 
-To guarantee `SERIALIZABLE` isolation, CockroachDB [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in a violation of the `SERIALIZABLE` isolation level. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Understand and Avoid Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
+To guarantee `SERIALIZABLE` isolation, CockroachDB [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in a violation of the `SERIALIZABLE` isolation level. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
 #### Transaction retries
 
 In some cases, [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is unavoidable. If a transaction fails due to contention, CockroachDB will automatically retry the transaction, or will return a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to the client. Most [official CockroachDB client libraries]({% link {{ page.version.version }}/install-client-drivers.md %}) include a transaction-retrying wrapper function to make writing your persistence layer easier. If your framework's client library does not include a retry wrapper, you will need to write transaction retry logic in your application. We go into more detail about transaction retries later in the guide, in [Retry Transactions]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).
+
+#### Read Committed isolation
+
+{% include_cached new-in.html version="v23.2" %} CockroachDB can be configured to execute transactions at [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) instead of `SERIALIZABLE` isolation. `READ COMMITTED` permits some concurrency anomalies in exchange for minimizing transaction aborts and [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries). Depending on your workload requirements, this may be desirable. For more information, see [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}).
 
 ### How applications interact with CockroachDB
 

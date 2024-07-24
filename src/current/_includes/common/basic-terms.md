@@ -32,8 +32,6 @@ Service accounts authenticate with API keys to the CockroachDB {{ site.data.prod
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles]({{ link_prefix }}authorization.html#organization-user-roles) as users.
 
-However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts is now deprecated. It is recommended to update such service accounts with updated organization roles.
-
 To learn more, refer to [Manage Service Accounts]({{ link_prefix }})managing-access.html#manage-service-accounts)
 
 #### CockroachDB {{ site.data.products.serverless }} cluster

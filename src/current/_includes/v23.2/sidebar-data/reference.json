@@ -378,6 +378,12 @@
             ]
           },
           {
+            "title": "Column Level Encryption",
+            "urls": [
+              "/${VERSION}/column-level-encryption.html"
+            ]
+          },
+          {
             "title": "PKI and TLS",
             "urls": [
               "/${VERSION}/security-reference/transport-layer-security.html"

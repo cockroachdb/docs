@@ -82,6 +82,10 @@ Explicit Incrementals URI
 
 In the examples on this page, `{collectionURI}` is a placeholder for the storage location that will contain the example backup.
 
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+{% include {{ page.version.version }}/backups/storage-collision-examples.md %}
+
 ## Full backups
 
 Full backups are now available to both core and Enterprise users.
@@ -104,7 +108,7 @@ To perform a full cluster backup, use the [`BACKUP`]({% link {{ page.version.ver
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{collectionURI}';
+BACKUP INTO '{collectionURI}';
 ~~~
 
 To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statement, specifying what you want to restore as well as the [collection's](#backup-collections) URI:
@@ -113,21 +117,21 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
+    RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
     ~~~
 
 - To restore the latest backup of a database:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
+    RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
     ~~~
 
 - To restore the latest backup of your full cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE FROM LATEST IN '{collectionURI}';
+    RESTORE FROM LATEST IN '{collectionURI}';
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -138,7 +142,7 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
+    RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
     ~~~
 
 To view the available backup subdirectories, use [`SHOW BACKUPS`]({% link {{ page.version.version }}/show-backup.md %}).
@@ -205,14 +209,21 @@ To restore from the latest backup in the collection, stored in the default `/inc
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN '{collectionURI}';
+RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
 To restore from a specific backup in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{collectionURI}';
+RESTORE FROM '{subdirectory}' IN '{collectionURI}';
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 ~~~
 
 {% include {{ page.version.version }}/backups/no-incremental-restore.md %}
@@ -221,7 +232,7 @@ To restore from a specific backup in the collection:
 `RESTORE` will re-validate [indexes]({% link {{ page.version.version }}/indexes.md %}) when [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
 
-## Incremental backups with explicitly specified destinations
+### Incremental backups with explicitly specified destinations
 
 To explicitly control where your incremental backups go, use the [`incremental_location`]({% link {{ page.version.version }}/backup.md %}#options) option. By default, incremental backups are stored in the `/incrementals` subdirectory at the root of the collection. However, there are some advanced cases where you may want to store incremental backups in a different storage location.
 
@@ -258,14 +269,16 @@ For details on cloud storage URLs, see [Use Cloud Storage]({% link {{ page.versi
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
-### Automated full backups
+### Scheduled backups
 
-Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
+You can use [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to set a recurring schedule for full and incremental backups. To create a schedule that includes incremental backups, you must have an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+
+Include the `FULL BACKUP ALWAYS` clause for a schedule to take only full backups. For example, to create a schedule for taking full cluster backups:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+CREATE SCHEDULE core_schedule_label
+    FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     RECURRING '@daily'
     FULL BACKUP ALWAYS
     WITH SCHEDULE OPTIONS first_run = 'now';
@@ -277,15 +290,15 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 (1 row)
 ~~~
 
-For more examples on how to schedule backups that take full and incremental backups, see [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
+For more examples on how to schedule backups that take full and incremental backups, refer to [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
 
 ### Exclude a table's data from backups
 
 In some situations, you may want to exclude a table's row data from a [backup]({% link {{ page.version.version }}/backup.md %}). For example, you have a table that contains high-churn data that you would like to [garbage collect]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) more quickly than the [incremental backup](#incremental-backups) schedule for the database or cluster holding the table. You can use the `exclude_data_from_backup = true` parameter with a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#exclude-a-tables-data-from-backups) statement to mark a table's row data for exclusion from a backup.
 
-It is important to note that the backup produced contains an empty table with the data excluded. The backup process does not attempt to contact the [KV storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) ranges to retrieve data when `exclude_data_from_backup = true`. Thus, backups will continue to succeed even when some ranges or regions are unavailable, if and only if, the unavailable ranges are in tables excluded from the backups. 
+It is important to note that the backup produced contains an empty table with the data excluded. The backup process does not attempt to contact the [KV storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) ranges to retrieve data when `exclude_data_from_backup = true`. Thus, backups will continue to succeed even when some ranges or regions are unavailable, if and only if, the unavailable ranges are in tables excluded from the backups.
 
-Setting this parameter prevents the cluster or database backup from delaying [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) on the key span for this table, and it also respects the configured GC TTL. This is useful when you want to set a shorter garbage collection window for tables containing high-churn data to avoid an accumulation of unnecessary data and improves the reliability in partially unavailable clusters. 
+Setting this parameter prevents the cluster or database backup from delaying [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) on the key span for this table, and it also respects the configured GC TTL. This is useful when you want to set a shorter garbage collection window for tables containing high-churn data to avoid an accumulation of unnecessary data and improves the reliability in partially unavailable clusters.
 
 Using the `movr` database as an example:
 

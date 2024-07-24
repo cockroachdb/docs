@@ -13,9 +13,9 @@ docs_area: deploy
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-<p>See <a href="https://www.cockroachlabs.com/docs/releases/{{page.version.version}}" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
-
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
+
+See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
 
 Use one of the options below to install CockroachDB.
 
@@ -23,7 +23,7 @@ Use one of the options below to install CockroachDB.
 To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}).
 {{site.data.alerts.end}}
 
-CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental binaries are not qualified for production use. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
+CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Generally Available (GA)</a></b> in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
 
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
@@ -123,7 +123,7 @@ true
 
   <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.</p>
   <p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
-  <p>CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use.</p>
+  <p>CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
 
   <ol>
     <li>
@@ -167,10 +167,15 @@ true
 
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
-- CockroachDB on ARM is in [Limited Access](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases) in CockroachDB v22.2.13, and is **experimental** in all other versions. Experimental binaries and Docker images are not qualified for production use.
-- Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
-- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
-- When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) in the GCC documentation.
+- CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is Generally Available (GA) in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments.
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
+
+  Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
+
+  When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
+
+- In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
+- A mix of Intel and ARM nodes is supported as a temporary transitional state during the migration only. Cockroach Labs recommends that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes, especially with respect to floating-point arithmetic.
 
 <h2 id="whats-next">What&#39;s next?</h2>
 

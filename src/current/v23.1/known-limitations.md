@@ -105,6 +105,10 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
 
+### Execution locality in changefeeds
+
+- {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
@@ -140,6 +144,10 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 - References to other user-defined functions.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+### Table-level restore will not restore user-defined functions
+
+{% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 
 ### Incorrect query plans for partitions with `NULL` values
 
@@ -709,3 +717,4 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}

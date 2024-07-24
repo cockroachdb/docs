@@ -63,9 +63,7 @@ To enable the pods to communicate across regions, we peer the VPCs in all 3 regi
 #### Exposing DNS servers
 
 {{site.data.alerts.callout_danger}}
-Until December 2019, Google Cloud Platform restricted clients to using a load balancer in the same region. In the approach documented below, the DNS servers from each Kubernetes cluster are hooked together by exposing them via a load balanced IP address that is visible to the public Internet. None of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
-
-You can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access) on Google Cloud Platform to allow clients from one region to use an internal load balancer in another. We will update this tutorial accordingly.
+Instead of using this approach, you can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access), which exposes the Kubernetes cluster's DNS servers via a load-balanced IP address that is visible to the public internet. With this this approach, noone of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
 {{site.data.alerts.end}}
 </section>
 
@@ -1075,7 +1073,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Decide how the upgrade will be finalized.
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
     Finalization only applies when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.

@@ -34,9 +34,9 @@ The following table provides a list of the parameters supported by each storage 
 
 Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon S3 | `s3` | Bucket name | [`AUTH`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-specified): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-assume-role) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
-Azure Blob Storage | `azure` | Storage container | `AZURE_ACCOUNT_NAME`: The name of your Azure account.<br><br>`AZURE_ACCOUNT_KEY`: Your Azure account key. You must [url encode](https://wikipedia.org/wiki/Percent-encoding) your Azure account key before authenticating to Azure Storage. For more information, see [Authentication - Azure Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#azure-blob-storage-specified-authentication).<br><br>`AZURE_ENVIRONMENT`: (optional) {% include {{ page.version.version }}/misc/azure-env-param.md %}<br><br>`AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).<br><br>`AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.<br><br>`AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
-Google Cloud Storage | `gs` | Bucket name | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS`<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-assume-role) (optional): Pass the [service account name](https://cloud.google.com/iam/docs/understanding-service-accounts) of the service account to assume. <br><br>For more information, see [Authentication - Google Cloud Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-specified).
+Amazon S3 | `s3` | Bucket name | [`AUTH`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-specified): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
+Azure Blob Storage | `azure-blob` / `azure` | Storage container | `AZURE_ACCOUNT_NAME`: The name of your Azure account.<br><br>`AZURE_ACCOUNT_KEY`: Your Azure account key. You must [url encode](https://wikipedia.org/wiki/Percent-encoding) your Azure account key before authenticating to Azure Storage. For more information, see [Authentication - Azure Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#azure-blob-storage-specified-authentication).<br><br>`AZURE_ENVIRONMENT`: (optional) {% include {{ page.version.version }}/misc/azure-env-param.md %}<br><br>`AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).<br><br>`AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.<br><br>`AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.<br><br>**Note:** {% include {{ page.version.version }}/misc/azure-blob.md %}
+Google Cloud Storage | `gs` | Bucket name | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS`<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role) (optional): Pass the [service account name](https://cloud.google.com/iam/docs/understanding-service-accounts) of the service account to assume. <br><br>For more information, see [Authentication - Google Cloud Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-specified).
 HTTP | `http` | Remote host | N/A <br><br>For more information, see [Authentication - HTTP]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#http-authentication).
 NFS/Local&nbsp;[<sup>1</sup>](#considerations) | `nodelocal` | `nodeID` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services  | `s3`  | Bucket name | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#s3-compatible-services-authentication).
@@ -59,28 +59,26 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 ### Example file URLs
 
-Example URLs for [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}),  or [`EXPORT`]({% link {{ page.version.version }}/export.md %}) given a bucket or container name of `acme-co` and an `employees` subdirectory:
+Example URLs for [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}),  or [`EXPORT`]({% link {{ page.version.version }}/export.md %}) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example
 -------------+----------------------------------------------------------------------------------
 Amazon S3 | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
-Azure Blob Storage | `azure://acme-co/employees?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
+Azure Blob Storage | `azure-blob://acme-co/employees?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
 Google Cloud Storage | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
-NFS/Local | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
+NFS/Local | `nodelocal://1/path/employees`
 
-{{site.data.alerts.callout_info}}
-[Cloud storage sinks (for changefeeds)]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
-{{site.data.alerts.end}}
+For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page.
 
 Example URLs for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example
 -------------+----------------------------------------------------------------------------------
 Amazon S3 | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
-Azure Blob Storage | `azure://acme-co/employees.sql?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
+Azure Blob Storage | `azure-blob://acme-co/employees.sql?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}`
 Google Cloud Storage | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`
 HTTP | `http://localhost:8080/employees.sql`
-NFS/Local | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
+NFS/Local | `nodelocal://1/path/employees`
 
 {{site.data.alerts.callout_info}}
 HTTP storage can only be used for [`IMPORT`]({% link {{ page.version.version }}/import.md %}) and [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}).
@@ -253,9 +251,17 @@ The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
 While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes.
 
-{{site.data.alerts.callout_info}}
-[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.
-{{site.data.alerts.end}}
+#### Incremental backups and archive storage classes
+
+[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
+
+Refer to the AWS documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for steps.
+
+When you are restoring archived backup files from Glacier Flexible Retrieval or Glacier Deep Archive back to an S3 bucket, you must restore both the full backup and incremental backup layers for that backup. By default, CockroachDB stores the incremental backup layers in a separate top-level directory at the backup's storage location. Refer to [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for detail on the backup directory structure at its storage location.
+
+Once you have restored all layers of a backup's archived files back to its S3 bucket, you can then [restore]({% link {{ page.version.version }}/restore.md %}) the backup to your CockroachDB cluster.
+
+#### Supported storage classes
 
 This table lists the valid CockroachDB parameters that map to an S3 storage class:
 

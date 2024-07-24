@@ -7,7 +7,6 @@ end: '</div>'
 callout_danger: '<div class="bs-callout bs-callout--danger"><div class="bs-callout__label">Warning:</div>'
 callout_success: '<div class="bs-callout bs-callout--success"><div class="bs-callout__label">Tip:</div>'
 callout_info: '<div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>'
-callout_version: '<div class="bs-callout bs-callout--version"><div class="bs-callout__label">Current version:</div>'
 
 hr_faded: '<hr class="faded"/>'
 hr_shaded: '<hr class="shaded"/>'

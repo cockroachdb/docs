@@ -18,6 +18,8 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/troubleshooting-page).
 
+- If you see discrepancies in metrics, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %}).
+
 - [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) let you query the status of your cluster's data replication, data placement, and zone constraint conformance.
 
 - If you cannot resolve the issue yourself, the following tools can help you move forward:

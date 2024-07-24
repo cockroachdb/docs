@@ -79,7 +79,7 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `targets` | Back up the listed [targets](#targets).
 `subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`]({% link {{ page.version.version }}/show-backup.md %}). If the backup `subdirectory` is not provided, incremental backups will be stored in the default `/incrementals` directory at the root of the collection URI. See the [Create incremental backups](#create-incremental-backups) example.<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
-<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.) The storage URI for each [backup collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) must be unique. You will encounter an error if you run multiple backup collections to the same storage URI.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
 `timestamp` | Back up data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
@@ -96,6 +96,8 @@ N/A                                | Back up the cluster. For an example of a fu
 
 Query parameter | Value | Description
 ----------------+-------+------------
+`ASSUME_ROLE` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |{% include {{ page.version.version }}/misc/assume-role-description.md %} Refer to [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup details.
+`AUTH` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
 `COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail and examples.
 `S3_STORAGE_CLASS` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
 
@@ -123,13 +125,7 @@ Backups support cloud object locking and [Amazon S3 storage classes](#back-up-wi
 
 ### Object dependencies
 
-Dependent objects must be backed up at the same time as the objects they depend on.
-
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_foreign_keys).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence it uses; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_sequences).
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 {{site.data.alerts.callout_info}}
 To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#exclude-a-tables-data-from-backups).
@@ -145,7 +141,7 @@ The `system.users` table stores your users and their passwords. To restore your 
 
 The backup job process minimizes its impact to the cluster's performance with:
 
-- Distribution of work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data. Refer to the [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}) page for a detailed explanation of how a backup job works.
+- {% include_cached new-in.html version="v23.2" %} Even distribution of work to a node that has a replica of the range to back up. If a locality filter is specified, work is distributed to a node from those that match the locality filter and has the most locality tiers in common with a node that has a replica. Refer to the [Backup Architecture]({% link {{ page.version.version }}/backup-architecture.md %}) page for a detailed explanation of how a backup job works.
 - Integration with elastic CPU limiter by default, which helps to minimize the impact backups have on foreground traffic. This integration will limit the amount of CPU time used by a backup thereby allowing foreground SQL traffic to continue largely unaffected.
 
 A backup job, like any read, cannot export a range if the range contains an [unresolved intent]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#resolving-write-intents). While it is important to minimize the impact of bulk, background jobs like `BACKUP` on your foreground traffic, it is still crucial for backups to finish (in order to maintain your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)).
@@ -186,31 +182,31 @@ Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.
 
 **Default:** `1`
 
-#### Cloud storage cluster settings
+#### Cluster settings for cloud storage
 
-The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.   
+The following cluster settings limit the read and write rates to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.
 
-#### `cloudstorage.<provider>.write.node_rate_limit`
+##### `cloudstorage.<provider>.write.node_rate_limit`
 
 Limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero.
 
 **Default:** unlimited, `0 B`
 
-#### `cloudstorage.<provider>.write.node_burst_limit`
+##### `cloudstorage.<provider>.write.node_burst_limit`
 
 Limit the number of bytes per second per node handled concurrently across operations writing to the designated cloud storage provider if non-zero.
 
 **Default:** unlimited, `0 B`
 
-#### `cloudstorage.<provider>.read.node_rate_limit`
+##### `cloudstorage.<provider>.read.node_rate_limit`
 
 Limit the number of bytes per second per node across operations reading to the designated cloud storage provider if non-zero.
 
 **Default:** unlimited, `0 B`
 
-#### `cloudstorage.<provider>.read.node_burst_limit`
+##### `cloudstorage.<provider>.read.node_burst_limit`
 
-Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero. 
+Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero.
 
 **Default:** unlimited, `0 B`
 
@@ -255,6 +251,8 @@ To take a [full backup]({% link {{ page.version.version }}/take-full-and-increme
 ~~~ sql
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
+
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
 
 ### Back up a database
 

@@ -27,24 +27,22 @@ Before you begin, make sure you have:
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
+- {% include cockroachcloud/cdc/tutorial-privilege-check.md %}
 
 ## Step 1. Create a cluster
 
 If you have not done so already, [create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
-## Step 2. Configure your cluster
+## Step 2. Connect to your cluster
 
-1. Connect to the built-in SQL shell as a user with [`admin`](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) privileges, replacing the placeholders in the [client connection string]({% link cockroachcloud/connect-to-your-cluster.md %}#select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
+Refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster) for detailed instructions on how to to:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257?sslmode=verify-full&sslrootcert=certs/ca.crt'
-    ~~~
+1. Download and install CockroachDB and your cluster's CA certificate locally.
+1. Generate the `cockroach sql` command that you will use to connect to the cluster from the command line as a SQL user with [admin] privileges in the cluster.
 
-    {{site.data.alerts.callout_info}}
-    For more information on connecting to your cluster, refer to [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your CockroachDB {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
-    {{site.data.alerts.end}}
+## Step 3. Configure your cluster
+
+1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:
 
@@ -53,7 +51,7 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
-## Step 3. Create a database
+## Step 4. Create a database
 
 1. In the built-in SQL shell, create a database called `cdc_test`:
 
@@ -69,7 +67,7 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
     SET DATABASE = cdc_test;
     ~~~
 
-## Step 4. Create tables
+## Step 5. Create tables
 
 Before you can start a changefeed, you need to create at least one table for the changefeed to target. The targeted table's rows are referred to as the "watched rows".
 
@@ -83,7 +81,7 @@ CREATE TABLE order_alerts (
 );
 ~~~
 
-## Step 5. Create an S3 bucket in the AWS Console
+## Step 6. Create an S3 bucket in the AWS Console
 
 Every change to a watched row is emitted as a record in a configurable format (i.e., `JSON` for cloud storage sinks). To configure an AWS S3 bucket as the cloud storage sink:
 
@@ -91,9 +89,9 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 1. Create an S3 bucket where streaming updates from the watched tables will be collected.
 
-    You will need the name of the S3 bucket when you [create your changefeed](#step-6-create-an-enterprise-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-6-create-an-enterprise-changefeed).
+    You will need the name of the S3 bucket when you [create your changefeed](#step-7-create-an-enterprise-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-7-create-an-enterprise-changefeed).
 
-## Step 6. Create an enterprise changefeed
+## Step 7. Create an enterprise changefeed
 
 Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.current_cloud_version}}/create-changefeed.html). Replace the placeholders with your AWS access key ID and AWS secret access key:
 
@@ -116,7 +114,7 @@ Refer to the [Cloud Storage Authentication](../{{site.versions["stable"]}}/cloud
 
 You will receive the changefeed's job ID that you can use to [manage the changefeed](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#configure-a-changefeed) if needed.
 
-## Step 7. Insert data into the tables
+## Step 8. Insert data into the tables
 
 1. In the built-in SQL shell, insert data into the `order_alerts` table that the changefeed is targeting:
 
@@ -134,7 +132,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-and-debug-changefeeds#debug-a-changefeed).
     {{site.data.alerts.end}}
 
-## Step 8. Configure Snowflake
+## Step 9. Configure Snowflake
 
 1. Log in to Snowflake as a user with [read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a cluster.
 
@@ -178,9 +176,9 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     SHOW PIPES;
     ~~~
 
-1. Copy the **ARN** of the SQS queue for your stage, which displays in the **notification_channel** column. You will use this information to [configure the S3 bucket](#step-9-configure-the-s3-bucket).
+1. Copy the **ARN** of the SQS queue for your stage, which displays in the **notification_channel** column. You will use this information to [configure the S3 bucket](#step-10-configure-the-s3-bucket).
 
-## Step 9. Configure the S3 bucket
+## Step 10. Configure the S3 bucket
 
 1. [Navigate back to your S3 bucket](https://s3.console.aws.amazon.com/).
 
@@ -189,7 +187,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
     - **Event types:** Select the **All object create events**.
     - **Destination:** Select **SQS Queue**.
     - **Specify SQS queue:** Select **Enter SQS queue ARN** from the drop-down.
-    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 8](#step-8-configure-snowflake)).
+    - **SQS queue ARN:** Paste the SQS queue name from the `SHOW PIPES` output (from [Step 9](#step-9-configure-snowflake)).
 
 1. Navigate back to Snowflake.
 
@@ -240,7 +238,7 @@ The following points outline two potential workarounds. For detailed instruction
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
 Refer to the [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#known-limitations) page for more general changefeed known limitations.
