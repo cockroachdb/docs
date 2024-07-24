@@ -53,16 +53,29 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
-{% assign is_lts_version = false %}
-{% if v.release_date != "N/A" and v.initial_lts_patch != "N/A" %}
-    {% assign is_lts_version = true %}
-{% endif %}
+    {% comment %}Determine if the major version is LTS and the patch component of the initial LTS patch{% endcomment %}
+    {% assign has_lts_releases = false %}
+    {% assign lts_link_linux = '' %}
+    {% assign lts_patch = nil %}
+    {% if v.initial_lts_patch != "N/A" %}
+        {% assign has_lts_releases = true %}
+        {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
+        {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
+        {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+    {% endif %}
+
 
 ## {{ v.major_version }}
 
-{% if DEBUG %}
-LTS? {{ is_lts_version }}
-{% endif %}
+{% if DEBUG == true %}
+    has_lts_releases: {{ has_lts_releases }}<br />
+    lts_patch_string: {{ lts_patch_string }}<br />
+    lts_patch: {{ lts_patch }}<br />
+    v.initial_lts_patch: {{ v.initial_lts_patch }}<br />
+    v.major_version: {{ v.major_version }}<br />
+    has_lts_releases: {{ has_lts_releases }}<br />
+    v.release_date: {{ v.release_date }}<br />
+    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -120,12 +133,29 @@ LTS? {{ is_lts_version }}
     </thead>
     <tbody>
             {% for r in releases %}
+                {% assign current_patch_string = '' %}
+                {% assign current_patch = nil %}
+                {% if has_lts_releases == true and s == "Production" %}
+                    {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
+                    {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+                    {% if current_patch == nil %}
+                        Error: Could not determine the current patch. Giving up.<br />
+                        {% break %}{% break %}
+                    {% endif %}
 
-              {% capture lts_link_linux %}{% if is_lts_version != "N/A" %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+                    {% assign in_lts = false %}
+                    {% assign comparison = nil %}
+                    {% assign comparison = current_patch | minus: lts_patch %}
+                    {% unless comparison < 0 %}
+                        {% assign in_lts = true %}
+                    {% endunless %}
+                {% endif %}
+
+                {% if DEBUG == true %}<tr><td colspan="3">current_patch: {{ current_patch }}<br />lts_patch: {{ lts_patch }}<br />r.release_name: {{ r.release_name }}<br />lts_link: {{ lts_link }}<br />in_lts: {{ in_lts }}</td>{% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{{ lts_link_linux }}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -284,8 +314,6 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     <tbody>
         {% for r in releases %}
 
-        {% capture lts_link_docker %}{% if is_lts_version %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
-
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
                 <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
@@ -316,7 +344,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% elsif r.docker.docker_arm_experimental == true %}
               **Intel**: GA<br />**ARM**: Experimental
             {% else %}
-              GA{{ lts_link_docker }}
+              GA{{ lts_link }}
             {% endif %}
             </td>
         </tr>
