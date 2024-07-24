@@ -1,6 +1,9 @@
-export default async (request) => {
+import { Context } from 'https://edge.netlify.com'
+
+export default async function handler(request) {
   const bytedanceUserAgents = [
     'Bytespider; spider-feedback@bytedance.com'
+    // Add other Bytedance user agents if needed
   ];
 
   // Get the user agent from the request headers
@@ -16,18 +19,10 @@ export default async (request) => {
       headers: { 'Content-Type': 'text/plain' }
     });
   }
+  
+    return fetch(request);
+}
 
-  console.log(`Request URL: ${url.href}`);
-
-  // Process and forward the request
-  const response = await fetch(request);
-  console.log(`Response Status: ${response.status}`);
-
-  return response;
-
-};
 export const config = {
   path: "/*",
 };
-
-
