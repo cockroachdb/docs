@@ -8,12 +8,7 @@
   [build.processing.html]
     pretty_urls = true
 
-[functions]
-  directory = "./netlify/edge-functions"
 
-[[edge_functions]]
-  path = "/*"
-  function = "blockBytedance"    
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
