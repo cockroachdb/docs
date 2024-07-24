@@ -1,4 +1,3 @@
-import { Context } from 'https://edge.netlify.com'
 
 export default async function handler(request) {
   const bytedanceUserAgents = [
@@ -19,7 +18,6 @@ export default async function handler(request) {
       headers: { 'Content-Type': 'text/plain' }
     });
   }
-  
     return fetch(request);
 }
 
