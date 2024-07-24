@@ -261,7 +261,7 @@ For a list of compatible parameters and options, refer to [Parameters]({% link {
 
 ### Pub/Sub sink configuration
 
-You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sink sink with the following:
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sub sink with the following:
 
 - If you have enabled [`changefeed.new_pubsub_sink_enabled`](#google-cloud-pub-sub), set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Pub/Sub sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Setting `changefeed.sink_io_workers` will also affect changefeeds emitting to [webhook sinks](#webhook-sink) when `changefeed.new_webhook_sink_enabled` is set to `true`.
 - Set the `pubsub_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `pubsub_sink_config` option's configurable fields, refer to the following table and examples.

@@ -296,7 +296,7 @@ For a list of compatible parameters and options, refer to [Parameters]({% link {
 
 ### Pub/Sub sink configuration
 
-You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sink sink:
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sub sink:
 
 - Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Pub/Sub sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Note that this cluster setting will also affect changefeeds running to [webhook sinks](#webhook-sink).
 - Set the `pubsub_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `pubsub_sink_config` option's configurable fields, refer to the following table and examples.
@@ -496,7 +496,6 @@ The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
-* Supports concurrency configuration. Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a webhook sink.
 
 ### Webhook sink configuration
 
