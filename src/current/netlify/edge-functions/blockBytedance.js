@@ -26,5 +26,8 @@ export default async (request) => {
   return response;
 
 };
+export const config = {
+  path: "/*",
+};
 
 
