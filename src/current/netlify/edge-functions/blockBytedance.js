@@ -18,7 +18,7 @@ export default async (request, context) => {
   }
 
   // Proceed with the request if it's not a Bytedance user agent
-  return await context.next();
+  
 };
 
 export const config = {
