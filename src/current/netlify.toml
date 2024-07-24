@@ -8,6 +8,10 @@
     RUBY_VERSION = "3.2.1"
   [build.processing.html]
     pretty_urls = true
+
+[[edge_functions]]
+  path = "/*"
+  function = "blockBytedance"
    
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
