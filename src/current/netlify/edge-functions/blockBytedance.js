@@ -19,9 +19,10 @@ export default async (request, context) => {
 
   
   // Proceed with the request if it's not a Bytedance user agent
-  return new Response(`Hello there! You can freely access our content from ${countryName}!`, {
-    headers: { 'Content-Type': 'text/html' }
-  });
+  const url = new URL(request.url);
+  url.pathname = '/'; // Redirect to the root directory
+  return Response.redirect(url.toString(), 302); // 302 status for temporary redirect
+
 };
 
 export const config = {
