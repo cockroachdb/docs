@@ -153,16 +153,24 @@ The cluster is automatically given a randomly-generated name. If desired, change
 
 ## Step 8. Select the CockroachDB version
 
-When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}). Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among two or more types of releases. In the list, releases are labeled according to their stability:
+When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among two or more types of releases. In the list, releases are labeled according to their stability:
 
-- **Stable**: The latest stable release is the default version. One or more stable releases may be listed at any given time.
+- **Latest Stable**: The latest stable GA release is the default version and is suitable for production.
+- **Stable**: One or more stable releases may be listed at any given time. All listed releases that are not labeled **Pre-Production Preview** are stable releases suitable for production.
 - **Pre-Production Preview**: Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases may be made available for CockroachDB {{ site.data.products.dedicated }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Pre-Production Preview releases are no longer available after the GA release of a major version.
 
-{{site.data.alerts.callout_danger}}
-Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+    {{site.data.alerts.end}}
+
+To select a version for your cluster:
+
+1. Under **Cluster Version**, click **More versions**.
+1. Select the cluster version from the **Cluster version** list.
 
 After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
+## Step 9. Finish creating the cluster
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
 
