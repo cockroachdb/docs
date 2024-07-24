@@ -9,7 +9,7 @@
     pretty_urls = true
 
 [functions]
-  directory = "netlify/edge-functions"
+  directory = "./netlify/edge-functions"
 
 [[edge_functions]]
   path = "/*"
