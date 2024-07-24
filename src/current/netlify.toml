@@ -8,7 +8,6 @@
   [build.processing.html]
     pretty_urls = true
 
-
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
