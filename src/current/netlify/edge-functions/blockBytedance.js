@@ -1,4 +1,4 @@
-export default async (request, context) => {
+export default async (request) => {
   const bytedanceUserAgents = [
     'Bytespider; spider-feedback@bytedance.com'
   ];
@@ -17,14 +17,20 @@ export default async (request, context) => {
     });
   }
 
-  
-  // Proceed with the request if it's not a Bytedance user agent
+  // Avoid redirecting if already at the root directory
   const url = new URL(request.url);
+  if (url.pathname === '/') {
+    // Serve the root directory content or a custom message
+    return new Response('<html><body><h1>Welcome to the root directory!</h1></body></html>', {
+      headers: { 'Content-Type': 'text/html' }
+    });
+  }
+
+  // Redirect to the root directory for all other requests
   url.pathname = '/'; // Redirect to the root directory
   return Response.redirect(url.toString(), 302); // 302 status for temporary redirect
-
 };
 
 export const config = {
-path: "/*",
+  path: "/*",
 };
