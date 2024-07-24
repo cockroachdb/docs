@@ -20,6 +20,4 @@ export default async (request) => {
   return fetch(request);
 };
 
-export const config = {
-  path: "/*",
-};
+
