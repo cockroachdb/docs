@@ -168,7 +168,7 @@ To select a version for your cluster:
 1. Under **Cluster Version**, click **More versions**.
 1. Select the cluster version from the **Cluster version** list.
 
-After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to the [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## Step 9. Finish creating the cluster
 
