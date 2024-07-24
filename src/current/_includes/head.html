@@ -82,7 +82,7 @@ var pageConfig = {
 {%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
 <script>
   !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET";;analytics.SNIPPET_VERSION="4.15.3";
-  analytics.load("qngoX5dcBNFLUnk0qNJ64braYXjiCn97", {
+  analytics.load("Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET", {
     user: {
       cookie: {
         key: "crl_brand_ajs_user_id",
@@ -143,10 +143,21 @@ var pageConfig = {
   console.log(2);
 </script>
 <script
-src="https://widget.kapa.ai/kapa-widget.bundle.js"
-data-website-id="98d1a919-dfd3-4d54-a8a0-58c9094f57e5"
-data-project-name="CockroachDB"
-data-project-color="#6933FF"
-data-project-logo="https://upload.wikimedia.org/wikipedia/en/3/31/Cockroach_Labs_Logo.png"
-data-modal-disclaimer="This AI bot is experimental. Don't rely on it for production workloads. Always consult the official CockroachDB documentation."
+  src="https://widget.kapa.ai/kapa-widget.bundle.js"
+  data-website-id="98d1a919-dfd3-4d54-a8a0-58c9094f57e5"
+  data-project-name="CockroachDB"
+  data-project-color="#6933FF"
+  data-project-logo="https://upload.wikimedia.org/wikipedia/en/3/31/Cockroach_Labs_Logo.png"
+  data-kapa-branding-hide="true"
+  data-modal-title="CockroachDB AI"
+  data-modal-disclaimer="This AI bot is experimental. Don't rely on it for production workloads. Always consult the official CockroachDB documentation. Interactions with this AI bot may be monitored or recorded, and your use of the AI bot is subject to the Cockroach Labs' [Terms of Use](https://www.cockroachlabs.com/website-terms-of-use/) and [Privacy policy](https://www.cockroachlabs.com/privacy/)."
 ></script>
+
+<style>
+  .mantine-Modal-content {
+    margin-top: 80px !important; /* Ensures the modal has enough top margin */
+  }
+  .mantine-Modal-content {
+    max-height: calc(75vh); /* Limits the modal's height to 75% of the viewport height */
+  }
+</style>
