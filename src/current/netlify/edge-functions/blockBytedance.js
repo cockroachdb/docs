@@ -17,18 +17,7 @@ export default async (request) => {
     });
   }
 
-  // Avoid redirecting if already at the root directory
-  const url = new URL(request.url);
-  if (url.pathname === '/') {
-    // Serve the root directory content or a custom message
-    return new Response('<html><body><h1>Welcome to the root directory!</h1></body></html>', {
-      headers: { 'Content-Type': 'text/html' }
-    });
-  }
-
-  // Redirect to the root directory for all other requests
-  url.pathname = '/'; // Redirect to the root directory
-  return Response.redirect(url.toString(), 302); // 302 status for temporary redirect
+  return fetch(request);
 };
 
 export const config = {
