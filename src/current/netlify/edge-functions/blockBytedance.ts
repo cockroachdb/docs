@@ -1,5 +1,6 @@
+import type { Config, Context } from "@netlify/edge-functions";
 
-export default async function handler(request) {
+export default async function handler(request: Request, context: Context) {
   const bytedanceUserAgents = [
     'Bytespider; spider-feedback@bytedance.com'
     // Add other Bytedance user agents if needed
@@ -18,9 +19,14 @@ export default async function handler(request) {
       headers: { 'Content-Type': 'text/plain' }
     });
   }
-    return fetch(request);
+
+  // Log "hello" before continuing the request
+  console.log("hello");
+
+  // Continue the request chain and get the response from the next handler or the origin server
+  return context.next();
 }
 
-export const config = {
-  path: "/*",
+export const config: Config = {
+  path: "/*", // This path can be adjusted based on where you want to apply this edge function
 };
