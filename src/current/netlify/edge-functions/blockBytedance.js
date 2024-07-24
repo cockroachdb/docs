@@ -17,8 +17,9 @@ export default async (request, context) => {
     });
   }
 
-  // Proceed with the request if it's not a Bytedance user agent
   
+  // Proceed with the request if it's not a Bytedance user agent
+  return fetch(request);
 };
 
 export const config = {
