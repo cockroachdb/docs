@@ -19,7 +19,9 @@ export default async (request, context) => {
 
   
   // Proceed with the request if it's not a Bytedance user agent
-  return fetch(request);
+  return new Response(`Hello there! You can freely access our content from ${countryName}!`, {
+    headers: { 'Content-Type': 'text/html' }
+  });
 };
 
 export const config = {
