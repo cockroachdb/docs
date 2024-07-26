@@ -13,21 +13,15 @@ This tutorial shows you how build a simple C# application with CockroachDB and t
 
 {% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Create a .NET project
+## Get the code
 
-In your terminal, run the following commands:
-
-{% include_cached copy-clipboard.html %}
 ~~~ shell
-dotnet new console -o cockroachdb-efcore-test-app
+git clone https://github.com/cockroachdb/efcore.pg.cockroach
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
-cd cockroachdb-efcore-test-app
+cd efcore.pg.cockroach/examples/
 ~~~
-
-The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-efcore-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-efcore-test-app` command puts you into the newly created app directory.
 
 ## Install the EFCore driver
 
@@ -35,7 +29,7 @@ Install the latest version of the [EFCore driver](https://www.nuget.org/packages
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-dotnet add package EFCore
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 ~~~
 
 ## Create a database
@@ -63,13 +57,11 @@ Now that you have set up your project and created a database, in this section yo
 
 ### Basic example
 
-#### Get the code
-
-Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-efcore-test-app` directory with the code below:
+Edit the contents of the `Program.cs` file in the `efcore.pg.cockroach/examples` directory, which is shown below. Note that you will need to update the code with the username and password of the SQL user you created earlier.
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/efcore.pg.cockroach/main/examples/Program.cs %}
 ~~~
 
 #### Run the basic example
