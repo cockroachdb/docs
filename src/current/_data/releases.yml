@@ -6419,6 +6419,7 @@
   previous_release: v24.2.0-beta.1
 
 - release_name: v23.2.9
+  lts: true
   major_version: v23.2
   release_date: '2024-08-01'
   release_type: Production
@@ -6444,3 +6445,10 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.8
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+    This version is currently available only for select
+    CockroachDB Cloud clusters. To request to upgrade
+    a CockroachDB self-hosted cluster to this version,
+    [contact support](https://support.cockroachlabs.com/hc/requests/new).
