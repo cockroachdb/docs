@@ -63,7 +63,7 @@ Function                  | Description
 --------------------------+----------------------
 `changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
 `event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
-`event_schema_timestamp()` | Returns the timestamp of the [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) event.
+`event_schema_timestamp()` | Returns the timestamp of [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) events that cause a [changefeed message]({% link {{ page.version.version }}/changefeed-messages.md %}) to emit.
 
 You can also use the following functions in CDC queries:
 
