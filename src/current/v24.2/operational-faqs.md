@@ -244,7 +244,7 @@ You can also see these metrics in [the Clock Offset graph]({% link {{ page.versi
 
 ## How do I prepare for planned node maintenance?
 
-Perform a [node shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown) to temporarily stop the `cockroach` process on a node that you plan to restart.
+Perform a [node shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown) to temporarily stop the `cockroach` process on the node. When maintenance is complete and you restart the `cockroach` process, the node will rejoin the cluster.
 
 ## See also
 
