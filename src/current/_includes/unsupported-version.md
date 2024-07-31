@@ -82,7 +82,7 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
 {% capture lts_maintenance_message %}
       {% if today >= lm %}
       {{site.data.alerts.callout_version}}
-      As of {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}, {{ include.major_version }} LTS releases of CockroachDB {{ x.major_version }} releases are in <strong>Maintenance Support</strong>{% if today > a %} and GA releases prior to {{ x.initial_lts_patch }} are no longer supported.{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
+      As of {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}, LTS releases of CockroachDB {{ x.major_version }} are in <strong>Maintenance Support</strong>{% if today > a %} and GA releases prior to {{ x.initial_lts_patch }} are no longer supported.{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
       {{site.data.alerts.end}}
       {% endif %}
 {% endcapture %}

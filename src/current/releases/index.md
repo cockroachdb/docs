@@ -57,6 +57,8 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     {% assign has_lts_releases = false %}
     {% assign lts_link_linux = '' %}
     {% assign lts_patch = nil %}
+    {% assign in_lts = false %}
+    {% assign comparison = nil %}
     {% if v.initial_lts_patch != "N/A" %}
         {% assign has_lts_releases = true %}
         {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
@@ -135,6 +137,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
             {% for r in releases %}
                 {% assign current_patch_string = '' %}
                 {% assign current_patch = nil %}
+                {% assign in_lts = false %}
                 {% if has_lts_releases == true and s == "Production" %}
                     {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
                     {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
@@ -143,8 +146,6 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
                         {% break %}{% break %}
                     {% endif %}
 
-                    {% assign in_lts = false %}
-                    {% assign comparison = nil %}
                     {% assign comparison = current_patch | minus: lts_patch %}
                     {% unless comparison < 0 %}
                         {% assign in_lts = true %}
@@ -296,10 +297,16 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 <section class="filter-content" markdown="1" data-scope="docker">
 
+        {% if s == "Production" %}{% comment %}Print this only for the Production section{% endcomment %}
     Docker images for CockroachDB are published on [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/tags).
 
-        {% if v_docker_arm == true %}
+            {% if v_docker_arm == true %}
+                {% if v.major_version == "v22.2" or v.major_version == "v23.1" %}
     [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM.
+                {% else %}
+        All Docker images for {{ v.major_version }} are [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) with support for both Intel and ARM.
+                {% endif %}
+            {% endif %}
         {% endif %}
 
     <table class="release-table">
@@ -308,16 +315,32 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>Version</td>
             <td>Date</td>
             <td>Docker image tag</td>
-            <td>Notes</td>
+            {% if s == "Production" %}{% if v.major_version == "v23.1" or v.major_version == "v22.2" %}<td>Notes</td>{% endif %}{% endif %}
         </tr>
     </thead>
     <tbody>
         {% for r in releases %}
+            {% assign current_patch_string = '' %}
+            {% assign current_patch = nil %}
+            {% assign in_lts = false %}
+            {% if has_lts_releases == true and s == "Production" %}
+                {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
+                {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+                {% if current_patch == nil %}
+                    Error: Could not determine the current patch. Giving up.<br />
+                    {% break %}{% break %}
+                {% endif %}
+
+                {% assign comparison = current_patch | minus: lts_patch %}
+                {% unless comparison < 0 %}
+                    {% assign in_lts = true %}
+                {% endunless %}
+            {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
                 <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
-".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r.
+".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.
 {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
@@ -332,28 +355,30 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
                 {% continue %}
             {% else %}
                 {% if r.source == true %}
-                <b>{% if r.docker.docker_arm == false %}Intel{% else %}Multi-platform{% endif %}</b>:<br><code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
+                {% if v.major_version == "v22.2" or v.major_version == "v23.1" %}{% if r.docker.docker_arm == false %}<b>Intel</b>:<br />{% else %}<b>Multi-platform</b>:<br />{% endif %}{% endif %}<code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
                 {% else %}
                 N/A
                 {% endif %}
             {% endif %}
             </td>
+            {% if s == "Production" %}{% if v.major_version == "v23.1" or v.major_version == "v22.2" %}
             <td>
-            {% if r.docker.docker_arm_limited_access == true %}
+                {% if r.docker.docker_arm_limited_access == true %}
               **Intel**: GA<br />**ARM**: Limited Access
-            {% elsif r.docker.docker_arm_experimental == true %}
+                {% elsif r.docker.docker_arm_experimental == true %}
               **Intel**: GA<br />**ARM**: Experimental
-            {% else %}
-              GA{{ lts_link }}
-            {% endif %}
+                {% else %}
+              GA
+                {% endif %}
             </td>
+            {% endif %}{% endif %}
         </tr>
         {% endfor %}
     </tbody>
     </table>
 </section>
 
-<section class="filter-content" data-scope="source">
+<section class="filter-content" markdown="1" data-scope="source">
     <p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/" class="binary-link">cockroachdb/cockroach</a> repository on Github.</p>
     <table class="release-table">
     <thead>
@@ -365,8 +390,6 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
-        R: <br />{{ r }}<br />
-        V: <br />{{ v }}</br>
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
