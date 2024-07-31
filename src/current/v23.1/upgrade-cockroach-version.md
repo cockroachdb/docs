@@ -341,7 +341,7 @@ Finalization is required only when upgrading from {{ previous_version }}.x to {{
     RESUME JOB {changefeed_job_ID};
     ~~~
 
-    Or, pause all changefeed jobs:
+    Or, resume all changefeed jobs:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
