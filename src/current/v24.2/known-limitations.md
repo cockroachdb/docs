@@ -16,10 +16,6 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
 
-### Physical cluster replication cut back to primary cluster
-
-{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
-
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
@@ -451,6 +447,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
+- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 #### `RESTORE` limitations
 

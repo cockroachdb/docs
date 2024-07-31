@@ -44,7 +44,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-06-14-general-updates"> General updates </h3>
 
-- Deletion protection, which helps to prevent a cluster in CockroachDB {{ site.data.products.cloud }} from being deleted by mistake, is generally available for CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters. A user with permission to delete a cluster can enable deletion protection for the cluster. Refer to the instructions for [CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/serverless-cluster-management.md %}#enable-deletion-protection) and [CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/cluster-management.md %}#enable-deletion-protection).
+- Deletion protection, which helps to prevent a cluster in CockroachDB {{ site.data.products.cloud }} from being deleted by mistake, is generally available for CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters. A user with permission to delete a cluster can enable deletion protection for the cluster. Refer to the instructions for [CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection) and [CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/cluster-management.md %}#enable-deletion-protection).
 
 ## June 12, 2024
 
@@ -152,7 +152,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-02-05-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} clusters now have a [**Metrics** page]({% link cockroachcloud/metrics-page.md %}) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**. On the **Metrics** page, a **Custom** tab takes you to the [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) (available in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})) where you can create custom charts showing the time series data for an available metric or combination of metrics.
+- CockroachDB {{ site.data.products.dedicated }} clusters now have a [**Metrics** page]({% link cockroachcloud/metrics-essential.md %}) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**. On the **Metrics** page, a **Custom** tab takes you to the [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) (available in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})) where you can create custom charts showing the time series data for an available metric or combination of metrics.
 
 ## January 29, 2024
 
@@ -164,7 +164,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-01-17-general-updates"> General updates </h3>
 
-- The single-page CockroachDB Cloud [Create cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster) and [Edit cluster](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management) have been updated to use multi-step wizards.
+- The single-page CockroachDB Cloud [Create cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster) and [Edit cluster](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management) have been updated to use multi-step wizards.
 
 ## January 17, 2024
 
@@ -219,17 +219,17 @@ Get future release notes emailed to you:
 
 <h3 id="2023-10-02-general-changes"> General changes </h3>
 
-- [CockroachDB {{ site.data.products.dedicated }} on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is [generally available](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases).
+- [CockroachDB {{ site.data.products.dedicated }} on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-advanced-on-azure) is [generally available](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases).
 
 <h3 id="2023-10-02-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.serverless }} clusters now have a [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) available in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}). From the [**Metrics** page]({% link cockroachcloud/metrics-page.md %}) in the Console, navigate to the **Custom** tab to create custom charts showing the time series data for an available metric or combination of metrics.
+- CockroachDB {{ site.data.products.serverless }} clusters now have a [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) available in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}). From the [**Metrics** page]({% link cockroachcloud/metrics-essential.md %}) in the Console, navigate to the **Custom** tab to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ## September 29, 2023
 
 <h3 id="2023-09-29-general-changes"> General changes </h3>
 
-- [Multi-region CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters) clusters are now [generally available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability), and [cross-region network charges](https://www.cockroachlabs.com/pricing) are now accounted for in RU consumption.
+- [Multi-region CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters) clusters are now [generally available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability), and [cross-region network charges](https://www.cockroachlabs.com/pricing) are now accounted for in RU consumption.
 ## September 27, 2023
 
 <h3 id="2023-09-27-general-changes"> General changes </h3>
@@ -240,7 +240,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-09-22-general-changes"> General changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} clusters on Azure can now be modified, [horizontally or vertically scaled]({% link cockroachcloud/cluster-management.md %}), [upgraded]({% link cockroachcloud/upgrade-policy.md %}), have their [storage increased]({% link cockroachcloud/cluster-management.md %}#increase-storage-for-a-cluster), and have [maintenance windows]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) set. To learn more, refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+- CockroachDB {{ site.data.products.dedicated }} clusters on Azure can now be modified, [horizontally or vertically scaled]({% link cockroachcloud/cluster-management.md %}), [upgraded]({% link cockroachcloud/upgrade-policy.md %}), have their [storage increased]({% link cockroachcloud/cluster-management.md %}#increase-storage-for-a-cluster), and have [maintenance windows]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) set. To learn more, refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 ## September 11, 2023
 
@@ -252,7 +252,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-09-08-general-changes"> General changes </h3>
 
-- [Managed-service backups](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups?filters=dedicated) are now available for [CockroachDB {{ site.data.products.dedicated }} clusters on Azure (Limited Access)]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+- [Managed-service backups](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups?filters=dedicated) are now available for [CockroachDB {{ site.data.products.dedicated }} clusters on Azure (Limited Access)]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 - You can now create new [multi-region](https://www.cockroachlabs.com/docs/stable/multiregion-overview) CockroachDB {{ site.data.products.dedicated }} clusters on Azure.
 
@@ -288,7 +288,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-08-16-general-changes"> General changes </h3>
 
-- In the {{ site.data.products.cloud }} Console, you can now [add regions and change the primary region]({% link cockroachcloud/folders.md %}) for multi-region  CockroachDB {{ site.data.products.serverless }} clusters. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added. For details, refer to [Planning a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters).
+- In the {{ site.data.products.cloud }} Console, you can now [add regions and change the primary region]({% link cockroachcloud/folders.md %}) for multi-region  CockroachDB {{ site.data.products.serverless }} clusters. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added. For details, refer to [Planning a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters).
 
 ## August 16, 2023
 
@@ -306,7 +306,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-08-01-general-changes"> General changes </h3>
 
-- {{ site.data.products.serverless }} pricing changes that went into effect for newly-created organizations beginning on  [May 1, 2023](#may-1-2023) are now in effect for all organizations. Review the [new pricing](../cockroachcloud/plan-your-cluster-serverless.html#pricing), and review your current [resource limits](../cockroachcloud/serverless-cluster-management.html#edit-cluster-capacity) to prevent disruptions to your service.
+- {{ site.data.products.serverless }} pricing changes that went into effect for newly-created organizations beginning on  [May 1, 2023](#may-1-2023) are now in effect for all organizations. Review the [new pricing](../cockroachcloud/plan-your-cluster-basic.html#pricing), and review your current [resource limits](../cockroachcloud/basic-cluster-management.html#edit-cluster-capacity) to prevent disruptions to your service.
 
 ## July 31, 2023
 
@@ -393,7 +393,7 @@ In addition to many of the Feature Highlights in the [CockroachDB v23.1.0 Releas
     - The cluster’s regional configuration applies to all databases by default, so it is not necessary to run [`ALTER DATABASE ... ADD REGION`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#add-region) to configure regions when adding a database to the cluster.
     - [`SURVIVE REGION FAILURE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#survive-zone-region-failure) is supported to achieve [region-level survival goals](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-overview#survival-goals).
 
-- [Creating CockroachDB {{ site.data.products.dedicated }} clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-dedicated-on-azure) is now available in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability). To enroll your organization and begin testing this feature, contact your Cockroach Labs account team.
+- [Creating CockroachDB {{ site.data.products.dedicated }} clusters on Azure](https://www.cockroachlabs.com/docs/cockroachcloud/cockroachdb-advanced-on-azure) is now available in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability). To enroll your organization and begin testing this feature, contact your Cockroach Labs account team.
 
 <h3 id="2023-05-15-console-changes"> Console changes </h3>
 
@@ -411,12 +411,12 @@ In addition to many of the Feature Highlights in the [CockroachDB v23.1.0 Releas
 
 The following changes were made to CockroachDB {{ site.data.products.serverless }} for **new organizations** created on or after April 26, 2023. **Existing organizations will not be affected until August 1, 2023**.
 
-- The price of [Request Units (RUs)](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) increased from $1 per 10M RU to $2 per 10M RUs.
+- The price of [Request Units (RUs)](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic#request-units) increased from $1 per 10M RU to $2 per 10M RUs.
 - The price of [storage](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#storage) decreased from $1 per 1 GiB storage to $0.50 per 1 GiB storage.
 - Free resources are allocated on a per-organization basis instead of a per-cluster basis. All All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to contract customers.
 - All resources are available instantly at the beginning of each month (burst and baseline RUs are now deprecated).
-- You can now [set separate RU and storage limits](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management#edit-your-resource-limits) for your clusters, or set a spend limit that will be divided between resources automatically.
-- You can now [set unlimited resources](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management#edit-your-resource-limits) for a cluster so your workload is never restricted.
+- You can now [set separate RU and storage limits](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management#edit-your-resource-limits) for your clusters, or set a spend limit that will be divided between resources automatically.
+- You can now [set unlimited resources](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management#edit-your-resource-limits) for a cluster so your workload is never restricted.
 - Organizations on the free plan will have at most one free serverless cluster (instead of the previous limit of five free clusters). **Cockroach Labs will continue to maintain all existing free clusters with the new organization-level free resources**.
 - Organizations can now create 200 serverless clusters instead of the previous maximum of five total clusters.
 
@@ -501,14 +501,14 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - The following features are now available for CockroachDB {{ site.data.products.serverless }} clusters running CockroachDB [v22.2.0]({% link releases/v22.2.md %}) or later:
   - [Query cancellation](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cancel-query#considerations) using the PostgreSQL wire protocol (pgwire).
-  - [`EXPLAIN ANALYZE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) now gives an estimate of the [Request Units (RUs)](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) a query consumes.
+  - [`EXPLAIN ANALYZE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) now gives an estimate of the [Request Units (RUs)](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic#request-units) a query consumes.
   - All CockroachDB {{ site.data.products.serverless }} users can now use cloud storage for [`IMPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import), [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup), and [change data capture (CDC)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/change-data-capture-overview) without entering billing information.
   - [`SHOW RANGES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-ranges) is now supported on CockroachDB {{ site.data.products.serverless }}.
   - The [GC TTL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones#gc-ttlseconds) for deleted values is lowered from 24 hours to 1 hour and 15 minutes.
 
 <h3 id="2023-02-06-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.serverless }} clusters' regions are now displayed on the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-overview-page) and [**Clusters** page](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management#view-clusters-page).
+- CockroachDB {{ site.data.products.serverless }} clusters' regions are now displayed on the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-overview-page) and [**Clusters** page](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management#view-clusters-page).
 - The links in the sidebar navigation of the [**Cluster Overview**](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-overview-page) page have been reorganized into sections under relevant headers.
 - For CockroachDB {{ site.data.products.dedicated }} clusters, the **Monitoring** page is now called the [**Tools** page](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page) and is located in the **Monitoring** section of the sidebar.
 
@@ -558,7 +558,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 - CockroachDB {{ site.data.products.serverless }} clusters now have a [**Metrics** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-custom-chart-debug-page) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**.
 - The `p99.9` and `p99.99` latencies are now shown in the `SQL Connection Latency` and `SQL Statement Latency` charts on the [**Metrics** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-custom-chart-debug-page) for CockroachDB {{ site.data.products.serverless }} clusters.
 - The **Last used** column on the [**Table Details** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) now uses the UTC timezone.
-- The CockroachDB {{ site.data.products.serverless }} [**Cost estimator**](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management#estimate-usage-cost) has been temporarily disabled while a bug is being fixed.
+- The CockroachDB {{ site.data.products.serverless }} [**Cost estimator**](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management#estimate-usage-cost) has been temporarily disabled while a bug is being fixed.
 
 <h3 id="2022-12-05-api-changes"> Cloud API changes </h3>
 
@@ -616,7 +616,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2022-09-16-console-changes">Console changes</h3>
 
-- A tool to [estimate your monthly cost](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-cluster-management#estimate-usage-cost) based on your workload is now available for CockroachDB {{ site.data.products.serverless }} clusters.
+- A tool to [estimate your monthly cost](https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management#estimate-usage-cost) based on your workload is now available for CockroachDB {{ site.data.products.serverless }} clusters.
 
 ## September 8, 2022
 
