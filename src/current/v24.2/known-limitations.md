@@ -16,10 +16,6 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
 
-### Physical cluster replication cut back to primary cluster
-
-{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
-
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
@@ -196,8 +192,10 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ~~~
 
 ~~~
-ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.2
 ~~~
 
 [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
@@ -451,6 +449,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
+- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 #### `RESTORE` limitations
 
