@@ -2,12 +2,17 @@
   base = "src/current/"
   publish = "_site/"
   command = "./netlify/build.sh"
+  edge_functions = "./netlify/edge-functions"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
   [build.processing.html]
     pretty_urls = true
 
+[[edge_functions]]
+  path = "/*"
+  function = "blockBytedance"
+   
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
