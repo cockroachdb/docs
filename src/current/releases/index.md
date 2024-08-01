@@ -297,15 +297,19 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 <section class="filter-content" markdown="1" data-scope="docker">
 
+        {% comment %}Prepare to show the Notes column in v22.2 and v23.1{% endcomment %}
+        {% assign show_notes_column = false %}
+        {% if v.major_version == "v23.1" or v.major_version == "v22.2" %}
+            {% assign show_notes_column = true %}
+        {% endif %}
+
         {% if s == "Production" %}{% comment %}Print this only for the Production section{% endcomment %}
     Docker images for CockroachDB are published on [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/tags).
 
-            {% if v_docker_arm == true %}
-                {% if v.major_version == "v22.2" or v.major_version == "v23.1" %}
-    [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM.
-                {% else %}
+            {% if show_notes_column == true %}
+      [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM.
+            {% else %}
         All Docker images for {{ v.major_version }} are [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) with support for both Intel and ARM.
-                {% endif %}
             {% endif %}
         {% endif %}
 
@@ -315,7 +319,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>Version</td>
             <td>Date</td>
             <td>Docker image tag</td>
-            {% if s == "Production" %}{% if v.major_version == "v23.1" or v.major_version == "v22.2" %}<td>Notes</td>{% endif %}{% endif %}
+            {% if show_notes_column == true %}<td>Notes</td>{% endif %}
         </tr>
     </thead>
     <tbody>
@@ -338,40 +342,46 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
-            <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
-".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.
-{% endcomment %}
+
+            {% comment %}Version column{% endcomment %}
+            <td><a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
+".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.{% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
             </td>
+
+            {% comment %}Release Date column{% endcomment %}
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+
+            {% comment %}Docker Image Tag column{% endcomment %}
             <td>
-            {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-                <span class="badge badge-gray">Withdrawn</span>
-            {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
-                <span>{{ r.cloud_only_message_short }}</span>
-                {% continue %}
+            {% if r.withdrawn == true %}
+                <span class="badge badge-gray">Withdrawn</span></td>{% comment %} Suppress download links for withdrawn releases, spans Intel and ARM columns {% endcomment %}
+            {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases, spans Intel and ARM columns {% endcomment %}
+                <span>{{ r.cloud_only_message_short }}</span></td>
             {% else %}
-                {% if r.source == true %}
-                {% if v.major_version == "v22.2" or v.major_version == "v23.1" %}{% if r.docker.docker_arm == false %}<b>Intel</b>:<br />{% else %}<b>Multi-platform</b>:<br />{% endif %}{% endif %}<code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
-                {% else %}
+                {% if r.source == false %}
                 N/A
+                {% else %}
+                    {% if show_notes_column == true %}{% comment %}Show Intel and ARM details only for major versions with a mix{% endcomment %}
+                        {% if r.docker.docker_arm == false %}<b>Intel</b>:<br />{% else %}<b>Multi-platform</b>:<br />{% endif %}
+                    {% endif %}<code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
                 {% endif %}
             {% endif %}
             </td>
-            {% if s == "Production" %}{% if v.major_version == "v23.1" or v.major_version == "v22.2" %}
+            {% if show_notes_column == true %}
+            {% comment %}Notes column{% endcomment %}
             <td>
                 {% if r.docker.docker_arm_limited_access == true %}
-              **Intel**: GA<br />**ARM**: Limited Access
+                **Intel**: Production<br />**ARM**: Limited Access
                 {% elsif r.docker.docker_arm_experimental == true %}
-              **Intel**: GA<br />**ARM**: Experimental
+                **Intel**: Production<br />**ARM**: Experimental
                 {% else %}
-              GA
+                Production
                 {% endif %}
             </td>
-            {% endif %}{% endif %}
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
@@ -414,15 +424,15 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             </td>
             {% endif %}
         </tr>
-        {% endfor %}
+        {% endfor %} {% comment %}for release in releases{% endcomment %}
     </tbody>
     </table>
 </section>
 
 
         {% endif %} {% comment %}if releases[0]{% endcomment %}
-    {% endfor %} {% comment %}Sections {% endcomment %}
-{% endfor %} {% comment %}Versions{% endcomment %}
+    {% endfor %} {% comment %}for s in sections {% endcomment %}
+{% endfor %} {% comment %}for v in versions{% endcomment %}
 
 ## Release naming
 
