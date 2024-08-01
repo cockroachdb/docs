@@ -72,7 +72,7 @@ For more comprehensive guides, refer to:
 
 ### Cluster versions and upgrades
 
-The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's virtual cluster at the time of [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
+The standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster at the time of [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
 
 To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
 
