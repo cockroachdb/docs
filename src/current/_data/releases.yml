@@ -6420,7 +6420,7 @@
 
 - release_name: v24.2.0-beta.3
   major_version: v24.2
-  release_date: '2024-07-31'
+  release_date: '2024-08-01'
   release_type: Testing
   go_version: go1.22.5
   sha: 742a2251a05088a238fc6eb4c2466dace3cb1bb2
