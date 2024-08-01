@@ -33,13 +33,7 @@ The following databases are currently supported:
 
 To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 
-| Operating System |                                    AMD 64-bit                                   |                                    ARM 64-bit                                   |
-|------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| Windows          | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz) | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz) |
-| Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
-| Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
-
-For previous binaries, see the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). 
+{% include molt/molt-install.md %}
 
 # Setup
 
@@ -74,11 +68,12 @@ Flag | Description
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
 `--concurrency` | Number of threads to process at a time when reading the tables. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{site.current_cloud_version}}/int.md %}), [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}), and [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %}) data types.{% endcomment %}
-`--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
-`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
-`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
 `--live` | Retry verification on rows before emitting warnings or errors. This is useful during live data import, when temporary mismatches can occur. <br />**Default:** `false`
+`--metrics-listen-addr` | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
+`--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
+`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
+`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 
 ## Usage
 

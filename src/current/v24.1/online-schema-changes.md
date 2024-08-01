@@ -80,6 +80,7 @@ The following statements use the declarative schema changer by default:
 - [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
 - [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
 - [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
+- [`CREATE SEQUENCE`]({% link {{page.version.version}}/create-sequence.md %})
 
 Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-use-declarative-schema-changer) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}#use_declarative_schema_changer).
 
