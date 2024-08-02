@@ -174,7 +174,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `[NOT] VISIBLE`
 
-`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
+`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determine whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
 By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
 
@@ -187,7 +187,7 @@ Note the following considerations:
 - Indexes that are not visible are still used for foreign key cascades.
 - When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the unique constraint.
 
-For examples, see [Set index visibility](#set-index-visibility).
+For examples, refer to [Set index visibility](#set-index-visibility).
 
 #### Aliases
 
