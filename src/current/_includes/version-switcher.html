@@ -1,13 +1,65 @@
+{% assign DEBUG=false %}
+
+{% comment %}Get the version of the page we are currently viewing{% endcomment %}
+{% assign version = site.data.versions | where_exp: "v", "v.major_version == page.version.version" | sort: "release_date" | first %}
+{% unless version %}Error: Could not get version details for version {{ page.version.version }}. Giving up.{% break %}{% endunless %}
+
+{% comment %}Check whether the current page's version is released and if so, is LTS{% endcomment %}
+{% assign current_version_is_lts = false %}
+{% if version.initial_lts_patch != "N/A" %}
+  {% assign current_version_is_lts = true %}
+{% endif %}
+
+{% if DEBUG %}
+<!-- page.version: {{ page.version }}-->
+
+<!-- version: {{ version }}-->
+
+<!-- current_version_is_lts: {{ current_version_is_lts }}-->
+{% endif %}
+
 <div class="mt-3 mb-4">
 <div id="version-switcher">
   <ul class="nav">
     <li class="tier-1">
       <a href="#">
-        Version <span class="version-name">{{ page.version.name }}</span>
+
+        {% comment %}Display the page version we are currently viewing{% endcomment %}
+
+        Version <span class="version-name">{{ page.version.name }}</span>{% if current_version_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
         <div class="arrow"></div>
       </a>
       <ul class="list-unstyled"  style="display: none">
+        {% comment %}Build the list of versions of the page{% endcomment %}
+
         {% for v in page.versions %}
+          {% assign v_is_lts = false %}
+          {% comment %}Get major-version details for this version{% endcomment %}
+          {% assign major_version_details = site.data.versions | where_exp: "pv", "pv.major_version == v.version.version" | sort: "release_date" | first %}
+          {% unless major_version_details %}Error: Could not get version details for version {{ v.version }}. Giving up.{% break %}{% endunless %}
+
+          {% comment %}Check whether this version is released and if so, and is LTS{% endcomment %}
+
+          {% if major_version_details.major_version == v.version.version and major_version_details.initial_lts_patch != "N/A" %}
+            {% assign v_is_lts = true %}
+          {% endif %}
+
+          {% if DEBUG %}
+
+          <!-- major_version_details:  {{ major_version_details }}-->
+
+          <!-- major_version_details.major_version: {{major_version_details.major_version }} -->
+
+            <!-- major_version_details.initial_lts_patch -->
+
+          <!-- page.versions: {{ page.versions }}-->
+
+          <!-- v.version: {{ v.version }}-->
+
+          <!-- v_is_lts: {{ v_is_lts }}-->
+          {% endif %}
+
+
         <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
           <a data-proofer-ignore
           {% if v.url %}
@@ -16,7 +68,7 @@
           {% else %}
             class="version--mobile version--page-dne"
           {% endif %}>
-            {{ v.version.name }}
+            {{ v.version.name }}{% if v_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
             {% unless v.version.tag == "cloud" or v.version.tag == nil %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endunless %}
             {% unless v.url %}
               <span class="version-text--page-dne">
@@ -32,7 +84,7 @@
             class="version--desktop version--page-dne"
             data-tooltip data-placement="left" data-container="body" title="This page does not exist in {{ v.version.version }}."
           {% endif %}>
-            {{ v.version.name }}
+            {{ v.version.name }}{% if v_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
             {% if v.version.tag %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endif %}
           </a>
         </li>
