@@ -112,8 +112,8 @@ Cockroach Labs **strongly** recommends the following:
 
 	~~~ shell
 	molt fetch \
-	--source "$SOURCE" \
-	--target "$TARGET" \
+	--source '$SOURCE' \
+	--target '$TARGET' \
 	--table-filter 'employees' \
 	--bucket-path 's3://molt-test' \
 	--table-handling truncate-if-exists
@@ -606,6 +606,10 @@ A change data capture (CDC) cursor is written to the output as `cdc_cursor` at t
 ~~~
 
 You can use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes on the source data to CockroachDB.
+
+## Docker usage
+
+{% include {{ page.version.version }}/molt/molt-docker.md %}
 
 ## Examples
 

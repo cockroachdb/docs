@@ -111,6 +111,10 @@ When verification completes, the output displays a summary message like the foll
 - `num_success` is the number of rows that matched.
 - `num_conditional_success` is the number of rows that matched while having a column mismatch due to a type difference. This value indicates that all other columns that could be compared have matched successfully. You should manually review the warnings and errors in the output to determine whether the column mismatches can be ignored.
 
+## Docker usage
+
+{% include {{ page.version.version }}/molt/molt-docker.md %}
+
 ## Known limitations
 
 - MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. If `--live` mode is enabled, MOLT Verify retries verification on these rows. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
