@@ -240,7 +240,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-09-22-general-changes"> General changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} clusters on Azure can now be modified, [horizontally or vertically scaled]({% link cockroachcloud/cluster-management.md %}), [upgraded]({% link cockroachcloud/upgrade-policy.md %}), have their [storage increased]({% link cockroachcloud/cluster-management.md %}#increase-storage-for-a-cluster), and have [maintenance windows]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) set. To learn more, refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+- CockroachDB {{ site.data.products.dedicated }} clusters on Azure can now be modified, [horizontally or vertically scaled]({% link cockroachcloud/cluster-management.md %}), [upgraded]({% link cockroachcloud/upgrade-policy.md %}), have their [storage increased]({% link cockroachcloud/advanced-cluster-management.md %}#increase-storage-for-a-cluster), and have [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) set. To learn more, refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 ## September 11, 2023
 
