@@ -12,28 +12,9 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
-{% endcomment %}
-
-### PL/pgSQL
-
-- It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
-- PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
-
-### UDFs and stored procedures
-
-- Routines cannot be invoked with named arguments, e.g., `SELECT foo(a => 1, b => 2);` or `SELECT foo(b := 1, a := 2);`. [#122264](https://github.com/cockroachdb/cockroach/issues/122264)
-- Routines cannot be created if they reference temporary tables. [#121375](https://github.com/cockroachdb/cockroach/issues/121375)
-- Routines cannot be created with unnamed `INOUT` parameters. For example, `CREATE PROCEDURE p(INOUT INT) AS $$ BEGIN NULL; END; $$ LANGUAGE PLpgSQL;`. [#121251](https://github.com/cockroachdb/cockroach/issues/121251)
-- Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
-- A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
-
-### Physical cluster replication cut back to primary cluster
-
-{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -211,8 +192,10 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ~~~
 
 ~~~
-ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.2
 ~~~
 
 [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
@@ -466,6 +449,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
+- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 #### `RESTORE` limitations
 
