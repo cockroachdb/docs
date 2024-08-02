@@ -6187,7 +6187,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.22
-  lts: true
 
 - release_name: v24.2.0-alpha.1
   major_version: v24.2
@@ -6241,7 +6240,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.6
-  lts: true
 
 - release_name: v24.1.2
   major_version: v24.1
@@ -6298,7 +6296,6 @@
   previous_release: v24.2.0-alpha.1
 
 - release_name: v23.2.8
-  lts: true
   major_version: v23.2
   release_date: '2024-07-15'
   release_type: Production
@@ -6356,7 +6353,6 @@
   major_version: v23.1
   release_date: '2024-07-18'
   release_type: Production
-  lts: true
   go_version: go1.22.5
   sha: b9b86f7f30053d86327d80f0bd582af57ffc3020
   has_sql_only: true
@@ -6435,7 +6431,6 @@
   previous_release: v24.2.0-beta.2
 
 - release_name: v23.2.9
-  lts: true
   major_version: v23.2
   release_date: '2024-08-01'
   release_type: Production
