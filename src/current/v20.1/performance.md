@@ -15,7 +15,7 @@ This document is about CockroachDB’s performance on benchmarks. For guidance o
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.2M tpmC with 100,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.2M tpmC with 100,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmark details](#benchmark-details) below.
 
 <img src="{{ 'images/v20.1/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
 
@@ -58,7 +58,7 @@ For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most
 
 CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
 
-## Benchmarks used
+## Benchmark details
 
 ### TPC-C
 

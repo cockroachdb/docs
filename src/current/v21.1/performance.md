@@ -17,7 +17,7 @@ This document is about CockroachDB’s performance on benchmarks. For guidance o
 
 TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the chart below, this is a 40% improvement over the results from CockroachDB 19.2.
 
-For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
+For a refresher on what exactly TPC-C is and how it is measured, see [Benchmark details](#benchmark-details) below.
 
 CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard.
 
@@ -61,7 +61,7 @@ For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most
 
 CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
 
-## Benchmarks used
+## Benchmark details
 
 ### TPC-C
 
@@ -78,10 +78,6 @@ TPC-C measures the throughput and latency for processing sales through a custome
 TPC-C specifies restrictions on the maximum throughput achievable per warehouse. This is done to ensure that as a system becomes progressively more capable of throughput, it must also deal with progressively more data. This is how things work in the real world, and it makes little sense to say that your database can process a bazillion transactions per second if it’s processing the same data over and over again.
 
 Because TPC-C is constrained to a maximum amount of throughput per warehouse, we often discuss TPC-C performance as the **maximum number of warehouses for which a database can maintain the maximum throughput per minute.** For a full description of the benchmark, please consult the [official documentation](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-c_v5.11.0.pdf).
-
-### Sysbench
-
-[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, as discussed above, but Sysbench’s `oltp_insert` and `oltp_point_select` workloads are reasonable alternatives for understanding basic throughput and latency across different databases.
 
 ## Performance limitations
 
