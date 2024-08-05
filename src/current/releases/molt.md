@@ -36,6 +36,22 @@ For more information, refer to [Configuration]({% link molt/live-migration-servi
 </section>
 
 <section class="filter-content" markdown="1" data-scope="fetch_verify">
+## July 31, 2024
+MOLT Fetch/Verify 1.1.3 is [available](#installation).
+
+- `'infinity'::timestamp` values can now be moved with Fetch.
+- Fixed an issue where connections were not being closed immediately after sharding was completed. This could lead to errors if the [maximum number of connections]({% link molt/molt-fetch.md %}#best-practices) was set to a low value.
+- Fetch users can now exclude specific tables from migration using the [`--table-exclusion-filter` flag]({% link molt/molt-fetch.md %}#global-flags).
+
+## July 18, 2024
+
+MOLT Fetch/Verify 1.1.2 is [available](#installation).
+
+- Fetch users can now specify columns to exclude from table migrations in order to migrate a subset of their data. This is supported in the schema creation, export, import, and direct copy phases.
+- Fetch now automatically maps a partitioned table from a PostgreSQL source to the target CockroachDB schema.
+- Fetch now supports computed column mappings via a new transformations framework. 
+- The new Fetch `--transformations-file` flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
+
 ## July 10, 2024
 
 MOLT Fetch/Verify 1.1.1 is [available](#installation).
