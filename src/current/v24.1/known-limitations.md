@@ -31,6 +31,10 @@ Limitations will be added as they are discovered.
 - Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
 - A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
 
+### Physical cluster replication cut back to primary cluster
+
+{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
@@ -207,8 +211,10 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ~~~
 
 ~~~
-ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.1
 ~~~
 
 [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
@@ -461,6 +467,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
+- {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
 
 #### `RESTORE` limitations
 
@@ -485,6 +492,7 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 #### `ALTER CHANGEFEED` limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ### Physical cluster replication
 

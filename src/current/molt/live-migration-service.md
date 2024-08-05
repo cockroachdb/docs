@@ -1,5 +1,5 @@
 ---
-title: Use the Live Migration Service
+title: MOLT Live Migration Service
 summary: Learn how to use the Live Migration Service to shadow application traffic, perform cutover, and migrate a database to CockroachDB.
 toc: true
 docs_area: migrate
@@ -90,16 +90,11 @@ This section describes the most important and commonly used values. For details 
 
 #### LMS version
 
-~~~ yaml
-image:
-  tag: 0.2.4  
-~~~
+{% include molt/update-lms-version.md %}
 
-`image.tag` specifies the LMS version. This **must** match the installed [`molt-lms-cli`](#molt-lms-cli) version, which can be queried with `molt-lms-cli version`.
-
-{% comment %}
-For release details, see the [MOLT changelog]({% link releases/molt-releases.md %}).
-{% endcomment %}
+{{site.data.alerts.callout_success}}
+For release details, see the [MOLT changelog]({% link releases/molt.md %}?filters=lms).
+{{site.data.alerts.end}}
 
 #### Source dialect
 

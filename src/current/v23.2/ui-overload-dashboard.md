@@ -21,15 +21,28 @@ The **Overload** dashboard displays the following time series graphs:
 
 ## Goroutine Scheduling Latency: 99th percentile
 
-This graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines/) as tracked by the `cr.node.go.scheduler_latency-p99` metric.
+This graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines/), as tracked by the `go.scheduler_latency-p99` metric. A value above `1ms` here indicates high load that causes background (elastic) CPU work to be throttled.
 
 - In the node view, the graph shows the 99th percentile of scheduling latency for Goroutines on the selected node.
-
 - In the cluster view, the graph shows the 99th percentile of scheduling latency for Goroutines across all nodes in the cluster.
 
 ## Runnable Goroutines per CPU
 
 {% include {{ page.version.version }}/ui/runnable-goroutines-graph.md %}
+
+## Elastic CPU Utilization
+
+This graph shows the CPU utilization by elastic (background) work, compared to the limit set for elastic work, as tracked by the `admission.elastic_cpu.utilization` and the `admission.elastic_cpu.utilization_limit` metrics.
+
+- In the node view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages on the selected node.
+- In the cluster view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages across all nodes in the cluster.
+
+## Elastic CPU Exhausted Duration Per Second
+
+This graph shows the relative time the node had exhausted tokens for background (elastic) CPU work per second of wall time, measured in microseconds/second, as tracked by the `admission.elastic_cpu.nanos_exhausted_duration` metric. Increased token exhausted duration indicates CPU resource exhaustion, specifically for background (elastic) work.
+
+- In the node view, the graph shows the elastic CPU exhausted duration in microseconds per second on the selected node.
+- In the cluster view, the graph shows the elastic CPU exhausted duration in microseconds per second across all nodes in the cluster.
 
 ## IO Overload
 
