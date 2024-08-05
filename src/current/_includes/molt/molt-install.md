@@ -6,7 +6,13 @@
 
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, see the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 
-### Use Docker
+{% if page.name == "molt-fetch.md" or page.name == "molt.md" %}
+{{site.data.alerts.callout_info}}
+MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
+{{site.data.alerts.end}}
+{% endif %}
+
+### Docker image
 
 [Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt) containing both the AMD and ARM binaries are available. To pull the latest image:
 

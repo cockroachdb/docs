@@ -29,7 +29,7 @@ The following databases are currently supported:
 - [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
 - CockroachDB
 
-## Install and run MOLT Verify
+## Installation
 
 To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 

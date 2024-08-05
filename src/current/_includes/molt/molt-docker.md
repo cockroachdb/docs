@@ -1,19 +1,21 @@
+For details on pulling Docker images, see [Docker image](#docker-image).
+
 ### Performance
 
-MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources on your Docker container.
+MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory and/or compute resources on your Docker container.
 
 {% if page.name == "molt-fetch.md" %}
 ### Authentication
 
-{{site.data.alerts.callout_info}}
-It is only necessary to specify volumes and environment variables when using MOLT Fetch with [cloud storage](#cloud-storage), as described in the following sections. No additional configuration is needed when running MOLT Fetch with a [local file server](#local-file-server) or in [direct copy mode](#direct-copy): 
+When using MOLT Fetch with [cloud storage](#cloud-storage), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 
+
+No additional configuration is needed when running MOLT Fetch with a [local file server](#local-file-server) or in [direct copy mode](#direct-copy): 
 
 ~~~ shell
-docker run -it cockroachdb/molt:latest fetch ...
+docker run -it cockroachdb/molt fetch ...
 ~~~
 
 For more information on `docker run`, see the [Docker documentation](https://docs.docker.com/reference/cli/docker/container/run/).
-{{site.data.alerts.end}}
 
 #### Google Cloud Storage
 
@@ -26,7 +28,7 @@ docker run \
   -v ~/.config/gcloud/application_default_credentials.json:/gcp/creds.json:ro \
   -e GOOGLE_APPLICATION_CREDENTIALS=/gcp/creds.json \
   -it \
-  cockroachdb/molt:latest fetch ...
+  cockroachdb/molt fetch ...
 ~~~
 
 In case the previous authentication method fails, you can volume map the entire [Google Cloud configuration directory](https://cloud.google.com/sdk/docs/configurations) into the container. In addition to setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, set `CLOUDSDK_CONFIG` to point to the configuration directory:
@@ -37,7 +39,7 @@ docker run \
   -e CLOUDSDK_CONFIG=/gcp/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/gcp/config/application_default_credentials.json \
   -it \
-  cockroachdb/molt:latest fetch ...
+  cockroachdb/molt fetch ...
 ~~~
 
 For details on Google Cloud Storage authentication, see [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
@@ -55,7 +57,7 @@ docker run \
   -e AWS_SECRET_ACCESS_KEY=your-secret-access-key \
   -e AWS_ACCESS_KEY_ID=your-access-key-id \
   -it \
-  cockroachdb/molt:latest fetch ...
+  cockroachdb/molt fetch ...
 ~~~
 {% endif %}
 

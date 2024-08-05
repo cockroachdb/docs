@@ -23,10 +23,6 @@ To install MOLT Fetch, download the binary that matches your system. To download
 
 {% include molt/molt-install.md %}
 
-{{site.data.alerts.callout_info}}
-MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
-{{site.data.alerts.end}}
-
 ## Setup
 
 Complete the following items before using MOLT Fetch:
