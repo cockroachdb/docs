@@ -23,10 +23,6 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
-
-{{site.data.alerts.callout_info}}
-[MOLT Fetch]({% link molt/molt-fetch.md %}) is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
-{{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="lms">
