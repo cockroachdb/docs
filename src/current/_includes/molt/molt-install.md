@@ -14,7 +14,7 @@ MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 
 ### Docker image
 
-[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt) containing both the AMD and ARM binaries are available. To pull the latest image:
+[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM binaries are available. To pull the latest image:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
