@@ -2,7 +2,7 @@ For details on pulling Docker images, see [Docker image](#docker-image).
 
 ### Performance
 
-MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory and/or compute resources on your Docker container.
+MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
 
 {% if page.name == "molt-fetch.md" %}
 ### Authentication
