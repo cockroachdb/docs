@@ -1,0 +1,67 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="4" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+   <th colspan="1" rowspan="1">Ver.</th>
+   <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-Hosted</th>
+   <th colspan="1" rowspan="1">Dedicated</th>
+   <th colspan="1" rowspan="1">Serverless</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">Improved performance for changefeeds at scale</p>
+    <p class="feature-description">
+     <a href="https://www.cockroachlabs.com/docs/v24.2/advanced-changefeed-configuration#mux-rangefeeds">Mux rangefeed</a> is a subsystem that improves the performance of <a href="https://www.cockroachlabs.com/docs/v24.2/create-and-configure-changefeeds#enable-rangefeeds">rangefeeds</a> with scale. In v24.2, Mux rangefeeds are enabled by default.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Emit changefeed messages to an Azure Event Hub</p>
+    <p class="feature-description">Changefeeds can emit messages to an <a href="https://www.cockroachlabs.com/docs/v24.2/changefeed-examples#create-a-changefeed-connected-to-an-azure-event-hubs-sink">Azure Event Hub</a>, which is compatible with Apache Kafka. You can use the Kafka changefeed and sink configuration options.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Google Cloud Pub/Sub sink for changefeeds is now generally available</p>
+    <p class="feature-description">The changefeed <a href="https://www.cockroachlabs.com/docs/v24.2/changefeed-sinks#google-cloud-pub-sub">sink for Google Cloud Pub/Sub</a> is GA.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Filter changefeed messages based on cluster, SQL session, or row-level TTL jobs</p>
+    <p class="feature-description">Use the <code>disable_changefeed_replication</code> session variable to prevent changefeeds from emitting messages for any changes during that session. Also in v24.2, you can enable the <code>ignore_disable_changefeed_replication</code> option to ignore the storage parameter or cluster setting that disables changefeed replication. These <a href="https://www.cockroachlabs.com/docs/v24.2/changefeed-messages#filtering-changefeed-messages">settings</a> can be useful to manage multiple changefeed use cases on the same table.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Set Kafka quotas per changefeed</p>
+    <p class="feature-description">For <a href="https://www.cockroachlabs.com/docs/v24.2/changefeed-sinks#kafka-sink-configuration">Kafka sinks</a>, implement a resource usage limit per changefeed by setting a client ID and quota in your Kafka server's configuration.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+ </tbody>
+</table>

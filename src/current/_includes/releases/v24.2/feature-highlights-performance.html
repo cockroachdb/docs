@@ -1,0 +1,70 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="4" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+   <th colspan="1" rowspan="1">Ver.</th>
+   <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-Hosted</th>
+   <th colspan="1" rowspan="1">Dedicated</th>
+   <th colspan="1" rowspan="1">Serverless</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">WAL (Write-ahead Logging) Failover</p>
+    <p class="feature-description">When a CockroachDB node is configured to run with multiple stores, you can mitigate some effects of disk stalls by configuring the node to <a href="https://www.cockroachlabs.com/docs/v24.2/cockroach-start#write-ahead-log-wal-failover">failover the store's write-ahead log (WAL)</a> to another store's data directory.</p>
+    <p class="feature-description">This feature is in preview.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Autocommit DDL</p>
+    <p class="feature-description">In 24.1 we have added the <code>autocommit_before_ddl</code>
+     <a href="https://www.cockroachlabs.com/docs/v24.2/session-variables#supported-variables">session variable</a>. When set to true, any schema change statement that is sent during an explicit transaction will cause the transaction to commit before executing the schema change. This setting can be used to improve compatibility with some tools that do not work well due to our limitations with schema changes in explicit transactions. It also can be used to use schema changes under <code>READ COMMITTED</code> more easily, without needing to teach the schema changer about <code>READ COMMITTED</code>.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Statistics for virtual computed columns</p>
+    <p class="feature-description">CockroachDB now collects statistics for <a href="https://www.cockroachlabs.com/docs/v24.2/computed-columns.html#virtual-computed-columns">virtual computed columns</a>, making it possible to optimize query plans for tables that have these columns. Customers will see better query performance for queries that involve virtual computed columns.</p>
+    <p class="feature-description">For more information, you can also view a <a href="https://youtu.be/5D9jUV8Vs_U">video demo</a>.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Write Amplification Improvements</p>
+    <p class="feature-description">A number of <a href="https://www.cockroachlabs.com/docs/v24.2/architecture/storage-layer">Pebble</a> improvements are now on by default, leading to a reduction in <a href="https://www.cockroachlabs.com/docs/v24.2/architecture/storage-layer#inverted-lsms">write amplification</a>. Of particular note, a vast majority of range snapshots previously ingested into L0 are now ingested directly into L6 in the <a href="https://www.cockroachlabs.com/docs/v24.2/architecture/storage-layer#log-structured-merge-trees">LSM</a>, reducing write and read amplification with positive effects to node stability and SQL performance.</p>
+   </td>
+   <td>24.1</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Increased SLA for multi-region Dedicated clusters</p>
+    <p class="feature-description">CockroachDB Dedicated multi-region clusters now offer a <a href="https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/">five-nines (99.999%) availability target</a>.</p>
+   </td>
+   <td>All<sup>&starf;</sup>
+   </td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+  </tr>
+ </tbody>
+</table>
