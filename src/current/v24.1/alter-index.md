@@ -40,6 +40,7 @@ Subcommand | Description |
 [`RENAME TO`](#rename-to) | Change the name of an index.
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
+[`VISIBILITY`](#visibility) | Set the visibility of an index between a range of `0.0` and `1.0`.
 [`[NOT] VISIBLE`](#not-visible) | Make an index visible or not visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index).
 
 ### `CONFIGURE ZONE`
@@ -160,9 +161,20 @@ The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/s
 
 For usage, see [Synopsis](#synopsis).
 
+### `VISIBILITY`
+
+`ALTER INDEX ... VISIBILITY` specifies the visibility of an index between a range of `0.0` and `1.0`.
+
+- `VISIBILITY 0.0` means that an index is not visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). This is equivalent to [`NOT VISIBLE`](#not-visible).
+- `VISIBILITY 1.0` means that an index is visible to the optimizer. This is equivalent to [`VISIBLE`](#not-visible).
+- Any value between `0.0` and `1.0` means that an index is visible to the specified fraction of queries. This is known as a *partially visible index*.
+  {{site.data.alerts.callout_info}}
+  {% include {{ page.version.version }}/sql/partially-visible-indexes.md %}
+  {{site.data.alerts.end}}
+
 ### `[NOT] VISIBLE`
 
-`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` sets the visibility of an index. This determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
+`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determine whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
 By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
 
@@ -173,9 +185,9 @@ Note the following considerations:
 - Primary indexes must be visible.
 - Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
 - Indexes that are not visible are still used for foreign key cascades.
-- When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX` after creating the unique constraint.
+- When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the unique constraint.
 
-For examples, see [Set index visibility](#set-index-visibility).
+For examples, refer to [Set index visibility](#set-index-visibility).
 
 #### Aliases
 
@@ -425,7 +437,7 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-1. Show the indexes on the `rides` table. In the last column, `visible`, you can see that all indexes have the value `t` (true).
+1. Show the indexes on the `rides` table. In the second-to-last column, `visible`, you can see that all indexes have the value `t` (true).
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -433,16 +445,18 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
     ~~~
 
     ~~~
-      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
-    -------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
+
+      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  |  definition   | direction | storing | implicit | visible | visibility
+    -------------+-----------------------------------------------+------------+--------------+---------------+---------------+-----------+---------+----------+---------+-------------
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | city          | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | rider_id      | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | id            | ASC       |    f    |    t     |    t    |          1
+      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | vehicle_city  | ASC       |    f    |    f     |    t    |          1
       ...
-      rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
+      rides      | rides_pkey                                    |     f      |           10 | revenue       | revenue       | N/A       |    t    |    f     |    t    |          1
     (17 rows)
     ~~~
+
 
 1. Explain a query that filters on revenue. Since there is no index on the `revenue` column, the query performs a full scan.
 
@@ -491,21 +505,21 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
     ~~~
 
     ~~~
-      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
-    -------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
+      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  |  definition   | direction | storing | implicit | visible | visibility
+    -------------+-----------------------------------------------+------------+--------------+---------------+---------------+-----------+---------+----------+---------+-------------
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | city          | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | rider_id      | ASC       |    f    |    f     |    t    |          1
       ...
-      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            5 | start_address | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            9 | city          | ASC       |    f    |    t     |    t
-      rides      | rides_revenue_idx                             |     t      |           10 | id            | ASC       |    f    |    t     |    t
+      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | revenue       | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | vehicle_city  | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | rider_id      | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | vehicle_id    | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            5 | start_address | start_address | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | end_address   | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | start_time    | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | end_time      | N/A       |    t    |    f     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |            9 | city          | city          | ASC       |    f    |    t     |    t    |          1
+      rides      | rides_revenue_idx                             |     t      |           10 | id            | id            | ASC       |    f    |    t     |    t    |          1
     (27 rows)
     ~~~
 
@@ -544,23 +558,22 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
     ~~~
 
     ~~~
-      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
-    -------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
+      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  |  definition   | direction | storing | implicit | visible | visibility
+    -------------+-----------------------------------------------+------------+--------------+---------------+---------------+-----------+---------+----------+---------+-------------
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | city          | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | rider_id      | ASC       |    f    |    f     |    t    |          1
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | id            | ASC       |    f    |    t     |    t    |          1
       ...
-      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            5 | start_address | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | N/A       |    t    |    f     |    f
-      rides      | rides_revenue_idx                             |     t      |            9 | city          | ASC       |    f    |    t     |    f
-      rides      | rides_revenue_idx                             |     t      |           10 | id            | ASC       |    f    |    t     |    f
-    (27 rows)
+      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | revenue       | ASC       |    f    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | vehicle_city  | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | rider_id      | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | vehicle_id    | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            5 | start_address | start_address | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | end_address   | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | start_time    | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | end_time      | N/A       |    t    |    f     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |            9 | city          | city          | ASC       |    f    |    t     |    f    |          0
+      rides      | rides_revenue_idx                             |     t      |           10 | id            | id            | ASC       |    f    |    t     |    f    |          0
     ~~~
 
 1. Explain the query behavior after making the index not visible to the optimizer. With the index not visible, the optimizer reverts to full scan and recommends that you make the index visible.
@@ -593,6 +606,65 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
       1. type: index alteration
          SQL command: ALTER INDEX rides@rides_revenue_idx VISIBLE;
     (19 rows)
+    ~~~
+
+#### Set an index as partially visible
+
+Using the `rides_revenue_idx` created in the [preceding example](#set-an-index-to-be-not-visible):
+
+1. Set the visibility of the index to `0.5`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER INDEX rides_revenue_idx VISIBILITY 0.5;
+    ~~~
+
+1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `0.5`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW INDEXES FROM rides;
+    ~~~
+
+    ~~~
+      table_name |                  index_name                   | non_unique | seq_in_index |  column_name  |  definition   | direction | storing | implicit | visible | visibility
+    -------------+-----------------------------------------------+------------+--------------+---------------+---------------+-----------+---------+----------+---------+-------------
+      rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | city          | ASC       |    f    |    f     |    t    |          1
+      ...
+      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | revenue       | ASC       |    f    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | vehicle_city  | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | rider_id      | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | vehicle_id    | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            5 | start_address | start_address | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | end_address   | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | start_time    | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | end_time      | N/A       |    t    |    f     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |            9 | city          | city          | ASC       |    f    |    t     |    f    |        0.5
+      rides      | rides_revenue_idx                             |     t      |           10 | id            | id            | ASC       |    f    |    t     |    f    |        0.5
+    ~~~
+
+1. Explain the query behavior after making the index partially visible to the optimizer. For the purposes of index recommendations, a partially visible index is treated as not visible. The optimizer recommends that you make this index fully visible.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
+    ~~~
+
+    ~~~
+                                            info
+    -------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • scan
+        estimated row count: 12,413 (9.9% of the table; stats collected 36 seconds ago)
+        table: rides@rides_revenue_idx
+        spans: (/90 - ]
+
+      index recommendations: 1
+      1. type: index alteration
+         SQL command: ALTER INDEX movr.public.rides@rides_revenue_idx VISIBLE;
+    (11 rows)
     ~~~
 
 ## See also

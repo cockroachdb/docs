@@ -8,6 +8,9 @@ pre_production_preview: true
 pre_production_preview_version: v24.1.0-beta.1
 ---
 
+{% comment %}Enable debug to print debug messages {% endcomment %}
+{% assign DEBUG = false %}
+
 {% comment %}
 NOTE TO WRITERS: This file contains interleaved HTML and Liquid. To ease maintenance and readability
 of this file, block-level HTML is indented in relation to the other HTML, and block-level Liquid is
@@ -50,7 +53,31 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
+    {% comment %}Determine if the major version is LTS and the patch component of the initial LTS patch{% endcomment %}
+    {% assign has_lts_releases = false %}
+    {% assign lts_link_linux = '' %}
+    {% assign lts_patch = nil %}
+    {% assign in_lts = false %}
+    {% assign comparison = nil %}
+    {% if v.initial_lts_patch != "N/A" %}
+        {% assign has_lts_releases = true %}
+        {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
+        {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
+        {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+    {% endif %}
+
+
 ## {{ v.major_version }}
+
+{% if DEBUG == true %}
+    has_lts_releases: {{ has_lts_releases }}<br />
+    lts_patch_string: {{ lts_patch_string }}<br />
+    lts_patch: {{ lts_patch }}<br />
+    v.initial_lts_patch: {{ v.initial_lts_patch }}<br />
+    v.major_version: {{ v.major_version }}<br />
+    has_lts_releases: {{ has_lts_releases }}<br />
+    v.release_date: {{ v.release_date }}<br />
+    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -108,12 +135,28 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     </thead>
     <tbody>
             {% for r in releases %}
+                {% assign current_patch_string = '' %}
+                {% assign current_patch = nil %}
+                {% assign in_lts = false %}
+                {% if has_lts_releases == true and s == "Production" %}
+                    {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
+                    {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+                    {% if current_patch == nil %}
+                        Error: Could not determine the current patch. Giving up.<br />
+                        {% break %}{% break %}
+                    {% endif %}
 
-              {% capture lts_link_linux %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+                    {% assign comparison = current_patch | minus: lts_patch %}
+                    {% unless comparison < 0 %}
+                        {% assign in_lts = true %}
+                    {% endunless %}
+                {% endif %}
+
+                {% if DEBUG == true %}<tr><td colspan="3">current_patch: {{ current_patch }}<br />lts_patch: {{ lts_patch }}<br />r.release_name: {{ r.release_name }}<br />lts_link: {{ lts_link }}<br />in_lts: {{ in_lts }}</td>{% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{{ lts_link_linux }}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -254,10 +297,20 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 <section class="filter-content" markdown="1" data-scope="docker">
 
+        {% comment %}Prepare to show the Notes column in v22.2 and v23.1{% endcomment %}
+        {% assign show_notes_column = false %}
+        {% if v.major_version == "v23.1" or v.major_version == "v22.2" %}
+            {% assign show_notes_column = true %}
+        {% endif %}
+
+        {% if s == "Production" %}{% comment %}Print this only for the Production section{% endcomment %}
     Docker images for CockroachDB are published on [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach/tags).
 
-        {% if v_docker_arm == true %}
-    [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM.
+            {% if show_notes_column == true %}
+      [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM.
+            {% else %}
+        All Docker images for {{ v.major_version }} are [Multi-platform images](https://docs.docker.com/build/building/multi-platform/) with support for both Intel and ARM.
+            {% endif %}
         {% endif %}
 
     <table class="release-table">
@@ -266,54 +319,76 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>Version</td>
             <td>Date</td>
             <td>Docker image tag</td>
-            <td>Notes</td>
+            {% if show_notes_column == true %}<td>Notes</td>{% endif %}
         </tr>
     </thead>
     <tbody>
         {% for r in releases %}
+            {% assign current_patch_string = '' %}
+            {% assign current_patch = nil %}
+            {% assign in_lts = false %}
+            {% if has_lts_releases == true and s == "Production" %}
+                {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
+                {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+                {% if current_patch == nil %}
+                    Error: Could not determine the current patch. Giving up.<br />
+                    {% break %}{% break %}
+                {% endif %}
 
-        {% capture lts_link_docker %}{% if r.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %})){% endif %}{% endcapture %}
+                {% assign comparison = current_patch | minus: lts_patch %}
+                {% unless comparison < 0 %}
+                    {% assign in_lts = true %}
+                {% endunless %}
+            {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
-            <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
-".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r.
-{% endcomment %}
+
+            {% comment %}Version column{% endcomment %}
+            <td><a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
+".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.{% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
             </td>
+
+            {% comment %}Release Date column{% endcomment %}
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+
+            {% comment %}Docker Image Tag column{% endcomment %}
             <td>
-            {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-                <span class="badge badge-gray">Withdrawn</span>
-            {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
-                <span>{{ r.cloud_only_message_short }}</span>
-                {% continue %}
+            {% if r.withdrawn == true %}
+                <span class="badge badge-gray">Withdrawn</span></td>{% comment %} Suppress download links for withdrawn releases, spans Intel and ARM columns {% endcomment %}
+            {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases, spans Intel and ARM columns {% endcomment %}
+                <span>{{ r.cloud_only_message_short }}</span></td>
             {% else %}
-                {% if r.source == true %}
-                <b>{% if r.docker.docker_arm == false %}Intel{% else %}Multi-platform{% endif %}</b>:<br><code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
-                {% else %}
+                {% if r.source == false %}
                 N/A
+                {% else %}
+                    {% if show_notes_column == true %}{% comment %}Show Intel and ARM details only for major versions with a mix{% endcomment %}
+                        {% if r.docker.docker_arm == false %}<b>Intel</b>:<br />{% else %}<b>Multi-platform</b>:<br />{% endif %}
+                    {% endif %}<code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
                 {% endif %}
             {% endif %}
             </td>
+            {% if show_notes_column == true %}
+            {% comment %}Notes column{% endcomment %}
             <td>
-            {% if r.docker.docker_arm_limited_access == true %}
-              **Intel**: GA<br />**ARM**: Limited Access
-            {% elsif r.docker.docker_arm_experimental == true %}
-              **Intel**: GA<br />**ARM**: Experimental
-            {% else %}
-              GA{{ lts_link_docker }}
-            {% endif %}
+                {% if r.docker.docker_arm_limited_access == true %}
+                **Intel**: Production<br />**ARM**: Limited Access
+                {% elsif r.docker.docker_arm_experimental == true %}
+                **Intel**: Production<br />**ARM**: Experimental
+                {% else %}
+                Production
+                {% endif %}
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
     </table>
 </section>
 
-<section class="filter-content" data-scope="source">
+<section class="filter-content" markdown="1" data-scope="source">
     <p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/" class="binary-link">cockroachdb/cockroach</a> repository on Github.</p>
     <table class="release-table">
     <thead>
@@ -349,15 +424,15 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             </td>
             {% endif %}
         </tr>
-        {% endfor %}
+        {% endfor %} {% comment %}for release in releases{% endcomment %}
     </tbody>
     </table>
 </section>
 
 
         {% endif %} {% comment %}if releases[0]{% endcomment %}
-    {% endfor %} {% comment %}Sections {% endcomment %}
-{% endfor %} {% comment %}Versions{% endcomment %}
+    {% endfor %} {% comment %}for s in sections {% endcomment %}
+{% endfor %} {% comment %}for v in versions{% endcomment %}
 
 ## Release naming
 
@@ -378,5 +453,5 @@ During development of a major version of CockroachDB, releases are produced acco
 ## Licenses
 
 Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
- 
+
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license/) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.

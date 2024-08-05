@@ -129,3 +129,35 @@ var pageConfig = {
 
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200&q=40" />
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200&q=40" />
+<script>
+  console.log(1);
+  (function() {
+    let k = window.Kapa;
+    if (!k) {
+      let i = function() { i.c(arguments) };
+      i.q = [];
+      i.c = function(args) { i.q.push(args) };
+      window.Kapa = i;
+    }
+  })();
+  console.log(2);
+</script>
+<script
+  src="https://widget.kapa.ai/kapa-widget.bundle.js"
+  data-website-id="98d1a919-dfd3-4d54-a8a0-58c9094f57e5"
+  data-project-name="CockroachDB"
+  data-project-color="#6933FF"
+  data-project-logo="https://upload.wikimedia.org/wikipedia/en/3/31/Cockroach_Labs_Logo.png"
+  data-kapa-branding-hide="true"
+  data-modal-title="CockroachDB AI"
+  data-modal-disclaimer="This AI bot is experimental. Don't rely on it for production workloads. Always consult the official CockroachDB documentation. Interactions with this AI bot may be monitored or recorded, and your use of the AI bot is subject to the Cockroach Labs' [Terms of Use](https://www.cockroachlabs.com/website-terms-of-use/) and [Privacy policy](https://www.cockroachlabs.com/privacy/)."
+></script>
+
+<style>
+  .mantine-Modal-content {
+    margin-top: 80px !important; /* Ensures the modal has enough top margin */
+  }
+  .mantine-Modal-content {
+    max-height: calc(75vh); /* Limits the modal's height to 75% of the viewport height */
+  }
+</style>
