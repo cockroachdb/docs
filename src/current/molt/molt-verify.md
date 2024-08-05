@@ -29,7 +29,7 @@ The following databases are currently supported:
 - [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
 - CockroachDB
 
-## Install and run MOLT Verify
+## Installation
 
 To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 
@@ -111,6 +111,10 @@ When verification completes, the output displays a summary message like the foll
 - `num_column_mismatch` is the number of columns with mismatched types on the target database, preventing `molt verify` from comparing the column's rows. For example, if your source table uses an auto-incrementing ID, MOLT Verify will identify a mismatch with CockroachDB's [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}) type. In such cases, you might fix the mismatch by [creating a composite type]({% link {{site.current_cloud_version}}/create-type.md %}#create-a-composite-data-type) on CockroachDB that uses the auto-incrementing ID.
 - `num_success` is the number of rows that matched.
 - `num_conditional_success` is the number of rows that matched while having a column mismatch due to a type difference. This value indicates that all other columns that could be compared have matched successfully. You should manually review the warnings and errors in the output to determine whether the column mismatches can be ignored.
+
+## Docker usage
+
+{% include {{ page.version.version }}/molt/molt-docker.md %}
 
 ## Known limitations
 
