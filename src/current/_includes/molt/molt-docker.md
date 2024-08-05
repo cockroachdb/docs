@@ -61,16 +61,16 @@ docker run \
 
 ### Local connection strings
 
-When testing locally, specify the host `host.docker.internal` (macOS) or `172.17.0.1` (Linux and Windows). For example:
+When testing locally, specify the host as follows:
 
-Mac:
+- For macOS, use `host.docker.internal`. For example:
 
 ~~~
 --source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
 --target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
 ~~~
 
-Linux and Windows:
+- For Linux and Windows, use `172.17.0.1`. For example:
 
 ~~~
 --source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
