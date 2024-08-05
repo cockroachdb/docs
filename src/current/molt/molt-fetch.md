@@ -362,7 +362,7 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 --schema-filter 'public'
 ~~~
 
-`--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the title and exclude every source table that has "temp" in the title:
+`--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
 {% include_cached copy-clipboard.html %}
 ~~~
