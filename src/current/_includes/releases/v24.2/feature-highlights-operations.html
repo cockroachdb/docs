@@ -1,0 +1,42 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="4" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+   <th colspan="1" rowspan="1">Ver.</th>
+   <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-Hosted</th>
+   <th colspan="1" rowspan="1">Dedicated</th>
+   <th colspan="1" rowspan="1">Serverless</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">CockroachDB Cloud Terraform Provider - Operations at scale</p>
+    <p class="feature-description">
+      This release includes updates to enhance operations at scale using <a href="https://github.com/cockroachdb/terraform-provider-cockroach">CockroachDB Cloud Terraform Provider</a> across multiple Terraform projects. A new Resource for User Role Grants makes it easier to manage user account access to clusters across projects. A new Data Source for Folders allows better access to Clusters organized in Folders across multiple projects. A new Service Account Resource brings CockroachDB Cloud API access under Terraform management.
+    </p>
+   </td>
+   <td>All<sup>&starf;&starf;</sup>
+   </td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Support for Optional Innovation Releases</p>
+    <p class="feature-description">As of v24.2, CockroachDB has shifted from a 6-month <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">major version release cycle</a> to a 3-month cycle. The additional versions, called "Innovation releases", are skippable for CockroachDB Dedicated and Self-Hosted, where they have shorter support windows. Users can upgrade directly from a Regular release to the next Regular release, without needing to upgrade to the intermediary Innovation version.
+</p>
+    <p class="feature-description">In CockroachDB Dedicated, users can now select any supported version for their cluster at creation time and when upgrading. CockroachDB Serverless clusters continue to receive all major versions, including Innovation releases.</p>
+   </td>
+   <td>24.2
+   </td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-no.html %} <br></br>(not skippable)</td>
+  </tr>
+ </tbody>
+</table>
