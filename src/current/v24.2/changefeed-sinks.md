@@ -212,6 +212,35 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
+## Amazon MSK Serverless
+
+{{site.data.alerts.callout_info}}
+CockroachDB instances must be in the same VPC as the MSK Serverless cluster in order for the changefeed to authenticate successfully.
+
+If you are running a CockroachDB {{ site.data.products.dedicated }} cluster, you must request egress private endpoints from your Cockroach Labs account team.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v24.2" %} Changefeeds can deliver messages to [Amazon MSK Serverless clusters (Amazon Managed Streaming for Apache Kafka)](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) using AWS IAM roles.
+
+For an initial MSK serverless setup guide, refer to the AWS [Getting started using MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html) documentation.
+
+To connect to an MSK Serverless cluster, you must use AWS IAM roles. The URI needs to include the following parameters:
+
+~~~
+kafka://{cluster_endpoint}/?sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-2&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
+~~~
+
+Changefeeds connecting to an MSK Serverless cluster use the `kafka://` scheme.
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`cluster_endpoint` | The endpoint listed for your MSK Serverless cluster in the AWS Console. For example, `boot-a1test.c3.kafka-serverless.us-east-2.amazonaws.com:9098`.
+`sasl_enabled` | Set to `true`.
+`sasl_mechanism` | Set to `AWS_MSK_IAM`.
+`sasl_aws_region` | The region of the MSK Serverless cluster.
+`sasl_aws_iam_role_arn` | The ARN for the IAM role that has the permissions to create a topic and send data to the topic. For more details on setting up an MSK Serverless cluster with an IAM role, refer to [the AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html).
+`sasl_aws_iam_session_name` | The user-specified string that identifies the session in AWS.
+
 ## Confluent Cloud
 
 Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).

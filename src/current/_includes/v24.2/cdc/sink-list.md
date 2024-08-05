@@ -1,3 +1,4 @@
+- {% if page.name == "changefeed-sinks.md" %} [Amazon MSK Serverless](#amazon-msk-serverless) {% else %} [Amazon MSK Serverless]({% link {{ page.version.version }}/changefeed-sinks.md %}#amazon-msk-serverless) {% endif %}
 - {% if page.name == "changefeed-sinks.md" %} [Apache Pulsar](#apache-pulsar) (in Preview) {% else %} [Apache Pulsar]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) (in Preview) {% endif %}
 - {% if page.name == "changefeed-sinks.md" %} [Azure Event Hubs](#azure-event-hubs) {% else %} [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) {% endif %}
 - {% if page.name == "changefeed-sinks.md" %} [Cloud Storage](#cloud-storage-sink) / HTTP {% else %} [Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) / HTTP {% endif %}
