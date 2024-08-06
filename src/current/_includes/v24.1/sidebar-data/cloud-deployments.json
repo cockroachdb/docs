@@ -390,6 +390,12 @@
                     "urls": [
                       "/${VERSION}/essential-metrics-dedicated.html"
                     ]
+                  },
+                  {
+                    "title": "Essential Alerts for CockroachDB {{ site.data.products.dedicated }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-alerts-dedicated.html"
+                    ]
                   }
                 ]
               },
