@@ -14,15 +14,11 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-<a id="july-31-2024"></a>
-{% comment %}Commented out until version selection is in the Cloud 2.0 UI
-
 ## July 31, 2024
 
 <h3 id="2024-07-24-general-updates"> General updates </h3>
 
-- When creating a new CockroachDB {{ site.data.products.dedicated }} cluster, you can now [select the cluster's major version]({% link cockroachcloud/create-your-cluster.md %}#step-8-select-the-cockroachdb-version). The default option is the latest stable version. At any given time, you may be able to choose from additional stable releases or experimental [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Patch releases within a major version are applied automatically.
-{% endcomment %}
+- When creating a new CockroachDB {{ site.data.products.advanced }} cluster, you can now [select the cluster's major version]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-8-select-the-cockroachdb-version). The default option is the latest stable version. At any given time, you may be able to choose from additional stable releases or experimental [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Patch releases within a major version are applied automatically.
 
 ## July 19, 2024
 
