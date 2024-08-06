@@ -146,7 +146,7 @@ To learn more about rotating a CMEK key using the CockroachDB {{ site.data.produ
 
 #### Are CockroachDB {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 
-Yes, the [managed backups]({% link cockroachcloud/use-managed-service-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
+Yes, the [managed backups]({% link cockroachcloud/managed-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
 
 #### As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
 

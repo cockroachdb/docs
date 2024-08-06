@@ -1,23 +1,114 @@
 ---
-title: Use Managed-Service Backups
-summary: Restore data from a backup in CockroachDB Cloud.
+title: Managed Backups
+summary: Learn about CockroachDB Cloud managed backups.
 toc: true
 docs_area: manage
 ---
 
-This page describes how to use [_managed-service backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) in CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
+{% include cockroachcloud/backups/managed-backup-description.md %}
 
-Managed-service backups are automated backups of CockroachDB Cloud clusters that are stored in Cockroach Labs' cloud storage.
+In [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#standard-and-advanced-clusters), you can configure:
+
+- The frequency of the backups to meet [recovery point objective (RPO)]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}#resilience-strategy) requirements.
+- The retention of the backups to set how long Cockroach Labs retains the backups.
+
+In [{{ site.data.products.basic }} clusters](#basic-clusters), you can disable managed backups.
 
 {{site.data.alerts.callout_info}}
-In addition to managed-service backups, you can configure manual backups to your own storage bucket with customer-owned backups. Refer to the [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) page.
+In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the [Take and Restore Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) page.
 {{site.data.alerts.end}}
 
-This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
+## Managed backup settings
 
-{% include cockroachcloud/backups/managed-service-backups-frequency.md %}
+You can configure the settings of managed backups depending on the tier of your cluster.
 
-To access your managed-service backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left-side navigation.
+- [{{ site.data.products.basic }} clusters](#basic-clusters)
+- [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#standard-and-advanced-clusters)
+
+### Basic clusters
+
+Cockroach Labs will take a managed backup every 24 hours. You can also disable managed backups. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
+
+Once a cluster is deleted, Cockroach Labs retains the backup for 30 days. The retained backups are not available for restore using the Cloud Console. If an organization is deleted, you will lose access to all of the managed backups that Cockroach Labs has taken of the cluster after 30 days.
+
+To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+
+### Standard and Advanced clusters
+
+In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters you can configure the [frequency](#frequency) and [retention](#retention) of managed backups. For details on setting these options with the Cloud API, refer to [Cloud API](#cloud-api). You can view your configured managed backup settings in the [Cloud Console](#cloud-console).
+
+#### Frequency
+
+You can configure how frequently Cockroach Labs takes backups, which will determine the cluster's [RPO]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}#resilience-strategy).
+
+You can set backup frequency to one of the following options:
+
+- Disabled
+- 5 minutes
+- 10 minutes
+- 30 minutes
+- 1 hour (default)
+- 4 hours
+- 24 hours
+
+#### Retention
+
+You can set your retention duration **once**. The available retention options are:
+
+- 2 days
+- 7 days
+- 30 days (default)
+- 90 days
+- 365 days
+
+If you need to adjust the retention setting after your initial selection, contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+
+{% include cockroachcloud/backups/retention-deleted-cluster.md %}
+
+### Upgrades and downgrades
+
+If you have upgraded from a {{ site.data.products.basic }} cluster to a {{ site.data.products.standard }} cluster, the existing backup schedules will still apply, but you can then configure the frequency and retention of future managed backups in the {{ site.data.products.standard }} cluster.
+
+If you have downgraded from a {{ site.data.products.standard }} cluster to a {{ site.data.products.basic }} cluster, existing managed backups will be retained for the configured retention duration. The default managed backups in {{ site.data.products.basic }} clusters will be taken every 24 hours and have a 30-day retention.
+
+
+
+
+{% comment %}All content from here down to be updated.{% endcomment %}
+
+
+## Cloud API
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="basic-and-standard"><strong>CockroachDB {{ site.data.products.standard }}/{{ site.data.products.basic }}</strong></button>
+    <button class="filter-button page-level" data-scope="advanced"><strong>CockroachDB {{ site.data.products.advanced }}</strong></button>
+</div>
+
+{% comment %}
+TODO Also need to add access level / privileges for the API
+{% endcomment %}
+
+
+
+To configure the frequency and retention of managed backups, send a `POST` request to the `/v1/clusters/{cluster_id}/backups/config` endpoint.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups/config \
+--header 'Authorization: Bearer {secret_key}' \
+---data '
+~~~
+
+## Cloud Console
+
+{% comment %}
+TODO
+All of this section still needs to be updated once the UI elements are in staging.
+{% endcomment %}
+
+
+To access your managed backups, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left-side navigation.
 
 Select one of the following filters for your deployment:
 
@@ -29,8 +120,6 @@ Select one of the following filters for your deployment:
 <section class="filter-content" markdown="1" data-scope="basic-and-standard">
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
-
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 
 Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
@@ -44,10 +133,10 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup and Restore** page.
 
-Consider the following as you use managed-service backups:
+Consider the following as you use managed backups:
 
-- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. 
-- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+- By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups.
+- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed backups that Cockroach Labs has taken of the cluster.
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
@@ -136,7 +225,7 @@ Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#or
 Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
-- [Back up and restore data manually]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %})
+- [Back up and restore data manually]({% link cockroachcloud/take-and-restore-self-managed-backups.md %})
 
 ### Restore a cluster
 
@@ -287,7 +376,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
     - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
     - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.
 
-See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211).
+See [tracking issue](https://github.com/cockroachlabs/managed/pull/12211).
 
 ## Troubleshooting
 
@@ -346,11 +435,11 @@ Or [change the existing table's name](https://www.cockroachlabs.com/docs/{{site.
 Find the cluster backup you want to restore, and click **Restore**.
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not support cross-cluster restores through the CockroachDB {{ site.data.products.cloud }} Console. If you need to restore data into a new or different cluster, use [customer-owned backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [contact support](https://support.cockroachlabs.com).
+CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not support cross-cluster restores through the CockroachDB {{ site.data.products.cloud }} Console. If you need to restore data into a new or different cluster, use [customer-owned backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support](https://support.cockroachlabs.com).
 {{site.data.alerts.end}}
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) location or a [cloud storage location]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud).
+You can [manage your own backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) location or a [cloud storage location]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}?filters=cloud).
 
 </section>

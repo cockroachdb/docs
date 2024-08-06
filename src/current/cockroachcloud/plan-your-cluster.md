@@ -18,9 +18,9 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 ## Provisioned capacity
 
-Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. 
+Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU.
 
-Estimate your workload's peak vCPU needs by analyzing available historical data, adjusted for future changes, or by comparing with similar existing workloads. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. 
+Estimate your workload's peak vCPU needs by analyzing available historical data, adjusted for future changes, or by comparing with similar existing workloads. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues.
 
 You can scale the provisioned capacity up or down based on workload changes, allowing for efficient resource management and cost optimization.
 
@@ -32,7 +32,7 @@ CockroachDB {{ site.data.products.standard }} pricing is determined by two compo
 
 ### Provisioned capacity pricing
 
-CockroachDB {{ site.data.products.standard }} processing is priced based on the provisioned capacity for the cluster over time, in increments of 500 RUs/sec. 
+CockroachDB {{ site.data.products.standard }} processing is priced based on the provisioned capacity for the cluster over time, in increments of 500 RUs/sec.
 
 Since costs are metered in near real-time, a change in the provisioned capacity value will be reflected in the cost for the cluster right away. The monthly bill for the cluster will be prorated to reflect the portion of the month during which the cluster exists.
 
@@ -42,7 +42,7 @@ You will only be charged for the storage you use. Storage starts at $0.75/GiB ho
 
 ## Multi-region clusters
 
-When you create a multi-region {{ site.data.products.standard }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/cluster-management.md %}#add-a-region-to-your-cluster), or you can [back up and restore]({% link cockroachcloud/use-managed-service-backups.md %}) your data into a new cluster with the desired configuration. 
+When you create a multi-region {{ site.data.products.standard }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/cluster-management.md %}#add-a-region-to-your-cluster), or you can [back up and restore]({% link cockroachcloud/managed-backups.md %}) your data into a new cluster with the desired configuration.
 
 {{site.data.alerts.callout_info}}
 You cannot currently remove regions once they have been added.

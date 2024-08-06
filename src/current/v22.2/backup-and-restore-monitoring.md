@@ -18,7 +18,7 @@ We recommend setting up monitoring to alert when anomalies occur. You can then u
 - [`SHOW JOBS`](show-jobs.html)
 - [`SHOW BACKUP`](show-backup.html)
 
-For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backups** page in the Cloud Console.
+For detail on [managed-service backups](../cockroachcloud/managed-backups.html) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backups** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
@@ -35,7 +35,7 @@ We recommend the following guidelines:
 - Use the `schedules_backup_last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
 - Configure alerting on the `schedules_backup_last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
 
-Metric | Description 
+Metric | Description
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.
@@ -65,7 +65,7 @@ To use the Datadog integration with your **CockroachDB {{ site.data.products.ded
 
 ### Available metrics in Datadog
 
-Metric | Description 
+Metric | Description
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.

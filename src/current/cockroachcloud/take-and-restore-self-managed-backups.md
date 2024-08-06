@@ -1,11 +1,11 @@
 ---
-title: Take and Restore Customer-Owned Backups on CockroachDB Cloud
+title: Take and Restore Self-Managed Backups on CockroachDB Cloud
 summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
 ---
 
-This page describes how to take and restore [_customer-owned backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
+This page describes how to take and restore [_self-managed backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
 
 The [examples](#examples) on this page provide a quick overview of the backup features you can run to your own storage bucket. For more technical detail on the complete list of backup features, refer to:
 
@@ -231,7 +231,7 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones#gc-ttlseconds) to be removed from disk.
 
-To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts]({% link cockroachcloud/use-managed-service-backups.md %}#troubleshooting).
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts]({% link cockroachcloud/managed-backups.md %}#troubleshooting).
 
 ## See also
 

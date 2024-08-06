@@ -49,9 +49,9 @@ CockroachDB {{ site.data.products.dedicated }} clusters can be created with a mi
 
 ### What backup and restore options are available for clusters on Azure?
 
-[Managed-service backups]({% link cockroachcloud/use-managed-service-backups.md %}?filters=dedicated) automatically back up clusters on Azure, and customers can [take and restore from manual backups to Azure storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) ([Blob Storage](https://azure.microsoft.com/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob/) for an example.
+[Managed-service backups]({% link cockroachcloud/managed-backups.md %}?filters=dedicated) automatically back up clusters on Azure, and customers can [take and restore from manual backups to Azure storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) ([Blob Storage](https://azure.microsoft.com/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob/) for an example.
 
-You can [take and restore from encrypted backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) on Azure storage by using an RSA key stored in [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/keys/about-keys).
+You can [take and restore from encrypted backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) on Azure storage by using an RSA key stored in [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/keys/about-keys).
 
 ### Are changefeeds available?
 
