@@ -211,6 +211,8 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 ## See also
 

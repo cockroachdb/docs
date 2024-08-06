@@ -80,6 +80,8 @@ The output shows the `primary` column family with `4` in the value (`{"id":4,"na
 - When you do not specify column family names in the `CREATE` or `ALTER TABLE` statement, the family names will default to either of the following:
     - `primary`: Since `primary` is a key word, you'll receive a syntax error if you run `CREATE CHANGEFEED FOR table FAMILY primary`. To avoid this syntax error, use double quotes: `CREATE CHANGEFEED FOR table FAMILY "primary"`. You'll receive output from the changefeed like: `table.primary`.
     - `fam_<zero-indexed family id>_<delimited list of columns>`: For a table that does not include a name for the family: `FAMILY (id, name)`, you'll receive output from the changefeed containing: `table.fam_0_id_name`. This references the table, the family ID and the two columns that this column family includes.
+- Creating a changefeed with [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) is not supported on tables with more than one column family.
+- When you create a changefeed on a table with more than one column family, the changefeed will emit messages per column family in separate streams. As a result, [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) for different column families will arrive at the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) under separate topics. For more details, refer to [Message format](#message-format).
 
 For examples of starting changefeeds on tables with column families, see the following examples for Enterprise and Core changefeeds.
 
