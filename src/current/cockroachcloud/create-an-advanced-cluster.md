@@ -28,23 +28,24 @@ You do not need an account in the deployment environment you choose. The cluster
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
-## Step 3. Configure region(s) and node(s)
+## Step 3. Configure regions and nodes
 
 Select the region(s) and number of nodes for your cluster:
 
 1. In the **Regions** section, select at minimum one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.advanced }} clusters can be deployed. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.advanced }} cluster.
 
-    A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
+    A multi-region cluster requires at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
 1. Select the number of nodes:
-    - For single-region application development and testing, you may create a 1 node cluster.
     - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-    - Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
+    - For single-region application development and testing, you may create a single-node cluster.
 
-        {% include cockroachcloud/nodes-limitation.md %}
+Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
 
-        Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
+{% include cockroachcloud/nodes-limitation.md %}
+
+Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
 
 Click **Next: Capacity**.
 
@@ -57,7 +58,7 @@ VPC peering is available only for GCP clusters. For clusters deployed on AWS, yo
 You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
 
 1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
-    
+
 1. Enter the IP range and size (in CIDR format) for the CockroachDB {{ site.data.products.cloud }} network based on the following considerations:
       -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
@@ -116,7 +117,7 @@ Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. 
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost.
 
     {{site.data.alerts.callout_danger}}
     This configuration cannot be changed after cluster creation.
@@ -139,9 +140,13 @@ You can enable advanced security features for PCI DSS and HIPAA [compliance]({% 
       Remember to [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Otherwise, your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
       {{site.data.alerts.end}}
 
-## Step 7. Name the cluster
+<a id="step-7-name-the-cluster"></a>
+
+## Step 8. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after the cluster is created.
+
+<a id="step-8-select-the-cockroachdb-version"></a>
 
 ## Step 8. Select the CockroachDB version
 
@@ -154,6 +159,13 @@ Testing releases, including Pre-Production Preview releases, are provided for te
 {{site.data.alerts.end}}
 
 If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
+
+To select the cluster version:
+
+1. Under **Cluster version**, click the version selector.
+1. Select a CockroachDB version.
+
+## Step 9. Finish creating the cluster
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
 

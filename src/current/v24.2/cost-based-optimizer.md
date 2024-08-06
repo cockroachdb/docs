@@ -236,15 +236,15 @@ You can disable statement plans that perform full table scans with the [`disallo
 
 ## Control whether the optimizer uses an index
 
-You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). 
+You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
 
-This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
+You can also set an index as [partially visible]({% link {{ page.version.version }}/alter-index.md %}#visibility) within a range of `0.0` to `1.0`, where `0.0` means not visible and `1.0` means visible. Any value between `0.0` and `1.0` means that an index is visible to the specified fraction of queries. {% include {{ page.version.version }}/sql/partially-visible-indexes.md %}
 
 {{site.data.alerts.callout_info}}
 Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
 {{site.data.alerts.end}}
 
-You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
+You can instruct the optimizer to use indexes marked as not visible with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 

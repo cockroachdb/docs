@@ -5060,7 +5060,6 @@
   major_version: v23.1
   release_date: '2023-11-13'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: d7e9824b4cd6ebf7a8548156f2a772ae6648257d
   has_sql_only: true
@@ -5250,7 +5249,6 @@
   major_version: v23.1
   release_date: '2023-12-11'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 8d065df26e25a762a1abbbf2b1e475456b341a00
   has_sql_only: true
@@ -5359,7 +5357,6 @@
   major_version: v23.1
   release_date: '2024-01-17'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: b95f2225b09cf25f9f2be31ef6a6f65c73a1b081
   has_sql_only: true
@@ -5468,7 +5465,6 @@
   major_version: v23.1
   release_date: '2024-02-20'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 69a32fafce429e5b75dba8f339ea15922286a0ba
   has_sql_only: true
@@ -5523,7 +5519,6 @@
   major_version: v23.1
   release_date: '2024-02-27'
   release_type: Production
-  lts: true
   go_version: go1.21
   sha: 37f75744ac468fe5a97b343a188ea248bce8fb4a
   has_sql_only: true
@@ -5657,7 +5652,6 @@
   major_version: v23.1
   release_date: '2024-03-19'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: d50ccb5a52cdf5a1f41cbb2fa61ef971c65e1346
   has_sql_only: true
@@ -5766,7 +5760,6 @@
   major_version: v23.1
   release_date: '2024-04-09'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 84cf36a2a05dcfcf6dfccf4014aad8f703ff6cef
   has_sql_only: true
@@ -5848,7 +5841,6 @@
   major_version: v23.1
   release_date: '2024-04-18'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 1bca2adcbc1deb23067e28369f8b24c99194f2bb
   has_sql_only: true
@@ -5930,7 +5922,6 @@
   major_version: v23.1
   release_date: '2024-05-01'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 93a67980ee45391b8ef02d40a6d50ddb0245817b
   has_sql_only: true
@@ -5985,7 +5976,6 @@
   major_version: v23.1
   release_date: '2024-05-07'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: fceb4cf5c378bfb53b3cf12c672716168192f1fe
   has_sql_only: true
@@ -6094,7 +6084,6 @@
   major_version: v23.1
   release_date: '2024-05-23'
   release_type: Production
-  lts: true
   go_version: go1.22.0
   sha: 6ed4ef16634f683adfb7d77b4ebf414e0c1e42a7
   has_sql_only: true
@@ -6198,7 +6187,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.22
-  lts: true
 
 - release_name: v24.2.0-alpha.1
   major_version: v24.2
@@ -6252,7 +6240,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.6
-  lts: true
 
 - release_name: v24.1.2
   major_version: v24.1
@@ -6309,7 +6296,6 @@
   previous_release: v24.2.0-alpha.1
 
 - release_name: v23.2.8
-  lts: true
   major_version: v23.2
   release_date: '2024-07-15'
   release_type: Production
@@ -6362,12 +6348,11 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-alpha.2
-  
+
 - release_name: v23.1.24
   major_version: v23.1
   release_date: '2024-07-18'
   release_type: Production
-  lts: true
   go_version: go1.22.5
   sha: b9b86f7f30053d86327d80f0bd582af57ffc3020
   has_sql_only: true
@@ -6417,3 +6402,84 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-beta.1
+
+- release_name: v24.2.0-beta.3
+  major_version: v24.2
+  release_date: '2024-08-01'
+  release_type: Testing
+  go_version: go1.22.5
+  sha: 742a2251a05088a238fc6eb4c2466dace3cb1bb2
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.2.0-beta.2
+
+- release_name: v23.2.9
+  major_version: v23.2
+  release_date: '2024-08-01'
+  release_type: Production
+  go_version: go1.22.5
+  sha: 579c0a000fb80ef7184e46ea038937c135ee2f0c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v23.2.8
+
+- release_name: v24.1.3
+  major_version: v24.1
+  release_date: '2024-08-01'
+  release_type: Production
+  go_version: go1.22.5
+  sha: 9e10212477fde97f55ea4fff01797288c836575c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.2

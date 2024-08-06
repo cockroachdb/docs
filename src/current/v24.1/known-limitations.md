@@ -211,8 +211,10 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ~~~
 
 ~~~
-ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.1
 ~~~
 
 [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
@@ -486,6 +488,8 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 #### `ALTER CHANGEFEED` limitations
 
