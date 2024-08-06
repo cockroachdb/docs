@@ -299,14 +299,14 @@ Two types of plans can be cached: custom and generic. Refer to [Query plan type]
 
 The following types of plans can be cached:
 
-- *Custom* query plans are generated for a given query structure and optimized for specific parameter values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
-- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific parameter values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. Once a generic plan is optimized for a given statement, the CPU utilization associated with query planning for all subsequent executions of that statement should be 0%.
+- *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
+- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. Once a generic plan is optimized for a given statement, the CPU utilization associated with query planning for all subsequent executions of that statement should be 0%.
 
     {{site.data.alerts.callout_success}}
-    Generic query plans can reduce latency and CPU utilization for prepared statements whose parameters change frequently and for complex queries that are costly to optimize.
+    Generic query plans will only benefit workloads that use prepared statements, which are issued via `PREPARE` or with an ORM. They can reduce latency and CPU utilization for prepared statements whose parameters change frequently and for complex queries that are costly to optimize.
     {{site.data.alerts.end}}
 
-To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {{ page.version.version }}/session-variables.md %}#plan-cache-mode) session setting. This setting applies when a statement is executed, not when it is prepared. Statements are therefore not associated with a specific query plan type upon creation.
+To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {{ page.version.version }}/session-variables.md %}#plan-cache-mode) session setting. This setting applies when a statement is executed, not when it is prepared. Statements are therefore not associated with a specific query plan type when they are prepared.
 
 The following modes can be set:
 
@@ -343,8 +343,8 @@ ALTER ROLE db_user SET plan_cache_mode= force_generic_plan;
 
 To verify that a query uses a generic plan, check the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) output for the query.
 
-- If a generic query plan is optimized for the current execution, the `plan type` field in the output is `generic, re-optimized`.
-- If a generic query plan is reused for the current execution without performing optimization, the `plan type` field in the output is `generic, reused`.
+- If a generic query plan is optimized for the current execution, the `plan type` in the output is `generic, re-optimized`.
+- If a generic query plan is reused for the current execution without performing optimization, the `plan type` in the output is `generic, reused`.
 
 ## Join reordering
 
