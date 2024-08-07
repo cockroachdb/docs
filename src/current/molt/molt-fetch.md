@@ -552,12 +552,15 @@ Transformation rules are specified using a JSON file and `--transformations-file
 		Columns that match the `column` regex will **not** be moved to CockroachDB if either `add_computed_def` is omitted, or a matching column is a non-computed column.
 		{{site.data.alerts.end}}
 - `table_rename_opts` configures the following option for table renaming:
-	- `value` specifies the table name to which the matching `table` is mapped. If there is only one matching `table` on the source, it is renamed to `value` on the target. If there is more than one matching `table`, this assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema. Otherwise, the process will error.
+	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If there is only one table matching `resource_specifier` on the source, it is renamed to `table_rename_opts.value` on the target. If there is more than one matching `resource_specifier` (i.e. `n` to `1` mapping), this assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema. Otherwise, the process will error. 
+	- Additionally, in such `n` to `1` mapping situation: 
+	     - Since these tables' data will be ingested into the single target table _concurrently_, only `--use-copy` or `--direct-copy` mode is allowed for the data ingestion phase. 
+	     - User will have to create the schema of the target table on their own, and must choose `--table-handling=none` mode. I.e. `--table-handling={truncate|drop-on-target-and-recreate}` are disabled for this case.
 
 The preceding JSON example therefore defines two rules:
 
 - Rule `1` maps all source `age` columns on the source database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
-- Rule `2` maps all table names beginning with `charges_part` from the source database to a single `charges` table on CockroachDB. This assumes that all matching `charges_part.*` tables have the same schema.
+- Rule `2` maps all table names with prefix `charges_part` from the source database to a single `charges` table on CockroachDB. (I.e. an `n` to `1` mapping) This assumes that all matching `charges_part.*` tables have the same schema.
 
 Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
 
