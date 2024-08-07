@@ -37,7 +37,6 @@ You can use PCR in a disaster recovery plan to:
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
-- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
 
