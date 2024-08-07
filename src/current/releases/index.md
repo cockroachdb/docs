@@ -7,9 +7,6 @@ toc_not_nested: true
 pre_production_preview: true
 pre_production_preview_version: v24.1.0-beta.1
 ---
-{% comment %}TODO:
-- Check for #release-naming links.
-{% endcomment %}
 
 {% comment %}Enable debug to print debug messages {% endcomment %}
 {% assign DEBUG = false %}
