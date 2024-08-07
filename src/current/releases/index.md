@@ -1,5 +1,5 @@
 ---
-title: Releases
+title: CockroachDB Releases
 summary: Information about CockroachDB releases with an index of available releases and their release notes and binaries.
 toc: true
 docs_area: releases
@@ -7,6 +7,9 @@ toc_not_nested: true
 pre_production_preview: true
 pre_production_preview_version: v24.1.0-beta.1
 ---
+{% comment %}TODO:
+- Check for #release-naming links.
+{% endcomment %}
 
 {% comment %}Enable debug to print debug messages {% endcomment %}
 {% assign DEBUG = false %}
@@ -17,21 +20,103 @@ of this file, block-level HTML is indented in relation to the other HTML, and bl
 indented in relation to the other Liquid. Please try to keep the indentation consistent. Thank you!
 {% endcomment %}
 
-After downloading a supported CockroachDB binary, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
+## Overview
 
-- **Generally Available (GA)** releases (also known as Production releases) are qualified for production environments. These may have either a default GA support type or an extended LTS (Long-Term Support) designation. Refer to [Release Support Policy]({% link releases/release-support-policy.md %}) for more information.
-- **Testing** releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments. Testing releases allow you to begin testing and validating the next major version of CockroachDB early.
-- **Experimental** binaries allow you to deploy and develop with CockroachDB on architectures that are not yet qualified for production use. Experimental binaries are not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, then a series of patch releases.
 
-For more details, refer to [Release Naming](#release-naming). For information about applicable software licenses, refer to [Licenses](#licenses).
+Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
+
+{% comment %}TODO: Add variables for versions.{% endcomment %}
+For example, the latest production release is `v24.2.0`, within major version `v24.2`.
+
+This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB versions.
+
+After choosing a version of CockroachDB, learn how to [create a CockroachDB Cloud cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster), [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb) for a Self-Hosted cluster, [upgrade a Cloud cluster](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-to-v24.1.html), or [upgrade a Self-Hosted cluster](https://www.cockroachlabs.com/docs/v24.1/upgrade-cockroach-version.html). Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}). For information about applicable software licenses, refer to [Licenses](#licenses).
+
+## Release types
+
+### Major release types
+
+As of 2024, every second major version is an **Innovation** release. For CockroachDB Self-Hosted and CockroachDB Dedicated, these releases offer shorter support windows and can be skipped.
+
+All other major versions are called **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series. For details on how this impacts support in CockroachDB Self-Hosted, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
+| Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
+| :---: | :---: | :---: | :---: |
+| Regular (e.g. v24.1) | 2x/year | on Dedicated, Serverless, Self-Hosted | Yes |
+| Innovation (e.g. v24.2) | 2x/year | on Serverless only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
+<small>* Column does not apply to CockroachDB Serverless, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
+
+For a given CockroachDB Self-Hosted or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or also include Innovation Releases, to benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where each major release is an automatic upgrade.
+
+CockroachDB v24.2 is an Innovation release and v24.3 is planned as a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
+
+### Patch release types
+
+A major version has two types of patch releases: a series of **testing releases** followed by a series of **production releases**. A major version’s initial production release is also known as its GA release.
+
+<style>
+  .no-wrap-table td:nth-child(1) {
+    width: 140px; /* Set width for the first column */
+    white-space: nowrap; /* Prevent wrapping */
+  }
+  .no-wrap-table td:nth-child(2) {
+    width: 200px; /* Set width for the second column */
+    white-space: nowrap; /* Prevent wrapping */
+  }
+</style>
+
+<table class="no-wrap-table">
+  <thead>
+    <tr>
+      <th>Patch Release Type</th>
+      <th>Naming</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Production</td>
+      <td><code>vYY.R.0</code> - <code>vYY.R.n</code><br>(ex. v24.2.1)</td>
+      <td>Production releases are qualified for production environments. The type and duration of support for a production release may vary depending on the major release type, according to the <a href="release-support-policy.html">Release Support Policy</a>.</td>
+    </tr>
+    <tr>
+      <td>Testing</td>
+      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br>ex. v24.3.1-alpha.2</td>
+      <td>Produced during development of a new major version, testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments.</td>
+    </tr>
+  </tbody>
+</table>
 
 {{site.data.alerts.callout_danger}}
-In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
+A cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
 {{site.data.alerts.end}}
 
 ## Staged release process
 
 As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+
+## Recent releases
+
+{% comment %} TODO: Automate by Aug 12, 2024, or update the morning of August 12, then automate soon after. {% endcomment %}
+| Version | Release Type | GA date | Latest patch release |
+| :---: | :---: | :---: | :---: |
+| [v24.2](#v24-2) | Innovation | 2024-08-12 | v24.2.0 |
+| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.3 |
+| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.9 (LTS) |
+| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.24 (LTS) |
+
+## Upcoming releases
+
+The following releases and their descriptions represent proposed plans that are subject to change. Please contact your account representative with any questions.
+
+| Version | Release Type | Expected GA date |
+| :---: | :---: | :---: |
+| v24.3 | Regular    | 2024-11-18 |
+| v25.1 | Innovation | 2025 Q1    |
+| v25.2 | Regular    | 2025 Q2    |
+| v25.3 | Innovation | 2025 Q3    |
+| v25.4 | Regular    | 2025 Q4    |
 
 {{ experimental_js_warning }}
 
@@ -66,7 +151,6 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
         {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
     {% endif %}
 
-
 ## {{ v.major_version }}
 
 {% if DEBUG == true %}
@@ -78,6 +162,11 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
     has_lts_releases: {{ has_lts_releases }}<br />
     v.release_date: {{ v.release_date }}<br />
     v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
+
+{% if v.major_version == "v24.2" %}
+CockroachDB v24.2 is an [Innovation release](#major-release-types), which is optional for CockroachDB Dedicated and CockroachDB Self-Hosted clusters. Refer to [Major release types](#major-release-types) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html). 
+{% endif %}
+{% comment %}TODO: Link above to 24.2 Feature Highlights{% endcomment %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -111,7 +200,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
         {% assign v_docker_arm = false %}
         {% for r in releases %}
-            {% if r.docker.docker_arm == true %}
+            {% if r.docker.docker_arm   == true %}
                 {% assign v_docker_arm = true %}
                 {% break %}
             {% endif %}
@@ -433,22 +522,6 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
         {% endif %} {% comment %}if releases[0]{% endcomment %}
     {% endfor %} {% comment %}for s in sections {% endcomment %}
 {% endfor %} {% comment %}for v in versions{% endcomment %}
-
-## Release naming
-
-Cockroach Labs uses a three-component calendar versioning scheme to name CockroachDB [releases](https://cockroachlabs.com/docs/releases/index#production-releases). The format is `YY.R.PP`, where `YY` indicates the year, `R` indicates the release (historically “1” or “2”, representing a typical biannual cycle), and `PP` indicates the patch release version. Example: Version 23.1.0 (abbreviated v23.1.0). Leading up to a new major version's initial GA (Generally Available) release, multiple testing builds are produced, moving from Alpha to Beta to Release Candidate. CockroachDB began using this versioning scheme with v19.1.
-
-A major release is typically produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
-
-Patch releases are produced during the [support period]({% link releases/release-support-policy.md %}) for a major version to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
-
-During development of a major version of CockroachDB, releases are produced according to the following patterns. Alpha, Beta, and Release Candidate releases are testing releases intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-
-- Alpha releases are the earliest testing releases leading up to a major version's initial GA (generally available) release, and have `alpha` in the version name. Example: `v23.1.0-alpha.1`.
-- Beta releases are produced after the series of alpha releases leading up to a major version's initial GA release, and tend to be more stable and introduce fewer changes than alpha releases. They have `beta` in the version name. Example: `v23.1.0-beta.1`.
-- Release candidates are produced after the series of beta releases and are nearly identical to what will become the initial generally available (GA) release. Release candidates have `rc` in the version name. Example: `v23.1.0-rc.1`.
-- A major version's initial GA release is produced after the series of release candidates for a major version, and ends with `0`. Example: `v23.1.0`. GA releases are validated and suitable for production environments.
-- Patch (maintenance) releases are produced after a major version's GA release, and are numbered sequentially. Example: `v23.1.13`.
 
 ## Licenses
 
