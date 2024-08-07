@@ -300,10 +300,10 @@ Two types of plans can be cached: custom and generic. Refer to [Query plan type]
 The following types of plans can be cached:
 
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
-- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. Once a generic plan is optimized for a given statement, the CPU utilization associated with query planning for all subsequent executions of that statement should be 0%.
+- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This eliminates most of the query latency attributed to planning.
 
     {{site.data.alerts.callout_success}}
-    Generic query plans will only benefit workloads that use prepared statements, which are issued via `PREPARE` or with an ORM. They can reduce latency and CPU utilization for prepared statements whose parameters change frequently and for complex queries that are costly to optimize.
+    Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}).
     {{site.data.alerts.end}}
 
 To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {{ page.version.version }}/session-variables.md %}#plan-cache-mode) session setting. This setting applies when a statement is executed, not when it is prepared. Statements are therefore not associated with a specific query plan type when they are prepared.
@@ -315,36 +315,37 @@ The following modes can be set:
 - `auto`: Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans. 
 
 {{site.data.alerts.callout_info}}
-Generic plans are always used for non-prepared statements that do not contain placeholders or [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility).
+Generic plans are always used for non-prepared statements that do not contain placeholders or [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility), regardless of the `plan_cache_mode` setting.
 {{site.data.alerts.end}}
 
-To configure the optimizer to use generic plans for all queries, for example, set `plan_cache_mode` to `force_generic_plan`.
+In some cases, generic query plans are less efficient than custom plans. For this reason, Cockroach Labs recommends setting `plan_cache_mode` to `auto` instead of `force_generic_plan`. Under the `auto` setting, the optimizer avoids bad generic plans by falling back to custom plans. For example:
 
-At the session level:
+Set `plan_cache_mode` to `auto` at the session level:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET plan_cache_mode = force_generic_plan
+SET plan_cache_mode = auto
 ~~~
 
 At the [database level]({% link {{ page.version.version }}/alter-database.md %}#set-session-variable):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER DATABASE db SET plan_cache_mode = force_generic_plan;
+ALTER DATABASE db SET plan_cache_mode = auto;
 ~~~
 
 At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE db_user SET plan_cache_mode= force_generic_plan;
+ALTER ROLE db_user SET plan_cache_mode= auto;
 ~~~
 
-To verify that a query uses a generic plan, check the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) output for the query.
+To verify the plan type used by a query, check the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) output for the query.
 
 - If a generic query plan is optimized for the current execution, the `plan type` in the output is `generic, re-optimized`.
 - If a generic query plan is reused for the current execution without performing optimization, the `plan type` in the output is `generic, reused`.
+- If a custom query plan is used for the current execution, the `plan type` in the output is `custom`.
 
 ## Join reordering
 
