@@ -547,7 +547,7 @@ Transformation rules are specified using a JSON file and `--transformations-file
 	- `table` specifies the tables to be affected by the transformation rule, formatted as a POSIX regex string.
 - `column_exclusion_opts` configures the following options for column exclusions and computed columns:
 	- `column` specifies source columns to exclude from being mapped to regular columns on the target schema. It is formatted as a POSIX regex string.
-	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema, using the computed column definition on the source schema. This assumes that all matching columns are computed columns on the source.
+	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema. Instead of being moved from the source, the column data is generated on the target using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the computed column definition from the source schema. This assumes that all matching columns are computed columns on the source.
 		{{site.data.alerts.callout_danger}}
 		Columns that match the `column` regex will **not** be moved to CockroachDB if either `add_computed_def` is omitted, or a matching column is a non-computed column.
 		{{site.data.alerts.end}}
@@ -564,7 +564,7 @@ The preceding JSON example therefore defines two rules:
 
 Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
 
-To verify that the logging shoes that the computed columns are being created:
+To verify that the logging shows that the computed columns are being created:
 
 When running `molt fetch`, set `--logging 'debug'` and look for `ALTER TABLE ... ADD COLUMN` statements with the `STORED` or `VIRTUAL` keywords in the log output:
 
@@ -572,7 +572,7 @@ When running `molt fetch`, set `--logging 'debug'` and look for `ALTER TABLE ...
 {"level":"debug","time":"2024-07-22T12:01:51-04:00","message":"running: ALTER TABLE IF EXISTS public.computed ADD COLUMN computed_col INT8 NOT NULL AS ((col1 + col2)) STORED"}
 ~~~
 
-After running `molt fetch`, show the `CREATE` statement for a table:
+After running `molt fetch`, issue a `SHOW CREATE TABLE` statement on CockroachDB:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
