@@ -219,10 +219,11 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                               |
 | `--table-filter`                              | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                        |
 | `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                                                                                             |
+| `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch process. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                   |
 | `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling 'drop-on-target-and-recreate'`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                                                                                          |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                          |
 | `--use-copy`                                  | Use [`COPY FROM` mode](#fetch-mode) to move data. This makes tables queryable during data load, but is slower than `IMPORT INTO` mode. For details, see [Fetch mode](#fetch-mode).                                                                                                                                                                                                                                                                                                              |
-| `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                                              |
+| `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                            |
 
 ### `tokens list` flags
 
@@ -502,6 +503,87 @@ The JSON is formatted as follows:
 - `table` specifies the table that will use the custom type mappings in `column-type-map`, written as `{schema}.{table}`.
 - `column` specifies the column that will use the custom type mapping in `type-kv`. If `*` is specified, then all columns in the `table` with the matching `source-type` are converted.
 - `type-kv` specifies the `source-type` that maps to the target `crdb-type`.
+
+### Transformations
+
+You can define transformation rules to be performed on the target schema during the fetch process. These can be used to:
+
+- Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) to a target schema.
+- Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
+- Rename tables on the target schema.
+
+Transformation rules are specified using a JSON file and `--transformations-file`. For example:
+
+~~~ json
+{
+  "transforms": [
+    {
+      "id": 1,
+      "resource_specifier": {
+        "schema": ".*",
+        "table": ".*"
+      },
+      "column_exclusion_opts": {
+        "add_computed_def": true,
+        "column": "^age$"
+      }
+    },
+    {
+      "id": 2,
+      "resource_specifier": {
+        "schema": "public",
+        "table": "charges_part.*"
+      },
+      "table_rename_opts": {
+        "value": "charges"
+      }
+    }
+  ]
+}
+~~~
+
+- `resource_specifier` configures the following options for transformation rules:
+	- `schema` specifies the schemas to be affected by the transformation rule, formatted as a POSIX regex string.
+	- `table` specifies the tables to be affected by the transformation rule, formatted as a POSIX regex string.
+- `column_exclusion_opts` configures the following options for column exclusions and computed columns:
+	- `column` specifies source columns to exclude from being mapped to regular columns on the target schema. It is formatted as a POSIX regex string.
+	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema, using the computed column definition on the source schema. This assumes that all matching columns are computed columns on the source.
+		{{site.data.alerts.callout_danger}}
+		Columns that match the `column` regex will **not** be moved to CockroachDB if either `add_computed_def` is omitted, or a matching column is a non-computed column.
+		{{site.data.alerts.end}}
+- `table_rename_opts` configures the following option for table renaming:
+	- `value` specifies the table name to which the matching `table` is mapped. If there is only one matching `table` on the source, it is renamed to `value` on the target. If there is more than one matching `table`, this assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema. Otherwise, the process will error.
+
+The preceding JSON example therefore defines two rules:
+
+- Rule `1` maps all source `age` columns on the soruce database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
+- Rule `2` maps all table names beginning with `charges_part` from the source database to a single `charges` table on CockroachDB. This assumes that all matching `charges_part.*` tables have the same schema.
+
+Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
+
+To verify that the logging shoes that the computed columns are being created:
+
+When running `molt fetch`, set `--logging 'debug'` and look for `ALTER TABLE ... ADD COLUMN` statements with the `STORED` or `VIRTUAL` keywords in the log output:
+
+~~~ json
+{"level":"debug","time":"2024-07-22T12:01:51-04:00","message":"running: ALTER TABLE IF EXISTS public.computed ADD COLUMN computed_col INT8 NOT NULL AS ((col1 + col2)) STORED"}
+~~~
+
+After running `molt fetch`, show the `CREATE` statement for a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE TABLE computed;
+~~~
+
+~~~
+  table_name |                         create_statement
+-------------+-------------------------------------------------------------------
+  computed   | CREATE TABLE public.computed (
+  ...
+             |     computed_col INT8 NOT NULL AS (col1 + col2) STORED
+             | )
+~~~
 
 ### Fetch continuation
 
