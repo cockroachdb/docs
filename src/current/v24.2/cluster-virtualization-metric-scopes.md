@@ -17,7 +17,8 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying CockroachDB cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
 {% comment %}
-Src: cockroach gen metrics-list --format=csv against v24.1.1
+Src: cockroach gen metrics-list --format=csv against cockroach-v24.2.0-rc.1.darwin-10.9-amd64
+
 
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). Sort by Layer, then Metric. Paste into the correct section below.
