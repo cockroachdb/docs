@@ -556,7 +556,7 @@ Transformation rules are specified using a JSON file and `--transformations-file
 
 The preceding JSON example therefore defines two rules:
 
-- Rule `1` maps all source `age` columns on the soruce database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
+- Rule `1` maps all source `age` columns on the source database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
 - Rule `2` maps all table names beginning with `charges_part` from the source database to a single `charges` table on CockroachDB. This assumes that all matching `charges_part.*` tables have the same schema.
 
 Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
