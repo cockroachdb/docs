@@ -1015,6 +1015,12 @@
               "urls": [
                 "/${VERSION}/uuid.html"
               ]
+            },
+            {
+              "title": "<code>VECTOR</code>",
+              "urls": [
+                "/${VERSION}/vector.html"
+              ]
             }
           ]
         },
