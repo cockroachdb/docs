@@ -225,6 +225,30 @@ SELECT * FROM system.comments;
 (1 row)
 ~~~
 
+### Remove a comment from a database
+
+To remove a comment from a database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE movr IS NULL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES WITH COMMENT;
+~~~
+
+~~~
+  database_name | owner | primary_region | regions | survival_goal | comment
+----------------+-------+----------------+---------+---------------+----------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | NULL
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
+~~~
+
 ### Remove a comment from a type
 
 Suppose we [create a type]({% link {{ page.version.version }}/create-type.md %}):
@@ -267,30 +291,6 @@ To remove a comment from a type, use a statement like the following:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMENT ON TYPE my_point IS NULL;
-~~~
-
-### Remove a comment from a database
-
-To remove a comment from a database:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> COMMENT ON DATABASE movr IS NULL;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES WITH COMMENT;
-~~~
-
-~~~
-  database_name | owner | primary_region | regions | survival_goal | comment
-----------------+-------+----------------+---------+---------------+----------
-  defaultdb     | root  | NULL           | {}      | NULL          | NULL
-  movr          | demo  | NULL           | {}      | NULL          | NULL
-  postgres      | root  | NULL           | {}      | NULL          | NULL
-  system        | node  | NULL           | {}      | NULL          | NULL
-(4 rows)
 ~~~
 
 ## See also
