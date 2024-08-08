@@ -303,7 +303,7 @@ The following types of plans can be cached:
 - {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This eliminates most of the query latency attributed to planning.
 
     {{site.data.alerts.callout_success}}
-    Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}).
+    Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
     {{site.data.alerts.end}}
 
 To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {{ page.version.version }}/session-variables.md %}#plan-cache-mode) session setting. This setting applies when a statement is executed, not when it is prepared. Statements are therefore not associated with a specific query plan type when they are prepared.
@@ -357,7 +357,7 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET reorder_joins_limit = 0;
+SET reorder_joins_limit = 0;
 ~~~
 
 To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
@@ -376,6 +376,7 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
 
 - To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to a lower value, for example:
 
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET reorder_joins_limit = 2;
     ~~~
