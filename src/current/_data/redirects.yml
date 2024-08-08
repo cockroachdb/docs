@@ -246,9 +246,6 @@
     - 'learn-about-request-units.md'
   versions: ['cockroachcloud']
 
-- destination: molt/live-migration-service.md
-  sources: [':version/live-migration-service.md']
-
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
   versions: ['v21.1']
@@ -273,6 +270,11 @@
     
 - destination: molt/molt-fetch.md
   sources: [':version/molt-fetch.md']
+
+- destination: molt/molt-overview.md
+  sources:
+    - molt/live-migration-service.md
+    - :version/live-migration-service.md
 
 - destination: molt/molt-verify.md
   sources: [':version/molt-verify.md']
