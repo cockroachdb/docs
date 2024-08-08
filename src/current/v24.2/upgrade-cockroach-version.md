@@ -136,11 +136,13 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 ### Features that require upgrade finalization
 
-When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+When upgrading from one major version to another, certain features and performance improvements will be enabled only after finalizing the upgrade. However, when upgrading from {{ previous_version }} to {{ page.version.version }}, all features are available immediately, and no features require finalization.
 
-- {% include v24.1/finalization-required/119894.md version="v24.1" %}
+{{site.data.alerts.callout_info}}
+Finalization is always required to complete an upgrade.
+{{site.data.alerts.end}}
 
-For more details about a given feature, refer to the [CockroachDB v24.1.0 release notes](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0).
+For more details about a given feature, refer to the [CockroachDB v24.2.0 release notes](https://www.cockroachlabs.com/docs/releases/v24.2#v24-2-0).
 
 ## Step 4. Perform the rolling upgrade
 
