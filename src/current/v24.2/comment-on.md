@@ -181,7 +181,7 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`]({% link {{ page.v
 (8 rows)
 ~~~
 
-### Add or remove a comment to or from a type
+### Add a comment to a type
 
 Suppose we [create a type]({% link {{ page.version.version }}/create-type.md %}):
 
@@ -209,6 +209,43 @@ To add a comment on the type, use a statement like the following:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMENT ON TYPE my_point IS '3D point';
+~~~
+
+To view all comments on types, make a [selection query]({% link {{page.version.version}}/select-clause.md %}) against the `system.comments` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM system.comments;
+~~~
+
+~~~
+  type | object_id | sub_id | comment
+-------+-----------+--------+-----------
+     7 |       112 |      0 | 3D POINT
+(1 row)
+~~~
+
+### Remove a comment from a type
+
+Suppose we [create a type]({% link {{ page.version.version }}/create-type.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TYPE IF NOT EXISTS my_point AS (x FLOAT, y FLOAT, z FLOAT);
+~~~
+
+To view the type you just created, use [`SHOW TYPES`]({% link {{page.version.version}}/show-types.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW TYPES;
+~~~
+
+~~~
+  schema |   name   | owner
+---------+----------+--------
+  public | my_point | root
+(1 row)
 ~~~
 
 To view all comments on types, make a [selection query]({% link {{page.version.version}}/select-clause.md %}) against the `system.comments` table:
