@@ -1,6 +1,6 @@
 ---
 title: Upgrade to CockroachDB v24.2
-summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.1
+summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.2
 toc: true
 docs_area: manage
 page_version: v24.2
@@ -149,7 +149,7 @@ CockroachDB {{ x.major_version }} is a{% if skippable == true %}n [Innovation re
 Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}) before installing or upgrading for release timing and support details.
 
 {{site.data.alerts.callout_success}}
-Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
+Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade
