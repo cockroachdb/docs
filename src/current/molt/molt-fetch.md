@@ -553,7 +553,7 @@ Transformation rules are specified using a JSON file and `--transformations-file
 		{{site.data.alerts.end}}
 - `table_rename_opts` configures the following option for table renaming:
 	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If there is only one table matching `resource_specifier` on the source, it is renamed to `table_rename_opts.value` on the target. If there is more than one matching `resource_specifier` (i.e., an n-to-1 mapping), this assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema. Otherwise, the process will error. 
-	- Additionally, in such `n` to `1` mapping situation: 
+	- Additionally, in such an n-to-1 mapping situation: 
 	     - Since these tables' data will be ingested into the single target table _concurrently_, only `--use-copy` or `--direct-copy` mode is allowed for the data ingestion phase. 
 	     - User will have to create the schema of the target table on their own, and must choose `--table-handling=none` mode. I.e. `--table-handling={truncate|drop-on-target-and-recreate}` are disabled for this case.
 
