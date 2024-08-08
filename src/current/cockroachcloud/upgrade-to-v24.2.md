@@ -1,6 +1,6 @@
 ---
 title: Upgrade to CockroachDB v24.2
-summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.1
+summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.2
 toc: true
 docs_area: manage
 page_version: v24.2
