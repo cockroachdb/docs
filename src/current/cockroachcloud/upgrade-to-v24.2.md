@@ -4,10 +4,10 @@ summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.1
 toc: true
 docs_area: manage
 page_version: v24.2
-prev_version: v24.1
 pre_production_preview: false
 pre_production_preview_version: v24.1.0-rc.1
 ---
+{% assign DEBUG = false %}
 
 {% assign DEBUG = false %}
 
