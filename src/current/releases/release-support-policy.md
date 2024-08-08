@@ -9,13 +9,13 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB Self-Hosted. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
+This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB Self-Hosted. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-There are two major release types: Regular and Innovation. Each offers customers a unique set of support types, which define the duration that certain phases of support will be provided.
+There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-types). Each offers customers a unique set of Support Types, which define the durations that certain phases of support will be provided.
 
 ## Support Phases
 
-- **Maintenance Support**: Begins for a CockroachDB major version upon its GA release. During this period:  
+- **Maintenance Support**: Begins for a CockroachDB major version upon its [GA release]({% link releases/index.md %}#patch-releases). During this period:  
   * Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.  
   * Cockroach Labs may backport non-breaking enhancements produced for newer major versions.  
   * Cockroach Labs may direct customers to workarounds or other fixes applicable to a reported case.  
