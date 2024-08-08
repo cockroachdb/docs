@@ -457,7 +457,7 @@ If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch 
 	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{site.current_cloud_version}}/bool.md %})                                                        |
 	| `ENUM`                                              | [`ANY_ENUM`]({% link {{site.current_cloud_version}}/enum.md %})                                                    |
 
-- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are specified using a JSON file and `--type-map-file`. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link molt/molt-verify.md %}):
+- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are defined in the JSON file indicated by the `--type-map-file` flag. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link molt/molt-verify.md %}):
 
 	- [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %})
 	- [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %}) <> [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %})
@@ -512,7 +512,7 @@ You can define transformation rules to be performed on the target schema during 
 - Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
 - Rename tables on the target schema.
 
-Transformation rules are specified using a JSON file and `--transformations-file`. For example:
+Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. The JSON is formatted as follows:
 
 ~~~ json
 {
@@ -549,13 +549,15 @@ Transformation rules are specified using a JSON file and `--transformations-file
 	- `column` specifies source columns to exclude from being mapped to regular columns on the target schema. It is formatted as a POSIX regex string.
 	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema. Instead of being moved from the source, the column data is generated on the target using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the computed column definition from the source schema. This assumes that all matching columns are computed columns on the source.
 		{{site.data.alerts.callout_danger}}
-		Columns that match the `column` regex will **not** be moved to CockroachDB if either `add_computed_def` is omitted, or a matching column is a non-computed column.
+		Columns that match the `column` regex will **not** be moved to CockroachDB if `add_computed_def` is omitted or set to `false` (default), or if a matching column is a non-computed column.
 		{{site.data.alerts.end}}
 - `table_rename_opts` configures the following option for table renaming:
-	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If there is only one table matching `resource_specifier` on the source, it is renamed to `table_rename_opts.value` on the target. If there is more than one matching `resource_specifier` (i.e., an n-to-1 mapping), this assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema. Otherwise, the process will error. 
-	- Additionally, in such an n-to-1 mapping situation: 
-	     - Since these tables' data will be ingested into the single target table _concurrently_, only `--use-copy` or `--direct-copy` mode is allowed for the data ingestion phase. 
-	     - User will have to create the schema of the target table on their own, and must choose `--table-handling=none` mode. I.e. `--table-handling={truncate|drop-on-target-and-recreate}` are disabled for this case.
+	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If only one source table matches `resource_specifier`, it is renamed to `table_rename_opts.value` on the target. If more than one table matches `resource_specifier` (i.e., an n-to-1 mapping), the fetch process assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema, and moves their data to a table named `table_rename_opts.value` on the target. Otherwise, the process will error. 
+		
+		Additionally, in an n-to-1 mapping situation: 
+
+		- Specify [`--use-copy`](#fetch-mode) or [`--direct-copy`](#direct-copy) mode for data movement. This is because the data from the source tables is loaded concurrently into the target table.
+		- Create the target table schema manually, and do **not** use [`--table-handling 'drop-on-target-and-recreate'`](#target-table-handling) for target table handling.
 
 The preceding JSON example therefore defines two rules:
 
