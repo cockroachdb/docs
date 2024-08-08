@@ -300,7 +300,7 @@ Two types of plans can be cached: custom and generic. Refer to [Query plan type]
 The following types of plans can be cached:
 
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
-- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This eliminates most of the query latency attributed to planning.
+- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
 
     {{site.data.alerts.callout_success}}
     Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
@@ -338,7 +338,7 @@ At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-defa
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE db_user SET plan_cache_mode= auto;
+ALTER ROLE db_user SET plan_cache_mode = auto;
 ~~~
 
 To verify the plan type used by a query, check the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) output for the query.
