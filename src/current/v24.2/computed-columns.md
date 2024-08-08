@@ -30,6 +30,9 @@ Computed columns:
 - Cannot be used to generate other computed columns.
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) and [`ON UPDATE`]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) expressions.
+- {% include_cached new-in.html version="v24.2" %} Can be used in [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) constraints, but are restricted to the following subset of supported options. This restriction is necessary because we cannot allow the computed column value to change.
+  - `ON UPDATE (NO ACTION|RESTRICT)`
+  - `ON DELETE (NO ACTION|RESTRICT|CASCADE)`
 
 Virtual computed columns:
 

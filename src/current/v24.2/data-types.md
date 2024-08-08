@@ -33,6 +33,7 @@ Type | Description | Example
 [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}) | A list of lexemes and operators used in [full-text search]({% link {{ page.version.version }}/full-text-search.md %}). | `'list' & 'lexem' & 'oper' & 'use' & 'full' & 'text' & 'search'`
 [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) | A list of lexemes with optional integer positions and weights used in [full-text search]({% link {{ page.version.version }}/full-text-search.md %}). | `'full':13 'integ':7 'lexem':4 'list':2 'option':6 'posit':8 'search':15 'text':14 'use':11 'weight':10`
 [`UUID`]({% link {{ page.version.version }}/uuid.md %}) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`
+[`VECTOR`]({% link {{ page.version.version }}/vector.md %}) | A fixed-length array of floating-point numbers. | `[1.0, 0.0, 0.0]`
 
 ## Data type conversions and casts
 

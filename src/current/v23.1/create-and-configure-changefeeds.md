@@ -63,6 +63,7 @@ To maintain a high number of changefeeds in your cluster:
 
 ### Considerations
 
+- [Pause]({% link {{ page.version.version }}/pause-job.md %}) running changefeed jobs before you start a [rolling upgrade process]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to move to a later version of CockroachDB. For more details, refer to the [Upgrade CockroachDB version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#pause-changefeed-jobs) page.
 - If you require [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
 - Many DDL queries (including [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}), [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations]({% link {{ page.version.version }}/change-data-capture-overview.md %}) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees) will still hold for as long as a changefeed [remains active]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed).
@@ -210,6 +211,8 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 ## See also
 

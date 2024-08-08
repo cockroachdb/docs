@@ -13,7 +13,7 @@ There are two ways to handle node shutdown:
     - Clients are disconnected, and subsequent connection requests are sent to other nodes.
     - The node's data store is preserved and will be reused as long as the node restarts in a short time. Otherwise, the node's data is moved to other nodes.
 
-    After the node is drained, you can terminate the `cockroach` process, perform maintenance, then restart it. CockroachDB automatically drains a node when [upgrading its cluster version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). Draining a node is lightweight because it generates little node-to-node traffic across the cluster.
+    After the node is drained, you can manually terminate the `cockroach` process to perform maintenance, then restart the process for the node to rejoin the cluster. {% include_cached new-in.html version="v24.2" %}The `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) automatically terminates the `cockroach` process after draining completes. A node is also automatically drained when [upgrading its major version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). Draining a node is lightweight because it generates little node-to-node traffic across the cluster.
 - **Decommission a node** to permanently remove it from the cluster, such as when scaling down the cluster or to replace the node due to hardware failure. During decommission:
     - The node is drained automatically if you have not manually drained it.
     - The node's data is moved off the node to other nodes. This [replica rebalancing]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) generates a large amount of node-to-node network traffic, so decommissioning a node is considered a heavyweight operation.
@@ -62,7 +62,11 @@ After this stage, the node is automatically drained. However, to avoid possible 
 
 <section class="filter-content" markdown="1" data-scope="drain">
 
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any [range leases]{% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to other nodes, but does not move replicas or data off of the node. When draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down, perform the required maintenance, and then restart the `cockroach` process on the node.
+An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any [range leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to other nodes, but does not move replicas or data off of the node.
+
+When draining is complete, the node must be shut down prior to any maintenance. After a 60-second wait at minimum, you can send a `SIGTERM` signal to the `cockroach` process to shut it down. {% include_cached new-in.html version="v24.2" %}The `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) automatically terminates the `cockroach` process after draining completes.
+
+After you perform the required maintenance, you can restart the `cockroach` process on the node for it to rejoin the cluster.
 
 {% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
 
@@ -116,7 +120,10 @@ After draining and decommissioning are complete, an operator [terminates the nod
 After draining is complete:
 
 - If the node was drained automatically because the `cockroach` process received a `SIGTERM` signal, the `cockroach` process is automatically terminated when draining is complete.
-- If the node was drained manually because an operator issued a `cockroach node drain` command, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
+- If the node was drained manually because an operator issued a `cockroach node drain` command:
+  - {% include_cached new-in.html version="v24.2" %}If you pass the `--shutdown` flag to [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags), the `cockroach` process terminates automatically after draining completes.
+  - If the node's major version is being updated, the `cockroach` process terminates automatically after draining completes.
+  - Otherwise, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
 
 </section>
 
@@ -363,6 +370,10 @@ Do **not** terminate the node process, delete the storage volume, or remove the 
 <section class="filter-content" markdown="1" data-scope="drain">
 ### Drain the node and terminate the node process
 
+{% include_cached new-in.html version="v24.2" %}If you passed the `--shutdown` flag to [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags), the `cockroach` process terminates automatically after draining completes. Otherwise, terminate the `cockroach` process.
+
+Perform maintenance on the node as required, then restart the `cockroach` process for the node to rejoin the cluster.
+
 {{site.data.alerts.callout_success}}
 To drain the node without process termination, see [Drain a node manually](#drain-a-node-manually).
 {{site.data.alerts.end}}
@@ -552,7 +563,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
 You can use [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) to drain a node separately from decommissioning the node or terminating the node process.
 
-1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete):
+1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete). {% include_cached new-in.html version="v24.2" %}You can optionally pass the `--shutdown` flag to [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) to automatically terminate the `cockroach` process after draining completes.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -615,7 +626,7 @@ This example assumes you will decommission node IDs `4` and `5` of a 5-node clus
 
 #### Step 2. Drain the nodes manually
 
-Run the [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) command for each node to be removed, specifying the ID of the node to drain:
+Run the [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) command for each node to be removed, specifying the ID of the node to drain. {% include_cached new-in.html version="v24.2" %}Optionally, pass the `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) to automatically terminate the `cockroach` process after draining completes.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

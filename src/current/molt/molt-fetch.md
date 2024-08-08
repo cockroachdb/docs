@@ -23,10 +23,6 @@ To install MOLT Fetch, download the binary that matches your system. To download
 
 {% include molt/molt-install.md %}
 
-{{site.data.alerts.callout_info}}
-MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
-{{site.data.alerts.end}}
-
 ## Setup
 
 Complete the following items before using MOLT Fetch:
@@ -112,8 +108,8 @@ Cockroach Labs **strongly** recommends the following:
 
 	~~~ shell
 	molt fetch \
-	--source "$SOURCE" \
-	--target "$TARGET" \
+	--source '$SOURCE' \
+	--target '$TARGET' \
 	--table-filter 'employees' \
 	--bucket-path 's3://molt-test' \
 	--table-handling truncate-if-exists
@@ -206,7 +202,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                    |
 | `--log-file`                                  | Write messages to the specified log filename. If not specified, messages are only written to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                          |
 | `--logging`                                   | Level at which to log messages (`'trace'`/`'debug'`/`'info'`/`'warn'`/`'error'`/`'fatal'`/`'panic'`).<br><br>**Default:** `'info'`                                                                                                                                                                                                                                                                                                                                                              |
-| `--metrics-listen-addr`                       | Address of the metrics endpoint.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `--metrics-listen-addr`                       | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--non-interactive`                           | Run the fetch process without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                      |
 | `--ongoing-replication`                       | Enable continuous [replication](#replication) to begin after the fetch process succeeds (i.e., initial source data is loaded into CockroachDB).                                                                                                                                                                                                                                                                                                                                                 |
 | `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                                                                                       |
@@ -217,6 +213,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                               |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                             |
 | `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                               |
+| `--table-exclusion-filter`                    | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                                 |
 | `--table-filter`                              | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                        |
 | `--table-handling`                            | How tables are initialized on the target database (`'none'`/`'drop-on-target-and-recreate'`/`'truncate-if-exists'`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `'none'`                                                                                                                                                                                                                                                                             |
 | `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch process. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                   |
@@ -362,11 +359,11 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 --schema-filter 'public'
 ~~~
 
-`--table-filter` specifies a range of tables to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database that has "user" in the title:
+`--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
 {% include_cached copy-clipboard.html %}
 ~~~
---table-filter '.*user.*'
+--table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
 ### Target table handling
@@ -700,6 +697,10 @@ A change data capture (CDC) cursor is written to the output as `cdc_cursor` at t
 ~~~
 
 You can use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes on the source data to CockroachDB.
+
+## Docker usage
+
+{% include {{ page.version.version }}/molt/molt-docker.md %}
 
 ## Examples
 
