@@ -488,6 +488,8 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 #### `ALTER CHANGEFEED` limitations
 
