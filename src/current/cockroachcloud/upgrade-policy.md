@@ -9,9 +9,9 @@ This page describes the support and upgrade policy for clusters deployed in Cock
 
 ## CockroachDB Cloud Support Policy
 
-[Major versions]({% link releases/index.md %}) of CockroachDB that are labeled [Regular releases]({% link releases/index.md %}#major-release-types) are supported for 12 months from their initial production release date.
+[Major versions]({% link releases/index.md %}) of CockroachDB that are labeled [Regular releases]({% link releases/index.md %}#major-releases) are supported for 12 months from their initial production release date.
 
-[Major versions]({% link releases/index.md %}) of CockroachDB that are labeled [Innovation releases]({% link releases/index.md %}#major-release-types) are supported for 6 months from their initial production release date. 
+[Major versions]({% link releases/index.md %}) of CockroachDB that are labeled [Innovation releases]({% link releases/index.md %}#major-releases) are supported for 6 months from their initial production release date. 
 
 For each release type, the end date of this period is called End of Support (EOS).
 

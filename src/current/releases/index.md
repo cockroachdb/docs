@@ -41,7 +41,9 @@ After choosing a version of CockroachDB, learn how to [create a CockroachDB Clou
 
 As of 2024, every second major version is an **Innovation** release. For CockroachDB Self-Hosted and CockroachDB Dedicated, these releases offer shorter support windows and can be skipped.
 
-All other major versions are **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series. For details on how this impacts support in CockroachDB Self-Hosted, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+All other major versions are **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series. 
+
+For details on how this impacts support in CockroachDB Self-Hosted, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
@@ -84,7 +86,7 @@ A major version has two types of patch releases: a series of **testing releases*
     </tr>
     <tr>
       <td>Testing</td>
-      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br>ex. v24.3.1-alpha.2</td>
+      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br>(ex. v24.3.1-alpha.2)</td>
       <td>Produced during development of a new major version, testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments.</td>
     </tr>
   </tbody>
@@ -166,7 +168,7 @@ The following releases and their descriptions represent proposed plans that are 
     v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
 
 {% if v.major_version == "v24.2" %}
-CockroachDB v24.2 is an [Innovation release](#major-release-types), which is optional for CockroachDB Dedicated and CockroachDB Self-Hosted clusters. Refer to [Major release types](#major-release-types) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html). 
+CockroachDB v24.2 is an [Innovation release](#major-releases), which is optional for CockroachDB Dedicated and CockroachDB Self-Hosted clusters. Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html). 
 {% endif %}
 {% comment %}TODO: Link above to 24.2 Feature Highlights{% endcomment %}
 
