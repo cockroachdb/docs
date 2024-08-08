@@ -21,8 +21,9 @@ CockroachDB Serverless clusters will automatically be upgraded to the next major
 
 A CockroachDB Dedicated cluster must be upgraded by an administrator prior to its EOS date to maintain uninterrupted support and SLA guarantees. 
 
-When a CockroachDB Dedicated cluster is nearing  its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. An Org Administrator can [upgrade a cluster](https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-to-v24.1) directly from the CockroachDB Cloud Console.
-{% comment %}TODO: Update link to use v24.2 upgrade page{% endcomment %}
+When a CockroachDB Dedicated cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. An Org Administrator can [upgrade a cluster]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) directly from the CockroachDB Cloud Console.
+{% comment %}TODO: Awaiting details from Eng on upgrade permissions/roles{% endcomment %}
+{% comment %}TODO: Update link to use v24.2 upgrade page or to use a version variable{% endcomment %}
 
 ### Currently supported versions
 
@@ -64,7 +65,7 @@ Major version upgrades are automatic for CockroachDB Serverless clusters and mus
 
 ### Innovation releases
 
-As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [regular release or an innovation release](\#release-types). Regular releases provide a longer support period and a longer period between upgrades, while innovation releases offer a shorter support period and faster access to new features. 
+As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [Regular release or an Innovation release]({% link releases/index.md %}#release-types). Regular releases provide a longer support period and a longer period between upgrades, while Innovation releases offer a shorter support period and faster access to new features. 
 
 - Regular releases are not optional; they must be applied to CockroachDB Dedicated clusters and they are applied automatically to CockroachDB Serverless clusters. Regular releases are produced twice a year, alternating with Innovation Releases. They are supported for one year. Upgrading CockroachDB Dedicated directly from one regular release to the next regular release, skipping the intervening Innovation release, is supported.  
 - Innovation releases are optional and can be skipped for CockroachDB Dedicated clusters but are required for CockroachDB Serverless. Innovation releases are produced twice a year, alternating with Regular releases. An innovation release is supported for 6 months, at which time a Dedicated cluster must be upgraded to the next Regular Release. At a a given time, only one Innovation release is typically supported. Upgrading CockroachDB Dedicated directly from one Innovation release to the next innovation release is not supported.
