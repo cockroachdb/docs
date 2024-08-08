@@ -302,7 +302,7 @@ The following types of plans can be cached:
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
 - {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
 
-    Generic query plans require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
+    Generic query plans require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
     {{site.data.alerts.callout_success}}
     Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
@@ -314,7 +314,7 @@ The following modes can be set:
 
 - `force_custom_plan` (default): Force the use of custom plans.
 - `force_generic_plan`: Force the use of generic plans.
-- `auto`: Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans. 
+- `auto`: Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans.
 
 {{site.data.alerts.callout_info}}
 Generic plans are always used for non-prepared statements that do not contain placeholders or [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility), regardless of the `plan_cache_mode` setting.
