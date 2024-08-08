@@ -51,7 +51,7 @@ For details on how this impacts support in CockroachDB Self-Hosted, refer to [Re
 | Innovation (e.g. v24.2) | 2x/year | on Serverless only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
 <small>* Column does not apply to CockroachDB Serverless, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
 
-For a given CockroachDB Self-Hosted or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or also include Innovation Releases, to benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where every major release is an automatic upgrade.
+For a given CockroachDB Self-Hosted or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where every major release is an automatic upgrade.
 
 CockroachDB v24.2 is an Innovation release and v24.3 is planned as a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
 
