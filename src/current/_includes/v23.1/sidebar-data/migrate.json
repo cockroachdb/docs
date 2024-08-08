@@ -22,12 +22,6 @@
           "urls": [
             "/molt/molt-verify.html"
           ]
-        },
-        {
-          "title": "Live Migration Service",
-          "urls": [
-            "/molt/live-migration-service.html"
-          ]
         }
       ]
     },
