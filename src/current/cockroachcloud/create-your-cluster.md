@@ -153,20 +153,14 @@ The cluster is automatically given a randomly-generated name. If desired, change
 
 ## Step 8. Select the CockroachDB version
 
-When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among two or more types of releases. In the list, releases are labeled according to their stability:
+When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among multiple releases. In the list:
 
-- **Latest Stable**: The latest stable GA release is the default version and is suitable for production.
-- **Stable**: One or more stable releases may be listed at any given time. All listed releases that are not labeled **Pre-Production Preview** are stable releases suitable for production.
-- **Pre-Production Preview**: Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases may be made available for CockroachDB {{ site.data.products.dedicated }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. Pre-Production Preview releases are no longer available after the GA release of a major version.
+- **No label**: The latest patch of a Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}) that is not the latest. A Regular release has full support for one year from the release date, at which a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to maintain support.
+- **Latest**: The latest patch of the latest regular [Production release]({% link cockroachcloud/upgrade-policy.md %}). This is the default version for new clusters.
+- **Innovation Version**: The latest patch of an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}). Innovation releases are optional releases that provide earlier access to new features, and are released between regular releases. An Innovation release has full support for six months from the release date, at which time a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to the next Regular release to maintain support.
+- **Pre-Production Version**: A [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades). Leading up to a new CockroachDB Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}), a series of Beta and Release Candidate (RC) patches may be made available for CockroachDB {{ site.data.products.dedicated }} as Pre-Production Preview releases. Pre-Production Preview releases are not suitable for production environments. They are no longer available in CockroachDB {{ site.data.products.cloud }} for new clusters or upgrades after the new version is GA. When the GA release is available, a cluster running a Pre-Production Preview is automatically upgraded to the GA release and subsequent patches and is eligible for support.
 
-    {{site.data.alerts.callout_danger}}
-    Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-    {{site.data.alerts.end}}
-
-To select a version for your cluster:
-
-1. Under **Cluster Version**, click **More versions**.
-1. Select the cluster version from the **Cluster version** list.
+1. To choose a version for your cluster, select the cluster version from the **Cluster version** list.
 
 After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to the [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
