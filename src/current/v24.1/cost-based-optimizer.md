@@ -302,7 +302,7 @@ The following types of plans can be cached:
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
 - {% include_cached new-in.html version="v24.1.TK" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
 
-    Generic query plans require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+    Generic query plans require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
 
     {{site.data.alerts.callout_success}}
     Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
