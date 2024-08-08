@@ -474,7 +474,7 @@ If [`'drop-on-target-and-recreate'`](#target-table-handling) is set, MOLT Fetch 
 --type-map-file 'type-mappings.json'
 ~~~
 
-The JSON is formatted as follows:
+The following JSON example defines two type mappings:
 
 ~~~ json
 [
@@ -512,7 +512,14 @@ You can define transformation rules to be performed on the target schema during 
 - Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
 - Rename tables on the target schema.
 
-Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. The JSON is formatted as follows:
+Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--transformations-file 'transformation-rules.json'
+~~~
+
+The following JSON example defines two transformation rules:
 
 ~~~ json
 {
