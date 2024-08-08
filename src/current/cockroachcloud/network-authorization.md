@@ -38,7 +38,7 @@ Use private connectivity if:
 Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 
 {{site.data.alerts.callout_info}}
-Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Cluster default network configuration
@@ -74,7 +74,7 @@ If your application servers’ IP addresses are not static, or you want to limit
 
 Refer to:
 
-- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#authorize-your-network).
+- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-basic-cluster.md %}#authorize-your-network).
 - [Connect to a CockroachDB {{ site.data.products.dedicated }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
 
 ## DB Console

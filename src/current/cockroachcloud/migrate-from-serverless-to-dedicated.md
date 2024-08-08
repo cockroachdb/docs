@@ -21,7 +21,7 @@ These instructions assume you already have the following:
 
 First, upload your CockroachDB {{ site.data.products.serverless }} data to a cloud storage location where the CockroachDB {{ site.data.products.dedicated }} cluster can access it.
 
-1. [Connect to your CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) and run the [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) database to an Amazon S3 bucket:
+1. [Connect to your CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) and run the [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) database to an Amazon S3 bucket:
 
     {% include copy-clipboard.html %}
     ~~~ sql

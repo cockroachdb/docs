@@ -108,7 +108,7 @@ When you create a [locality-aware backup]({% link {{ page.version.version }}/tak
 
 Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) at the time the coordinator planned the [distributed backup flow]({% link {{ page.version.version }}/backup-architecture.md %}#resolution-phase).
 
-Every node backing up a [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) will back up to the storage bucket that most closely matches that node's locality. The backup job attempts to back up ranges through nodes matching the range's locality. As a result, there is no guarantee that all ranges will be backed up to their locality's storage bucket. For additional detail on locality-aware backups in the context of a CockroachDB {{ site.data.products.serverless }} cluster, refer to [Job coordination on Serverless clusters](#job-coordination-on-serverless-clusters).
+Every node backing up a [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) will back up to the storage bucket that most closely matches that node's locality. The backup job attempts to back up ranges through nodes matching the range's locality. As a result, there is no guarantee that all ranges will be backed up to their locality's storage bucket. For additional detail on locality-aware backups in the context of a CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters, refer to [Job coordination on Standard and Basic clusters](#job-coordination-on-standard-and-basic-clusters).
 
 The node exporting the row data, and the leaseholder of the range being backed up, are usually the same. However, these nodes can differ when lease transfers have occurred during the [execution](#export-phase) of the backup. In this case, the leaseholder node returns the files to the node exporting the backup data (usually a local transfer), which then writes the file to the external storage location with a locality that usually matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
 
@@ -118,9 +118,9 @@ During a [restore]({% link {{ page.version.version }}/restore.md %}) job, the jo
 
 <img src="{{ 'images/v23.1/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
 
-#### Job coordination on Serverless clusters
+#### Job coordination on Standard and Basic clusters
 
-{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
+{% include {{ page.version.version }}/backups/locality-aware-multi-tenant.md %}
 
 ### Job coordination using the `EXECUTION LOCALITY` option
 

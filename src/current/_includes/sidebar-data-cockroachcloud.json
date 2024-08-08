@@ -17,14 +17,14 @@
       	{
       	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-serverless-cluster.html",
+      	    "/cockroachcloud/create-a-basic-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
+      	    "/cockroachcloud/connect-to-a-basic-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
@@ -48,7 +48,7 @@
         {
           "title": "Manage Your Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/basic-cluster-management.html",
             "/cockroachcloud/cluster-management.html"
           ]
         },
@@ -307,12 +307,6 @@
       ]
     },
     {
-      "title": "Architecture",
-      "urls": [
-         "/cockroachcloud/architecture.html"
-      ]
-    },
-    {
       "title": "Tutorials",
       "items": [
       	{
@@ -327,13 +321,6 @@
       	    "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
       	  ]
       	}
-      ]
-    },
-    {
-      "title": "FAQs",
-      "urls": [
-        "/cockroachcloud/serverless-faqs.html",
-        "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
     {

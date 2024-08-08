@@ -7,10 +7,6 @@ docs_area: migrate
 
 This page provides an overview of how to migrate a database to CockroachDB.
 
-{{site.data.alerts.callout_info}}
-If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](https://www.cockroachlabs.com/docs/cockroachcloud/migrate-from-serverless-to-dedicated).
-{{site.data.alerts.end}}
-
 A database migration broadly consists of the following phases:
 
 1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
@@ -119,8 +115,8 @@ Determine the size of the target CockroachDB cluster. To do this, consider your 
 
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster) for details:
 
-- For CockroachDB {{ site.data.products.dedicated }}, refer to the [example](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#dedicated-example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For CockroachDB {{ site.data.products.serverless }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to [Choosing resource limits](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#choose-resource-limits) to learn about how to limit your resource consumption.
+- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#choose-resource-limits) and [CockroachDB {{ site.data.products.basic }}](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic#choose-resource-limits) documentation to learn about how to limit your resource consumption.
+- For CockroachDB {{ site.data.products.advanced }}, refer to the [example](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-advanced#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
 - For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist](https://www.cockroachlabs.com/docs/cockroachcloud/production-checklist#use-a-pool-of-persistent-connections).
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
@@ -234,7 +230,7 @@ First, convert your database schema to an equivalent CockroachDB schema:
 
 Then import the converted schema to a CockroachDB cluster:
 
-- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
+- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.cloud }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
 - For CockroachDB {{ site.data.products.core }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
 	{{site.data.alerts.callout_success}}
 	For the fastest performance, you can use a [local, single-node CockroachDB cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#start-a-single-node-cluster) to convert your schema and [check the results of queries](#test-query-results-and-performance).

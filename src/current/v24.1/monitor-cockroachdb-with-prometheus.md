@@ -8,7 +8,7 @@ docs_area: manage
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Prometheus. For the CockroachDB {{ site.data.products.dedicated }} integration with Prometheus, refer to [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead of this page.
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Prometheus. For the CockroachDB {{ site.data.products.advanced }} integration with Prometheus, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) instead of this page.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -212,5 +212,5 @@ When storage of time-series metrics is disabled, the cluster continues to expose
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
 - [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
 - [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})

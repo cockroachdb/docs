@@ -82,7 +82,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     export DATABASE_URL="<connection-string>"
     ~~~
 
-    TypeORM accepts the following format for CockroachDB {{ site.data.products.serverless }} connection strings:
+    TypeORM accepts the following format for CockroachDB {{ site.data.products.standard }} connection strings:
 
     {% include_cached copy-clipboard.html %}
     ~~~

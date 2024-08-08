@@ -1,3 +1,6 @@
 ## Supported products
 
-The feature described on this page is available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [customer-owned backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#cockroachdb-backup-types). For a full list of features, see [Backup and restore product support]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+The feature described on this page is supported in **CockroachDB {{ site.data.products.core }}** clusters. It is also available in **CockroachDB {{ site.data.products.standard }}**, **CockroachDB {{ site.data.products.advanced }}**, and **CockroachDB {{ site.data.products.basic }}** {{ site.data.products.cloud }} clusters when you are running [customer-owned backups](https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-customer-owned-backups). For a full list of features, refer to:
+
+- CockroachDB {{ site.data.products.core }}: [Backup and restore product support]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+- CockroachDB {{ site.data.products.cloud }}: [Backup and restore support](https://www.cockroachlabs.com/docs/cockroachcloud/backup-and-restore-overview#backup-and-restore-support).

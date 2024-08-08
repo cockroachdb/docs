@@ -20,7 +20,7 @@ This tutorial assumes you are running under [`SERIALIZABLE`]({% link {{ page.ver
 Choose whether to run a local cluster or a free CockroachDB {{ site.data.products.cloud }} cluster.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.standard }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -33,9 +33,9 @@ Choose whether to run a local cluster or a free CockroachDB {{ site.data.product
 
   <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-### Create a free cluster
+### Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ### Set up your cluster connection
 

@@ -43,4 +43,5 @@ It is within our scope to understand and support our own timeseries database. If
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %})
-- [Export Metrics From a CockroachDB Dedicated Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics)
+- [Export Metrics From a CockroachDB Standard Cluster]({% link cockroachcloud/export-metrics.md %})
+- [Export Metrics From a CockroachDB Advanced Cluster]({% link cockroachcloud/export-metrics-advanced.md %})

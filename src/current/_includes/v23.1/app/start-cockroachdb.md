@@ -1,15 +1,15 @@
-Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachDB {{ site.data.products.serverless }}. The instructions below will adjust accordingly.
+Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachDB {{ site.data.products.standard }}. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.standard }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-### Create a free cluster
+### Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ### Set up your cluster connection
 

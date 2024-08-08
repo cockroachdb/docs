@@ -59,7 +59,7 @@ SELECT ST_Contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 
 In this example, `{{page.title}}` returns `false` because:
 
-- At least one point in the interior of LineString _B_ does not lie in the interior of the Polygon _A_.  
+- At least one point in the interior of LineString _B_ does not lie in the interior of the Polygon _A_.
 
 Note that A query against these shapes with [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %}) will return `true`.
 

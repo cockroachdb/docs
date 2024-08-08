@@ -60,7 +60,7 @@ Option | Value | Description
 
 ## Examples
 
-Before running any of the examples in this section, it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
+Before running any of the examples in this section, it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, this cluster setting is enabled by default.
 
 The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page provides detail on the available sinks for your change data messages and connection URIs. We recommend using [external connections]({% link {{ page.version.version }}/create-external-connection.md %}) to interact with external sinks. The examples in this section use an external connection URI for the changefeed sink.
 

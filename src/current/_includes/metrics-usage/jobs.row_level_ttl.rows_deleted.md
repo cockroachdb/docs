@@ -1,0 +1,1 @@
+Correlate this metric with the metric `jobs.row_level_ttl.rows_selected` to ensure all the rows that should be deleted are actually getting deleted.

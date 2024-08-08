@@ -41,7 +41,7 @@ For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `
 Nodes that have completely lost connectivity are color-coded depending on connection status:
 
 - Orange with an exclamation mark indicates `unknown connection state`.
-- Red with a [no symbol](https://www.wikipedia.org/wiki/No_symbol) indicates `Failed connection`. 
+- Red with a [no symbol](https://www.wikipedia.org/wiki/No_symbol) indicates `Failed connection`.
 
 This information can help you diagnose a network partition in your cluster.
 

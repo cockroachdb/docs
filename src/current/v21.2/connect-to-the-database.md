@@ -104,7 +104,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -228,7 +228,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -394,7 +394,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -437,7 +437,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-basic-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -659,7 +659,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -888,7 +888,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -1046,7 +1046,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 
@@ -1087,7 +1087,7 @@ Parameter | Description
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="../cockroachcloud/connect-to-a-basic-cluster.html">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
@@ -1206,7 +1206,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </div>
 

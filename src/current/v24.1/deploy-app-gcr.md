@@ -1,13 +1,13 @@
 ---
 title: Deploy a CockroachDB Cloud Application with Google Cloud Run
-summary: Learn how to use Google Cloud Run (GCR) and CockroachDB Serverless to deploy a serverless application.
+summary: Learn how to use Google Cloud Run (GCR) and CockroachDB Standard to deploy a serverless application.
 toc: true
 twitter: false
 referral_id: docs_gcr_django
 docs_area: get_started
 ---
 
-This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a CockroachDB {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a CockroachDB {{ site.data.products.standard }} cluster.
 
 ## Before you begin
 
@@ -18,9 +18,9 @@ Before starting the tutorial, do the following:
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk).
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ## Step 2. Set up your cluster connection
 

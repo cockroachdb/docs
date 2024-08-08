@@ -214,7 +214,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 1. Run the query below, which gathers the points into a single geometry using [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON]({% link {{ page.version.version }}/architecture/glossary.md %}#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql 
+    ~~~ sql
     WITH
         the_geoms_table
             AS (

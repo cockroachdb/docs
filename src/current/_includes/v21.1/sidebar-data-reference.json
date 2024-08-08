@@ -49,12 +49,6 @@
             "urls": [
               "/${VERSION}/architecture/reads-and-writes-overview.html"
             ]
-          },
-          {
-            "title": "CockroachDB Cloud Architecture",
-            "urls": [
-              "/cockroachcloud/architecture.html"
-            ]
           }
         ]
       },

@@ -44,7 +44,7 @@ Checking **Per Node** displays statistics for each node, which could show whethe
 For important metrics to visualize in a custom dashboard, refer to:
 
 - [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
 
 ## Available metrics
 

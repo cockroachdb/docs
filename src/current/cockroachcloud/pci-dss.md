@@ -20,7 +20,7 @@ This page provides information about compliance with PCI DSS within CockroachDB 
 When a CockroachDB {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
 
-PCI DSS is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+PCI DSS is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 ## Overview of PCI DSS
 
@@ -121,7 +121,7 @@ A CockroachDB {{ site.data.products.dedicated }} cluster must have the following
 
 - Enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}), which allow you to protect data at rest in a CockroachDB {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. It enables file-based encryption of all new or updated data, and provides additional protection on top of the storage-level encryption of cluster disks.
 - Enable [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), which ensure that cluster egress operations, such as [customer-managed cluster backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [change data capture](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/change-data-capture-overview), are restricted to a list of specified external destinations.
-- [Cluster log exports]({% link cockroachcloud/export-logs.md %}) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of AWS CloudWatch or GCP Cloud Logging.
+- [Cluster log exports]({% link cockroachcloud/export-logs.md %}) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of Amazon CloudWatch or GCP Cloud Logging.
 - [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) automatically capture information when many types of events occur in your CockroachDB {{ site.data.products.cloud }} organization, such as when a cluster is created or when a member is added to or removed from an organization. You can export your CockroachDB {{ site.data.products.cloud }} organization's audit logs to analyze usage patterns and investigate security incidents.
 - [Cluster audit log export]({% link cockroachcloud/export-logs.md %}) automatically capture detailed information about queries being executed in your cluster.
 
