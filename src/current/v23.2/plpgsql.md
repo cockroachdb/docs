@@ -2,7 +2,6 @@
 title: PL/pgSQL
 summary: PL/pgSQL is a procedural language that you can use within user-defined functions and stored procedures.
 toc: true
-key: sql-expressions.html
 docs_area: reference.sql
 ---
 
