@@ -50,6 +50,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 [Generic query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type) are generated and optimized once without considering specific placeholder values, and are not regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
 
+### Vector search
+
+The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations.
+
 ### CockroachDB Cloud Folders
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
