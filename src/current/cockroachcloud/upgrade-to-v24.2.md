@@ -1,10 +1,10 @@
 ---
-title: Upgrade to CockroachDB v24.1
-summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.1
+title: Upgrade to CockroachDB v24.2
+summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.2
 toc: true
 docs_area: manage
-page_version: v24.1
-prev_version: v23.2
+page_version: v24.2
+prev_version: v24.1
 pre_production_preview: false
 pre_production_preview_version: v24.1.0-rc.1
 ---
@@ -134,8 +134,6 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 ### Expect temporary limitations
 
 Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors.
-
-- {% include v24.1/finalization-required/119894.md version="v24.1" %}
 
 For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
