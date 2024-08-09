@@ -7,3 +7,4 @@
 - User-defined functions cannot call themselves recursively. [#93049](https://github.com/cockroachdb/cockroach/issues/93049)
 - [Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF. [#92961](https://github.com/cockroachdb/cockroach/issues/92961)
 - The `setval` function cannot be resolved when used inside UDF bodies. [#110860](https://github.com/cockroachdb/cockroach/issues/110860)
+- Casting subqueries to [user-defined types]({% link {{ page.version.version }}/create-type.md %}) in UDFs is not supported. [#108184](https://github.com/cockroachdb/cockroach/issues/108184)
