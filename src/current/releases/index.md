@@ -31,6 +31,7 @@ For example, the latest production release is `{{ latest_full_production_version
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#).
 
 After choosing a version of CockroachDB, learn how to:
+
 - [Create a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/create-a-serverless-cluster.md %}).
 - [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}).
 - [Install CockroachDB {{ site.data.products.core }}]({% link {{site.current_cloud_version}}/install-cockroachdb.md %})
@@ -42,9 +43,9 @@ Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/rele
 
 #### Major releases
 
-As of 2024, every second major version is an **Innovation** release. For CockroachDB {{ site.data.products.core }} and CockroachDB Dedicated, these releases offer shorter support windows and can be skipped.
+As of 2024, every second major version is an **Innovation release**. For CockroachDB {{ site.data.products.core }} and CockroachDB {{ site.data.products.dedicated }}, these releases offer shorter support windows and can be skipped.
 
-All other major versions are **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
+All other major versions are **Regular releases**, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
 
 For details on how this impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
