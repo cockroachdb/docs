@@ -3,9 +3,6 @@ title: CockroachDB Releases
 summary: Information about CockroachDB releases with an index of available releases and their release notes and binaries.
 toc: true
 docs_area: releases
-toc_not_nested: true
-pre_production_preview: true
-pre_production_preview_version: v24.1.0-beta.1
 ---
 
 {% comment %}Enable debug to print debug messages {% endcomment %}
@@ -31,19 +28,25 @@ Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` 
 
 For example, the latest production release is `{{ latest_full_production_version.release_name }}`, within major version [`{{ latest_major_version_with_production }}`]({% link releases/{{ latest_major_version_with_production }}.md %}).
 
-This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB versions.
+This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#).
 
-After choosing a version of CockroachDB, learn how to [create a CockroachDB Cloud cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}), [install CockroachDB]({% link {{site.current_cloud_version}}/install-cockroachdb.md %}) for a Self-Hosted cluster, [upgrade a Cloud cluster]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}), or [upgrade a Self-Hosted cluster]({% link {{site.current_cloud_version}}/upgrade-cockroach-version.md %}). Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}). For information about applicable software licenses, refer to [Licenses](#licenses).
+After choosing a version of CockroachDB, learn how to:
+- [Create a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+- [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}).
+- [Install CockroachDB {{ site.data.products.core }}]({% link {{site.current_cloud_version}}/install-cockroachdb.md %})
+- [Upgrade a Self-Hosted cluster]({% link {{site.current_cloud_version}}/upgrade-cockroach-version.md %}).
 
-## Release types
+Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}) and review information about applicable [software licenses](#licenses).
 
-### Major releases
+### Release types
 
-As of 2024, every second major version is an **Innovation** release. For CockroachDB Self-Hosted and CockroachDB Dedicated, these releases offer shorter support windows and can be skipped.
+#### Major releases
 
-All other major versions are **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series. 
+As of 2024, every second major version is an **Innovation** release. For CockroachDB {{ site.data.products.core }} and CockroachDB Dedicated, these releases offer shorter support windows and can be skipped.
 
-For details on how this impacts support in CockroachDB Self-Hosted, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+All other major versions are **Regular** releases, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
+
+For details on how this impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
@@ -51,11 +54,11 @@ For details on how this impacts support in CockroachDB Self-Hosted, refer to [Re
 | Innovation (e.g. v24.2) | 2x/year | on Serverless only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
 <small>* Column does not apply to CockroachDB Serverless, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
 
-For a given CockroachDB Self-Hosted or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where every major release is an automatic upgrade.
+For a given CockroachDB {{ site.data.products.core }} or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where every major release is an automatic upgrade.
 
 CockroachDB v24.2 is an Innovation release and v24.3 is planned as a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
 
-### Patch releases
+#### Patch releases
 
 A major version has two types of patch releases: a series of **testing releases** followed by a series of **production releases**. A major version’s initial production release is also known as its GA release.
 
@@ -96,11 +99,11 @@ A major version has two types of patch releases: a series of **testing releases*
 A cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
 {{site.data.alerts.end}}
 
-## Staged release process
+### Staged release process
 
-As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB Self-Hosted downloads.
+As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB {{ site.data.products.core }} downloads.
 
-## Recent releases
+### Recent releases
 
 {% comment %} TODO: Automate by Aug 12, 2024, or update the morning of August 12, then automate soon after. {% endcomment %}
 | Version | Release Type | GA date | Latest patch release |
@@ -110,7 +113,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 | [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.9 (LTS) |
 | [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.24 (LTS) |
 
-## Upcoming releases
+### Upcoming releases
 
 The following releases and their descriptions represent proposed plans that are subject to change. Please contact your account representative with any questions.
 
@@ -121,6 +124,8 @@ The following releases and their descriptions represent proposed plans that are 
 | v25.2 | Regular    | 2025 Q2    |
 | v25.3 | Innovation | 2025 Q3    |
 | v25.4 | Regular    | 2025 Q4    |
+
+## Downloads
 
 {{ experimental_js_warning }}
 
@@ -155,7 +160,7 @@ The following releases and their descriptions represent proposed plans that are 
         {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
     {% endif %}
 
-## {{ v.major_version }}
+### {{ v.major_version }}
 
 {% if DEBUG == true %}
     has_lts_releases: {{ has_lts_releases }}<br />
@@ -168,7 +173,7 @@ The following releases and their descriptions represent proposed plans that are 
     v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
 
 {% if v.major_version == "v24.2" %}
-CockroachDB v24.2 is an [Innovation release](#major-releases), which is optional for CockroachDB Dedicated and CockroachDB Self-Hosted clusters. Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html). 
+CockroachDB v24.2 is an [Innovation release](#major-releases), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters. Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html).
 {% endif %}
 {% comment %}TODO: Link above to 24.2 Feature Highlights{% endcomment %}
 
@@ -211,7 +216,7 @@ CockroachDB v24.2 is an [Innovation release](#major-releases), which is optional
         {% endfor %}
 
         {% if releases[0] %}
-### {{ s }} Releases
+#### {{ s }} Releases
 
 <section class="filter-content" markdown="1" data-scope="linux">
 
