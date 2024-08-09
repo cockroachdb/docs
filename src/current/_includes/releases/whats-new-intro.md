@@ -67,9 +67,15 @@ skippable: {{ skippable }}<br />
 <br />
 {% endif %}
 
-CockroachDB {{ page.major_version }} {% if skippable == true %}is an [Innovation Release](/docs/{{ page.major_version }}/release-support-policy), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters{% else %}{% if lts == true %} [(LTS)](/docs/{{ page.major_version }}/release-support-policy){% endif %} is a [Regular Release](/docs/{{ page.major_version }}/release-support-policy#support-types){% endif %}. Refer to [Major release types](/docs/{{ page.major_version }}/release-support-policy#support-types) before installing or upgrading for release timing and support details. To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).
+{% if skippable == true %}
+CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.serverless }}.
+{% else %}
+CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}  is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
+{% endif %}
 
-On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)](/docs/{{ page.major_version }}/release-support-policy){% endif %}
+Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details. To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).
+
+On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
 - For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
