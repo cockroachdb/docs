@@ -6,12 +6,12 @@ docs_area: manage
 page_version: v24.2
 pre_production_preview: true
 ---
-{% assign DEBUG = true %}
+{% assign DEBUG = false %}
 
 {% comment %}Determine Cloud support{% endcomment %}
 
 {% comment %}Date to compare support dates against. To test, replace today with YYYY-MM-DD.{% endcomment %}
-{% assign today = "2024-08-13" | date: "%s" %}
+{% assign today = '2025-08-08' | date: "%s" | plus: 0 %}
 
 {% comment %}Get the major version object{% endcomment %}
 {% assign x = site.data.versions | where_exp: "m", "m.major_version == page.page_version" | first %}
@@ -27,7 +27,7 @@ pre_production_preview: true
   {% assign latest_patch = site.data.releases | where_exp: "releases", "releases.major_version == page.page_version" | where_exp: "releases", "release_type == Production" | sort: "release_date" | reverse | first %}
 {% endif %}
 
-{% if DEBUG %}
+{% if DEBUG == true %}
 x: {{ x }}<br /><br />
 x.major_version: {{ x.major_version }}<br />
 x.release_date: {{ x.release_date }}<br />
@@ -37,87 +37,92 @@ released: {{ released }}<br /><br />
 latest_patch: {{ latest_patch }}<br /><br />
 {% endif %}
 
-{% assign released = false %}
-{% unless x.release_date == "N/A" and x.maint_supp_exp_date == "N/A" %}
-  {% assign released = true %}
-{% endunless %}
+{% if released == true %}
+  {% assign release_date_seconds = x.release_date | date: "%s" %}
+  {% if x.asst_supp_exp_date == "N/A" %}
+    {% assign skippable = true %}
+  {% endif %}
+{% endif %}
 
-{% assign skippable = false %}
 {% assign supported = false %}
-{% assign purple_date = 0 %}
-{% assign red_date = 0 %}
-{% assign red_result = 0 %}
-{% assign purple_result = 0 %}
 
 {% if released == true %}
-  {% if x.asst_supp_exp_date != "N/A" %}
-    {% assign eos_date_seconds = x.release_date | date: "%s" | plus: 31104000 %}{% comment %}1 year{% endcomment %}
+
+  {% if skippable == true %}
+    {% assign eos_date_seconds = x.release_date | date: "%s" | plus: 15638400 %}{% comment %}6 months{% endcomment %}
+    {% assign purple_date = eos_date_seconds | minus: 5097600 %}{% comment %}2 months in seconds{% endcomment %}
+    {% assign red_date = eos_date_seconds | minus: 2678400 %}{% comment %}1 month in seconds{% endcomment %}
+  {% else %}
+    {% assign eos_date_seconds = 31536000 %}{% comment %}1 year{% endcomment %}
     {% assign purple_date = eos_date_seconds | minus: 10368000 %}{% comment %}4 months in seconds{% endcomment %}
-    {% assign red_date = eos_date_seconds | minus: 5184000 %}{% comment %}2 months in seconds{% endcomment %}
-  {% elsif x.maint_supp_exp_date != "N/A" %}
-    {% assign skippable = true %}
-    {% assign eos_date_seconds = x.release_date | date: "%s" | plus: 15552000 %}{% comment %}6 months{% endcomment %}
-    {% assign purple_date = eos_date_seconds | minus: 5184000 %}{% comment %}2 months in seconds{% endcomment %}
-    {% assign red_date = eos_date_seconds | minus: 2592000 %}{% comment %}1 month in seconds{% endcomment %}
+    {% assign red_date = eos_date_seconds | minus: 5097600 %}{% comment %}2 months in seconds{% endcomment %}
   {% endif %}
 
-  {% assign eos = eos_date_seconds | date: "%M %D, %Y" %}
-  {% if today < eos_date_seconds %}
+  {% if DEBUG == true %}
+  today: {{ today }}<br />
+  x.asst_supp_exp_date: {{ x.asst_supp_exp_date }}<br />
+  release_date_seconds: {{ release_date_seconds }}<br/>
+  eos_date_seconds: {{ eos_date_seconds }}<br />
+  skippable: {{ skippable }}<br />
+  purple_date: {{ purple_date }}<br />
+  red_date: {{ red_date }}<br /><br />
+  {% endif %}
+
+  {% assign eos = eos_date_seconds | date: '%B %d, %Y' %}
+  {% if today <= eos_date_seconds %}
     {% assign supported = true %}
-    {% assign red_result = today | minus: red_date %}
-    {% assign purple_result = today | minus: purple_date %}
   {% endif %}
 {% endif %}
 
 {% if DEBUG == true %}
-skippable: {{ skippable }}<br />
 supported: {{ supported }}<br />
-today: {{ today }}<br />
 eos: {{ eos }}<br />
-eos_date_seconds: {{ eos_date }}<br />
-purple_date: {{ purple_date }}<br />
-red_date: {{ red_date }}<br /><br />
-purple_result: {{ purple_result }}<br /><br />
-red_result: {{ red_result }}<br />
 {% endif %}
 
-{% capture testing_release_message %}
-{{site.data.alerts.callout_info}}
-CockroachDB {{ x.major_version }} is a testing release{% if page.pre_production_preview == false %} and is not yet available in CockroachDB {{ site.data.products.cloud }}{% endif %}. [Testing releases]({% link releases/index.md %}#release-naming) are not qualified for production environments and not eligible for support or uptime SLA commitments. This page is provided for reference only and is subject to change.
-{{site.data.alerts.end}}
-{% endcapture %}
+{% comment %}Detect EOS status and show admonitions accordingly{% endcomment %}
+{% if released == true and supported == true %}
 
-{% capture support_ending_soon %}
-Support for CockroachDB v24.2 will end on **{{ eos_date }}** at the end of its Maintenance Support phase.{% if skippable == true %} Optional innovation releases are not eligible for Assistance Support.{% endif %} Prior to that date, upgrade to a newer version. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-{% endcapture %}
-
-{% capture eos_message %}{% if released == true and supported == false %}
+  {% if today >= red_date %}
 {{site.data.alerts.callout_danger}}
-As of **{{ eos }}**, CockroachDB {{ x.major_version }} is no longer supported. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}). This page is provided for reference purposes only.
+Support for CockroachDB {{ x.major_version }} will end on **{{ eos}}** at the end of its Maintenance Support phase.{% if skippable == true %} Optional innovation releases are not eligible for Assistance Support.{% endif %} Prior to that date, upgrade to a newer version. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
-{% endif %}{% endcapture %}
 
-{% if released == true and supported == false %}
-{{ eos_message }}
-{% elsif released == true and supported == true %}
-  {% if red_result < eos %}
-{{site.data.alerts.callout_danger}}
-{{ support_ending_soon }}
-{{site.data.alerts.end}}
-  {% elsif purple_result < eos %}
+  {% elsif today >= purple_date %}
 {{site.data.alerts.callout_version}}
-{{ support_ending_soon }}
+Support for CockroachDB {{ x.major_version }} will end on **{{ eos}}** at the end of its Maintenance Support phase.{% if skippable == true %} Optional innovation releases are not eligible for Assistance Support.{% endif %} Prior to that date, upgrade to a newer version. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
+
   {% endif %}
-{% else %}
-{{ testing_release_message }}
+
+{% elsif released == true and supported == false %}
+{{site.data.alerts.callout_danger}}
+As of **{{ eos }}**, CockroachDB {{ x.major_version }} is no longer supported.{% if skippable == true %} Optional innovation releases are not eligible for Assistance Support. {% endif %}For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+{{site.data.alerts.end}}
+
+{% elsif released == false and supported == false %}
+{{site.data.alerts.callout_info}}
+CockroachDB {{ x.major_version }} is a testing release{% if page.pre_production_preview == false %} and is not yet available in CockroachDB {{ site.data.products.cloud }}{% endif %}. [Testing releases]({% link releases/index.md %}#release-naming) are not qualified for production environments and not eligible for support or uptime SLA commitments. This page is provided for reference only and is subject to change. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+{{site.data.alerts.end}}
 {% endif %}
 
-[CockroachDB {{ latest_patch.major_version }}{% if released == false %} Pre-Production Preview{% endif %}](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ latest_patch.release_name | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade{% if released == false %} for testing and experimentation{% endif %}. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page shows how to upgrade a CockroachDB {{ site.data.products.dedicated }} cluster to {{ latest_release.release_name }}.
+{% comment %}Adapt the intro based on release and support status{% endcomment %}
+{% if released == false and page.pre_production_preview == true %}
+[CockroachDB {{ latest_patch.major_version }} Pre-Production Preview](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ latest_patch.release_name | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page shows how to upgrade a CockroachDB {{ site.data.products.dedicated }} cluster to {{ latest_release.release_name }} Pre-Production Preview.
 
 {{site.data.alerts.callout_success}}
-Upgrading from {{ x.previous_version }} to {{ x.major_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded{% if released == false %} to a Pre-Production Preview release{% endif %}, it is automatically upgraded to all subsequent releases within the same major version{% if released == false %}—including additional beta and RC releases, the GA release, and subsequent patch releases after GA,{% endif %} as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
+Upgrading from {{ x.previous_version }} to {{ x.major_version }} Pre-Production Preview is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 {{site.data.alerts.end}}
+
+{% elsif released == true and supported == true %}
+[CockroachDB {{ latest_patch.major_version }}](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ latest_patch.release_name | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page shows how to upgrade a CockroachDB {{ site.data.products.dedicated }} cluster to {{ latest_release.release_name }}. This page shows how to upgrade a CockroachDB {{ site.data.products.dedicated }} cluster to {{ latest_release.release_name }} Pre-Production Preview.
+
+{{site.data.alerts.callout_success}}
+Upgrading from {{ x.previous_version }} to {{ x.major_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded, it is automatically upgraded to all subsequent releases within the same major version as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
+{{site.data.alerts.end}}
+
+{% elsif released == true and supported == false %}
+[CockroachDB {{ latest_patch.major_version }}](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ latest_patch.release_name | replace: ".","-"}}) is no longer supported for new clusters or upgrades in CockroachDB {{ site.data.products.cloud }}. This page is provided for reference only. For details about currently-supported releases, refer to [CockroachDB Cloud Release Notes]({% link releases/cloud.md %}).
+{% endif %}
 
 {% capture previous_version_numeric %}{{ x.major_version | remove_first: 'v' }}{% endcapture %}
 {% capture major_version_numeric %}{{ x.previous_version | remove_first: 'v' }}{% endcapture %}
