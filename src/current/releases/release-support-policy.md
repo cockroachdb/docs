@@ -160,7 +160,11 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 </table>
 
 <sup id="lts-tbd">&#42;&nbsp;&nbsp;: This major version will receive LTS patch releases, which will be listed on an additional row, upon their availability.</sup><br />
+<<<<<<< HEAD
 <sup id="skippable">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
+=======
+<sup id="lts-tbd">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
+>>>>>>> 5ad2b98ac (Content updates for Innovation releases (#18801))
 
 ## End-of-life (EOL) versions
 

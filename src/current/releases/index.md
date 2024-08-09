@@ -22,13 +22,13 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
+This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
+
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, follwed by a series of patch releases.
 
 Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
 
 For example, the latest production release is `{{ latest_full_production_version.release_name }}`, within major version [`{{ latest_major_version_with_production }}`]({% link releases/{{ latest_major_version_with_production }}.md %}).
-
-This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#).
 
 After choosing a version of CockroachDB, learn how to:
 
@@ -169,6 +169,11 @@ The following releases and their descriptions represent proposed plans that are 
 
 ### {{ v.major_version }}
 
+{% assign skippable = false %}
+{% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
+    {% assign skippable = true %}
+{% endif %}
+
 {% if DEBUG == true %}
     has_lts_releases: {{ has_lts_releases }}<br />
     lts_patch_string: {{ lts_patch_string }}<br />
@@ -177,13 +182,12 @@ The following releases and their descriptions represent proposed plans that are 
     v.major_version: {{ v.major_version }}<br />
     has_lts_releases: {{ has_lts_releases }}<br />
     v.release_date: {{ v.release_date }}<br />
-    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
-
-{% if skippable == true %}
-CockroachDB {{ v.major_version }} is an [Innovation release](#major-releases), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} cluster upgrades.
-{% else %}
-CockroachDB {{ v.major_version }} is a [Regular release](#major-releases) for all clusters, which is required for all CockroachDB cluster upgrades.
+    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />
+    skippable: {{ skippable }}<br /><br />
 {% endif %}
+
+CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.serverless }}.{% else %}a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes]({% link releases/{{ v.major_version }}.md %}).
+
 Refer to [Major release types](#major-releases) before installing or upgrading for release support details.
 {% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
 {% unless v.major_version == 'v1.0' or
