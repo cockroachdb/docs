@@ -148,17 +148,23 @@ The following releases and their descriptions represent proposed plans that are 
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
-    {% comment %}Determine if the major version is LTS and the patch component of the initial LTS patch{% endcomment %}
+    {% comment %}
+      Determine if the major version is LTS and the patch component of the initial LTS patch,
+      or the major version is a skippable innovation release
+    {% endcomment %}
     {% assign has_lts_releases = false %}
     {% assign lts_link_linux = '' %}
     {% assign lts_patch = nil %}
     {% assign in_lts = false %}
     {% assign comparison = nil %}
+    {% assign skippable = false %}
     {% if v.initial_lts_patch != "N/A" %}
         {% assign has_lts_releases = true %}
         {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
         {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
         {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+    {% elsif v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
+        {% assign skippable = true %}
     {% endif %}
 
 ### {{ v.major_version }}
@@ -173,10 +179,12 @@ The following releases and their descriptions represent proposed plans that are 
     v.release_date: {{ v.release_date }}<br />
     v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
 
-{% if v.major_version == "v24.2" %}
-CockroachDB v24.2 is an [Innovation release](#major-releases), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters. Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights](https://www.cockroachlabs.com/docs/releases/v24.2.html).
+{% if skippable == true %}
+CockroachDB {{ v.major_version }} is an [Innovation release](#major-releases), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} cluster upgrades.
+{% else %}
+CockroachDB {{ v.major_version }} is a [Regular release](#major-releases) for all clusters, which is required for all CockroachDB cluster upgrades.
 {% endif %}
-{% comment %}TODO: Link above to 24.2 Feature Highlights{% endcomment %}
+Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
