@@ -1,4 +1,4 @@
-{% assign DEBUG = true %}
+{% assign DEBUG = false %}
 {% assign branched = false %}
 {% assign ancient = false %}
 {% assign old = false %}
