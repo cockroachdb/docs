@@ -2,6 +2,7 @@
 {% assign branched = false %}
 {% assign ancient = false %}
 {% assign old = false %}
+{% assign no_highlights = true %}
 {% assign skippable = false %}
 {% assign will_never_have_lts = false %}
 {% assign lts = false %}
@@ -23,18 +24,24 @@
 {% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
   {% assign branched = true %}
   {% assign ancient = true %}
+  {% assign no_hightlights = true %}
   {% assign will_never_have_lts = true %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }}.{% endcapture %}
 {% elsif page.major_version == 'v19.1' or page.major_version == 'v19.2' or page.major_version == 'v20.1' or page.major_version == 'v20.2' %}
   {% assign branched = true %}
+  {% assign old = true %}
+  {% assign no_hightlights = true %}
   {% assign will_never_have_lts = true %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture upgrade_link %}[upgrade your cluster](https://cockroachlabs.com/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
 {% else %}
   {% if branched %}
-    {% if page.major_version == 'v21.1' or page.major_version == 'v21.2' or page.major_version == 'v22.2' %}
+    {% if page.major_version == 'v21.1' or page.major_version == 'v21.2' %}
+      {% assign will_never_have_lts = true %}
+      {% assign no_hightlights = true %}
+    {% elsif page.major_version == 'v22.2' %}
       {% assign will_never_have_lts = true %}
     {% endif %}
     {% capture install_link %}[install CockroachDB](/docs/{{ page.major_version }}/install-cockroachdb.html){% endcapture %}
@@ -70,10 +77,10 @@ skippable: {{ skippable }}<br />
 {% if skippable == true %}
 CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.serverless }}.
 {% else %}
-CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}  is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
+CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
 {% endif %}
 
-Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details. To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).
+Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% unless no_highlights == true %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endunless %}
 
 On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
