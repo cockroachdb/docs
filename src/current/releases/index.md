@@ -184,7 +184,22 @@ CockroachDB {{ v.major_version }} is an [Innovation release](#major-releases), w
 {% else %}
 CockroachDB {{ v.major_version }} is a [Regular release](#major-releases) for all clusters, which is required for all CockroachDB cluster upgrades.
 {% endif %}
-Refer to [Major release types](#major-releases) before installing or upgrading for release support details. To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
+Refer to [Major release types](#major-releases) before installing or upgrading for release support details.
+{% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
+{% unless v.major_version == 'v1.0' or
+      v.major_version == 'v1.1' or
+      v.major_version == 'v2.0' or
+      v.major_version == 'v2.1' or
+      v.major_version == 'v19.1' or
+      v.major_version == 'v19.2' or
+      v.major_version == 'v20.1' or
+      v.major_version == 'v20.2' or
+      v.major_version == 'v21.1' or
+      v.major_version == 'v21.2' or
+      v.major_version == 'v22.1' or
+      v.major_version == 'v22.2' %}
+To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
+{% endunless %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>

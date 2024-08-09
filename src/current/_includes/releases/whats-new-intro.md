@@ -1,6 +1,5 @@
 {% assign DEBUG = true %}
 {% assign branched = false %}
-{% assign ancient = false %}
 {% assign old = false %}
 {% assign no_highlights = false %}
 {% assign skippable = false %}
@@ -20,27 +19,33 @@
   {% endunless %}
 {% endfor %}
 
-{% comment %}Some old pages need different links to install and upgrade pages{% endcomment %}
-{% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
+{% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
+{% if page.major_version == 'v1.0' or
+      page.major_version == 'v1.1' or
+      page.major_version == 'v2.0' or
+      page.major_version == 'v2.1' or
+      page.major_version == 'v19.1' or
+      page.major_version == 'v19.2' or
+      page.major_version == 'v20.1' or
+      page.major_version == 'v20.2' or
+      page.major_version == 'v21.1' or
+      page.major_version == 'v21.2' or
+      page.major_version == 'v22.1' or
+      page.major_version == 'v22.2' %}
   {% assign branched = true %}
-  {% assign ancient = true %}
   {% assign no_highlights = true %}
   {% assign will_never_have_lts = true %}
+{% endif %}
+
+{% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }}.{% endcapture %}
 {% elsif page.major_version == 'v19.1' or page.major_version == 'v19.2' or page.major_version == 'v20.1' or page.major_version == 'v20.2' %}
-  {% assign branched = true %}
-  {% assign no_highlights = true %}
-  {% assign will_never_have_lts = true %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture upgrade_link %}[upgrade your cluster](https://cockroachlabs.com/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
 {% else %}
   {% if branched %}
-    {% if page.major_version == 'v21.1' or page.major_version == 'v21.2' or page.major_version == 'v22.2' %}
-      {% assign will_never_have_lts = true %}
-      {% assign no_highlights = true %}
-    {% endif %}
     {% capture install_link %}[install CockroachDB](/docs/{{ page.major_version }}/install-cockroachdb.html){% endcapture %}
     {% capture upgrade_link %}[upgrade your cluster](/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
   {% else %}
@@ -63,7 +68,6 @@
 {% if DEBUG == true %}
 include.major_version: {{ include.major_version }}<br />
 page.major_version: {{ page.major_version }}<br />
-ancient: {{ ancient }}<br />
 branched: {{ branched }}<br />
 will_never_have_lts: {{ will_never_have_lts }}<br />
 lts: {{ lts }}<br />
