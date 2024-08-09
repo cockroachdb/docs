@@ -1,4 +1,4 @@
-{% assign DEBUG = false %}
+{% assign DEBUG = true %}
 {% assign branched = false %}
 {% assign ancient = false %}
 {% assign old = false %}
@@ -60,7 +60,7 @@
   {% endif %}
 {% endif %}
 
-{% if DEBUG %}
+{% if DEBUG == true %}
 include.major_version: {{ include.major_version }}<br />
 page.major_version: {{ page.major_version }}<br />
 ancient: {{ ancient }}<br />
@@ -78,7 +78,7 @@ CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases
 CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
 {% endif %}
 
-Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% unless no_highlights == true %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endunless %}
+Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == true %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
 
 On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
