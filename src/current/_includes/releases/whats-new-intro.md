@@ -24,7 +24,7 @@
 {% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
   {% assign branched = true %}
   {% assign ancient = true %}
-  {% assign no_hightlights = true %}
+  {% assign no_highlights = true %}
   {% assign will_never_have_lts = true %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }}.{% endcapture %}
