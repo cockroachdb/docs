@@ -33,6 +33,7 @@ SERVER: n/a
 {% comment %}LAYER=APPLICATION{% endcomment %}
 
 - `backup.last-failed-time.kms-inaccessible`
+- `build.timestamp`
 - `changefeed.admit_latency`
 - `changefeed.aggregator_progress`
 - `changefeed.backfill_count`
@@ -933,7 +934,6 @@ SERVER: n/a
 - `txn.restarts.writetoooldmulti`
 - `txn.rollbacks.async.failed`
 - `txn.rollbacks.failed`
-- `build.timestamp`
 
 ## Metrics scoped to the system virtual cluster
 
