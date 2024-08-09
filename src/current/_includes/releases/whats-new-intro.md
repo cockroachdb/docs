@@ -2,7 +2,7 @@
 {% assign branched = false %}
 {% assign ancient = false %}
 {% assign old = false %}
-{% assign no_highlights = true %}
+{% assign no_highlights = false %}
 {% assign skippable = false %}
 {% assign will_never_have_lts = false %}
 {% assign lts = false %}
@@ -68,6 +68,7 @@ branched: {{ branched }}<br />
 will_never_have_lts: {{ will_never_have_lts }}<br />
 lts: {{ lts }}<br />
 skippable: {{ skippable }}<br />
+no_highlights: {{ no_highlights }}<br />
 <br />
 {% endif %}
 
