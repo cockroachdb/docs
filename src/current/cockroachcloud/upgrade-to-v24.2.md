@@ -4,11 +4,9 @@ summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.1
 toc: true
 docs_area: manage
 page_version: v24.2
-pre_production_preview: false
-pre_production_preview_version: v24.1.0-rc.1
----
-{% assign DEBUG = false %}
+pre_production_preview: true
 
+---
 {% assign DEBUG = false %}
 
 {% comment %}Determine Cloud support{% endcomment %}
@@ -22,12 +20,12 @@ pre_production_preview_version: v24.1.0-rc.1
 {% comment %}Is it Production?{% endcomment %}
 {% assign released = false %}
 {% if x.release_date == "N/A" and x.maint_supp_exp_date == "N/A" %}
-  {% comment %}Get the object for the latest Production release in the major version{% endcomment %}
-  {% assign latest_patch = site.data.releases | where_exp: "releases", "releases.major_version == page.page_version" | where_exp: "releases", "release_type == Production" | sort: "release_date" | reverse | first %}
-{% else %}
   {% comment %}Get the object for the latest Testing release in the major version{% endcomment %}
-  {% assign released = true %}
   {% assign latest_patch = site.data.releases | where_exp: "releases", "releases.major_version == page.page_version" | where_exp: "releases", "release_type == Testing" | sort: "release_date" | reverse | first %}
+{% else %}
+  {% comment %}Get the object for the latest Production release in the major version{% endcomment %}
+  {% assign released = true %}
+  {% assign latest_patch = site.data.releases | where_exp: "releases", "releases.major_version == page.page_version" | where_exp: "releases", "release_type == Production" | sort: "release_date" | reverse | first %}
 {% endif %}
 
 {% if DEBUG %}
@@ -130,7 +128,7 @@ major_version_numeric: {{ major_version_numeric }}<br />
 {% endif %}
 
 {% if page.pre_production_preview == true and released == false %}
-[CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade for testing and experimentation.
+[CockroachDB {{ latest_patch.release_name }}](https://www.cockroachlabs.com/docs/releases/{{ x.major_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade for testing and experimentation.
 
 {{site.data.alerts.callout_danger}} [Testing releases]({% link releases/index.md %}#release-naming) are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
