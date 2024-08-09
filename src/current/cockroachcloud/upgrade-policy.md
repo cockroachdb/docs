@@ -21,7 +21,7 @@ CockroachDB {{ site.data.products.serverless }} clusters will automatically be u
 
 A CockroachDB {{ site.data.products.dedicated }} cluster must be upgraded prior to its EOS date to maintain uninterrupted support and SLA guarantees.
 
-When a CockroachDB {{ site.data.products.dedicated }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) can [upgrade a cluster]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}#org-administrator) or [Folder Admin]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}#folder-admin) can grant the Cluster Administrator role.{% endcapture %}{{ who_can_upgrade }}
+When a CockroachDB {{ site.data.products.dedicated }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) can [upgrade a cluster]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) can grant the Cluster Administrator role.{% endcapture %}{{ who_can_upgrade }}
 
 ### Currently supported versions
 
@@ -87,7 +87,7 @@ Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data
 
 ### Rollback support
 
-When upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, the upgrade is finalized automatically in approximately 72 hours. During this window, if you see unexpected behavior, you can [trigger a rollback]({% link cockroachcloud/upgrade-to-{{ site.current_cloud_version }}.md %}##roll-back-the-upgrade) to the previous major version from the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud).
+When upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, the upgrade is finalized automatically in approximately 72 hours. During this window, if you see unexpected behavior, you can [trigger a rollback]({% link cockroachcloud/upgrade-to-{{ site.current_cloud_version }}.md %}#roll-back-the-upgrade) to the previous major version from the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud).
 
 {{site.data.alerts.callout_info}}
 If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of the previous major version, which may differ from the patch release you were running before you initiated the upgrade.
