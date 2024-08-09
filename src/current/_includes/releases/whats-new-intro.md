@@ -1,4 +1,4 @@
-{% assign DEBUG = true %}
+{% assign DEBUG = false %}
 {% assign branched = false %}
 {% assign old = false %}
 {% assign no_highlights = false %}
