@@ -15,7 +15,8 @@ pre_production_preview_version: v24.1.0-rc.1
 {% if page.pre_production_preview == true %}
 [CockroachDB {{ page.pre_production_preview_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.dedicated }} clusters as an opt-in upgrade for testing and experimentation.
 
-{{site.data.alerts.callout_danger}} [Testing releases]({% link releases/index.md %}#overview) are not qualified for production environments and not eligible for support or uptime SLA commitments.
+{{site.data.alerts.callout_danger}}
+[Testing releases]({% link releases/index.md %}#overview) are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
 An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page shows how to upgrade a CockroachDB {{ site.data.products.dedicated }} cluster to {{ page.pre_production_preview_version }} for testing and experimentation.
