@@ -21,8 +21,8 @@ The date logic in this file can be confusing. Read it like this:
 {% endcomment %}
 
 {% comment %}Uncomment the following two lines and comment the third to test a specific date{% endcomment %}
-{% assign today = '2025-05-21' | date: "%s" %}
-{% assign actual_today = "today" | date: "%s" %}
+{% comment %}{% assign today = '2025-05-21' | date: "%s" %}
+{% assign actual_today = "today" | date: "%s" %}{% endcomment %}
 
 {% if DEBUG %}
   {% if actual_today %}Actual today: {{ actual_today }}<br />{% endif %}
