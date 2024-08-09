@@ -71,7 +71,8 @@ As of v24.2, Cockroach Labs releases a major version of CockroachDB once per qua
 - Regular releases are not optional; they must be applied to CockroachDB {{ site.data.products.dedicated }} clusters and they are applied automatically to CockroachDB {{ site.data.products.serverless }} clusters. Regular releases are produced twice a year, alternating with Innovation Releases. They are supported for one year. Upgrading CockroachDB {{ site.data.products.dedicated }} directly from one regular release to the next regular release, skipping the intervening Innovation release, is supported.
 - Innovation releases are optional and can be skipped for CockroachDB {{ site.data.products.dedicated }} clusters but are required for CockroachDB {{ site.data.products.serverless }}. Innovation releases are produced twice a year, alternating with Regular releases. An innovation release is supported for 6 months, at which time a Dedicated cluster must be upgraded to the next Regular Release. At a given time, only one Innovation release is typically supported. Upgrading CockroachDB {{ site.data.products.dedicated }} directly from one Innovation release to the next Innovation release is not supported.
 
-{{site.data.alerts.callout_info}}To opt out of Innovation releases entirely and hide them from your CockroachDB organization, contact Support.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+To opt out of Innovation releases entirely and hide them from your CockroachDB organization, contact Support.{{site.data.alerts.end}}
 
 To summarize the available major-version upgrade paths for CockroachDB {{ site.data.products.dedicated }}:
 
