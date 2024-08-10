@@ -259,6 +259,4 @@ The following versions of CockroachDB are no longer supported.
   </tbody>
 </table>
 
-<sup id="lts-tbd">&#42;&nbsp;&nbsp;: This EOL major version is an optional innovation release. Innovation releases do not receive LTS releases and are EOL when Maintenance Support ends.</sup><br />
-
-<sup id="skippable-eol">&#42;&nbsp;&nbsp;: This EOL major version is an optional innovation release. Innovation releases do not receive LTS releases and are EOL when Maintenance Support ends.</sup><br />
+<sup id="lts-tbd">&#42;&#42;&nbsp;&nbsp;: This EOL major version is an optional innovation release. Innovation releases do not receive LTS releases and are EOL when Maintenance Support ends.</sup><br />
