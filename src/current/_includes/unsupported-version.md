@@ -21,7 +21,7 @@ The date logic in this file can be confusing. Read it like this:
 {% endcomment %}
 
 {% comment %}Uncomment the following two lines and comment the third to test a specific date{% endcomment %}
-{% assign today = '2025-08-13' | date: "%s" %}
+{% assign today = '2024-08-13' | date: "%s" %}
 {% assign actual_today = "today" | date: "%s" %}
 
 {% if DEBUG %}
@@ -176,4 +176,7 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% break %}
     {% endif %}
   {% endif %}{% comment %}end production=true branch{% endcomment %}
+{% else %}
+Error: Could not find version details for {{ include.major_version }}. Check versions.csv. Giving up.
+  {% break %}
 {% endif %}{% comment %}End branch to process x object{% endcomment %}
