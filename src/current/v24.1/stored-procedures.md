@@ -2,7 +2,6 @@
 title: Stored Procedures
 summary: A stored procedure consists of PL/pgSQL or SQL statements that can be issued with a single call.
 toc: true
-key: sql-expressions.html
 docs_area: reference.sql
 ---
 

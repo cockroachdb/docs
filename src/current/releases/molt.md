@@ -36,7 +36,18 @@ For more information, refer to [Configuration]({% link molt/live-migration-servi
 </section>
 
 <section class="filter-content" markdown="1" data-scope="fetch_verify">
+## August 8, 2024
+
+MOLT Fetch/Verify 1.1.4 is [available](#installation).
+
+- Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replicator_only` and `--replicator-args` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
+- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#transformations).
+- Added a new `--metrics-scrape-interval` flag to allow users to specify their Prometheus scrape interval and apply a sleep at the end to allow for the final metrics to be scraped.
+- Previously, there was a mismatch between the errors logged in log lines and those recorded in the exceptions table when an `IMPORT INTO` or `COPY FROM` operation failed due to a non-PostgreSQL error. Now, all errors will lead to an exceptions table entry that allows the user to continue progress from a certain table's file.
+- Fixed a bug that will allow Fetch to properly determine a GTID if there are multiple `source_uuids`.
+
 ## July 31, 2024
+
 MOLT Fetch/Verify 1.1.3 is [available](#installation).
 
 - `'infinity'::timestamp` values can now be moved with Fetch.
@@ -49,8 +60,8 @@ MOLT Fetch/Verify 1.1.2 is [available](#installation).
 
 - Fetch users can now specify columns to exclude from table migrations in order to migrate a subset of their data. This is supported in the schema creation, export, import, and direct copy phases.
 - Fetch now automatically maps a partitioned table from a PostgreSQL source to the target CockroachDB schema.
-- Fetch now supports computed column mappings via a new transformations framework. 
-- The new Fetch `--transformations-file` flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
+- Fetch now supports column exclusions and computed column mappings via a new [transformations framework]({% link molt/molt-fetch.md %}#transformations). 
+- The new Fetch [`--transformations-file`]({% link molt/molt-fetch.md %}#global-flags) flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
 
 ## July 10, 2024
 
