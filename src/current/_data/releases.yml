@@ -6515,8 +6515,8 @@
 ## Matt's test v24.2.0 entry
 - release_name: v24.2.0
   major_version: v24.2
-  release_date: '2024-08-08'
-  release_type: Testing
+  release_date: '2024-08-13'
+  release_type: Production
   go_version: go1.22.5
   sha: 3d1bcc1df630c10c4065a22fc846daa911b436d6
   has_sql_only: true

@@ -1,5 +1,5 @@
 {% comment %}Set to true to enable debug output on the page{% endcomment %}
-{% assign DEBUG=false %}
+{% assign DEBUG=true %}
 
 {% unless include.major_version %}
 Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-version.md major_version=page.major_version %}{% endraw %}</code>
@@ -21,8 +21,8 @@ The date logic in this file can be confusing. Read it like this:
 {% endcomment %}
 
 {% comment %}Uncomment the following two lines and comment the third to test a specific date{% endcomment %}
-{% comment %}{% assign today = '2025-05-21' | date: "%s" %}
-{% assign actual_today = "today" | date: "%s" %}{% endcomment %}
+{% assign today = '2025-08-13' | date: "%s" %}
+{% assign actual_today = "today" | date: "%s" %}
 
 {% if DEBUG %}
   {% if actual_today %}Actual today: {{ actual_today }}<br />{% endif %}
