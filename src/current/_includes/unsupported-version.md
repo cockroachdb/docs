@@ -1,5 +1,5 @@
 {% comment %}Set to true to enable debug output on the page{% endcomment %}
-{% assign DEBUG=true %}
+{% assign DEBUG=false %}
 
 {% unless include.major_version %}
 Missing include.major_version. Usage: <code>{% raw %}{% include unsupported-version.md major_version=page.major_version %}{% endraw %}</code>
