@@ -6,6 +6,17 @@ docs_area: manage
 ---
 
 {% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | map: "previous_version" | first %}
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% assign released = false %}
+{% assign skippable = false %}
+{% if rd.release_date != "N/A" and rd.maint_supp_exp_date != "N/A" %}
+    {% assign released = true %}
+    {% if rd.asst_supp_exp_date == "N/A" %}
+        {% assign skippable = true %}
+    {% endif %}
+{% endif %}
+
 {% assign earliest = site.data.releases | where_exp: "earliest", "earliest.major_version == page.version.version" | sort: "release_date" | first %}
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
 {% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
@@ -23,27 +34,28 @@ This page describes how to upgrade to the latest **{{ page.version.version }}** 
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
-- A new *major release* is performed multiple times per year. The major version number indicates the year of release followed by the release number, starting with 1. For example, the latest major release is {{ actual_latest_prod.major_version }}.
-- Each [supported](https://www.cockroachlabs.com/docs/releases/release-support-policy) major release is maintained across *patch releases* that contain improvements including performance or security enhancements and bug fixes. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
-- All major and patch releases are suitable for production environments, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
-- Prior to an upcoming major release, alpha, beta, and release candidate (RC) binaries are made available for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number. These "testing releases" are not suitable for production environments and are not eligible for support or uptime SLA commitments. For more information, refer to the [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
-
-{{site.data.alerts.callout_info}}
-There are no "minor releases" of CockroachDB.
-{{site.data.alerts.end}}
+{% include release-terminology.md %}
 
 ## Step 1. Verify that you can upgrade
 
-{{site.data.alerts.callout_danger}}
-In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
+{{site.data.alerts.callout_info}}
+A cluster cannot be upgraded from an alpha binary of a prior release or from a binary built from the `master` branch of the CockroachDB source code.
 {{site.data.alerts.end}}
 
-Run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell. Then check your current cluster version:
+{% if skippable == true %}
+CockroachDB {{ latest.major_version }} is an optional [Innovation release]({% link releases/index.md %}#innovation-releases). If you skip it, you must upgrade to the next [Regular release]({% link releases/index.md %}#regular-releases) when it is available to maintain support.
+{% else %}
+CockroachDB {{ latest.major_version }} is a required [Regular release]({% link releases/index.md %}#regular-releases).
+{% endif %}{% comment %}TODO before next Regular, add logic for multiple targets to upgrade from to get to a Regular release{% endcomment %}
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CLUSTER SETTING version;
-~~~
+To verify that you can upgrade:
+
+1. Run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell. Then check your current cluster version:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CLUSTER SETTING version;
+    ~~~
 
 To upgrade to {{ latest.release_name }}, you must be running{% if prior.release_name %} either{% endif %}:
 
@@ -56,7 +68,7 @@ If you are running any other version, take the following steps **before** contin
 
 |                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
 |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version). |
+| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release, then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version). |
 | Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version).                                                     |
 | {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](https://www.cockroachlabs.com/docs/{{ previous_version }}/upgrade-cockroach-version).                                                                                                     |
 
@@ -68,7 +80,7 @@ Before starting the upgrade, complete the following steps.
 
 ### Review breaking changes
 
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
 
 Review the [backward-incompatible changes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}), [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}), and [key cluster setting changes](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-cluster-settings{% endunless %}) in {{ page.version.version }}. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 

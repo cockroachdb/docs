@@ -7,6 +7,10 @@ key: install-cockroachdb.html
 docs_area: deploy
 ---
 
+## Overview
+
+{% include {{ page.version.version }}/release-terminology.md %}
+
 <div id="os-tabs" class="clearfix">
   <button id="mac" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button>
   <a href="install-cockroachdb-linux.html"><button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button></a>
