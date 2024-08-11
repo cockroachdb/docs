@@ -86,7 +86,7 @@ true
 {% endcapture %}
 
 <div id="download-the-binary" class="install-option">
-  <h2 id="install-binary">Download the binary</h2>
+  <a id="install-the-binary"></a><h2 id="install-binary">Download the binary</h2>
   {{ arch_note_binaries }}
   <ol>
     <li>

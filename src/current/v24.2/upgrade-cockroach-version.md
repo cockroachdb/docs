@@ -41,9 +41,9 @@ A cluster cannot be upgraded from an alpha binary of a prior release or from a b
 {{site.data.alerts.end}}
 
 {% if skippable == true %}
-CockroachDB {{ latest.major_version }} is an optional [Innovation release]({% link releases/index.md %}#innovation-releases). If you skip it, you must upgrade to the next [Regular release]({% link releases/index.md %}#regular-releases) when it is available to maintain support.
+CockroachDB {{ page.version.version }} is an optional [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). If you skip it, you must upgrade to the next [Regular release]({% link releases/release-support-policy.md %}#regular-releases) when it is available to maintain support.
 {% else %}
-CockroachDB {{ latest.major_version }} is a required [Regular release]({% link releases/index.md %}#regular-releases).
+CockroachDB {{ page.version.version }} is a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).
 {% endif %}{% comment %}TODO before next Regular, add logic for multiple targets to upgrade from to get to a Regular release{% endcomment %}
 
 To verify that you can upgrade:
