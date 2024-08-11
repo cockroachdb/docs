@@ -7,10 +7,6 @@ key: install-cockroachdb.html
 docs_area: deploy
 ---
 
-## Overview
-
-{% include {{ page.version.version }}/release-terminology.md %}
-
 <div id="os-tabs" class="clearfix">
   <button id="mac" class="current" data-eventcategory="buttonClick-doc-os" data-eventaction="mac">Mac</button>
   <a href="install-cockroachdb-linux.html"><button id="linux" data-eventcategory="buttonClick-doc-os" data-eventaction="linux">Linux</button></a>
@@ -19,12 +15,7 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
-
-{% comment %}v22.2.0+{% endcomment %}
-{{site.data.alerts.callout_danger}}
-<p>On macOS ARM systems, <a href="{% link {{ page.version.version }}/spatial-data-overview.md %}">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. Refer to <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
-{{site.data.alerts.end}}
+{% include latest-release-details.md %}
 
 {% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
@@ -32,7 +23,11 @@ See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.v
 
 {% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p><p>CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
-Use one of the options below to install CockroachDB.
+{{site.data.alerts.callout_info}}
+CockroachDB on macOS is experimental and not suitable for production deployments.
+{{site.data.alerts.end}}
+
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). For limitations specific to geospatial features, refer to [Limitations](#limitations).
 
 <div id="use-homebrew" markdown="1" class="install-option">
 
@@ -234,3 +229,9 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 {% include {{ page.version.version }}/misc/install-next-steps.html %}
 
 {% include {{ page.version.version }}/misc/diagnostics-callout.html %}
+
+## Limitations
+
+{% comment %}v22.2.0+{% endcomment %}
+
+On macOS ARM systems, [spatial features]{% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161)</a> for more information.

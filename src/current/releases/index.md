@@ -177,13 +177,11 @@ The following releases and their descriptions represent proposed plans that are 
     v.major_version: {{ v.major_version }}<br />
     has_lts_releases: {{ has_lts_releases }}<br />
     v.release_date: {{ v.release_date }}<br />
-    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />{% endif %}
-
-{% if skippable == true %}
-CockroachDB {{ v.major_version }} is an [Innovation release](#major-releases), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} cluster upgrades.
-{% else %}
-CockroachDB {{ v.major_version }} is a [Regular release](#major-releases) for all clusters, which is required for all CockroachDB cluster upgrades.
+    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />
 {% endif %}
+
+{% include {{ page.version.version }}/latest-release-details.md %}
+
 Refer to [Major release types](#major-releases) before installing or upgrading for release support details.
 {% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
 {% unless v.major_version == 'v1.0' or
