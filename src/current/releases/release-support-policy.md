@@ -5,6 +5,7 @@ toc: true
 toc_not_nested: true
 docs_area: releases
 ---
+
 {% assign DEBUG = false %}
 
 {% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
