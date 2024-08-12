@@ -45,7 +45,6 @@ You can use PCR in a disaster recovery plan to:
 
 Cockroach Labs supports PCR up to the following scale:
 
-- Cluster size: 30TB
 - Writes: 10,000 writes per second
 - Reads: 18,000 reads per second
 
