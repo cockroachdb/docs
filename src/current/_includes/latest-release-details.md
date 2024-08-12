@@ -2,6 +2,8 @@
   This is included by v24.2+ install-cockroachdb-*.md upgrade-cockroach-version.md
 {% endcomment %}
 
+{% assign DEBUG = false %}
+
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
 
@@ -12,6 +14,14 @@
     {% if rd.asst_supp_exp_date == "N/A" %}
         {% assign skippable = true %}
     {% endif %}
+{% endif %}
+
+{% if DEBUG == true %}
+version: {{ rd }}<br /><br />
+latest release: {{ latest }}<br /><br />
+page version: {{ page.version }}<br /><br />
+released: {{ released }}<br />
+skippable: {{ skippable }}<br />
 {% endif %}
 
 CockroachDB {{ latest.major_version }} is the latest supported supported production release.{% if skippable == true %} It is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.serverless }}.{% else %} It is a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes](https://cockroachlabs.com/docs/releases/{{ latest.major_version }}.html).
