@@ -1,11 +1,11 @@
 ---
 title: COMMENT ON
-summary: The COMMENT ON statement associates comments to databases, tables, columns, or indexes.
+summary: The COMMENT ON statement associates comments to databases, tables, columns, indexes, or types.
 toc: true
 docs_area: reference.sql
 ---
 
-The `COMMENT ON` [statement]({% link {{ page.version.version }}/sql-statements.md %}) associates comments to [databases]({% link {{ page.version.version }}/create-database.md %}), [tables]({% link {{ page.version.version }}/create-table.md %}), [columns]({% link {{ page.version.version }}/alter-table.md %}#add-column), or [indexes]({% link {{ page.version.version }}/indexes.md %}).
+The `COMMENT ON` [statement]({% link {{ page.version.version }}/sql-statements.md %}) associates comments to [databases]({% link {{ page.version.version }}/create-database.md %}), [tables]({% link {{ page.version.version }}/create-table.md %}), [columns]({% link {{ page.version.version }}/alter-table.md %}#add-column), [indexes]({% link {{ page.version.version }}/indexes.md %}), or [types]({% link {{page.version.version}}/show-types.md %}).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -25,6 +25,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 ------------|--------------
 `database_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) on which you are commenting.
 `schema_name` |  The name of the [schema]({% link {{ page.version.version }}/create-schema.md %}) on which you are commenting.
+`type_name` | The name of the [type]({% link {{ page.version.version }}/show-types.md %}) on which you are commenting.
 `table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) on which you are commenting.
 `column_name` | The name of the [column]({% link {{ page.version.version }}/alter-table.md %}#add-column) on which you are commenting.
 `table_index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) on which you are commenting.
@@ -180,6 +181,50 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`]({% link {{ page.v
 (8 rows)
 ~~~
 
+### Add a comment to a type
+
+Issue a SQL statement to [create a type]({% link {{ page.version.version }}/create-type.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TYPE IF NOT EXISTS my_point AS (x FLOAT, y FLOAT, z FLOAT);
+~~~
+
+To view the type you just created, use [`SHOW TYPES`]({% link {{page.version.version}}/show-types.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW TYPES;
+~~~
+
+~~~
+  schema |   name   | owner
+---------+----------+--------
+  public | my_point | root
+(1 row)
+~~~
+
+To add a comment on the type, use a statement like the following:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMENT ON TYPE my_point IS '3D point';
+~~~
+
+To view all comments on types, make a [selection query]({% link {{page.version.version}}/select-clause.md %}) against the `system.comments` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM system.comments;
+~~~
+
+~~~
+  type | object_id | sub_id | comment
+-------+-----------+--------+-----------
+     7 |       112 |      0 | 3D POINT
+(1 row)
+~~~
+
 ### Remove a comment from a database
 
 To remove a comment from a database:
@@ -202,6 +247,15 @@ To remove a comment from a database:
   postgres      | root  | NULL           | {}      | NULL          | NULL
   system        | node  | NULL           | {}      | NULL          | NULL
 (4 rows)
+~~~
+
+### Remove a comment from a type
+
+To remove the comment from the type you created in the [preceding example](#add-a-comment-to-a-type), add a `NULL` comment:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMENT ON TYPE my_point IS NULL;
 ~~~
 
 ## See also

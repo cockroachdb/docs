@@ -1,0 +1,56 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="4" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+   <th colspan="1" rowspan="1">Ver.</th>
+   <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-Hosted</th>
+   <th colspan="1" rowspan="1">Dedicated</th>
+   <th colspan="1" rowspan="1">Serverless</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">Vector search</p>
+    <p class="feature-description">
+      Users can now store <a href="https://www.cockroachlabs.com/docs/v24.2/vector.html">
+      <code>VECTOR</code>
+     </a> embeddings within CockroachDB with <code>pgvector</code>-compatible semantics to build AI-driven applications. Numerous <a href="https://www.cockroachlabs.com/docs/v24.2/functions-and-operators.html#pgvector-functions">built-in functions</a> have been added for running similarity search across vectors. Note that vector indexing is not supported in this release. This feature is in <a href="https://cockroachlabs.com/docs/stable/feature-availability.html">Preview</a> and requires an <a href="https://www.cockroachlabs.com/docs/stable/enterprise-licensing">Enterprise license</a>.
+    </p>
+   </td>
+   <td>24.2</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Generic query plans</p>
+    <p class="feature-description">
+      Users can now enable <a href="https://www.cockroachlabs.com/docs/v24.2/cost-based-optimizer.html#query-plan-type">generic query plans</a>. Generic query plans optimize query execution for prepared statements by reusing precompiled query plans, and significantly reduce the CPU overhead associated with parsing and planning repeated queries, at the expense of plan quality. This feature is in <a href="https://cockroachlabs.com/docs/stable/feature-availability.html">Preview</a> and requires an <a href="https://www.cockroachlabs.com/docs/stable/enterprise-licensing">Enterprise license</a>.
+    </p>
+   </td>
+   <td>24.2</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">
+      COMMENT ON TYPE
+    </p>
+    <p class="feature-description">
+      CockroachDB users can now <a href="https://www.cockroachlabs.com/docs/v24.2/comment-on.html#add-a-comment-to-a-type">annotate a type with a comment</a> and reference the comment later for documentation purposes.
+    </p>
+   </td>
+   <td>24.2</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+ </tbody>
+</table>

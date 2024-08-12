@@ -4,14 +4,14 @@ summary: Learn how to upgrade a cluster in CockroachDB Cloud to v24.2
 toc: true
 docs_area: manage
 page_version: v24.2
-pre_production_preview: true
+pre_production_preview: false
 ---
 {% assign DEBUG = false %}
 
 {% comment %}Determine Cloud support{% endcomment %}
 
 {% comment %}Date to compare support dates against. To test, replace today with YYYY-MM-DD.{% endcomment %}
-{% assign today = '2025-08-08' | date: "%s" | plus: 0 %}
+{% assign today = "today" | date: "%s" | plus: 0 %}
 
 {% comment %}Get the major version object{% endcomment %}
 {% assign x = site.data.versions | where_exp: "m", "m.major_version == page.page_version" | first %}
@@ -163,12 +163,12 @@ In a multi-node cluster, the upgrade does not interrupt the cluster's overall he
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
-When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with {{ x.major_version }}.
+When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with {{ page.page_version }}.
 </section>
 
-If you are upgrading from {{ x.previous_version }} to {{ x.major_version }}, the upgrade must be finalized. This is not required for subsequent patch upgrades. Approximately 72 hours after all nodes are running {{ x.major_version }}, the upgrade will be automatically [finalized](../{{ x.major_version }}/upgrade-cockroach-version.html#step-6-finish-the-upgrade). It's important to monitor your cluster and applications during this 72-hour window, so that you can [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console if you see [unexpected behavior according to key metrics](../{{ x.major_version }}/essential-metrics-dedicated.html) or if you experience application or database issues.
+If you are upgrading from {{ page.prev_version }} to {{ page.page_version }}, the upgrade must be finalized. This is not required for subsequent patch upgrades. Approximately 72 hours after all nodes are running {{ page.page_version }}, the upgrade will be automatically [finalized]({% link {{ page.page_version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade). It's important to monitor your cluster and applications during this 72-hour window, so that you can [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console if you see [unexpected behavior according to key metrics]({% link {{ page.page_version }}/essential-metrics-dedicated.md %}) or if you experience application or database issues.
 
-During a major-version upgrade, certain features and performance improvements may not be available until the upgrade is finalized. However, when upgrading from {{ x.previous_version }} to {{ x.major_version }}, all features are available immediately, and no features require finalization.
+During a major-version upgrade, certain features and performance improvements may not be available until the upgrade is finalized. However, when upgrading to v24.2, all features are available immediately, and no features require finalization.
 
 {{site.data.alerts.callout_info}}
 Finalization is always required to complete an upgrade.
