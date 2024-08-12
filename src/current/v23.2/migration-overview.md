@@ -215,7 +215,7 @@ In the following order:
 
 <a name="molt"></a>
 
-You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify these steps:
+You can use the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}) to simplify these steps:
 
 - [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
@@ -262,9 +262,7 @@ Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.v
 
 ##### Shadowing
 
-You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. You can then [validate the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
-
-The [CockroachDB Live Migration Service (MOLT LMS)]({% link molt/live-migration-service.md %}) can [perform shadowing]({% link molt/live-migration-service.md %}#shadowing-modes). This is intended only for [testing](#test-query-results-and-performance) or [performing a dry run](#perform-a-dry-run). Shadowing should **not** be used in production when performing a [live migration](#zero-downtime).
+You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. You can then [validate the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration. Shadowing should **not** be used in production when performing a [live migration](#zero-downtime).
 
 ##### Test query results and performance
 
@@ -326,16 +324,14 @@ The following is a high-level overview of the migration steps. The two approache
 
 To prioritize consistency and minimize downtime:
 
-1. Set up the [CockroachDB Live Migration Service (MOLT LMS)]({% link molt/live-migration-service.md %}) to proxy for application traffic between your source database and CockroachDB. Do **not** shadow the application traffic.
 1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Use the tool to [**replicate ongoing changes**]({% link molt/molt-fetch.md %}#replication) after it performs the initial load of data into CockroachDB. 
 1. As the data is migrating, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
-1. After nearly all data from your source database has been moved to CockroachDB (for example, with a <1-second delay or <1000 rows), use MOLT LMS to begin a [*consistent cutover*]({% link molt/live-migration-service.md %}#consistent-cutover) and stop application traffic to your source database. **This begins downtime.**
+1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for MOLT Fetch to finish replicating changes to CockroachDB.
-1. Use MOLT LMS to commit the [consistent cutover]({% link molt/live-migration-service.md %}#consistent-cutover). This resumes application traffic, now to CockroachDB.
+1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
 
 To achieve zero downtime with inconsistency:
 
-1. Set up the [CockroachDB Live Migration Service (MOLT LMS)]({% link molt/live-migration-service.md %}) to proxy for application traffic between your source database and CockroachDB. Use a [shadowing mode]({% link molt/live-migration-service.md %}#shadowing-modes) to run application queries simultaneously on your source database and CockroachDB.
 1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Use the tool to **replicate ongoing changes** after performing the initial load of data into CockroachDB.
 1. As the data is migrating, you can use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. After nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), perform an [*immediate cutover*](#cutover-strategy) by pointing application traffic to CockroachDB.
