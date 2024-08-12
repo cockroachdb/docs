@@ -1,39 +1,22 @@
 ---
 title: MOLT Releases
-summary: Changelog for MOLT Fetch, Verify, and Live Migration Service
+summary: Changelog for MOLT Fetch and Verify
 toc: true
 docs_area: releases
 ---
 
 This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
 
-- [Fetch]({% link molt/molt-fetch.md %}) and [Verify]({% link molt/molt-verify.md %})
-- [Live Migration Service (LMS)]({% link molt/live-migration-service.md %})
+- [Fetch]({% link molt/molt-fetch.md %})
+- [Verify]({% link molt/molt-verify.md %})
 
 Cockroach Labs recommends using the latest available version of each tool. See [Installation](#installation).
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="fetch_verify">Fetch/Verify</button>
-    <button class="filter-button" data-scope="lms">LMS</button>
-</div>
-
 ## Installation
 
-<section class="filter-content" markdown="1" data-scope="fetch_verify">
 To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="lms">
-To install the LMS, refer to [MOLT Live Migration Service]({% link molt/live-migration-service.md %}#installation).
-
-To update the LMS once installed, configure the following [Helm chart values](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml):
-
-{% include molt/update-lms-version.md %}
-
-For more information, refer to [Configuration]({% link molt/live-migration-service.md %}#configuration).
-</section>
 
 <section class="filter-content" markdown="1" data-scope="fetch_verify">
 ## August 8, 2024
@@ -157,21 +140,3 @@ MOLT Fetch/Verify 0.1.0 is [available](#installation).
 - Updated the MOLT README with an OS + Docker-based edge case with Fetch.
 - Logging for Fetch and Verify now defaults to structured JSON logging, which contains at least the message, level, and formatted time string. The `--use-console-writer` flag enables prettier console writing that has colored and human-readable log output. Structured logging is the default because it is easier to parse with log ingestion tools and is more efficient for the application to output.
 - Task/data logs can now be written to specified log files using `--log-file`. If the flag is left empty, the MOLT tool will only write to `stdout`, which is more efficient.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="lms">
-## May 31, 2024
-
-LMS 0.2.6 is [available](#installation).
-
-## May 30, 2024
-
-LMS 0.2.5 is [available](#installation).
-
-## January 26, 2024
-
-LMS 0.2.4 is [available](#installation).
-
-- Added a restriction for [shadowing mode]({% link molt/live-migration-service.md %}#shadowing-modes) according to the cutover type. Consistent cutover **must** be executed without any shadowing (i.e., must be performed with the non-sync mode).
-
-</section>
