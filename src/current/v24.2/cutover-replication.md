@@ -283,10 +283,6 @@ This section illustrates the steps to cut back to the original primary cluster f
     ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    {{site.data.alerts.callout_danger}}
-    {% include {{ page.version.version }}/physical-replication/fast-cutback-latest-timestamp.md %}
-    {{site.data.alerts.end}}
-
     The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
 
     ~~~
