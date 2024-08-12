@@ -22,13 +22,13 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
+This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
+
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, follwed by a series of patch releases.
 
 Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
 
 For example, the latest production release is `{{ latest_full_production_version.release_name }}`, within major version [`{{ latest_major_version_with_production }}`]({% link releases/{{ latest_major_version_with_production }}.md %}).
-
-This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#).
 
 After choosing a version of CockroachDB, learn how to:
 
