@@ -19,7 +19,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-08-12-general-updates"> General updates </h3>
 
-- CockroachDB v24.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}. CockroachDB v24.2 is an optional [Innovation release]({% link releases/release-support-policy.md %}#support-types). Refer to [Create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.2]({% link cockroachcloud/upgrade-to-v24.2.md %}).
+- CockroachDB v24.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}. CockroachDB v24.2 is an optional [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.2]({% link cockroachcloud/upgrade-to-v24.2.md %}).
 
 - As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a _Regular release_ or an _Innovation release_.
 
