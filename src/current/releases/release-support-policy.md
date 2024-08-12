@@ -9,6 +9,8 @@ docs_area: releases
 
 {% assign DEBUG = false %}
 
+{% assign DEBUG = false %}
+
 {% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
@@ -53,6 +55,16 @@ Initially, a Regular release series has GA Support. After the series demonstrate
         - **365 days after** the **Maintenance Support end date** of the release.
 
 ### Innovation releases
+
+Innovation releases do not have LTS releases.
+
+- **Innovation Support**:
+  - **Maintenance Support ends:**
+    - **180 days after** the day of the **first production release** of the major version.
+
+Innovation releases are not eligible for Assistance Support, and reach EOL at the end of Maintenance Support.
+
+## Supported versions
 
 Innovation releases do not have LTS releases.
 
