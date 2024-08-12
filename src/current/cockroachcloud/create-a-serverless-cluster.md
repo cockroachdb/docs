@@ -10,6 +10,8 @@ cloud: true
 
 This page guides you through the process of creating a cluster using CockroachDB {{ site.data.products.serverless }}. Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
 
+New CockroachDB {{ site.data.products.serverless }} clusters always use the latest stable version of CockroachDB, and are automatically [upgraded]({% link cockroachcloud/upgrade-to-{{ site.current_cloud_version }}.md %}) to new patch versions, as well as new major versions, to maintain uninterrupted support and SLA guarantees. For more details, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
 ## Before you begin
 
 If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_serverless_cluster" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.

@@ -14,6 +14,24 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+
+## August 12, 2024
+
+<h3 id="2024-08-12-general-updates"> General updates </h3>
+
+- CockroachDB v24.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}. CockroachDB v24.2 is an optional [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.2]({% link cockroachcloud/upgrade-to-v24.2.md %}).
+
+- As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a _Regular release_ or an _Innovation release_.
+
+  - [Regular releases]({% link cockroachcloud/upgrade-policy.md %}#regular-releases) are required; they must be applied to CockroachDB {{ site.data.products.dedicated }} clusters, and they are applied automatically to CockroachDB {{ site.data.products.serverless }} clusters. Regular releases are produced twice a year, alternating with Innovation releases. They are supported for one year. Upgrading CockroachDB {{ site.data.products.dedicated }} directly from one regular release to the next regular release, skipping the intervening Innovation release, is supported.
+  - [Innovation releases]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases) are optional and can be skipped for CockroachDB {{ site.data.products.dedicated }} but are required for CockroachDB {{ site.data.products.serverless }}. Innovation releases are produced twice a year, alternating with Regular releases. An innovation release is supported for 6 months, at which time a CockroachDB {{ site.data.products.dedicated }} cluster must be upgraded to the next Regular release. At a a given time, only one Innovation release is typically supported. Upgrading CockroachDB {{ site.data.products.dedicated }} directly from one Innovation release to the next innovation release is not supported.
+
+    {{site.data.alerts.callout_info}}
+    To opt out of Innovation releases entirely and hide them from your CockroachDB organization, contact [Support](https://support.cockroachlabs.com/hc).
+    {{site.data.alerts.end}}
+
+  To learn more, refer to [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
 ## July 31, 2024
 
 <h3 id="2024-07-24-general-updates"> General updates </h3>
