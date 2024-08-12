@@ -56,6 +56,10 @@ For more comprehensive guides, refer to:
 
 ### Start clusters
 
+{{site.data.alerts.callout_danger}}
+Before starting PCR, ensure that the standby cluster is at the same version, or one version ahead of, the primary cluster. For more details, refer to [Cluster versions and upgrades](#cluster-versions-and-upgrades).
+{{site.data.alerts.end}}
+
 To initiate physical cluster replication on clusters, you must [start]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--config-profile` flag. This enables [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and sets up each cluster ready for replication.
 
 The active primary cluster that serves application traffic:
@@ -122,7 +126,11 @@ Statement | Action
 
 ### Cluster versions and upgrades
 
-When PCR is enabled, we recommend upgrading with the following procedure. This upgrades the standby cluster before the primary cluster. It is preferable to avoid a situation where the virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:
+{{site.data.alerts.callout_danger}}
+The standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster.
+{{site.data.alerts.end}}
+
+When PCR is enabled, upgrade with the following procedure. This upgrades the standby cluster before the primary cluster. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:
 
 1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-4-perform-the-rolling-upgrade) on the primary and standby clusters. Replace the binary on each node of the cluster and restart the node.
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the standby's system virtual cluster.
