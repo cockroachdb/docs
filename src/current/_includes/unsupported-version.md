@@ -176,16 +176,8 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% break %}
     {% endif %}
   {% endif %}{% comment %}end production=true branch{% endcomment %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
 {% else %}
 Error: Could not find version details for {{ include.major_version }}. Check versions.csv. Giving up.
   {% break %}
->>>>>>> origin/DOC-10686_innovation
-=======
-{% else %}
-Error: Could not find version details for {{ include.major_version }}. Check versions.csv. Giving up.
-  {% break %}
->>>>>>> origin/DOC-10686_innovation
 {% endif %}{% comment %}End branch to process x object{% endcomment %}
