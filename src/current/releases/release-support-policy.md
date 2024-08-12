@@ -7,6 +7,8 @@ docs_area: releases
 ---
 {% assign DEBUG = false %}
 
+{% assign DEBUG = false %}
+
 {% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
@@ -62,6 +64,16 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 
 ## Supported versions
 
+Innovation releases do not have LTS releases.
+
+- **Innovation Support**:
+  - **Maintenance Support ends:**
+    - **180 days after** the day of the **first production release** of the major version.
+
+Innovation releases are not eligible for Assistance Support, and reach EOL at the end of Maintenance Support.
+
+## Supported versions
+
 {% comment %}TODO: Bring in updated logic for Innovation{% endcomment %}
 <table>
 	<thead>
@@ -94,7 +106,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     {% endif %}
 
     {% comment %}Releases with a release date and no assistance date are skippable{% endcomment %}
-    {% if v.asst_supp_exp_date == "N/A" %}
+    {% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
       {% assign skippable = true %}
       {% assign will_never_have_lts = true %}
     {% endif %}
@@ -111,6 +123,9 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
           {% assign r_lts_eol = true %}
         {% endif %}
       {% endif %}
+    {% elsif v.asst_supp_exp_date == "N/A" and v.maint_supp_exp_date != "N/A" and v.maint_supp_exp_date < today and skippable == true %}
+      {% comment %}GA releases in this version are EOL{% endcomment %}
+      {% assign r_eol = true %}
     {% endif %}
 
     {% comment %}Evaluate whether skippable versions are EOL{% endcomment %}
@@ -160,11 +175,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 </table>
 
 <sup id="lts-tbd">&#42;&nbsp;&nbsp;: This major version will receive LTS patch releases, which will be listed on an additional row, upon their availability.</sup><br />
-<<<<<<< HEAD
 <sup id="skippable">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
-=======
-<sup id="lts-tbd">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
->>>>>>> 5ad2b98ac (Content updates for Innovation releases (#18801))
 
 ## End-of-life (EOL) versions
 
