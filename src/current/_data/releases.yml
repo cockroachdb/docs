@@ -6513,7 +6513,7 @@
 
 - release_name: v24.2.0
   major_version: v24.2
-  release_date: '2024-08-13'
+  release_date: '2024-08-12'
   release_type: Production
   go_version: go1.22.5
   sha: 953d09cce5a01cc0053e138516d80a27454f027c
