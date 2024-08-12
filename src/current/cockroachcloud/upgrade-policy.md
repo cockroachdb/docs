@@ -64,6 +64,7 @@ Major version [releases](https://www.cockroachlabs.com/docs/releases) (for examp
 
 Major version upgrades are automatic for CockroachDB {{ site.data.products.serverless }} clusters and must be initiated by an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) for CockroachDB {{ site.data.products.dedicated }} clusters. In CockroachDB {{ site.data.products.dedicated }}, major versions labeled Regular releases are all required upgrades, while Innovation releases are optional. Once a new major version is available, you can [start an upgrade]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) from the CockroachDB Cloud Console. The cluster will be upgraded to the latest patch release within that major version.
 
+<a id="regular-releases"></a>
 ### Innovation releases
 
 As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [Regular release or an Innovation release]({% link releases/index.md %}#release-types). Regular releases provide a longer support period and a longer period between upgrades, while Innovation releases offer a shorter support period and faster access to new features.
