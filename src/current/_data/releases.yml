@@ -6295,7 +6295,6 @@
   source: true
   previous_release: v24.2.0-alpha.1
 
-
 - release_name: v23.2.8
   major_version: v23.2
   release_date: '2024-07-15'

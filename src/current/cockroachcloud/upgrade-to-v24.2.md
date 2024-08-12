@@ -32,7 +32,6 @@ Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/doc
 Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
 {{site.data.alerts.end}}
 
-If you upgrade to a Pre-Production Preview of {{ page.page_version }}, your cluster will be automatically upgraded to {{ page.page_version }}.0 upon its GA release.
 {% endif %}
 
 ## Step 1. Verify that you can upgrade
@@ -58,7 +57,15 @@ In a multi-node cluster, the upgrade does not interrupt the cluster's overall he
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with {{ page.page_version }}.
 </section>
 
-If you are upgrading from {{ page.prev_version }} to {{ page.page_version }}, the upgrade must be finalized. This is not required for subsequent patch upgrades. Approximately 72 hours after all nodes are running {{ page.page_version }}, the upgrade will be automatically [finalized]({% link {{ page.page_version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade). It's important to monitor your cluster and applications during this 72-hour window, so that you can [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console if you see [unexpected behavior according to key metrics]({% link {{ page.page_version }}/essential-metrics-dedicated.md %}) or if you experience application or database issues. Finalization enables certain [features and performance improvements introduced in {{ page.page_version }}](#expect-temporary-limitations). When finalization is complete, it is no longer possible to roll back to {{ page.prev_version }}.
+If you are upgrading from {{ page.prev_version }} to {{ page.page_version }}, the upgrade must be finalized. This is not required for subsequent patch upgrades. Approximately 72 hours after all nodes are running {{ page.page_version }}, the upgrade will be automatically [finalized]({% link {{ page.page_version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade). It's important to monitor your cluster and applications during this 72-hour window, so that you can [roll back the upgrade](#roll-back-the-upgrade) from the CockroachDB {{ site.data.products.cloud }} Console if you see [unexpected behavior according to key metrics]({% link {{ page.page_version }}/essential-metrics-dedicated.md %}) or if you experience application or database issues.
+
+During a major-version upgrade, certain features and performance improvements may not be available until the upgrade is finalized. However, when upgrading from {{ previous_version }} to {{ page.version.version }}, all features are available immediately, and no features require finalization.
+
+{{site.data.alerts.callout_info}}
+Finalization is always required to complete an upgrade.
+{{site.data.alerts.end}}
+
+When finalization is complete, it is no longer possible to roll back to {{ page.prev_version }}.
 
 {{site.data.alerts.callout_info}}
 If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of {{ page.prev_version }}, which may differ from the patch release you were running before you initiated the upgrade. To learn more, refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
@@ -133,7 +140,7 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 ### Expect temporary limitations
 
-Most {{ page.page_version }} features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors.
+All {{ page.page_version }} features can be used right away. However, finalization is always required to complete a major-version upgrade.
 
 For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
 
@@ -151,17 +158,17 @@ During rollback, nodes will be reverted to the latest production patch release o
 Because your cluster contains a single node, the cluster will be briefly unavailable while the node is stopped and restarted with the latest production patch release of {{ page.prev_version }}. Be sure to [prepare for this brief unavailability](#prepare-for-brief-unavailability) before starting the rollback.
 </section>
 
+<a id="finalize-the-upgrade"></a>
+
 ## Step 7. Complete the upgrade
 
-If everything looks good, you can wait for the upgrade to automatically finalize, or you can manually finalize the upgrade to lift the [temporary limitations](#expect-temporary-limitations) on the cluster more quickly.
-
-### Finalize the upgrade
-
-The upgrade is automatically finalized after 72 hours.
+If everything looks good, you can wait for the upgrade to automatically finalize after 72 hours, or you can manually finalize the upgrade to lift any [temporary limitations](#expect-temporary-limitations) on the cluster more quickly.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Finalize upgrade**.
 
-After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted and all {{ page.page_version }} features will be available for use. However, it will no longer be possible to roll back to {{ page.prev_version }}. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
+After finalization, any [temporary limitations](#expect-temporary-limitations) will be lifted and all {{ page.page_version }} features will be available for use. No such features exist for v24.2.
+
+After finalization, it will no longer be possible to roll back to {{ page.prev_version }}. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 ## See also
 

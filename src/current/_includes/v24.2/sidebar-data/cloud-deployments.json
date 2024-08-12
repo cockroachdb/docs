@@ -438,6 +438,12 @@
                         ]
                     },
                     {
+                        "title": "Upgrade to v24.2",
+                        "urls": [
+                            "/cockroachcloud/upgrade-to-v24.2.html"
+                        ]
+                    },
+                    {
                         "title": "Upgrade to v24.1",
                         "urls": [
                             "/cockroachcloud/upgrade-to-v24.1.html"
