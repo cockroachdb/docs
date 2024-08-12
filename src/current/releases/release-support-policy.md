@@ -5,7 +5,6 @@ toc: true
 toc_not_nested: true
 docs_area: releases
 ---
-
 {% assign DEBUG = false %}
 
 {% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
@@ -112,6 +111,12 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
         {% endif %}
       {% endif %}
     {% elsif v.asst_supp_exp_date == "N/A" and v.maint_supp_exp_date != "N/A" and v.maint_supp_exp_date < today and skippable == true %}
+      {% comment %}GA releases in this version are EOL{% endcomment %}
+      {% assign r_eol = true %}
+    {% endif %}
+
+    {% comment %}Evaluate whether skippable versions are EOL{% endcomment %}
+    {% if v.asst_supp_exp_date == "N/A" and v.maint_supp_exp_date < today and skippable == true %}
       {% comment %}GA releases in this version are EOL{% endcomment %}
       {% assign r_eol = true %}
     {% endif %}
@@ -256,4 +261,4 @@ The following versions of CockroachDB are no longer supported.
   </tbody>
 </table>
 
-<sup id="lts-tbd">&#42;&#42;&nbsp;&nbsp;: This EOL major version is an optional innovation release. Innovation releases do not receive LTS releases and are EOL when Maintenance Support ends.</sup><br />
+<sup id="skippable-eol">&#42;&nbsp;&nbsp;: This EOL major version is an optional innovation release. Innovation releases do not receive LTS releases and are EOL when Maintenance Support ends.</sup><br />
