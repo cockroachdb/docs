@@ -145,7 +145,7 @@ Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-polic
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to CockroachDB {{ x.major_version}}, you must be running {{ x.previous_version }}. If you are not running {{ x.previous_version }}, first [upgrade to {{ x.previous_version }}](../cockroachcloud/upgrade-to-{{ x.previous_version }}.html). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
+To upgrade to CockroachDB {{ x.major_version }}, you must be running {{ x.previous_version }}. If you are not running {{ x.previous_version }}, first [upgrade to {{ x.previous_version }}]({% link cockroachcloud/upgrade-to-{{ x.previous_version }}.md %}). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
 
 ## Step 2. Select your cluster size
 
@@ -275,11 +275,11 @@ If everything looks good, you can wait for the upgrade to automatically finalize
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the CockroachDB {{ site.data.products.cloud }} Console, and then click **Finalize upgrade**.
 
-After finalization, any [temporary limitations](#expect-temporary-limitations) will be lifted and all {{ x.major_version }} features will be available for use. No such features exist for v24.2.{% comment %}This situation is unique for v24.2{% endcomment %}
+After finalization, any [temporary limitations](#expect-temporary-limitations) will be lifted and all {{ x.major_version }} features will be available for use. No such features exist for v24.2.
 
 After finalization, it will no longer be possible to roll back to {{ x.previous_version }}. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 ## See also
 
-- [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy)
-- [CockroachDB {{ x.major_version }} Release Notes]({% link releases/{{ x.major_version }}.md %)
+- [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB {{ x.major_version }} Release Notes]({% link releases/{{ x.major_version }}.md %})
