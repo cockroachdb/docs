@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: releases
 ---
 
-{% assign DEBUG = false %}
+{% assign DEBUG = true %}
 
 {% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
 
@@ -63,7 +63,6 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 
 ## Supported versions
 
-{% comment %}TODO: Bring in updated logic for Innovation{% endcomment %}
 <table>
 	<thead>
 		<tr>
@@ -95,7 +94,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     {% endif %}
 
     {% comment %}Releases with a release date and no assistance date are skippable{% endcomment %}
-    {% if v.asst_supp_exp_date == "N/A" %}
+    {% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
       {% assign skippable = true %}
       {% assign will_never_have_lts = true %}
     {% endif %}
@@ -112,10 +111,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
           {% assign r_lts_eol = true %}
         {% endif %}
       {% endif %}
-    {% endif %}
-
-    {% comment %}Evaluate whether skippable versions are EOL{% endcomment %}
-    {% if v.asst_supp_exp_date == "N/A" and v.maint_supp_exp_date < today and skippable == true %}
+    {% elsif v.asst_supp_exp_date == "N/A" and v.maint_supp_exp_date != "N/A" and v.maint_supp_exp_date < today and skippable == true %}
       {% comment %}GA releases in this version are EOL{% endcomment %}
       {% assign r_eol = true %}
     {% endif %}
