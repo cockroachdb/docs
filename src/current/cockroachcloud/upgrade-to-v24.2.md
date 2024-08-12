@@ -138,7 +138,7 @@ CockroachDB {{ site.data.products.serverless }} clusters are upgraded automatica
 
 {% comment %}An unreleased version can't yet be skippable{% endcomment %}
 {% if released == true %}
-CockroachDB {{ x.major_version }} {% if supported == false %}was a{% else %}is a{% endif %}{% if skippable == true %}n [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades), which {% if supported == false %}was{% else %}is{% endif %} optional for CockroachDB {{ site.data.products.dedicated }} clusters{% if supported == true %} but required for CockroachDB {{ site.data.products.serverless }}{% endif %}{% else %} [Regular release]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades), which is a required upgrade for both CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.serverless }}.{% endif %}
+CockroachDB {{ x.major_version }} {% if supported == false %}was a{% else %}is a{% endif %}{% if skippable == true %}n [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades), which {% if supported == false %}was{% else %}is{% endif %} optional for CockroachDB {{ site.data.products.dedicated }} clusters{% if supported == true %} but required for CockroachDB {{ site.data.products.serverless }}{% endif %}{% else %} [Regular release]({% link cockroachcloud/upgrade-policy.md %}#major-version-upgrades), which is a required upgrade for both CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.serverless }}.{% endif %}
 {% endif %}
 
 Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}) before installing or upgrading for release timing and support details.
