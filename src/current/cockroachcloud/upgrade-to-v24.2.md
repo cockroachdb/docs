@@ -145,7 +145,7 @@ Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-polic
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to CockroachDB {{ x.major_version}}, you must be running {{ x.previous_version }}. If you are not running {{ x.previous_version }}, first [upgrade to {{ x.previous_version }}](../cockroachcloud/upgrade-to{{ x.previous_version }}.html). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
+To upgrade to CockroachDB {{ x.major_version}}, you must be running {{ x.previous_version }}. If you are not running {{ x.previous_version }}, first [upgrade to {{ x.previous_version }}](../cockroachcloud/upgrade-to-{{ x.previous_version }}.html). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
 
 ## Step 2. Select your cluster size
 
