@@ -16,7 +16,7 @@
    <td>
     <p class="feature-summary">CockroachDB Cloud Terraform Provider - Operations at scale</p>
     <p class="feature-description">
-      This release includes updates to enhance operations at scale using <a href="https://github.com/cockroachdb/terraform-provider-cockroach">CockroachDB Cloud Terraform Provider</a> across multiple Terraform projects. A new Resource for User Role Grants makes it easier to manage user account access to clusters across projects. A new Data Source for Folders allows better access to Clusters organized in Folders across multiple projects. A new Service Account Resource brings CockroachDB Cloud API access under Terraform management.
+      This release includes updates to enhance operations at scale using the <a href="https://github.com/cockroachdb/terraform-provider-cockroach">CockroachDB Cloud Terraform Provider</a> across multiple Terraform projects. A new Resource for User Role Grants makes it easier to manage user account access to clusters across projects. A new Data Source for Folders allows better access to clusters organized in folders across multiple projects. A new Service Account Resource brings CockroachDB Cloud API access under Terraform management.
     </p>
    </td>
    <td>All<sup>&starf;&starf;</sup>
@@ -28,9 +28,9 @@
   <tr>
    <td>
     <p class="feature-summary">Support for Optional Innovation Releases</p>
-    <p class="feature-description">As of v24.2, CockroachDB has shifted from a 6-month <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">major version release cycle</a> to a 3-month cycle. The additional versions, called "Innovation releases", are skippable for CockroachDB Dedicated and Self-Hosted, where they have shorter support windows. Users can upgrade directly from a Regular release to the next Regular release, without needing to upgrade to the intermediary Innovation version.
-</p>
-    <p class="feature-description">In CockroachDB Dedicated, users can now select any supported version for their cluster at creation time and when upgrading. CockroachDB Serverless clusters continue to receive all major versions, including Innovation releases.</p>
+    <p class="feature-description">As of v24.2, CockroachDB has shifted from a 6-month <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">major version release cycle</a> to a 3-month cycle. The additional versions, called <a href="https://cockroachlabs.com/releases/release-support-policy#innovation-releases">Innovation releases</a>, are optional and can be skipped for CockroachDB Dedicated and Self-Hosted, but are required for CockroachDB Serverless. Innovation releases have shorter support windows than Regular releases. Users can upgrade directly from a Regular release to the next Regular release, without needing to upgrade to the intermediary Innovation release.
+    </p>
+    <p class="feature-description">In CockroachDB Dedicated, users can now choose to deploy or upgrade a cluster on any supported version. CockroachDB Serverless clusters continue to receive all major versions and patches for both Innovation releases and Regular releases as they become available.</p>
    </td>
    <td>24.2
    </td>
