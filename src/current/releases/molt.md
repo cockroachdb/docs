@@ -18,7 +18,6 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
-<section class="filter-content" markdown="1" data-scope="fetch_verify">
 ## August 8, 2024
 
 MOLT Fetch/Verify 1.1.4 is [available](#installation).
