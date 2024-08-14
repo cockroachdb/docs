@@ -40,6 +40,9 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
   {% assign production = false %}
   {% assign skippable = false %}
   {% assign lts = false %}
+  {% assign purple_warning = 0 %}
+  {% assign red_warning = 0 %}
+  {% assign maintenance_warning = 0 %}
 
   {% comment %}Is it GA?{% endcomment %}
   {% if x.release_date != "N/A" and x.maint_supp_exp_date != "N/A" %}
@@ -50,7 +53,9 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
     {% comment %}Skippable releases have no assistance period{% endcomment %}
     {% if x.asst_supp_exp_date == "N/A" %}
       {% assign skippable = true %}
-
+      {% assign purple_warning = m - 5259492 %}{% comment %}60 days before m in seconds{% endcomment %}
+      {% assign red_warning = m - 2629746 %}{% comment %}30 days before m in seconds{% endcomment %}
+      {% assign maintenance_warning = m - 1314873 %}{% comment %}15 days before m in seconds{% endcomment %}
     {% else %}
       {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
       {% comment %} GA date validation will stop processing the include early {% endcomment %}
@@ -60,8 +65,8 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% endif %}
       {% if x.asst_supp_exp_date == "N/A" %}
         Required production releases must have asst_supp_exp_date set to a date. Giving up. Check versions.csv.
-      {% break %}
-  {% endif %}
+        {% break %}
+      {% endif %}
     {% endif %}
   {% endif %}
 
@@ -69,12 +74,13 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
   {% if production == true and
         x.lts_maint_supp_exp_date != "N/A" and
         x.lts_asst_supp_exp_date != "N/A" and
-        x.initial_lts_release_date != "N/A" and
-        x.initial_lts_patch != "N/A" and
         skippable == false %}
     {% assign lts = true %}
     {% assign lm = x.lts_maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
     {% assign la = x.lts_asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+    {% assign purple_warning = la - 15778476 %}{% comment %}180 days before la in seconds{% endcomment %}
+    {% assign red_warning = la - 7889238 %}{% comment %}90 days before la in seconds{% endcomment %}
+    {% assign maintenance_warning = lm - 2629746 %}{% comment %}30 days before lm in seconds{% endcomment %}
 
     {% comment %} LTS date validation will stop processing the include early {% endcomment %}
     {% if la <= lm %}
@@ -85,6 +91,13 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
     Error: LTS assistance date must be after GA assistance and maintenance dates. Giving up.
       {% break %}
     {% endif %}
+  {% elsif production == true and
+            x.asst_supp_exp_date != "N/A" and
+            x.maint_supp_exp_date != "N/A" and
+            skippable == false %}
+    {% assign purple_warning = a - 7889238 %}{% comment %}90 days before a in seconds{% endcomment %}
+    {% assign red_warning = a - 5259492 %}{% comment %}60 days before a in seconds{% endcomment %}
+    {% assign maintenance_warning = m - 2629746 %}{% comment %}30 days before m in seconds{% endcomment %}
   {% endif %}
 
   {% if DEBUG %}
@@ -110,19 +123,24 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
         As of {{ x.lts_asst_supp_exp_date | date: "%B %e, %Y"}}, CockroachDB {{ include.major_version }} is no longer supported. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
         {{site.data.alerts.end}}
 
-      {% elsif today > lm %} {% comment %}After LTS maintenance{% endcomment %}
+      {% elsif today >= lm and today < la %} {% comment %}After LTS maintenance{% endcomment %}
 
-        {{site.data.alerts.callout_danger}}
+        {% if today > red_warning %}{{site.data.alerts.callout_danger}}{% else %}{{site.data.alerts.callout_version}}{% endif %}
         Maintenance Support for {{ include.major_version }} LTS releases ended on {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}{% if today >= a %}, and GA releases prior to {{ x.initial_lts_patch }} are no longer supported{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
         {{site.data.alerts.end}}
 
-      {% elsif today <= lm %}{% comment %}In LTS maintenance. Check for GA assistance is in the admonition {% endcomment %}
+      {% elsif today <= lm and today > purple_threshold %}{% comment %}In LTS maintenance. Check for GA assistance is in the admonition {% endcomment %}
 
-        {{site.data.alerts.callout_danger}}
+        {{site.data.alerts.callout_version}}
         As of {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}, LTS releases of CockroachDB {{ include.major_version }} releases are in <strong>Maintenance Support</strong>{% if today > a %} and GA releases of CockroachDB {{ include.major_version }} are no longer supported{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
         {{site.data.alerts.end}}
+      {% elsif today <= m and today > maintenance_warning %}{% comment %}1 month in seconds{% endcomment %}
 
-      {% endif %}{% comment %}If GA maintenance hasn't passed, show nothing{% endcomment %}
+        {{site.data.alerts.callout_version}}
+        Maintenance support for CockroachDB {{ include.major_version }} will end on {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}.{% if today > a %} GA releases of CockroachDB {{ include.major_version }} are no longer supported{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
+        {{site.data.alerts.end}}
+
+      {% endif %}{% comment %}If LTS maintenance hasn't passed, show nothing{% endcomment %}
 
     {% comment %}Innovation releases starting from v24.2{% endcomment %}
     {% elsif lts == false and skippable == true %}
@@ -132,6 +150,10 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
       {% if today > m %}
         {{site.data.alerts.callout_danger}}
         As of {{ x.maint_supp_exp_date | date: "%B %e, %Y"}}, CockroachDB {{ include.major_version }} is no longer supported. Optional innovation releases are not eligible for Assistance Support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
+        {{site.data.alerts.end}}
+      {% elsif today <= m and today > maintenance_warning %}{% comment %}15 days month in seconds{% endcomment %}
+        {% if today > red_warning %}{{site.data.alerts.callout_danger}}{% else %}{{site.data.alerts.callout_version}}{% endif %}
+        Maintenance support for CockroachDB {{ include.major_version }} will end on {{ x.lts_maint_supp_exp_date | date: "%B %e, %Y" }}.{% if today > a %} GA releases of CockroachDB {{ include.major_version }} are no longer supported{% endif %}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
         {{site.data.alerts.end}}
       {% endif %}
 
@@ -147,15 +169,22 @@ Today date: {{ today | date: "%Y-%m-%d" }} <br />
 
       {% elsif today > m and today <= a %} {% comment %}maintenance has ended{% endcomment %}
 
-        {{site.data.alerts.callout_danger}}
+        {% if today > red_warning %}{{site.data.alerts.callout_danger}}{% else %}{{site.data.alerts.callout_version}}{% endif %}
         As of {{ x.maint_supp_exp_date | date: "%B %e, %Y" }}, Maintenance support for {{ include.major_version }} has ended, and Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
         {{site.data.alerts.end}}
 
-      {% elsif today <= m %}
+      {% elsif today <= m and today > purple_warning %}
 
-        {{site.data.alerts.callout_danger}}
+        {{site.data.alerts.callout_version}}
         As of <strong>{{ x.maint_supp_exp_date | date: "%B %e, %Y" }}</strong>, {{ include.major_version }} releases are in <strong>Maintenance Support</strong> and Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} on <strong>{{ x.asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>.
         {{site.data.alerts.end}}
+
+      {% elsif today <= m and today > maintenance_warning %}{% comment %}1 month in seconds{% endcomment %}
+
+        {{site.data.alerts.callout_version}}
+        Maintenance support for CockroachDB {{ include.major_version }} will end on {{ x.maint_supp_exp_date | date: "%B %e, %Y" }}. Cockroach Labs will stop providing <strong>Assistance Support</strong> for {{ include.major_version }} LTS on <strong>{{ x.lts_asst_supp_exp_date | date: "%B %e, %Y" }}</strong>. Prior to that date, upgrade to a more recent version to continue receiving support. For more details, refer to the <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy.html">Release Support Policy</a>
+        {{site.data.alerts.end}}
+
       {% endif %}
 
     {% else %}
