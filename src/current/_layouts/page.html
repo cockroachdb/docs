@@ -53,7 +53,7 @@ front-matter.
 {% elsif page.major_version %}
   {% assign majorversion = page.major_version %}
 {% endif %}
-{% if majorversion and majorversion != 0 %}{% include unsupported-version.md major_version=majorversion %}{% endif %}
+
 {{content}}
 
 {% if page.feedback != false %}
