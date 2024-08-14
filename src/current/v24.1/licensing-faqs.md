@@ -5,6 +5,10 @@ toc: true
 docs_area: get_started
 ---
 
+{{site.data.alerts.callout_info}}
+{% include common/license/evolving.md %}
+{{site.data.alerts.end}}
+
 CockroachDB code is primarily licensed in two ways:
 
 -  [Business Source License (BSL)](#bsl)
