@@ -55,8 +55,8 @@ Initially, a Regular release series has GA Support. After the series demonstrate
 Innovation releases do not have LTS releases.
 
 - **Innovation Support**:
-  - **Maintenance Support ends:**
-    - **180 days after** the day of the **first production release** of the major version.
+    - **Maintenance Support ends:**
+        - **180 days after** the day of the **first production release** of the major version.
 
 Innovation releases are not eligible for Assistance Support, and reach EOL at the end of Maintenance Support.
 
