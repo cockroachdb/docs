@@ -55,8 +55,8 @@ Initially, a Regular release series has GA Support. After the series demonstrate
 Innovation releases do not have LTS releases.
 
 - **Innovation Support**:
-  - **Maintenance Support ends:**
-    - **180 days after** the day of the **first production release** of the major version.
+    - **Maintenance Support ends:**
+        - **180 days after** the day of the **first production release** of the major version.
 
 Innovation releases are not eligible for Assistance Support, and reach EOL at the end of Maintenance Support.
 
@@ -139,7 +139,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <td>LTS</td>
     <td>{{ v.initial_lts_release_date }}</td>
     <td>{% if v.lts_maint_supp_exp_date != "N/A" %}{{ v.lts_maint_supp_exp_date }}{% endif %}</td>
-    <td>{% if v.lts_asst_supp_exp_date != "N/A" %}{{ v.lts_asst_supp_exp_date }}{% endif %}</td>
+    <td>{{ v.lts_asst_supp_exp_date }}</td>
   </tr>
       {% endif %}
 
@@ -153,7 +153,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <td>GA</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
-    <td>{% if v.asst_supp_exp_date != "N/A" %}{{ v.asst_supp_exp_date }}{% endif %}</td>
+    <td>{{ v.asst_supp_exp_date }}</td>
   </tr>
     {% endif %}
 
@@ -241,7 +241,7 @@ The following versions of CockroachDB are no longer supported.
     <td>LTS</td>
     <td>{{ v.initial_lts_release_date }}</td>
     <td>{% if v.lts_maint_supp_exp_date != "N/A" %}{{ v.lts_maint_supp_exp_date }}{% endif %}</td>
-    <td>{% if v.lts_asst_supp_exp_date != "N/A" %}{{ v.lts_asst_supp_exp_date }}{% endif %}</td>
+    <td>{{ v.lts_asst_supp_exp_date }}</td>
   </tr>
       {% endif %}
 
@@ -252,7 +252,7 @@ The following versions of CockroachDB are no longer supported.
     <td>GA</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
-    <td>{% if v.asst_supp_exp_date != "N/A" %}{{ v.asst_supp_exp_date }}{% endif %}</td>
+    <td>{{ v.asst_supp_exp_date }}</td>
   </tr>
     {% endif %}
 
