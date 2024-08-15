@@ -28,28 +28,32 @@ You can download and install CockroachDB for Windows in two ways. Either:
 
 - (Recommended) Visit [Releases]({% link releases/index.md %}) to download the CockroachDB {{ page.version.version }} archive for Windows. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell.
 
-- Instead of downloading the binary directly, you can use the following PowerShell script.
-  1. Visit [Releases]({% link releases/index.md %}) and copy the link to the full CockroachDB binary you want to install.
-  1. Save the following PowerShell script and replace the following:
-       - `{ DOWNLOAD_URL }`: the download URL.
-       - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed.
+- Instead of downloading the binary directly, you can follow these steps to use PowerShell to download and install CockroachDB.
+
+1. Visit [Releases]({% link releases/index.md %}) and copy the link to the full CockroachDB binary you want to install.
+1. Save the following PowerShell script and replace the following:
+    - `{ DOWNLOAD_URL }`: the download URL.
+    - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed.
 
         {% include_cached copy-clipboard.html %}
         ~~~ powershell
-        $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri { DOWNLOAD_URL } -OutFile cockroach.zip; Expand-Archive -Force -Path cockroach.zip; Copy-Item -Force "cockroach/cockroach-{{ page.version.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:{ INSTALL_DIRECTORY }; $Env:PATH += ";$env:{ INSTALL_DIRECTORY }"
+        $ErrorActionPreference = "Stop";
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach;
+        Invoke-WebRequest -Uri { DOWNLOAD_URL } -OutFile cockroach.zip;
+        Expand-Archive -Force -Path cockroach.zip;
+        Copy-Item -Force "cockroach/cockroach-{{ page.version.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:{ INSTALL_DIRECTORY };$Env:PATH += ";$env:{ INSTALL_DIRECTORY }"
         ~~~
 
-  1. Run the PowerShell script. To run a PowerShell script from a file, use syntax like `powershell.exe -Command "{path_to_script}"`.
+1. Run the PowerShell script. To run a PowerShell script from a file, use syntax like `powershell.exe -Command "{path_to_script}"`.
 
+1. Check that the installation succeeded and that you can run `cockroach` commands:
 
-  1. Check that the installation succeeded and that you can run `cockroach` commands:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach version
+    ~~~
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach version
-        ~~~
-
-After you install CockroachDB, keep up-to-date with CockroachDB releases and best practices:
+1. Keep up-to-date with CockroachDB releases and best practices:
 
     {% include marketo-install.html uid="1" %}
 
@@ -64,7 +68,7 @@ To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), e
 <section id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
-This section shows how to install CockroachDB on a Windows host using Docker. The image creates a Linux container.
+This section shows how to install CockroachDB on a Windows host using Docker. On a Linux or Windows Docker host, the image creates a Linux container.
 
 {{site.data.alerts.callout_danger}}
 Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.
