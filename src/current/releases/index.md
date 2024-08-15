@@ -22,6 +22,10 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
+{{site.data.alerts.callout_info}}
+{% include common/license/evolving.md %}
+{{site.data.alerts.end}}
+
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
 
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, follwed by a series of patch releases.
@@ -561,6 +565,10 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 {% endfor %} {% comment %}for v in versions{% endcomment %}
 
 ## Licenses
+
+{{site.data.alerts.callout_info}}
+{% include common/license/evolving.md %}
+{{site.data.alerts.end}}
 
 Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
 
