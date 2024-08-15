@@ -203,7 +203,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--log-file`                                  | Write messages to the specified log filename. If not specified, messages are only written to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--logging`                                   | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                            |
 | `--metrics-listen-addr`                       | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                               |
-| `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, or `export-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                           |
+| `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                            |
 | `--non-interactive`                           | Run the fetch process without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                    |
 | `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                                                                                     |
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                   |
@@ -363,6 +363,15 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 {% include_cached copy-clipboard.html %}
 ~~~ 
 --mode export-only
+~~~
+
+#### Import data from storage
+
+`import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#cloud-storage) or [local file server](#local-file-server) into the CockroachDB target.
+
+{% include_cached copy-clipboard.html %}
+~~~ 
+--mode import-only
 ~~~
 
 ### Data movement
