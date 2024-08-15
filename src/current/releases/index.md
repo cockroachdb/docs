@@ -22,6 +22,10 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
+{{site.data.alerts.callout_info}}
+{% include common/license/evolving.md %}
+{{site.data.alerts.end}}
+
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
 
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, follwed by a series of patch releases.
