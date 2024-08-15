@@ -18,7 +18,7 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the CockroachDB cluster's configuration.
 
 {% comment %}
-Src: cockroach gen settings-list --show-class --format=csv against v24.1.1
+Src: cockroach gen metrics-list --format=csv against cockroach-v24.2.0-rc.1.darwin-10.9-amd64
 
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). Sort by the Class column, then Settings column, and paste into the correct section below.
@@ -45,7 +45,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `changefeed.aggregator.flush_jitter`
 - `changefeed.backfill.concurrent_scan_requests`
 - `changefeed.backfill.scan_request_size`
-- `changefeed.batch_reduction_retry.enabled`
+- `changefeed.batch_reduction_retry.enabled (alias: changefeed.batch_reduction_retry_enabled)`
 - `changefeed.default_range_distribution_strategy`
 - `changefeed.event_consumer_worker_queue_size`
 - `changefeed.event_consumer_workers`
@@ -63,6 +63,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `cloudstorage.timeout`
 - `cluster.auto_upgrade.enabled`
 - `cluster.preserve_downgrade_option`
+- `debug.zip.redact_addresses.enabled`
 - `diagnostics.forced_sql_stat_reset.interval`
 - `diagnostics.reporting.enabled`
 - `diagnostics.reporting.interval`
@@ -83,13 +84,13 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `kv.dist_sender.circuit_breaker.probe.timeout`
 - `kv.dist_sender.circuit_breakers.mode`
 - `kv.rangefeed.client.stream_startup_rate`
-- `kv.rangefeed.range_stuck_threshold`
 - `kv.transaction.max_intents_bytes`
 - `kv.transaction.max_refresh_spans_bytes`
+- `kv.transaction.randomized_anchor_key.enabled`
 - `kv.transaction.reject_over_max_intents_budget.enabled`
-- `kv.transaction.write_pipelining.enabled`
+- `kv.transaction.write_pipelining.enabled (alias: kv.transaction.write_pipelining_enabled)`
 - `kv.transaction.write_pipelining.locking_reads.enabled`
-- `kv.transaction.write_pipelining.max_batch_size`
+- `kv.transaction.write_pipelining.max_batch_size (alias: kv.transaction.write_pipelining_max_batch_size)`
 - `kv.transaction.write_pipelining.ranged_writes.enabled`
 - `schedules.backup.gc_protection.enabled`
 - `security.ocsp.mode`
@@ -99,7 +100,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `server.authentication_cache.enabled`
 - `server.child_metrics.enabled`
 - `server.client_cert_expiration_cache.capacity`
-- `server.clock.forward_jump_check.enabled`
+- `server.clock.forward_jump_check.enabled (alias: server.clock.forward_jump_check_enabled)`
 - `server.clock.persist_upper_bound_interval`
 - `server.eventlog.enabled`
 - `server.eventlog.ttl`
@@ -112,21 +113,22 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `server.log_gc.period`
 - `server.max_connections_per_gateway`
 - `server.max_open_transactions_per_gateway`
-- `server.oidc_authentication.autologin.enabled`
+- `server.oidc_authentication.autologin.enabled (alias: server.oidc_authentication.autologin)`
 - `server.oidc_authentication.button_text`
 - `server.oidc_authentication.claim_json_key`
 - `server.oidc_authentication.client_id`
 - `server.oidc_authentication.client_secret`
+- `server.oidc_authentication.client.timeout`
 - `server.oidc_authentication.enabled`
 - `server.oidc_authentication.principal_regex`
 - `server.oidc_authentication.provider_url`
 - `server.oidc_authentication.redirect_url`
 - `server.oidc_authentication.scopes`
 - `server.redact_sensitive_settings.enabled`
-- `server.shutdown.connections.timeout`
-- `server.shutdown.initial_wait`
-- `server.shutdown.jobs.timeout`
-- `server.shutdown.transactions.timeout`
+- `server.shutdown.connections.timeout (alias: server.shutdown.connection_wait)`
+- `server.shutdown.initial_wait (alias: server.shutdown.drain_wait)`
+- `server.shutdown.jobs.timeout (alias: server.shutdown.jobs_wait)`
+- `server.shutdown.transactions.timeout (alias: server.shutdown.query_wait)`
 - `server.sql_tcp_keep_alive.count`
 - `server.sql_tcp_keep_alive.interval`
 - `server.time_until_store_dead`
@@ -140,8 +142,10 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `server.user_login.timeout`
 - `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled`
 - `server.web_session.purge.ttl`
-- `server.web_session.timeout`
+- `server.web_session.timeout (alias: server.web_session_timeout)`
 - `sql.auth.change_own_password.enabled`
+- `sql.auth.grant_option_for_owner.enabled`
+- `sql.auth.grant_option_inheritance.enabled`
 - `sql.auth.public_schema_create_privilege.enabled`
 - `sql.auth.resolve_membership_single_scan.enabled`
 - `sql.closed_session_cache.capacity`
@@ -206,7 +210,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `sql.insights.execution_insights_capacity`
 - `sql.insights.high_retry_count.threshold`
 - `sql.insights.latency_threshold`
-- `sql.log.all_statements.enabled`
+- `sql.log.all_statements.enabled (alias: sql.trace.log_statement_execute)`
 - `sql.log.slow_query.experimental_full_table_scans.enabled`
 - `sql.log.slow_query.internal_queries.enabled`
 - `sql.log.slow_query.latency_threshold`
@@ -217,7 +221,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `sql.metrics.max_mem_reported_txn_fingerprints`
 - `sql.metrics.max_mem_stmt_fingerprints`
 - `sql.metrics.max_mem_txn_fingerprints`
-- `sql.metrics.statement_details.dump_to_logs.enabled`
+- `sql.metrics.statement_details.dump_to_logs.enabled (alias: sql.metrics.statement_details.dump_to_logs)`
 - `sql.metrics.statement_details.enabled`
 - `sql.metrics.statement_details.gateway_node.enabled`
 - `sql.metrics.statement_details.index_recommendation_collection.enabled`
@@ -273,8 +277,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `sql.txn_fingerprint_id_cache.capacity`
 - `sql.txn.read_committed_isolation.enabled`
 - `storage.max_sync_duration.fatal.enabled`
-- `storage.value_blocks.enabled`
-- `trace.debug_http_endpoint.enabled`
+- `trace.debug_http_endpoint.enabled (alias: trace.debug.enable)`
 - `trace.opentelemetry.collector`
 - `trace.snapshot.rate`
 - `trace.span_registry.enabled`
@@ -301,7 +304,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `kv.lease_transfer_read_summary.global_budget`
 - `kv.lease_transfer_read_summary.local_budget`
 - `kv.log_range_and_node_events.enabled`
-- `kv.range_split.by_load.enabled`
+- `kv.range_split.by_load.enabled (alias: kv.range_split.by_load_enabled)`
 - `kv.range_split.load_cpu_threshold`
 - `kv.range_split.load_qps_threshold`
 - `kv.replica_circuit_breaker.slow_replication_threshold`
@@ -310,13 +313,13 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `kv.snapshot_rebalance.max_rate`
 - `kv.snapshot_receiver.excise.enabled`
 - `kvadmission.store.provisioned_bandwidth`
-- `physical_replication.consumer.minimum_flush_interval`
+- `physical_replication.consumer.minimum_flush_interval (alias: bulkio.stream_ingestion.minimum_flush_interval)`
 - `server.consistency_check.max_rate`
 - `server.rangelog.ttl`
-- `server.shutdown.lease_transfer_iteration.timeout`
+- `server.shutdown.lease_transfer_iteration.timeout (alias: server.shutdown.lease_transfer_wait)`
 - `spanconfig.bounds.enabled`
-- `spanconfig.range_coalescing.application.enabled`
-- `spanconfig.range_coalescing.system.enabled`
+- `spanconfig.range_coalescing.application.enabled (alias: spanconfig.tenant_coalesce_adjacent.enabled)`
+- `spanconfig.range_coalescing.system.enabled (alias: spanconfig.storage_coalesce_adjacent.enabled)`
 - `storage.experimental.eventually_file_only_snapshots.enabled`
 - `storage.ingest_split.enabled`
 - `storage.wal_failover.unhealthy_op_threshold`
@@ -331,7 +334,7 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `diagnostics.memory_monitoring_dumps.enabled`
 - `enterprise.license`
 - `kv.bulk_sst.target_size`
-- `kv.closed_timestamp.follower_reads.enabled`
+- `kv.closed_timestamp.follower_reads.enabled (alias: kv.closed_timestamp.follower_reads_enabled)`
 - `kv.closed_timestamp.lead_for_global_reads_override`
 - `kv.closed_timestamp.side_transport_interval`
 - `kv.closed_timestamp.target_duration`
@@ -342,6 +345,8 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `sql.schema.telemetry.recurrence`
 - `storage.max_sync_duration`
 - `storage.sstable.compression_algorithm`
+- `storage.sstable.compression_algorithm_backup_storage`
+- `storage.sstable.compression_algorithm_backup_transport`
 - `timeseries.storage.resolution_10s.ttl`
 - `timeseries.storage.resolution_30m.ttl`
 

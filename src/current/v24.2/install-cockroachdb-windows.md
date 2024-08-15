@@ -15,14 +15,14 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
+{% include latest-release-details.md %}
 
-Use one of the options below to install CockroachDB.
+{% include windows_warning.md %}
+
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 
 <section id="download-the-binary-windows" markdown="1" class="install-option">
 <h2 id="install-binary">Download the executable</h2>
-
-  {% include windows_warning.md %}
 
 1. Using PowerShell, run the following script to download the [CockroachDB {{ page.release_info.version }} archive for Windows](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip) and copy the binary into your `PATH`:
 

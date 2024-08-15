@@ -239,8 +239,12 @@
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
-- destination: molt/live-migration-service.md
-  sources: [':version/live-migration-service.md']
+- destination: plan-your-cluster-serverless.md
+  sources:
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
 
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
@@ -263,9 +267,14 @@
 - destination: migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
-    
+
 - destination: molt/molt-fetch.md
   sources: [':version/molt-fetch.md']
+
+- destination: molt/molt-overview.md
+  sources:
+    - molt/live-migration-service.md
+    - :version/live-migration-service.md
 
 - destination: molt/molt-verify.md
   sources: [':version/molt-verify.md']

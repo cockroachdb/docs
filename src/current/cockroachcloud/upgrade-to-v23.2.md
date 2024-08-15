@@ -16,7 +16,7 @@ pre_production_preview_version: v23.2.0-rc.2
 [CockroachDB {{ page.pre_production_preview_version }}]({% link releases/{{ page.page_version }}.md %}#{{ page.pre_production_preview_version | replace: ".","-"}}) is available to CockroachDB {{ site.data.products.advanced }} clusters for testing and experimentation.
 
 {{site.data.alerts.callout_danger}}
-[Testing releases]({% link releases/index.md %}#release-naming) are not qualified for production environments and not eligible for support or uptime SLA commitments.
+[Testing releases]({% link releases/index.md %}#overview) are not qualified for production environments and not eligible for support or uptime SLA commitments.
 {{site.data.alerts.end}}
 
 An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.

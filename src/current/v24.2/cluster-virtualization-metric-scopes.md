@@ -17,7 +17,8 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying CockroachDB cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
 {% comment %}
-Src: cockroach gen metrics-list --format=csv against v24.1.1
+Src: cockroach gen metrics-list --format=csv against cockroach-v24.2.0-rc.1.darwin-10.9-amd64
+
 
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). Sort by Layer, then Metric. Paste into the correct section below.
@@ -32,6 +33,7 @@ SERVER: n/a
 {% comment %}LAYER=APPLICATION{% endcomment %}
 
 - `backup.last-failed-time.kms-inaccessible`
+- `build.timestamp`
 - `changefeed.admit_latency`
 - `changefeed.aggregator_progress`
 - `changefeed.backfill_count`
@@ -86,6 +88,9 @@ SERVER: n/a
 - `changefeed.sink_batch_hist_nanos`
 - `changefeed.sink_io_inflight`
 - `changefeed.size_based_flushes`
+- `changefeed.usage.error_count`
+- `changefeed.usage.query_duration`
+- `changefeed.usage.table_bytes`
 - `clock-offset.meannanos`
 - `clock-offset.stddevnanos`
 - `cloud.conns_opened`
@@ -138,7 +143,6 @@ SERVER: n/a
 - `distsender.rangefeed.retry.send`
 - `distsender.rangefeed.retry.slow_consumer`
 - `distsender.rangefeed.retry.store_not_found`
-- `distsender.rangefeed.retry.stuck`
 - `distsender.rangefeed.total_ranges`
 - `distsender.rangelookups`
 - `distsender.rpc.addsstable.sent`
@@ -429,6 +433,18 @@ SERVER: n/a
 - `jobs.key_visualizer.resume_completed`
 - `jobs.key_visualizer.resume_failed`
 - `jobs.key_visualizer.resume_retry_error`
+- `jobs.logical_replication.currently_idle`
+- `jobs.logical_replication.currently_paused`
+- `jobs.logical_replication.currently_running`
+- `jobs.logical_replication.expired_pts_records`
+- `jobs.logical_replication.fail_or_cancel_completed`
+- `jobs.logical_replication.fail_or_cancel_failed`
+- `jobs.logical_replication.fail_or_cancel_retry_error`
+- `jobs.logical_replication.protected_age_sec`
+- `jobs.logical_replication.protected_record_count`
+- `jobs.logical_replication.resume_completed`
+- `jobs.logical_replication.resume_failed`
+- `jobs.logical_replication.resume_retry_error`
 - `jobs.metrics.task_failed`
 - `jobs.migration.currently_idle`
 - `jobs.migration.currently_paused`
@@ -576,6 +592,27 @@ SERVER: n/a
 - `kv.protectedts.reconciliation.num_runs`
 - `kv.protectedts.reconciliation.records_processed`
 - `kv.protectedts.reconciliation.records_removed`
+- `logical_replication.batch_hist_nanos`
+- `logical_replication.checkpoint_events_ingested`
+- `logical_replication.commit_latency`
+- `logical_replication.events_dlqed`
+- `logical_replication.events_dlqed_age`
+- `logical_replication.events_dlqed_errtype`
+- `logical_replication.events_dlqed_space`
+- `logical_replication.events_ingested`
+- `logical_replication.events_initial_failure`
+- `logical_replication.events_initial_success`
+- `logical_replication.events_retry_failure`
+- `logical_replication.events_retry_success`
+- `logical_replication.flush_bytes`
+- `logical_replication.flush_hist_nanos`
+- `logical_replication.flush_row_count`
+- `logical_replication.logical_bytes`
+- `logical_replication.optimistic_insert_conflict_count`
+- `logical_replication.replan_count`
+- `logical_replication.replicated_time_seconds`
+- `logical_replication.retry_queue_bytes`
+- `logical_replication.retry_queue_events`
 - `physical_replication.admit_latency`
 - `physical_replication.commit_latency`
 - `physical_replication.cutover_progress`
@@ -852,6 +889,9 @@ SERVER: n/a
 - `sqlliveness.write_successes`
 - `tenant.cost_client.blocked_requests`
 - `tenant.sql_usage.cross_region_network_ru`
+- `tenant.sql_usage.estimated_cpu_seconds`
+- `tenant.sql_usage.estimated_kv_cpu_seconds`
+- `tenant.sql_usage.estimated_replication_bytes`
 - `tenant.sql_usage.external_io_egress_bytes`
 - `tenant.sql_usage.external_io_ingress_bytes`
 - `tenant.sql_usage.kv_request_units`
@@ -1085,6 +1125,10 @@ SERVER: n/a
 - `gcbytesage`
 - `gossip.bytes.received`
 - `gossip.bytes.sent`
+- `gossip.callbacks.pending`
+- `gossip.callbacks.pending_duration`
+- `gossip.callbacks.processed`
+- `gossip.callbacks.processing_duration`
 - `gossip.connections.incoming`
 - `gossip.connections.outgoing`
 - `gossip.connections.refused`
@@ -1523,8 +1567,6 @@ SERVER: n/a
 - `rpc.method.writebatch.recv`
 - `rpc.streams.mux_rangefeed.active`
 - `rpc.streams.mux_rangefeed.recv`
-- `rpc.streams.rangefeed.active`
-- `rpc.streams.rangefeed.recv`
 - `spanconfig.kvsubscriber.oldest_protected_record_nanos`
 - `spanconfig.kvsubscriber.protected_record_count`
 - `spanconfig.kvsubscriber.update_behind_nanos`
@@ -1538,6 +1580,9 @@ SERVER: n/a
 - `storage.batch-commit.wal-rotation.duration`
 - `storage.block-load.active`
 - `storage.block-load.queued`
+- `storage.category-pebble-manifest.bytes-written`
+- `storage.category-pebble-wal.bytes-written`
+- `storage.category-unspecified.bytes-written`
 - `storage.checkpoints`
 - `storage.compactions.duration`
 - `storage.compactions.keys.pinned.bytes`
@@ -1546,10 +1591,12 @@ SERVER: n/a
 - `storage.disk-stalled`
 - `storage.disk.io.time`
 - `storage.disk.iopsinprogress`
+- `storage.disk.read-max.bytespersecond`
 - `storage.disk.read.bytes`
 - `storage.disk.read.count`
 - `storage.disk.read.time`
 - `storage.disk.weightedio.time`
+- `storage.disk.write-max.bytespersecond`
 - `storage.disk.write.bytes`
 - `storage.disk.write.count`
 - `storage.disk.write.time`
@@ -1607,6 +1654,10 @@ SERVER: n/a
 - `storage.shared-storage.write`
 - `storage.single-delete.ineffectual`
 - `storage.single-delete.invariant-violation`
+- `storage.sstable.compression.none.count`
+- `storage.sstable.compression.snappy.count`
+- `storage.sstable.compression.unknown.count`
+- `storage.sstable.compression.zstd.count`
 - `storage.sstable.zombie.bytes`
 - `storage.wal.bytes_in`
 - `storage.wal.bytes_written`

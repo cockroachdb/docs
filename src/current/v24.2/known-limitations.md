@@ -449,7 +449,6 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
-- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 #### `RESTORE` limitations
 
@@ -462,6 +461,10 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) of a table or database.
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
+
+#### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
 
 ### Change data capture
 
@@ -477,10 +480,6 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
-
-### Physical cluster replication
-
-{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ### Performance optimization
 
