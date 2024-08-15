@@ -22,7 +22,7 @@ To download the latest MOLT Fetch/Verify binary:
 
 MOLT Fetch/Verify 1.1.5 is [available](#installation).
 
-- Deprecated the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
+- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
 - Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#export-data-to-storage). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
 - Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#import-data-from-storage). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
 - Strings for the `--mode` flag are now word-separated by hyphens instead of underscores. For example, `replication-only` instead of `replication_only`.
