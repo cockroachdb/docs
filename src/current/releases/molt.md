@@ -22,7 +22,7 @@ To download the latest MOLT Fetch/Verify binary:
 
 MOLT Fetch/Verify 1.1.4 is [available](#installation).
 
-- Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replicator-only` and `--replicator-args` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
+- Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replicator_only` and `--replicator-args` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
 - Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#transformations).
 - Added a new `--metrics-scrape-interval` flag to allow users to specify their Prometheus scrape interval and apply a sleep at the end to allow for the final metrics to be scraped.
 - Previously, there was a mismatch between the errors logged in log lines and those recorded in the exceptions table when an `IMPORT INTO` or `COPY FROM` operation failed due to a non-PostgreSQL error. Now, all errors will lead to an exceptions table entry that allows the user to continue progress from a certain table's file.
