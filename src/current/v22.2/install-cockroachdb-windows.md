@@ -24,7 +24,7 @@ Use one of the options below to install CockroachDB. To upgrade an existing clus
 
 You can download and install CockroachDB for Windows in two ways. Either:
 
-- **Recommended:** Visit [Releases]({% link releases/index.md %}?filters=windows) to download a CockroachDB {{ page.version.version }} archive for Windows. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell.
+- **Recommended**: Visit [Releases]({% link releases/index.md %}?filters=windows) to download a CockroachDB {{ page.version.version }} archive for Windows. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell.
 - Instead of downloading the binary directly, you can use PowerShell to download and install CockroachDB:
     1. Visit [Releases]({% link releases/index.md %}) and copy the link to the full CockroachDB binary you want to install.
     1. Save the following PowerShell script and replace the following:
