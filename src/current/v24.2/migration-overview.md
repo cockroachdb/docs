@@ -324,7 +324,7 @@ The following is a high-level overview of the migration steps. The two approache
 
 To prioritize consistency and minimize downtime:
 
-1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Use the tool to [**replicate ongoing changes**]({% link molt/molt-fetch.md %}#replication) after it performs the initial load of data into CockroachDB. 
+1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Enable [**continuous replication**]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes) after it performs the initial load of data into CockroachDB. 
 1. As the data is migrating, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for MOLT Fetch to finish replicating changes to CockroachDB.
