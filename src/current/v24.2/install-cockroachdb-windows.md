@@ -25,7 +25,6 @@ Use one of the options below to install CockroachDB. To upgrade an existing clus
 <h2 id="install-binary">Download the executable</h2>
 
 You can download and install CockroachDB for Windows in two ways. Either:
-https://binaries.cockroachdb.com/cockroach-v24.1.3.windows-6.2-amd64.zip
 
 - **Recommended**: Visit [Releases]({% link releases/index.md %}?filters=windows) to download CockroachDB. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell. Releases are rolled out gradually, so the latest version may not yet be downloadable.
 
@@ -80,7 +79,7 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
 1. Install <a href="https://docs.docker.com/docker-for-windows/install/">Docker for Windows</a>.
 
     {{site.data.alerts.callout_success}}
-    Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. Please see the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.
+    Docker for Windows requires 64-bit Windows 10 Pro and Microsoft Hyper-V. Refer to the [official documentation](https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install) for more details. If your system does not satisfy the stated requirements, you can try using [Docker Toolbox](https://docs.docker.com/toolbox/overview/).
     {{site.data.alerts.end}}
 
 1. In PowerShell, confirm that Docker is running in the background:
@@ -94,11 +93,11 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
 
 1. [Share your local drives](https://docs.docker.com/docker-for-windows/#/shared-drives) so you can mount local directories as data volumes to persist node data after containers are stopped or deleted.
 
-1. Pull the image for CockroachDB from [Docker Hub](https://hub.docker.com/r/{{page.release_info.docker_image}}/). <a id="win-docker-step3-{{ page.version.version }}"></a>:
+1. Pull the image for CockroachDB from [Docker Hub](https://hub.docker.com/layers/{{page.release_info.docker_image}}/). <a id="win-docker-step3-{{ page.version.name }}"></a>. Releases are rolled out gradually, so the latest version may not yet be available. Using the `latest` tag is not recommended; to pull the latest release within a major version, use a tag like `latest-{{ page.version.version }}`. The following command always pulls the `{{ page.version.name }}` image.
 
     {% include_cached copy-clipboard.html %}
     ~~~ powershell
-    docker pull {{ page.release_info.docker_image }}:{{ page.version.version }}
+    docker pull {{ page.release_info.docker_image }}:{{ page.version.name }}
     ~~~
 
 </section>
