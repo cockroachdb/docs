@@ -105,7 +105,7 @@ CockroachDB requires TCP communication on two ports:
 
     Each node will start with a [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 5 racks for 15 nodes so that 3 nodes will be assigned to each rack.
 
-1. Repeat steps 1 - 3 for the other 15 VMs for CockroachDB nodes. Each time, be sure to:
+1. Repeat steps 1 - 3 for the other 14 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
     - Set the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the appropriate "rack number".
 

@@ -91,7 +91,7 @@ CockroachDB requires TCP communication on two ports:
     --cache=.25
     ~~~
 
-1. Repeat steps 1 - 3 for the other 3 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
+1. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
 
 1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 

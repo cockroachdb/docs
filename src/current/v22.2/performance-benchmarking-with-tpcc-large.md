@@ -109,7 +109,7 @@ CockroachDB requires TCP communication on two ports:
     - Adjust the `--advertise-addr` flag.
     - Set the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the appropriate "rack number".
 
-1. On any of the VMs, `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
+1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
