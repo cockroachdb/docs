@@ -29,46 +29,29 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-1. Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes:
+Follow these steps to install CockroachDB and start a three-node cluster on the local system:
+
+1. Visit [Releases]({% link releases/index.md %}?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
+
+1. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
+
+1. Open three terminals. In each terminal, start CockroachDB. Use a different port for each node's `--listen-address` and `http-address`, and add each node's `--listen-address` to the `--join` flags for all nodes.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    cockroach start \
     --insecure \
     --store=tpcc-local1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
+
+1. In one terminal, run the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --store=tpcc-local2 \
-    --listen-addr=localhost:26258 \
-    --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --store=tpcc-local3 \
-    --listen-addr=localhost:26259 \
-    --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
-    ~~~
-
-1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach init \
+    cockroach init \
     --insecure \
     --host=localhost:26257
     ~~~
