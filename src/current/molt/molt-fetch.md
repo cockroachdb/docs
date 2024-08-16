@@ -108,8 +108,8 @@ Cockroach Labs **strongly** recommends the following:
 
 	~~~ shell
 	molt fetch \
-	--source '$SOURCE' \
-	--target '$TARGET' \
+	--source $SOURCE \
+	--target $TARGET \
 	--table-filter 'employees' \
 	--bucket-path 's3://molt-test' \
 	--table-handling truncate-if-exists
@@ -198,9 +198,9 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                 |
 | `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) to load data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`         |
 | `--local-path`                                | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                            |
-| `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is reachable by CockroachDB. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                     |
+| `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is **publicly accessible**. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                      |
 | `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                  |
-| `--log-file`                                  | Write messages to the specified log filename. If not specified, messages are only written to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                        |
+| `--log-file`                                  | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                    |
 | `--logging`                                   | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                            |
 | `--metrics-listen-addr`                       | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                               |
 | `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, or `export-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                           |
@@ -221,7 +221,6 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                        |
 | `--use-copy`                                  | Use [`COPY FROM`](#data-movement) to move data. This makes tables queryable during data load, but is slower than using `IMPORT INTO`. For details, refer to [Data movement](#data-movement).                                                                                                                                                                                                                                                                                                  |
 | `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                          |
-
 
 ### `tokens list` flags
 
@@ -371,7 +370,7 @@ MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}
 
 By default, MOLT Fetch uses `IMPORT INTO`:
 
-- `IMPORT INTO` achieves the highest throughput, but [requires taking the tables **offline**]({% link {{site.current_cloud_version}}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices](#best-practices).
+- `IMPORT INTO` achieves the highest throughput, but [requires taking the CockroachDB tables **offline**]({% link {{site.current_cloud_version}}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices](#best-practices).
 - `IMPORT INTO` supports compression using the `--compression` flag, which reduces the amount of storage used.
 
 `--use-copy` configures MOLT Fetch to use `COPY FROM`:
@@ -393,7 +392,7 @@ MOLT Fetch can move the source data to CockroachDB via [cloud storage](#cloud-st
 Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 {{site.data.alerts.end}}
 
-`--bucket-path` specifies that MOLT Fetch should write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. For example:
+`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. For example:
 
 Google Cloud Storage:
 
@@ -413,7 +412,7 @@ Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`
 
 #### Local file server
 
-`--local-path` specifies that MOLT Fetch should write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
+`--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -423,7 +422,7 @@ Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`
 
 In some cases, CockroachDB will not be able to use the local address specified by `--local-path-listen-addr`. This will depend on where CockroachDB is deployed, the runtime OS, and the source dialect.
 
-For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is reachable by CockroachDB. For example:
+For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is **publicly accessible**. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
