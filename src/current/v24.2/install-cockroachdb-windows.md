@@ -26,36 +26,30 @@ Use one of the options below to install CockroachDB. To upgrade an existing clus
 
 You can download and install CockroachDB for Windows in two ways. Either:
 
-- (Recommended) Visit [Releases]({% link releases/index.md %}) to download the CockroachDB {{ page.version.version }} archive for Windows. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell.
+- **Recommended:** Visit [Releases]({% link releases/index.md %}?filters=windows) to download a CockroachDB {{ page.version.version }} archive for Windows. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands]({% link {{ page.version.version }}/cockroach-commands.md %}) from any shell.
+- Instead of downloading the binary directly, you can use PowerShell to download and install CockroachDB:
+    1. Visit [Releases]({% link releases/index.md %}) and copy the link to the full CockroachDB binary you want to install.
+    1. Save the following PowerShell script and replace the following:
+        - `{ DOWNLOAD_URL }`: the download URL.
+        - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed.
 
-- Instead of downloading the binary directly, you can follow these steps to use PowerShell to download and install CockroachDB.
+            {% include_cached copy-clipboard.html %}
+            ~~~ powershell
+            $ErrorActionPreference = "Stop";
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach;
+            Invoke-WebRequest -Uri { DOWNLOAD_URL } -OutFile cockroach.zip;
+            Expand-Archive -Force -Path cockroach.zip;
+            Copy-Item -Force "cockroach/cockroach-{{ page.version.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:{ INSTALL_DIRECTORY };$Env:PATH += ";$env:{ INSTALL_DIRECTORY }"
+            ~~~
 
-1. Visit [Releases]({% link releases/index.md %}) and copy the link to the full CockroachDB binary you want to install.
-1. Save the following PowerShell script and replace the following:
-    - `{ DOWNLOAD_URL }`: the download URL.
-    - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed.
+    1. Run the PowerShell script. To run a PowerShell script from a file, use syntax like `powershell.exe -Command "{path_to_script}"`.
+
+    1. Check that the installation succeeded and that you can run `cockroach` commands:
 
         {% include_cached copy-clipboard.html %}
-        ~~~ powershell
-        $ErrorActionPreference = "Stop";
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach;
-        Invoke-WebRequest -Uri { DOWNLOAD_URL } -OutFile cockroach.zip;
-        Expand-Archive -Force -Path cockroach.zip;
-        Copy-Item -Force "cockroach/cockroach-{{ page.version.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:{ INSTALL_DIRECTORY };$Env:PATH += ";$env:{ INSTALL_DIRECTORY }"
+        ~~~shell
+        cockroach version
         ~~~
-
-1. Run the PowerShell script. To run a PowerShell script from a file, use syntax like `powershell.exe -Command "{path_to_script}"`.
-
-1. Check that the installation succeeded and that you can run `cockroach` commands:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach version
-    ~~~
-
-1. Keep up-to-date with CockroachDB releases and best practices:
-
-    {% include marketo-install.html uid="1" %}
 
 </section>
 
@@ -63,6 +57,7 @@ You can download and install CockroachDB for Windows in two ways. Either:
 <h2 id="install-kubernetes">Use Kubernetes</h2>
 
 To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), either with configuration files or the [Helm](https://helm.sh/) package manager, refer to [Orchestrate a local cluster with Kubernetes]({% link {{ page.version.version}}/orchestrate-a-local-cluster-with-kubernetes.md %}).
+
 </section>
 
 <section id="use-docker-windows" markdown="1" class="install-option">
@@ -102,11 +97,11 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
     docker pull {{ page.release_info.docker_image }}:{{ page.version.version }}
     ~~~
 
-1. Keep up-to-date with CockroachDB releases and best practices:
-
-    {% include marketo-install.html uid="2" %}
-
 </section>
+
+Keep up-to-date with CockroachDB releases and best practices:
+
+{% include marketo-install.html uid="1" %}
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
