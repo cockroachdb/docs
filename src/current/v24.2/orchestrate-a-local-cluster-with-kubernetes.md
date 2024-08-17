@@ -13,7 +13,7 @@ On top of CockroachDB's built-in automation, you can use a third-party [orchestr
 This page demonstrates a basic integration with the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
 {{site.data.alerts.callout_info}}
-To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
+To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.advanced }} cluster instead of orchestrating CockroachDB yourself, refer to the [Quickstart](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
 {{site.data.alerts.end}}
 
 ## Best practices
@@ -62,7 +62,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ minikube stop
+    minikube stop
     ~~~
 
     ~~~
@@ -76,7 +76,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ minikube delete
+    minikube delete
     ~~~
 
     ~~~
@@ -84,7 +84,9 @@ Choose a way to deploy and maintain the CockroachDB cluster:
     Machine deleted.
     ~~~
 
-    {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    To retain logs, copy them from each pod's `stderr` before deleting the cluster and all its resources. To access a pod's standard error stream, run `kubectl logs &lt;podname&gt;`.
+    {{site.data.alerts.end}}
 
 ## See also
 

@@ -23,10 +23,10 @@ This page describes:
 - The details of the [node shutdown sequence](#node-shutdown-sequence) from the point of view of the `cockroach` process on a CockroachDB node.
 - How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on CockroachDB {{ site.data.products.core }} clusters by coordinating load balancer, client application server, process manager, and cluster settings.
 - How to [perform node shutdown](#perform-node-shutdown) on CockroachDB {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
-- How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [CockroachDB {{ site.data.products.dedicated }} cluster](#decommissioning-and-draining-on-cockroachdb-dedicated).
+- How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [CockroachDB {{ site.data.products.advanced }} cluster](#decommissioning-and-draining-on-cockroachdb-advanced).
 
 {{site.data.alerts.callout_success}}
-This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a CockroachDB {{ site.data.products.dedicated }} cluster, refer to [Decommissioning and draining on CockroachDB {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
+This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a CockroachDB {{ site.data.products.advanced }} cluster, refer to [Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}](#decommissioning-and-draining-on-cockroachdb-advanced).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -344,7 +344,7 @@ After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the 
 </section>
 
 {{site.data.alerts.callout_success}}
-This guidance applies to manual deployments. In a Kubernetes deployment or a CockroachDB {{ site.data.products.dedicated }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes) and [Decommissioning and draining on CockroachDB {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
+This guidance applies to manual deployments. In a Kubernetes deployment or a CockroachDB {{ site.data.products.advanced }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes) and [Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}](#decommissioning-and-draining-on-cockroachdb-advanced).
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -872,13 +872,13 @@ Cockroach Labs recommends that you:
 
   A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting.
 
-<a id="decommissioning-and-draining-on-cockroachdb-dedicated"></a>
+<a id="decommissioning-and-draining-on-cockroachdb-advanced"></a>
 
-## Decommissioning and draining on CockroachDB {{ site.data.products.dedicated }}
+## Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}
 
-Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.dedicated }} cluster. CockroachDB {{ site.data.products.dedicated }} clusters have a `server.shutdown.connections.timeout` of 1800 seconds (30 minutes) and a termination grace period that is slightly longer. The termination grace period is not configurable, and adjusting `server.shutdown.connections.timeout` is generally not recommended.
+Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.advanced }} cluster. CockroachDB {{ site.data.products.advanced }} clusters have a `server.shutdown.connections.timeout` of 1800 seconds (30 minutes) and a termination grace period that is slightly longer. The termination grace period is not configurable, and adjusting `server.shutdown.connections.timeout` is generally not recommended.
 
-Client applications or application servers that connect to CockroachDB {{ site.data.products.dedicated }} clusters should use connection pools that have a maximum lifetime that is shorter than the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting.
+Client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters should use connection pools that have a maximum lifetime that is shorter than the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting.
 
 ## See also
 
