@@ -24,3 +24,7 @@ To learn more, refer to [PCI DSS Compliance in CockroachDB {{ site.data.products
 The Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_, defines standards for the storage and handling of personally-identifiable information (PII) related to patient healthcare and health insurance (also referred to as Private Health Information, or PHI).
 
 When configured appropriately for [PCI DSS Compliance]({% link cockroachcloud/pci-dss.md %}), CockroachDB {{ site.data.products.advanced }} advanced on AWS and GCP also meets the requirements of HIPAA. CockroachDB {{ site.data.products.advanced }} on Azure is not yet certified for compliance with HIPAA.
+
+## ISO 27001 and ISO 27017
+
+ISO 27001 and ISO 27017 define international standards for managing information security. ISO 27001 is a general standard, and ISO 27017 is a standard specific to cloud service providers and environments. These standards are governed jointly by the [International Organization for Standardization (ISO)](https://www.iso.org/home.html) and the [International Electrotechnical Commission (IEC)](https://www.iec.ch/homepage). CockroachDB {{ site.data.products.dedicated }} meets the requirements of ISO 27001 and ISO 27017.

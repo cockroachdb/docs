@@ -9,13 +9,7 @@ docs_area: stream_data
 
 CockroachDB supports the following sinks:
 
-- [Kafka](#kafka)
-- [Confluent Cloud](#confluent-cloud)
-- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
-- [Cloud Storage](#cloud-storage-sink) / HTTP
-- [Webhook](#webhook-sink)
-- [Azure Event Hubs](#azure-event-hubs)
-- [Apache Pulsar](#apache-pulsar) (in Preview)
+{% include {{ page.version.version }}/cdc/sink-list.md %}
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
