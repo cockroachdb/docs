@@ -85,7 +85,11 @@ The following Enterprise and Core sections outline how to create and configure e
 
 ## Configure a changefeed
 
-An {{ site.data.products.enterprise }} changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an {{ site.data.products.enterprise }} changefeed. For a step-by-step example connecting to a specific sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
+An {{ site.data.products.enterprise }} changefeed streams row-level changes in a [configurable format]({% link {{ page.version.version }}/changefeed-messages.md %}) to one of the following sinks:
+
+{% include {{ page.version.version }}/cdc/sink-list.md %}
+
+You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an {{ site.data.products.enterprise }} changefeed. For a step-by-step example connecting to a specific sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
 
 ### Create
 
