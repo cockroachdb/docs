@@ -213,6 +213,10 @@ To view statistics jobs, there are two options:
     (6 rows)
     ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/create-statistics-aost-limitation.md %}
+
 ## See also
 
 - [Cost-Based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %})
