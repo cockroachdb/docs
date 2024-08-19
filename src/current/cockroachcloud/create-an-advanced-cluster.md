@@ -72,11 +72,12 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 1. Click **Next: Capacity**.
 
-        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
+        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity).
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
+{% endcomment %}
 
-## Step 5. Configure cluster capacity{% endcomment %}
+## Step 4. Configure cluster capacity
 
 {% capture cap_per_vcpu %}{% include_cached {{ site.current_cloud_version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
@@ -113,7 +114,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 After your cluster is created, refer to:
 - [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %})
-- [Establish private connectivity]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink)
+- [Establish private connectivity]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity)
 
 Click **Next: Security**.
 

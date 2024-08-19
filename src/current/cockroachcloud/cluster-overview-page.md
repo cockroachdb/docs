@@ -77,8 +77,8 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 | Plan type | The [plan type]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
 | Regions   | The cluster's [region]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-3-configure-regions-and-nodes).         |
 | Nodes     | The [number of nodes]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-3-configure-regions-and-nodes) the cluster has and the status of each. |
-| Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
-| Storage   | The cluster's [storage per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
+| Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-4-configure-cluster-capacity).         |
+| Storage   | The cluster's [storage per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-4-configure-cluster-capacity).         |
 
 ## PCI ready (with Security add-on)
 

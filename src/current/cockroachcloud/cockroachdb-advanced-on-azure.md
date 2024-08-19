@@ -8,7 +8,7 @@ docs_area: deploy
 
 This page provides information about CockroachDB {{ site.data.products.advanced }} clusters on Microsoft Azure, including frequently asked questions and limitations. To create a cluster, refer to [Create a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}).
 
-To express interest or request more information about a given limitation, contact your Cockroach Labs account team. For more details, refer to the [FAQs](#faqs).
+To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
 
 ## Compute and storage
 
