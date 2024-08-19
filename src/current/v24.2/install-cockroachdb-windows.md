@@ -72,7 +72,7 @@ This section shows how to install CockroachDB on a Windows host using Docker. On
 Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.
 {{site.data.alerts.end}}
 
-Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform/) that contains binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform/) that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
 
 Intel binaries can run on ARM systems, but with a significant reduction in performance.
 
@@ -91,9 +91,9 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
 
     If you see an error, verify your Docker for Windows installation, then try again.
 
-1. [Share your local drives](https://docs.docker.com/docker-for-windows/#/shared-drives) so you can mount local directories as data volumes to persist node data after containers are stopped or deleted.
+1. [Enable synchronized drive sharing](https://docs.docker.com/desktop/synchronized-file-sharing/) so you can mount local directories as data volumes to persist node data after containers are stopped or deleted. so you can mount local directories as data volumes to persist node data after containers are stopped or deleted.
 
-1. Pull the image for CockroachDB from [Docker Hub](https://hub.docker.com/layers/{{page.release_info.docker_image}}/). <a id="win-docker-step3-{{ page.version.name }}"></a>. Releases are rolled out gradually, so the latest version may not yet be available. Using the `latest` tag is not recommended; to pull the latest release within a major version, use a tag like `latest-{{ page.version.version }}`. The following command always pulls the `{{ page.version.name }}` image.
+1. <a id="win-docker-step3-{{ page.version.name }}"></a>Pull the image for CockroachDB from [Docker Hub](https://hub.docker.com/layers/{{page.release_info.docker_image}}/). Releases are rolled out gradually, so the latest version may not yet be available. Using the `latest` tag is not recommended; to pull the latest release within a major version, use a tag like `latest-{{ page.version.version }}`. The following command always pulls the `{{ page.version.name }}` image.
 
     {% include_cached copy-clipboard.html %}
     ~~~ powershell
