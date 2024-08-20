@@ -85,4 +85,4 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
 ## What's next?
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

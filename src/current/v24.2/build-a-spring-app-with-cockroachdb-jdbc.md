@@ -35,7 +35,7 @@ Choose whether to run a local cluster or a free CockroachDB {{ site.data.product
 
 ### Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ### Set up your cluster connection
 
