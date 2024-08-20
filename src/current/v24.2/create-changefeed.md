@@ -57,7 +57,7 @@ Parameter | Description
 
 ### Sink URI
 
-This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
+To form the URI for each sink:
 
 ~~~
 '{scheme}://{host}:{port}?{query_parameters}'
@@ -65,80 +65,16 @@ This section provides example URIs for each of the sinks that CockroachDB change
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
+`scheme`           | The type of sink, e.g., [`kafka`]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [`gcpubsub`]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
+For more comprehensive detail of using and configuring each sink, refer to:
+
+{% include {{ page.version.version }}/cdc/sink-list.md %}
+
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
-
-#### Azure Event Hubs
-
-Example for an [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) URI:
-
-{% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
-
-#### Cloud Storage
-
-The following are example file URLs for each of the cloud storage schemes:
-
-{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
-
-For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
-
-#### Confluent Cloud
-
-Example of a [Confluent Cloud sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) URI:
-
-~~~
-'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}'
-~~~
-
-#### Google Cloud Pub/Sub
-
-Example of a Google Cloud Pub/Sub sink URI:
-
-~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
-~~~
-
-In CockroachDB v23.2 and later, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. For details on the changes to the message format, refer to [Pub/Sub sink messages]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-sink-messages).
-
-[Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for further consideration.
-
-#### Kafka
-
-Example of a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) URI:
-
-~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
-~~~
-
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
-{{site.data.alerts.end}}
-
-#### Webhook
-
-Example of a webhook URI:
-
-~~~
-'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
-~~~
-
-Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) for specifics on webhook sink configuration.
-
-#### Apache Pulsar
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-Example for an [Apache Pulsar sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) URI:
-
-{% include {{ page.version.version }}/cdc/apache-pulsar-uri.md %}
-
-Changefeeds emitting to a Pulsar sink do not support external connections or a number of changefeed options. For a full list, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) page.
 
 ### Query parameters
 
@@ -148,8 +84,8 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
-<a name="assume-role"></a>`ASSUME_ROLE` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage](#cloud-storage), [Google Cloud Pub/Sub](#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | {% include {{ page.version.version }}/misc/assume-role-description.md %}
-<a name="auth"></a>`AUTH` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage](#cloud-storage), [Google Cloud Pub/Sub](#google-cloud-pub-sub), [Azure Blob Storage](#cloud-storage) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
+<a name="assume-role"></a>`ASSUME_ROLE` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | {% include {{ page.version.version }}/misc/assume-role-description.md %}
+<a name="auth"></a>`AUTH` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), [Azure Blob Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
 <a name="api-key"></a>`api_key` | [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The API key created for the cluster in Confluent Cloud.
 <a name="api-secret"></a>`api_secret` | [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The API key's secret generated in Confluent Cloud. **Note:** This must be [URL-encoded](https://www.urlencoder.org/) before passing into the connection string.
 <a name="ca-cert"></a>`ca_cert` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`]({% link {{ page.version.version }}/string.md %})            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-schema-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
@@ -280,13 +216,6 @@ The following examples show the syntax for managing changefeeds and starting cha
 
 ### Create a changefeed connected to a sink
 
-You can connect a changefeed to the following sinks:
-
-- Kafka
-- Cloud storage / HTTP
-- Google Cloud Pub/Sub
-- Webhook
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
@@ -294,10 +223,9 @@ CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
   WITH updated, resolved;
 ~~~
 
-For guidance on the sink URI, refer to:
+You can connect a changefeed to the following sinks:
 
-- The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for general detail on query parameters and sink configuration.
-- The [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for instructions on setting up each supported cloud storage authentication.
+{% include {{ page.version.version }}/cdc/sink-list.md %}
 
 ### Create a changefeed that filters and transforms change data
 
