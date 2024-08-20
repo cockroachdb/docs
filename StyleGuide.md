@@ -1422,7 +1422,7 @@ Many popular code editors feature extensions that can highlight `TODO`s across t
 
 ## Word usage guidelines
 
-This section logs decisions about dictionary words to use and avoid.  Add specific guidelines we decide as a team to this table. Refer also to [Technical terminology](#technical-termilogy) for tecnical terms that may not be in a dictionary.
+This section logs decisions about dictionary words to use and avoid.  Add specific guidelines we decide as a team to this section. Refer also to [Technical terminology](#technical-termilogy) for tecnical terms that may not be in a dictionary.
 
 ### Directories and folders
 - Use "directory" to refer to a filesystem directory, either locally or in a VM. For example, "Compress the directory into a `zip` archive."
