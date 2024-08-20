@@ -4,7 +4,7 @@ summary: Learn how metrics can differ between third-party monitoring tools that 
 toc: true
 ---
 
-When using [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as the [metrics export feature](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics), discrepancies may be seen when comparing those metrics charts to ones found on the [Metrics dashboards]({% link {{ page.version.version }}/ui-overview.md %}#metrics) or [custom charts]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). This page explains why these different systems may yield different results.
+When using [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as the [metrics export feature]({% link cockroachcloud/export-metrics.md %}), discrepancies may be seen when comparing those metrics charts to ones found on the [Metrics dashboards]({% link {{ page.version.version }}/ui-overview.md %}#metrics) or [custom charts]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). This page explains why these different systems may yield different results.
 
 ## CockroachDB’s Timeseries Database
 
@@ -33,7 +33,7 @@ Datadog scrapes every 60s | 0 | - | - | - | - | - | 0
 
 Since Cockroach Labs does not own the third-party systems, we can not be expected to have intimate knowledge about how each system’s different query language and timeseries database works.
 
-The [metrics export feature](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) scrapes the `/_status/vars` endpoint every 30 seconds, and forwards the data along to the third-party system. The metrics export does no intermediate aggregation, downsampling, or modification of the timeseries values at any point. The raw metrics export data is at a 30-second resolution, but how that data is processed once received by the third party system is unknown to us.
+The [metrics export feature]({% link cockroachcloud/export-metrics.md %}) scrapes the `/_status/vars` endpoint every 30 seconds, and forwards the data along to the third-party system. The metrics export does no intermediate aggregation, downsampling, or modification of the timeseries values at any point. The raw metrics export data is at a 30-second resolution, but how that data is processed once received by the third party system is unknown to us.
 
 It is within our scope to understand and support our own timeseries database. If you have problems receiving metrics in your third-party system, [our support]({% link {{ page.version.version }}/support-resources.md %}) can help troubleshoot those problems. However, once the data is ingested into the third-party system, please contact your representative at that third-party company to support issues found on those systems. For example, assuming the raw metric data has been ingested as expected, Cockroach Labs does not support writing queries in third-party systems, such as using Datadog's Metrics Explorer or Datadog Query Language (DQL).
 
@@ -43,4 +43,4 @@ It is within our scope to understand and support our own timeseries database. If
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %})
-- [Export Metrics From a CockroachDB Dedicated Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics)
+- [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %})

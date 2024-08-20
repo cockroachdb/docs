@@ -70,7 +70,7 @@ The example uses a modified version of the PostgreSQL `french-towns-communes-fra
        psql frenchtowns -a -f frenchtowns.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) and create the {{ site.data.products.serverless }} cluster.
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -78,7 +78,7 @@ The example uses a modified version of the PostgreSQL `french-towns-communes-fra
 
 ### Step 1. Convert the PostgreSQL schema
 
-Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert the `frenchtowns` schema for compatibility with CockroachDB. The schema has three tables: `regions`, `departments`, and `towns`.
+Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to convert the `frenchtowns` schema for compatibility with CockroachDB. The schema has three tables: `regions`, `departments`, and `towns`.
 
 1. Dump the PostgreSQL `frenchtowns` schema with the following [`pg_dump`](https://www.postgresql.org/docs/15/app-pgdump.html) command:
 
@@ -87,12 +87,12 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        pg_dump --schema-only frenchtowns > frenchtowns_schema.sql
        ~~~
 
-1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) in the {{ site.data.products.cloud }} Console and [add a new PostgreSQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#convert-a-schema).
+1. Open the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) in the {{ site.data.products.cloud }} Console and [add a new PostgreSQL schema]({% link cockroachcloud/migrations-page.md %}#convert-a-schema).
 
-       After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#summary-report) shows that there are errors under **Required Fixes**. You must resolve these in order to migrate the schema to CockroachDB.
+       After conversion is complete, [review the results]({% link cockroachcloud/migrations-page.md %}#review-the-schema). The [**Summary Report**]({% link cockroachcloud/migrations-page.md %}#summary-report) shows that there are errors under **Required Fixes**. You must resolve these in order to migrate the schema to CockroachDB.
 
        {{site.data.alerts.callout_success}}
-       You can also [add your PostgreSQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the PostgreSQL database.
+       You can also [add your PostgreSQL database credentials]({% link cockroachcloud/migrations-page.md %}#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the PostgreSQL database.
        {{site.data.alerts.end}}
 
 1. `Missing user: postgres` errors indicate that the SQL user `postgres` is missing from CockroachDB. Click **Add User** to create the user.
@@ -107,9 +107,9 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
+1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
 
-       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
+       You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
 
 ### Step 2. Load the PostgreSQL data
 
@@ -287,7 +287,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
