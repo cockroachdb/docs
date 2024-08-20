@@ -110,7 +110,7 @@ Included in this guide:
   - [Tabs](#tabs)
     - [Linking into tabbed content](#linking-into-tabbed-content)
   - [Comments](#comments)
-- [Terminology and word usage](#terminology-and-word-usage)
+- [Word usage guidelines](#word-usage-guidelines)
 
 ## Style and tone
 
