@@ -1428,7 +1428,7 @@ This section logs decisions about dictionary words to use and avoid.  Add specif
 - Use "directory" to refer to a filesystem directory, either locally or in a VM. For example, "Compress the directory into a `zip` archive."
 - Use "folder" to refer to a folder within a UI, such as a web UI or an IDE. For example "Create a folder in your CockroachDB Cloud organization."
 
-## Technical terminology
+### Technical terminology
 This section logs decisions about software branding and terminology. In general, align third-party branding with that brand's usage. For example, the [PostgreSQL project](https://www.postgresql.org/) uses the word "PostgreSQL" with that capitalization. Add specific guidelines we decide as a team to this table.
 
 Term | Classification | Note
