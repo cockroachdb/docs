@@ -302,6 +302,25 @@ SHOW GRANTS ON TYPE status;
 (4 rows)
 ~~~
 
+{% include_cached copy-clipboard.html %}
+~~~ sql
+REVOKE ALL ON TYPE status FROM max;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON TYPE status;
+~~~
+
+~~~
+  database_name | schema_name | type_name | grantee | privilege_type | is_grantable
+----------------+-------------+-----------+---------+----------------+---------------
+  movr          | public      | status    | admin   | ALL            |      t
+  movr          | public      | status    | public  | USAGE          |      f
+  movr          | public      | status    | root    | ALL            |      t
+(3 rows)
+~~~
+
 ### Revoke role membership
 
 {% include_cached copy-clipboard.html %}

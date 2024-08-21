@@ -30,8 +30,6 @@ See [`DROP ROLE`: Synopsis]({% link {{ page.version.version }}/drop-role.md %}#s
 
 ## Example
 
-### Remove privileges
-
 All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
@@ -56,14 +54,14 @@ SHOW GRANTS ON customers FOR max;
 (1 row)
 ~~~
 
+We can test that dropping the user will fail unless all privileges are revoked (including [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)). Issue the following statement to revoke a subset of the user's privileges:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE CREATE,INSERT,UPDATE ON customers FROM max;
 ~~~
 
-### Remove default privileges
-
-In addition to removing a user's privileges, a user's [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges) must be removed prior to dropping the user. If you attempt to drop a user with modified default privileges, you will encounter an error like the following:
+If you attempt to drop a user with privileges remaining, you will encounter an error like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

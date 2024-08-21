@@ -159,7 +159,7 @@ SHOW GRANTS ON TABLE movr.public.*;
 (18 rows)
 ~~~
 
-To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
+To ensure that any time a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

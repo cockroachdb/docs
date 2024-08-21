@@ -30,7 +30,7 @@ By default, a new user belongs to the `public` role and has no privileges other 
 
 ## Create and manage roles
 
-For examples showing how to create and manage your cluster's users and roles, see the following documentation:
+For examples showing how to create and manage your cluster's users and roles, refer to the following documentation:
 
 Statement | Description
 ----------|------------
