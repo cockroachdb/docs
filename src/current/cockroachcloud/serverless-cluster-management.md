@@ -23,7 +23,7 @@ For each cluster, the following details display:
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Edit cluster**](#edit-cluster-capacity)
-    - [**Move cluster**](https://www.cockroachlabs.com/docs/cockroachcloud/folders#move-a-cluster-into-or-out-of-a-folder)
+    - [**Move cluster**]({% link cockroachcloud/folders.md %}#move-a-cluster-into-or-out-of-a-folder)
     - [**Delete cluster**](#delete-cluster)
     - **Get support**
 

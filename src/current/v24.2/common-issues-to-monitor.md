@@ -331,4 +331,4 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Admission Control]({% link {{ page.version.version }}/admission-control.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Alerts Page](https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page) (CockroachDB {{ site.data.products.dedicated }})
+- [Alerts Page]({% link cockroachcloud/alerts-page.md %}) (CockroachDB {{ site.data.products.dedicated }})

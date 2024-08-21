@@ -28,7 +28,7 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 
 - **CockroachDB cluster**: you must have access to one of the following:
 	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-	- A [CockroachDB {{ site.data.products.dedicated }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
+	- A [CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 
 ## Log in to a cluster's DB Console with SSO
