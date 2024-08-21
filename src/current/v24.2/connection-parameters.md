@@ -99,7 +99,7 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
+`--cluster=<routing-id>` | Identifies your tenant cluster on a multi-tenant host. For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
 `-c <session_variable>=<value>` |  Sets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) for the SQL session.
 `results_buffer_size` | Default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. Can also be set using the [`sql.defaults.results_buffer.size` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size). Can be set as a top-level query parameter or as an `options` parameter.
 

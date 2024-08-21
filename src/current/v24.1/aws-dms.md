@@ -39,7 +39,7 @@ Complete the following items before starting the DMS migration:
 
     This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- Manually create all schema objects in the target CockroachDB cluster. If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, you can [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema.
+- Manually create all schema objects in the target CockroachDB cluster. If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, you can [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema.
 
     - All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
 
@@ -211,7 +211,7 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ### AWS PrivateLink
 
-If using CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster using a private endpoint. To configure AWS PrivateLink with CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, see [Network Authorization](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#aws-privatelink).
+If using CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster using a private endpoint. To configure AWS PrivateLink with CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }}, see [Network Authorization]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
 ### `BatchApplyEnabled`
 
@@ -407,7 +407,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 ## See Also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
 - [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})

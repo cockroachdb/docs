@@ -105,7 +105,7 @@ The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-ot
        mysqlsh -uroot --sql --file {path}/world-db/world.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -162,7 +162,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new CockroachDB {{ site.data.products.standard }} cluster with the converted schema. Name the database `world`.
 
-       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
+       You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
        
 1. Open a SQL shell to the CockroachDB `world` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `world` database and **CockroachDB Client** option. It will look like:
 
@@ -402,7 +402,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})

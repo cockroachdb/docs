@@ -24,7 +24,7 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.advanced
 
 ### CMEK
 
-The [Customer-Managed Encryption Keys (CMEK)](https://www.cockroachlabs.com/docs/cockroachcloud/cmek) alert is triggered when the cluster node is unable to start due to CMEK key access failure.
+The [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) alert is triggered when the cluster node is unable to start due to CMEK key access failure.
 {% comment %}- Encrypted backup failed due to CMEK key access failure.{% endcomment %}
 
 If you receive the alert repeatedly, verify the following:
