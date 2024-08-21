@@ -115,9 +115,9 @@ Determine the size of the target CockroachDB cluster. To do this, consider your 
 
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for details:
 
-- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster.md %}#choose-resource-limits) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#choose-resource-limits) documentation to learn about how to limit your resource consumption.
+- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster.md %}#request-units) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) documentation to learn about how to limit your resource consumption.
 - For CockroachDB {{ site.data.products.advanced }}, refer to the [example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#use-a-pool-of-persistent-connections).
+- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#connection-pooling).
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 
@@ -150,13 +150,13 @@ The [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) autom
 
 #### Index creation best practices
 
-Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB. 
+Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB.
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data. 
+Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
 
 Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
@@ -320,7 +320,7 @@ The following is a high-level overview of the migration steps. The two approache
 
 To prioritize consistency and minimize downtime:
 
-1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Enable [**continuous replication**]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes) after it performs the initial load of data into CockroachDB. 
+1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Enable [**continuous replication**]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes) after it performs the initial load of data into CockroachDB.
 1. As the data is migrating, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for MOLT Fetch to finish replicating changes to CockroachDB.

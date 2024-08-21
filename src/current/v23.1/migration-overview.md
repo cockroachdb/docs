@@ -115,9 +115,9 @@ Determine the size of the target CockroachDB cluster. To do this, consider your 
 
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for details:
 
-- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster.md %}#choose-resource-limits) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#choose-resource-limits) documentation to learn about how to limit your resource consumption.
+- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster.md %}#request-units) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) documentation to learn about how to limit your resource consumption.
 - For CockroachDB {{ site.data.products.advanced }}, refer to the [example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#use-a-pool-of-persistent-connections).
+- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#sql-connection-handling).
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 
