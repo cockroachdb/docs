@@ -18,6 +18,12 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## August 19, 2024
+
+MOLT Fetch/Verify 1.1.6 is [available](#installation).
+
+- Fixed a Fetch bug where [`--table-exclusion-filter`]({% link molt/molt-fetch.md %}#schema-and-table-selection) was ignored when `--table-filter` and `--schema-filter` were set to the defaults.
+
 ## August 15, 2024
 
 MOLT Fetch/Verify 1.1.5 is [available](#installation).
