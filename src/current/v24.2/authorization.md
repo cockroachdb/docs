@@ -12,7 +12,7 @@ Procedures for managing access are covered in [Managing Access in CockroachDB {{
 {{site.data.alerts.callout_info}}
 The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users within CockroachDB {{ site.data.products.cloud }} organizations.
 
-Learn more: [Overview of the CockroachDB Cloud authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB Cloud authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model)
 {{site.data.alerts.end}}
 
 
