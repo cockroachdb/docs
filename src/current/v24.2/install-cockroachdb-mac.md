@@ -21,8 +21,6 @@ docs_area: deploy
 
 {% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
-{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p><p>CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
-
 {{site.data.alerts.callout_info}}
 CockroachDB on macOS is experimental and not suitable for production deployments.
 {{site.data.alerts.end}}
@@ -172,42 +170,11 @@ true
   <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
 </div>
 
-<div id="use-docker" class="install-option">
-  <h2 id="install-docker">Use Docker</h2>
+<div id="use-docker" markdown="1" class="install-option">
+<h2 id="install-docker">Use Docker</h2>
 
-  {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/install-docker-steps.md %}
 
-  {{ arch_note_docker }}
-
-  <ol>
-    <li>
-      <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
-    </li>
-    <li>
-      <p>Confirm that the Docker daemon is running in the background:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step2"><span class="nv language-shell mac-docker-step2" id="mac-docker-step2-{{ page.version.version }}" data-eventcategory="mac-docker-step2">$ </span>docker version</code></pre></div>
-      <p>If you do not see the server listed, start the <strong>Docker</strong> daemon.</p>
-    </li>
-    <li>
-      <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" class="mac-docker-step3" id="mac-docker-step3-{{page.version.version}}" data-eventcategory="mac-docker-step3">Docker Hub</a>:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-docker-step3"><span class="nv language-shell mac-docker-step3" id="mac-docker-step3-{{ page.version.version }}" data-eventcategory="mac-docker-step3">$ </span>docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}</code></pre>
-      </div>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="3" %}
-    </li>
-  </ol>
 </div>
 
 <div id="build-from-source" class="install-option">

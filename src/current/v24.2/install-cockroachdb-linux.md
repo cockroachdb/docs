@@ -114,46 +114,11 @@ true
   </ul>
 </div>
 
-<div id="use-docker-linux" class="install-option">
-  <h2 id="install-docker">Use Docker</h2>
+<div id="use-docker-linux" markdown="1" class="install-option">
+<h2 id="install-docker">Use Docker</h2>
 
-  {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/install-docker-steps.md %}
 
-  <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.</p>
-  <p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
-  <p>CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
-
-  <ol>
-    <li>
-      <p>Install <a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/">Docker for Linux</a>. Please carefully check that you meet all prerequisites.</p>
-    </li>
-    <li>
-      <p>Confirm that the Docker daemon is running in the background:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="linux-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step2"><span class="nv language-shell linux-docker-step2" id="linux-docker-step2-{{ page.version.version }}" data-eventcategory="linux-docker-step2">$ </span>docker version</code></pre></div>
-      <p>If you do not see the server listed, start the <strong>Docker</strong> daemon.</p>
-
-      {{site.data.alerts.callout_info}}On Linux, Docker needs sudo privileges.{{site.data.alerts.end}}
-    </li>
-    <li>
-      <p>Pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" class="linux-docker-step3" id="linux-docker-step3-{{page.version.version}}" data-eventcategory="linux-docker-step3">Docker Hub</a>:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="linux-docker-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-docker-step3"><span class="nv language-shell linux-docker-step3" id="linux-docker-step3-{{ page.version.version }}" data-eventcategory="linux-docker-step3">$ </span>sudo docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}</code></pre>
-      </div>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="2" %}
-    </li>
-  </ol>
 </div>
 
 <div id="build-from-source-linux" class="install-option">

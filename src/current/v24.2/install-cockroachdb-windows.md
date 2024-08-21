@@ -56,44 +56,12 @@ Use one of the options below to install CockroachDB. To upgrade an existing clus
 To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.
 </section>
 
-<section id="use-docker-windows" markdown="1" class="install-option">
+<div id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
-{{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/install-docker-steps.md %}
 
-For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM. CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments. Multi-platform images do not take up additional space on your Docker host.
-
-Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.
-
-1. Install <a href="https://docs.docker.com/docker-for-windows/install/">Docker for Windows</a>.
-
-    {{site.data.alerts.callout_success}}
-    Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. Please see the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.
-    {{site.data.alerts.end}}
-
-1. In PowerShell, confirm that the Docker daemon is running in the background:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ powershell
-    docker version
-    ~~~
-
-    If you see an error, start Docker for Windows.
-
-1. <a href="https://docs.docker.com/docker-for-windows/#/shared-drives">Share your local drives</a>. This makes it possible to mount local directories as data volumes to persist node data after containers are stopped or deleted.
-
-1. In PowerShell, pull the image for the {{page.release_info.version}} release of CockroachDB from <a href="https://hub.docker.com/r/{{page.release_info.docker_image}}/" class="win-docker-step3" id="win-docker-step3-{{page.version.version}}" data-eventcategory="win-docker-step3">Docker Hub</a>:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ powershell
-    docker pull {{page.release_info.docker_image}}:{{page.release_info.version}}
-    ~~~
-
-1. Keep up-to-date with CockroachDB releases and best practices:
-
-    {% include marketo-install.html uid="2" %}
-
-</section>
+</div>
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
