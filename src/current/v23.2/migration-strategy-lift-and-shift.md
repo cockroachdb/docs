@@ -72,7 +72,7 @@ It's important to decide which data formats, storage media, and database feature
 
 Data formats that can be imported by CockroachDB include:
 
-- [SQL]({% link {{ page.version.version }}/schema-design-overview.md %}) for the [schema import](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page).
+- [SQL]({% link {{ page.version.version }}/schema-design-overview.md %}) for the [schema import]({% link cockroachcloud/migrations-page.md %}).
 - [CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}) for table data.
 - [Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}) for table data.
 
@@ -121,7 +121,7 @@ For more information about import performance, see [Import Performance Best Prac
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Migrate with AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
 - [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
