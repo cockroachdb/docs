@@ -8,7 +8,7 @@ docs_area: manage
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
 {{site.data.alerts.end}}
 
 The CockroachDB {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:

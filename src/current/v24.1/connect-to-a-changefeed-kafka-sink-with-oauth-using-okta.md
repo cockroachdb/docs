@@ -22,7 +22,7 @@ An overview of the workflow involves:
 Before starting this tutorial, you will need:
 
 - A CockroachDB cluster. You can use a CockroachDB {{ site.data.products.cloud }} or CockroachDB {{ site.data.products.core }} cluster.
-    - If you are using CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) guide. For CockroachDB {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
+    - If you are using CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB]({% link cockroachcloud/quickstart.md %}) guide. For CockroachDB {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
 - An [Okta Developer account](https://developer.okta.com/signup/).
 - (Optional) A Kafka cluster. This tutorial includes [Kafka cluster setup](#step-3-create-a-kafka-sink). Note that this tutorial was tested with Kafka [version 2.8.2](https://kafka.apache.org/downloads). The Kafka cluster configuration may vary with different versions, but the Okta setup and changefeed creation will be the same.
 - {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}

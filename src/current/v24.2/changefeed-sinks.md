@@ -9,13 +9,7 @@ docs_area: stream_data
 
 CockroachDB supports the following sinks:
 
-- [Kafka](#kafka)
-- [Confluent Cloud](#confluent-cloud)
-- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
-- [Cloud Storage](#cloud-storage-sink) / HTTP
-- [Webhook](#webhook-sink)
-- [Azure Event Hubs](#azure-event-hubs)
-- [Apache Pulsar](#apache-pulsar) (in Preview)
+{% include {{ page.version.version }}/cdc/sink-list.md %}
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -247,7 +241,7 @@ Since CockroachDB v23.2, the `changefeed.new_pubsub_sink_enabled` cluster settin
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -258,7 +252,7 @@ URI Parameter      | Description
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
-`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts).
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
