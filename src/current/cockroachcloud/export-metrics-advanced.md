@@ -54,7 +54,7 @@ See [Service accounts]({% link cockroachcloud/managing-access.md %}#manage-servi
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-Exporting metrics to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on AWS. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on Azure, you can export metrics to [Azure Monitor](?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog](?filters=datadog-metrics-export) or [Prometheus](?filters=prometheus-metrics-export) instead.
+Exporting metrics to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on AWS. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on Azure, you can export metrics to [Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
 Enabling metrics export will send around 250 metrics per node to Amazon CloudWatch. Review the [Amazon CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your Amazon CloudWatch spend.
@@ -340,7 +340,7 @@ For CockroachDB {{ site.data.products.advanced }} clusters hosted on AWS and GCP
 Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.advanced }} cluster is in **[limited access]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
-Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. {{ site.data.products.advanced }} clusters hosted in AWS If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on AWS, you can export metrics to [Amazon CloudWatch](?filters=aws-metrics-export#enable-metrics-export). If it is hosted on GCP, you can export metrics to [Datadog](?filters=datadog-metrics-export#enable-metrics-export) or [Prometheus](?filters=prometheus-metrics-export#enable-metrics-export) instead.
+Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. {{ site.data.products.advanced }} clusters hosted in AWS If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on AWS, you can export metrics to [Amazon CloudWatch]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export#enable-metrics-export). If it is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export#enable-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export#enable-metrics-export) instead.
 
 To enable metrics export to Azure Monitor:
 
@@ -574,7 +574,7 @@ Where:
 
 ## Limitations
 
-- Metrics export to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.advanced }} clusters which are hosted on AWS. Similarly, metrics export to Azure is only available on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog](?filters=datadog-metrics-export) or [Prometheus](?filters=prometheus-metrics-export) instead.
+- Metrics export to Amazon CloudWatch is only available on CockroachDB {{ site.data.products.advanced }} clusters which are hosted on AWS. Similarly, metrics export to Azure is only available on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) instead.
 - Amazon CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your CockroachDB {{ site.data.products.advanced }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
 ## Troubleshooting
@@ -585,7 +585,7 @@ Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM p
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
-Your CockroachDB {{ site.data.products.advanced }} cluster must be running on AWS (not GCP or Azure) to make use of metrics export to Amazon CloudWatch. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on Azure, you can export metrics to [Azure Monitor](?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog](?filters=datadog-metrics-export) or [Prometheus](?filters=prometheus-metrics-export) instead.
+Your CockroachDB {{ site.data.products.advanced }} cluster must be running on AWS (not GCP or Azure) to make use of metrics export to Amazon CloudWatch. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on Azure, you can export metrics to [Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export). If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) instead.
 
 ## See Also
 
