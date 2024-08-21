@@ -33,12 +33,13 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 {{site.data.alerts.end}}
 
 ## Before you begin
-
+{% comment %}Commented out for Cloud 2.0 for now, awaiting confirmation about PCI Ready
 - Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
-    - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features]({% link cockroachcloud/cluster-management.md %}#configure-pci-ready-features-dedicated-advanced).
-    - CockroachDB {{ site.data.products.dedicated }} [Private Cluster]({% link cockroachcloud/private-clusters.md %}).
+    - CockroachDB {{ site.data.products.advanced }} clusters with [PCI-ready features]({% link cockroachcloud/cluster-management-advanced.md %}#configure-pci-ready-features-dedicated-advanced).
+    - CockroachDB {{ site.data.products.advanced }} [Private Clusters]({% link cockroachcloud/private-clusters.md %}).
 
     Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.dedicated }} on Azure or for CockroachDB {{ site.data.products.serverless }}.
+{% endcomment %}
 - You need a service account with the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}
