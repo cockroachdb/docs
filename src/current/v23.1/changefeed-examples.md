@@ -406,36 +406,36 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud pubsub subscriptions create movr-users-sub --topic=movr-users --topic-project=cockroach-project
     ~~~
 
-1. With the topic and subscription set up, you can now download your Service Account's key. Use the following command to specify where to download the json key file (`key.json`):
+1. With the topic and subscription set up, you can now download your Service Account credentials. Use the [`gcloud iam service-accounts keys create`](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create) command to specify where to download the JSON credential file (`credentials.json`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    gcloud iam service-accounts keys create key.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
+    gcloud iam service-accounts keys create credentials.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
     ~~~
 
-    Next, base64 encode your credentials key using the command specific to your platform.
+    Next, base64 encode the file that contains the entire JSON credential object using the command specific to your platform.
 
     If you're working on macOS:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cat key.json | base64
+    cat credentials.json | base64
     ~~~
 
     If you're working on Linux, run the following to ensure that lines are not wrapped in the output:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cat key.json | base64 -w 0
+    cat credentials.json | base64 -w 0
     ~~~
 
-    Copy the output so that you can add it to your [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
+    Copy the output so that you can add it to your [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement in the next step. When you create your changefeed, it is necessary that the credentials are base64 encoded before passing it in the URI.
 
-1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account:
+1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you have base64 encoded the entire credentials JSON object for your Service Account and then run:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
+    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded credentials}';
     ~~~
 
     You can include the `region` parameter for your topic, or use the [WITH `unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) page for more detail.

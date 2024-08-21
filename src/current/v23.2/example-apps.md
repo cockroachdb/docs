@@ -52,7 +52,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 
 | Driver/ORM Framework                       | Support level  | Example apps                                            |
 |--------------------------------------------+----------------+--------------------------------------------------------|
-| [JDBC](https://jdbc.postgresql.org/)       | Full           | [Quickstart](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)<br>[Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %})<br>[Roach Data (Spring Boot App)](build-a-spring-app-with-cockroachdb-jdbc.html)
+| [JDBC](https://jdbc.postgresql.org/)       | Full           | [Quickstart]({% link cockroachcloud/quickstart.md %})<br>[Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %})<br>[Roach Data (Spring Boot App)](build-a-spring-app-with-cockroachdb-jdbc.html)
 | [Hibernate](https://hibernate.org/orm/)    | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb-hibernate.md %})<br>[Roach Data (Spring Boot App)](build-a-spring-app-with-cockroachdb-jpa.html)
 | [jOOQ](https://www.jooq.org/)              | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb-jooq.md %})
 
