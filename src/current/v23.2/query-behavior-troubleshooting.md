@@ -21,7 +21,7 @@ Such long-running queries can hold locks for (practically) unlimited durations. 
 
 Refer to the performance tuning recipe for [identifying and unblocking a waiting transaction]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction).
 
-If you experience this issue on a CockroachDB {{ site.data.products.serverless }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits](https://www.cockroachlabs.com/docs/cockroachcloud/troubleshooting-page#hanging-or-stuck-queries).
+If you experience this issue on a CockroachDB {{ site.data.products.serverless }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits]({% link cockroachcloud/troubleshooting-page.md %}#hanging-or-stuck-queries).
 
 ### Identify slow queries
 
