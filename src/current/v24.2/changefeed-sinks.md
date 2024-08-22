@@ -38,6 +38,17 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 
 ## Kafka
 
+{{site.data.alerts.callout_info}}
+CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. If you are using a [testing release]({% link releases/index.md %}#patch-releases) of v24.2 or v24.2.0, we recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link v24.2/show-cluster-setting.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_kafka_sink.enabled = true;
+~~~
+
+If you are running v24.2.1 and later, the `changefeed.new_kafka_sink.enabled` cluster setting is enabled by default.
+{{site.data.alerts.end}}
+
 ### Kafka sink connection
 
 Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
