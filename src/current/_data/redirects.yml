@@ -246,12 +246,6 @@
     - 'learn-about-request-units.md'
   versions: ['cockroachcloud']
 
-- destination: molt/live-migration-service.md
-  sources:
-    - v23.1/live-migration-service.md
-    - v23.2/live-migration-service.md
-    - v24.1/live-migration-service.md
-
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
   versions: ['v21.1']
@@ -275,15 +269,15 @@
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
     
 - destination: molt/molt-fetch.md
+  sources: [':version/molt-fetch.md']
+
+- destination: molt/molt-overview.md
   sources:
-    - v23.2/molt-fetch.md
-    - v24.1/molt-fetch.md
+    - molt/live-migration-service.md
+    - :version/live-migration-service.md
 
 - destination: molt/molt-verify.md
-  sources:
-    - v23.1/molt-verify.md
-    - v23.2/molt-verify.md
-    - v24.1/molt-verify.md
+  sources: [':version/molt-verify.md']
 
 - destination: node-shutdown.md
   sources: ['cockroach-quit.md']

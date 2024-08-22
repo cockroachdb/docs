@@ -60,7 +60,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 #### Read Committed Isolation Limitations
 
-- Several capabilities are not yet supported with [Read Committed isolation](https://www.cockroachlabs.com/docs/v23.2/read-committed):
+- Several capabilities are not yet supported with [Read Committed isolation]({% link {{ page.version.version}}/read-committed.md %}):
   - Schema changes (e.g., [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}), [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level]({% link {{ page.version.version }}/read-committed.md %}#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
   - `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
   - [Shared locks]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) cannot yet be promoted to exclusive locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
@@ -456,6 +456,10 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
+### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
+
 ### DB Console may become inaccessible for secure clusters
 
 Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
@@ -709,3 +713,5 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 - {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}

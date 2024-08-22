@@ -297,7 +297,7 @@ Construct the ARN for your identity role. You will need this to add into the Tru
 arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix}
 ~~~
 
-You can find the AWS account ID and your cluster's ID using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api):
+You can find the AWS account ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -596,7 +596,7 @@ Construct the service account name for your identity service account. You will n
 crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
-You can find the GCP project ID and your cluster's ID using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api):
+You can find the GCP project ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -718,7 +718,9 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure-blob://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 ## Azure Blob Storage implicit authentication
 
@@ -803,7 +805,9 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
     BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~
 
+    {{site.data.alerts.callout_info}}
     {% include {{ page.version.version }}/misc/azure-blob.md %}
+    {{site.data.alerts.end}}
 
 </section>
 

@@ -57,7 +57,7 @@ Parameter | Description
 
 ### Sink URI
 
-This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
+To form the URI for each sink:
 
 ~~~
 '{scheme}://{host}:{port}?{query_parameters}'
@@ -65,80 +65,16 @@ This section provides example URIs for each of the sinks that CockroachDB change
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
+`scheme`           | The type of sink, e.g., [`kafka`]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [`gcpubsub`]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
+For more comprehensive detail of using and configuring each sink, refer to:
+
+{% include {{ page.version.version }}/cdc/sink-list.md %}
+
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
-
-#### Azure Event Hubs
-
-Example for an [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) URI:
-
-{% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
-
-#### Cloud Storage
-
-The following are example file URLs for each of the cloud storage schemes:
-
-{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
-
-For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) for considerations when using cloud storage.
-
-#### Confluent Cloud
-
-Example of a [Confluent Cloud sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) URI:
-
-~~~
-'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}'
-~~~
-
-#### Google Cloud Pub/Sub
-
-Example of a Google Cloud Pub/Sub sink URI:
-
-~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
-~~~
-
-In CockroachDB v23.2 and later, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. For details on the changes to the message format, refer to [Pub/Sub sink messages]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-sink-messages).
-
-[Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) for further consideration.
-
-#### Kafka
-
-Example of a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) URI:
-
-~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
-~~~
-
-{{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/cdc/kafka-vpc-limitation.md %}
-{{site.data.alerts.end}}
-
-#### Webhook
-
-Example of a webhook URI:
-
-~~~
-'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
-~~~
-
-Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) for specifics on webhook sink configuration.
-
-#### Apache Pulsar
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-Example for an [Apache Pulsar sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) URI:
-
-{% include {{ page.version.version }}/cdc/apache-pulsar-uri.md %}
-
-Changefeeds emitting to a Pulsar sink do not support external connections or a number of changefeed options. For a full list, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) page.
 
 ### Query parameters
 
@@ -148,8 +84,8 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
-<a name="assume-role"></a>`ASSUME_ROLE` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage](#cloud-storage), [Google Cloud Pub/Sub](#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | {% include {{ page.version.version }}/misc/assume-role-description.md %}
-<a name="auth"></a>`AUTH` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage](#cloud-storage), [Google Cloud Pub/Sub](#google-cloud-pub-sub), [Azure Blob Storage](#cloud-storage) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
+<a name="assume-role"></a>`ASSUME_ROLE` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | {% include {{ page.version.version }}/misc/assume-role-description.md %}
+<a name="auth"></a>`AUTH` | [Amazon S3]({% link {{ page.version.version }}/changefeed-sinks.md %}), [Google Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), [Azure Blob Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
 <a name="api-key"></a>`api_key` | [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The API key created for the cluster in Confluent Cloud.
 <a name="api-secret"></a>`api_secret` | [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The API key's secret generated in Confluent Cloud. **Note:** This must be [URL-encoded](https://www.urlencoder.org/) before passing into the connection string.
 <a name="ca-cert"></a>`ca_cert` | [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html) | [`STRING`]({% link {{ page.version.version }}/string.md %})            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-schema-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
@@ -184,6 +120,7 @@ Option | Value | Description
 <a name="confluent-schema-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.<br><br>{% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}<br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}<br><br>{% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
 <a name="cursor"></a>`cursor` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters)  | Emit any changes after the given timestamp. `cursor` does not output the current state of the table first. When `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>The changefeed will encounter an error if you specify a timestamp that is before the configured garbage collection window for the target table. (Refer to [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables).) With default garbage collection settings, this means you cannot create a changefeed that starts more than [the-default-MVCC-garbage-collection-interval]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) in the past.<br><br>You can use `cursor` to [start-a-new-changefeed-where-a-previous-changefeed-ended](#start-a-new-changefeed-where-another-ended).<br><br>Example: `cursor='1536242855577149065.0000000000'`
 <a name="diff"></a>`diff` | N/A |  Publish a [`before` field]({% link {{ page.version.version }}/changefeed-messages.md %}#wrapped-and-diff) with each message, which includes the value of the row before the update was applied. Changefeeds must use the `diff` option with the default [`wrapped` envelope](#envelope) to emit the `before` field.
+<a name="encode-json-value-null-as-object"></a><span class="version-tag">New in v24.2:</span> `encode_json_value_null_as_object` | N/A | Emit JSON `NULL` values as `{"__crdb_json_null__": true}` to distinguish these values from SQL `NULL` values. Refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}#json) page for an example.<br><br>**Note:** When this option is enabled, if the changefeed encounters the literal value `{"__crdb_json_null__": true}` in JSON, it will have the same representation as a JSON `NULL` value and a warning will be printed to the [`DEV` logging channel]({% link {{ page.version.version }}/logging.md %}#dev).
 <a name="end-time"></a>`end_time` | [Timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
 <a name="envelope"></a>`envelope` | `wrapped` / `bare` / `key_only` / `row` | `wrapped` the default envelope structure for changefeed messages containing an array of the primary key, a top-level field for the type of message, and the current state of the row (or `null` for deleted rows).<br><br>`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with `avro` format, `record` will replace the `after` key. **Note:** This is the default envelope format for [CDC-queries]({% link {{ page.version.version }}/cdc-queries.md %}). For an example, refer to [Filter-columns]({% link {{ page.version.version }}/cdc-queries.md %}#filter-columns).<br><br>`key_only` emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for [Kafka-sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds.<br><br>`row` emits the row without any additional metadata fields in the message. This envelope option is only supported in [Kafka-sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro` format](#format). <br><br>Refer to [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses) for more detail on message format.<br><br>Default: `envelope=wrapped`. Default for [CDC-queries]({% link {{ page.version.version }}/cdc-queries.md %}): `envelope=bare`.
 <a name="execution-locality"></a>`execution_locality` | Key-value pairs | Restricts the execution of a changefeed to nodes that match the defined locality filter requirements, e.g., `WITH execution_locality = 'region=us-west-1a,cloud=aws'`. <br><br>See [Run a changefeed job by locality]({% link {{ page.version.version }}/changefeeds-in-multi-region-deployments.md %}#run-a-changefeed-job-by-locality) for usage and reference detail.
@@ -198,12 +135,12 @@ Option | Value | Description
 <a name="lagging-ranges-threshold"></a>`lagging_ranges_threshold` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Set a duration from the present that determines the length of time a range is considered to be lagging behind, which will then track in the [`lagging_ranges`]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#lagging-ranges-metric) metric. Note that ranges undergoing an [initial scan](#initial-scan) for longer than the threshold duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease.<br><br>**Default:** `3m`
 <a name="lagging-ranges-polling-interval"></a>`lagging_ranges_polling_interval` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Set the interval rate for when lagging ranges are checked and the `lagging_ranges` metric is updated. Polling adds latency to the `lagging_ranges` metric being updated. For example, if a range falls behind by 3 minutes, the metric may not update until an additional minute afterward.<br><br>**Default:** `1m`
 <a name="metrics-label"></a>`metrics_label` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Define a metrics label to which the metrics for one or multiple changefeeds increment. All changefeeds also have their metrics aggregated.<br><br>The maximum length of a label is 128 bytes. There is a limit of 1024 unique labels.<br><br>`WITH metrics_label=label_name` <br><br>For more detail on usage and considerations, see [Using changefeed metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-<a name="min-checkpoint-frequency"></a>`min_checkpoint_frequency` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Controls how often nodes flush their progress to the [coordinating changefeed node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Changefeeds will wait for at least the specified duration before a flush to the sink. This can help you control the flush frequency of higher latency sinks to achieve better throughput. If this is set to `0s`, a node will flush as long as the high-water mark has increased for the ranges that particular node is processing. If a changefeed is resumed, then `min_checkpoint_frequency` is the amount of time that changefeed will need to catch up. That is, it could emit duplicate messages during this time. <br><br>**Note:** [`resolved`](#resolved) messages will not be emitted more frequently than the configured `min_checkpoint_frequency` (but may be emitted less frequently). Since `min_checkpoint_frequency` defaults to `30s`, you **must** configure `min_checkpoint_frequency` to at least the desired `resolved` message frequency if you require `resolved` messages more frequently than `30s`.<br><br>**Default:** `30s`
+<a name="min-checkpoint-frequency"></a>`min_checkpoint_frequency` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Controls how often nodes flush their progress to the [coordinating changefeed node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Changefeeds will wait for at least the specified duration before a flush to the sink. This can help you control the flush frequency of higher latency sinks to achieve better throughput. However, more frequent checkpointing can increase CPU usage. If this is set to `0s`, a node will flush messages as long as the high-water mark has increased for the ranges that particular node is processing. If a changefeed is resumed, then `min_checkpoint_frequency` is the amount of time that changefeed will need to catch up. That is, it could emit [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages) during this time. <br><br>**Note:** [`resolved`](#resolved) messages will not be emitted more frequently than the configured `min_checkpoint_frequency` (but may be emitted less frequently). If you require `resolved` messages more frequently than `30s`, you must configure `min_checkpoint_frequency` to at least the desired `resolved` message frequency. For more details, refer to [Resolved message frequency]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-timestamp-frequency).<br><br>**Default:** `30s`
 <a name="mvcc-timestamp"></a>`mvcc_timestamp` | N/A |  Include the [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 <a name="on-error"></a>`on_error` | `pause` / `fail` |  Use `on_error=pause` to pause the changefeed when encountering **non**-retryable errors. `on_error=pause` will pause the changefeed instead of sending it into a terminal failure state. **Note:** Retryable errors will continue to be retried with this option specified. <br><br>Use with [`protect_data_from_gc_on_pause`](#protect-data-from-gc-on-pause) to protect changes from [garbage collection]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).<br><br>If a changefeed with `on_error=pause` is running when a watched table is [truncated]({% link {{ page.version.version }}/truncate.md %}), the changefeed will pause but will not be able to resume reads from that table. Using [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) to drop the table from the changefeed and then [resuming the job]({% link {{ page.version.version }}/resume-job.md %}) will work, but you cannot add the same table to the changefeed again. Instead, you will need to [create a new changefeed](#start-a-new-changefeed-where-another-ended) for that table.<br><br>Default: `on_error=fail`
 <a name="protect-data-from-gc-on-pause"></a>`protect_data_from_gc_on_pause` | N/A |  This option is deprecated as of v23.2 and will be removed in a future release.<br><br>When a [changefeed is paused]({% link {{ page.version.version }}/pause-job.md %}), ensure that the data needed to [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}) is not garbage collected. If `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp records. It is also important to note that pausing and adding `protect_data_from_gc_on_pause` to a changefeed will not protect data if the [garbage collection]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) window has already passed. <br><br>Use with [`on_error=pause`](#on-error) to protect changes from garbage collection when encountering non-retryable errors. <br><br>Refer to [Protect Changefeed Data from Garbage Collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on protecting changefeed data.<br><br>**Note:** If you use this option, changefeeds that are left paused for long periods of time can prevent garbage collection. Use with the [`gc_protect_expires_after`](#gc-protect-expires-after) option to set a limit for protected data and for how long a changefeed will remain paused.
 <a name="pubsub-sink-config"></a>`pubsub_sink_config` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`. <br><br>**Note** that if either `Messages` or `Bytes` are nonzero, then a non-zero value for `Frequency` must be provided. <br><br>Refer to [Pub/Sub sink configuration]({% link {{ page.version.version }}/changefeed-sinks.md %}#pub-sub-sink-configuration) for more details on using this option.
-<a name="resolved"></a>`resolved` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Emits [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-messages) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If a duration is unspecified, all resolved timestamps are emitted as the high-water mark advances.<br><br>**Note:** If you set `resolved` lower than `30s`, then you **must** also set [`min_checkpoint_frequency`](#min-checkpoint-frequency) to at minimum the same value as `resolved`, because `resolved` messages may be emitted less frequently than `min_checkpoint_frequency`, but cannot be emitted more frequently.<br><br>Refer to [Resolved messages]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-messages) for more detail.
+<a name="resolved"></a>`resolved` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Emits [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-messages) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until the changefeed job has reached a checkpoint. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If a duration is unspecified, all resolved timestamps are emitted as the high-water mark advances.<br><br>**Note:** If you set `resolved` lower than `30s`, then you **must** also set [`min_checkpoint_frequency`](#min-checkpoint-frequency) to at minimum the same value as `resolved`, because `resolved` messages may be emitted less frequently than `min_checkpoint_frequency`, but cannot be emitted more frequently.<br><br>Refer to [Resolved messages]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-messages) for more detail.
 <a name="schema-change-events"></a>`schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) events for columns that have a non-`NULL` [`DEFAULT` value]({% link {{ page.version.version }}/default-value.md %}) or are [computed]({% link {{ page.version.version }}/computed-columns.md %}), and all [`DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) events.</li><li>`column_changes`: Include all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
 <a name="schema-change-policy"></a>`schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill), perform no logical backfills. The changefeed will not emit any messages about the schema change. </li><li>`stop`: For [schema changes with column backfill]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 <a name="split-column-families"></a>`split_column_families` | N/A | Use this option to create a changefeed on a table with multiple [column families]({% link {{ page.version.version }}/column-families.md %}). The changefeed will emit messages for each of the table's column families. See [Changefeeds on tables with column families]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}) for more usage detail.
@@ -279,13 +216,6 @@ The following examples show the syntax for managing changefeeds and starting cha
 
 ### Create a changefeed connected to a sink
 
-You can connect a changefeed to the following sinks:
-
-- Kafka
-- Cloud storage / HTTP
-- Google Cloud Pub/Sub
-- Webhook
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
@@ -293,10 +223,9 @@ CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
   WITH updated, resolved;
 ~~~
 
-For guidance on the sink URI, refer to:
+You can connect a changefeed to the following sinks:
 
-- The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for general detail on query parameters and sink configuration.
-- The [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for instructions on setting up each supported cloud storage authentication.
+{% include {{ page.version.version }}/cdc/sink-list.md %}
 
 ### Create a changefeed that filters and transforms change data
 
@@ -364,6 +293,24 @@ CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
 {% include {{ page.version.version }}/cdc/disable-replication-ttl.md %}
 
 For guidance on how to filter changefeed messages to emit [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) deletes only, refer to [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}#reference-ttl-in-a-cdc-query).
+
+### Disallow schema changes on tables to improve changefeed performance
+
+Use the `schema_locked` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}) to disallow [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
+
+Enable `schema_locked` on the watched table with the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE watched_table SET (schema_locked = true);
+~~~
+
+While `schema_locked` is enabled on a table, attempted schema changes on the table will be rejected and an error returned. If you need to run a schema change on the locked table, unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run as normal while `schema_locked = false`, but it will not benefit from the performance optimization.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE watched_table SET (schema_locked = false);
+~~~
 
 ### Manage a changefeed
 

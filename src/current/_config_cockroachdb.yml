@@ -1,7 +1,7 @@
 baseurl: /docs
-current_cloud_version: v24.1
+current_cloud_version: v24.2
 destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:
-  stable: v24.1
+  stable: v24.2
   dev: v24.2

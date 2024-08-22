@@ -212,7 +212,7 @@ For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) s
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -223,7 +223,7 @@ URI Parameter      | Description
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
-`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts).
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
@@ -261,9 +261,10 @@ For a list of compatible parameters and options, refer to [Parameters]({% link {
 
 ### Pub/Sub sink configuration
 
-The `pubsub_sink_config` option allows the changefeed flushing and retry behavior of your Pub/Sub sink to be configured.
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sub sink with the following:
 
-You can configure the following fields:
+- If you have enabled [`changefeed.new_pubsub_sink_enabled`](#google-cloud-pub-sub), set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Pub/Sub sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Setting `changefeed.sink_io_workers` will also affect changefeeds emitting to [webhook sinks](#webhook-sink) when `changefeed.new_webhook_sink_enabled` is set to `true`.
+- Set the `pubsub_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `pubsub_sink_config` option's configurable fields, refer to the following table and examples.
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
@@ -350,7 +351,7 @@ Examples of supported cloud storage sink URIs:
 ### Azure Blob Storage
 
 ~~~
-'azure-blob://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
 ~~~
 
 ### Google Cloud Storage
@@ -467,13 +468,13 @@ The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
-* There is no concurrency configurability.
 
 ### Webhook sink configuration
 
- The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a webhook sink with the following:
 
-The following details the configurable fields:
+- If you have enabled `changefeed.new_webhook_sink_enabled`, set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a webhook sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Setting `changefeed.sink_io_workers` will also affect changefeeds emitting to [Google Cloud Pub/Sub sinks](#google-cloud-pub-sub) when `changefeed.new_pubsub_sink_enabled` is set to `true`.
+- Set the `webhook_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `webhook_sink_config` option's configurable fields, refer to the following table and examples.
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------

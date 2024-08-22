@@ -6,13 +6,13 @@ docs_area: stream_data
 key: use-changefeeds.html
 ---
 
-Changefeeds emit messages as changes happen to watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
+Changefeeds generate and emit messages (on a per-key basis) as changes happen to the rows in watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
 
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
 - [Message envelopes](#message-envelopes): The structure of the changefeed message.
-- [Ordering and delivery guarantees](#ordering-and-delivery-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
+- [Ordering and delivery guarantees](#ordering-and-delivery-guarantees): CockroachDB's guarantees for a changefeed's message ordering and delivery.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
 - [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
 - [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
@@ -198,8 +198,8 @@ CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wr
 
 Changefeeds provide the following guarantees for message delivery to changefeed sinks:
 
-- [Per-key ordering](#per-key-ordering)
-- [At-least-once delivery](#at-least-once-delivery)
+- [Per-key ordering](#per-key-ordering) for the first emission of an event's message.
+- [At-least-once delivery](#at-least-once-delivery) per event message.
 
 {{site.data.alerts.callout_info}}
 Changefeeds do not support total message ordering or transactional ordering of messages.
@@ -207,11 +207,13 @@ Changefeeds do not support total message ordering or transactional ordering of m
 
 ### Per-key ordering
 
-Changefeeds provide a _per-key ordering guarantee_ for messages emitted to the sink. Once the changefeed has emitted a row with a timestamp, the changefeed will not emit any previously unseen versions of that row with a lower timestamp. Therefore, you will never receive a **new** change for that row at an earlier timestamp.
+Changefeeds provide a _per-key ordering guarantee_ for the **first emission** of a message to the sink. Once the changefeed has emitted a row with a timestamp, the changefeed will not emit any previously unseen versions of that row with a lower timestamp. Therefore, you will never receive a new change for that row at an earlier timestamp.
 
 For example, a changefeed can emit updates to rows `A` at timestamp `T1`, `B` at `T2`, and `C` at `T3` in any order.
 
-When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` **after** `A` at `T1`. However, `A` at `T3` could precede or follow `B` at `T2`. This is because there is no timestamp ordering between keys.
+When there are updates to rows `A` at `T1`, `B` at `T2`, and `A` at `T3`, the changefeed will always emit `A` at `T3` (for the first time) **after** emitting `A` at `T1` (for the first time). However, `A` at `T3` could precede or follow `B` at `T2`, because there is no timestamp ordering between keys.
+
+Under some circumstances, a changefeed will emit [duplicate messages](#duplicate-messages) of row updates. Changefeeds can emit duplicate messages in any order.
 
 As an example, you run the following sequence of SQL statements to create a changefeed:
 
@@ -264,7 +266,7 @@ As an example, you run the following sequence of SQL statements to create a chan
     {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
     ~~~
 
-    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will always be in the correct timestamp order.
+    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, if a changefeed starts to re-emit messages after the last [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}), it may not emit all duplicate messages between the first duplicate message and new updates to the table. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
 
     The `updated` option adds an `updated` timestamp to each emitted row. You can also use the [`resolved` option](#resolved-messages) to emit a `resolved` timestamp message to each Kafka partition, or to a separate file at a cloud storage sink. A `resolved` timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
@@ -288,7 +290,7 @@ CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
 
 ### At-least-once delivery
 
-Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it will re-emit all messages starting from the previous checkpoint to ensure every message is delivered at least once, but could be emitted more than once.
+Changefeeds also provide an _at-least-once delivery guarantee_, which means that each version of a row will be emitted once. Under some infrequent conditions a changefeed will emit duplicate messages. This happens when the changefeed was not able to emit all messages before reaching a checkpoint. As a result, it may re-emit some or all of the messages starting from the previous checkpoint to ensure that every message is delivered at least once, which could lead to some messages being delivered more than once.
 
 Refer to [Duplicate messages](#duplicate-messages) for causes of messages repeating at the sink.
 
@@ -320,7 +322,11 @@ For example, the checkpoints and changefeed pauses marked in this output show ho
 [checkpoint]
 ~~~
 
-With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. (Refer to [Per-key ordering](#per-key-ordering).)
+In this example, with duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table. (Refer to [Per-key ordering](#per-key-ordering).)
+
+{{site.data.alerts.callout_danger}}
+The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, there may be gaps in a sequence of duplicate messages for a key.
+{{site.data.alerts.end}}
 
 To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.).
 
@@ -340,19 +346,44 @@ In some unusual situations you may receive a delete message for a row without fi
 
 ## Resolved messages
 
-When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) in the changefeed have progressed to a specific point in time.
+When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until the changefeed job has reached a [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
 
 When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
 
 There are three different ways to configure resolved timestamp messages:
 
 - If you do not specify the `resolved` option at all, then the changefeed coordinator node will not send resolved timestamp messages.
-- If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
-- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed.
+- If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the changefeed job checkpoints and the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
 
-{{site.data.alerts.callout_info}}
-If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
-{{site.data.alerts.end}}
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE ... WITH resolved;
+    ~~~
+
+- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed. For example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE ... WITH resolved=30s;
+    ~~~
+
+### Resolved timestamp frequency
+
+The changefeed job's coordinating node will emit resolved timestamp messages once the changefeed has reached a checkpoint. The frequency of the checkpoints determine how often the resolved timestamp messages emit to the sink. To configure how often the changefeed checkpoints, you can set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option and [flush frequency]({% link {{ page.version.version }}/changefeed-sinks.md %}) (if flushing is configurable for your sink).
+
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating node. If you need resolved timestamp messages to emit from the changefeed more frequently than the `30s` default, then you must set `min_checkpoint_frequency` to at least the desired resolved timestamp frequency. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE ... WITH resolved=10s, min_checkpoint_frequency=10s;
+~~~
+
+When you configure the `min_checkpoint_frequency` and `resolved` options, there can be a tradeoff between changefeed message latency and cluster CPU usage.
+
+- Lowering these options will cause the changefeed to checkpoint and send resolved timestamp messages more frequently, which can add overhead to CPU usage in the cluster.
+- Raising these options will result in the changefeed checkpointing and sending resolved timestamp messages less frequently, which can cause latency in message delivery to the sink.
+
+For example, you can set `min_checkpoint_frequency` and `resolved` to `0s` so that the changefeed job checkpoints as frequently as possible and messages are sent immediately followed by the resolved timestamp. However, the frequent checkpointing will increase CPU usage in the cluster. If your application can tolerate a longer duration than `0s` between checkpoints, this will help to reduce the overhead on the cluster.
 
 ## Duplicate messages
 
@@ -365,7 +396,7 @@ Under some circumstances, changefeeds will emit duplicate messages to ensure the
 
 A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
 
-When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+When a changefeed must pause and then resume, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
 
 <img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
 

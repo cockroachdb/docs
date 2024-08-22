@@ -12,6 +12,12 @@
       "title": "MOLT Tools",
       "items": [
         {
+          "title": "Overview",
+          "urls": [
+            "/molt/molt-overview.html"
+          ]
+        },
+        {
           "title": "Schema Conversion Tool",
           "urls": [
             "/cockroachcloud/migrations-page.html"
@@ -27,12 +33,6 @@
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
-          ]
-        },
-        {
-          "title": "Live Migration Service",
-          "urls": [
-            "/molt/live-migration-service.html"
           ]
         }
       ]

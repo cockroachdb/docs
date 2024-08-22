@@ -12,28 +12,9 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
-{% endcomment %}
-
-### PL/pgSQL
-
-- It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
-- PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
-
-### UDFs and stored procedures
-
-- Routines cannot be invoked with named arguments, e.g., `SELECT foo(a => 1, b => 2);` or `SELECT foo(b := 1, a := 2);`. [#122264](https://github.com/cockroachdb/cockroach/issues/122264)
-- Routines cannot be created if they reference temporary tables. [#121375](https://github.com/cockroachdb/cockroach/issues/121375)
-- Routines cannot be created with unnamed `INOUT` parameters. For example, `CREATE PROCEDURE p(INOUT INT) AS $$ BEGIN NULL; END; $$ LANGUAGE PLpgSQL;`. [#121251](https://github.com/cockroachdb/cockroach/issues/121251)
-- Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
-- A `RECORD`-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
-
-### Physical cluster replication cut back to primary cluster
-
-{% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -211,8 +192,10 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ~~~
 
 ~~~
-ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.2
 ~~~
 
 [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
@@ -479,6 +462,10 @@ The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statemen
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
 
+#### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
@@ -486,15 +473,13 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 #### `ALTER CHANGEFEED` limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
-
-### Physical cluster replication
-
-{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ### Performance optimization
 

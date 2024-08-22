@@ -56,7 +56,7 @@ If latencies are consistently high, check for:
 
 [Compaction on the storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) uses CPU to run concurrent worker threads.
 
-- The [**CPU Percent**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#cpu-percent) graph on the Hardware and Overload dashboards shows the CPU consumption by the CockroachDB process, and excludes other processes on the node.
+- The [**CPU Utilization**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#cpu-utilization) graph on the Hardware and Overload dashboards shows the CPU consumption by the CockroachDB process, and excludes other processes on the node.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-cpu-percent.md %}
 
@@ -331,4 +331,4 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Admission Control]({% link {{ page.version.version }}/admission-control.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Alerts Page](https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page) (CockroachDB {{ site.data.products.dedicated }})
+- [Alerts Page]({% link cockroachcloud/alerts-page.md %}) (CockroachDB {{ site.data.products.dedicated }})

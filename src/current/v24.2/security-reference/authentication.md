@@ -9,7 +9,7 @@ This page give an overview of CockroachDB's security features for authenticating
 
 Instead, you might be looking for:
 
-- [Logging in to the CockroachDB {{ site.data.products.cloud }} web console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication).
+- [Logging in to the CockroachDB {{ site.data.products.cloud }} web console]({% link cockroachcloud/authentication.md %}).
 - [Accessing the DB console on CockroachDB {{ site.data.products.core }} clusters]({% link {{ page.version.version }}/ui-overview.md %}).
 
 ## Authentication configuration
@@ -106,7 +106,7 @@ This is convenient for quick usage and experimentation, but is not suitable for 
 
 CockroachDB {{ site.data.products.dedicated }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
 
-See [Managing Network Authorization for CockroachDB {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization).
+See [Managing Network Authorization for CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/network-authorization.md %}).
 
 ### CockroachDB Self-Hosted
 

@@ -91,6 +91,7 @@ Parameter | Description | Default value
 `sslkey` | Path to the [client private key]({% link {{ page.version.version }}/cockroach-cert.md %}), when `sslmode` is not `disable`. | Empty string.
 `password` | The SQL user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`). | Empty string
 `options` | [Additional options](#supported-options-parameters) to be passed to the server. | Empty string
+`results_buffer_size` | Default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. Can also be set using the [`sql.defaults.results_buffer.size` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size). Can be set as a top-level query parameter or as an `options` parameter.
 
 #### Supported `options` parameters
 
@@ -98,8 +99,9 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host]({% link cockroachcloud/architecture.md %}#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
 `-c <session_variable>=<value>` |  Sets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) for the SQL session.
+`results_buffer_size` | Default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. Can also be set using the [`sql.defaults.results_buffer.size` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-results-buffer-size). Can be set as a top-level query parameter or as an `options` parameter.
 
 {{site.data.alerts.callout_info}}
 Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/use/#connection-parameters) must be specified as `%20`.

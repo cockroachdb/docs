@@ -15,9 +15,9 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
+{% include latest-release-details.md %}
 
-Use one of the options below to install CockroachDB.
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 
 To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}).
 

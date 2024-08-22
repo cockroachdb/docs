@@ -22,7 +22,7 @@ This page describes:
 
 ### Enable rangefeeds
 
-Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+Changefeeds connect to a long-lived request called a _rangefeed_, which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
@@ -31,9 +31,9 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-{% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}
+Any created changefeeds will error until this setting is enabled. If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
 
-Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
+Enabling rangefeeds has a small performance cost (about a 5–10% increase in write latencies), whether or not the rangefeed is being used in a changefeed. When `kv.rangefeed.enabled` is set to `true`, a small portion of the latency cost is caused by additional write event information that is sent to the [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft-logs) and for [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}). The remainder of the latency cost is incurred once a changefeed is running; the write event information is reconstructed and sent to an active rangefeed, which will push the event to the changefeed.
 
 The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
@@ -63,6 +63,7 @@ To maintain a high number of changefeeds in your cluster:
 
 ### Considerations
 
+- [Pause]({% link {{ page.version.version }}/pause-job.md %}) running changefeed jobs before you start a [rolling upgrade process]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) to move to a later version of CockroachDB. For more details, refer to the [Upgrade CockroachDB version]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#pause-changefeed-jobs) page.
 - If you require [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
 - Many DDL queries (including [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}), [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations]({% link {{ page.version.version }}/change-data-capture-overview.md %}) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees) will still hold for as long as a changefeed [remains active]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed).
@@ -210,6 +211,8 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 ## See also
 
