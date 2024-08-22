@@ -61,7 +61,7 @@ Where:
 
 Perform the following steps to enable log export from your CockroachDB {{ site.data.products.advanced }} cluster to Amazon CloudWatch.
 
-1. Create the desired target Amazon CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you can skip this step. To send logs to more than one target log group, refer to the custom configuration option in step 9 below.
+1. Create the desired target Amazon CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you can skip this step. To send logs to more than one target log group, refer to the custom configuration option in step 8 below.
 
 1. Find your CockroachDB {{ site.data.products.advanced }} cluster ID:
 
@@ -590,7 +590,7 @@ Log messages received from CockroachDB {{ site.data.products.advanced }} nodes t
 
 Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 6 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your CockroachDB {{ site.data.products.advanced }} AWS account ID (as determined in step 3) and has permission to write to your specified log group in CloudWatch (as created in step 1).
 
-When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 9, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy. Whether you are using the default logging configuration or the custom configuration: be sure to supply this ARN to the `auth_principal` parameter, in the `--data` payload.
+When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 8, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy. Whether you are using the default logging configuration or the custom configuration: be sure to supply this ARN to the `auth_principal` parameter, in the `--data` payload.
 
 ### GCP Cloud Logging
 
