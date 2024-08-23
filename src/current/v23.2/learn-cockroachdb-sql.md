@@ -10,7 +10,7 @@ This tutorial guides you through some of the most essential CockroachDB SQL stat
 For a complete list of supported SQL statements and related details, see [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %}).
 
 {{site.data.alerts.callout_info}}
-This tutorial is for {{site.data.products.core}} users. If you are working with {{site.data.products.dedicated}} or {{site.data.products.serverless}}, you can run this tutorial against [a cluster running in the cloud](https://www.cockroachlabs.com/docs/cockroachcloud/learn-cockroachdb-sql).
+This tutorial is for {{site.data.products.core}} users. If you are working with {{site.data.products.dedicated}} or {{site.data.products.serverless}}, you can run this tutorial against [a cluster running in the cloud]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 {{site.data.alerts.end}}
 
 ## Start CockroachDB

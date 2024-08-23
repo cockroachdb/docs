@@ -60,11 +60,11 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 ### GCP Private Service Connect for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
 
 ### Azure Private Link for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
