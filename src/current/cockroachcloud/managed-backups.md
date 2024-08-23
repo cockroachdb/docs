@@ -27,9 +27,9 @@ You can configure the settings of managed backups depending on the tier of your 
 
 ### Basic clusters
 
-Cockroach Labs will take a managed backup every 24 hours. You can also disable managed backups. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
+Cockroach Labs will take a managed backup every 24 hours. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
 
-Once a cluster is deleted, Cockroach Labs retains the backup for 30 days. The retained backups are not available for restore using the Cloud Console. If an organization is deleted, you will lose access to all of the managed backups that Cockroach Labs has taken of the cluster after 30 days.
+Once a cluster is deleted, Cockroach Labs retains the backup for 30 days. If an organization is deleted, you will lose access to all of the managed backups that Cockroach Labs has taken of the cluster after 30 days.
 
 To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
 
@@ -53,7 +53,7 @@ You can set backup frequency to one of the following options:
 
 #### Retention
 
-You can set your retention duration **once**. The available retention options are:
+You can set your retention duration **once**. After you have adjusted the retention, the duration will only apply to new backups. The available retention options are:
 
 - 2 days
 - 7 days
