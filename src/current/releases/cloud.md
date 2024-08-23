@@ -8,8 +8,6 @@ docs_area: releases
 
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-For details on features that are not supported in CockroachDB {{ site.data.products.serverless }}, see [Unsupported Features in CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/serverless-unsupported-features.md %}).
-
 Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
@@ -188,7 +186,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-01-17-general-updates"> General updates </h3>
 
-- The single-page CockroachDB Cloud [Create cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) and [Edit cluster]({% link cockroachcloud/basic-cluster-management.md %}) have been updated to use multi-step wizards.
+- The single-page CockroachDB Cloud [Create cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) and [Edit cluster]({% link cockroachcloud/basic-cluster-management.md %}) have been updated to use multi-step wizards.
 
 ## January 17, 2024
 
@@ -412,7 +410,7 @@ In addition to many of the Feature Highlights in the [CockroachDB v23.1.0 Releas
 
 - CockroachDB {{ site.data.products.serverless }} [multi-region](https://www.cockroachlabs.com/docs/v23.1/multiregion-overview) is now publicly available in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases). Multi-region benefits like reduced latency and high availability are now achievable in conjunction with the ease-of-operation and automatic scaling advantages of the CockroachDB {{ site.data.products.serverless }} deployment model.
 
-    - [Regions available](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-faqs#what-regions-are-available-for-cockroachdb-serverless-clusters): 6 regions in AWS and 6 regions in GCP.
+    - [Regions available]({% link cockroachcloud/regions.md %}): 6 regions in AWS and 6 regions in GCP.
     - A primary region for the cluster is specified upon creation.
     - The cluster’s regional configuration applies to all databases by default, so it is not necessary to run [`ALTER DATABASE ... ADD REGION`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#add-region) to configure regions when adding a database to the cluster.
     - [`SURVIVE REGION FAILURE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#survive-zone-region-failure) is supported to achieve [region-level survival goals](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-overview#survival-goals).
@@ -686,7 +684,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2022-07-06-console-changes">Console changes</h3>
 
 - The [**Connect to your cluster**](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connect-to-the-database) dialog now includes code snippets for [supported languages and tools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools).
-- The [**Connect to your cluster**]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) dialog for clusters running CockroachDB [v22.1]({% link releases/v22.1.md %}) now loads more quickly.
+- The [**Connect to your cluster**]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) dialog for clusters running CockroachDB [v22.1]({% link releases/v22.1.md %}) now loads more quickly.
 - If users log in using an [SSO]({% link cockroachcloud/cloud-org-sso.md %}) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
 - Previously, CockroachDB {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.
 - The date and time selection on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages now defaults to UTC and has an improved design.
@@ -752,17 +750,17 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2022-04-20-console-changes">Console changes</h3>
 
 - [SQL user passwords](https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#change-a-sql-users-password) are now generated and saved automatically to simplify the connection experience.
-- When [connecting to your cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}), the CA certificate download is now hidden once you have already downloaded the certificate.
+- When [connecting to your cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}), the CA certificate download is now hidden once you have already downloaded the certificate.
 
 <h3 id="2022-04-20-doc-changes">Documentation changes</h3>
 
-- Improved CockroachDB {{ site.data.products.serverless }} [cluster connection]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) documentation, including a [third-party tool connection guide](https://www.cockroachlabs.com/docs/stable/connect-to-the-database), improved [Quickstart]({% link cockroachcloud/quickstart.md %}), and CRUD app examples.
+- Improved CockroachDB {{ site.data.products.serverless }} [cluster connection]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) documentation, including a [third-party tool connection guide](https://www.cockroachlabs.com/docs/stable/connect-to-the-database), improved [Quickstart]({% link cockroachcloud/quickstart.md %}), and CRUD app examples.
 
 ## April 4, 2022
 
 <h3 id="2022-04-04-console-changes">Console changes</h3>
 
-- You no longer need to download a CA certificate to [connect to a CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) cluster through the CockroachDB SQL client if your cluster is running [v21.2.5]({% link releases/v21.2.md %}) or later.
+- You no longer need to download a CA certificate to [connect to a CockroachDB {{ site.data.products.serverless }}]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) cluster through the CockroachDB SQL client if your cluster is running [v21.2.5]({% link releases/v21.2.md %}) or later.
 - When [creating a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}), the approximate monthly cost is now displayed in the **Summary** sidebar along with the hourly cost.
 
 ## March 7, 2022
@@ -876,7 +874,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2021-10-04-bug-fixes">Bug fixes</h3>
 
-- Fixed an error in the connection string for Windows users [connecting to CockroachDB {{ site.data.products.cloud }} Free (beta)]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) clusters.
+- Fixed an error in the connection string for Windows users [connecting to CockroachDB {{ site.data.products.cloud }} Free (beta)]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) clusters.
 
 <h3>Miscellaneous changes</h3>
 
@@ -950,7 +948,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2021-07-06-console-changes">Console changes</h3>
 
 - [Multi-region](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster#step-3-select-the-region-s) clusters can now be created through the Console. To learn more about creating a multi-region cluster, see [Planning your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster?filters=dedicated).
-- The **Connect** modal now has updated commands to make [connecting to your cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) a smoother experience on Mac, Linux, and Windows.
+- The **Connect** modal now has updated commands to make [connecting to your cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) a smoother experience on Mac, Linux, and Windows.
 - All CockroachDB {{ site.data.products.cloud }} users now have access to the [**Transactions** page]({% link cockroachcloud/transactions-page.md %}) in the Console.
 - Navigation on the **Clusters** page is now a vertical sidebar instead of horizontal tabs.
 - Added a tooltip to the **Upgrade** option in the **Action** Menu, which gives users more version-specific context.
@@ -977,7 +975,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - New users can now [sign up]({% link cockroachcloud/create-an-account.md %}) for CockroachDB {{ site.data.products.cloud }} with Github Authorization. Logging in with GitHub allows users to enforce [GitHub's two-factor authentication (2FA)](https://docs.github.com/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa) on their CockroachDB {{ site.data.products.cloud }} account. Current users can [switch their login method](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account#change-your-login-method) between email and GitHub.
 - When logging in fails due to user input, the error message now includes [login method](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account#change-your-login-method) as a potential reason for failure.
-- Previously, selecting a new cloud provider while [creating a cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) would reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
+- Previously, selecting a new cloud provider while [creating a cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) would reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
 
 <h3 id="2021-05-01-bug-fixes">Bug fixes</h3>
 
@@ -1028,7 +1026,7 @@ New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB
 
 New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB [v20.2.4]({% link releases/v20.2.md %}#v20-2-4).
 
-- [CockroachDB {{ site.data.products.cloud }} Free]({% link cockroachcloud/serverless-faqs.md %}) is now in beta. CockroachDB {{ site.data.products.cloud }} Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic. There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
+- CockroachDB {{ site.data.products.cloud }} Free is now in beta. CockroachDB {{ site.data.products.cloud }} Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic. There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
 
     You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
