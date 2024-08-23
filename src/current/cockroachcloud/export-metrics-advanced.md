@@ -340,7 +340,7 @@ For CockroachDB {{ site.data.products.advanced }} clusters hosted on AWS and GCP
 Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.advanced }} cluster is in **[limited access]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
-Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. {{ site.data.products.advanced }} clusters hosted in AWS If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on AWS, you can export metrics to [Amazon CloudWatch]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export#enable-metrics-export). If it is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export#enable-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export#enable-metrics-export) instead.
+Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.advanced }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.advanced }} cluster is hosted on AWS, you can export metrics to [Amazon CloudWatch]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export#enable-metrics-export). If it is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export#enable-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export#enable-metrics-export) instead.
 
 To enable metrics export to Azure Monitor:
 
@@ -359,14 +359,14 @@ To enable metrics export to Azure Monitor:
     cat ca.crt ca.key | awk '{printf "%s\\n", $0}'  > concatenated.pem
     ~~~
 
-1. To give access to the CockroachDB cluster to your Azure tenant, [create a Microsoft Entra application](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
+1. To give the CockroachDB cluster access to your Azure tenant, [create a Microsoft Entra application](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal). When registering the application, leave the optional **Redirect URI** empty since certificate-based authentication is being used, not browser-based authentication.
 
   1. Once the application is registered, upload the certificate file (`ca.crt`) created in step 2.
   1. From the **Overview** page for the Entra application, note the values for **Display Name**, **Application (client) ID**, and **Directory (tenant) ID**, which will be used in step 5.
 
 1. To allow Azure Monitor to receive metrics, [create an Application Insights resource](https://learn.microsoft.com/azure/azure-monitor/app/create-workspace-resource).
 
-  1. In the newly-created Application Insights resource, add a role assignment that assigns the Entra application (search for the **Display Name** from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
+  1. In the newly created Application Insights resource, add a role assignment that assigns the Entra application (search for the **Display Name** from step 3) to the role [Monitoring Metrics Publisher](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/monitor#monitoring-metrics-publisher).
   1. On the **Overview** page for the Application Insights resource, view the **Connection String**. Note the values for **InstrumentationKey** and **IngestionEndpoint**, which will be used in step 5.
 
 1. To enable metrics export for your CockroachDB {{ site.data.products.advanced }} cluster, issue the following [Cloud API]({% link cockroachcloud/cloud-api.md %}) command:
