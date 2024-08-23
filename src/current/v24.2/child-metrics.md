@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.metrics
 ---
 
-The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) enables the exporting of child metrics, which are additional [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) time-series with extra labels.
+The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) enables the exporting of child metrics, which are additional [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) time series with extra labels.
 
-This page provides details on various metrics and their potential child metrics, which are determined by the specific feature utilized by the cluster. The number of these child metrics can significantly increase based on their associated labels, also known as "high cardinality". Refer to the information here to understand the potential size of the Prometheus scrape payload for your workload when child metrics are enabled.
+The metrics and their potential child metrics are determined by the specific feature the cluster is using. The number of child metrics can significantly increase based on their associated labels, which increases cardinality. This page will help you understand the potential size of the Prometheus scrape payload for your workload when child metrics are enabled.
 
 ## Enable child metrics
 
@@ -20,7 +20,7 @@ SET CLUSTER SETTING server.child_metrics.enabled = true;
 
 ## All clusters
 
-An RPC (Remote Procedure Call) connection is a communication method used in distributed systems, like CockroachDB, to allow one program to request a service from a program located in another computer on a network without having to understand the network's details. In the context of CockroachDB, RPC connections are used for inter-node communication. For instance, if Node 1 sends a request to Node 2 and Node 2 dials back (sends request back to Node 1), it ensures that communication is healthy in both directions. This is referred to as a "bidirectionally connected" and "heartbeating" RPC connection.
+An RPC (Remote Procedure Call) connection is a communication method used in distributed systems, like CockroachDB, to allow one program to request a service from a program located in another computer on a network without having to understand the network's details. In the context of CockroachDB, RPC connections are used for inter-node communication. For instance, if Node 1 sends a request to Node 2, and Node 2 dials back (sends request back to Node 1), it ensures that communication is healthy in both directions. This is referred to as a "bidirectionally connected" and "heartbeating" RPC connection.
 
 When child metrics is enabled, for all clusters the `rpc.connection.*` metrics are exported per-peer with labels for `remote_node_id`, `remote_addr`, and `class`. The `class` label may have the following values: `system`, `default`, and `raft`. The cardinality increases with the number of nodes. An aggregated metric is also included.
 
@@ -96,7 +96,7 @@ sysbytes{store="1",node_id="1",tenant_id="system"} 41476
 
 When child metrics is enabled and [changefeeds with metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) are created on the cluster, the `changefeed.*` metrics are exported per changefeed metric label with a label for `scope`. The `scope` label may have the values set using the `metrics_label` option. The cardinality increases with the number of changefeed metric labels. An aggregated metric is also included.
 
-For example:
+For example, when you create two changefeeds with the metrics labels `employees` and `office_dogs`, the counter metric `changefeed_error_retries` exports child metrics with a `scope` for `employees` and `office_dogs`. In addition, the `default` scope will also be exported which includes changefeeds started without a metrics label.
 
 ~~~
  HELP changefeed_error_retries Total retryable errors encountered by all changefeeds
@@ -130,7 +130,9 @@ jobs_row_level_ttl_total_rows{node_id="1",relation="defaultdb_public_events_usin
 
 ## Metrics of type histogram
 
-When child metrics is enabled with changefeeds or row-level TTL jobs, be aware that metrics of type HISTOGRAM will increase cardinality quickly. For example, with two changefeeds with metrics labels, the histogram metric `changefeed_flush_hist_nanos` exports child metrics for each bucket for the following `scope` values: `default`,  `employees` and `office_dogs`:
+When child metrics is enabled with changefeeds or row-level TTL jobs, be aware that metrics of type HISTOGRAM will increase cardinality quickly.
+
+For example, when you create two changefeeds with the metrics labels `employees` and `office_dogs`, the histogram metric `changefeed_flush_hist_nanos` exports child metrics for each bucket for each metrics label. In addition, the `default` scope will also be exported which includes changefeeds started without a metrics label. Therefore, in this example, `changefeed_flush_hist_nanos` exports child metrics for each bucket for the scope values: `default`, `employees` and `office_dogs`:
 
 ~~~
 # HELP changefeed_flush_hist_nanos Time spent flushing messages across all changefeeds
