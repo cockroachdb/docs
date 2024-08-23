@@ -32,10 +32,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 {{site.data.alerts.end}}
 
 ### Export logs to Azure Monitor
-[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Export metrics to Azure Monitor
-[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### AWS PrivateLink for CockroachDB Serverless
 
@@ -55,8 +55,8 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-[Exporting metrics from CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/export-metrics.md %}) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+### Export metrics from CockroachDB {{ site.data.products.advanced }} clusters
+[Exporting metrics from CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}) to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_info}}
 Exporting metrics to Azure Monitor is in limited access. Refer to [Exporting metrics to Azure Monitor](#export-metrics-to-azure-monitor).
@@ -176,10 +176,6 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 ### Super regions
 
 [Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
-
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Show range information for a specific row
 

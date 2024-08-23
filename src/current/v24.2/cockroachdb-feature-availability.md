@@ -32,10 +32,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 {{site.data.alerts.end}}
 
 ### Export logs to Azure Monitor
-[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Export metrics to Azure Monitor
-[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### AWS PrivateLink for CockroachDB Serverless
 [Connecting privately to a multi-region CockroachDB {{ site.data.products.serverless }} cluster using AWS PrivateLink]({% link cockroachcloud/aws-privatelink.md %}?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
@@ -60,20 +60,20 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 ### GCP Private Service Connect for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
 
 ### Azure Private Link for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-[Exporting metrics from CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/export-metrics.md %}) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+### Export metrics from CockroachDB {{ site.data.products.advanced }} clusters
+[Exporting metrics from CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}) to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink.
 
-[Exporting metrics from CockroachDB {{ site.data.products.dedicated }} to Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview for clusters hosted on Azure. It is in general availability for clusters hosted on AWS and GCP.
+[Exporting metrics from CockroachDB {{ site.data.products.advanced }} to Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview for clusters hosted on Azure. It is in general availability for clusters hosted on AWS and GCP.
 
 {{site.data.alerts.callout_info}}
 Exporting metrics to Azure Monitor is in limited access. Refer to [Exporting metrics to Azure Monitor](#export-metrics-to-azure-monitor).
