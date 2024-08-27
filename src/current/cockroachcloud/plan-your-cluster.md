@@ -12,19 +12,11 @@ This page describes how to plan your CockroachDB {{ site.data.products.standard 
 
 This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.standard }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
 
-## Request Units
-
-{% include cockroachcloud/request-units.md %}
-
 ## Provisioned capacity
 
-Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. 
+The *compute* resources available to Standard clusters is provisioned and scaled using a *provisioned capacity* model based on *vCPUs* as the unit of measurement for compute. The amount of capacity required for a Standard cluster is entirely dependent on the scale and query profile of the workload, and may change over time as the workload evolves. Note that *storage capacity* in Standard is allocated as needed for the current data volume, so it’s not covered here under capacity provisioning. See section [Estimating storage pricing for Standard clusters](#estimating-storage-pricing-for-standard-clusters).
 
-Estimate your workload's peak vCPU needs by analyzing available historical data, adjusted for future changes, or by comparing with similar existing workloads. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. 
-
-You can scale the provisioned capacity up or down based on workload changes, allowing for efficient resource management and cost optimization.
-
-For [multi-region deployments](#multi-region-clusters), the single provisioned capacity value you configure for the cluster applies across all regions, acting as an overall capacity budget from which each region can draw depending on its processing requirements.
+It’s typical to roughly estimate the compute capacity needed for a workload before creating the Standard cluster and then easily adjust that capacity up or down based on observing the actual compute capacity consumed by the workload.
 
 ## Pricing
 
@@ -32,9 +24,12 @@ CockroachDB {{ site.data.products.standard }} pricing is determined by two compo
 
 ### Provisioned capacity pricing
 
-CockroachDB {{ site.data.products.standard }} processing is priced based on the provisioned capacity for the cluster over time, in increments of 500 RUs/sec. 
+The pricing per-vCPUs does not depend in any way on the workload. Standard vCPUs are priced at 60% of the price of Advanced vCPUs, with some slight variations depending on the Cloud provider and region. Since vCPUs are equivalent between Standard and Advanced on average, both plans require the same number of vCPUs on average, so total cluster cost for Standard is 60% of Advanced on average.
 
-Since costs are metered in near real-time, a change in the provisioned capacity value will be reflected in the cost for the cluster right away. The monthly bill for the cluster will be prorated to reflect the portion of the month during which the cluster exists.
+The minimum GCP price is $0.10 per vCPU-hr, which is $73/month.
+The minimum AWS price is $0.12 per vCPU-hr, which is $88/month.
+
+Workloads may vary significantly from the average, so the estimation challenge is one of predicting the actual number of vCPUs a workload may require, regardless of whether you’re considering Standard or Advanced.
 
 ### Storage pricing
 
