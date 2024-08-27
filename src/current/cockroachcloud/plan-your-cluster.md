@@ -14,7 +14,7 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 ## Provisioned capacity
 
-The *compute* resources available to Standard clusters is provisioned and scaled using a *provisioned capacity* model based on *vCPUs* as the unit of measurement for compute. The amount of capacity required for a Standard cluster is entirely dependent on the scale and query profile of the workload, and may change over time as the workload evolves. Note that *storage capacity* in Standard is allocated as needed for the current data volume, so it’s not covered here under capacity provisioning. See section [Estimating storage pricing for Standard clusters](#estimating-storage-pricing-for-standard-clusters).
+The *compute* resources available to Standard clusters is provisioned and scaled using a *provisioned capacity* model based on *vCPUs* as the unit of measurement for compute. The amount of capacity required for a Standard cluster is entirely dependent on the scale and query profile of the workload, and may change over time as the workload evolves. Note that *storage capacity* in Standard is allocated as needed for the current data volume, so it’s not covered here under capacity provisioning.
 
 It’s typical to roughly estimate the compute capacity needed for a workload before creating the Standard cluster and then easily adjust that capacity up or down based on observing the actual compute capacity consumed by the workload.
 
