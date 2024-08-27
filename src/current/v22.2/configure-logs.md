@@ -539,7 +539,7 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 ## Log buffering for network sinks
 
-{% include_cached new-in.html version="v22.2" %} Both [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) and [HTTP](#output-to-http-network-collectors) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
+{% include new-in.md version="v22.2" %} Both [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) and [HTTP](#output-to-http-network-collectors) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
 
 With log buffering configured, log messages are held in a buffer for a configurable time period or accumulated message size threshold before being written to the target log sink together as a batch. Log buffering helps to ensure consistent low-latency log message writes over the network even in high-traffic, high-contention scenarios.
 

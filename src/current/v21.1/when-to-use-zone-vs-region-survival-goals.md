@@ -4,7 +4,7 @@ summary: Learn how to use CockroachDB's improved multi-region user experience.
 toc: false
 ---
 
-{% include_cached new-in.html version="v21.1" %} [_Survival Goals_](multiregion-overview.html#survival-goals) dictate how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive.  All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
+{% include new-in.md version="v21.1" %} [_Survival Goals_](multiregion-overview.html#survival-goals) dictate how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive.  All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
 
 Allowed survival goals include:
 

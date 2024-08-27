@@ -23,7 +23,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - As of v21.2, certain `IMPORT TABLE` statements that defined the table schema inline are **deprecated**. These include running `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with any non-bundle format (`CSV`, `DELIMITED`, `PGCOPY`, or `AVRO`) data types. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
 - `IMPORT` can only import data to a new table. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html).
 - For instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-- `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). {% include_cached new-in.html version="v21.2" %} Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
+- `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). {% include new-in.md version="v21.2" %} Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
 
 {{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
@@ -62,7 +62,7 @@ The user must have the `CREATE` [privileges](security-reference/authorization.ht
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create.
-`table_elem_list` | The table schema you want to use.  
+`table_elem_list` | The table schema you want to use.
 `CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-location) of a SQL file containing the table schema.
 `file_location` | The [URL](#import-file-location) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).

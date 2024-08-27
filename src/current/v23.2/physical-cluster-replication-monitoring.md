@@ -9,7 +9,7 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} You can monitor a physical cluster replication stream using:
+{% include new-in.md version="v23.2" %} You can monitor a physical cluster replication stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
 - The [Physical Replication dashboard](#db-console) on the DB Console.

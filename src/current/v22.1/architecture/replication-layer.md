@@ -70,13 +70,13 @@ Non-voting replicas can be configured via [zone configurations through `num_vote
 
 ##### Overview
 
-{% include_cached new-in.html version="v22.1" %} When individual [ranges](overview.html#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
+{% include new-in.md version="v22.1" %} When individual [ranges](overview.html#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely.
 
 From a user's perspective, this means that if a [SQL query](sql-layer.html) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica](overview.html#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard](../ui-replication-dashboard.html) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages](../ui-debug-pages.html). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
 
 This feature is designed to increase the availability of your CockroachDB clusters by making them more robust to transient errors.
 
-For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console](../ui-overview.html): 
+For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console](../ui-overview.html):
 
 - The [**Replication** dashboard](../ui-replication-dashboard.html).
 - The [**Advanced Debug** page](../ui-debug-pages.html). From there you can view the **Problem Ranges** page, which lists the range replicas whose circuit breakers were tripped. You can also view the **Range Status** page, which displays the circuit breaker error message for a given range.

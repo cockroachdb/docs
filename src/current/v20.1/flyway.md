@@ -8,13 +8,13 @@ This page walks you through a series of simple database schema changes using Fly
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="xz4j5tU0ZRU" %}
+{% include youtube.md video_id="xz4j5tU0ZRU" %}
 
 ## Before You Begin
 
 Before you begin, do the following:
 
-1. [Install CockroachDB](install-cockroachdb.html) and [start a secure cluster](secure-a-cluster.html).    
+1. [Install CockroachDB](install-cockroachdb.html) and [start a secure cluster](secure-a-cluster.html).
 1. Download the latest version of the [Flyway command-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB v20.1 is fully compatible with Flyway versions 6.4.2 and greater.
 
 ## Step 1. Configure Flyway connect to CockroachDB
@@ -187,4 +187,3 @@ If you run into problems, please file an issue on the [Flyway issue tracker](htt
 + [Client connection parameters](connection-parameters.html)
 + [Third-Party Database Tools](third-party-database-tools.html)
 + [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-

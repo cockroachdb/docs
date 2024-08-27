@@ -29,7 +29,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Storage Dashboard](ui-storage-dashboard.html) has metrics about storage capacity and file descriptors.
 - [Replication Dashboard](ui-replication-dashboard.html) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 - [Changefeeds Dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
-- {% include_cached new-in.html version="v21.2" %} [Overload Dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). 
+- {% include new-in.md version="v21.2" %} [Overload Dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html).
 
 ### Databases
 
@@ -72,7 +72,7 @@ If your CockroachDB cluster is behind a load balancer, you may wish to proxy you
 You can accomplish this using one of these methods:
 
 - Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](ui-debug-pages.html#license-and-node-information) page to select a different node to proxy to.
-- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`. 
+- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`.
 
 ## DB Console security considerations
 

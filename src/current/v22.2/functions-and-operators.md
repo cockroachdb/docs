@@ -47,7 +47,7 @@ The following table lists the operators that look like built-in functions but ha
 
 ## User-defined functions
 
-{% include_cached new-in.html version="v22.2" %}  In addition to the built-in functions described in the following sections, CockroachDB supports user-defined functions. For details, see [User-Defined Functions](user-defined-functions.html).
+{% include new-in.md version="v22.2" %}  In addition to the built-in functions described in the following sections, CockroachDB supports user-defined functions. For details, see [User-Defined Functions](user-defined-functions.html).
 
 ## Built-in functions
 

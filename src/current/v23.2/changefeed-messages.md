@@ -516,11 +516,11 @@ There are several ways to define messages, filter different types of message, or
 
 ### Prevent changefeeds from emitting row-level TTL deletes
 
-{% include_cached new-in.html version="v23.2" %} To prevent changefeeds from emitting deletes issued by all [TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}) on a cluster, set the `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
+{% include new-in.md version="v23.2" %} To prevent changefeeds from emitting deletes issued by all [TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}) on a cluster, set the `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 
 ### Disable changefeeds from emitting messages
 
-{% include_cached new-in.html version="v23.2" %} To prevent changefeeds from emitting messages for any changes (e.g., `INSERT`, `UPDATE`) issued to watched tables during that session, set the `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/session-variables.md %}) to `true`.
+{% include new-in.md version="v23.2" %} To prevent changefeeds from emitting messages for any changes (e.g., `INSERT`, `UPDATE`) issued to watched tables during that session, set the `disable_changefeed_replication` [session variable]({% link {{ page.version.version }}/session-variables.md %}) to `true`.
 
 ### Define the change data emitted to a sink
 
@@ -625,4 +625,3 @@ aebb80a6-eceb-4d10-9d9a-f26270188114,washington dc,Kenneth Miller,52393 Stephen 
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %})
-

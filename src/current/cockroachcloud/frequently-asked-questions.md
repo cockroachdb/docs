@@ -171,7 +171,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 For a detailed comparison of CockroachDB's SLA versus the major Cloud Service Provider databases, watch the following video:
 
-{% include_cached youtube.html video_id="NXAsCinvgM0" %}
+{% include youtube.md video_id="NXAsCinvgM0" %}
 
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 

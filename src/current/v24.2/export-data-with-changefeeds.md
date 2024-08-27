@@ -59,7 +59,7 @@ When the scan has completed you will find the output shows `succeeded` in the `s
 
 For a demo on how to use changefeeds to export large amounts of data, watch the following video:
 
-{% include_cached youtube.html video_id="UXsKuXbkjws" %}
+{% include youtube.md video_id="UXsKuXbkjws" %}
 
 ## See also
 

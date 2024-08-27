@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v23.2" %} The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+{% include new-in.md version="v23.2" %} The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 

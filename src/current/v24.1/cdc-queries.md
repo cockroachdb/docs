@@ -505,7 +505,7 @@ CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides
 
 For a demo on how to harness CDC Queries to filer and produce JSON events, watch the following video:
 
-{% include_cached youtube.html video_id="mea4czXi7tI" %}
+{% include youtube.md video_id="mea4czXi7tI" %}
 
 ## See also
 

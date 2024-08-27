@@ -211,7 +211,7 @@ CockroachDB supports two backup features that use a node's locality to determine
 
 For practical examples of running backup and restore jobs, watch the following video:
 
-{% include_cached youtube.html video_id="t_ocOi_iYQ8" %}
+{% include youtube.md video_id="t_ocOi_iYQ8" %}
 
 ## See also
 

@@ -13,7 +13,7 @@ This doc provides information about how to take and restore encrypted backups in
 
 - [Using AWS Key Management Service (KMS)](#aws-kms-uri-format)
 - [Using Google Cloud Key Management Service (KMS)](#google-cloud-kms-uri-format)
-- {% include_cached new-in.html version="v23.1" %} [Using Azure Key Vault](#azure-key-vault-uri-format)
+- {% include new-in.md version="v23.1" %} [Using Azure Key Vault](#azure-key-vault-uri-format)
 - [Using a passphrase](#use-a-passphrase)
 
 {% include {{ page.version.version }}/backups/support-products.md %}
@@ -67,7 +67,7 @@ See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/creat
 
 #### Azure Key Vault URI format
 
-{% include_cached new-in.html version="v23.1" %} The Azure Key Vault URI must use one of two formats:
+{% include new-in.md version="v23.1" %} The Azure Key Vault URI must use one of two formats:
 
 - Explicit authentication using the `AUTH=specified` parameter (or omitting this, as it is the default option) with the tenant ID, client ID, client secret, and key vault name parameters:
 
@@ -222,7 +222,7 @@ RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 #### Take an encrypted Azure Blob Storage backup
 
-{% include_cached new-in.html version="v23.1" %} To take an encrypted backup with Azure KMS, use the `kms` [option]({% link {{ page.version.version }}/backup.md %}#options):
+{% include new-in.md version="v23.1" %} To take an encrypted backup with Azure KMS, use the `kms` [option]({% link {{ page.version.version }}/backup.md %}#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -232,7 +232,7 @@ BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={ac
 
 #### Take a locality-aware backup with kms encryption
 
-{% include_cached new-in.html version="v23.1" %} To take a [locality-aware backup with kms encryption](#locality-aware-backup-with-kms-encryption), use the `kms` option to specify a comma-separated list of KMS URIs:
+{% include new-in.md version="v23.1" %} To take a [locality-aware backup with kms encryption](#locality-aware-backup-with-kms-encryption), use the `kms` option to specify a comma-separated list of KMS URIs:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -284,7 +284,7 @@ database_name | parent_schema_name |      object_name       | object_type | back
 
 #### Restore from an encrypted Azure Blob Storage backup
 
-{% include_cached new-in.html version="v23.1" %} To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
+{% include new-in.md version="v23.1" %} To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

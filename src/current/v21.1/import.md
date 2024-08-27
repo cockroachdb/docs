@@ -322,7 +322,7 @@ WITH
 
 ### Import a limited number of rows
 
-{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include new-in.md version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
@@ -495,7 +495,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include new-in.md version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 

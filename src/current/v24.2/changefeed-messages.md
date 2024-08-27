@@ -622,7 +622,7 @@ aebb80a6-eceb-4d10-9d9a-f26270188114,washington dc,Kenneth Miller,52393 Stephen 
 
 ### JSON
 
-{% include_cached new-in.html version="v24.2" %} To distinguish between JSON `NULL` values and SQL `NULL` values in changefeed messages, you can use the [`encode_json_value_null_as_object` option]({% link {{ page.version.version }}/create-changefeed.md %}#encode-json-value-null-as-object) with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}). When you enable `encode_json_value_null_as_object`, JSON `NULL` values will emit as `{"__crdb_json_null__": true}`.
+{% include new-in.md version="v24.2" %} To distinguish between JSON `NULL` values and SQL `NULL` values in changefeed messages, you can use the [`encode_json_value_null_as_object` option]({% link {{ page.version.version }}/create-changefeed.md %}#encode-json-value-null-as-object) with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}). When you enable `encode_json_value_null_as_object`, JSON `NULL` values will emit as `{"__crdb_json_null__": true}`.
 
 For example, the following `test` table has a primary key column and a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column. The `INSERT` adds `NULL` values in each column. A changefeed without the option enabled will not distinguish between the SQL and JSON `NULL` values. With the `encode_json_value_null_as_object` option enabled, the changefeed emits the JSON `NULL` as `{"__crdb_json_null__": true}`:
 

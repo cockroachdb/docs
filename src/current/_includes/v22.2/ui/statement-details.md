@@ -18,7 +18,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 - **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
 - **Last execution time**: The timestamp when the statement was last executed.
 - **Fingerprint ID**: The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistic`s]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
-  
+
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
 <img src="{{ 'images/v22.2/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
@@ -65,7 +65,7 @@ To display the plan that was executed, click the plan gist. For the plan gist `A
 
 #### Insights
 
-{% include_cached new-in.html version="v22.2" %} The plan table displays the number of insights related to the plan. If a plan has at least 1 insight, when you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
+{% include new-in.md version="v22.2" %} The plan table displays the number of insights related to the plan. If a plan has at least 1 insight, when you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
 
 The following screenshot shows 1 insight found after running the query discussed in [Overview](#overview) 6 or more times:
 

@@ -25,7 +25,7 @@ In v22.2 and above, CockroachDB introduces a new [system-level privilege model](
 There is continued support for the [legacy privilege model](#legacy-privilege-model) for changefeeds in v23.1, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all changefeeds.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.1" %} To create a changefeed with `EXPERIMENTAL CHANGEFEED FOR`, a user must have the `SELECT` privilege on the changefeed's source tables.
+{% include new-in.md version="v23.1" %} To create a changefeed with `EXPERIMENTAL CHANGEFEED FOR`, a user must have the `SELECT` privilege on the changefeed's source tables.
 
 You can [grant]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-specific-tables-in-a-database) a user the `SELECT` privilege to allow them to create core changefeeds on a specific table:
 

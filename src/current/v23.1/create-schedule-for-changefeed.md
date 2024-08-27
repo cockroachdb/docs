@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v23.1" %} `CREATE SCHEDULE FOR CHANGEFEED` allows you to create a scheduled changefeed to export data out of CockroachDB. Scheduled changefeeds have the scale, observability, and endpoint sink options that changefeed jobs include, with the convenience of setting a regular schedule. A changefeed job created with `CREATE SCHEDULE FOR CHANGEFEED` performs a one-time table scan using the [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) functionality to create an export of your table data.
+{% include new-in.md version="v23.1" %} `CREATE SCHEDULE FOR CHANGEFEED` allows you to create a scheduled changefeed to export data out of CockroachDB. Scheduled changefeeds have the scale, observability, and endpoint sink options that changefeed jobs include, with the convenience of setting a regular schedule. A changefeed job created with `CREATE SCHEDULE FOR CHANGEFEED` performs a one-time table scan using the [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) functionality to create an export of your table data.
 
 For more detail on using changefeeds to create an export of your table data, see [Export Data with Changefeeds]({% link {{ page.version.version }}/export-data-with-changefeeds.md %}).
 

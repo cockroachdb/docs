@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v23.2" %} The `ALTER VIRTUAL CLUSTER` statement initiates a cutover in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
+{% include new-in.md version="v23.2" %} The `ALTER VIRTUAL CLUSTER` statement initiates a cutover in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 

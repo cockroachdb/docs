@@ -78,7 +78,7 @@ For examples showing how to use the `DELIMITED DATA` format, see the [Examples](
 
 You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `<option>  [= <value>]`.
 
-Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             
+Key                 | <div style="width:130px">Context</div> | Value
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**. <br><br> Example: To use tab-delimited values: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t';`
 `comment`              | `CSV DATA `     | The unicode character that identifies rows to skip. <br><br> Example: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH comment = '#';`
@@ -135,7 +135,7 @@ Before using `IMPORT INTO`, you should have:
 - `random()`
 - `gen_random_uuid()`
 - `unique_rowid()`
-- {% include_cached new-in.html version="v21.1" %} `nextval()`
+- {% include new-in.md version="v21.1" %} `nextval()`
 
 ### Available storage
 

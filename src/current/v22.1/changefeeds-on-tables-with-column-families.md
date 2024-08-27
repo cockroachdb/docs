@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-{% include_cached new-in.html version="v22.1" %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
+{% include new-in.md version="v22.1" %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
 
 For further detail, see the following sections:
 
@@ -96,7 +96,7 @@ For examples of starting changefeeds on tables with column families, see the fol
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families).
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.1" %} In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
+{% include new-in.md version="v22.1" %} In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
@@ -281,8 +281,8 @@ For examples of starting changefeeds on tables with column families, see the fol
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output. 
-    
+    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output.
+
     When using the `FAMILY` keyword, the `topics` field will display in the format `topic.family`, e.g., `office_dogs.employee,office_dogs.dogs`. With the `split_column_families` option set, `topics` will show the topic name and a family placeholder `topic.{family}`, e.g., `office_dogs.{family}`.
     {{site.data.alerts.end}}
 
@@ -305,7 +305,7 @@ For examples of starting changefeeds on tables with column families, see the fol
 
 ## Create a Core changefeed on a table with column families
 
-{% include_cached new-in.html version="v22.1" %} In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
+{% include new-in.md version="v22.1" %} In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
 
 1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 

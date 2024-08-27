@@ -11,7 +11,7 @@ Core users can only use backup scheduling for [full backups](create-schedule-for
 To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule](manage-a-backup-schedule.html). You can use `ALTER BACKUP SCHEDULE` to do the following:
+{% include new-in.md version="v22.2" %} The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule](manage-a-backup-schedule.html). You can use `ALTER BACKUP SCHEDULE` to do the following:
 
 - Set a different name for a backup schedule.
 - Change a scheduled backup's storage location.

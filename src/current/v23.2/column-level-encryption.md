@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v23.2" %} CockroachDB supports _column level encryption_. Using this feature, you can encrypt one or more of the columns in each row of a database table.
+{% include new-in.md version="v23.2" %} CockroachDB supports _column level encryption_. Using this feature, you can encrypt one or more of the columns in each row of a database table.
 
 Column level encryption can be useful for compliance scenarios such as adhering to PCI.
 
@@ -88,7 +88,7 @@ Internally, keys have to be 16-, 24-, or 32-byte lengths and map to the correspo
 
 ## Performance considerations
 
-Use of the `encrypt` built-in function can have anywhere from 10-40% overhead depending on the length of the data being encrypted and the hardware provisioned for CockroachDB. 
+Use of the `encrypt` built-in function can have anywhere from 10-40% overhead depending on the length of the data being encrypted and the hardware provisioned for CockroachDB.
 
 Cockroach Labs measured baseline performance in a 3-node CockroachDB cluster running on three [`n1-standard-4` machines on GCP](https://cloud.google.com/compute/docs/general-purpose-machines#n1_machines).
 

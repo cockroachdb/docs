@@ -5,7 +5,7 @@ If the video you want to embed is at this URL: https://www.youtube.com/watch?v=5
 
 Then the suggested syntax of this include is as follows:
 
-{% include_cached youtube.html video_id="5kiMg7GXAsY" %}
+{% include youtube.md video_id="5kiMg7GXAsY" %}
 
 Add an optional parameter of widescreen=true to make the iframe containing the YouTube video span the width of the page. This is currently only used in the Foreign Key Reference doc.
 {% endcomment %}

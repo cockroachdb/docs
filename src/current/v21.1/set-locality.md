@@ -4,7 +4,7 @@ summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
 ---
 
-{% include_cached new-in.html version="v21.1" %} The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
+{% include new-in.md version="v21.1" %} The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
 
 While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that enables or disables `REGIONAL BY ROW` on a table within a database, any [`ADD REGION`](add-region.html) and [`DROP REGION`](drop-region.html) statements on that database will fail.
 
@@ -26,7 +26,7 @@ While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that 
 | `locality`   | The [locality](multiregion-overview.html#table-locality) to apply to this table.  Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 
 {{site.data.alerts.callout_info}}
-For more information about which table locality is right for your use case, see the following pages:  
+For more information about which table locality is right for your use case, see the following pages:
 <ul>
 <li>[Multi-region table localities](multiregion-overview.html#table-locality)</li>
 </ul>
@@ -129,7 +129,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
   CASE
     WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east-1'
     WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west-1'
-    WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'eu-west-1'  
+    WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'eu-west-1'
   END
 ) STORED;
 ~~~

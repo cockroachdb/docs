@@ -65,7 +65,7 @@ Column | Description
 
 ### character_sets
 
-{% include_cached new-in.html version="v21.1" %} `character_sets` identifies the character sets available in the current database.
+{% include new-in.md version="v21.1" %} `character_sets` identifies the character sets available in the current database.
 
 Column | Description
 -------|-----------
@@ -91,7 +91,7 @@ Column | Description
 
 ### collations
 
-{% include_cached new-in.html version="v21.1" %} `collations` identifies the collations available in the current database.
+{% include new-in.md version="v21.1" %} `collations` identifies the collations available in the current database.
 
 Column | Description
 -------|-----------
@@ -102,7 +102,7 @@ Column | Description
 
 ### collation_character_set_applicability
 
-{% include_cached new-in.html version="v21.1" %} `collation_character_set_applicability` identifies which character set the available collations are applicable to.
+{% include new-in.md version="v21.1" %} `collation_character_set_applicability` identifies which character set the available collations are applicable to.
 
 Column | Description
 -------|-----------
@@ -443,7 +443,7 @@ Column | Description
 
 ### session_variables
 
-{% include_cached new-in.html version="v21.1" %} `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
+{% include new-in.md version="v21.1" %} `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
 
 For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 

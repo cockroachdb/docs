@@ -112,7 +112,7 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
-{% include_cached new-in.html version="v22.1" %} Also, a full cluster restore will:
+{% include new-in.md version="v22.1" %} Also, a full cluster restore will:
 
 - Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
 - Drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
@@ -129,7 +129,7 @@ Restoring a database will create a new database and restore all of its tables an
 RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI';
 ~~~
 
-{% include_cached new-in.html version="v22.1" %} To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
+{% include new-in.md version="v22.1" %} To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
 
 {{site.data.alerts.callout_success}}
 If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
@@ -195,8 +195,8 @@ CockroachDB does **not** support incremental-only restores.
 
 - The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
 - When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
-- {% include_cached new-in.html version="v22.1" %} A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
-- {% include_cached new-in.html version="v22.1" %} A restore job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
+- {% include new-in.md version="v22.1" %} A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
+- {% include new-in.md version="v22.1" %} A restore job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
 ## Restoring to multi-region databases
 
@@ -263,7 +263,7 @@ When you want to [restore a specific backup](#restore-a-specific-backup), add th
 
 ### Restore the most recent backup
 
-{% include_cached new-in.html version="v22.1" %} To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
+{% include new-in.md version="v22.1" %} To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -341,8 +341,8 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
 {{site.data.alerts.end}}
 
 ### Restore with `AS OF SYSTEM TIME`
- 
-Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history. 
+
+Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
 
 If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
 
@@ -416,7 +416,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
 
 First, create the new database that you'll restore the table or view into:
 
@@ -435,7 +435,7 @@ WITH into_db = 'newdb';
 
 #### Rename a database on restore
 
-{% include_cached new-in.html version="v22.1" %} To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+{% include new-in.md version="v22.1" %} To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -448,11 +448,11 @@ When you run `RESTORE` with `new_db_name`, the existing database that was origin
 ~~~
 database_name
 --------------+
-defaultdb     
-bank          
-new_bank      
-postgres      
-system        
+defaultdb
+bank
+new_bank
+postgres
+system
 ~~~
 
 #### Remove the foreign key before restore
@@ -498,7 +498,7 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-{% include_cached new-in.html version="v22.1" %} To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+{% include new-in.md version="v22.1" %} To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup
 - the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement

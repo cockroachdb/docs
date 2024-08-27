@@ -6,7 +6,7 @@ docs_area: manage
 keywords: authentication, ldap, X.509, X509, tls
 ---
 
-{% include_cached new-in.html version="v24.1" %} For customers that need to use their established Certificate Authority (CA) infrastructure to manage SQL user authentication, CockroachDB supports mapping of SQL user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to values in the Subject field of the [X.509 certificate](https://en.wikipedia.org/wiki/X.509) used for [TLS authentication]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#what-is-transport-layer-security-tls).
+{% include new-in.md version="v24.1" %} For customers that need to use their established Certificate Authority (CA) infrastructure to manage SQL user authentication, CockroachDB supports mapping of SQL user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to values in the Subject field of the [X.509 certificate](https://en.wikipedia.org/wiki/X.509) used for [TLS authentication]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#what-is-transport-layer-security-tls).
 
 This mapping (hereafter referred to as "Subject mapping") can be used to automate the synchronization of SQL user roles with specific certificate attributes, leading to improved scalability of access control mechanisms.
 

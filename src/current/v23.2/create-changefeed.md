@@ -86,7 +86,7 @@ Example of a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md
 
 #### Confluent Cloud
 
-{% include_cached new-in.html version="v23.2" %} Example of a [Confluent Cloud sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) URI:
+{% include new-in.md version="v23.2" %} Example of a [Confluent Cloud sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) URI:
 
 ~~~
 'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}'
@@ -343,7 +343,7 @@ CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
 
 ### Disallow schema changes on tables to improve changefeed performance
 
-{% include_cached new-in.html version="v23.2.1" %} Use the `schema_locked` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}) to disallow [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
+{% include new-in.md version="v23.2.1" %} Use the `schema_locked` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}) to disallow [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
 
 Enable `schema_locked` on the watched table with the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement:
 

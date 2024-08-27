@@ -154,7 +154,7 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
-- {% include_cached new-in.html version="v21.1" %} [Row limit](migrate-from-csv.html#row-limit)
+- {% include new-in.md version="v21.1" %} [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 
@@ -251,7 +251,7 @@ For more information and examples, refer to the following:
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
+The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.
 
 
 ## Step 8. Import the CSV
@@ -294,7 +294,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
 (1 row)
@@ -323,9 +323,9 @@ The last phase of the migration process is to change the [transactional behavior
 
 Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`](select-for-update.html) statement is also supported in CockroachDB.
 
-Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
+Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).
 
-As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).  
+As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
 
 ### SQL dialect
 
@@ -358,7 +358,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
         customer string,
         address string
       );
-    ~~~  
+    ~~~
 
 - [Subqueries](subqueries.html)
 - `SYSDATE`

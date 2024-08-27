@@ -173,14 +173,14 @@ When using the [`schema_change_policy = nobackfill` option](create-changefeed.ht
 
 ## Garbage collection and changefeeds
 
-{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+{% include new-in.md version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
-- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
+- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
-However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed.
 
 We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is retrying, it will (without limit) accumulate garbage while it retries to run.
 
@@ -246,4 +246,3 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 - [Online Schema Changes](online-schema-changes.html)
 - [Change Data Capture Overview](change-data-capture-overview.html)
 - [Create and Configure Changefeeds](create-and-configure-changefeeds.html)
-

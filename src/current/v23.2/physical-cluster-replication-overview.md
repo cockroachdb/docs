@@ -11,7 +11,7 @@ docs_area: manage
 Refer to the [Known Limitations](#known-limitations) section for further detail.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} CockroachDB physical cluster replication continuously sends all data at the byte level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
+{% include new-in.md version="v23.2" %} CockroachDB physical cluster replication continuously sends all data at the byte level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
 
 In a disaster recovery scenario, you can [_cut over_]({% link {{ page.version.version }}/cutover-replication.md %}) from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
@@ -144,4 +144,4 @@ The standby cluster must be at the same version as, or one version ahead of, the
 
 Learn how to harness Physical Cluster Replication to meet your RTO and RPO requirements with the following demo:
 
-{% include_cached youtube.html video_id="VDqw4XIpEAk" %}
+{% include youtube.md video_id="VDqw4XIpEAk" %}

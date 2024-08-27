@@ -9,7 +9,7 @@ CockroachDB's flexible [replication controls](configure-replication-zones.html) 
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="cCJkgZy6s2Q" %}
+{% include youtube.md video_id="cCJkgZy6s2Q" %}
 
 ## Step 1. Install prerequisites
 

@@ -15,8 +15,8 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 - [Google Cloud Pub/Sub](#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink)
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
-- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#create-a-changefeed-connected-to-an-azure-event-hubs-sink)
-- {% include_cached new-in.html version="v24.1" %} [Apache Pulsar](#create-a-changefeed-connected-to-an-apache-pulsar-sink) (Preview)
+- {% include new-in.md version="v24.1" %} [Azure Event Hubs](#create-a-changefeed-connected-to-an-azure-event-hubs-sink)
+- {% include new-in.md version="v24.1" %} [Apache Pulsar](#create-a-changefeed-connected-to-an-apache-pulsar-sink) (Preview)
 
 Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
@@ -557,7 +557,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to an Azure Event Hubs sink
 
-{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to [Azure Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs). The changefeed watches two tables. You'll need access to the Azure Developer Portal, you can sign up for an [Azure free account](https://azure.microsoft.com/en-us/free/).
+{% include new-in.md version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to [Azure Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs). The changefeed watches two tables. You'll need access to the Azure Developer Portal, you can sign up for an [Azure free account](https://azure.microsoft.com/en-us/free/).
 
 {% include {{ page.version.version }}/cdc/examples-license-workload.md %}
 
@@ -704,7 +704,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to an [Apache Pulsar](https://pulsar.apache.org/docs/next/getting-started-standalone/) sink. The changefeed will watch a table and send messages to the sink.
+{% include new-in.md version="v24.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to an [Apache Pulsar](https://pulsar.apache.org/docs/next/getting-started-standalone/) sink. The changefeed will watch a table and send messages to the sink.
 
 {% include {{ page.version.version }}/cdc/examples-license-workload.md %}
 

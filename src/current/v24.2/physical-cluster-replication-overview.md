@@ -158,4 +158,4 @@ The standby cluster must be at the same version as, or one version ahead of, the
 
 Learn how to use PCR to meet your RTO and RPO requirements with the following demo:
 
-{% include_cached youtube.html video_id="VDqw4XIpEAk" %}
+{% include youtube.md video_id="VDqw4XIpEAk" %}

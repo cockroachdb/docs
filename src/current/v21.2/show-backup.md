@@ -118,7 +118,7 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### Show the most recent backup
 
-{% include_cached new-in.html version="v21.2" %} To view the most recent backup, use the `LATEST` syntax:
+{% include new-in.md version="v21.2" %} To view the most recent backup, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -297,7 +297,7 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
 ### Show a backup with descriptor IDs
 
-{% include_cached new-in.html version="v21.2" %} Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
+{% include new-in.md version="v21.2" %} Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

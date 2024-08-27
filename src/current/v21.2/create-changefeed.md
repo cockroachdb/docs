@@ -27,7 +27,7 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail. 
+`table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
@@ -62,11 +62,11 @@ Example of a Kafka sink URI:
 
 The following are example file URLs for each of the cloud storage schemes:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`  
+Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`
 Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
-Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`                         
+Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
 HTTP         | `'http://localhost:8080/{PATH}'`
 
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
@@ -231,7 +231,7 @@ For step-by-step guidance on creating a changefeed connected to a cloud storage 
 
 ### Create a changefeed with an S3 storage class
 
-{% include_cached new-in.html version="v21.2.6" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include new-in.md version="v21.2.6" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -264,7 +264,7 @@ For step-by-step guidance on creating a changefeed connected to a webhook sink, 
 
 ### Manage a changefeed
 
-{% include_cached new-in.html version="v21.2" %} For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
+{% include new-in.md version="v21.2" %} For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

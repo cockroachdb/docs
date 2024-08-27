@@ -29,7 +29,7 @@ You can use the [`timezone()`]({% link {{ page.version.version }}/functions-and-
 
 Explore the differences of `TIMESTAMP` and `TIMESTAMPTZ` in the following video:
 
-{% include_cached youtube.html video_id="jyfQmtISr3Y" %}
+{% include youtube.md video_id="jyfQmtISr3Y" %}
 
 ## Best practices
 
@@ -238,14 +238,14 @@ SQLSTATE: 0A000
 SELECT now()::int;
 ~~~
 
-### Convert a `TIMESTAMP` to milliseconds since epoch 
+### Convert a `TIMESTAMP` to milliseconds since epoch
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT (now()::float*1000)::int;
 ~~~
 
-### Convert a `TIMESTAMP` to microseconds since epoch 
+### Convert a `TIMESTAMP` to microseconds since epoch
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

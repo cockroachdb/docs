@@ -52,7 +52,7 @@ In summary, Cockroach Labs recommends that you use follower reads whenever you c
 
 In the following demo, we show the importance of choosing the correct topology patterns for your tables:
 
-{% include_cached youtube.html video_id="sO1Mr0Gmde0" %}
+{% include youtube.md video_id="sO1Mr0Gmde0" %}
 
 ## Anti-patterns
 

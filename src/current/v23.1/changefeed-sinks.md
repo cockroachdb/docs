@@ -49,7 +49,7 @@ Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
 ~~~
 
-{% include_cached new-in.html version="v23.1" %} Example of a Kafka sink URI using `OAUTHBEARER` authentication:
+{% include new-in.md version="v23.1" %} Example of a Kafka sink URI using `OAUTHBEARER` authentication:
 
 ~~~
 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
@@ -200,7 +200,7 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
-{% include_cached new-in.html version="v23.1" %} Enable the `changefeed.new_pubsub_sink_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to improve the throughput of changefeeds emitting to Pub/Sub sinks. Enabling this setting also alters the message format to use capitalized top-level fields in changefeeds emitting JSON-encoded messages. Therefore, you may need to reconfigure downstream systems to parse the new message format before enabling this setting:
+{% include new-in.md version="v23.1" %} Enable the `changefeed.new_pubsub_sink_enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to improve the throughput of changefeeds emitting to Pub/Sub sinks. Enabling this setting also alters the message format to use capitalized top-level fields in changefeeds emitting JSON-encoded messages. Therefore, you may need to reconfigure downstream systems to parse the new message format before enabling this setting:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

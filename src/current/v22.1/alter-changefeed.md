@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v22.1" %} The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
+{% include new-in.md version="v22.1" %} The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
 
 - Add new target tables to a changefeed.
 - Remove target tables from a changefeed.
@@ -134,7 +134,7 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
     The output from `ALTER CHANGEFEED` will show the `CREATE CHANGEFEED` statement with the options you've defined. After modifying a changefeed with `ALTER CHANGEFEED`, the `CREATE` description will show the fully qualified table name.
 
-    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options](create-changefeed.html#options).  
+    For an explanation on each of these options, see the `CREATE CHANGEFEED` [options](create-changefeed.html#options).
 
 1. Resume the changefeed job with `RESUME JOB`:
 

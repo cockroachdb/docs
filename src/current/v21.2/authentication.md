@@ -70,7 +70,7 @@ CockroachDB offers the following methods for client authentication:
    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
    {{site.data.alerts.callout_success}}
-   {% include_cached new-in.html version="v21.2" %} For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+   {% include new-in.md version="v21.2" %} For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
    {{site.data.alerts.end}}
 
 - **Password authentication without TLS**
@@ -279,7 +279,7 @@ Going back to our example and assuming that we trust the CA, Rosa needs to get h
 
 A public key is shared using a digital certificate signed by a CA using the CA's private key. The digital certificate contains:
 
--   The certificate owner’s public key    
+-   The certificate owner’s public key
 -   Information about the certificate owner
 -   The CA's digital signature
 

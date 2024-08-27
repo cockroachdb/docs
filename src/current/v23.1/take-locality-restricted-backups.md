@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v23.1" %} The `EXECUTION LOCALITY` option allows you to restrict the nodes that can execute a [backup]({% link {{ page.version.version }}/backup.md %}) job by using a [locality filter]({% link {{ page.version.version }}/cockroach-start.md %}#locality) when you create the backup. This will pin the [coordination of the backup job]({% link {{ page.version.version }}/backup-architecture.md %}#job-creation-phase) and the nodes that [process the row data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase) to the defined locality filter.
+{% include new-in.md version="v23.1" %} The `EXECUTION LOCALITY` option allows you to restrict the nodes that can execute a [backup]({% link {{ page.version.version }}/backup.md %}) job by using a [locality filter]({% link {{ page.version.version }}/cockroach-start.md %}#locality) when you create the backup. This will pin the [coordination of the backup job]({% link {{ page.version.version }}/backup-architecture.md %}#job-creation-phase) and the nodes that [process the row data]({% link {{ page.version.version }}/backup-architecture.md %}#export-phase) to the defined locality filter.
 
-{% include_cached new-in.html version="v23.1.12" %} Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities.
+{% include new-in.md version="v23.1.12" %} Pass the `WITH EXECUTION LOCALITY` option for [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) to restrict execution of the job to nodes with matching localities.
 
 Defining an execution locality for a backup job is useful in the following cases:
 
@@ -67,7 +67,7 @@ For example, you can pin the execution of the backup job to `us-west-1`:
 BACKUP DATABASE {database} INTO 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
 ~~~
 
-{% include_cached new-in.html version="v23.1.12" %} To restore the most recent locality-restricted backup:
+{% include new-in.md version="v23.1.12" %} To restore the most recent locality-restricted backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -174,7 +174,7 @@ When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are 
 
 ### Control whether the `avg_size` statistic is used to cost scans
 
-{% include_cached new-in.html version="v22.1" %} The `avg_size` table statistic represents the average size of a table column.
+{% include new-in.md version="v22.1" %} The `avg_size` table statistic represents the average size of a table column.
 If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
@@ -228,7 +228,7 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
-The optimizer can use cached plans if they are: 
+The optimizer can use cached plans if they are:
 
 - Prepared statements.
 - Non-prepared statements using identical constant values.
@@ -366,7 +366,7 @@ To prevent the optimizer from planning a zigzag join for the specified table, us
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
 
-{% include_cached new-in.html version="v22.1" %} To force the optimizer to plan a zigzag join for the specified table, use the hint `FORCE_ZIGZAG`. For example:
+{% include new-in.md version="v22.1" %} To force the optimizer to plan a zigzag join for the specified table, use the hint `FORCE_ZIGZAG`. For example:
 
 ~~~ sql
 SELECT * FROM abc@{FORCE_ZIGZAG};

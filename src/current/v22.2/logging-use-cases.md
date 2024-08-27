@@ -464,7 +464,7 @@ See the [reference documentation](log-formats.html#format-json-fluent-compact) f
 
 A database operator can configure CockroachDB to buffer log messages for a configurable time period or collected message size before writing them to the [log sink](configure-logs.html#configure-log-sinks). This is especially useful for writing log messages to network log sinks, such as [Fluentd-compatible servers](configure-logs.html#output-to-fluentd-compatible-network-collectors) or [HTTP servers](configure-logs.html#output-to-http-network-collectors), where high-traffic or high-contention scenarios can result in log message write latency.
 
-{% include_cached new-in.html version="v22.2" %} Log buffering is enabled by default on the [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
+{% include new-in.md version="v22.2" %} Log buffering is enabled by default on the [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
 
 For example, the following logging configuration adjusts the default log buffering behavior for both a [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and an [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destination:
 

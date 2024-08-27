@@ -127,7 +127,7 @@ SQL driver to determine whether these options are supported.
 
 ### Convert a URL for different drivers
 
-{% include_cached new-in.html version="v21.2" %} The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
+{% include new-in.md version="v21.2" %} The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~

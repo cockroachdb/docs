@@ -140,7 +140,7 @@ For a step-by-step demonstration showing how CockroachDB's multi-region capabili
 
 If you'd prefer to watch a video on Regional Tables, check out the following video:
 
-{% include_cached youtube.html video_id="3gmF_yXj3q8" %}
+{% include youtube.md video_id="3gmF_yXj3q8" %}
 
 ## See also
 

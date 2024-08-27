@@ -240,7 +240,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-{% include_cached new-in.html version="v21.1.14" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+{% include new-in.md version="v21.1.14" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -312,7 +312,7 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}/{path/to/backup-collect
 ~~~
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="v21.1" %} `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+{% include new-in.md version="v21.1" %} `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
 
 ### Restore a backup asynchronously
@@ -324,7 +324,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 RESTORE TABLE bank.customers FROM LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' WITH DETACHED;
 ~~~
 
-The job ID is returned after the restore job creation completes: 
+The job ID is returned after the restore job creation completes:
 
 ~~~
         job_id
@@ -346,7 +346,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
 
 First, create the new database that you'll restore the table or view into:
 

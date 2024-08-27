@@ -14,12 +14,12 @@ MOLT Verify checks for data discrepancies between a source database and Cockroac
 The tool performs the following verifications to ensure data integrity during a migration:
 
 - **Table Verification:** Check that the structure of tables between the source database and the target database are the same.
-- **Column Definition Verification:** Check that the column names, data types, constraints, nullability, and other attributes between the source database and the target database are the same. 
+- **Column Definition Verification:** Check that the column names, data types, constraints, nullability, and other attributes between the source database and the target database are the same.
 - **Row Value Verification:** Check that the actual data in the tables is the same between the source database and the target database.
 
 For a demo of MOLT Verify, watch the following video:
 
-{% include_cached youtube.html video_id="6mfebmCLClY" %}
+{% include youtube.md video_id="6mfebmCLClY" %}
 
 ## Supported databases
 

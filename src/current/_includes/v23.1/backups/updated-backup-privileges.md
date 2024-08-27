@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new [system-level privilege model]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) that provides finer control over a user's privilege to work with the database, including taking backups. 
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) that provides finer control over a user's privilege to work with the database, including taking backups.
 
 There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) for backups in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
 {{site.data.alerts.end}}
@@ -29,7 +29,7 @@ To manage a backup job with [`PAUSE JOB`]({% link {{ page.version.version }}/pau
 
 To view a backup job with [`SHOW JOB`]({% link {{ page.version.version }}/show-jobs.md %}), users must have at least one of the following:
 
-- {% include_cached new-in.html version="v23.1" %} The [`VIEWJOB` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
+- {% include new-in.md version="v23.1" %} The [`VIEWJOB` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
 - Be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 - The [`CONTROLJOB` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options).
 

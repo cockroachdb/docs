@@ -181,7 +181,7 @@ The incremental backup schedule's `BACKUP` statement shows that it will read fil
 
 ### Execute a schedule immediately
 
-{% include_cached new-in.html version="v24.1" %} You can alter an active schedule to run an incremental schedule immediately with `EXECUTE IMMEDIATELY`:
+{% include new-in.md version="v24.1" %} You can alter an active schedule to run an incremental schedule immediately with `EXECUTE IMMEDIATELY`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

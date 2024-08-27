@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v22.1" %} The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+{% include new-in.md version="v22.1" %} The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
 After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
@@ -58,7 +58,7 @@ To add a new KMS key to the most recent backup:
 ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
-~~~  
+~~~
 
 To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
@@ -67,7 +67,7 @@ To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement tha
 ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
-~~~  
+~~~
 
 To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
 
@@ -80,7 +80,7 @@ To add a new KMS key to the most recent backup:
 ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
     WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~  
+~~~
 
 To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
@@ -89,7 +89,7 @@ To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement tha
 ALTER BACKUP '2022/03/23-213101.37' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
     WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~  
+~~~
 
 To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
 

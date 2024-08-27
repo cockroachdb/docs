@@ -75,4 +75,4 @@ Use a [`GLOBAL` table locality]({% link {{ page.version.version }}/table-localit
 
 For an in-depth data placement support comparison and a demonstration of how the [Federal Wire Act (1961)](https://en.wikipedia.org/wiki/Federal_Wire_Act) can only be satisfied with CockroachDB, watch the following video:
 
-{% include_cached youtube.html video_id="3p9VcZOf1Y4" %}
+{% include youtube.md video_id="3p9VcZOf1Y4" %}

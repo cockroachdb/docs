@@ -49,7 +49,7 @@ Hovering over the graph displays:
 
 <img src="{{ 'images/v24.1/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
-{% include_cached new-in.html version="v24.1" %} The **Replication Lag** graph displays the [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby cluster. This is the time between the most up-to-date replicated time and the actual time.
+{% include new-in.md version="v24.1" %} The **Replication Lag** graph displays the [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby cluster. This is the time between the most up-to-date replicated time and the actual time.
 
 Hovering over the graph displays:
 

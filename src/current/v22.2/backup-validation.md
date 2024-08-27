@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v22.2" %} CockroachDB provides backup validation tools to check that backups you have in storage are restorable. Although a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid.
+{% include new-in.md version="v22.2" %} CockroachDB provides backup validation tools to check that backups you have in storage are restorable. Although a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid.
 
 You can validate a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view) backup with one of the following [`SHOW BACKUP`](show-backup.html) or [`RESTORE`](restore.html) statements. The three options result in increasing levels of backup validation:
 

@@ -36,10 +36,10 @@ When inserting a `STRING` value or a `STRING`-related-type value:
 - For `STRING(n)` and `VARCHAR(n)`/`CHARACTER VARYING(n)` types, if the value is under the column's length limit, CockroachDB does **not** add space padding to the end of the value.
 - For `CHAR(n)`/`CHARACTER(n)` types, if the value is under the column's length limit, CockroachDB adds space padding from the end of the value to the length limit.
 
-                        Type                      |          Length                  
+                        Type                      |          Length
 --------------------------------------------------|------------------------------
-`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length                
-`CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit  
+`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length
+`CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit
 `TEXT`, `VARCHAR`, `CHARACTER VARYING`, `STRING`  | Variable-length, with no limit
 
 ## Syntax
@@ -57,7 +57,7 @@ or the escaped format otherwise.
 
 ## Size
 
-The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.   
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
@@ -173,7 +173,7 @@ A literal entered through a SQL client will be translated into a different value
 
 ### Concatenate `STRING` values with values of other types
 
-{% include_cached new-in.html version="v21.1" %} `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
+{% include new-in.md version="v21.1" %} `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
 
 For example:
 

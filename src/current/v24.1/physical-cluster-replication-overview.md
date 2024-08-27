@@ -157,4 +157,4 @@ When PCR is enabled, upgrade with the following procedure. This upgrades the sta
 
 Learn how to use PCR to meet your RTO and RPO requirements with the following demo:
 
-{% include_cached youtube.html video_id="VDqw4XIpEAk" %}
+{% include youtube.md video_id="VDqw4XIpEAk" %}

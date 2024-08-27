@@ -50,7 +50,7 @@ To use the `SHOW CLUSTER SETTING` statement, a user must have one of the followi
 - Have the `MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted.
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="22.2.7" %} The cluster setting `sql.auth.modify_cluster_setting_applies_to_all.enabled` affects what users with the `MODIFYCLUSTERSETTING` privilege are able to view:
+{% include new-in.md version="22.2.7" %} The cluster setting `sql.auth.modify_cluster_setting_applies_to_all.enabled` affects what users with the `MODIFYCLUSTERSETTING` privilege are able to view:
 
 - If set to `true` (the default), users are able to view all cluster settings.
 - If set to `false`, users are allowed to view only `sql.defaults.*` cluster settings, not all cluster settings.

@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v24.1" %} To cut back to a cluster that was previously the primary cluster, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax:
+{% include new-in.md version="v24.1" %} To cut back to a cluster that was previously the primary cluster, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

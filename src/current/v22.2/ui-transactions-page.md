@@ -41,7 +41,7 @@ If you click the transaction fingerprint in the **Transactions** column, the [**
 
 ## Active Executions view
 
-{% include_cached new-in.html version="v22.2" %} The **Active Executions** view helps you:
+{% include new-in.md version="v22.2" %} The **Active Executions** view helps you:
 
 - Understand and tune workload performance, particularly for long-running transactions.
 

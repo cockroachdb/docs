@@ -1168,7 +1168,7 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
     NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
     ~~~
 
-1. View the table structure: 
+1. View the table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1803,7 +1803,7 @@ To unhide the column, run:
 
 #### Demo
 
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
+{% include youtube.md video_id="MPx-LXY2D-c" %}
 
 #### Alter a single-column primary key
 

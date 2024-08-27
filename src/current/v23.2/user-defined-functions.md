@@ -287,7 +287,7 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 For a deep-dive demo on UDFs, watch the following video:
 
-{% include_cached youtube.html video_id="glveuxrzZB4" %}
+{% include youtube.md video_id="glveuxrzZB4" %}
 
 ## Known limitations
 

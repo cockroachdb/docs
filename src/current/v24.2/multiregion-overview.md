@@ -94,7 +94,7 @@ Note that super regions take a different approach to data domiciling than [`ALTE
 
 For a demo on Super Regions, watch the following video:
 
-{% include_cached youtube.html video_id="IXFTojYfA5A" %}
+{% include youtube.md video_id="IXFTojYfA5A" %}
 
 For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Data Domiciling with CockroachDB]({% link {{ page.version.version }}/data-domiciling.md %}).
 

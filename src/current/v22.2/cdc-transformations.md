@@ -9,7 +9,7 @@ docs_area: stream
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
+{% include new-in.md version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
 
 You can use CDC transformations to do the following:
 
@@ -335,4 +335,3 @@ Since all non-primary key columns will be `NULL` in the [`cdc_prev()`](#cdc-tran
 - [`CREATE CHANGEFEED`](create-changefeed.html)
 - [Changefeed Messages](changefeed-messages.html)
 - [Changefeed Sinks](changefeed-sinks.html)
-

@@ -37,7 +37,7 @@ The high-level steps in this tutorial are:
 - The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="v24.1" %} To set up PCR from an existing CockroachDB cluster, which will serve as the primary cluster, refer to [Set up PCR from an existing cluster](#set-up-pcr-from-an-existing-cluster).
+{% include new-in.md version="v24.1" %} To set up PCR from an existing CockroachDB cluster, which will serve as the primary cluster, refer to [Set up PCR from an existing cluster](#set-up-pcr-from-an-existing-cluster).
 {{site.data.alerts.end}}
 
 ## Step 1. Create the primary cluster
@@ -274,7 +274,7 @@ To create certificates signed by an external certificate authority, refer to [Cr
 
 At this point, the primary and standby clusters are both running. The next step allows the standby cluster to connect to the primary cluster and begin ingesting its data. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
 
-{% include_cached new-in.html version="v24.1" %} You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
+{% include new-in.md version="v24.1" %} You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
 
 For example, in this tutorial you will need a connection string for the primary cluster when you start the replication stream from the standby.
 
@@ -371,7 +371,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
 
 ## Set up PCR from an existing cluster
 
-{% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster, which serves application traffic.
+{% include new-in.md version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster, which serves application traffic.
 
 Before you begin, you will need:
 

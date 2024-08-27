@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v24.1" %} Use the `ttl_disable_changefeed_replication` table storage parameter to prevent changefeeds from sending `DELETE` messages issued by row-level TTL jobs for a table. Include the storage parameter when you create or alter the table. For example:
+{% include new-in.md version="v24.1" %} Use the `ttl_disable_changefeed_replication` table storage parameter to prevent changefeeds from sending `DELETE` messages issued by row-level TTL jobs for a table. Include the storage parameter when you create or alter the table. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

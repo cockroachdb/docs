@@ -7,12 +7,12 @@ docs_area: stream_data
 
 This page describes features that you can use for changefeeds running on multi-region deployments.
 
-- {% include_cached new-in.html version="v23.1" %} [Run a changefeed job by locality](#run-a-changefeed-job-by-locality).
+- {% include new-in.md version="v23.1" %} [Run a changefeed job by locality](#run-a-changefeed-job-by-locality).
 - [Run changefeeds on regional by row tables](#run-changefeeds-on-regional-by-row-tables).
 
 ## Run a changefeed job by locality
 
-{% include_cached new-in.html version="v23.1" %} Use the `execution_locality` option to set locality filter requirements that a node must meet to take part in executing a [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job. This will pin the [coordination of the changefeed job]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) and the nodes that process the [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) to the defined locality.
+{% include new-in.md version="v23.1" %} Use the `execution_locality` option to set locality filter requirements that a node must meet to take part in executing a [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job. This will pin the [coordination of the changefeed job]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) and the nodes that process the [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) to the defined locality.
 
 Defining an execution locality for a changefeed job, could be useful in the following cases:
 

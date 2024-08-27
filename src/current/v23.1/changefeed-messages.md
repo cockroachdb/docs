@@ -525,7 +525,7 @@ However, if the changefeed lags too far behind, the protected changes could lead
 
 - [Cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed job.
 - [Resume]({% link {{ page.version.version }}/resume-job.md %}) a paused changefeed job.
-- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
+- {% include new-in.md version="v23.1" %} Set the [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
 
     For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
 
@@ -633,4 +633,3 @@ aebb80a6-eceb-4d10-9d9a-f26270188114,washington dc,Kenneth Miller,52393 Stephen 
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %})
-

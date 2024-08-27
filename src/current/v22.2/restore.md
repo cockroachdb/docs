@@ -36,7 +36,7 @@ Starting in v22.2, CockroachDB introduces a new restore privilege model that pro
 There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
+{% include new-in.md version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
 
 Restore | Privilege
 -------+-----------

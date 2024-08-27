@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v23.1.4" %} This tutorial describes how to configure logging of [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL statistics. The `sampled_query` events contain common SQL event and execution details for sessions, transactions, and statements.
+{% include new-in.md version="v23.1.4" %} This tutorial describes how to configure logging of [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL statistics. The `sampled_query` events contain common SQL event and execution details for sessions, transactions, and statements.
 
 CockroachDB supports a built-in integration with Datadog which sends query events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query events for greater workload observability.
 
@@ -24,7 +24,7 @@ CockroachDB supports a built-in integration with Datadog which sends query event
 Configure an [HTTP network collector]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) by creating or modifying the [`logs.yaml` file]({% link {{ page.version.version }}/configure-logs.md %}#yaml-payload).
 
 {{site.data.alerts.callout_danger}}
-Given the [volume of `sampled_query` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write `sampled_query` events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` events to a file group will unnecessarily consume cluster resources and impact workload performance. 
+Given the [volume of `sampled_query` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write `sampled_query` events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` events to a file group will unnecessarily consume cluster resources and impact workload performance.
 
 To disable the creation of a telemetry file and avoid writing `sampled_query` events and other [telemetry events]({% link {{ page.version.version }}/eventlog.md %}#telemetry-events) to disk, change the telemetry `file-groups` setting from the [default of `channels: [TELEMETRY]`]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to `channels: []`.
 {{site.data.alerts.end}}

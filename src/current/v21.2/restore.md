@@ -195,7 +195,7 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 ## Restoring to multi-region databases
 
-{% include_cached new-in.html version="v21.2" %} Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
+{% include new-in.md version="v21.2" %} Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
 
 - A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
@@ -268,7 +268,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-{% include_cached new-in.html version="v21.2.3" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+{% include new-in.md version="v21.2.3" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -355,7 +355,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 WITH DETACHED;
 ~~~
 
-The job ID is returned after the restore job creation completes: 
+The job ID is returned after the restore job creation completes:
 
 ~~~
         job_id
@@ -377,7 +377,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
 
 First, create the new database that you'll restore the table or view into:
 

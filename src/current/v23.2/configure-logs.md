@@ -491,7 +491,7 @@ sinks:
 
 ### Set timezone
 
-{% include_cached new-in.html version="v23.2" %} Using the `format-options` sink parameter, you may set the timezone for a specified log format.
+{% include new-in.md version="v23.2" %} Using the `format-options` sink parameter, you may set the timezone for a specified log format.
 
 #### `timezone` for text formats
 

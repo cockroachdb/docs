@@ -90,7 +90,7 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### Show the most recent backup
 
-{% include_cached new-in.html version="v22.1" %} To view the most recent backup, use the `LATEST` syntax:
+{% include new-in.md version="v22.1" %} To view the most recent backup, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -140,7 +140,7 @@ system        | public             | role_members               | table       | 
 
 ### Show a backup taken with the incremental location option
 
-{% include_cached new-in.html version="v22.1" %} To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
+{% include new-in.md version="v22.1" %} To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
 
 {{site.data.alerts.callout_info}}
 `SHOW BACKUP` can display backups taken with the `incremental_location` option **or** for [locality-aware backups](take-and-restore-locality-aware-backups.html), but not for locality-aware backups taken with the `incremental_location` option.

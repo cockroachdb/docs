@@ -59,7 +59,7 @@ For example, to import the data from `employees.csv` into an `employees` table, 
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
 (1 row)
@@ -82,7 +82,7 @@ The following options are available to [`IMPORT ... CSV`][import]:
 + [Column delimiter](#column-delimiter)
 + [Comment syntax](#comment-syntax)
 + [Skip header rows](#skip-header-rows)
-+ {% include_cached new-in.html version="v21.1" %} [Row limit](#row-limit)
++ {% include new-in.md version="v21.1" %} [Row limit](#row-limit)
 + [Null strings](#null-strings)
 + [File compression](#file-compression)
 
@@ -148,7 +148,7 @@ Example usage:
 
 ### Row limit
 
-{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+{% include new-in.md version="v21.1" %} The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 

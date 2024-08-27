@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v22.2" %} A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](sql-statements.html#data-manipulation-statements).
+{% include new-in.md version="v22.2" %} A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](sql-statements.html#data-manipulation-statements).
 
 ## Overview
 

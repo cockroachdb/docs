@@ -233,7 +233,7 @@ Field | Description
 
 #### Write Ahead Log (WAL) Failover
 
-{% include_cached new-in.html version="v24.1" %} On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag.
+{% include new-in.md version="v24.1" %} On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag.
 
 Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can give the node a chance to eventually catch up once the disk stall has been resolved.
 

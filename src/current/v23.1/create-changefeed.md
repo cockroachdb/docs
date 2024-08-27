@@ -337,7 +337,7 @@ CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
 
 ### Disallow schema changes on tables to improve changefeed performance
 
-{% include_cached new-in.html version="v23.1.15" %} Use the `schema_locked` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}) to disallow [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
+{% include new-in.md version="v23.1.15" %} Use the `schema_locked` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}) to disallow [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
 
 Enable `schema_locked` on the watched table with the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement:
 
@@ -446,7 +446,7 @@ CREATE CHANGEFEED FOR TABLE table_name
 
 ### Define a key to determine the changefeed sink partition
 
-{% include_cached new-in.html version="v23.1" %} With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
+{% include new-in.md version="v23.1" %} With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

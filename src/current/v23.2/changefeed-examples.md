@@ -329,7 +329,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a Confluent Cloud sink
 
-{% include_cached new-in.html version="v23.2" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a Confluent Cloud managed Kafka cluster. The changefeed will watch a table and send messages to the sink.
+{% include new-in.md version="v23.2" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a Confluent Cloud managed Kafka cluster. The changefeed will watch a table and send messages to the sink.
 
 {% include {{ page.version.version }}/cdc/examples-license-workload.md %}
 

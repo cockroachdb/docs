@@ -14,7 +14,7 @@ GRANT CHANGEFEED ON TABLE example_table TO user;
 When you grant a user the `CHANGEFEED` privilege on a set of tables, they can:
 
 - Create changefeeds on the target tables even if the user does **not** have the [`CONTROLCHANGEFEED` role option]({% link {{ page.version.version }}/alter-role.md %}#role-options) or the `SELECT` privilege on the tables.
-- {% include_cached new-in.html version="v23.1" %} Manage the changefeed jobs running on the tables using the [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs), [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}), [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}), and [`CANCEL JOB`](cancel-job.html) commands.
+- {% include new-in.md version="v23.1" %} Manage the changefeed jobs running on the tables using the [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs), [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}), [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}), and [`CANCEL JOB`](cancel-job.html) commands.
 
 These users will be able to create changefeeds, but they will not be able to run a `SELECT` query on that data directly. However, they could still read this data indirectly if they have read access to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
 

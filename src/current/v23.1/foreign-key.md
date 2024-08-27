@@ -14,7 +14,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 
 To learn more about the basics of foreign keys, watch the following video:
 
-{% include_cached youtube.html video_id="5kiMg7GXAsY" %}
+{% include youtube.md video_id="5kiMg7GXAsY" %}
 
 {{site.data.alerts.callout_success}}
 To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.
@@ -34,7 +34,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
         {{site.data.alerts.callout_info}}
         A foreign key column cannot reference a table's `crdb_region` column if [auto-rehoming is enabled]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables) for the table.
         {{site.data.alerts.end}}
-        
+
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) or [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
@@ -379,7 +379,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
     When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated to the referencing table `orders_2`.
 
-    Similarly, a deletion will cascade. 
+    Similarly, a deletion will cascade.
 
 1. Delete `id = 23` from `customers_2`:
 
@@ -503,8 +503,8 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
     When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
 
-    Similarly, a deletion will set the referencing `customer_id` to `NULL`. 
-    
+    Similarly, a deletion will set the referencing `customer_id` to `NULL`.
+
 1. Delete `id = 2` from `customers_3`:
 
       {% include_cached copy-clipboard.html %}
@@ -631,7 +631,7 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
     When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first and last rows of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
 
-    Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. 
+    Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value.
 
 1. Delete `id = 2` from `customers_4`:
 

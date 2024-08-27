@@ -63,8 +63,8 @@ Metrics for scheduled backups fall into two categories:
     - `schedules.BACKUP.failed`: The number of backups started by a schedule that failed.
 
         When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) to check which schedule is affected and to inspect the error in the `status` column. {% include {{ page.version.version }}/backups/retry-failure.md %}
-    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protected by backup schedules.
-    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by backup schedules.
+    - {% include new-in.md version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protected by backup schedules.
+    - {% include new-in.md version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by backup schedules.
 
 - Scheduler-specific metrics:
 

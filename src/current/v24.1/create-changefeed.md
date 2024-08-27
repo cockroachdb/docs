@@ -74,7 +74,7 @@ URI Component      | Description
 
 #### Azure Event Hubs
 
-{% include_cached new-in.html version="v24.1" %} Example for an [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) URI:
+{% include new-in.md version="v24.1" %} Example for an [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) URI:
 
 {% include {{ page.version.version }}/cdc/azure-event-hubs-uri.md %}
 
@@ -134,7 +134,7 @@ Refer to [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.1" %} Example for an [Apache Pulsar sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) URI:
+{% include new-in.md version="v24.1" %} Example for an [Apache Pulsar sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) URI:
 
 {% include {{ page.version.version }}/cdc/apache-pulsar-uri.md %}
 

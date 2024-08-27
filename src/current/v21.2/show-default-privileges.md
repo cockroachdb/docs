@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v21.2" %} The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
+{% include new-in.md version="v21.2" %} The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
 
 ## Synopsis
 

@@ -220,7 +220,7 @@ For an example network logging configuration, see [Logging use cases](logging-us
 
 ### Output to HTTP network collectors
 
-{% include_cached new-in.html version="v21.2" %} CockroachDB can send logs over the network to an HTTP server. `http-servers` specifies the channels that output to a server, along with the server configuration details. For example:
+{% include new-in.md version="v21.2" %} CockroachDB can send logs over the network to an HTTP server. `http-servers` specifies the channels that output to a server, along with the server configuration details. For example:
 
 ~~~ yaml
 file-defaults: ...

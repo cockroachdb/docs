@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-{% include_cached new-in.html version="v22.2" %} The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads. These are called *insights* in the DB Console.
+{% include new-in.md version="v22.2" %} The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads. These are called *insights* in the DB Console.
 
 The **Insights** page helps you:
 

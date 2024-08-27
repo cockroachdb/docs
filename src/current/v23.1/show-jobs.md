@@ -33,7 +33,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 You must have at least one of the following to run `SHOW JOBS`:
 
-- {% include_cached new-in.html version="v23.1" %} The `VIEWJOB` privilege, which can view all jobs (including `admin`-owned jobs).
+- {% include new-in.md version="v23.1" %} The `VIEWJOB` privilege, which can view all jobs (including `admin`-owned jobs).
 - Be a member of the `admin` role.
 - The [`CONTROLJOB` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options).
 - For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.

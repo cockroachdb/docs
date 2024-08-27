@@ -24,7 +24,7 @@ CockroachDB [does not support schema changes](#limitations) within explicit [tra
 
 To see a demo of an online schema change, watch the following video:
 
-{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+{% include youtube.md video_id="xvBBQVIGYio" %}
 
 ## How online schema changes work
 
@@ -76,14 +76,14 @@ The following statements use the declarative schema changer by default:
 - [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
 - [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
 - [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
-- {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
-- {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
+- {% include new-in.md version="v23.1" %} [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
+- {% include new-in.md version="v23.1" %} [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- {% include new-in.md version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
 
 Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 

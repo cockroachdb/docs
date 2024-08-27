@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v23.2" %} The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+{% include new-in.md version="v23.2" %} The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 
 ## Required privileges
 
@@ -74,7 +74,7 @@ The following example uses [PL/pgSQL conditional statements]({% link {{ page.ver
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS 
+CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS
   $$
   DECLARE
     result INT;
@@ -104,7 +104,7 @@ The following example uses [PL/pgSQL loop statements]({% link {{ page.version.ve
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE PROCEDURE arr_var() AS 
+CREATE OR REPLACE PROCEDURE arr_var() AS
   $$
   DECLARE
     x INT[] := ARRAY[1, 2, 3, 4, 5];

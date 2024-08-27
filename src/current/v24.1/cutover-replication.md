@@ -314,7 +314,7 @@ At this point, **Cluster A** is once again the primary and **Cluster B** is once
 
 ### Cut back after PCR from an existing cluster
 
-{% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a replication stream in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
+{% include new-in.md version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a replication stream in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
 After a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) to the standby cluster, you may want to then set up a replication stream from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are couple of ways to set up a new standby, and some considerations.
 

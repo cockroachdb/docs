@@ -109,7 +109,7 @@ Click **Create cluster**. Your cluster will be created in a few seconds.
 
 To learn the basics of multi-region Serverless clusters, watch the following video:
 
-{% include_cached youtube.html video_id="qoexXvuHNfI" %}
+{% include youtube.md video_id="qoexXvuHNfI" %}
 
 ## What's next
 

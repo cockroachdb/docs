@@ -44,7 +44,7 @@ You must configure the [cluster settings]({% link {{ page.version.version }}/clu
 |-----------------|------
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation..
 | `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. If `server.jwt_authentication.jwks_auto_fetch.enabled` is `true`, keys are fetched automatically and `server.jwt_authentication.jwks` is ignored.
-| {% include_cached new-in.html version="v23.1" %}`server.jwt_authentication.jwks_auto_fetch.enabled` | If `true`, public signing keys are automatically fetched from the domains specified in `server.jwt_authentication.issuers` for each session, and `server.jwt_authentication.jwks` is ignored. Defaults to `false`.
+| {% include new-in.md version="v23.1" %}`server.jwt_authentication.jwks_auto_fetch.enabled` | If `true`, public signing keys are automatically fetched from the domains specified in `server.jwt_authentication.issuers` for each session, and `server.jwt_authentication.jwks` is ignored. Defaults to `false`.
 | `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
 | `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).

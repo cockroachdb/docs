@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v22.2" %} The `SHOW SYSTEM GRANTS` [statement](sql-statements.html) lists the [system privileges](security-reference/authorization.html#supported-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users).
+{% include new-in.md version="v22.2" %} The `SHOW SYSTEM GRANTS` [statement](sql-statements.html) lists the [system privileges](security-reference/authorization.html#supported-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users).
 
 ## Syntax
 

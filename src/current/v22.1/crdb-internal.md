@@ -1060,7 +1060,7 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 #### Detect suboptimal and regressed plans
 
-{% include_cached new-in.html version="v22.1" %} Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+{% include new-in.md version="v22.1" %} Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
 
 Suppose you wanted to compare plans of the following query:
 
@@ -1139,7 +1139,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction [contention](performance-best-practices-overview.html#transaction-contention) event.
+{% include new-in.md version="v22.1" %} Contains one row for each transaction [contention](performance-best-practices-overview.html#transaction-contention) event.
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 

@@ -25,7 +25,7 @@ In general, a few hours to a few days are appropriate values for these settings.
 
 ### `changefeed.protect_timestamp.max_age`
 
-{% include_cached new-in.html version="v23.2" %} By default, the `changefeed.protect_timestamp.max_age` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) sets the maximum time that changefeeds making no forward progress will hold protected timestamp records. Once the `changefeed.protect_timestamp.max_age` duration is reached, the changefeed will fail with a permanent error. As a result, it is **critical to monitor for changefeed failures** because changefeeds will eventually fail with an unrecoverable error if they cannot progress before the duration is reached.
+{% include new-in.md version="v23.2" %} By default, the `changefeed.protect_timestamp.max_age` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) sets the maximum time that changefeeds making no forward progress will hold protected timestamp records. Once the `changefeed.protect_timestamp.max_age` duration is reached, the changefeed will fail with a permanent error. As a result, it is **critical to monitor for changefeed failures** because changefeeds will eventually fail with an unrecoverable error if they cannot progress before the duration is reached.
 
 This cluster setting is enabled by default to 4 days. To disable expiration of protected timestamp records, you can set `changefeed.protect_timestamp.max_age` to `0`; however, Cockroach Labs recommends implementing an expiration.
 

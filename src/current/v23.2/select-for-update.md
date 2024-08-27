@@ -25,7 +25,7 @@ For the full `SELECT` statement syntax documentation, see [Selection Queries]({%
 |            Parameter             |                                                                                                                                                      Description                                                                                                                                                      |
 |----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `FOR SHARE`      | <span class="version-tag">New in v23.2:</span> Acquire a shared lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. Shared locks are not enabled by default for `SERIALIZABLE` transactions. For details, see [`FOR SHARE` usage](#for-share-usage).
-| `FOR UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).  
+| `FOR UPDATE` | Acquire an exclusive lock on the rows returned by the [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement. For details, see [`FOR UPDATE` usage](#for-update-usage).
 
 Under `SERIALIZABLE` isolation:
 
@@ -39,7 +39,7 @@ Lock "strength" determines how restrictive the lock is to concurrent transaction
 
 {% include {{ page.version.version }}/sql/select-lock-strengths.md %}
 
-Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) when using `SERIALIZABLE` isolation, regardless of the specified lock strength.                    
+Note that CockroachDB [ensures serializability]({% link {{ page.version.version }}/demo-serializable.md %}) when using `SERIALIZABLE` isolation, regardless of the specified lock strength.
 
 ### `FOR UPDATE` usage
 
@@ -47,11 +47,11 @@ Note that CockroachDB [ensures serializability]({% link {{ page.version.version 
 
 For a demo on `SELECT FOR UPDATE` and how it - alongside SERIALISABLE ISOLATION - can protect you against the [ACID Rain attack](http://www.bailis.org/papers/acidrain-sigmod2017.pdf), watch the following video:
 
-{% include_cached youtube.html video_id="vfq3o5yG-PU" %}
+{% include youtube.md video_id="vfq3o5yG-PU" %}
 
 ### `FOR SHARE` usage
 
-{% include_cached new-in.html version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
+{% include new-in.md version="v23.2" %} `SELECT ... FOR SHARE` is primarily used with [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions.
 
 If you need to read the latest version of a row, but not update the row, use `SELECT ... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed. For details, see [Locking reads]({% link {{ page.version.version }}/read-committed.md %}#locking-reads).
 

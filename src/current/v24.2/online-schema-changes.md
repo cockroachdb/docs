@@ -266,13 +266,13 @@ You can also enable the setting [from your application's connection string]({% l
 
 To see a demo of an online schema change against a primary key column, watch the following video:
 
-{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+{% include youtube.md video_id="xvBBQVIGYio" %}
 
 ### Updating foreign key columns
 
 To see a demo of an online schema change against a foreign key column, watch the following video:
 
-{% include_cached youtube.html video_id="HXAIB6bJuZQ" %}
+{% include youtube.md video_id="HXAIB6bJuZQ" %}
 
 ## Undoing a schema change
 

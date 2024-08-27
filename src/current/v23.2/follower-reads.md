@@ -69,7 +69,7 @@ SELECT now() - follower_read_timestamp();
 
 The following video describes and demonstrates [exact staleness](#exact-staleness-reads) follower reads.
 
-{% include_cached youtube.html video_id="V--skgN_JMo" %}
+{% include youtube.md video_id="V--skgN_JMo" %}
 
 #### Exact staleness follower reads in read-only transactions
 

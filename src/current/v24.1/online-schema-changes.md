@@ -19,7 +19,7 @@ Schema changes consume additional resources, and if they are run when the cluste
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction. <br /><br /> {% include_cached new-in.html version="v24.1" %} Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction. <br /><br /> {% include new-in.md version="v24.1" %} Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
 {{site.data.alerts.end}}
 
 ## How online schema changes work
@@ -235,7 +235,7 @@ All schema change jobs can be [paused]({% link {{ page.version.version }}/pause-
 
 ### Enable automatic commit before running schema changes inside transactions
 
-{% include_cached new-in.html version="v24.1" %} When the [`autocommit_before_ddl` session setting]({% link {{page.version.version}}/set-vars.md %}#autocommit-before-ddl) is set to `on`, any schema change statement that is sent during an [explicit transaction]({% link {{page.version.version}}/transactions.md %}) will cause the transaction to [commit]({% link {{page.version.version}}/commit-transaction.md %}) before executing the schema change.
+{% include new-in.md version="v24.1" %} When the [`autocommit_before_ddl` session setting]({% link {{page.version.version}}/set-vars.md %}#autocommit-before-ddl) is set to `on`, any schema change statement that is sent during an [explicit transaction]({% link {{page.version.version}}/transactions.md %}) will cause the transaction to [commit]({% link {{page.version.version}}/commit-transaction.md %}) before executing the schema change.
 
 This setting can be used to:
 
@@ -266,13 +266,13 @@ You can also enable the setting [from your application's connection string]({% l
 
 To see a demo of an online schema change against a primary key column, watch the following video:
 
-{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+{% include youtube.md video_id="xvBBQVIGYio" %}
 
 ### Updating foreign key columns
 
 To see a demo of an online schema change against a foreign key column, watch the following video:
 
-{% include_cached youtube.html video_id="HXAIB6bJuZQ" %}
+{% include youtube.md video_id="HXAIB6bJuZQ" %}
 
 ## Undoing a schema change
 

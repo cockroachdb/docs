@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-{% include_cached new-in.html version="v23.1" %} A full-text search is used to perform natural-language searches on documents such as articles, websites, or other written formats.
+{% include new-in.md version="v23.1" %} A full-text search is used to perform natural-language searches on documents such as articles, websites, or other written formats.
 
 This page describes how to perform full-text searches using the provided [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions).
 
@@ -285,7 +285,7 @@ Add a new `TSVECTOR` column that is computed from `a` using [`to_tsvector()`](#p
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE t ADD COLUMN b TSVECTOR 
+ALTER TABLE t ADD COLUMN b TSVECTOR
   AS (to_tsvector('english', a)) STORED;
 ~~~
 
@@ -391,7 +391,7 @@ CREATE INDEX ON t USING GIN (b);
     The frequency of the `tree` lexeme in each row determines the difference in the rankings.
 
 1. Search the table for the query `calling`, and rank the results:
-    
+
     ~~~ sql
     SELECT opener, response, ts_rank(joke, query) AS rank
     FROM dadjokes, to_tsvector(opener || response) joke, to_tsquery('calling') query

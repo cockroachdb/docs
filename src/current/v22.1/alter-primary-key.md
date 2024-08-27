@@ -11,7 +11,7 @@ The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`AL
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
+{% include youtube.md video_id="MPx-LXY2D-c" %}
 
 ## Details
 

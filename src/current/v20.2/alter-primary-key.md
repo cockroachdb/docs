@@ -8,7 +8,7 @@ toc: true
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
+{% include youtube.md video_id="MPx-LXY2D-c" %}
 
 ## Details
 

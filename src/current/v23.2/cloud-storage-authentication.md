@@ -117,7 +117,7 @@ Replace `{CLUSTER_ID_SUFFIX}` with the last 12 digits of the cluster's ID.
 
 To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket.
 
-{% include_cached new-in.html version="v23.2" %} You can use the `external_id` option with `ASSUME_ROLE` to specify an [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for third-party access to your Amazon S3 bucket. The external ID is a unique ID that the third party provides you along with their ARN. For guidance on `external_id` usage in CockroachDB, refer to the [following example](#set-up-amazon-s3-assume-role).
+{% include new-in.md version="v23.2" %} You can use the `external_id` option with `ASSUME_ROLE` to specify an [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for third-party access to your Amazon S3 bucket. The external ID is a unique ID that the third party provides you along with their ARN. For guidance on `external_id` usage in CockroachDB, refer to the [following example](#set-up-amazon-s3-assume-role).
 
 {{site.data.alerts.callout_success}}
 Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access directly to IAM users.
@@ -728,7 +728,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
 Implicit authentication to Azure is only available for CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
+{% include new-in.md version="v23.2" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
 
 - A credentials file with the path specified in the environment variable `COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE`. Refer to [Set up a credentials file](#set-up-a-credentials-file).
 - Each credential set as an environment variable.

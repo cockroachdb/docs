@@ -75,7 +75,7 @@ Kafka has the following topic limitations:
 
 ### Kafka sink configuration
 
-{% include_cached new-in.html version="v21.2" %} The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
+{% include new-in.md version="v21.2" %} The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
 
 {{site.data.alerts.callout_danger}}
 Each of the following settings have significant impact on a changefeed's behavior, such as latency. For example, it is possible to configure batching parameters to be very high, which would negatively impact changefeed latency. As a result it would take a long time to see messages coming through to the sink. Also, large batches may be rejected by the Kafka server unless it's separately configured to accept a high [`max.message.bytes`](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes).
@@ -144,7 +144,7 @@ URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
 `AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
-`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for examples of each of these. 
+`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
 `AZURE_ENVIRONMENT` | Azure | {% include {{ page.version.version }}/misc/azure-env-param.md %}
@@ -163,7 +163,7 @@ URI Parameter      | Storage | Description
 **This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+{% include new-in.md version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
 Example of a webhook sink URL:
 
@@ -188,7 +188,7 @@ The following are considerations when using the webhook sink:
 
 ### Webhook sink configuration
 
-{% include_cached new-in.html version="v21.2" %} The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
+{% include new-in.md version="v21.2" %} The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
 
 The following details the configurable fields:
 

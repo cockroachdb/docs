@@ -38,7 +38,7 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
-{% include_cached new-in.html version="v22.1" %} The following online schema changes pause if the node executing the schema change is running out of disk space:
+{% include new-in.md version="v22.1" %} The following online schema changes pause if the node executing the schema change is running out of disk space:
 
 - Changes that trigger an index backfill (adding data to an index).
 - The following statements:
@@ -62,7 +62,7 @@ If a schema change fails, the schema change job will be cleaned up automatically
 
 ## Declarative schema changer
 
-{% include_cached new-in.html version="v22.1" %} CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
+{% include new-in.md version="v22.1" %} CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
 
 The following statements use the declarative schema changer by default:
 

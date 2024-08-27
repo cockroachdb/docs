@@ -6,7 +6,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v23.1" %} This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
+{% include new-in.md version="v23.1" %} This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
 
 {{site.data.alerts.callout_danger}}
 We strongly recommend only using the Automatic CPU Profiler when working directly with the [Cockroach Labs support team]({% link {{ page.version.version }}/support-resources.md %}).
@@ -18,7 +18,7 @@ You can configure automatic CPU profile capture with the following [cluster sett
 
 Cluster Setting | Description | Default Value | Recommended Value
 ----------------|-------------|---------------|------------------
-`server.cpu_profile.enabled` | Indicates if the Automatic CPU Profiler is on or off. | `false` | 
+`server.cpu_profile.enabled` | Indicates if the Automatic CPU Profiler is on or off. | `false` |
 `server.cpu_profile.cpu_usage_combined_threshold` | The baseline value for when CPU profiles should be taken. Collect profiles from each node that meets threshold. | MAX integer, such as `9223372036854775807` | `80`
 `server.cpu_profile.interval` | The period of time after which the [high-water mark](#high-water-mark-threshold) resets to the baseline value. | `5m0s` (5 minutes) | `1m40s` (100 seconds)
 `server.cpu_profile.duration` | The length of time a CPU profile is taken. | `10s` (10 seconds) | `1s` or `2s`
@@ -41,7 +41,7 @@ Only setting `server.cpu_profile.enabled` to `true` will not generate a CPU prof
 - Set `server.cpu_profile.duration` to a lower value, for example `1s` or `2s`. This minimizes the impact of [overhead](#overhead) on your cluster compared to the current default value.
 - Set `server.cpu_profile.interval` to a lower value, for example `1m40s` (1 minute 40 seconds).
 
-### High-water mark threshold 
+### High-water mark threshold
 
 The Automatic CPU Profiler runs asynchronously in the background. After every second, the Automatic CPU Profiler checks if the CPU usage exceeds the high-water mark threshold. If so, it captures a CPU profile. If a profile capture is already in progress, a second profile is not taken.
 

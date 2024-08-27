@@ -11,7 +11,7 @@ CockroachDB's [geo-partitioning](partitioning.html) feature gives you low-latenc
 
 ### Watch a demo
 
-{% include_cached youtube.html video_id="TgnQwOOk9Js" %}
+{% include youtube.md video_id="TgnQwOOk9Js" %}
 
 ### Read a case study
 

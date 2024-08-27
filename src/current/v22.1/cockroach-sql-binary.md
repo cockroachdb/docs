@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-{% include_cached new-in.html version="v22.1" %}
+{% include new-in.md version="v22.1" %}
 
 The `cockroach-sql` command is a client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run `cockroach-sql` as described below.
 

@@ -300,7 +300,7 @@ Two types of plans can be cached: custom and generic. Refer to [Query plan type]
 The following types of plans can be cached:
 
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans.
-- {% include_cached new-in.html version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
+- {% include new-in.md version="v24.2" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
 
     Generic query plans require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
 

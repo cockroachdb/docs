@@ -679,7 +679,7 @@ In this SQL statement, `AUTH=implicit` uses the workload identity service accoun
 
 You can authenticate to Azure with explicit credentials in the following ways:
 
-- {% include_cached new-in.html version="v23.1" %} Define the `AUTH=specified` parameter with:
+- {% include new-in.md version="v23.1" %} Define the `AUTH=specified` parameter with:
     - `AZURE_ACCOUNT_NAME`: Name of your Azure account.
     - `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
     - `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
@@ -712,7 +712,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
 Implicit authentication to Azure is only available for CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.1.9" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
+{% include new-in.md version="v23.1.9" %} When the `AUTH` parameter is set to `implicit`, CockroachDB will load credentials from one of the following:
 
 - A credentials file with the path specified in the environment variable `COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE`. Refer to [Set up a credentials file](#set-up-a-credentials-file).
 - Each credential set as an environment variable.

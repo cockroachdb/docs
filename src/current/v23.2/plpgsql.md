@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-{% include_cached new-in.html version="v23.2" %} [PL/pgSQL](https://www.postgresql.org/docs/16/plpgsql-overview.html) is a procedural language that you can use within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) in CockroachDB. 
+{% include new-in.md version="v23.2" %} [PL/pgSQL](https://www.postgresql.org/docs/16/plpgsql-overview.html) is a procedural language that you can use within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) in CockroachDB.
 
 In contrast to [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}), which are issued one-by-one from the client to the database, PL/pgSQL statements are encapsulated in a [block structure](#structure) and executed on the database side, thus reducing network latency. PL/pgSQL enables more complex functionality than standard SQL, including [conditional statements](#write-conditional-statements), [loops](#write-loops), and [exception handling](#report-messages-and-handle-exceptions).
 
@@ -32,7 +32,7 @@ PL/pgSQL is block-structured. A block contains the following:
 At the highest level, a PL/pgSQL block looks like the following:
 
 ~~~ sql
-[ DECLARE 
+[ DECLARE
 	declarations ]
   BEGIN
 	statements
@@ -60,7 +60,7 @@ For complete examples, see [Create a user-defined function using PL/pgSQL](#crea
 
 ### Declare a variable
 
-`DECLARE` specifies all variable definitions that are used in the function or procedure body. 
+`DECLARE` specifies all variable definitions that are used in the function or procedure body.
 
 ~~~ sql
 DECLARE
@@ -129,7 +129,7 @@ CREATE OR REPLACE PROCEDURE p(x INT) AS $$
 	BEGIN
 	    INSERT INTO t (col) VALUES (x) RETURNING col INTO i;
 	    RAISE NOTICE 'New Row: %', i;
-	END 
+	END
 $$ LANGUAGE PLpgSQL;
 ~~~
 
@@ -181,7 +181,7 @@ Use `IF` syntax to execute statements conditionally. PL/pgSQL understands severa
 `IF ... THEN` executes statements only if a boolean condition is true.
 
 ~~~ sql
-IF condition THEN 
+IF condition THEN
 		statements;
   END IF;
 ~~~
@@ -274,7 +274,7 @@ BEGIN
 	OPEN cursor_name [ FOR query ];
 ~~~
 
-After opening the cursor, you can issue a PL/pgSQL `FETCH` statement to assign the result to one or more variables. 
+After opening the cursor, you can issue a PL/pgSQL `FETCH` statement to assign the result to one or more variables.
 
 ~~~ sql
 BEGIN
@@ -294,7 +294,7 @@ BEGIN
 	CLOSE cursor_name;
 ~~~
 
-Cursors that are specified as parameters, rather than declared as variables, can be passed externally to and from PL/pgSQL blocks. 
+Cursors that are specified as parameters, rather than declared as variables, can be passed externally to and from PL/pgSQL blocks.
 
 For example, using the [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}):
 
@@ -346,7 +346,7 @@ RAISE level 'message' [, expressions ]
 - `level` is the message severity. Possible values are `DEBUG`, `LOG`, `NOTICE`, `INFO`, `WARNING`, and `EXCEPTION`. Specify `EXCEPTION` to raise an error that aborts the current transaction.
 - `message` is a message string to display.
 - `expressions` is an optional, comma-separated list of [expressions](https://www.postgresql.org/docs/16/plpgsql-expressions.html) that provide values to replace any `%` placed within the message string. The number of expressions must match the number of `%` placeholders.
-- `option` is a type of additional information to include. Possible values are `MESSAGE`, `DETAIL`, `HINT`, or `ERRCODE`. To specify `MESSAGE`, use the following alternate syntax: 
+- `option` is a type of additional information to include. Possible values are `MESSAGE`, `DETAIL`, `HINT`, or `ERRCODE`. To specify `MESSAGE`, use the following alternate syntax:
 
 	~~~ sql
 	RAISE level USING MESSAGE = 'message';
@@ -379,7 +379,7 @@ CALL
 
 #### Write exception logic
 
-Use an `EXCEPTION` statement to catch and handle specified errors. 
+Use an `EXCEPTION` statement to catch and handle specified errors.
 
 Any valid [`SQLSTATE` error code or name](https://www.postgresql.org/docs/16/errcodes-appendix.html) can be specified, except for Class 40 (transaction rollback) errors. Arbitrary user-defined `SQLSTATE` codes can also be specified.
 

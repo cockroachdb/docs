@@ -214,7 +214,7 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
 
-{% include_cached new-in.html version="v23.2" %} If [`READ COMMITTED` isolation is enabled]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `READ COMMITTED` is no longer an alias for `SERIALIZABLE`, and `READ UNCOMMITTED` becomes an alias for `READ COMMITTED`.
+{% include new-in.md version="v23.2" %} If [`READ COMMITTED` isolation is enabled]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `READ COMMITTED` is no longer an alias for `SERIALIZABLE`, and `READ UNCOMMITTED` becomes an alias for `READ COMMITTED`.
 
 #### Comparison
 

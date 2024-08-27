@@ -18,7 +18,7 @@ This is an [Enterprise feature](enterprise-licensing.html).
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="V--skgN_JMo" %}
+{% include youtube.md video_id="V--skgN_JMo" %}
 
 ## How follower reads work
 

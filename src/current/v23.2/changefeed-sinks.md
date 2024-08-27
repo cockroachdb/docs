@@ -10,7 +10,7 @@ docs_area: stream_data
 CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
-- {% include_cached new-in.html version="v23.2" %} [Confluent Cloud](#confluent-cloud)
+- {% include new-in.md version="v23.2" %} [Confluent Cloud](#confluent-cloud)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
@@ -195,7 +195,7 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 ## Confluent Cloud
 
-{% include_cached new-in.html version="v23.2" %} Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
+{% include new-in.md version="v23.2" %} Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
 
 A Confluent Cloud sink connection URI must include the following:
 
@@ -231,7 +231,7 @@ The following parameters are also needed, but are **set by default** in Cockroac
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. Without this cluster setting enabled, changefeeds emit JSON-encoded events with the top-level message fields all lowercase. With `changefeed.new_pubsub_sink_enabled`, the top-level fields are capitalized. For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
+{% include new-in.md version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. Without this cluster setting enabled, changefeeds emit JSON-encoded events with the top-level message fields all lowercase. With `changefeed.new_pubsub_sink_enabled`, the top-level fields are capitalized. For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
 {{site.data.alerts.end}}
 
 A Pub/Sub sink URI follows this example:
@@ -309,7 +309,7 @@ pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": 
 
 ### Pub/Sub sink messages
 
-{% include_cached new-in.html version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved changefeed throughput peformance. With `changefeed.new_pubsub_sink_enabled` enabled, the changefeed JSON-encoded message format have top-level fields that are capitalized:
+{% include new-in.md version="v23.2" %} The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved changefeed throughput peformance. With `changefeed.new_pubsub_sink_enabled` enabled, the changefeed JSON-encoded message format have top-level fields that are capitalized:
 
 ~~~
 {Key: ..., Value: ..., Topic: ...}

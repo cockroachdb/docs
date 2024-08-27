@@ -144,7 +144,7 @@ Despite being implemented in the storage layer, MVCC values are widely used to e
 
 For a demo of MVCC and garbage collection in CockroachDB, watch the following video:
 
-{% include_cached youtube.html video_id="Ctp5WQdbEd4" %}
+{% include youtube.md video_id="Ctp5WQdbEd4" %}
 
 #### Time-travel
 

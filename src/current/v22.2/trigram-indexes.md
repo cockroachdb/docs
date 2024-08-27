@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-{% include_cached new-in.html version="v22.2" %} A _trigram index_ is a type of [inverted index](inverted-indexes.html) created on a [`STRING`](string.html) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
+{% include new-in.md version="v22.2" %} A _trigram index_ is a type of [inverted index](inverted-indexes.html) created on a [`STRING`](string.html) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
 
 This page describes how to create and use trigram indexes on CockroachDB.
 
@@ -36,7 +36,7 @@ A trigram index stores every unique trigram within each string being indexed. Wh
 - Exact for an equality (`=`) or pattern matching (`LIKE`/`ILIKE`) search.
 - Inexact for a similarity (`%`) search.
 
-Trigrams enable pattern matching even when the prefix of the string is not known. For example: 
+Trigrams enable pattern matching even when the prefix of the string is not known. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -58,7 +58,7 @@ SELECT first_name FROM users WHERE first_name % 'steven';
 ~~~
 
 ~~~
-  first_name    
+  first_name
 --------------
   Stephen
   Steve

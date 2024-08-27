@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v23.2" %} A *stored procedure* is a database object consisting of [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) or [SQL]({% link {{ page.version.version }}/sql-statements.md %}) statements that can be issued with a single [`CALL`]({% link {{ page.version.version }}/call.md %}) statement. This allows complex logic to be executed repeatedly within the database, which can improve performance and mitigate security risks.
+{% include new-in.md version="v23.2" %} A *stored procedure* is a database object consisting of [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) or [SQL]({% link {{ page.version.version }}/sql-statements.md %}) statements that can be issued with a single [`CALL`]({% link {{ page.version.version }}/call.md %}) statement. This allows complex logic to be executed repeatedly within the database, which can improve performance and mitigate security risks.
 
 {% include {{ page.version.version }}/sql/udfs-vs-stored-procs.md %}
 
@@ -21,7 +21,7 @@ CREATE PROCEDURE procedure_name(parameters)
 
 - Each parameter can be a supported [SQL data type]({% link {{ page.version.version }}/data-types.md %}), [user-defined type]({% link {{ page.version.version }}/create-type.md %}), or the PL/pgSQL `REFCURSOR` type, when [declaring PL/pgSQL cursor variables]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables).
 - `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages [`SQL`]({% link {{ page.version.version }}/sql-statements.md %}) and [`PLpgSQL`]({% link {{ page.version.version }}/plpgsql.md %}).
-- The procedure body: 
+- The procedure body:
 	- Can be enclosed in single or dollar (`$$`) quotes. Dollar quotes are easier to use than single quotes, which require that you escape other single quotes that are within the procedure body.
 	- Must conform to a [block structure]({% link {{ page.version.version }}/plpgsql.md %}#structure) if written in PL/pgSQL.
 
@@ -50,7 +50,7 @@ ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
 
 - Stored procedures cannot call other stored procedures or [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
 - Stored procedures do not support `OUT` and `INOUT` argument modes.
-- [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`) cannot be used within a stored procedure body. 
+- [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`) cannot be used within a stored procedure body.
 - [Transactions]({% link {{ page.version.version }}/transactions.md %}) cannot be run within stored procedures.
 
 Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).

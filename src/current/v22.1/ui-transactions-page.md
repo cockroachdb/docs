@@ -31,7 +31,7 @@ By default, the **Transactions** page shows transactions from all applications a
 
 To search using the search field:
 
-1. Type a string over `Search Transactions`. {% include_cached new-in.html version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
+1. Type a string over `Search Transactions`. {% include new-in.md version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
 1. Press `Enter`.
 
     The list of transactions is filtered by the string.

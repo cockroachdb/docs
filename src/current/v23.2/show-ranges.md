@@ -83,13 +83,13 @@ Field | Description | Emitted for option(s)
 
 CockroachDB stores all user data in a sorted map of key-value pairs, also known as a keyspace. A span refers to an interval within this keyspace.
 
-{% include_cached new-in.html version="v23.2" %} The `SHOW RANGES` command emits span statistics when the `DETAILS` option is specified. The statistics are included in a column named `span_stats`, as a `JSON` object.
+{% include new-in.md version="v23.2" %} The `SHOW RANGES` command emits span statistics when the `DETAILS` option is specified. The statistics are included in a column named `span_stats`, as a `JSON` object.
 
 The statistics are calculated for the identifier of each row. For example:
 
 - `SHOW RANGES WITH DETAILS` will compute span statistics for each [range]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#review-of-cockroachdb-terminology).
 - `SHOW RANGES WITH TABLES, DETAILS` will compute span statistics for each table.
- 
+
 The `span_stats` `JSON` object has the following keys:
 
  Key | Description
@@ -445,7 +445,7 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 
 For a deep dive demo on ranges and how data is stored within them, watch the following video:
 
-{% include_cached youtube.html video_id="BVqnI4tnLA8" %}
+{% include youtube.md video_id="BVqnI4tnLA8" %}
 
 ## See also
 

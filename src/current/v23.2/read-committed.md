@@ -9,7 +9,7 @@ docs_area: deploy
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} `READ COMMITTED` is one of two [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) supported on CockroachDB. By default, CockroachDB uses the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, which is the strongest [ANSI transaction isolation level](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
+{% include new-in.md version="v23.2" %} `READ COMMITTED` is one of two [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) supported on CockroachDB. By default, CockroachDB uses the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, which is the strongest [ANSI transaction isolation level](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
 
 `READ COMMITTED` isolation is appropriate in the following scenarios:
 
@@ -115,7 +115,7 @@ To begin a transaction as a `READ COMMITTED` transaction, use one of the followi
 	  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 	~~~
 
-- The [`transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#transaction-isolation) session variable, at the beginning of the transaction: 
+- The [`transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#transaction-isolation) session variable, at the beginning of the transaction:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -144,7 +144,7 @@ Starting a transaction as `READ COMMITTED` does not affect the [default isolatio
 
 `READ COMMITTED` and `SERIALIZABLE` transactions both serve globally consistent ("non-stale") reads and [commit atomically]({% link {{ page.version.version }}/developer-basics.md %}#how-transactions-work-in-cockroachdb). `READ COMMITTED` transactions have the following differences:
 
-- Writes in concurrent `READ COMMITTED` transactions can interleave without aborting transactions, and a write can never block a non-locking read of the same row. This is because `READ COMMITTED` transactions are not required to be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}). 
+- Writes in concurrent `READ COMMITTED` transactions can interleave without aborting transactions, and a write can never block a non-locking read of the same row. This is because `READ COMMITTED` transactions are not required to be placed into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}).
 
 - Whereas statements in `SERIALIZABLE` transactions see data that committed before the transaction began, statements in `READ COMMITTED` transactions see data that committed before each **statement** began. If rows are being updated by concurrent writes, reads in a `READ COMMITTED` transaction can [return different results](#non-repeatable-reads-and-phantom-reads).
 
@@ -209,20 +209,20 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   ~~~ sql
   CREATE TABLE kv (k INT PRIMARY KEY, v INT);
   ~~~
-  
+
   {% include_cached copy-clipboard.html %}
   ~~~ sql
   INSERT INTO kv VALUES (1, 2);
   ~~~
-  
+
   Begin a `READ COMMITTED` transaction and read a table row:
-  
+
   {% include_cached copy-clipboard.html %}
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
     SELECT * FROM kv WHERE v = 2;
   ~~~
-  
+
   ~~~
     k | v
   ----+----
@@ -237,9 +237,9 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
   ~~~
-  
+
   Update the table row, insert a new row, and commit the transaction:
-  
+
   {% include_cached copy-clipboard.html %}
   ~~~ sql
   UPDATE kv SET k = 2 WHERE v = 2;
@@ -255,7 +255,7 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   ~~~ sql
   SELECT * FROM kv WHERE v = 2;
   ~~~
-  
+
   ~~~
     k | v
   ----+----
@@ -295,7 +295,7 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   ~~~ sql
   INSERT INTO kv VALUES (1, 2);
   ~~~
-  
+
   Begin a `READ COMMITTED` transaction and read a table row:
 
   {% include_cached copy-clipboard.html %}
@@ -303,7 +303,7 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
     SELECT * FROM kv WHERE k = 1;
   ~~~
-  
+
   ~~~
     k | v
   ----+----
@@ -318,9 +318,9 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
   ~~~
-  
+
   Update the table row and commit the transaction:
-  
+
   {% include_cached copy-clipboard.html %}
   ~~~ sql
   UPDATE kv SET v = 3 WHERE k = 1;
@@ -336,14 +336,14 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   UPDATE kv SET v = 4 WHERE k = 1;
     COMMIT;
   ~~~
-  
+
   Read the table row and see that it reflects the update from Session 1:
-  
+
   {% include_cached copy-clipboard.html %}
   ~~~ sql
   SELECT * FROM kv WHERE k = 1;
   ~~~
-  
+
   ~~~
     k | v
   ----+----
@@ -371,7 +371,7 @@ While concurrent `READ COMMITTED` transactions can have their committed writes o
 
 #### Write skew anomaly
 
-The following sequence of operations on a table is possible under `READ COMMITTED` isolation: 
+The following sequence of operations on a table is possible under `READ COMMITTED` isolation:
 
 1. Transaction `A` reads row `R` at timestamp `1`.
 1. Transaction `B` reads row `S` at timestamp `2`.
@@ -423,7 +423,7 @@ In this scenario:
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on call for a particular shift, and both of them try to request leave for the shift in two concurrent transactions.
-- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) anomaly can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift. 
+- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) anomaly can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
 
 The following examples demonstrate how to:
 
@@ -510,7 +510,7 @@ Confirm that at least one doctor is on call each day of the week:
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
   GROUP BY day
-  ORDER BY day;  
+  ORDER BY day;
 ~~~
 
 ~~~
@@ -554,7 +554,7 @@ SELECT * FROM schedules
   </div>
 
   <div class="grid-item">
-Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. 
+Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application.
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 
@@ -687,7 +687,7 @@ Confirm that at least one doctor is on call each day of the week:
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
   GROUP BY day
-  ORDER BY day;  
+  ORDER BY day;
 ~~~
 
 ~~~
@@ -737,7 +737,7 @@ SELECT * FROM schedules
   </div>
 
   <div class="grid-item">
-Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. 
+Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application.
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 
@@ -812,7 +812,7 @@ Confirm that at least one doctor is on call each day of the week:
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
   GROUP BY day
-  ORDER BY day;  
+  ORDER BY day;
 ~~~
 
 ~~~
@@ -857,7 +857,7 @@ SELECT * FROM schedules
 </div>
 
   <div class="grid-item">
-Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. 
+Around the same time, Doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application.
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 

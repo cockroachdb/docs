@@ -191,7 +191,7 @@ See the [Backup and Restore Monitoring]({% link {{ page.version.version }}/backu
 
 For practical examples of running backup and restore jobs, watch the following video:
 
-{% include_cached youtube.html video_id="t_ocOi_iYQ8" %}
+{% include youtube.md video_id="t_ocOi_iYQ8" %}
 
 ## See also
 

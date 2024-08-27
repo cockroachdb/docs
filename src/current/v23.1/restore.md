@@ -58,7 +58,7 @@ To manage a restore job with [`PAUSE JOB`]({% link {{ page.version.version }}/pa
 
 To view a restore job with [`SHOW JOB`]({% link {{ page.version.version }}/show-jobs.md %}), users must have at least one of the following:
 
-- {% include_cached new-in.html version="v23.1" %} The [`VIEWJOB` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
+- {% include new-in.md version="v23.1" %} The [`VIEWJOB` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
 - Be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 - The [`CONTROLJOB` role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options).
 

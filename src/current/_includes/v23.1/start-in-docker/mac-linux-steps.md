@@ -57,7 +57,7 @@ This section shows how to start a three-node cluster where:
 When SQL and inter-node traffic are separated, some client commands need to be modified with a `--host` flag or a `--uri` connection string. Some commands, such as `cockroach init`, default to port 26257 but must use the inter-node traffic port (the `--listen-addr` or `--advertise-addr`) rather than the SQL traffic port when traffic is separated.
 {{site.data.alerts.end}}
 
-1. {% include_cached new-in.html version="v23.1" %}Optionally, on each node, set the `COCKROACH_ARGS` environment variable to the string of arguments to use when starting CockroachDB. If `COCKROACH_ARGS` is set, its value is automatically passed to the `cockroach` command, and any additional arguments to the `cockroach` command are ignored.
+1. {% include new-in.md version="v23.1" %}Optionally, on each node, set the `COCKROACH_ARGS` environment variable to the string of arguments to use when starting CockroachDB. If `COCKROACH_ARGS` is set, its value is automatically passed to the `cockroach` command, and any additional arguments to the `cockroach` command are ignored.
 
 1. Start the first node and configure it to listen on `roach1:26257` for SQL clients and `roach1:8080` for the DB Console and to publish these ports, and to use `roach1:26357`for inter-node traffic. The Docker host will forward traffic to a published port to the publishing container. CockroachDB starts in insecure mode and a `certs` directory is not created.
 

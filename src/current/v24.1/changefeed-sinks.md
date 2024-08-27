@@ -14,8 +14,8 @@ CockroachDB supports the following sinks:
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
-- {% include_cached new-in.html version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
-- {% include_cached new-in.html version="v24.1" %} [Apache Pulsar](#apache-pulsar) (in Preview)
+- {% include new-in.md version="v24.1" %} [Azure Event Hubs](#azure-event-hubs)
+- {% include new-in.md version="v24.1" %} [Apache Pulsar](#apache-pulsar) (in Preview)
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -122,7 +122,7 @@ kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": 
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
 
-{% include_cached new-in.html version="v24.1" %} Implement a Kafka resource usage limit per changefeed by setting a client ID and Kafka quota. You can set the quota for the client ID in your Kafka server's configuration:
+{% include new-in.md version="v24.1" %} Implement a Kafka resource usage limit per changefeed by setting a client ID and Kafka quota. You can set the quota for the client ID in your Kafka server's configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -585,7 +585,7 @@ The following shows the default JSON messages for a changefeed emitting to a web
 
 ## Azure Event Hubs
 
-{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to an [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), which is compatible with Apache Kafka.
+{% include new-in.md version="v24.1" %} Changefeeds can deliver messages to an [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), which is compatible with Apache Kafka.
 
 An Azure Event Hubs sink URI:
 
@@ -616,7 +616,7 @@ The following parameters are also needed, but are **set by default** in Cockroac
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.1" %} Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+{% include new-in.md version="v24.1" %} Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
 
 A Pulsar sink URI:
 

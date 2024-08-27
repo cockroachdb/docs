@@ -43,7 +43,7 @@ Parameter        | Description
 
 For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#synopsis) page.
 
-{% include_cached new-in.html version="v23.1" %} To emit different properties for a row, specify the following explicitly in CDC queries:
+{% include new-in.md version="v23.1" %} To emit different properties for a row, specify the following explicitly in CDC queries:
 
 - `cdc_prev`: A tuple-typed column that gives changefeeds access to the previous state of a row. For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`. See the [Emit the previous state of a row](#emit-the-previous-state-of-a-row) example for more detail.
 - CDC queries support [system columns]({% link {{ page.version.version }}/crdb-internal.md %}), for example:
@@ -59,7 +59,7 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`]({% link
 
 ## CDC query function support
 
-{% include_cached new-in.html version="v23.1" %} The following table outlines functions that are useful with CDC queries:
+{% include new-in.md version="v23.1" %} The following table outlines functions that are useful with CDC queries:
 
 Function                  | Description
 --------------------------+----------------------
@@ -70,7 +70,7 @@ Function                  | Description
 You can also use the following functions in CDC queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page]({% link {{ page.version.version }}/functions-and-operators.md %}).
-- {% include_cached new-in.html version="v23.1" %} Non-volatile [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}). See the [Queries and user-defined functions](#queries-and-user-defined-functions) example.
+- {% include new-in.md version="v23.1" %} Non-volatile [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}). See the [Queries and user-defined functions](#queries-and-user-defined-functions) example.
 - Functions that rely on [session data]({% link {{ page.version.version }}/show-sessions.md %}). At the time of changefeed creation, information about the current session is saved. When a CDC query includes one of the functions that use session data, the query will evaluate the saved session data.
 - The following "Stable" functions:
   - `age()`
@@ -170,7 +170,7 @@ The `before` value in the delete message, produced by the `diff` option, will in
 
 ### Emit the previous state of a row
 
-{% include_cached new-in.html version="v23.1" %} Changefeeds can access the `cdc_prev` hidden column on a table to emit the previous state of a row or column. `cdc_prev` is a tuple-typed column that contains the table's columns.
+{% include new-in.md version="v23.1" %} Changefeeds can access the `cdc_prev` hidden column on a table to emit the previous state of a row or column. `cdc_prev` is a tuple-typed column that contains the table's columns.
 
 To emit the previous state of a row, it is necessary to explicitly call `cdc_prev`:
 
@@ -341,7 +341,7 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 ### Determine the age of a row
 
-{% include_cached new-in.html version="v23.1" %} You can determine the age of a row by using the `crdb_internal_mvcc_timestamp` system column and `cdc_prev` to [access the row's previous state](#emit-the-previous-state-of-a-row):
+{% include new-in.md version="v23.1" %} You can determine the age of a row by using the `crdb_internal_mvcc_timestamp` system column and `cdc_prev` to [access the row's previous state](#emit-the-previous-state-of-a-row):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -486,7 +486,7 @@ Since all non-primary key columns will be `NULL` in the `cdc_prev` output for an
 
 ### Queries and user-defined functions
 
-{% include_cached new-in.html version="v23.1" %} You can create CDC queries that include [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
+{% include new-in.md version="v23.1" %} You can create CDC queries that include [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
 
 The following [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) statement builds the `doubleRevenue()` function at the database level:
 

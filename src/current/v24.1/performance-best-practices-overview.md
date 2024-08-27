@@ -338,7 +338,7 @@ Writing transactions ["lock" rows]({% link {{ page.version.version }}/architectu
 
 By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, transactions that operate on the same index key values (specifically, that operate on the same [column family]({% link {{ page.version.version }}/column-families.md %}) for a given index key) are strictly serialized. To maintain this isolation, `SERIALIZABLE` transactions [refresh their reads]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) at commit time to verify that the values they read were not subsequently updated by other, concurrent transactions. If read refreshing is unsuccessful, then the transaction must be retried.
 
-[When transactions are experiencing contention]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
+[When transactions are experiencing contention]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-application-is-experiencing-transaction-contention), you may observe:
 
 - [Delays in query completion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
 - [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a serializable ordering among all of the currently-executing transactions. This is also called a *serialization conflict*.
@@ -378,7 +378,7 @@ Read hot spots can occur if you perform lots of scans of a portion of a table in
 
 For a demo on hot spot reduction, watch the following video:
 
-{% include_cached youtube.html video_id="j15k01NeNNA" %}
+{% include youtube.md video_id="j15k01NeNNA" %}
 
 ## See also
 

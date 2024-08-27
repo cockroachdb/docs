@@ -22,8 +22,8 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
-    - {% include_cached new-in.html version="v21.2" %} Cannot be `none`.
-    - {% include_cached new-in.html version="v21.2" %} Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
+    - {% include new-in.md version="v21.2" %} Cannot be `none`.
+    - {% include new-in.md version="v21.2" %} Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
 - Roles and users share the same namespace and must be unique.

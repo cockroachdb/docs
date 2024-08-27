@@ -64,7 +64,7 @@ Example of a Kafka sink URI:
 The Google Cloud Pub/Sub sink is currently in **beta**.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.1" %} Example of a Google Cloud Pub/Sub sink URI:
+{% include new-in.md version="v22.1" %} Example of a Google Cloud Pub/Sub sink URI:
 
 ~~~
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
@@ -181,7 +181,7 @@ For example:
 /2020-04-02/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
 ~~~
 
-{% include_cached new-in.html version="v22.1" %} When emitting changefeed messages to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), you can specify a partition format for your files using the [`partition_format`](#partition-format) query parameter. This will result in the following file path formats:
+{% include new-in.md version="v22.1" %} When emitting changefeed messages to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), you can specify a partition format for your files using the [`partition_format`](#partition-format) query parameter. This will result in the following file path formats:
 
 - `daily`: This is the default option and will follow the same pattern as the previous general file format.
 - `hourly`: This will partition into an hourly directory as the changefeed emits messages, like the following:
@@ -269,7 +269,7 @@ For step-by-step guidance on creating a changefeed connected to a cloud storage 
 
 ### Create a changefeed with an S3 storage class
 
-{% include_cached new-in.html version="v22.1" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include new-in.md version="v22.1" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -149,7 +149,7 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
-The optimizer can use cached plans if they are: 
+The optimizer can use cached plans if they are:
 
 - Prepared statements.
 - Non-prepared statements using identical constant values.
@@ -261,7 +261,7 @@ EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
 
 ### Prevent zigzag joins
 
-{% include_cached new-in.html version="v21.2" %}
+{% include new-in.md version="v21.2" %}
 
 The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
 

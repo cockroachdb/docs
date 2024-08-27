@@ -32,7 +32,7 @@ In some cases, [transaction contention]({% link {{ page.version.version }}/perfo
 
 #### Read Committed isolation
 
-{% include_cached new-in.html version="v23.2" %} CockroachDB can be configured to execute transactions at [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) instead of `SERIALIZABLE` isolation. `READ COMMITTED` permits some concurrency anomalies in exchange for minimizing transaction aborts and [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries). Depending on your workload requirements, this may be desirable. For more information, see [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}).
+{% include new-in.md version="v23.2" %} CockroachDB can be configured to execute transactions at [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) instead of `SERIALIZABLE` isolation. `READ COMMITTED` permits some concurrency anomalies in exchange for minimizing transaction aborts and [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries). Depending on your workload requirements, this may be desirable. For more information, see [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}).
 
 ### How applications interact with CockroachDB
 

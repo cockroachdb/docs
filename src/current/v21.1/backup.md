@@ -152,7 +152,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="v21.1" %} The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{% include new-in.md version="v21.1" %} The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -243,7 +243,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup job creation completes: 
+The job ID is returned after the backup job creation completes:
 
 ~~~
         job_id

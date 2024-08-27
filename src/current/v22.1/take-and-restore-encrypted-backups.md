@@ -8,7 +8,7 @@ docs_area: manage
 This doc provides information about how to take and restore encrypted backups in the following ways:
 
 - [Using AWS Key Management Service (KMS)](#aws-kms-uri-format)
-- {% include_cached new-in.html version="v22.1" %} [Using Google Cloud Key Management Service (KMS)](#google-cloud-kms-uri-format)
+- {% include new-in.md version="v22.1" %} [Using Google Cloud Key Management Service (KMS)](#google-cloud-kms-uri-format)
 - [Using a passphrase](#use-a-passphrase)
 
 {{site.data.alerts.callout_info}}

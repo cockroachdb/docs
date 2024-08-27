@@ -27,7 +27,7 @@ By default, the Statements page shows SQL statements from all applications and d
 
 To search using the search field:
 
-1. Type a string over `Search Statements`. {% include_cached new-in.html version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
+1. Type a string over `Search Statements`. {% include new-in.md version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
 1. Press `Enter`.
 
     The list of statements is filtered by the string.

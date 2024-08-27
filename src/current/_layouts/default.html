@@ -26,7 +26,7 @@
 {%- elsif page.url == '/search.html' -%}
   {%- assign sidebar_class = "nav--search " -%}
 {%- endif -%}
-{% include_cached sidebar.html sidebar_class=sidebar_class %}
+{% include sidebar.md sidebar_class=sidebar_class %}
         </nav>
 {% if page.toc == true %}
   {% if page.homepage != true %}
@@ -61,7 +61,7 @@
 
 {% include_cached footer.html %}
 
-{% include_cached sidebar.js.html sidebar_data=page.sidebar_data %}
+{% include_cached sidebar.js sidebar_data=page.sidebar_data %}
     <script src="https://go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
     <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}" defer></script>
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}" defer></script>

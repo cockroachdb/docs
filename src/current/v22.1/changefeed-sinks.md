@@ -171,7 +171,7 @@ See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a C
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+{% include new-in.md version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
 A Pub/Sub sink URI follows this example:
 

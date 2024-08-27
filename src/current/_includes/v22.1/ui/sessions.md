@@ -2,7 +2,7 @@
 <img src="{{ 'images/v22.1/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
-{% include_cached new-in.html version="v22.1" %} To filter the sessions, click the **Filters** field.
+{% include new-in.md version="v22.1" %} To filter the sessions, click the **Filters** field.
 
 <img src="{{ 'images/v22.1/ui-session-filter.png' | relative_url }}" alt="Session filter" />
 
@@ -13,7 +13,7 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 To filter by session duration, specify the session time and unit.
 
-{% include_cached new-in.html version="v22.1" %} Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
+{% include new-in.md version="v22.1" %} Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
 The following are displayed for each session:
 
@@ -46,10 +46,10 @@ The **Cancel session** button ends the session. The client that holds this sessi
 - **Session Details**
   - **Session Start Time** shows the timestamp at which the session started.
   - **Gateway Node** <a name="session-details-gateway-node"></a> shows the node ID and IP address/port of the [gateway]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#gateway) node handling the client connection.
-  - **Application Name** {% include_cached new-in.html version="v22.1" %} shows the name of the application connected to the session.
+  - **Application Name** {% include new-in.md version="v22.1" %} shows the name of the application connected to the session.
   - **Client IP Address** shows the IP address/port of the client that opened the session.
   - **Memory Usage** shows the amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever allocated.
-  - **User Name** {% include_cached new-in.html version="v22.1" %} displays the name of the user that started the session.
+  - **User Name** {% include new-in.md version="v22.1" %} displays the name of the user that started the session.
 
 - **Transaction** displays the following information for an open transaction.
   - **Transaction Start Time** shows the timestamp at which the transaction started.

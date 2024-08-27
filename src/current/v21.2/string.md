@@ -181,7 +181,7 @@ A literal entered through a SQL client will be translated into a different value
 
 ### Cast hexadecimal digits to `BIT`
 
-{% include_cached new-in.html version="v21.2" %} You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
+{% include new-in.md version="v21.2" %} You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
 
 For example:
 

@@ -358,7 +358,7 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ### Amazon S3 storage classes
 
-{% include_cached new-in.html version="v21.2.6" %} When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
+{% include new-in.md version="v21.2.6" %} When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
 
 The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
@@ -366,7 +366,7 @@ The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
 ~~~
 
-While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes. 
+While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes.
 
 {{site.data.alerts.callout_info}}
 [Incremental backups](take-full-and-incremental-backups.html#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.

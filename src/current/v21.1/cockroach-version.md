@@ -23,7 +23,7 @@ Build Commit ID:  ac916850f403f083ea62e2b0dfdfecbbeaaa4d05
 Build Type:       release
 ~~~
 
-{% include_cached new-in.html version="v21.1" %} You can also run `cockroach --version`.
+{% include new-in.md version="v21.1" %} You can also run `cockroach --version`.
 
 ## Response
 

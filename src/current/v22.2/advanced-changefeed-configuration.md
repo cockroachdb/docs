@@ -157,7 +157,7 @@ If you have a table with 10,000 or more [ranges](architecture/overview.html#arch
 
 ## Lagging ranges
 
-{% include_cached new-in.html version="v22.2.15" %} Use the `changefeed.lagging_ranges` metric to track the number of ranges that are behind in a changefeed. This is calculated based on the [cluster settings](cluster-settings.html):
+{% include new-in.md version="v22.2.15" %} Use the `changefeed.lagging_ranges` metric to track the number of ranges that are behind in a changefeed. This is calculated based on the [cluster settings](cluster-settings.html):
 
 - `changefeed.lagging_ranges_threshold` sets a duration from the present that determines the length of time a range is considered to be lagging behind, which will then track in the [`lagging_ranges`](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels) metric. Note that ranges undergoing an [initial scan](create-changefeed.html#initial-scan) for longer than the threshold duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease.
     - **Default:** `3m`

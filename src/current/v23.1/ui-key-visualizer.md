@@ -11,7 +11,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access-only.md %}
 
-{% include_cached new-in.html version="v23.1" %} The **Key Visualizer** page of the DB Console provides access to the Key Visualizer tool, which enables the visualization of current and historical [key-value (KV)]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data-kv-structure) traffic serviced by your cluster.
+{% include new-in.md version="v23.1" %} The **Key Visualizer** page of the DB Console provides access to the Key Visualizer tool, which enables the visualization of current and historical [key-value (KV)]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data-kv-structure) traffic serviced by your cluster.
 
 The Key Visualizer is a useful troubleshooting tool when experiencing performance problems with your cluster, surfacing historical and current KV [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) in your keyspace, drawing attention to [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), and highlighting potentially-unnecessary [full-table scans]({% link {{ page.version.version }}/make-queries-fast.md %}) that might benefit from the creation of a targeted index, among others.
 
@@ -53,7 +53,7 @@ The Key Visualizer presents the following information:
 
 - You can zoom in to focus on a particular range or sample period, or zoom out to see the entire keyspace at once, up to the maximum historical data retention period of seven days.
 
-- Hovering over a range in the Key Visualizer presents a tooltip with the start key, end key, number of requests, and timestamp of the recorded sample. 
+- Hovering over a range in the Key Visualizer presents a tooltip with the start key, end key, number of requests, and timestamp of the recorded sample.
 
 ## Key Visualizer customization
 
@@ -64,7 +64,7 @@ Beyond the `keyvisualizer.enabled` [cluster setting]({% link {{ page.version.ver
 `keyvisualizer.sample_interval` | Controls the frequency at which the Key Visualizer collects samples.<br>**Default:** `5m`
 `keyvisualizer.max_buckets` | Controls the maximum number of buckets in a sample. This value can range from `1` to `1024`.<br>**Default:** `256`
 
-Together, these cluster settings control the sampling resolution, or granularity, of the key data that the Key Visualizer collects and presents. 
+Together, these cluster settings control the sampling resolution, or granularity, of the key data that the Key Visualizer collects and presents.
 
 If your cluster has a large number of ranges, and the storage headroom to store the increased historical data, you might increase `keyvisualizer.max_buckets` to get more granularity in the visualizer, making pinpointing a specific problematic key range easier. Similarly, you might lower `keyvisualizer.sample_interval` to achieve more frequent samples, identifying changes between recorded samples more closely to when they actually occurred.
 
