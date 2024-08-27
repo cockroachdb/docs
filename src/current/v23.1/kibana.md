@@ -27,7 +27,7 @@ Either of the following:
 - Self-managed [Elastic Stack](https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html) with [Metricbeat installed](https://www.elastic.co/guide/en/beats/metricbeat/7.13/metricbeat-installation-configuration.html)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [CockroachDB {{ site.data.products.cloud }}](https://www.cockroachlabs.com/docs/cockroachcloud) does not expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB module

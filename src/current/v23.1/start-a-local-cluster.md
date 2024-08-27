@@ -57,7 +57,7 @@ This section shows how to start a cluster interactively. In production, operator
     * - Any user, connecting as root, can read or write any data in your cluster.
     * - There is no network encryption nor authentication, and thus no confidentiality.
     *
-    * Check out how to secure your cluster: https://www.cockroachlabs.com/docs/{{ page.version.version }}/secure-a-cluster.html
+    * Check out how to secure your cluster: {% link {{ page.version.version }}/secure-a-cluster.md %}
     *
     *
     * INFO: initial startup completed.

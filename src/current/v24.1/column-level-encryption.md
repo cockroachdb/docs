@@ -31,7 +31,7 @@ For usage examples, see:
 These functions require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). If you do not have an Enterprise license, you will see an error message like the following if you try to use them:
 
 ~~~
-ERROR: encrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
+ERROR: encrypt(): use of this cryptographic function ({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -50,7 +50,7 @@ For usage examples, see:
 These functions require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). If you do not have an Enterprise license, you will see an error message like the following if you try to use them:
 
 ~~~
-ERROR: decrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
+ERROR: decrypt(): use of this cryptographic function ({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
 ~~~
 
 {{site.data.alerts.callout_info}}
