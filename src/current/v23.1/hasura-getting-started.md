@@ -1,5 +1,5 @@
 ---
-title: Build a GraphQL Application Using Hasura 
+title: Build a GraphQL Application Using Hasura
 summary: Learn how to use Hasura with CockroachDB to create GraphQL queries.
 toc: true
 twitter: false
@@ -45,7 +45,7 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 1. Select **Env vars** in your project settings, and click **New Env Var**.
 1. Under **Key** type `SSL_ROOT_CERT`, then press **Enter**.
 1. Copy the contents of your cluster's CA certificate file you downloaded earlier.
-  
+
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
     {% include_cached copy-clipboard.html %}
@@ -62,7 +62,7 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 1. Select **Env vars** in your project settings, and click **New Env Var**.
 1. Under **Key** type `SSL_ROOT_CERT`, then press **Enter**.
 1. Copy the contents of your CockroachDB {{ site.data.products.dedicated }} cluster's CA certificate file you downloaded earlier.
-  
+
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
     {% include_cached copy-clipboard.html %}

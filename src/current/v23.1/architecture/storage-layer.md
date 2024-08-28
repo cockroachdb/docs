@@ -175,4 +175,4 @@ The storage layer commits writes from the Raft log to disk, as well as returns r
 
 ## What's next?
 
-Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [local cluster]({% link {{ page.version.version }}/install-cockroachdb.md %}) and start [building an app with CockroachDB]({% link {{ page.version.version}}/example-apps.md %}).
+Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [local cluster]({% link {{ page.version.version }}/install-cockroachdb.md %}) and start [building an app with CockroachDB]({% link {{ page.version.version}}/example-apps.md %}).

@@ -99,7 +99,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. In the **Endpoint type** section, select **Target endpoint**.
 1. Supply an **Endpoint identifier** to identify the new target endpoint.
 1. In the **Target engine** dropdown, select **PostgreSQL**.
-1. Under **Access to endpoint database**, select **Provide access information manually**. 
+1. Under **Access to endpoint database**, select **Provide access information manually**.
 
     For information about where to find CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
@@ -143,7 +143,7 @@ To conserve CPU, consider migrating tables in multiple replication tasks, rather
 1. To preserve the schema you manually created, select **Truncate** or **Do nothing** for the **Target table preparation mode**.
     <img src="{{ 'images/v23.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Optionally check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
-1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
+1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues.
 1. For the **Target Load**, select **Detailed debug**.
     <img src="{{ 'images/v23.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
 
@@ -240,7 +240,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
     ~~~
 
-- If you are migrating from PostgreSQL, are using a [`STRING`]({% link {{ page.version.version }}/string.md %}) as a [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}), and have selected **Enable validation** in your [task settings](#step-2-2-task-settings), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
+- If you are migrating from PostgreSQL, are using a [`STRING`]({% link {{ page.version.version }}/string.md %}) as a [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}), and have selected **Enable validation** in your [task settings](#step-2-2-task-settings), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings.
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation]({% link {{ page.version.version }}/collate.md %}) such as `COLLATE "en_US"` in CockroachDB.
 

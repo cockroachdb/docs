@@ -1,5 +1,5 @@
 ---
-title: Build a GraphQL Application Using Hasura 
+title: Build a GraphQL Application Using Hasura
 summary: Learn how to use Hasura with CockroachDB to create GraphQL queries.
 toc: true
 twitter: false
@@ -30,7 +30,7 @@ Before you start this tutorial, you need:
 
 1. In the **Create Project** panel select the cloud infrastructure provider and region.
 
-    The cloud infrastructure provider and region should match your cluster. For example, if you created a CockroachDB {{ site.data.products.dedicated }} cluster in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
+    The cloud infrastructure provider and region should match your cluster. For example, if you created a CockroachDB {{ site.data.products.standard }} cluster in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
 
 1. Click **Create Free Project**.
 
@@ -45,7 +45,7 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 1. Select **Env vars** in your project settings, and click **New Env Var**.
 1. Under **Key** type `SSL_ROOT_CERT`, then press **Enter**.
 1. Copy the contents of your cluster's CA certificate file you downloaded earlier.
-  
+
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
     {% include_cached copy-clipboard.html %}
@@ -61,8 +61,8 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
 1. Select **Env vars** in your project settings, and click **New Env Var**.
 1. Under **Key** type `SSL_ROOT_CERT`, then press **Enter**.
-1. Copy the contents of your CockroachDB {{ site.data.products.dedicated }} cluster's CA certificate file you downloaded earlier.
-  
+1. Copy the contents of your CockroachDB {{ site.data.products.standard }} cluster's CA certificate file you downloaded earlier.
+
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
     {% include_cached copy-clipboard.html %}
@@ -117,7 +117,7 @@ Create a `CRDB_URL` environment variable to store the connection string.
 
 ## Add the Hasura Cloud network to your cluster allowlist
 
-Your CockroachDB {{ site.data.products.dedicated }} cluster needs to be configured to [allow incoming client connections]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) from Hasura Cloud.
+Your CockroachDB {{ site.data.products.standard }} cluster needs to be configured to [allow incoming client connections]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) from Hasura Cloud.
 
 1. In the Hasura Cloud overview page select **Projects**, then click the **Config** icon for your project.
 
