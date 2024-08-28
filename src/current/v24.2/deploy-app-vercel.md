@@ -24,7 +24,7 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 {% include_cached cockroachcloud/connection-string-standard.md %}
 
-# Step 2. Get the code
+## Step 2. Get the code
 
 1. Open the code repository's [GitHub repository](https://github.com/cockroachdb/prisma-examples).
 1. Fork it by clicking **Fork** at the top. Netlify requires you to own a Netlify app's repository.
