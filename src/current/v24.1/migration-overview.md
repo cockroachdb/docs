@@ -113,11 +113,11 @@ Determine the size of the target CockroachDB cluster. To do this, consider your 
 - What is the total size of the data you will migrate?
 - How many active [application connections]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
 
-Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster) for details:
+Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for details:
 
-- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#choose-resource-limits) and [CockroachDB {{ site.data.products.basic }}](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic#choose-resource-limits) documentation to learn about how to limit your resource consumption.
-- For CockroachDB {{ site.data.products.advanced }}, refer to the [example](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-advanced#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist](https://www.cockroachlabs.com/docs/cockroachcloud/production-checklist#use-a-pool-of-persistent-connections).
+- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster.md %}#request-units) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) documentation to learn about how to limit your resource consumption.
+- For CockroachDB {{ site.data.products.advanced }}, refer to the [example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
+- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#connection-pooling).
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 
@@ -139,7 +139,7 @@ As you develop your migration plan, consider the application changes that you wi
 Follow these recommendations when [converting your schema](#convert-the-schema) for compatibility with CockroachDB.
 
 {{site.data.alerts.callout_success}}
-The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) automatically identifies potential improvements to your schema.
+The [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) automatically identifies potential improvements to your schema.
 {{site.data.alerts.end}}
 
 - You should define an explicit primary key on every table. For more information, see [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices).
@@ -150,13 +150,13 @@ The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/m
 
 #### Index creation best practices
 
-Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB. 
+Review the [best practices for creating secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices) on CockroachDB.
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data. 
+Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
 
 Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
@@ -165,7 +165,7 @@ Transaction retry errors are more frequent under CockroachDB's default [`SERIALI
 Update your queries to resolve differences in functionality and SQL syntax.
 
 {{site.data.alerts.callout_success}}
-The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) automatically flags syntax incompatibilities and unimplemented features in your schema.
+The [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) automatically flags syntax incompatibilities and unimplemented features in your schema.
 {{site.data.alerts.end}}
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
@@ -213,7 +213,7 @@ In the following order:
 
 You can use the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}) to simplify these steps:
 
-- [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
 
@@ -221,17 +221,17 @@ You can use the following [MOLT (Migrate Off Legacy Technology) tools]({% link m
 
 First, convert your database schema to an equivalent CockroachDB schema:
 
-- Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert your schema line-by-line. This requires a free [CockroachDB {{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account). The tool will convert the syntax, identify [unimplemented features and syntax incompatibilities](#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
+- Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to convert your schema line-by-line. This requires a free [CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}). The tool will convert the syntax, identify [unimplemented features and syntax incompatibilities](#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
 	{{site.data.alerts.callout_info}}
 	The Schema Conversion Tool accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
 	{{site.data.alerts.end}}
 
-- Alternatively, manually convert the schema according to our [schema design best practices](#schema-design-best-practices){% comment %}and data type mappings{% endcomment %}. You can also [export a partially converted schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool to finish the conversion manually.
+- Alternatively, manually convert the schema according to our [schema design best practices](#schema-design-best-practices){% comment %}and data type mappings{% endcomment %}. You can also [export a partially converted schema]({% link cockroachcloud/migrations-page.md %}#export-the-schema) from the Schema Conversion Tool to finish the conversion manually.
 
 Then import the converted schema to a CockroachDB cluster:
 
-- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.cloud }} database](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#migrate-the-schema).
-- For CockroachDB {{ site.data.products.core }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool.
+- For CockroachDB {{ site.data.products.cloud }}, use the Schema Conversion Tool to [migrate the converted schema to a new {{ site.data.products.cloud }} database]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema).
+- For CockroachDB {{ site.data.products.core }}, pipe the [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). You can [export a converted schema file]({% link cockroachcloud/migrations-page.md %}#export-the-schema) from the Schema Conversion Tool.
 	{{site.data.alerts.callout_success}}
 	For the fastest performance, you can use a [local, single-node CockroachDB cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#start-a-single-node-cluster) to convert your schema and [check the results of queries](#test-query-results-and-performance).
 	{{site.data.alerts.end}}
@@ -264,7 +264,7 @@ You can "shadow" your production workload by executing your source SQL statement
 
 You can manually validate your queries by testing a subset of "critical queries" on an otherwise idle CockroachDB cluster:
 
-- Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console](https://www.cockroachlabs.com/docs/cockroachcloud/statements-page) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
+- Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
 
 - Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link molt/molt-verify.md %}).
 
@@ -320,7 +320,7 @@ The following is a high-level overview of the migration steps. The two approache
 
 To prioritize consistency and minimize downtime:
 
-1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Enable [**continuous replication**]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes) after it performs the initial load of data into CockroachDB. 
+1. Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to move the source data to CockroachDB. Enable [**continuous replication**]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes) after it performs the initial load of data into CockroachDB.
 1. As the data is migrating, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for MOLT Fetch to finish replicating changes to CockroachDB.
@@ -346,7 +346,7 @@ After you have successfully [conducted the migration](#conduct-the-migration):
 
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?]({% link {{ page.version.version }}/frequently-asked-questions.md %}#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
 - [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-schema.md %})
 - [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)

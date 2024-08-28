@@ -1,0 +1,236 @@
+# child-metrics.yml is a manually curated file of metrics that are included in the Child Metrics.
+# The metrics are in the order of appearance in the comment:
+# https://github.com/cockroachdb/cockroach/issues/124343#issuecomment-2117886012
+# The tenant.consumption.* metrics are not included because they only apply to serverless.
+# 
+# The corresponding metrics-list.csv file was generated using the v24.1.0 binary with the following command:
+# cockroach gen metric-list --format=csv > metrics-list.csv
+# Once generated, the metrics-list.csv was manually modified to change the case of the headers to lowercase to work with liquid comparison code.
+
+- child_metric_id: changefeed.error_retries
+  feature: changefeed
+
+- child_metric_id: changefeed.emitted_messages
+  feature: changefeed
+
+- child_metric_id: changefeed.emitted_batch_sizes
+  feature: changefeed
+
+- child_metric_id: changefeed.filtered_messages
+  feature: changefeed
+
+- child_metric_id: changefeed.message_size_hist
+  feature: changefeed
+
+- child_metric_id: changefeed.emitted_bytes
+  feature: changefeed
+
+- child_metric_id: changefeed.flushed_bytes
+  feature: changefeed
+
+- child_metric_id: changefeed.flushes
+  feature: changefeed
+
+- child_metric_id: changefeed.size_based_flushes
+  feature: changefeed
+
+- child_metric_id: changefeed.parallel_io_queue_nanos
+  feature: changefeed
+
+- child_metric_id: changefeed.parallel_io_pending_rows
+  feature: changefeed
+
+- child_metric_id: changefeed.parallel_io_result_queue_nanos
+  feature: changefeed
+
+- child_metric_id: changefeed.parallel_io_in_flight_keys
+  feature: changefeed
+
+- child_metric_id: changefeed.sink_io_inflight
+  feature: changefeed
+
+- child_metric_id: changefeed.sink_batch_hist_nanos
+  feature: changefeed
+
+- child_metric_id: changefeed.flush_hist_nanos
+  feature: changefeed
+
+- child_metric_id: changefeed.commit_latency
+  feature: changefeed
+
+- child_metric_id: changefeed.admit_latency
+  feature: changefeed
+
+- child_metric_id: changefeed.backfill_count
+  feature: changefeed
+
+- child_metric_id: changefeed.backfill_pending_ranges
+  feature: changefeed
+
+- child_metric_id: changefeed.running
+  feature: changefeed
+
+- child_metric_id: changefeed.batch_reduction_count
+  feature: changefeed
+
+- child_metric_id: changefeed.internal_retry_message_count
+  feature: changefeed
+
+- child_metric_id: changefeed.schema_registry.retry_count
+  feature: changefeed
+
+- child_metric_id: changefeed.schema_registry.registrations
+  feature: changefeed
+
+- child_metric_id: changefeed.aggregator_progress
+  feature: changefeed
+
+- child_metric_id: changefeed.checkpoint_progress
+  feature: changefeed
+
+- child_metric_id: changefeed.lagging_ranges
+  feature: changefeed
+
+- child_metric_id: changefeed.cloudstorage_buffered_bytes
+  feature: changefeed
+
+- child_metric_id: changefeed.kafka_throttling_hist_nanos
+  feature: changefeed
+
+- child_metric_id: livebytes
+  feature: virtual
+
+- child_metric_id: keybytes
+  feature: virtual
+
+- child_metric_id: valbytes
+  feature: virtual
+
+- child_metric_id: rangekeybytes
+  feature: virtual
+
+- child_metric_id: rangevalbytes
+  feature: virtual
+
+- child_metric_id: totalbytes
+  feature: virtual
+
+- child_metric_id: intentbytes
+  feature: virtual
+
+- child_metric_id: lockbytes
+  feature: virtual
+
+- child_metric_id: livecount
+  feature: virtual
+
+- child_metric_id: keycount
+  feature: virtual
+
+- child_metric_id: valcount
+  feature: virtual
+
+- child_metric_id: rangekeycount
+  feature: virtual
+
+- child_metric_id: rangevalcount
+  feature: virtual
+
+- child_metric_id: intentcount
+  feature: virtual
+
+- child_metric_id: lockcount
+  feature: virtual
+
+- child_metric_id: intentage
+  feature: virtual
+
+- child_metric_id: gcbytesage
+  feature: virtual
+
+- child_metric_id: sysbytes
+  feature: virtual
+
+- child_metric_id: syscount
+  feature: virtual
+
+- child_metric_id: abortspanbytes
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.num_tenants
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.current_blocked
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.read_batches_admitted
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.write_batches_admitted
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.read_requests_admitted
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.write_requests_admitted
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.read_bytes_admitted
+  feature: virtual
+
+- child_metric_id: kv.tenant_rate_limit.write_bytes_admitted
+  feature: virtual
+
+- child_metric_id: security.certificate.expiration.client
+  feature: secure
+  description: "Minimum expiration for client certificates, labeled by SQL user. 0 means no certificate or error."
+  type: GAUGE
+  unit: SECONDS
+
+- child_metric_id: jobs.row_level_ttl.span_total_duration
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.select_duration
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.delete_duration
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.rows_selected
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.rows_deleted
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.num_active_spans
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.total_rows
+  feature: row-level-ttl
+
+- child_metric_id: jobs.row_level_ttl.total_expired_rows
+  feature: row-level-ttl
+
+- child_metric_id: rpc.connection.healthy
+  feature: all
+
+- child_metric_id: rpc.connection.unhealthy
+  feature: all
+
+- child_metric_id: rpc.connection.inactive
+  feature: all
+
+- child_metric_id: rpc.connection.healthy_nanos
+  feature: all
+
+- child_metric_id: rpc.connection.unhealthy_nanos
+  feature: all
+
+- child_metric_id: rpc.connection.heartbeats
+  feature: all
+
+- child_metric_id: rpc.connection.failures
+  feature: all
+
+- child_metric_id: rpc.connection.avg_round_trip_latency
+  feature: all

@@ -21,7 +21,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/quickstart.md %}).
 
 {{site.data.alerts.callout_info}}
 You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) page of the Cockroach Labs documentation site.
@@ -187,7 +187,7 @@ We do not recommend deploying insecure web applications on public networks.
 1. Create a [Google Cloud Run](https://console.cloud.google.com/run/) service for the application, in one of the regions in which the database is deployed (e.g., `gcp-us-east1`):
     - Select the container image URL for the image that you just pushed to the container registry.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
-        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachDB {{ site.data.products.standard }} cluster, in the region in which this first Cloud Run service is located.    
+        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachDB {{ site.data.products.standard }} cluster, in the region in which this first Cloud Run service is located.
 
             Verify that the `DB_URI` value:
             1. Specifies `cockroachdb` as the database protocol.
@@ -235,7 +235,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 {% comment %} [MovR (live demo)](https://movr.cloud){% endcomment %}
-- [CockroachDB {{ site.data.products.cloud }} documentation](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)
+- [CockroachDB {{ site.data.products.cloud }} documentation]({% link cockroachcloud/quickstart.md %})
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

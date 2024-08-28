@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB. 
+This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
 
 The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to use [MOLT tooling]({% link {{ page.version.version }}/migration-overview.md %}#molt) to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
@@ -78,7 +78,7 @@ SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 
 You can use one of the following methods to migrate MySQL data to CockroachDB:
 
-- {% include {{ page.version.version }}/migration/load-data-import-into.md %} 
+- {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 
        {% include {{ page.version.version }}/misc/import-perf.md %}
 
@@ -105,7 +105,7 @@ The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-ot
        mysqlsh -uroot --sql --file {path}/world-db/world.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -130,7 +130,7 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
 1. [Upload `world_schema.sql`](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#upload-file) to the Schema Conversion Tool.
 
-       After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#summary-report) shows that there are no errors. This means that the schema is ready to migrate to CockroachDB. 
+       After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#summary-report) shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
        {{site.data.alerts.callout_success}}
        You can also [add your MySQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
@@ -159,16 +159,16 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        Click **Save**.
 
        This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link molt/molt-verify.md %}#known-limitations) documentation.
-       
+
 1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new CockroachDB {{ site.data.products.standard }} cluster with the converted schema. Name the database `world`.
 
-       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
-       
+       You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
+
 1. Open a SQL shell to the CockroachDB `world` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `world` database and **CockroachDB Client** option. It will look like:
 
        {% include_cached copy-clipboard.html %}
        ~~~ shell
-       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full" 
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full"
        ~~~
 
 1. For large imports, Cockroach Labs recommends [removing indexes prior to loading data]({% link {{ page.version.version }}/import-performance-best-practices.md %}#import-into-a-schema-with-secondary-indexes) and recreating them afterward. This provides increased visibility into the import progress and the ability to retry each step independently.
@@ -236,7 +236,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
        - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
-       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import. 
+       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import.
 
        The dump files generated in the preceding step are already hosted on a public S3 bucket created for this example.
 
@@ -244,7 +244,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
 
        {% include_cached copy-clipboard.html %}
        ~~~ shell
-       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full" 
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full"
        ~~~
 
 1. Use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import each MySQL dump file into the corresponding table in the `world` database.
@@ -301,7 +301,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        ~~~
 
        {{site.data.alerts.callout_info}}
-       After [converting the schema](#step-1-convert-the-mysql-schema) to work with CockroachDB, the `id` column in `city` is an [`INT8`]({% link {{ page.version.version }}/int.md %}) with default values generated by [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). However, `unique_rowid()` values are only generated when new rows are [inserted]({% link {{ page.version.version }}/insert.md %}) without an `id` value. The MySQL data dump still includes the sequential `id` values generated by the MySQL [`AUTO_INCREMENT` attribute](#auto_increment-attribute), and these are imported with the `IMPORT INTO` command. 
+       After [converting the schema](#step-1-convert-the-mysql-schema) to work with CockroachDB, the `id` column in `city` is an [`INT8`]({% link {{ page.version.version }}/int.md %}) with default values generated by [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). However, `unique_rowid()` values are only generated when new rows are [inserted]({% link {{ page.version.version }}/insert.md %}) without an `id` value. The MySQL data dump still includes the sequential `id` values generated by the MySQL [`AUTO_INCREMENT` attribute](#auto_increment-attribute), and these are imported with the `IMPORT INTO` command.
 
        In an actual migration, you can either update the primary key into a [multi-column key]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) or add a new primary key column that [generates unique IDs]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
        {{site.data.alerts.end}}
@@ -402,7 +402,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})

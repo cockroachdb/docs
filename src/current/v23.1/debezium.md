@@ -117,7 +117,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
 - [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %})
