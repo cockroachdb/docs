@@ -61,7 +61,7 @@ As part of this migration, data may move temporarily out of the geography where 
 
 ### Step 1. Remove the old replication zone configurations
 
-Depending on which [legacy multi-region topology pattern](https://www.cockroachlabs.com/docs/v20.2/topology-patterns#multi-region-patterns) you are migrating from, the procedure will vary. For instructions showing how to remove the existing zone configuration for each pattern, see below.
+Depending on which [legacy multi-region topology pattern]({% link v20.2/topology-patterns.md %}#multi-region-patterns) you are migrating from, the procedure will vary. For instructions showing how to remove the existing zone configuration for each pattern, see below.
 
 - [Duplicate indexes](#duplicate-indexes)
 - [Geo-partitioned leaseholders](#geo-partitioned-leaseholders)
@@ -73,9 +73,9 @@ You can check the state of any schema object's replication zone configuration at
 
 #### Duplicate indexes
 
-If you used the [duplicate indexes pattern](https://www.cockroachlabs.com/docs/v20.2/topology-duplicate-indexes), the steps for backing out the old configuration are:
+If you used the [duplicate indexes pattern]({% link v20.2/topology-duplicate-indexes.md %}), the steps for backing out the old configuration are:
 
-1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`]({% link {{ page.version.version }}/alter-database.md %}#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes](https://www.cockroachlabs.com/docs/v20.2/topology-duplicate-indexes) pattern, you will have to reapply them.
+1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`]({% link {{ page.version.version }}/alter-database.md %}#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes]({% link v20.2/topology-duplicate-indexes.md %}) pattern, you will have to reapply them.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -94,7 +94,7 @@ The latency and resiliency benefits of the duplicate indexes pattern can be repl
 
 #### Geo-partitioned replicas
 
-If you applied the [geo-partitioned replicas]https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-replicas] pattern, the steps for backing out the old configuration are:
+If you applied the [geo-partitioned replicas]({% link v20.2/topology-geo-partitioned-replicas.md %}) pattern, the steps for backing out the old configuration are:
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
@@ -118,7 +118,7 @@ The multi-region SQL abstractions use a hidden [`crdb_region`]({% link {{ page.v
 
 #### Geo-partitioned leaseholders
 
-If you applied the [geo-partitioned leaseholders](https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-leaseholders) pattern, the steps for backing out the old configuration are:
+If you applied the [geo-partitioned leaseholders]({% link v20.2/topology-geo-partitioned-leaseholders.md %}) pattern, the steps for backing out the old configuration are:
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 

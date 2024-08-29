@@ -249,7 +249,7 @@ To associate your export objects with a [specific storage class]({% link {{ page
 
 ### Export data out of CockroachDB {{ site.data.products.cloud }}
 
-Using `EXPORT` with [`userfile`]({% link {{ page.version.version }}/use-userfile-storage.md %}) is not recommended. You can either export data to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) or to a local CSV file by using [`cockroach sql --execute`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql#general):
+Using `EXPORT` with [`userfile`]({% link {{ page.version.version }}/use-userfile-storage.md %}) is not recommended. You can either export data to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) or to a local CSV file by using [`cockroach sql --execute`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}#general):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="local">local CSV</button>

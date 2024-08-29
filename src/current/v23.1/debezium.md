@@ -28,7 +28,7 @@ Migrating with Debezium requires familiarity with Kafka. Refer to the [Debezium 
 
 Complete the following items before using Debezium:
 
-- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
+- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
 - Install and configure [Debezium](https://debezium.io/), [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html), and [Kafka](https://kafka.apache.org/).
 
 ## Migrate data to CockroachDB
