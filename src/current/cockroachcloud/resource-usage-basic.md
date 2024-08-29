@@ -64,7 +64,7 @@ If any queries are more expensive than expected, you can use the [`EXPLAIN ANALY
 
 Each query has an associated RU cost, so the total number of queries is an important factor in your consumption.
 
-To diagnose excessive queries, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Statements** chart displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in your resource consumption.
+To diagnose excessive queries, navigate to your cluster's **Metrics** page, [**SQL** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Statements** chart displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in your resource consumption.
 
 Reducing the rate of queries is application-specific and must be achieved at the application level.
 
@@ -72,7 +72,7 @@ Reducing the rate of queries is application-specific and must be achieved at the
 
 CockroachDB {{ site.data.products.basic }} clusters consume minimal resources per connection, so increased RU consumption is not likely to be caused by a high number of connections. However, it will be important to manage your connections for both performance optimization and RU consumption as your application scales up.
 
-Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connection Attempts** chart displays new SQL connection attempts over time.
+Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connections** chart displays new SQL connections over time.
 
 [Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/).
 

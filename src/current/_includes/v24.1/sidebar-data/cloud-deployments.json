@@ -425,18 +425,6 @@
                                 ]
                             },
                             {
-                                "title": "Monitor SQL Activity",
-                                "urls": [
-                                "/cockroachcloud/metrics-monitor-sql-activity.html"
-                                ]
-                            },
-                            {
-                                "title": "Identify SQL Problems tab",
-                                "urls": [
-                                "/cockroachcloud/metrics-identify-sql-problems.html"
-                                ]
-                            },
-                            {
                                 "title": "Custom",
                                 "urls": [
                                 "/cockroachcloud/custom-metrics-chart-page.html"
