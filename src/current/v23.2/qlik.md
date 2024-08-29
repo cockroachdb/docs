@@ -42,7 +42,7 @@ This page describes the Qlik Replicate functionality at a high level. For detail
 
 Complete the following items before using Qlik Replicate:
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/index.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
     - Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
@@ -78,7 +78,7 @@ You can use Qlik Replicate to migrate tables from a source database to Cockroach
 In the Qlik Replicate interface, the source database is configured as a **source endpoint** with the appropriate dialect, and CockroachDB is configured as a PostgreSQL **target endpoint**. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
 {{site.data.alerts.callout_info}}
-To use a CockroachDB {{ site.data.products.serverless }} cluster as the target endpoint, set the **Database name** to `{serverless-hostname}.{database-name}` in the Qlik Replicate dialog. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
+To use a CockroachDB {{ site.data.products.serverless }} cluster as the target endpoint, set the **Database name** to `{serverless-hostname}.{database-name}` in the Qlik Replicate dialog. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
 {{site.data.alerts.end}}
 
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.

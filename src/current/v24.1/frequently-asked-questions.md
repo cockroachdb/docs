@@ -55,7 +55,7 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
 - [Plan Your Serverless Cluster - Cluster scaling]({% link cockroachcloud/plan-your-cluster.md %}#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster?filters=dedicated#cluster-scaling)
+- [Manage Your Dedicated Cluster - Scale your cluster]({% link cockroachcloud/plan-your-cluster.md %}?filters=dedicated#cluster-scaling)
 - [`cockroach start` - Add a node to a cluster]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?
