@@ -23,7 +23,7 @@ This page includes the following information:
 | Unstable | Supported for consumption by humans. Not supported for automation.        | [Backward-incompatible changes](#backward-incompatible-changes) may be introduced in new major and patch versions.                                                                                                 |
 | Reserved | Intended for use by CockroachDB developers. Not supported for public use. | N/A                                                                                                                                                                                                                |
 
-Backward-incompatible changes to **stable APIs** are highlighted in the [release notes](https://www.cockroachlabs.com/docs/releases/#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#review-breaking-changes) to a new CockroachDB version.
+Backward-incompatible changes to **stable APIs** are highlighted in the [release notes]({% link releases/index.md %}#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#review-breaking-changes) to a new CockroachDB version.
 
 ### Backward-incompatible changes
 
@@ -89,5 +89,5 @@ A *mixed* API includes both stable and unstable features.
 
 ## See also
 
-- [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy)
+- [Release Support Policy]({% link releases/release-support-policy.md %})
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})

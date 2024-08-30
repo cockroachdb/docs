@@ -135,7 +135,7 @@ The error message for `RETRY_SERIALIZABLE` contains additional information about
 ```
 restart transaction: TransactionRetryWithProtoRefreshError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE  - failed preemptive refresh due to conflicting locks on /Table/106/1/918951292305080321/0 [reason=wait_policy] - conflicting txn: meta={id=1b2bf263 key=/Table/106/1/918951292305080321/0 iso=Serializable pri=0.00065863 epo=0 ts=1700512205.521833000,2 min=1700512148.761403000,0 seq=1}): "sql txn" meta={id=07d42834 key=/Table/106/1/918951292305211393/0 iso=Serializable pri=0.01253025 epo=0 ts=1700512229.378453000,2 min=1700512130.342117000,0 seq=2} lock=true stat=PENDING rts=1700512130.342117000,0 wto=false gul=1700512130.842117000,0
 SQLSTATE: 40001
-HINT: See: https://www.cockroachlabs.com/docs/v23.2/transaction-retry-error-reference.html#retry_serializable
+HINT: See: https://www.cockroachlabs.com/docs/{{ page.version.version }}/transaction-retry-error-reference.html#retry_serializable
 ```
 
 **Error type:** Serialization error
