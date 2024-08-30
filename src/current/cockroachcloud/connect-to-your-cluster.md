@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
-This page shows you how to connect to your CockroachDB {{ site.data.products.standard }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql).
+This page shows you how to connect to your CockroachDB {{ site.data.products.standard }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
 
 ## Before you start
 
@@ -36,7 +36,7 @@ AWS PrivateLink allows customers to establish SQL access to their clusters entir
 
 To configure PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your private endpoint. For more information, refer to [Network Authorization for CockroachDB {{ site.data.products.standard }} clusters: AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
 
-AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). 
+AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}).
 
 <a id="establish-gcp-vpc-peering-or-aws-privatelink"></a>
 ### Establish private connectivity
@@ -177,12 +177,17 @@ If you forget your SQL user's password, an [Org Administrator]({% link cockroach
   </section>
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-You can connect to your cluster with any [supported version](https://www.cockroachlabs.com/docs/releases/release-support-policy#current-supported-releases) of the full CockroachDB binary or the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql). To download the full binary and connect to a CockroachDB {{ site.data.products.standard }} cluster, follow these steps.
+You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}). To download the full binary and connect to a CockroachDB {{ site.data.products.dedicated }} cluster, follow these steps.
 
-1. Select **CockroachDB Client** from the **Select option/language** dropdown.
-1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
-1. Copy the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
+{{site.data.alerts.callout_success}}
+To download a supported version of the SQL shell instead of the full binary, visit [Releases]({% link releases/index.md %}).
+{{site.data.alerts.end}}
+
+1. Select the **Command Line** tab.
+1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
+1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
+1. Copy the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command, which will be used in the next step (and to connect to your cluster in the future). Click **Close**.
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
 
 1. Enter the SQL user's password and hit enter.
 
@@ -204,5 +209,5 @@ You can connect to your cluster with any [supported version](https://www.cockroa
 
 ## What's next
 
-- [Build a "Hello, World" app](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django)
+- [Build a "Hello, World" app]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
