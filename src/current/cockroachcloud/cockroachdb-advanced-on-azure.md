@@ -12,13 +12,6 @@ This page provides information about CockroachDB {{ site.data.products.dedicated
 
 CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the following temporary limitations. To express interest or request more information about a given limitation, contact your Cockroach Labs account team. For more details, refer to the [FAQs](#faqs).
 
-### Editing and scaling
-
-- A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported.
-- After it is created, a cluster's storage can be increased in place, but cannot subsequently be decreased or removed.
-
-### Other features
-
 [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) features are not yet available on Azure. To express interest, contact your Cockroach Labs account team.
 
 - [Private Clusters]({% link cockroachcloud/private-clusters.md %})
@@ -44,8 +37,6 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 ### What kind of compute and storage resources are used?
 
 {{ site.data.products.dedicated }} clusters on Azure use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types.
-
-CockroachDB {{ site.data.products.dedicated }} clusters can be created with a minimum of 4 vcPUs per node on Azure.
 
 ### What backup and restore options are available for clusters on Azure?
 

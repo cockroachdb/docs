@@ -6,7 +6,7 @@ cloud: true
 docs_area: deploy
 ---
 
-Before deploying CockroachDB {{ site.data.products.cloud }} in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
+Before deploying CockroachDB {{ site.data.products.cloud }} clusters in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
 
 Under the Shared Responsibility Model, Cockroach Labs is responsible for the following tasks:
 
@@ -17,9 +17,7 @@ Under the Shared Responsibility Model, Cockroach Labs is responsible for the fol
 
 The customer is responsible for the following tasks:
 
-- Estimating workload and sizing the cluster.
-- Scaling clusters based on workload.
-- Ensuring sufficient disk, compute, and memory capacity for each cluster.
+- Estimating workload requirements and scaling clusters as required to ensure sufficient storage, compute, and memory capacity for each cluster.
 - Monitoring cluster health and application performance.
 - Ensuring that the workload is distributed appropriately across the nodes of the cluster.
 - Performance tuning of SQL queries and schema.
@@ -30,21 +28,21 @@ This page provides important recommendations for CockroachDB {{ site.data.produc
 
 ## Deployment options
 
-When planning your deployment, it is important to carefully review and choose the [deployment options](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/choose-a-deployment-option) that best meet your scale, cost, security, and resiliency requirements.
+When planning your deployment, it is important to carefully review and choose the [deployment options]({% link {{site.current_cloud_version}}/choose-a-deployment-option.md %}) that best meet your scale, cost, security, and resiliency requirements.
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
 
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 4 vCPUs per node and a minimum of 3 nodes per region.
 {{site.data.alerts.end}}
 
 For an example, refer to [Plan your Advanced cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).
 
 ## Topology patterns
 
-When planning your deployment, it is important to carefully review and choose the [topology patterns](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/topology-patterns) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
+When planning your deployment, it is important to carefully review and choose the [topology patterns]({% link {{site.current_cloud_version}}/topology-patterns.md %}) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
 
 ## Cluster management
 

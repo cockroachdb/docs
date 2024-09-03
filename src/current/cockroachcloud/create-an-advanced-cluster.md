@@ -37,9 +37,8 @@ Select the region(s) and number of nodes for your cluster:
     A multi-region cluster requires at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
 1. Select the number of nodes:
-    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance.
+    - For single-region production deployments, we require a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance. New CockroachDB {{ site.data.products.cloud }} organizations can no longer create single-node clusters or scale a cluster to a single node. Single-node clusters are not suitable for production deployments.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-    - For single-region application development and testing, you may create a single-node cluster.
 
 Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
 
@@ -85,8 +84,8 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     Factor | Description
     ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
-    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 4 vCPUs can handle approximately 4000 transactions per second. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPUs per node is the minimum supported capacity. Less powerful nodes are generally not suitable for production workloads.
+    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPU is the minimum supported capacity when scaling down a node. For most production applications, we recommend **at least 8 vCPUs per node**.
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 1. Select the **Storage per node**.

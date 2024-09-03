@@ -26,7 +26,7 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 
 1. For **VPC Peering**, use the default selection of **Use the default IP range**. Click **Next: Capacity**.
 
-1. On the **Capacity page**, select 2vCPU for **Compute per node** and a 35 GiB disk for **Storage per node**.
+1. On the **Capacity page**, select 4 vCPU for **Compute per node** and a 35 GiB disk for **Storage per node**.
 
     {{site.data.alerts.callout_info}}
     You can select up to 9 nodes, 4 vCPUs of compute, and 150 GiB of storage. The trial code will not apply to larger clusters.

@@ -101,7 +101,7 @@ Success! Created cluster
 
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-You can set the cluster name, cloud infrastructure provider, region, and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, and [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -118,13 +118,13 @@ Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data
 ccloud cluster create dedicated
 ~~~
 
-This command creates a 1 node CockroachDB {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
+This command creates a 3-node CockroachDB {{ site.data.products.advanced }} cluster with 4 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
 You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:3 --cloud GCP --vcpus 4 --storage-gib 110
 ~~~
 
 ~~~
@@ -136,16 +136,16 @@ Success! Created cluster
 
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-When creating multi node clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 3 node cluster where 2 nodes are in `us-central1` and 1 node is in `us-west2`:
+When creating multi-region clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 12-node cluster where 8 nodes are in `us-central1` and 4 nodes are in `us-west2`. For optimum performance, it is generally recommended to configure the same number of nodes in each region.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated blue-dog us-central1:2 us-west2:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:8 us-west2:4 --cloud GCP --vcpus 4 --storage-gib 110
 ~~~
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a CockroachDB {{ site.data.products.serverless }} cluster, or create a CockroachDB {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, or create a CockroachDB {{ site.data.products.advanced }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
@@ -268,7 +268,7 @@ ccloud cluster info blue-dog
 Cluster info
  name: blue-dog
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
- cockroach version: v21.2.4
+ cockroach version: {{ site.current_cloud_version }}
  cloud: CLOUD_PROVIDER_GCP
  plan type: PLAN_SERVERLESS
  state: CLUSTER_STATE_CREATED
@@ -283,14 +283,14 @@ Cluster info
 Cluster info
  name: ievans-blue-dog-dos
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
- cockroach version: v21.2.4
+ cockroach version: {{ site.current_cloud_version }}
  cloud: CLOUD_PROVIDER_GCP
  plan type: PLAN_DEDICATED
  state: CLUSTER_STATE_CREATING
  hardware per node:
-  2 vCPU
+  4 vCPU
   7.500000 GiB RAM
-  15 GiB disk
+  110 GiB disk
   450 IOPS
  region nodes:
   us-central1: 1

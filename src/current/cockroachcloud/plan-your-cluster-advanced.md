@@ -16,14 +16,14 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Cluster configuration
 
-A single-node cluster is appropriate only for single-region application development and testing. For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. For new CockroachDB {{ site.data.products.cloud }} organizations, 3 nodes is the minimum supported configuration. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
 Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned memory capacity is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 CockroachDB {{ site.data.products.advanced }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster.
 {{site.data.alerts.end}}
 
 #### Advanced security features
@@ -40,15 +40,15 @@ You can configure a maximum of 9 regions per cluster through the Console. If you
 
 ### Cluster scaling
 
-When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3 node cluster with 2 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at least 4 to 8 vCPUs per node.
+When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3 node cluster with 4 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node. New CockroachDB {{ site.data.products.cloud }} organizations can no longer scale a cluster down to fewer than 4 vCPUs per node.
 
-We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster and takes about 30 minutes per region. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. Before removing regions from a cluster, be aware that access to the database from that region will no longer be as fast.
+We recommend you add or remove nodes from a cluster during a time when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster and takes about 30 minutes per region. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times to apply node modifications. Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. If you remove regions from a cluster, access to the cluster from clients in those regions will no longer be as fast.
 
-If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
+If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if attempt to scale down the cluster to 3 nodes, the decommission operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
 
 ### Example
 
-Let's say you want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
+Let's say you want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `us-east1` region, and that the application requires 2000 transactions per second.
 
 Suppose the raw data amount you expect to store without replication is 500 GiB.
 At 40% compression, you can expect a savings of 200 GiB, making the amount of data you need to store is 300 GiB.
@@ -59,7 +59,7 @@ With the default replication factor of 3, the total amount of data stored is (3 
 
 To determine the number of nodes and the hardware configuration to store 1350 GiB of data, refer to the table in [Create Your Cluster]({% link cockroachcloud/create-your-cluster.md %}#step-2-select-the-cloud-provider). One way to reach a 1350 GiB storage capacity is 3 nodes with 480 GiB per node, which gives you a capacity of (3*480 GiB) = 1440 GiB.
 
-Let's see how many vCPUs you need to meet your performance requirement of 2000 TPS. We don't recommend 2 vCPU nodes for production, so the first compute configuration you should check is 3 nodes with 4 vCPUs per node. This configuration has (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, a configuration of 4 vCPUs per node meets your performance requirements.
+To meet your performance requirement of 2000 TPS, consider a configuration of 3 nodes with 4 vCPUs per node. This configuration has (3*4 vCPUs) = 12 vCPUs. Each vCPU can handle around 1000 TPS, so this configuration provides 12000 TPS, which exceeds your performance requirements.
 
 Your final configuration is as follows:
 
