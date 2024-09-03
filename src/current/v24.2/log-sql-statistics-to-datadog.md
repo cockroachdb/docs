@@ -88,12 +88,9 @@ Set the [`sql.telemetry.query_sampling.mode` cluster setting]({% link {{ page.ve
 SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'statement';
 ~~~
 
-Set the [`sql.telemetry.query_sampling.max_event_frequency` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-query-sampling-max-event-frequency) to `100000` to emit query events at a higher rate per second than the default value of `8`, which is extremely conservative for the Datadog HTTP API. This cluster setting controls the max event frequency at which CockroachDB samples queries for telemetry.
+Configure the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to a value that is dependent on the level of granularity you require and how much performance impact from frequent logging you can tolerate:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING sql.telemetry.query_sampling.max_event_frequency = 100000;
-~~~
+- [`sql.telemetry.query_sampling.max_event_frequency`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-query-sampling-max-event-frequency) (default `8`) is the max event frequency (events per second) at which we sample executed queries for telemetry. If sampling mode is set to `'transaction'`, this setting is ignored. In practice, this means that we only sample an executed query if 1/`max_event_frequency` seconds have elapsed since the last executed query was sampled. Sampling impacts the volume of query events emitted which can have downstream impact to workload performance and third-party processing costs. Slowly increase this sampling threshold and monitor potential impact.
 
 {{site.data.alerts.callout_info}}
 The `sql.telemetry.query_sampling.max_event_frequency` cluster setting and the `buffering` options in the `logs.yaml` control how many events are emitted to Datadog and that can be potentially dropped. Adjust this setting and these options according to your workload, depending on the size of events and the queries per second (QPS) observed through monitoring.
@@ -117,7 +114,7 @@ SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'transaction';
 
 Configure the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to values that are dependent on the level of granularity you require and how much performance impact from frequent logging you can tolerate:
 
-- [`sql.telemetry.transaction_sampling.max_event_frequency`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-max-event-frequency) (default `8`) is the max event frequency (events per second) at which we sample transactions for telemetry. If sampling mode is set to 'statement', this setting is ignored. In practice, this means that we only sample a transaction if 1/max_event_frequency seconds have elapsed since the last transaction was sampled.
+- [`sql.telemetry.transaction_sampling.max_event_frequency`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-max-event-frequency) (default `8`) is the max event frequency (events per second) at which we sample transactions for telemetry. If sampling mode is set to `'statement'`, this setting is ignored. In practice, this means that we only sample a transaction if 1/`max_event_frequency` seconds have elapsed since the last transaction was sampled. Sampling impacts the volume of transaction events emitted which can have downstream impact to workload performance and third-party processing costs. Slowly increase this sampling threshold and monitor potential impact.
 - [`sql.telemetry.transaction_sampling.statement_events_per_transaction.max`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-transaction-sampling-statement-events-per-transaction-max) (default `50`) is the maximum number of statement events to log for every sampled transaction. Note that statements that are always captured do not adhere to this limit. Logs are always captured for statements under the following conditions:
   - Statements that are not of type [DML (data manipulation language)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements). These statement types are:
       - [DDL (data definition language)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements)

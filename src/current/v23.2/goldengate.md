@@ -45,7 +45,7 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
 
 - Ensure [libpg](https://www.postgresql.org/download/linux/redhat/) is available on the Oracle GoldenGate host.
 
-- Ensure you have a secure, [publicly available]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
+- Ensure you have a secure, [publicly available]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
 
 ## Configure Oracle GoldenGate for PostgreSQL
 

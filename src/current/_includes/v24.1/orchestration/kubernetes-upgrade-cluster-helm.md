@@ -2,7 +2,7 @@
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](https://www.cockroachlabs.com/docs/releases) and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release]({% link releases/index.md %}) and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
@@ -21,7 +21,7 @@
 
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
 
-1. Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+1. Review the [backward-incompatible changes in {{ page.version.version }}]({% link releases/{{ page.version.version }}.md %}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Decide how the upgrade will be finalized.
 
