@@ -15,7 +15,7 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
+See [Release Notes]({% link releases/{{page.version.version}}.md %}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade]({% link {{page.version.version}}/upgrade-cockroach-version.md %}).
 
 Use one of the options below to install CockroachDB.
 
@@ -23,7 +23,7 @@ Use one of the options below to install CockroachDB.
 To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}).
 {{site.data.alerts.end}}
 
-CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Generally Available (GA)</a></b> in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
+CockroachDB on ARM is **experimental** in CockroachDB v23.1 versions prior to v23.1.14, and is <b><a href="{% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases">Generally Available (GA)</a></b> in v23.1.14 and above. Experimental binaries and Docker images are not qualified for production use and not eligible for support or uptime SLA commitments. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
 
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
@@ -123,7 +123,7 @@ true
 
   <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.</p>
   <p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
-  <p>CockroachDB on ARM is in <b><a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
+  <p>CockroachDB on ARM is in <b><a href="{% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
 
   <ol>
     <li>

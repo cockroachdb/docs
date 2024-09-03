@@ -42,7 +42,7 @@ This page describes the Qlik Replicate functionality at a high level. For detail
 
 Complete the following items before using Qlik Replicate:
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/index.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
     - Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
@@ -65,7 +65,7 @@ Complete the following items before using Qlik Replicate:
     - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. Qlik can create a basic schema, but does not create indexes or constraints such as foreign keys and defaults.
-    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add transformation rules. If you make substantial schema changes, the Qlik Replicate migration may fail.
+    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add transformation rules. If you make substantial schema changes, the Qlik Replicate migration may fail.
 
         {{site.data.alerts.callout_info}}
         All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
@@ -78,7 +78,7 @@ You can use Qlik Replicate to migrate tables from a source database to Cockroach
 In the Qlik Replicate interface, the source database is configured as a **source endpoint** with the appropriate dialect, and CockroachDB is configured as a PostgreSQL **target endpoint**. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
 {{site.data.alerts.callout_info}}
-To use a CockroachDB {{ site.data.products.serverless }} cluster as the target endpoint, set the **Database name** to `{serverless-hostname}.{database-name}` in the Qlik Replicate dialog. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
+To use a CockroachDB {{ site.data.products.serverless }} cluster as the target endpoint, set the **Database name** to `{serverless-hostname}.{database-name}` in the Qlik Replicate dialog. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
 {{site.data.alerts.end}}
 
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.
@@ -97,7 +97,7 @@ In the Qlik Replicate interface, CockroachDB is configured as a PostgreSQL **sou
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
 - [Migrate with AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})

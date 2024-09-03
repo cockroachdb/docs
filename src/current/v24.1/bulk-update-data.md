@@ -19,7 +19,7 @@ Exercise caution when batch-updating rows from tables with foreign key constrain
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 
     For the example on this page, we use the `psycopg2` Python driver.

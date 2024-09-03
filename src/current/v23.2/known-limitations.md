@@ -60,7 +60,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 #### Read Committed Isolation Limitations
 
-- Several capabilities are not yet supported with [Read Committed isolation](https://www.cockroachlabs.com/docs/v23.2/read-committed):
+- Several capabilities are not yet supported with [Read Committed isolation]({% link {{ page.version.version}}/read-committed.md %}):
   - Schema changes (e.g., [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}), [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level]({% link {{ page.version.version }}/read-committed.md %}#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/114778)
   - `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables in which [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns.
   - [Shared locks]({% link {{ page.version.version }}/read-committed.md %}#locking-reads) cannot yet be promoted to exclusive locks. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110435)
