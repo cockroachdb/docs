@@ -9,7 +9,7 @@ key: experimental-features.html
 Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
 {{site.data.alerts.callout_info}}
-This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy) or [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}) or [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Feature availability phases
@@ -52,11 +52,11 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### GCP Private Service Connect for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
 
 ### Azure Private Link for CockroachDB Dedicated
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
+[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 

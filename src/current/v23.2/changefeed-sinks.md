@@ -42,6 +42,15 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 
 ## Kafka
 
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v23.2.10" %} CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. We recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link v24.2/show-cluster-setting.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_kafka_sink.enabled = true;
+~~~
+{{site.data.alerts.end}}
+
 ### Kafka sink connection
 
 Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
@@ -237,7 +246,7 @@ Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integr
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -248,7 +257,7 @@ URI Parameter      | Description
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
-`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts).
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}

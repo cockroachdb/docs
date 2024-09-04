@@ -17,7 +17,7 @@ If you need help migrating to CockroachDB, contact our <a href="mailto:sales@coc
 
 You will likely need to make application changes due to differences in syntax between MySQL and CockroachDB. Along with the [general considerations in the migration overview]({% link {{ page.version.version }}/migration-overview.md %}#application-changes), also consider the following MySQL-specific information as you develop your migration plan.
 
-When [using the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), MySQL syntax that cannot automatically be converted will be displayed in the [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#summary-report). These may include the following.
+When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), MySQL syntax that cannot automatically be converted will be displayed in the [**Summary Report**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#summary-report). These may include the following.
 
 #### String case sensitivity
 
@@ -27,11 +27,11 @@ For more information about the case sensitivity of strings in MySQL, see [Case S
 
 #### Identifier case sensitivity
 
-Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When [using the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), you can either keep case sensitivity by enclosing identifiers in double quotes, or make identifiers case-insensitive by converting them to lowercase.
+Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), you can either keep case sensitivity by enclosing identifiers in double quotes, or make identifiers case-insensitive by converting them to lowercase.
 
 #### `AUTO_INCREMENT` attribute
 
-The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences]({% link {{ page.version.version }}/create-sequence.md %}), `UUID` values with [`gen_random_uuid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions), or unique `INT8` values using [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
+The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences]({% link {{ page.version.version }}/create-sequence.md %}), `UUID` values with [`gen_random_uuid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions), or unique `INT8` values using [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
 {{site.data.alerts.callout_info}}
 Changing a column type during schema conversion will cause [MOLT Verify]({% link molt/molt-verify.md %}) to identify a type mismatch during [data validation](#step-3-validate-the-migrated-data). This is expected behavior.
@@ -39,15 +39,15 @@ Changing a column type during schema conversion will cause [MOLT Verify]({% link
 
 #### `ENUM` type
 
-MySQL `ENUM` types are defined in table columns. On CockroachDB, [`ENUM`]({% link {{ page.version.version }}/enum.md %}) is a standalone type. When [using the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), you can either deduplicate the `ENUM` definitions or create a separate type for each column.
+MySQL `ENUM` types are defined in table columns. On CockroachDB, [`ENUM`]({% link {{ page.version.version }}/enum.md %}) is a standalone type. When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), you can either deduplicate the `ENUM` definitions or create a separate type for each column.
 
 #### `TINYINT` type
 
-`TINYINT` data types are not supported in CockroachDB. The [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) automatically converts `TINYINT` columns to [`INT2`]({% link {{ page.version.version }}/int.md %}) (`SMALLINT`).
+`TINYINT` data types are not supported in CockroachDB. The [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql) automatically converts `TINYINT` columns to [`INT2`]({% link {{ page.version.version }}/int.md %}) (`SMALLINT`).
 
 #### Geospatial types
 
-MySQL geometry types are not converted to CockroachDB [geospatial types]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) by the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql). They should be manually converted to the corresponding types in CockroachDB.
+MySQL geometry types are not converted to CockroachDB [geospatial types]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) by the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql). They should be manually converted to the corresponding types in CockroachDB.
 
 #### `FIELD` function
 
@@ -105,7 +105,7 @@ The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-ot
        mysqlsh -uroot --sql --file {path}/world-db/world.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account](https://www.cockroachlabs.com/docs/cockroachcloud/create-an-account), which is used to access the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql) and create the {{ site.data.products.serverless }} cluster.
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -113,7 +113,7 @@ The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-ot
 
 ### Step 1. Convert the MySQL schema
 
-Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) to convert the `world` schema for compatibility with CockroachDB. The schema has three tables: `city`, `country`, and `countrylanguage`.
+Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql) to convert the `world` schema for compatibility with CockroachDB. The schema has three tables: `city`, `country`, and `countrylanguage`.
 
 1. Dump the MySQL `world` schema with the following [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump-sql-format.html) command:
 
@@ -122,23 +122,23 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
        mysqldump -uroot --no-data world > world_schema.sql
        ~~~
 
-1. Open the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql) in the {{ site.data.products.cloud }} Console and [add a new MySQL schema](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema).
+1. Open the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql) in the {{ site.data.products.cloud }} Console and [add a new MySQL schema]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema).
 
        For **AUTO_INCREMENT Conversion Option**, select the [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) option. This will convert the `ID` column in the `city` table, which has MySQL type `int` and `AUTO_INCREMENT`, to a CockroachDB [`INT8`]({% link {{ page.version.version }}/int.md %}) type with default values generated by [`unique_rowid()`]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). For context on this option, see [`AUTO_INCREMENT` attribute](#auto_increment-attribute).
 
        The `UUID` and `unique_rowid()` options are each preferred for [different use cases]({% link {{ page.version.version }}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For this example, selecting the `unique_rowid()` option makes [loading the data](#step-2-load-the-mysql-data) more straightforward in a later step, since both the source and target columns will have integer types.
 
-1. [Upload `world_schema.sql`](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#upload-file) to the Schema Conversion Tool.
+1. [Upload `world_schema.sql`]({% link cockroachcloud/migrations-page.md %}?filters=mysql#upload-file) to the Schema Conversion Tool.
 
-       After conversion is complete, [review the results](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#review-the-schema). The [**Summary Report**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#summary-report) shows that there are no errors. This means that the schema is ready to migrate to CockroachDB. 
+       After conversion is complete, [review the results]({% link cockroachcloud/migrations-page.md %}?filters=mysql#review-the-schema). The [**Summary Report**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#summary-report) shows that there are no errors. This means that the schema is ready to migrate to CockroachDB. 
 
        {{site.data.alerts.callout_success}}
-       You can also [add your MySQL database credentials](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
+       You can also [add your MySQL database credentials]({% link cockroachcloud/migrations-page.md %}?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
        {{site.data.alerts.end}}
 
        This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-1. Before you migrate the converted schema, click the **Statements** tab to view the [Statements list](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#statements-list). Scroll down to the `CREATE TABLE countrylanguage` statement and edit the statement to add a [collation]({% link {{ page.version.version }}/collate.md %}) (`COLLATE en_US`) on the `language` column:
+1. Before you migrate the converted schema, click the **Statements** tab to view the [Statements list]({% link cockroachcloud/migrations-page.md %}?filters=mysql#statements-list). Scroll down to the `CREATE TABLE countrylanguage` statement and edit the statement to add a [collation]({% link {{ page.version.version }}/collate.md %}) (`COLLATE en_US`) on the `language` column:
 
        {% include_cached copy-clipboard.html %}
        ~~~ sql
@@ -160,9 +160,9 @@ Use the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachclo
 
        This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link molt/molt-verify.md %}#known-limitations) documentation.
        
-1. Click [**Migrate Schema**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
+1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
 
-       You can view this database on the [**Databases** page](https://www.cockroachlabs.com/docs/cockroachcloud/databases-page) of the {{ site.data.products.cloud }} Console.
+       You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
        
 1. Open a SQL shell to the CockroachDB `world` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.cloud }} Console and select the `world` database and **CockroachDB Client** option. It will look like:
 
@@ -402,7 +402,7 @@ To learn more, see the [Migration Overview]({% link {{ page.version.version }}/m
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})

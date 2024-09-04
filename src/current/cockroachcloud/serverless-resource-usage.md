@@ -52,7 +52,7 @@ Expensive queries, especially `FULL SCAN` operations, are the most common cause 
   
 1. Next, sort the queries by the **Bytes Read** column. Most queries should read fewer than 1000 bytes.
 
-If any queries are more expensive than expected, you can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) for an estimate of the RUs consumed. Efficient queries generally consume fewer RUs, so the guidelines for [Optimizing Query Performance](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview) can be applied here. You can also refer to [Cockroach Labs Blog - How to troubleshoot and optimize query performance in CockroachDB](https://www.cockroachlabs.com/blog/query-performance-optimization/) for further information.
+If any queries are more expensive than expected, you can use the [`EXPLAIN ANALYZE` SQL command]({% link {{site.current_cloud_version}}/explain-analyze.md %}) for an estimate of the RUs consumed. Efficient queries generally consume fewer RUs, so the guidelines for [Optimizing Query Performance]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}) can be applied here. You can also refer to [Cockroach Labs Blog - How to troubleshoot and optimize query performance in CockroachDB](https://www.cockroachlabs.com/blog/query-performance-optimization/) for further information.
 
 ### Excessive queries
 
@@ -68,7 +68,7 @@ CockroachDB {{ site.data.products.serverless }} consumes minimal resources per c
 
 To diagnose excessive connections, navigate to your cluster's [**Metrics** page]({% link cockroachcloud/metrics-page.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connection Attempts** chart displays new SQL connection attempts over time. Maintaining fewer than five active connections is recommended for most workloads.
 
-[Connection pooling](https://www.cockroachlabs.com/docs/stable/connection-pooling) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
+[Connection pooling]({% link {{ site.current_cloud_version }}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
 
 ### Excessive data egress
 
@@ -97,24 +97,24 @@ You might also see [multiple open connections](#excessive-number-of-connections)
 
 ### Data migration
 
-Initial data ingestion during a migration may consume a high number of RUs. Generally, optimized performance will also coincide with optimized RU consumption in this case. Refer to our [Migration Overview](https://www.cockroachlabs.com/docs/v23.1/migration-overview) documentation for more information.
+Initial data ingestion during a migration may consume a high number of RUs. Generally, optimized performance will also coincide with optimized RU consumption in this case. Refer to our [Migration Overview]({% link {{ site.current_cloud_version }}/migration-overview.md %}) documentation for more information.
 
 ### Changefeeds (CDC)
 
-The {{ site.data.products.cloud }} Console does not currently provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds](https://www.cockroachlabs.com/docs/stable/cdc-queries) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also [Monitor and Debug Changefeeds](https://www.cockroachlabs.com/docs/stable/monitor-and-debug-changefeeds) in the DB Console.
+The {{ site.data.products.cloud }} Console does not currently provide direct observability of changefeeds, but they can contribute to significant RU usage. Refer to our documentation on [Optimizing changefeeds]({% link {{ site.current_cloud_version }}/cdc-queries.md %}) for performance guidance that may decrease RU consumption. CockroachDB {{ site.data.products.dedicated }} users can also [Monitor and Debug Changefeeds]({% link {{ site.current_cloud_version }}/monitor-and-debug-changefeeds.md %}) in the DB Console.
 
 ### General tips for reducing RU usage
 
 The following recommendations can help reduce the RU cost of a query by reducing the work your cluster must do to execute that query:
 
 - Drop indexes that are no longer needed.
-- Use [secondary indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/schema-design-indexes) that reduce the number of rows that need to be scanned.
+- Use [secondary indexes]({% link {{site.current_cloud_version}}/schema-design-indexes.md %}) that reduce the number of rows that need to be scanned.
 - Take advantage of SQL filters, joins, and aggregations rather than performing these operations in the application to reduce the amount of data returned to the client.
-- Use [batched `INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
+- Use [batched `INSERT`]({% link {{site.current_cloud_version}}/insert.md %}#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
-- Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
-- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/global-tables), [regional by row tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/regional-tables), and [follower reads](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/follower-reads) where possible.
+- Don't disable automatic statistics, as they are needed to power the [optimizer]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}).
+- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-serverless.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) where possible.
 
 ### Example Request Unit calculation
 
@@ -148,7 +148,7 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
 
-You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+You can use the [`EXPLAIN ANALYZE` SQL command]({% link {{site.current_cloud_version}}/explain-analyze.md %}) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

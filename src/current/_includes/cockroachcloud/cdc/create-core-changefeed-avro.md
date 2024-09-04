@@ -21,7 +21,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
-1. As the `root` user, open the [built-in SQL client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroach-sql):
+1. As the `root` user, open the [built-in SQL client]({% link {{ site.current_cloud_version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

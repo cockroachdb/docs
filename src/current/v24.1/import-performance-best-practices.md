@@ -35,7 +35,7 @@ When importing into a new table, split your dump data into two files:
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
 
-Convert the schema-only file using the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page). The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+Convert the schema-only file using the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}). The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 

@@ -21,7 +21,7 @@ This tutorial will show you how to configure a Hasura project with a CockroachDB
 
 Before you start this tutorial, you need:
 
-- An existing [CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) cluster, running CockroachDB v22.2 or later.
+- An existing [CockroachDB Cloud]({% link cockroachcloud/quickstart.md %}) cluster, running CockroachDB v22.2 or later.
 - A [Hasura Cloud account](https://hasura.io/docs/latest/getting-started/getting-started-cloud/).
 
 ## Configure your cluster
@@ -46,7 +46,7 @@ Before you start this tutorial, you need:
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 1. In the [CockroachDB Cloud console](https://cockroachlabs.cloud/clusters), select your cluster and click **Connect**.
-1. If you have not set up [IP Allowlists](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#ip-allowlisting) under **Network Security**, follow the instructions to add connections to your cluster from your machine.
+1. If you have not set up [IP Allowlists]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) under **Network Security**, follow the instructions to add connections to your cluster from your machine.
 1. Select the SQL user you want to use for the Hasura Cloud connection under **Select SQL user**. If you have not set up a SQL user for this cluster, follow the instructions to create a new SQL user. Be sure to copy and save the password to a secure location.
 1. Select **General connection String**.
 1. Copy the connection string under **General connection string** and paste it in a secure location. You will use this connection string later to configure Hasura GraphQL Engine with your cluster.
@@ -146,7 +146,7 @@ Create a `CRDB_URL` environment variable to store the connection string.
 
 ## Add the Hasura Cloud network to your cluster allowlist
 
-Your CockroachDB {{ site.data.products.dedicated }} cluster needs to be configured to [allow incoming client connections](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#ip-allowlisting) from Hasura Cloud.
+Your CockroachDB {{ site.data.products.dedicated }} cluster needs to be configured to [allow incoming client connections]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) from Hasura Cloud.
 
 1. In the Hasura Cloud overview page select **Projects**, then click the **Config** icon for your project.
 

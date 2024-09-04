@@ -15,7 +15,7 @@ For detailed reference documentation on the `CREATE SCHEMA` statement, including
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Review the database schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}).
 - [Create a database]({% link {{ page.version.version }}/schema-design-database.md %}).
 
