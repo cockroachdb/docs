@@ -15,7 +15,7 @@ Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in C
 
 The following table summarizes the CockroachDB {{ site.data.products.cloud }} security features and provides links to detailed documentation for each feature where applicable.
 
-<table>
+<table markdown="1">
   <tr>
     <th width="120">Security Domain</th>
     <th>CockroachDB Serverless</th>
@@ -36,12 +36,12 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/security-reference/scram-authentication">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+    <td><a href="{% link {{ site.current_cloud_version }}/security-reference/scram-authentication.md %}">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Cluster DB console authentication with third-party <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-db-console">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
+    <td>Cluster DB console authentication with third-party <a href="{% link {{ site.current_cloud_version }}/sso-db-console.md %}">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
   </tr>
   <tr>
     <td>✓</td>
@@ -51,7 +51,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td>SQL Client authentication with <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-sql">Cluster SSO</a> using customer-managed identity providers</td>
+    <td>SQL Client authentication with <a href="{% link {{ site.current_cloud_version }}/sso-sql.md %}">Cluster SSO</a> using customer-managed identity providers</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -61,7 +61,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/manage-certs-revoke-ocsp">OCSP</a> certificate revocation protocol</td>
+    <td><a href="{% link {{ site.current_cloud_version }}/manage-certs-revoke-ocsp.md %}">OCSP</a> certificate revocation protocol</td>
   </tr>
   <tr>
   <td rowspan="5" >Data Protection</a></td>
@@ -114,7 +114,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/private-clusters">Private Clusters</a></td>
+    <td><a href="{% link cockroachcloud/private-clusters.md %}">Private Clusters</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -145,7 +145,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
     <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sql-audit-logging">SQL Audit Logging</a></td>
+    <td><a href="{% link {{ site.current_cloud_version }}/sql-audit-logging.md %}">SQL Audit Logging</a></td>
   </tr>
   <tr>
     <td>✓</td>
@@ -153,11 +153,11 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
     <td><a href="{% link cockroachcloud/cloud-org-audit-logs.md %}">Cloud Organization Audit Logging</a></td>
   </tr>
   <tr>
-    <td><a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery">Availability/Resilience</a></td>
+    <td><a href="{% link {{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery.md %}">Availability/Resilience</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery">Disaster Recovery.</a></td>
+    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery.md %}">Disaster Recovery.</a></td>
   </tr>
 </table>
 
-<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless">Manage AWS PrivateLink</a>.
+<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="{% link cockroachcloud/aws-privatelink.md %}?filters=serverless">Manage AWS PrivateLink</a>.
