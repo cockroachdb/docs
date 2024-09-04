@@ -61,7 +61,7 @@ The **Storage Used** graph displays the amount of data being stored in the clust
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/select-clause), [`INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert), [`UPDATE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/update), and [`DELETE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/delete) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), and [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %}) statements successfully executed per second.
 
 </section>
 

@@ -22,7 +22,7 @@ CMEK is not yet available for [CockroachDB {{ site.data.products.dedicated }} on
 See also:
 
 - [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)]({% link cockroachcloud/cmek.md %}#faqs)
-- [Encryption at Rest (Enterprise)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest)
+- [Encryption at Rest (Enterprise)]({% link {{site.current_cloud_version}}/security-reference/encryption.md %}#encryption-at-rest)
 
 
 ## Overview of CMEK management procedures
