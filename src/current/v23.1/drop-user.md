@@ -54,7 +54,7 @@ SHOW GRANTS ON customers FOR max;
 (1 row)
 ~~~
 
-We can test that dropping the user will fail unless all privileges are revoked (including [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)). Issue the following statement to revoke a subset of the user's privileges:
+You can test that dropping the user will fail unless all privileges are revoked (including [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)). Issue the following statement to revoke a subset of the user's privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
