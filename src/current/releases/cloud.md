@@ -523,7 +523,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - The following features are now available for CockroachDB {{ site.data.products.serverless }} clusters running CockroachDB [v22.2.0]({% link releases/v22.2.md %}) or later:
   - [Query cancellation]({% link {{site.current_cloud_version}}/cancel-query.md %}#considerations) using the PostgreSQL wire protocol (pgwire).
-  - [`EXPLAIN ANALYZE`]({% link {{site.current_cloud_version}}/explain-analyze.md %}) now gives an estimate of the [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster.md %}#request-units) a query consumes.
+  - [`EXPLAIN ANALYZE`]({% link {{site.current_cloud_version}}/explain-analyze.md %}) now gives an estimate of the [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) a query consumes.
   - All CockroachDB {{ site.data.products.serverless }} users can now use cloud storage for [`IMPORT`]({% link {{site.current_cloud_version}}/import-into.md %}), [`BACKUP`]({% link {{site.current_cloud_version}}/backup.md %}), and [change data capture (CDC)]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}) without entering billing information.
   - `SHOW RANGES` is now supported on CockroachDB {{ site.data.products.serverless }}.
   - The [GC TTL]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}#gc-ttlseconds) for deleted values is lowered from 24 hours to 1 hour and 15 minutes.
