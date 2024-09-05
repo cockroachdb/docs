@@ -2,4 +2,4 @@ The number of RUs consumed by KV storage layer reads, broken down by bytes. SQL 
 <br>
 <b>1 RU = 64 KiB read request payload (prorated)</b>
 <br>
-Correlate this metric with <a href="#tenant.consumption.request_units">Request Units (RUs)</a>. To learn more about how RUs are calculated, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-resource-usage">Resource Usage</a>.
+Correlate this metric with <a href="#tenant.consumption.request_units">Request Units (RUs)</a>. To learn more about how RUs are calculated, refer to [Resource Usage]({% link cockroachcloud/resource-usage-basic.md %}).
