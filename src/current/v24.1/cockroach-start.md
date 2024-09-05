@@ -258,24 +258,24 @@ To enable WAL failover, you must take one of the following actions:
 
 [Writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). So It's not enough to failover your WAL writes to another disk, you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
 
-Therefore, if you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
+Therefore, if you enable WAL failover and log to local disks, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
 
-- (**Recommended**) Configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks.
-- If you must log to local disks:
-  1. Disable [audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}). File-based audit logging and the WAL failover feature cannot coexist. File-based audit logging provides guarantees that every log message makes it to disk, otherwise CockroachDB needs to shut down. Because of this, resuming operations in the face of disk unavailability is not compatible with audit logging.
-  1. Enable asynchronous buffering of [`file-groups` log sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the `buffering` configuration option. The `buffering` configuration can be applied to [`file-defaults`]({% link {{ page.version.version }}/configure-logs.md %}#configure-logging-defaults) or individual `file-groups` as needed. Note that enabling asynchronous buffering of `file-groups` log sinks is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
-  1. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
-  1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown below. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This in turn will cause internal routines doing other important work to hang, potentially affecting cluster stability.
-  1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
+1. Disable [audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}). File-based audit logging and the WAL failover feature cannot coexist. File-based audit logging provides guarantees that every log message makes it to disk, otherwise CockroachDB needs to shut down. Because of this, resuming operations in the face of disk unavailability is not compatible with audit logging.
+1. Enable asynchronous buffering of [`file-groups` log sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the `buffering` configuration option. The `buffering` configuration can be applied to [`file-defaults`]({% link {{ page.version.version }}/configure-logs.md %}#configure-logging-defaults) or individual `file-groups` as needed. Note that enabling asynchronous buffering of `file-groups` log sinks is in [preview]({% link {{page.version.version}}/cockroachdb-feature-availability.md %}#features-in-preview).
+1. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
+1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown below. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This in turn will cause internal routines doing other important work to hang, potentially affecting cluster stability.
+1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-        ~~~
-        file-defaults:
-          buffered-writes: false
-          buffering:
-            max-staleness: 1s
-            flush-trigger-size: 256KiB
-            max-buffer-size: 50MiB
-        ~~~
+      ~~~
+      file-defaults:
+        buffered-writes: false
+        buffering:
+          max-staleness: 1s
+          flush-trigger-size: 256KiB
+          max-buffer-size: 50MiB
+      ~~~
+
+Another option is to configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version}}/cockroach-debug-zip.md %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
 ##### Disable WAL failover
 
