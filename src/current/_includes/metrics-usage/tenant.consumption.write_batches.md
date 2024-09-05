@@ -2,4 +2,4 @@ The number of RUs consumed by KV writes, broken down by batches. SQL statements 
 <br>
 <b>1 RU = 1 storage write batch</b>
 <br>
-Correlate this metric with <a href="#tenant.consumption.request_units">Request Units (RUs)</a>. To learn more about how RUs are calculated, refer to [Resource Usage]({% link cockroachcloud/resource-usage-basic.md %}).
+Correlate this metric with [Request Units (RUs)](#tenant.consumption.request_units). To learn more about how RUs are calculated, refer to [Resource Usage]({% link cockroachcloud/resource-usage-basic.md %}).
