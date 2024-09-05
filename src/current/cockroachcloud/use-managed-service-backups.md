@@ -30,7 +30,7 @@ Select one of the following filters for your deployment:
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 
 Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
@@ -47,7 +47,7 @@ Click on **Backup and Restore** in the **Data section** of the left-side navigat
 Consider the following as you use managed-service backups:
 
 - By default, full backups are retained for 30 days, while incremental backups are retained for 7 days. However, if you delete the backup schedule manually or enable [CMEK]({% link cockroachcloud/cmek.md %}) on the cluster, this will affect the availability of managed backups. Refer to the [CockroachDB Cloud FAQs]({% link cockroachcloud/frequently-asked-questions.md %}#who-is-responsible-for-backup) for more detail.
-- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+- Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
 {{site.data.alerts.callout_info}}
@@ -65,7 +65,7 @@ The **Backups** tab displays a list of your full and incremental cluster backups
 For each backup, the following details display:
 
 - **Data From**: The date and time the backup was taken.
-- **Type**: Whether the backup is a [full](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) or [incremental](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#incremental-backups) backup.
+- **Type**: Whether the backup is a [full]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#incremental-backups) backup.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
 
@@ -184,20 +184,20 @@ To restore a database:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-database) or [`RENAME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`]({% link {{site.current_cloud_version}}/drop-database.md %}) or [`RENAME`]({% link {{site.current_cloud_version}}/alter-database.md %}#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
-    - **Skip missing foreign keys**, which will remove missing [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
-    - **Skip missing sequences**, which will ignore [sequence](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-sequences) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
-    - **Skip missing views**, which will skip restoring [views](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/views) that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip missing foreign keys**, which will remove missing [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore [sequence]({% link {{site.current_cloud_version}}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring [views]({% link {{site.current_cloud_version}}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**.
 1. Once you have reviewed the restore details, click **Restore**.
 
     When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
-When the restore is complete, be sure to set any database-specific [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) and, if applicable, [grant privileges](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant).
+When the restore is complete, be sure to set any database-specific [zone configurations]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}) and, if applicable, [grant privileges]({% link {{site.current_cloud_version}}/grant.md %}).
 
 ### Restore a table
 
@@ -215,13 +215,13 @@ To restore a table:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-database) or [`RENAME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`]({% link {{site.current_cloud_version}}/drop-database.md %}) or [`RENAME`]({% link {{site.current_cloud_version}}/alter-database.md %}#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
-    - **Skip missing foreign keys**, which will remove missing [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
-    - **Skip missing sequences**, which will ignore [sequence](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-sequences) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
-    - **Skip missing views**, which will skip restoring [views](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/views) that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip missing foreign keys**, which will remove missing [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore [sequence]({% link {{site.current_cloud_version}}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring [views]({% link {{site.current_cloud_version}}/views.md %}) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**.
 1. Once you have reviewed the restore details, click **Restore**.
@@ -232,7 +232,7 @@ To restore a table:
 
 To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.products.cloud }} cluster:
 
-1. While [connected to your self-hosted CockroachDB cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connect-to-the-database), [back up](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) your databases and/or tables to an [external location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#backup-file-urls):
+1. While [connected to your self-hosted CockroachDB cluster]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}), [back up]({% link {{site.current_cloud_version}}/backup.md %}) your databases and/or tables to an [external location]({% link {{site.current_cloud_version}}/backup.md %}#backup-file-urls):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -240,7 +240,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachDB {{ site.data.products.cloud }} will need the `specified` credentials upon [`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore). For more information on authentication parameters to cloud storage providers, see [Cloud Storage Authentication](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cloud-storage-authentication).
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachDB {{ site.data.products.cloud }} will need the `specified` credentials upon [`RESTORE`]({% link {{site.current_cloud_version}}/restore.md %}). For more information on authentication parameters to cloud storage providers, see [Cloud Storage Authentication]({% link {{site.current_cloud_version}}/cloud-storage-authentication.md %}).
     {{site.data.alerts.end}}
 
 1. [Connect to your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}):
@@ -254,7 +254,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
     {% include cockroachcloud/sql-connection-string.md %}
 
 
-1. [Restore](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) to your CockroachDB {{ site.data.products.cloud }} cluster.
+1. [Restore]({% link {{site.current_cloud_version}}/restore.md %}) to your CockroachDB {{ site.data.products.cloud }} cluster.
 
     Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
 
@@ -282,7 +282,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.pro
 ## Known limitations
 
 - For [restoring a cluster](#restore-a-cluster):
-    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restoring-backups-across-versions).
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions]({% link {{site.current_cloud_version}}/restoring-backups-across-versions.md %}).
     - Restoring CockroachDB {{ site.data.products.dedicated }} to CockroachDB {{ site.data.products.serverless }} or vice versa does not work.
     - Restoring to a different cluster is disabled for [CMEK]({% link cockroachcloud/cmek.md %}) clusters.
     - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
@@ -301,14 +301,14 @@ The databases you want to restore cannot have the same name as an existing datab
 > SHOW DATABASES;
 ~~~
 
-If the database's name is already in use, either [drop the existing database](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-database):
+If the database's name is already in use, either [drop the existing database]({% link {{site.current_cloud_version}}/drop-database.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE example_database;
 ~~~
 
-Or [change the existing database's name](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#rename-to):
+Or [change the existing database's name]({% link {{site.current_cloud_version}}/alter-database.md %}#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -324,14 +324,14 @@ The table you want to restore cannot have the same name as an existing table in 
 > SHOW TABLES FROM database_name;
 ~~~
 
-If the table's name is already in use, either [drop the existing table](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-table):
+If the table's name is already in use, either [drop the existing table]({% link {{site.current_cloud_version}}/drop-table.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE target_database.example_table;
 ~~~
 
-Or [change the existing table's name](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#rename-to):
+Or [change the existing table's name]({% link {{site.current_cloud_version}}/alter-table.md %}#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

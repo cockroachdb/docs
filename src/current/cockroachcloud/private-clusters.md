@@ -11,7 +11,7 @@ Limiting access to a CockroachDB cluster's nodes over the public internet is an 
 By default, CockroachDB {{ site.data.products.cloud }} has safeguards in place to protect cluster's data from the public internet.
 
 - Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) and [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
-- Egress traffic from a cluster, such as [exports](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/export), [backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/backup), and [Change Data Capture (CDC)](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/change-data-capture-overview.html), use public subnets by default.
+- Egress traffic from a cluster, such as [exports]({% link {{ site.current_cloud_version }}/export.md %}), [backups]({% link {{ site.current_cloud_version }}/backup.md %}), and [Change Data Capture (CDC)]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}), use public subnets by default.
 
 A CockroachDB {{ site.data.products.dedicated }} advanced cluster is a _private cluster_. Its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
@@ -36,7 +36,7 @@ An existing cluster can't be migrated in-place to a private cluster.
 
 ## Limit inbound connections from egress operations
 
-Egress traffic from a private cluster to non-cloud external resources will always appear to come from the static IP addresses that comprise the cluster's NAT gateway. To determine the NAT gateway's IP addresses, you can initiate an egress operation such as an [`EXPORT`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/export) or [`BACKUP`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/backup) operation on the cluster and observe the source addresses of the resulting connections to your non-cloud external resources. Cockroach Labs recommends that you allow connections to such resources only from those IP addresses.
+Egress traffic from a private cluster to non-cloud external resources will always appear to come from the static IP addresses that comprise the cluster's NAT gateway. To determine the NAT gateway's IP addresses, you can initiate an egress operation such as an [`EXPORT`]({% link {{ site.current_cloud_version }}/export.md %}) or [`BACKUP`]({% link {{ site.current_cloud_version }}/backup.md %}) operation on the cluster and observe the source addresses of the resulting connections to your non-cloud external resources. Cockroach Labs recommends that you allow connections to such resources only from those IP addresses.
 
 ## What's next?
 
@@ -46,5 +46,5 @@ Egress traffic from a private cluster to non-cloud external resources will alway
 
 ## Limitations
 
-- An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/migration-overview).
+- An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
 - Private clusters are not available with CockroachDB {{ site.data.products.serverless }}.

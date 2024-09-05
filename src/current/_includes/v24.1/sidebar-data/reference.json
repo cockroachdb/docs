@@ -284,7 +284,7 @@
       {
         "title": "Metrics",
         "urls": [
-          "/${VERSION}/metrics.html"
+          "/${VERSION}/metrics.html"        
         ]
       },
       {

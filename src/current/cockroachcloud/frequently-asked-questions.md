@@ -51,7 +51,7 @@ We use separate certificate authorities for each cluster, and all connections to
 
 {% include common/tls-bad-cipher-warning.md %}
 
-See the [Security Overview page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page]({% link {{site.current_cloud_version}}/security-reference/security-overview.md %}) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on CockroachDB {{ site.data.products.dedicated }}?
 
@@ -62,10 +62,10 @@ All data in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ s
 {{site.data.alerts.callout_info}}
 CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }}.
 
-As a result, encryption will appear to be disabled in the [DB Console](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview), since the console is unaware of cloud provider encryption.
+As a result, encryption will appear to be disabled in the [DB Console]({% link {{site.current_cloud_version}}/ui-overview.md %}), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
 
-See the [Security Overview page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page]({% link {{site.current_cloud_version}}/security-reference/security-overview.md %}) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -93,16 +93,16 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 ### Who is responsible for backup?
 
-Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery).
+Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}).
 
 CockroachDB {{ site.data.products.cloud }} automatically runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. By default, full backups are retained for 30 days and incremental backups for 7 days. However, there are some cases where you will no longer be able to restore the managed backups even within the retainment window:
 
 - Manually deleting the managed backup schedule.
 - Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster. Refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 
-In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
+In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`]({% link {{site.current_cloud_version}}/backup.md %}) statement.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -114,7 +114,7 @@ Learn more:
 
 - Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) for more information about using customer-managed backups.
 
-- Refer to [Disaster Recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery) for information about more holistically maintaining a capacity to recover from potential disruptions.
+- Refer to [Disaster Recovery]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}) for information about more holistically maintaining a capacity to recover from potential disruptions.
 
 - [Contact support](https://support.cockroachlabs.com).
 
@@ -124,11 +124,11 @@ The backups for AWS clusters are encrypted using [AWS S3’s server-side encrypt
 
 ### Can I download the backups that CockroachDB {{ site.data.products.cloud }} takes for me?
 
-CockroachDB {{ site.data.products.cloud }} automated backups cannot be downloaded, but you can manually [run a backup]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to your own [storage location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+CockroachDB {{ site.data.products.cloud }} automated backups cannot be downloaded, but you can manually [run a backup]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to your own [storage location]({% link {{site.current_cloud_version}}/backup.md %}#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachDB {{ site.data.products.dedicated }}?
 
-Yes. You can [backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) your self-hosted CockroachDB databases to an [external location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#backup-file-urls) and then [restore](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) to your CockroachDB {{ site.data.products.cloud }} cluster.
+Yes. You can [backup]({% link {{site.current_cloud_version}}/backup.md %}) your self-hosted CockroachDB databases to an [external location]({% link {{site.current_cloud_version}}/backup.md %}#backup-file-urls) and then [restore]({% link {{site.current_cloud_version}}/restore.md %}) to your CockroachDB {{ site.data.products.cloud }} cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -146,7 +146,7 @@ Azure Private Link is not yet available for [CockroachDB {{ site.data.products.d
 
 ### Are enterprise features available to me?
 
-Yes, CockroachDB {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features](https://www.cockroachlabs.com/docs/stable/enterprise-licensing) are available to you.
+Yes, CockroachDB {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features]({% link {{ site.current_cloud_version }}/enterprise-licensing.md %}) are available to you.
 
 ### Is there a public API for CockroachDB {{ site.data.products.cloud }}?
 
@@ -175,7 +175,7 @@ For a detailed comparison of CockroachDB's SLA versus the major Cloud Service Pr
 
 ### Am I in control of upgrades for my CockroachDB {{ site.data.products.dedicated }} clusters?
 
-Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v23.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart](https://www.cockroachlabs.com/docs/v21.2/connection-pooling#validating-connections-in-a-pool). For more information, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.html).
+Yes, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can apply major release upgrades directly [through the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/upgrade-to-v23.2.md %}); however, patch version upgrades are automatically applied to all clusters. CockroachDB {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version upgrades, so previously established connections will need to be [reestablished after the restart]({% link {{ site.current_cloud_version }}/connection-pooling.md %}#validate-connections-in-a-pool). For more information, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
@@ -193,7 +193,7 @@ The [**CockroachDB {{ site.data.products.cloud }} Status** page](https://status.
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) and [Query Performance Optimization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/make-queries-fast) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) and [Query Performance Optimization]({% link {{site.current_cloud_version}}/make-queries-fast.md %}) docs for more information.
 
 ### Can I monitor my cluster with third-party tools?
 
