@@ -20,7 +20,7 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.advanced
 
 - A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete.
 - When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
-- When a cluster's CockroachDB version is nearing [end of life]({% link releases/release-support-policy.md %}#support-phases) and must be upgraded to maintain support.
+- When a cluster's CockroachDB version is nearing [end of support]({% link cockroachcloud/upgrade-policy.md %}) and must be upgraded to maintain support.
 
 ### CMEK
 
