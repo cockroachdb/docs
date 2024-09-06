@@ -35,7 +35,7 @@ Setting resource limits will allow your cluster to scale to meet your applicatio
 
 ## Choose resource limits
 
-Your cluster's [configured capacity]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-configure-cluster-capacity) determines the [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) (the maximum amount of storage and RUs the cluster can use in a month).
+Your cluster's [configured capacity]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-configure-cluster-capacity) determines the resource limits (the maximum amount of storage and RUs the cluster can use in a month).
 
 - If you reach your storage limit, your cluster will be unable to write to its storage unless you delete data or increase your storage limit.
 - If you reach your RU limit, your cluster will be disabled until you increase your RU limit or a new billing cycle begins.
@@ -44,7 +44,7 @@ Your cluster's [configured capacity]({% link cockroachcloud/create-a-serverless-
 
 Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your CockroachDB {{ site.data.products.serverless }} Resource Usage]({% link cockroachcloud/serverless-resource-usage.md %}).
 
-Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its resource limits.
 
 ## Multi-region clusters
 
@@ -56,9 +56,9 @@ You cannot currently remove regions once they have been added.
 
 For optimal performance, deploy client applications in one of your cluster's configured regions. CockroachDB {{ site.data.products.serverless }} uses a geolocation routing policy to automatically route clients to the nearest region, even if that region is not one of your cluster's configured regions. This means that if you are running an application from a region that is not used by your cluster, connecting to that region may cause high network latency. This may be acceptable for development, but should be avoided for any production or performance-sensitive applications. Refer to the [CockroachDB {{ site.data.products.serverless }} FAQs]({% link cockroachcloud/serverless-faqs.md %}#how-do-i-get-the-sql-endpoint-for-a-specific-region-of-my-multi-region-cluster) for information on overriding the automatic routing policy.
 
-While multi-region CockroachDB {{ site.data.products.dedicated }} clusters must have a minimum of three regions, {{ site.data.products.serverless-plan }} clusters can survive [zone failures](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals#survive-zone-failures) with only two regions. To survive a [regional failure](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals#survive-region-failures), a minimum of three regions is required.
+While multi-region CockroachDB {{ site.data.products.dedicated }} clusters must have a minimum of three regions, {{ site.data.products.serverless-plan }} clusters can survive [zone failures]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}#survive-zone-failures) with only two regions. To survive a [regional failure]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}#survive-region-failures), a minimum of three regions is required.
 
-Databases created in CockroachDB {{ site.data.products.serverless }} will automatically inherit all of a cluster's regions, so it is not necessary to run [`ALTER DATABASE ... ADD REGION`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-database#add-region) to configure regions when adding a database to the cluster. To override the default inheritance, you can specify the primary region with the [`CREATE DATABASE <db_name> WITH PRIMARY REGION`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-database) SQL syntax or the [`sql.defaults_primary_region`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cluster-settings#setting-sql-defaults-primary-region) setting.
+Databases created in CockroachDB {{ site.data.products.serverless }} will automatically inherit all of a cluster's regions, so it is not necessary to run [`ALTER DATABASE ... ADD REGION`]({% link {{site.current_cloud_version}}/alter-database.md %}#add-region) to configure regions when adding a database to the cluster. To override the default inheritance, you can specify the primary region with the [`CREATE DATABASE <db_name> WITH PRIMARY REGION`]({% link {{site.current_cloud_version}}/create-database.md %}) SQL syntax or the [`sql.defaults_primary_region`]({% link {{site.current_cloud_version}}/cluster-settings.md %}#setting-sql-defaults-primary-region) setting.
 
 Storage for a multi-region cluster is billed at the same rate as a single-region cluster. However, by default data is replicated three times in the primary region and once in each additional region, and each replica in the additional regions will accrue more storage costs. For example, a three-region cluster with data replicated five times will use 5/3 times the storage space of a single-region cluster where data is replicated three times.
 
@@ -68,5 +68,5 @@ Keep in mind the following key points when planning your multi-region CockroachD
 
 - Write-heavy applications may experience a significant increase in RU consumption because replicating writes across all regions consumes more resources.
 - Read-heavy applications may experience a smaller increase in RU consumption because the resources required to read from a single region of a multi-region cluster are comparable with a single-region cluster.
-- Cross-region reads are an anti-pattern and may significantly increase RU consumption. Features such as [global tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/global-tables), [regional by row tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/regional-tables), and [follower reads](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/follower-reads) help avoid most cross-region reads.
+- Cross-region reads are an anti-pattern and may significantly increase RU consumption. Features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) help avoid most cross-region reads.
 - Cross-region writes will also consume additional RUs, but should not significantly increase consumption.

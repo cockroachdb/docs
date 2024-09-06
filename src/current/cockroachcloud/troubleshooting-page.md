@@ -15,7 +15,7 @@ We have updated the CA certificate used by CockroachDB {{ site.data.products.ser
 
 ### Cannot load certificates
 
-You see the following error when you are using the [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) command to connect to your CockroachDB {{ site.data.products.serverless }} cluster:
+You see the following error when you are using the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command to connect to your CockroachDB {{ site.data.products.serverless }} cluster:
 
 ~~~
 ERROR: cannot load certificates.
@@ -27,7 +27,7 @@ Failed running "sql"
 
 <h4>Solution</h4>
 
-Update to the latest [CockroachDB client](https://www.cockroachlabs.com/docs/releases#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+Update to the latest [CockroachDB client]({% link releases/index.md %}#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
 
 ### Certificate signed by unknown authority
 
@@ -40,7 +40,7 @@ Failed running "sql"
 
 <h4>Solution: CA certificate conflicts</h4>
 
-If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and are trying to connect to a CockroachDB {{ site.data.products.serverless }} cluster using [`cockroach sql`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
+If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.dedicated }} clusters and are trying to connect to a CockroachDB {{ site.data.products.serverless }} cluster using [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
 
 For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
 
@@ -51,7 +51,7 @@ cockroach sql --url "postgresql://maxroach@blue-dog-147.6wr.cockroachlabs.cloud:
 
 ### Invalid cluster name in a third-party tool
 
-The following error is displayed if you try to connect to a [third-party tool](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version}}/third-party-database-tools) with the wrong cluster or database name. The actual error message may vary depending on your tool:
+The following error is displayed if you try to connect to a [third-party tool]({% link {{ site.current_cloud_version}}/third-party-database-tools.md %}) with the wrong cluster or database name. The actual error message may vary depending on your tool:
 
 ~~~
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
@@ -61,7 +61,7 @@ FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid clu
 
 Check that you are using the correct cluster and database names. You can find these parameters in the CockroachDB {{ site.data.products.cloud }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**.
 
-For connection examples with your tool, see [these examples](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version}}/third-party-database-tools).
+For connection examples with your tool, see [these examples]({% link {{ site.current_cloud_version}}/third-party-database-tools.md %}).
 
 ### I/O timeout
 
@@ -127,7 +127,7 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 <h4>Solution</h4>
 
-CockroachDB {{ site.data.products.cloud }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-pooling) and connection retry logic to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
+CockroachDB {{ site.data.products.cloud }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections]({% link {{site.current_cloud_version}}/connection-pooling.md %}) and connection retry logic to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
 
 ## Security errors
 
@@ -146,7 +146,7 @@ Check the directory path for the [CA certificate in the connection method]({% li
 
 ### Issue with CockroachDB workloads
 
-The following error is displayed while trying to a run [CockroachDB workload](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload) with `sslmode=verify-full`:
+The following error is displayed while trying to a run [CockroachDB workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}) with `sslmode=verify-full`:
 
 ~~~
 Error: x509: certificate signed by unknown authority

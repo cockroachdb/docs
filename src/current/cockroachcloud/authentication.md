@@ -22,7 +22,7 @@ Refer to: [Overview of the CockroachDB {{ site.data.products.cloud }} authorizat
 
 	Refer to: [`ccloud` authentication](#ccloud-authentication)
 
-- The CockroachDB {{ site.data.products.cloud }} API allows [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account) to perform many organization and cluster administration functions.
+- The CockroachDB {{ site.data.products.cloud }} API allows service accounts to perform many organization and cluster administration functions.
 
 	Refer to: [Cloud API authentication](#cloud-api-authentication)
 
@@ -55,7 +55,7 @@ Refer to: [Log in to CockroachDB Cloud using ccloud auth]({% link cockroachcloud
 
 ## Cloud API authentication
 
-The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account).
+The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by service accounts.
 
 Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 
@@ -63,7 +63,7 @@ Refer to: [Managing Service Accounts: API access]({% link cockroachcloud/managin
 
 ## SQL client authentication
 
-To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/install-client-drivers).
+To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools]({% link {{site.current_cloud_version}}/install-client-drivers.md %}).
 
 ### The connection string
 
@@ -76,7 +76,7 @@ Clients can authenticate in two ways. Your connection string must be modified de
 - [Username and password](#username-and-password)
 - [PKI security certificate](#pki-security-certificate)
 
-Note that the [TLS public root certificate authority (CA) certificate of the cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security#certificates-signing-trust-and-authority) is also required for authenticating the cluster server against the SQL client. This certificate can be downloaded by following the instructions in the **Connect** UI.
+Note that the [TLS public root certificate authority (CA) certificate of the cluster]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority) is also required for authenticating the cluster server against the SQL client. This certificate can be downloaded by following the instructions in the **Connect** UI.
 
 ### Username and password
 
@@ -90,7 +90,7 @@ For information on managing SQL user credentials, including provisioning passwor
 
 SQL clients may authenticate to CockroachDB {{ site.data.products.dedicated }} clusters using PKI security certificates.
 
-Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for an overview of PKI certificate authentication in general and its use in CockroachDB.
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
 Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedural information on administering and using client certificate authentication.
 
@@ -120,5 +120,5 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 
 - [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
 - [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
