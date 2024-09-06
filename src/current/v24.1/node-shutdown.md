@@ -67,7 +67,7 @@ An operator [initiates the draining process](#drain-the-node-and-terminate-the-n
 {% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
 
 {{site.data.alerts.callout_danger}}
-{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.initial_wait`](#server-shutdown-initial_wait) and the [termination grace period](https://www.cockroachlabs.com/docs/stable/node-shutdown?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
+{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.initial_wait`](#server-shutdown-initial_wait) and the [termination grace period]({% link {{ page.version.version}}/node-shutdown.md %}?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
 {{site.data.alerts.end}}
 
 </section>

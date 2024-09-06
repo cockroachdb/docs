@@ -65,7 +65,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 Make sure there are no [bulk imports]({% link {{site.current_cloud_version}}/import-into.md %}) or [schema changes]({% link {{site.current_cloud_version}}/online-schema-changes.md %}) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.</span>
 
-To check for ongoing bulk operations, use [`SHOW JOBS`]({% link v20.1/show-jobs.md %}#show-schema-changes) or check the [**Jobs** page]({% link {{site.current_cloud_version}}/ui-jobs-page.md %}) in the DB Console.
+To check for ongoing bulk operations, use [`SHOW JOBS`]({% link {{ site.current_cloud_version }}/show-jobs.md %}#show-schema-changes) or check the [**Jobs** page]({% link {{site.current_cloud_version}}/ui-jobs-page.md %}) in the DB Console.
 
 {{site.data.alerts.callout_info}}
 Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`]({% link {{site.current_cloud_version}}/show-jobs.md %}) and the [**Jobs** page]({% link {{site.current_cloud_version}}/ui-jobs-page.md %}) in the DB Console will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`]({% link {{site.current_cloud_version}}/pause-job.md %})/[`RESUME JOB`]({% link {{site.current_cloud_version}}/resume-job.md %})/[`CANCEL JOB`]({% link {{site.current_cloud_version}}/cancel-job.md %}) statements. Once the upgrade has been finalized, these schema changes will run to completion.
@@ -125,19 +125,19 @@ Before your upgrade has been finalized, remember to prevent new schema changes a
 
 Also, most v20.1 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{site.current_cloud_version}}/alter-table.md %}#alter-primary-key) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`]({% link v20.1/add-constraint.md %}#drop-and-add-a-primary-key-constraint) in the same transaction.
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`]({% link {{site.current_cloud_version}}/alter-table.md %}#alter-primary-key) statement, or using `DROP CONSTRAINT` and then `ADD CONSTRAINT` in the same transaction.
 
-- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements]({% link v20.1/foreign-key.md %}#rules-for-creating-foreign-keys).
+- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements]({% link {{ site.current_cloud_version }}/foreign-key.md %}#rules-for-creating-foreign-keys).
 
-- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes]({% link v20.1/create-index.md %}#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
+- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes]({% link {{ site.current_cloud_version }}/create-index.md %}#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
 
-- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles]({% link v20.1/create-user.md %}#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
+- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles]({% link {{ site.current_cloud_version }}/create-user.md %}#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
-- **Nested transactions:** After finalization, it will be possible to create [nested transactions]({% link v20.1/transactions.md %}#nested-transactions) using [`SAVEPOINT`s]({% link {{site.current_cloud_version}}/savepoint.md %}).
+- **Nested transactions:** After finalization, it will be possible to create [nested transactions]({% link {{ site.current_cloud_version }}/transactions.md %}#nested-transactions) using [`SAVEPOINT`s]({% link {{site.current_cloud_version}}/savepoint.md %}).
 
-- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`]({% link v20.1/time.md %}#timetz) data type to store a time of day with a time zone offset from UTC.
+- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`]({% link {{ site.current_cloud_version }}/time.md %}#timetz) data type to store a time of day with a time zone offset from UTC.
 
-- **`TIME`/`TIMETZ` and `INTERVAL` precision:** After finalization, it will be possible to specify precision levels from 0 (seconds) to 6 (microseconds) for [`TIME`/`TIMETZ`]({% link v20.1/time.md %}#precision) and [`INTERVAL`]({% link v20.1/interval.md %}#precision) values.
+- **`TIME`/`TIMETZ` and `INTERVAL` precision:** After finalization, it will be possible to specify precision levels from 0 (seconds) to 6 (microseconds) for `TIME`/`TIMETZ` and [`INTERVAL`]({% link {{ site.current_cloud_version }}/interval.md %}#precision) values.
 
 ## Step 6. Finish the upgrade
 

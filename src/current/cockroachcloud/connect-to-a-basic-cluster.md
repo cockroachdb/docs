@@ -47,9 +47,9 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
-1. In the **Download CA Cert (Required only once)** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
-1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to CockroachDB {{ site.data.products.basic }}.
-1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.basic }} with a [supported client]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}), see [Connect to a CockroachDB Cluster]({% link {{ site.current_cloud_version }}/connect-to-the-database.md %}).
+1. In the **Download CA Cert** section of the dialog, you can optionally download the CA certificate. The CA certificate is signed by Let's Encrypt, which may already be trusted by your local system. However, some use cases, such as developing with Python, do not use the operating system's local certificate store and require the CA certificate to be available locally. When developing with Javascript or Node, you do not need to download the CA certificate locally. To download the CA certificate, select your operating system, then use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to your cluster.
+1. Add your copied connection string to your application code. For information about connecting to your cluster with a [supported client]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}), see [Connect to a CockroachDB Cluster]({% link {{ site.current_cloud_version }}/connect-to-the-database.md %}).
 
 {% include cockroachcloud/postgresql-special-characters.md %}
 
@@ -84,7 +84,7 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}). To download the full binary and connect to a CockroachDB {{ site.data.products.basic }} cluster, follow these steps.
+You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}). To download the full binary and connect to your cluster, follow these steps.
 
 1. Select **CockroachDB Client** from the **Select option/language** dropdown.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.

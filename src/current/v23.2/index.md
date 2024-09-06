@@ -90,7 +90,7 @@ docs_area:
       <p class="landing-column-title">Deploy</p>
       <ul>
         <li><a href="recommended-production-settings.html">Production Checklist</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">CockroachDB Cloud Deployment</a></li>
+        <li><a href="{% link cockroachcloud/create-your-cluster.md %}">CockroachDB Cloud Deployment</a></li>
         <li><a href="kubernetes-overview.html">Kubernetes Overview</a></li>
         <li><a href="performance.html">Performance Profiles</a></li>
         <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>
@@ -139,9 +139,9 @@ docs_area:
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Releases</p>
       <ul>
-        <li><a href="https://www.cockroachlabs.com/docs/releases/{{page.version.version}}">{{page.version.version}} Release</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/releases">All Releases</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/releases/release-support-policy">Release Support Policy</a></li>
+        <li><a href="{% link releases/{{page.version.version}}.md %}">{{page.version.version}} Release</a></li>
+        <li><a href="{% link releases/index.md %}">All Releases</a></li>
+        <li><a href="{% link releases/release-support-policy.md %}">Release Support Policy</a></li>
         <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>
     </div>

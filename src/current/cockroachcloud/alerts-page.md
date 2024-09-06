@@ -19,8 +19,8 @@ The **Alerts** page is applicable for CockroachDB {{ site.data.products.advanced
 [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) receive email alerts when:
 
 - A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete.
-- When a cluster is scheduled for [maintenance]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
-- When a cluster's CockroachDB version is nearing [end of life]({% link releases/release-support-policy.md %}#support-cycle) and must be upgraded to maintain support.
+- When a cluster is scheduled for [maintenance]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- When a cluster's CockroachDB version is nearing [end of life]({% link releases/release-support-policy.md %}#support-phases) and must be upgraded to maintain support.
 
 ### CMEK
 
@@ -86,8 +86,6 @@ If you receive an alert repeatedly:
 - Identify unoptimized queries and [optimize your workload]({% link {{ site.current_cloud_version }}/make-queries-fast.md %}).
 - Add one or more [indexes]({% link {{ site.current_cloud_version }}/create-index.md %}) to improve query performance.
 - Consider [increasing the capacity]({% link cockroachcloud/advanced-cluster-management.md %}#change-compute-for-a-cluster) of the nodes or [add more nodes]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster) to reduce the load per node.
-
-If you receive an alert repeatedly, you may need to [optimize your workload]({% link {{ site.current_cloud_version }}/make-queries-fast.md %}) or [scale your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster).
 
 ### Maintenance Window
 

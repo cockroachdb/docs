@@ -345,7 +345,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             This configuration:
             - Enables [redaction]({% link {{site.current_cloud_version}}/configure-logs.md %}#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
             - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a GCP Clo ud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` GCP Cloud Logging log group.
 
@@ -462,7 +462,7 @@ No, the CockroachDB {{ site.data.products.standard }} log export feature does no
 
 ### Does log export configuration use the same syntax as CockroachDB log configuration?
 
-No, log export configuration uses the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities), while CockroachDB uses `filter`.
+No, log export configuration uses the [CockroachDB {{ site.data.products.cloud }} API](/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities), while CockroachDB uses `filter`.
 
 ## Troubleshooting
 
