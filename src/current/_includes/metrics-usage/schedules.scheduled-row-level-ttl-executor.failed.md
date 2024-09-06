@@ -1,1 +1,1 @@
-Monitor this metric to ensure the <a href="https://www.cockroachlabs.com/docs/stable/row-level-ttl">Row-Level TTL</a> job is running. If it is non-zero, it means the job could not be created.
+Monitor this metric to ensure the [Row-Level TTL]({% link {{ site.current_cloud_version }}/row-level-ttl.md %}) job is running. If it is non-zero, it means the job could not be created.
