@@ -24,10 +24,10 @@ Depending on your CockroachDB {{ site.data.products.cloud }} deployment, the **M
  Metrics Tab | CockroachDB Basic | CockroachDB Standard | CockroachDB Advanced
 :------------|:--------------------:|:--------------------:|:-----------------:
  [**Overview**]({% link cockroachcloud/metrics-overview.md %}) | ✔ | ✔ | ✔
- [**Request Units**]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |
  [**SQL**]({% link cockroachcloud/metrics-sql.md %}) | ✔ | ✔ | ✔
  [**Changefeeds**]({% link cockroachcloud/metrics-changefeeds.md %}) | ✔ | ✔ | ✔
  [**Row-Level TTL**]({% link cockroachcloud/metrics-row-level-ttl.md %}) | ✔ | ✔ | ✔
+ [**Request Units**]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |
  [**Custom**]({% link cockroachcloud/custom-metrics-chart-page.md %}) | ✔ | ✔ | ✔
 
 ### Time interval selection

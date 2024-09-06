@@ -401,12 +401,6 @@
                                 ]
                             },
                             {
-                                "title": "Request Units",
-                                "urls": [
-                                "/cockroachcloud/metrics-request-units.html"
-                                ]
-                            },
-                            {
                                 "title": "SQL",
                                 "urls": [
                                 "/cockroachcloud/metrics-sql.html"
@@ -422,6 +416,12 @@
                                 "title": "Row-Level TTL",
                                 "urls": [
                                 "/cockroachcloud/metrics-row-level-ttl.html"
+                                ]
+                            },
+                            {
+                                "title": "Request Units",
+                                "urls": [
+                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {

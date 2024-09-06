@@ -390,20 +390,14 @@
                         "items": [
                             {
                                 "title": "Metrics Overview",
-                    "urls": [
-                      "/cockroachcloud/metrics.html"
+                                "urls": [
+                                "/cockroachcloud/metrics.html"
                                 ]
                             },
                             {
                                 "title": "Overview tab",
                                 "urls": [
                                 "/cockroachcloud/metrics-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Request Units",
-                                "urls": [
-                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {
@@ -422,6 +416,12 @@
                                 "title": "Row-Level TTL",
                                 "urls": [
                                 "/cockroachcloud/metrics-row-level-ttl.html"
+                                ]
+                            },
+                            {
+                                "title": "Request Units",
+                                "urls": [
+                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {
