@@ -48,7 +48,7 @@ To edit your cluster's capacity:
     {{site.data.alerts.callout_success}}
     You can decrease the provisioned capacity only three times within a 7-day period.
     {{site.data.alerts.end}}
-    
+
 1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
 
 ## Restore data from a backup
