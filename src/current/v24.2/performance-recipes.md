@@ -25,7 +25,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <td><ul><li>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster.</li></ul></td>
     </tr>
     <td><ul>
-      <li>The Transactions page in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/transactions-page">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
+      <li>The Transactions page in the <a href="{% link cockroachcloud/transactions-page.md %}">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
       <li>Your application is experiencing degraded performance with <code>SQLSTATE: 40001</code> and a <a href="{% link {{ page.version.version }}/transaction-retry-error-reference.md %}#transaction-retry-error-reference">transaction retry error</a> message.</li>
       <li>Querying the <a href="{% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
       <li>The SQL Statement Contention graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-identify-sql-problems.md %}#sql-statement-contention) or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>

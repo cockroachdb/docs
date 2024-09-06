@@ -12,7 +12,7 @@ For broader context, refer to [Network Authorization for CockroachDB {{ site.dat
 This page describes the steps to setting up an AWS PrivateLink connection for CockroachDB {{ site.data.products.dedicated }} and multi-region CockroachDB {{ site.data.products.serverless }} clusters from your AWS account.
 
 {{site.data.alerts.callout_info}}
-AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[limited access]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -63,7 +63,7 @@ Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) on AWS in the same regions as your application.
 
     {{site.data.alerts.callout_info}}
-    **Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
+    **Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
     {{site.data.alerts.end}}
 
 1. Navigate to the **Networking** page.
@@ -301,14 +301,14 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
 - [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
-- [Connect to a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
+- [Connect to a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 
 </section>

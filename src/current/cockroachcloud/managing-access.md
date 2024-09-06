@@ -183,7 +183,7 @@ To change the API key name for an existing API key:
 <section class="filter-content" markdown="1" data-scope="client">
 Once you have [connected to the cluster's SQL client]({% link cockroachcloud/connect-to-your-cluster.md %}), you can create a new user.
 
-To create a new user, use the [`CREATE USER ... WITH PASSWORD`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-user) statement:
+To create a new user, use the [`CREATE USER ... WITH PASSWORD`]({% link {{site.current_cloud_version}}/create-user.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -191,7 +191,7 @@ To create a new user, use the [`CREATE USER ... WITH PASSWORD`](https://www.cock
 ~~~
 
 {{site.data.alerts.callout_info}}
-Be sure to create a password for each new user. Without a password, or being enrolled in cluster single sign-on (SSO), a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-user) statement.
+Be sure to create a password for each new user. Without a password, or being enrolled in cluster single sign-on (SSO), a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`]({% link {{site.current_cloud_version}}/alter-user.md %}) statement.
 {{site.data.alerts.end}}
 </section>
 
@@ -215,7 +215,7 @@ On the **SQL Users** page, you can do the following:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To list all the users in your cluster, use the [`SHOW USERS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-users) statement:
+To list all the users in your cluster, use the [`SHOW USERS`]({% link {{site.current_cloud_version}}/show-users.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -248,7 +248,7 @@ To change a user's password:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To change a user's password, use the [`ALTER USER`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-user) statement:
+To change a user's password, use the [`ALTER USER`]({% link {{site.current_cloud_version}}/alter-user.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -275,7 +275,7 @@ To remove a user:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To remove a user, use the [`DROP USER`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-user) statement:
+To remove a user, use the [`DROP USER`]({% link {{site.current_cloud_version}}/drop-user.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -289,9 +289,9 @@ All of a user's privileges must be [revoked](#revoke-a-sql-users-privileges) bef
 
 ### Grant privileges to a SQL user
 
-Access to the data in your cluster is controlled by [privileges](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/authorization#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges]({% link {{site.current_cloud_version}}/security-reference/authorization.md %}#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
-To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant) statement. For example, to assign a user all privileges for all tables in a database:
+To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`]({% link {{site.current_cloud_version}}/grant.md %}) statement. For example, to assign a user all privileges for all tables in a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -305,11 +305,11 @@ To assign a user more limited privileges for one table in a database:
 > GRANT SELECT, INSERT ON TABLE <database>.<table> TO <user>;
 ~~~
 
-For more details, see [Privileges](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/authorization#managing-privileges) and [`GRANT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant).
+For more details, see [Privileges]({% link {{site.current_cloud_version}}/security-reference/authorization.md %}#managing-privileges) and [`GRANT`]({% link {{site.current_cloud_version}}/grant.md %}).
 
 ### View a SQL user's privileges
 
-To show privileges granted to a user, use the [`SHOW GRANTS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-grants) statement:
+To show privileges granted to a user, use the [`SHOW GRANTS`]({% link {{site.current_cloud_version}}/show-grants.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -318,7 +318,7 @@ To show privileges granted to a user, use the [`SHOW GRANTS`](https://www.cockro
 
 ### Revoke a SQL user's privileges
 
-To revoke privileges from a user, use the [`REVOKE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/revoke) statement:
+To revoke privileges from a user, use the [`REVOKE`]({% link {{site.current_cloud_version}}/revoke.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -331,49 +331,49 @@ Role-based access control lets you simplify how you manage privileges. In essenc
 
 Once you have [connected to the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}), you can set up roles:
 
-- To create a role, use the [`CREATE ROLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-role) statement:
+- To create a role, use the [`CREATE ROLE`]({% link {{site.current_cloud_version}}/create-role.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE <role>;
     ~~~
 
-- To grant privileges to a role, use the [`GRANT <privilege>`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant) statement:
+- To grant privileges to a role, use the [`GRANT <privilege>`]({% link {{site.current_cloud_version}}/grant.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <privilege> ON DATABASE <database> TO <role>;
     ~~~
 
-- To add a user (or another role) to a role, use the [`GRANT <role>`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/grant) statement:
+- To add a user (or another role) to a role, use the [`GRANT <role>`]({% link {{site.current_cloud_version}}/grant.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <role> TO <user or role>;
     ~~~
 
-- To revoke privileges from a role, use the [`REVOKE <privilege>`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/revoke) statement:
+- To revoke privileges from a role, use the [`REVOKE <privilege>`]({% link {{site.current_cloud_version}}/revoke.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE INSERT ON TABLE <database>.<table> FROM <role>;
     ~~~
 
-- To remove a user (or another role) from a role, use the [`REVOKE <role>`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/revoke) statement:
+- To remove a user (or another role) from a role, use the [`REVOKE <role>`]({% link {{site.current_cloud_version}}/revoke.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE <role> FROM <user or role>;
     ~~~
 
-- To list all roles in your cluster, use the [`SHOW ROLES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-roles) statement:
+- To list all roles in your cluster, use the [`SHOW ROLES`]({% link {{site.current_cloud_version}}/show-roles.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
 
-- To remove a role, use the [`DROP ROLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/drop-role) statement:
+- To remove a role, use the [`DROP ROLE`]({% link {{site.current_cloud_version}}/drop-role.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -386,5 +386,5 @@ Once you have [connected to the cluster]({% link cockroachcloud/connect-to-your-
 
 ## See also
 
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
 - [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
