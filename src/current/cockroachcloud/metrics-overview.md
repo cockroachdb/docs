@@ -22,7 +22,7 @@ The time interval selector at the top of each tab allows you to filter the view 
 {% assign metrics = site.data.metrics | where: "metric_ui_graph", g %}
 {% comment %} Fetch all metrics for given metric_ui_tab. {% endcomment %}
 
-<table>
+<table markdown="1">
     <thead>
         <tr>
             <td><b>Short Name</b></td>
