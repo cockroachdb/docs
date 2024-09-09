@@ -4,7 +4,7 @@ summary: The Metrics Overview graphs let you monitor SQL performance, Request Un
 toc: true
 ---
 
-The Overview metrics let you monitor SQL performance and storage. For {{ site.data.products.basic }} deployments, you can also monitor Request Units.
+The Overview metrics let you monitor SQL performance. For {{ site.data.products.basic }} deployments, you can also monitor Request Units. For {{ site.data.products.basic }} and {{ site.data.products.standard }} deployments, you can also monitor storage.
 
 To view these graphs, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Overview** tab.
 
