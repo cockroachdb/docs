@@ -1858,12 +1858,6 @@
         ]
       },
       {
-        "title": "Unsupported Features in CockroachDB Serverless",
-        "urls": [
-          "/cockroachcloud/serverless-unsupported-features.html"
-        ]
-      },
-      {
         "title": "Third-Party Support",
         "items": [
           {

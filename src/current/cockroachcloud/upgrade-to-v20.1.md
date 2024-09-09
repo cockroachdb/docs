@@ -131,7 +131,7 @@ Also, most v20.1 features can be used right way, but there are some that will be
 
 - **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes]({% link {{ site.current_cloud_version }}/create-index.md %}#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
 
-- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles]({% link {{ site.current_cloud_version }}/create-user.md %}#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
+- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles]({% link {{ site.current_cloud_version }}/create-user.md %}) via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
 - **Nested transactions:** After finalization, it will be possible to create [nested transactions]({% link {{ site.current_cloud_version }}/transactions.md %}#nested-transactions) using [`SAVEPOINT`s]({% link {{site.current_cloud_version}}/savepoint.md %}).
 
