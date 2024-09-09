@@ -61,7 +61,7 @@ As part of this migration, data may move temporarily out of the geography where 
 
 ### Step 1. Remove the old replication zone configurations
 
-Depending on which legacy multi-region topology pattern] you are migrating from, the procedure will vary. For instructions showing how to remove the existing zone configuration for each pattern, see below.
+Depending on which [legacy multi-region topology pattern]({% link {{ page.version.version }}/topology-patterns.md %}#multi-region) you are migrating from, the procedure will vary. For instructions showing how to remove the existing zone configuration for each pattern, see below.
 
 - [Duplicate indexes](#duplicate-indexes)
 - [Geo-partitioned leaseholders](#geo-partitioned-leaseholders)
