@@ -34,7 +34,7 @@ These sections show how to scale a {{ site.data.products.advanced }} cluster hor
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, a cluster must have at least 3 nodes per region.
+You cannot scale a multi-node cluster down to a single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
@@ -100,7 +100,7 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
     If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
 
-1. Select the desired new region and specify the number of nodes for it. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, each region must have at least 3 nodes.
+1. Select the desired new region and specify the number of nodes for it.
 1. In the sidebar, verify the hourly estimated cost for the cluster.
 1. Click **Next: Capacity** and then **Update cluster**.
 

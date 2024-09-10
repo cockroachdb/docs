@@ -35,7 +35,7 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 4 vCPUs per node and a minimum of 3 nodes per region.
+CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 4 vCPUs per node.
 {{site.data.alerts.end}}
 
 For an example, refer to [Plan your Advanced cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).

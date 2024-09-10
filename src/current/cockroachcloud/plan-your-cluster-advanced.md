@@ -16,14 +16,14 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Cluster configuration
 
-For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 3 nodes is the minimum supported configuration. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
 Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned memory capacity is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 CockroachDB {{ site.data.products.advanced }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 #### Advanced security features
