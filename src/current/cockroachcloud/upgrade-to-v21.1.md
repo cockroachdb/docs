@@ -92,11 +92,11 @@ Most v21.1 features can be used right away, but there are some that will be enab
 
 - **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features]({% link {{ site.current_cloud_version }}/multiregion-overview.md %}), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas]({% link {{ site.current_cloud_version }}/architecture/replication-layer.md %}#non-voting-replicas) and [non-blocking transactions]({% link {{ site.current_cloud_version }}/architecture/transaction-layer.md %}#non-blocking-transactions), will be available after finalization as well.
 
-- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes]({% link {{ site.current_cloud_version }}inverted-indexes.md %}) will contain rows containing empty arrays in [`ARRAY`]({% link {{ site.current_cloud_version }}array.md %}) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
+- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes]({% link {{ site.current_cloud_version }}/inverted-indexes.md %}) will contain rows containing empty arrays in [`ARRAY`]({% link {{ site.current_cloud_version }}/array.md %}) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
 
-- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns]({% link {{ site.current_cloud_version }}computed-columns.md %}).
+- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}).
 
-- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link {{ site.current_cloud_version }}stream-data-out-of-cockroachdb-using-changefeeds.md %}) will detect primary key changes.
+- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link {{ site.current_cloud_version }}/stream-data-out-of-cockroachdb-using-changefeeds.md %}) will detect primary key changes.
 
 ## Step 7. Finish the upgrade
 
