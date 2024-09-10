@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB is officially integrated with the following third-party monitoring platforms. These integrations enable external tools and interfaces 
+CockroachDB is officially integrated with the following third-party monitoring platforms. These integrations enable external tools and interfaces
 
-- to collect, visualize, and alert on CockroachDB [metrics](#metrics) and 
+- to collect, visualize, and alert on CockroachDB [metrics](#metrics) and
 - to collect CockroachDB [logs](#logs).
 
 ## Monitoring integration availability
@@ -15,7 +15,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 ### Metrics
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
-|----------|:--------------------:|:--------------------:|:-----------------------:| 
+|----------|:--------------------:|:--------------------:|:-----------------------:|
 | [Amazon CloudWatch](#amazon-cloudwatch-metrics) | ✔ | ✔ |  |
 | [DataDog](#datadog) | ✔ | ✔ | ✔ |
 | [DBmarlin](#dbmarlin) |  |  | ✔ |
@@ -25,7 +25,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 ### Logs
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
-|----------|:--------------------:|:--------------------:|:-----------------------:| 
+|----------|:--------------------:|:--------------------:|:-----------------------:|
 | [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ |  |
 | [GCP Logging](#gcp-logging) | ✔ | ✔ |  |
 

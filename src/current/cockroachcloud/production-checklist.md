@@ -50,11 +50,11 @@ You can create and manage CockroachDB {{ site.data.products.cloud }} clusters us
 
 ## Transaction retries
 
-When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+When several transactions try to modify the same underlying data concurrently, they may experience [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) that leads to [transaction retries]({% link {{ site.current_cloud_version }}/transactions.md %}#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling]({% link {{ site.current_cloud_version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 ## SQL best practices
 
-To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) guide.
 
 ## Network authorization
 
@@ -100,15 +100,15 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Monitoring and alerting
 
-Even with CockroachDB's various [built-in safeguards](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+Even with CockroachDB's various [built-in safeguards]({% link {{site.current_cloud_version}}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, refer to [Monitoring and Alerting]({% link cockroachcloud/cluster-overview-page.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 ## Backup and restore
 
-For CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
+For CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters, Cockroach Labs takes [full cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
 
-For CockroachDB {{ site.data.products.advanced }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
+For CockroachDB {{ site.data.products.advanced }} clusters, Cockroach Labs takes [full cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#full-backups) daily and [incremental cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
 
 Backups are stored in a single-region cluster's region or a multi-region cluster's primary region.
 

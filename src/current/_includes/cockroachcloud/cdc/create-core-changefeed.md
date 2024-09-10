@@ -1,6 +1,6 @@
 In this example, you'll set up a core changefeed on your CockroachDB {{ site.data.products.serverless }} cluster.
 
-1. As the `root` user, open the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql):
+1. As the `root` user, open the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -11,7 +11,7 @@ In this example, you'll set up a core changefeed on your CockroachDB {{ site.dat
 
     {% include cockroachcloud/cdc/core-csv.md %}
 
-1. Enable the `kv.rangefeed.enabled` [cluster setting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cluster-settings):
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{site.current_cloud_version}}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

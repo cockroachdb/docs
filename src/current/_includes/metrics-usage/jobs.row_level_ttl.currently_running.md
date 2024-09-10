@@ -1,1 +1,1 @@
-Monitor this metric to ensure there are not too many <a href="https://www.cockroachlabs.com/docs/stable/row-level-ttl">Row-Level TTL</a> jobs running at the same time. Generally, this metric should be in the low single digits.
+Monitor this metric to ensure there are not too many [Row-Level TTL]({% link {{ site.current_cloud_version }}/row-level-ttl.md %}) jobs running at the same time. Generally, this metric should be in the low single digits.

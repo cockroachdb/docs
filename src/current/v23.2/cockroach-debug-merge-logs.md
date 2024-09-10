@@ -80,7 +80,7 @@ cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --redact
 
 ## Considerations
 
-As of v23.2, logs can be configured to use a [timezone with formats `crdb-v1` or `crdb-v2`]({% link {{ page.version.version }}/configure-logs.md %}#set-timezone). This is a [backward-incompatible change](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-alpha-1-backward-incompatible-changes). `cockroach debug merge-logs` requires v23.2 or later if run against logs with the timezone configured. With versions prior to v23.2, `cockroach debug merge-logs` will return an error if run against logs with the timezone configured.
+As of v23.2, logs can be configured to use a [timezone with formats `crdb-v1` or `crdb-v2`]({% link {{ page.version.version }}/configure-logs.md %}#set-timezone). This is a [backward-incompatible change]({% link releases/v23.2.md %}#v23-2-0-alpha-1-backward-incompatible-changes). `cockroach debug merge-logs` requires v23.2 or later if run against logs with the timezone configured. With versions prior to v23.2, `cockroach debug merge-logs` will return an error if run against logs with the timezone configured.
 
 ## See also
 

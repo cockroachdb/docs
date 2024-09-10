@@ -1,1 +1,1 @@
-This metric tracks the permanent <a href="https://www.cockroachlabs.com/docs/stable/change-data-capture-overview">changefeed</a> job failures that the jobs system will not try to restart. Any increase in this counter should be investigated. An alert on this metric is recommended.
+This metric tracks the permanent [changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) job failures that the jobs system will not try to restart. Any increase in this counter should be investigated. An alert on this metric is recommended.

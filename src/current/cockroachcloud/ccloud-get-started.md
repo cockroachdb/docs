@@ -41,7 +41,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
-If you are a member of more than one [CockroachDB Cloud organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization), use the `--org` flag to set the organization name when authenticating.
+If you are a member of more than one CockroachDB Cloud organization, use the `--org` flag to set the organization name when authenticating.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -102,6 +102,7 @@ Success! Created cluster
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 You can set the cluster name, cloud infrastructure provider, region, and [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
+ The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -419,7 +420,7 @@ ccloud cluster sql blue-dog --skip-ip-check
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
