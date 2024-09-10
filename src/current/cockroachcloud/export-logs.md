@@ -400,7 +400,7 @@ curl --request GET \
 
 Where:
 
-- `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. Refer to [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 ## Update an existing log export configuration
@@ -459,7 +459,7 @@ No, the CockroachDB {{ site.data.products.standard }} log export feature does no
 
 ### Does log export configuration use the same syntax as CockroachDB log configuration?
 
-No, log export configuration uses the [CockroachDB {{ site.data.products.cloud }} API](/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities), while CockroachDB uses `filter`.
+No, log export configuration uses the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities), while CockroachDB uses `filter`.
 
 ## Troubleshooting
 
