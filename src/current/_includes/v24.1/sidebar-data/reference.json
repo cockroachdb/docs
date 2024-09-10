@@ -18,12 +18,6 @@
             ]
           },
           {
-            "title": "Cloud Infrastructure",
-            "urls": [
-              "/cockroachcloud/architecture.html"
-            ]
-          },
-          {
             "title": "SQL Layer",
             "urls": [
               "/${VERSION}/architecture/sql-layer.html"
@@ -245,12 +239,6 @@
             ]
           },
           {
-            "title": "<code>cockroach import</code>",
-            "urls": [
-              "/${VERSION}/cockroach-import.html"
-            ]
-          },
-          {
             "title": "The <code>cockroach-sql</code> command",
             "urls": [
               "/${VERSION}/cockroach-sql-binary.html"
@@ -300,12 +288,6 @@
             "title": "CockroachDB Feature Availability",
             "urls": [
               "/${VERSION}/cockroachdb-feature-availability.html"
-            ]
-          },
-          {
-            "title": "Unsupported Features in Serverless",
-            "urls": [
-              "/cockroachcloud/serverless-unsupported-features.html"
             ]
           },
           {

@@ -12,7 +12,7 @@ For broader context, refer to [Network Authorization for CockroachDB {{ site.dat
 This page describes the steps to setting up an AWS PrivateLink connection for CockroachDB {{ site.data.products.dedicated }} and multi-region CockroachDB {{ site.data.products.serverless }} clusters from your AWS account.
 
 {{site.data.alerts.callout_info}}
-AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[limited access]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -23,7 +23,7 @@ AWS PrivateLink for CockroachDB {{ site.data.products.serverless }} is in **[lim
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 {{site.data.alerts.callout_success}}
-You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.dedicated }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
+You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.dedicated }} cluster both in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
@@ -33,7 +33,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.serverless }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish AWS PrivateLink]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#establish-aws-privatelink).
+You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.serverless }} cluster both in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
@@ -60,10 +60,10 @@ Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) on AWS in the same regions as your application.
+1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) on AWS in the same regions as your application.
 
     {{site.data.alerts.callout_info}}
-    **Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
+    **Multi-region for CockroachDB {{ site.data.products.serverless }} is in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
     {{site.data.alerts.end}}
 
 1. Navigate to the **Networking** page.
@@ -97,12 +97,12 @@ Your service account must have one of the following roles on the cluster, either
 
 ### Add a private endpoint trusted owner
 
-To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
+To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#post-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
   --header 'Authorization: Bearer {bearer_token' \
   --header 'content-type: application/json' \
   --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
@@ -120,12 +120,12 @@ Next, you can [create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 ### List private endpoint trusted owners
 
-To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
+To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api.html/cloud/v1#get-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
   --header 'Authorization: Bearer {bearer_token}'
 ~~~
 
@@ -136,12 +136,12 @@ Replace:
 
 ### Get details about a trusted owner
 
-To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#get-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
   --header 'Authorization: Bearer {bearer_token}'
 ~~~
 
@@ -153,12 +153,12 @@ Replace:
 
 ### Remove a trusted owner
 
-To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#delete-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request DELETE \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
   --header 'Authorization: {bearer_token}'
 ~~~
 
@@ -301,14 +301,14 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
 - [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-- [Client Connection Parameters](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters)
-- [Connect to a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %})
+- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
+- [Connect to a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 
 </section>

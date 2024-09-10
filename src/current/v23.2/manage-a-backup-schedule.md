@@ -13,7 +13,7 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
-{% include {{ page.version.version }}/backups/support-products.md %}
+{% include_cached {{ page.version.version }}/backups/support-products.md %}
 
 ## Considerations
 

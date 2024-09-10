@@ -14,7 +14,7 @@ This page describes:
 
 ## Before you create a changefeed
 
-1. Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+1. Enable rangefeeds on CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
 1. Decide on whether you will run an {{ site.data.products.enterprise }} or Core changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
@@ -22,7 +22,7 @@ This page describes:
 
 ### Enable rangefeeds
 
-Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+Changefeeds connect to a long-lived request called a _rangefeed_, which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
@@ -31,9 +31,9 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-{% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}
+Any created changefeeds will error until this setting is enabled. If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
 
-Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
+Enabling rangefeeds has a small performance cost (about a 5–10% increase in write latencies), whether or not the rangefeed is being used in a changefeed. When `kv.rangefeed.enabled` is set to `true`, a small portion of the latency cost is caused by additional write event information that is sent to the [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft-logs) and for [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}). The remainder of the latency cost is incurred once a changefeed is running; the write event information is reconstructed and sent to an active rangefeed, which will push the event to the changefeed.
 
 The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance. Refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) for more detail.
 
@@ -183,6 +183,8 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 ## See also
 

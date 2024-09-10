@@ -38,15 +38,15 @@ Use private connectivity if:
 Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 
 {{site.data.alerts.callout_info}}
-Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Cluster default network configuration
 
 CockroachDB {{ site.data.products.dedicated }} and Serverless clusters differ in their default network configuration:
 
-- On creation, a Serverless cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist entry.
-- On creation, a Dedicated cluster is "locked down" and has no access until an authorized network is created.
+- On creation, a CockroachDB {{ site.data.products.serverless }} cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist entry.
+- On creation, a CockroachDB {{ site.data.products.dedicated }} cluster is "locked down" and has no access until an authorized network is created.
 
 CockroachDB {{ site.data.products.cloud }} clusters can only accept SQL connections from [allowed IP addresses](#ip-allowlisting).
 
@@ -60,7 +60,7 @@ Authorized network access can be managed from the CockroachDB {{ site.data.produ
 
 Cluster Type                | IP allowlist rule max
 ----------------------------|------------
-Dedicated (AWS)             | 7
+Dedicated (AWS)             | 20
 Dedicated (GCP and Azure)   | 200
 Serverless                  | 50
 
@@ -74,7 +74,7 @@ If your application servers’ IP addresses are not static, or you want to limit
 
 Refer to:
 
-- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#authorize-your-network).
+- [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-basic-cluster.md %}#authorize-your-network).
 - [Connect to a CockroachDB {{ site.data.products.dedicated }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
 
 ## DB Console
@@ -86,11 +86,11 @@ Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Clust
 Refer to [Organization user roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
 {{site.data.alerts.end}}
 
-For information on functionality, refer to: [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
+For information on functionality, refer to: [DB Console Overview]({% link {{site.current_cloud_version}}/ui-overview.md %}).
 
 To access the DB Console, you must first authorize your current IP address:
 
-1. Visit your Dedicated cluster's IP allowlist page:
+1. Visit your cluster's IP allowlist page:
 
     {% include_cached copy-clipboard.html %}
     ~~~txt

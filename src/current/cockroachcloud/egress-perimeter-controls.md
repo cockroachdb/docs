@@ -10,35 +10,36 @@ cloud: true
 This page describes how Egress Perimeter Controls can enhance the security of CockroachDB {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
 {{site.data.alerts.callout_info}}
-Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Why use Egress Perimeter Controls
 
 CockroachDB {{ site.data.products.dedicated }} clusters access external resources for many purposes:
 
-- Managing [backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview) as part of a disaster recovery plan
-- Using [Change data capture (CDC) changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/change-data-capture-overview)
-- [Exporting data](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export)
+- Managing [backups]({% link {{site.current_cloud_version}}/backup-and-restore-overview.md %}) as part of a disaster recovery plan
+- Using [Change data capture (CDC) changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %})
+- [Exporting data]({% link {{site.current_cloud_version}}/export.md %})
 - [Exporting logs]({% link cockroachcloud/export-logs.md %})
 
 By default, clusters can access external resources via the internet without restriction, and even [private clusters]({% link cockroachcloud/private-clusters.md %}) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control.
 
 Operators of CockroachDB {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable Cluster Administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters]({% link cockroachcloud/private-clusters.md %}), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
-Further reading: [review how CockroachDB products differs in advanced security features](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview).
+Further reading: [review how CockroachDB products differs in advanced security features]({% link {{site.current_cloud_version}}/security-reference/security-overview.md %}).
 
 {{site.data.alerts.callout_info}}
 Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.
 {{site.data.alerts.end}}
 
 ## Before you begin
-
+{% comment %}Commented out for Cloud 2.0 for now, awaiting confirmation about PCI Ready
 - Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
-    - CockroachDB {{ site.data.products.dedicated }} advanced with [PCI-ready features](https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management#configure-pci-ready-features-dedicated-advanced).
-    - CockroachDB {{ site.data.products.dedicated }} [Private Cluster]({% link cockroachcloud/private-clusters.md %}).
+    - CockroachDB {{ site.data.products.advanced }} clusters with [PCI-ready features]({% link cockroachcloud/cluster-management-advanced.md %}#configure-pci-ready-features-dedicated-advanced).
+    - CockroachDB {{ site.data.products.advanced }} [Private Clusters]({% link cockroachcloud/private-clusters.md %}).
 
     Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.dedicated }} on Azure or for CockroachDB {{ site.data.products.serverless }}.
+{% endcomment %}
 - You need a service account with the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}

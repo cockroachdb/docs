@@ -2,7 +2,6 @@
 title: User-Defined Functions
 summary: A user-defined function is a named function defined at the database level that can be called in queries and other contexts.
 toc: true
-key: sql-expressions.html
 docs_area: reference.sql
 ---
 

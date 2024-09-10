@@ -246,12 +246,6 @@
     - 'learn-about-request-units.md'
   versions: ['cockroachcloud']
 
-- destination: molt/live-migration-service.md
-  sources:
-    - v23.1/live-migration-service.md
-    - v23.2/live-migration-service.md
-    - v24.1/live-migration-service.md
-
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
   versions: ['v21.1']
@@ -273,17 +267,17 @@
 - destination: migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
-    
+
 - destination: molt/molt-fetch.md
+  sources: [':version/molt-fetch.md']
+
+- destination: molt/molt-overview.md
   sources:
-    - v23.2/molt-fetch.md
-    - v24.1/molt-fetch.md
+    - molt/live-migration-service.md
+    - :version/live-migration-service.md
 
 - destination: molt/molt-verify.md
-  sources:
-    - v23.1/molt-verify.md
-    - v23.2/molt-verify.md
-    - v24.1/molt-verify.md
+  sources: [':version/molt-verify.md']
 
 - destination: node-shutdown.md
   sources: ['cockroach-quit.md']
@@ -825,6 +819,33 @@
     - interleave-in-parent.md
     - stable/interleave-in-parent.md
 
+# Cloud 2.0 updates (Serverless/Dedicated to Basic/Standard/Advanced)
+
+- destination: cockroachcloud/cockroachdb-advanced-on-azure.md
+  sources: ['cockroachcloud/cockroachdb-dedicated-on-azure.md']
+
+- destination: cockroachcloud/create-a-basic-cluster.md
+  sources: ['cockroachcloud/create-a-serverless-cluster.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/basic-cluster-management.md
+  sources: ['cockroachcloud/serverless-cluster-management.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/connect-to-a-basic-cluster.md
+  sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
+
+- destination: cockroachcloud/resource-usage.md
+  sources: ['cockroachcloud/serverless-resource-usage.md']
+
+- destination: plan-your-cluster-basic.md
+  sources:
+    - 'plan-your-cluster-serverless.md'
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
+
 # Cloud releases
 
 - destination: releases/cloud.md#january-22-2021
@@ -924,6 +945,12 @@
 - destination: deploy-cockroachdb-with-kubernetes-insecure.md
   sources: ['orchestrate-cockroachdb-with-kubernetes-insecure.md']
   versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+
+- destination: import-into.md
+  sources:
+    - import.md
+    - cockroach-import.md
+  versions: ['v24.1', 'v24.2']
 
 - destination: kubernetes-overview.md
   sources: ['orchestration.md']

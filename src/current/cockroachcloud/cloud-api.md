@@ -206,12 +206,12 @@ Where:
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+    The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
     {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a specific cluster
@@ -233,7 +233,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -275,14 +275,14 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a cluster's nodes
@@ -305,7 +305,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -340,7 +340,7 @@ Where:
 
 ## Set the maximum resource limits of a Serverless cluster
 
-To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
+To set the maximum resource limits for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
@@ -380,7 +380,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
@@ -408,7 +408,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -538,7 +538,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster.
   - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
@@ -600,7 +600,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
 
 If the request was successful, the client will receive a list of SQL users.
@@ -643,7 +643,7 @@ Where:
 
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the new SQL user you want to create.
 - `{password}` is the new user's password.
@@ -676,7 +676,7 @@ curl --request DELETE \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user you want to delete.
 
@@ -709,7 +709,7 @@ curl --request PUT \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user whose password you want to change.
 - `{new_password}` is the new password for the SQL user.

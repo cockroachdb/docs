@@ -57,6 +57,12 @@
   ]
 },
 {
+  "title": "MOLT Releases",
+  "urls": [
+    "/releases/molt.html"
+  ]
+},
+{
   "title": "Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"

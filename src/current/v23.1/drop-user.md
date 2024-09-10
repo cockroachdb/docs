@@ -30,59 +30,80 @@ See [`DROP ROLE`: Synopsis]({% link {{ page.version.version }}/drop-role.md %}#s
 
 ## Example
 
-### Remove privileges
-
 All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON test.customers FOR mroach;
-~~~
-
-~~~
-+-----------+--------+------------+
-|   Table   |  User  | Privileges |
-+-----------+--------+------------+
-| customers | mroach | CREATE     |
-| customers | mroach | INSERT     |
-| customers | mroach | UPDATE     |
-+-----------+--------+------------+
-(3 rows)
+CREATE DATABASE test;
+CREATE TABLE customers (k int, v int);
+CREATE USER max;
+GRANT ALL ON TABLE customers TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
+SHOW GRANTS ON customers FOR max;
 ~~~
+
+~~~
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  test          | public      | customers  | max     | ALL            |      f
+(1 row)
+~~~
+
+You can test that dropping the user will fail unless all privileges are revoked (including [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)). Issue the following statement to revoke a subset of the user's privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DROP USER mroach;
+REVOKE CREATE,INSERT,UPDATE ON customers FROM max;
 ~~~
 
-### Remove default privileges
+If you attempt to drop a user with privileges remaining, you will encounter an error like the following:
 
-In addition to removing a user's privileges, a user's [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges) must be removed prior to dropping the user. If you attempt to drop a user with modified default privileges, you will encounter an error like the following:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DROP USER max;
+~~~
 
 ~~~
-ERROR: role mroach cannot be dropped because some objects depend on it
-privileges for default privileges on new relations belonging to role demo in database movr
+ERROR: cannot drop role/user max: grants still exist on test.public.customers
 SQLSTATE: 2BP01
-HINT: USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
 ~~~
 
-Run the `HINT` SQL prior to dropping the user.
+To see what privileges the user still has remaining on the table, issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
+SHOW GRANTS ON TABLE test.customers FOR max;
 ~~~
+
+~~~
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  test          | public      | customers  | max     | BACKUP         |      f
+  test          | public      | customers  | max     | CHANGEFEED     |      f
+  test          | public      | customers  | max     | DELETE         |      f
+  test          | public      | customers  | max     | DROP           |      f
+  test          | public      | customers  | max     | SELECT         |      f
+  test          | public      | customers  | max     | ZONECONFIG     |      f
+(6 rows)
+~~~
+
+To drop the user you must revoke all of the user's remaining privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DROP USER mroach;
+REVOKE ALL ON TABLE public.customers FROM max;
+~~~
+
+Now dropping the user should succeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DROP USER max;
 ~~~
 
 ## See also

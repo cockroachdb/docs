@@ -42,7 +42,7 @@ For more information about how this data set is put together, see the [Data set 
 
 ## Step 2. Start CockroachDB
 
-This tutorial can be accomplished in any CockroachDB cluster running [v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) or later.
+This tutorial can be accomplished in any CockroachDB cluster running [v20.2]({% link releases/v20.2.md %}#v20-2-0) or later.
 
 The simplest way to get up and running is with [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
 
@@ -67,23 +67,23 @@ root@127.0.0.1:34839/movr>
     USE tutorial;
     ~~~
 
-1. [`IMPORT`]({% link {{ page.version.version }}/import.md %}) the parts of [the data set](#data-set-description) that live in the `tutorial` database.
+1. In a separate terminal, download the parts of [the data set](#data-set-description) that live in the `tutorial` database:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql') WITH ignore_unsupported_statements;
+    ~~~ shell
+    curl -o bookstores-and-roads.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql
     ~~~
 
-    ~~~
-            job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
-    ---------------------+-----------+--------------------+--------+---------------+-----------
-      629565276454256641 | succeeded |                  1 | 228807 |             0 | 75952972
-    (1 row)
+1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
 
-    Time: 17.745s total (execution 17.744s / network 0.000s)
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url {"CONNECTION STRING"} < bookstores-and-roads.sql
     ~~~
 
-1. Create a `birds` database, and use it.
+    The SQL execution will take some time to complete.
+
+1. Back in the SQL shell, create a `birds` database, and use it.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -91,19 +91,21 @@ root@127.0.0.1:34839/movr>
     USE birds;
     ~~~
 
-1. [`IMPORT`]({% link {{ page.version.version }}/import.md %}) the parts of [the data set](#data-set-description) that live in the `birds` database.
+1. In a separate terminal, download the parts of [the data set](#data-set-description) that live in the `birds` database:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/birds-20210125.sql') WITH ignore_unsupported_statements;
+    ~~~ shell
+    curl -o birds.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/birds-20210125.sql
     ~~~
 
+1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url {"CONNECTION STRING"} < birds.sql
     ~~~
-            job_id       |  status   | fraction_completed | rows  | index_entries |  bytes
-    ---------------------+-----------+--------------------+-------+---------------+----------
-      629565605599412225 | succeeded |                  1 | 86616 |             0 | 4096847
-    (1 row)
-    ~~~
+
+    The SQL execution will take some time to complete.
 
 1. Switch back to the `tutorial` database. All of the queries in this tutorial assume you are in the `tutorial` database.
 

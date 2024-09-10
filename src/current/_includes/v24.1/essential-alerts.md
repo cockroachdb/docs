@@ -6,8 +6,8 @@
 A node with a high CPU utilization, an *overloaded* node, has a limited ability to process the user workload and increases the risks of cluster instability.
 
 **Metric**
-<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-combined-percent-normalized)
-<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
+<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-cpu-combined-percent-normalized)
+<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-cpu-host-combined-percent-normalized)
 
 **Rule**
 <br>Set alerts for each node for each of the listed metrics:
@@ -29,8 +29,8 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized.
 
 **Metric**
-<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
-<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized)
+<br>[`sys.cpu.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-cpu-host-combined-percent-normalized)
+<br>[`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-cpu-host-combined-percent-normalized)
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
@@ -45,7 +45,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) -- the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory-planning).
 
 **Metric**
-<br>[`sys.rss`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-rss)
+<br>[`sys.rss`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-rss)
 
 **Rule**
 <br>Set alerts for each node:
@@ -61,7 +61,7 @@ One node with high memory utilization is a cluster stability risk. High memory u
 Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Refer to [Disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops).
 
 **Metric**
-<br>[`sys.host.disk.iopsinprogress`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-host-disk-iopsinprogress)
+<br>[`sys.host.disk.iopsinprogress`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-host-disk-iopsinprogress)
 
 **Rule**
 <br>WARNING:  `sys.host.disk.iopsinprogress` greater than `10` for `10 seconds`
@@ -110,8 +110,8 @@ Send an alert when a cluster is getting close to the open file descriptor limit.
 A CockroachDB node will not able to operate if there is no free disk space on a CockroachDB [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) volume.
 
 **Metric**
-<br>[`capacity`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#capacity)
-<br>[`capacity.available`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#capacity-available)
+<br>[`capacity`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#capacity)
+<br>[`capacity.available`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#capacity-available)
 
 **Rule**
 <br>Set alerts for each node:
@@ -130,7 +130,7 @@ A CockroachDB node will not able to operate if there is no free disk space on a 
 A high `write-stalls` value means CockroachDB is unable to write to a disk in an acceptable time, resulting in CockroachDB facing a disk latency issue and not responding to writes.
 
 **Metric**
-<br>[`storage.write-stalls`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#storage-write-stalls)
+<br>[`storage.write-stalls`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#storage-write-stalls)
 
 **Rule**
 <br>Set alerts for each node:
@@ -150,7 +150,7 @@ A high `write-stalls` value means CockroachDB is unable to write to a disk in an
 Send an alert if a node has restarted more than once in the last 10 minutes. Calculate this using the number of times the sys.uptime metric was reset back to zero.
 
 **Metric**
-<br>[`sys.uptime`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-uptime)
+<br>[`sys.uptime`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-uptime)
 
 **Rule**
 <br>Set alerts for each node:
@@ -183,7 +183,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration.
 
 **Metric**
-<br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#seconds-until-enterprise-license-expiry)
+<br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#seconds-until-enterprise-license-expiry)
 
 **Rule**
 <br>WARNING:  `seconds.until.enterprise.license.expiry` is greater than `0` and less than `1814400` seconds (3 weeks)
@@ -198,12 +198,12 @@ Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensi
 Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.md %}) expiration.
 
 **Metric**
-<br>[`security.certificate.expiration.ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ca)
-<br>[`security.certificate.expiration.client-ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-client-ca)
-<br>[`security.certificate.expiration.ui`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ui)
-<br>[`security.certificate.expiration.ui-ca`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-ui-ca)
-<br>[`security.certificate.expiration.node`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-node)
-<br>[`security.certificate.expiration.node-client`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#security-certificate-expiration-node-client)
+<br>[`security.certificate.expiration.ca`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-ca)
+<br>[`security.certificate.expiration.client-ca`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-client-ca)
+<br>[`security.certificate.expiration.ui`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-ui)
+<br>[`security.certificate.expiration.ui-ca`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-ui-ca)
+<br>[`security.certificate.expiration.node`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-node)
+<br>[`security.certificate.expiration.node-client`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#security-certificate-expiration-node-client)
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
@@ -227,7 +227,7 @@ During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroac
 Monitor the cluster health for early signs of instability. If this metric exceeds 1 second, it is a sign of instability. 
 
 **Metric**
-<br>[`liveness.heartbeatlatency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#liveness-heartbeatlatency)
+<br>[`liveness.heartbeatlatency`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#liveness-heartbeatlatency)
 
 **Rule**
 <br>WARNING: `liveness.heartbeatlatency` greater than `0.5s`
@@ -242,7 +242,7 @@ Monitor the cluster health for early signs of instability. If this metric exceed
 The liveness checks reported by a node is inconsistent with the rest of the cluster. Number of live nodes in the cluster (will be 0 if this node is not itself live). This is a critical metric that tracks the live nodes in the cluster.
 
 **Metric**
-<br>[`liveness.livenodes`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#liveness-livenodes)
+<br>[`liveness.livenodes`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#liveness-livenodes)
 
 **Rule**
 <br>Set alerts for each node:
@@ -281,7 +281,7 @@ Transactions that create a large number of [write intents]({% link {{ page.versi
 Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
 
 **Metric**
-<br>[`ranges.unavailable`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#ranges-unavailable)
+<br>[`ranges.unavailable`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#ranges-unavailable)
 
 **Rule**
 <br>WARNING:  `ranges.unavailable` greater than `0` for `10 minutes`
@@ -309,7 +309,7 @@ Send an alert when a replica stops serving traffic due to other replicas being o
 Send an alert when the number of ranges with replication below the replication factor is non-zero for too long.
 
 **Metric**
-<br>[`ranges.underreplicated`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#ranges-underreplicated)
+<br>[`ranges.underreplicated`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#ranges-underreplicated)
 
 **Rule**
 <br>WARNING:  `ranges.underreplicated` greater than `0` for `1 hour`
@@ -340,7 +340,7 @@ Send an alert when requests are taking a very long time in replication. An (eval
 Send an alert when a node is not executing SQL despite having connections. `sql.conns` shows the number of connections as well as the distribution, or balancing, of connections across cluster nodes. An imbalance can lead to nodes becoming overloaded.
 
 **Metric**
-<br>[`sql.conns`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-conns)
+<br>[`sql.conns`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sql-conns)
 <br>`sql.query.count`
 
 **Rule**
@@ -356,7 +356,7 @@ Send an alert when a node is not executing SQL despite having connections. `sql.
 Send an alert when the query failure count exceeds a user-determined threshold based on their application's SLA.
 
 **Metric**
-<br>[`sql.failure.count`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-failure-count)
+<br>[`sql.failure.count`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sql-failure-count)
 
 **Rule**
 <br>WARNING:  `sql.failure.count` is greater than a threshold (based on the user’s application SLA)
@@ -370,8 +370,8 @@ Send an alert when the query failure count exceeds a user-determined threshold b
 Send an alert when the query latency exceeds a user-determined threshold based on their application’s SLA.
 
 **Metric**
-<br>[`sql.service.latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-service-latency)
-<br>[`sql.conn.latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sql-conn-latency)
+<br>[`sql.service.latency`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sql-service-latency)
+<br>[`sql.conn.latency`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sql-conn-latency)
 
 **Rule**
 <br>WARNING:  (p99 or p90 of `sql.service.latency` plus average of `sql.conn.latency`) is greater than a threshold (based on the user’s application SLA)
@@ -388,7 +388,7 @@ Send an alert when the query latency exceeds a user-determined threshold based o
 While CockroachDB is a distributed product, there is always a need to ensure backups complete.
 
 **Metric**
-<br>[`schedules.BACKUP.failed`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#schedules-BACKUP-failed)
+<br>[`schedules.BACKUP.failed`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#schedules-BACKUP-failed)
 
 **Rule**
 <br>Set alerts for each node:
@@ -410,7 +410,7 @@ During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroac
 Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) will not try to restart). Any increase in this metric counter should prompt investigative action.
 
 **Metric**
-<br>[`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-failures)
+<br>[`changefeed.failures`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-failures)
 
 **Rule**
 <br>CRITICAL:  If `changefeed.failures` is greater than `0`
@@ -431,7 +431,7 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ pag
 Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
 
 **Metric**
-<br>[`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-error-retries)
+<br>[`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-error-retries)
 
 **Rule**
 <br>WARNING:  If `changefeed.error_retries` is greater than `50` for more than `15 minutes`
@@ -445,7 +445,7 @@ Changefeeds automatically restart in case of transient errors. However "too many
 Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
 
 **Metric**
-<br>[`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-commit-latency)
+<br>[`changefeed.commit_latency`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-commit-latency)
 
 **Rule**
 <br>WARNING:  `changefeed.commit_latency` is greater than `10 minutes`
@@ -483,7 +483,7 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 Changefeed jobs should not be paused for a long time because the protected timestamp prevents garbage collections. As a hedge against an operational error, this alert guard against an inadvertently "forgotten" pause. 
 
 **Metric**
-<br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#changefeed-currently-paused)
+<br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-currently-paused)
 
 **Rule**
 <br>WARNING:  `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`
@@ -527,7 +527,7 @@ Send an alert when the maximum latency of any running changefeed exceeds a speci
 - [Common Issues to Monitor]({% link {{ page.version.version }}/common-issues-to-monitor.md %})
 {% if include.deployment == 'self-hosted' %}
 - [Essential Metrics for CockroachDB Self-Hosted Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-{% elsif include.deployment == 'dedicated' %}
-- [Essential Metrics for CockroachDB Dedicated Deployments]({% link {{ page.version.version }}/essential-metrics-dedicated.md %})
+{% elsif include.deployment == 'advanced' %}
+- [Essential Metrics for CockroachDB Advanced Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
 {% endif %}
 

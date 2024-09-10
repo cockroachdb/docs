@@ -16,7 +16,7 @@ The **Custom Metrics Chart** page allows you to create custom charts showing the
 
 On the **Custom Metrics Chart** page, you can set the time range for all charts, add new custom charts, and edit or remove existing charts:
 
-- To set the time range for the page, use the time interval selector at the top right of the page to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on all tabs of the [**Metrics** page]({% link cockroachcloud/metrics-page.md %}).
+- To set the time range for the page, use the time interval selector at the top right of the page to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on all tabs of the [**Metrics** page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
 - To add a chart, click **Create** to create the first custom chart or **Add Chart** to create subsequent custom charts. The [**Create custom chart** dialog](#create-custom-chart-dialog) is displayed.
 - To edit a chart, click the pencil icon to display the [**Edit custom chart** dialog](#create-custom-chart-dialog).
 - To delete a chart, click the trash icon.
@@ -40,4 +40,6 @@ In the **Create custom chart** dialog, you can customize each chart.
 
 ## See also
 
-- [Metrics Page]({% link cockroachcloud/metrics-page.md %})
+- [Metrics Overview]({% link cockroachcloud/metrics.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.standard }} Deployments]({% link cockroachcloud/metrics-essential.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ site.current_cloud_version }}/essential-metrics-advanced.md %})

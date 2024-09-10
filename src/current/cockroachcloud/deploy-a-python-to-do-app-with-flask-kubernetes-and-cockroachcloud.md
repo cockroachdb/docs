@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area:
 ---
 
-This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachDB {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
+This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachDB {{ site.data.products.standard }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
 
 ## Before you begin
 
@@ -20,19 +20,19 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
-1. If you haven't already, [create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+1. If you haven't already, [create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 ## Prepare your cluster
 
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
 - [Step 2. Create a SQL user](#step-2-create-a-sql-user)
 - [Step 3. Connect to the cluster](#step-3-connect-to-the-cluster)
-- [Step 4. Create the CockroachDB {{ site.data.products.dedicated }} database](#step-4-create-the-database)
+- [Step 4. Create the CockroachDB {{ site.data.products.standard }} database](#step-4-create-the-database)
 - [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
 
-Before you connect to your CockroachDB {{ site.data.products.dedicated }} cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
+Before you connect to your CockroachDB {{ site.data.products.standard }} cluster, you need to authorize your network by adding the public IP address of the workstation to the allowlist. Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
@@ -42,7 +42,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 1. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview]({% link {{site.current_cloud_version}}/ui-overview.md %}).
 
 1. Click **Apply**.
 
@@ -75,7 +75,7 @@ In this step, you connect both your application and your local system to the clu
 1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
 1. Select the **Connection string** tab.
 1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
-1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.dedicated }}.
+1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.standard }}.
 1. Click **Close**.
 1. Use the connection string to connect to the cluster using `cockroach sql`:
 
@@ -450,7 +450,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-cluster-overview-page), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page]({% link {{site.current_cloud_version}}/ui-cluster-overview-page.md %}), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/{{site.cur
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-1. On the [**Hardware** dashboard](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-hardware-dashboard), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard]({% link {{site.current_cloud_version}}/ui-hardware-dashboard.md %}), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](https://www.cockroachlabs.com/docs/{{site.cur
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-1. The [**Statements** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-statements-page) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page]({% link {{site.current_cloud_version}}/ui-statements-page.md %}) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

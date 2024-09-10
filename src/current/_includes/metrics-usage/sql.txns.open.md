@@ -1,0 +1,1 @@
+This metric should roughly correspond to the number of cores * 4. If this metric is consistently larger, scale out the cluster.

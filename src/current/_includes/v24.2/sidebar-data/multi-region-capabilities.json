@@ -1,0 +1,76 @@
+{
+    "title": "Multi-Region Capabilities",
+    "is_top_level": true,
+    "items": [
+        {
+        "title": "Overview",
+        "urls": [
+            "/${VERSION}/multiregion-overview.html"
+            ]
+        },
+        {
+        "title": "Survival Goals",
+        "urls": [
+            "/${VERSION}/multiregion-survival-goals.html"
+            ]
+        },
+        {
+        "title": "Data Domiciling and Performance",
+        "items": [
+            {
+                "title": "Table Localities",
+                "urls": [
+                "/${VERSION}/table-localities.html"
+                ]
+            },
+            {
+                "title": "Table Partitioning",
+                "urls": [
+                "/${VERSION}/partitioning.html"
+                ]
+            }
+            ]
+        },
+        {
+            "title": "How to Choose a Multi-Region Configuration",
+            "urls": [
+            "/${VERSION}/choosing-a-multi-region-configuration.html"
+            ]
+        },
+        {
+            "title": "Multi-Region Zone Config Extensions",
+            "urls": [
+            "/${VERSION}/zone-config-extensions.html"
+            ]
+        },
+        {
+            "title": "Multi-Region Tutorials",
+            "items": [
+                {
+                    "title": "Low Latency Reads and Writes",
+                    "urls": [
+                    "/${VERSION}/demo-low-latency-multi-region-deployment.html"
+                    ]
+                },
+                {
+                    "title": "Data Domiciling with CockroachDB",
+                    "urls": [
+                    "/${VERSION}/data-domiciling.html"
+                    ]
+                },
+                {
+                    "title": "Migrate to Multi-Region SQL with Replication Zones",
+                    "urls": [
+                    "/${VERSION}/migrate-to-multiregion-sql.html"
+                    ]
+                },
+                {
+                    "title": "Using GeoServer with CockroachDB",
+                    "urls": [
+                    "/${VERSION}/geoserver.html"
+                    ]
+                }
+            ]
+        }
+    ]
+}

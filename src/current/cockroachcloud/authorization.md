@@ -28,14 +28,14 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
     Organizing clusters using folders is available in [Public Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
     {{site.data.alerts.end}}
 
-1. Cluster: Each CockroachDB cluster defines its own set of [SQL users](https://www.cockroachlabs.com/docs/stable/authorization#create-cockroachdb-users) and [roles](https://www.cockroachlabs.com/docs/stable/authorization#create-and-manage-roles) which manage permission to execute SQL statements on the cluster.
+1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster.
 
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
 
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/authorization.md %})
+- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
 
 ## Organization user roles
 
@@ -75,19 +75,19 @@ Cluster Operators can perform a variety of cluster functions:
 
   - View a cluster's [Overview page]({% link cockroachcloud/cluster-overview-page.md %}), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
   - Manage a cluster's databases from the [Databases Page]({% link cockroachcloud/databases-page.md %}).
-  - [Scale a cluster's nodes]({% link cockroachcloud/cluster-management.md %}#scale-your-cluster).
+  - [Scale a cluster's nodes]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster).
   - View and configure a cluster's authorized networks from the [Networking Page]({% link cockroachcloud/network-authorization.md %}).
   - View backups in a cluster's [Backup and Restore Page]({% link cockroachcloud/use-managed-service-backups.md %}#backups-tab).
   - [Restore a cluster from a backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster).
   - View a cluster's Jobs from the [Jobs page]({% link cockroachcloud/jobs-page.md %}).
-  - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics-page.md %}).
+  - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
   - View a cluster's Insights from the [Insights page]({% link cockroachcloud/insights-page.md %}).
-  - [Upgrade]({% link cockroachcloud/upgrade-to-v23.1.md %}#step-5-start-the-upgrade) a cluster's CRDB version.
-  - View a cluster's [PCI-readiness status (Dedicated Advanced clusters only)]({% link cockroachcloud/cluster-overview-page.md %}?filters=dedicated#pci-ready-dedicated-advanced).
+  - [Upgrade]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) a cluster's CockroachDB version.
+  - View a cluster's [PCI-readiness status (Advanced clusters with Security add-on only)]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready-with-security-add-on).
   - Send a test alert from the [Alerts Page]({% link cockroachcloud/alerts-page.md %}).
   - Configure single sign-on (SSO) enforcement.
   - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
-  - Configure a cluster's [maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window).
+  - Configure a cluster's [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window).
 
 - *Service accounts* with this role can perform the following *API operations*:
 
@@ -96,7 +96,7 @@ Cluster Operators can perform a variety of cluster functions:
   - [Export a cluster's logs]({% link cockroachcloud/export-logs.md %}).
   - [Export a cluster's metrics]({% link cockroachcloud/export-metrics.md %}).
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
-  - [Configure the export of metrics to DataDog or AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}).
+  - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
@@ -116,7 +116,7 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 - [Edit or delete a cluster]({% link cockroachcloud/cluster-management.md %}).
 - Cluster Administrators for the whole organization (rather than scoped to a single cluster) can [create new clusters]({% link cockroachcloud/create-your-cluster.md %}).
 - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
-- Configure a cluster's [maintenance window]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window).
+- Configure a cluster's [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window).
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 

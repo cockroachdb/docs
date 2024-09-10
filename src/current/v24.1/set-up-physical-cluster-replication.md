@@ -452,6 +452,12 @@ Before you begin, you will need:
     (2 rows)
     ~~~
 
+At this point, your replication stream will be running.
+
+To _cut over_ to the standby cluster, follow the instructions on the [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %}) page.
+
+For details on how to _cut back_ after replicating a non-virtualized cluster, refer to [Cut back after PCR from an existing cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-after-pcr-from-an-existing-cluster).
+
 ## Connection reference
 
 This table outlines the connection strings you will need for this setup tutorial.

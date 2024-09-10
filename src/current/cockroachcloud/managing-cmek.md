@@ -16,13 +16,13 @@ This page shows how to enable [Customer-Managed Encryption Keys (CMEK)]({% link 
 - CMEK can be enabled only on a CockroachDB {{ site.data.products.dedicated }} advanced [private cluster]({% link cockroachcloud/private-clusters.md %}). CMEK is not supported on CockroachDB {{ site.data.products.serverless }}.
 
 {{site.data.alerts.callout_info}}
-CMEK is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+CMEK is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 {{site.data.alerts.end}}
 
 See also:
 
 - [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)]({% link cockroachcloud/cmek.md %}#faqs)
-- [Encryption at Rest (Enterprise)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest)
+- [Encryption at Rest (Enterprise)]({% link {{site.current_cloud_version}}/security-reference/encryption.md %}#encryption-at-rest)
 
 
 ## Overview of CMEK management procedures
