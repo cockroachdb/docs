@@ -13,6 +13,7 @@ The [privilege model](#required-privileges) for external connections means that 
 
 You can also use the following SQL statements to work with external connections:
 
+- [`SHOW EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-external-connection.md %})
 - [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
 - [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 
@@ -53,6 +54,7 @@ Parameter | Description
 
 Storage or sink      | Operation support
 ---------------------+---------------------------------
+[Amazon MSK]({% link {{ page.version.version }}/changefeed-sinks.md %}#amazon-msk) | Changefeeds
 [Amazon S3]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
 [Amazon S3 KMS]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#aws-kms-uri-format) | Encrypted backups
 [Azure Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
@@ -67,7 +69,7 @@ Storage or sink      | Operation support
 [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) | Backups, restores, imports, exports, changefeeds
 [Webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) | Changefeeds
 
-For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
+For more information on authentication and forming the URI that an external connection will represent, refer to the storage or sink pages linked in the table.
 
 ### Changefeed sinks as external connections
 
