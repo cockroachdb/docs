@@ -1,1 +1,1 @@
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string as a constant value. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
