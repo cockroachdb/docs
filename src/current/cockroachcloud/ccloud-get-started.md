@@ -146,8 +146,6 @@ ccloud cluster create dedicated blue-dog us-central1:8 us-west2:4 --cloud GCP --
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) for a CockroachDB {{ site.data.products.basic }} cluster, or to create a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster, you must [add a credit card](billing-management.html) to your organization.
-{{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
