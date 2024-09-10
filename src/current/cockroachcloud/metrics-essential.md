@@ -10,7 +10,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
 {% comment %} Fetch the list of all metric types {% endcomment %}
 
 {% for t in types %} {% comment %} Iterate through the types. {% endcomment %}
-
+{% unless t contains "Request Units" %} {% comment %} Request Units is only for Basic tier. {% endcomment %}
 ## {{ t }}
 
     {% assign metrics = site.data.metrics | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_standard == true"%}
@@ -49,7 +49,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
 </table>
-
+{% endunless %}
 {% endfor %} {% comment %} types {% endcomment %}
 
 ## See also
