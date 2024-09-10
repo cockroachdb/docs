@@ -54,11 +54,16 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
 
-### `root` user
+### Reserved identities
 
-The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
+These identities are reserved within CockroachDB. These identities are created automatically and cannot be removed.
 
-For secure clusters, in addition to [generating the client certificate](../authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](../alter-user.html) statement.
+Identity                         | Description
+---------------------------------|-------------
+`node`                           | Used for all internode communications and for executing internal SQL operations that are run as part of regular node background processes. The `node` user does not appear when listing a cluster's users.
+<a id="root-user"></a>`root`     | Used for administrator access in cases where it is required to manage other admins, such as when deploying a new cluster. The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.<br />For routine administration in production, Cockroach Labs recommends that you:<ul><li>Assign a password for the `root` user using the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement, and restrict access to the password.</li><li>Avoid relying on the `root` user, and instead [grant the `admin` role]({% link {{ page.version.version }}/authorization.md %}#create-and-manage-roles) to users.</li></ul>
+
+In production, access to the `node` and `root` cluster certificates must be handled with care due to the broad level of access they confer on their holders.
 
 ## Roles
 
@@ -136,7 +141,7 @@ Roles and users can be granted the following privileges:
 
 {% include {{ page.version.version }}/sql/privileges.md %}
 
-### System-level privileges 
+### System-level privileges
 
 <span class="version-tag">New in v22.2:</span> System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
 
@@ -209,4 +214,4 @@ We recommend the following best practices to set up access control for your clus
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
-- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
+- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used.

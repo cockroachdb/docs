@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.cli
 ---
 
-This page explains the `cockroach start-single-node` [command]({% link {{ page.version.version }}/cockroach-commands.md %}), which you use to start a single-node cluster with replication disabled. A single-node cluster is all you need for quick SQL testing or app development.
+This page explains the `cockroach start-single-node` [command]({% link {{ page.version.version }}/cockroach-commands.md %}), which you use to start a single-node cluster with replication disabled. A single-node cluster is appropriate for quick SQL testing or app development.
 
-{{site.data.alerts.callout_success}}
-To run a multi-node cluster with replicated data for availability and consistency, use [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) and [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}).
+{{site.data.alerts.callout_danger}}
+A single-node cluster is not appropriate for use in production or for performance testing. To run a multi-node cluster with replicated data for availability, consistency and resiliency, including load balancing across multiple nodes, use [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) and [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) to start a multi-node cluster with a minimum of three nodes instead.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -40,7 +40,7 @@ The `cockroach start-single-node` flags are identical to [`cockroach start`]({% 
 Flag | Description
 -----|-----------
 `--attrs` | **Not relevant for single-node clusters.** Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) for full details.
-`--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead.
+`--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead. If you use `--background`, using `--pid-file` is also recommended. To gracefully stop the `cockroach` process, send the `SIGTERM` signal to the process ID in the PID file. To gracefully restart the process, send the `SIGHUP` signal.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. Increasing the cache size will generally improve the node's read performance. See [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size) for more details.
 `--external-io-dir` | The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to `disabled`, backups and restores using local node directories and NFS drives are disabled.<br><br>**Default:** `extern` subdirectory of the first configured [`store`](#store).<br><br>To set the `--external-io-dir` flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the `extern` directory.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
@@ -200,8 +200,7 @@ Field | Description
     $ cockroach start-single-node \
     --certs-dir=certs \
     --listen-addr=localhost:26257 \
-    --http-addr=localhost:8080 \
-    --background
+    --http-addr=localhost:8080
     ~~~
 </section>
 
@@ -212,8 +211,7 @@ Field | Description
 $ cockroach start-single-node \
 --insecure \
 --listen-addr=localhost:26257 \
---http-addr=localhost:8080 \
---background
+--http-addr=localhost:8080
 ~~~
 </section>
 
@@ -260,15 +258,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --certs-dir=certs \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will initially comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
     {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
 
-1. Add two more nodes:
+1. In new terminal windows, add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -277,8 +274,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -288,8 +284,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine. Also, since all nodes use the same hostname (`localhost`), you can use the first node's certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
@@ -352,13 +347,12 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --insecure \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
-1. Add two more nodes:
+1. In new terminal windows, add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -367,8 +361,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --store=node2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -378,8 +371,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --store=node3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine.

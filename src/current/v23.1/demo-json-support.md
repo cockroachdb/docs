@@ -33,7 +33,7 @@ This page guides you through a simple demonstration of how CockroachDB can store
 
 ## Step 2. Start a single-node cluster
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command:
+For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command in the foreground.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -41,13 +41,12 @@ $ cockroach start-single-node \
 --insecure \
 --store=json-test \
 --listen-addr=localhost:26257 \
---http-addr=localhost:8080 \
---background
+--http-addr=localhost:8080
 ~~~
 
 ## Step 3. Create a user
 
-Open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) as the `root` user and create a new user, `maxroach`:
+In a new terminal window, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and create a new SQL user, `maxroach`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -113,7 +112,7 @@ Still in the SQL shell, create a table called `programming`:
 
 ## Step 6. Run the code
 
-Now that you have a database, user, and a table, let's run code to insert rows into the table.
+Now that you have a database, a SQL user, and a table, let's run code to insert rows into the table.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="python">Python</button>

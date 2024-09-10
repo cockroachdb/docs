@@ -1,6 +1,6 @@
 Flag | Description
 -----|------------
-`--log-dir` | Enable logging to files and write logs to the specified directory.<br/><br/>Setting `--log-dir` to a blank directory (`--log-dir=""`) disables logging to files.
+`--log-dir` | Enable logging to files and write logs to the specified directory.<br/><br/>Setting `--log-dir` to a blank directory (`--log-dir=`) disables logging to files. Do not use `--log-dir=""`; this creates a new directory named `""` and stores log files in that directory.
 `--log-dir-max-size` | After the log directory reaches the specified size, delete the oldest log file. The flag's argument takes standard file sizes, such as `--log-dir-max-size=1GiB`.<br/><br/>**Default**: 100MiB
 `--log-file-max-size` | After logs reach the specified size, begin writing logs to a new file. The flag's argument takes standard file sizes, such as `--log-file-max-size=2MiB`.<br/><br/>**Default**: 10MiB
 `--log-file-verbosity` | Only writes messages to log files if they are at or above the specified [severity level](debug-and-error-logs.html#severity-levels), such as `--log-file-verbosity=WARNING`. **Requires** logging to files.<br/><br/>**Default**: `INFO`

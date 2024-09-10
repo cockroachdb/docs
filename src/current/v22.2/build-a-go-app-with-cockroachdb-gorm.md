@@ -61,7 +61,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
 
     </section>

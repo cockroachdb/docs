@@ -1,9 +1,8 @@
-{% if page.cloud == true %}
-  {% capture link_prefix %}../{{site.versions["stable"]}}/{% endcapture %}
-{% elsif page.security == true %}
-  {% capture link_prefix %}../{% endcapture %}
+{% assign base_url = "https://www.cockroachlabs.com/docs/" %}
+{% if page.path contains "cockroachcloud/" or site.baseurl contains "/cockroachcloud" %}
+  {% assign link_version = "stable" %}
 {% else %}
-  {% assign link_prefix = "" %}
+  {% assign link_version = page.version.version %}
 {% endif %}
 
-**This feature is in [limited access]({{link_prefix}}cockroachdb-feature-availability.html)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+**This feature is in [limited access]({{base_url}}{{link_version}}/cockroachdb-feature-availability.html)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.

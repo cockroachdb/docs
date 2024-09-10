@@ -1,6 +1,6 @@
 Flag | Description
 -----|------------
-`--log-dir` | Enable logging to files and write logs to the specified directory.<br/><br/>Setting `--log-dir` to a blank directory (`--log-dir=""`) disables logging to files.
+`--log-dir` | Enable logging to files and write logs to the specified directory.<br/><br/>Setting `--log-dir` to a blank directory (`--log-dir=`) disables logging to files. Do not use `--log-dir=""`; this creates a new directory named `""` and stores log files in that directory.
 `--log-dir-max-size` | **Deprecated.** Use `--log-group-max-size`.
 `--log-group-max-size` | After the logging group (i.e., `cockroach`, `cockroach-sql-audit`, `cockroach-auth`, `cockroach-sql-exec`, `cockroach-pebble`, `cockroach-rocksdb`) reaches the specified size, delete the oldest log file. The flag's argument takes standard file sizes, such as `--log-group-max-size=1GiB`.<br/><br/>**Default**: 100MiB
 `--log-file-max-size` | After logs reach the specified size, begin writing logs to a new file. The flag's argument takes standard file sizes, such as `--log-file-max-size=2MiB`.<br/><br/>**Default**: 10MiB

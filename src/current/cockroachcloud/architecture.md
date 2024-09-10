@@ -9,7 +9,7 @@ cloud: true
 CockroachDB {{ site.data.products.cloud }} is a fully-managed deployment of CockroachDB. This page describes CockroachDB {{ site.data.products.cloud }}'s architecture and how it relates to CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/architecture/overview) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
+For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture]({% link {{ site.current_cloud_version }}/architecture/overview.md %}) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 {% include common/basic-terms.md %}
@@ -21,10 +21,6 @@ If you need a single tenant cluster with no shared resources, we recommend Cockr
 ### Hardware
 
 We use the Kubernetes offerings in AWS, GCP, and Azure (EKS, GKE, and AKS respectively) to run CockroachDB {{ site.data.products.cloud }} offerings.
-
-- GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs).
-- AWS clusters use [M6 instance types](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
-- Azure clusters use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds).
 
 Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
 
@@ -92,4 +88,4 @@ The diagrams below shows how CockroachDB {{ site.data.products.serverless }} aut
 
 ## Learn more
 
-See the [CockroachDB architecture](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/overview) documentation for more information.
+See the [CockroachDB architecture]({% link {{site.current_cloud_version}}/architecture/overview.md %}) documentation for more information.

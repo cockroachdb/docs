@@ -24,7 +24,7 @@ First, download the OSM data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-wget https://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf
+curl -o australia-oceania/australia-latest.osm.pbf https://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf
 ~~~
 
 ## Step 2. Prepare the database

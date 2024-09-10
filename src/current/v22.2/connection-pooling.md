@@ -37,7 +37,11 @@ These are Cockroach Labs recommendations for settings common to most connection 
 
 ### Set the maximum lifetime of connections
 
-The maximum lifetime of a connection should be set to no less than 5 minutes and no more than 30 minutes. Applications that connect to {{ site.data.products.serverless }} clusters should set this to 30 minutes, while applications that connect to {{ site.data.products.dedicated }} and {{ site.data.products.core }} clusters should set this to 5 minutes.
+The maximum lifetime of a connection should be set to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+
+Cockroach Labs recommends starting with a 5 minute maximum connection lifetime and increasing the connection lifetime if there is an impact on tail latency, normally seen when there are large numbers of connections to a cluster. Setting the connection lifetime below 5 minutes is possible, but there is little benefit, and comes at a cost of increased CPU usage for clients and servers. The maximum connection lifetime changes the [rate of new connections per second](#monitor-new-connections) (i.e., average new connections per second = total connections / maximum connection age).
+
+Configure your connection pooling with [connection jitter](#avoid-spikes-in-new-connections) to prevent connection storms.
 
 ### Set the maximum number of open connections
 
@@ -57,23 +61,13 @@ Follow these additional recommendations optimize the performance of your connect
 
 ### Avoid spikes in new connections
 
-If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection lifetime "jitter," where the wait time between new connections is randomized. Using a connection jitter of 10% of the maximum connection lifetime smooths out the rate of new connections to a cluster. For example, for a maximum connection lifetime of 300 seconds, set the connection jitter to 30 seconds.
+If possible configure your connection pool to avoid periodic spikes in new connections, also known as "thundering herds" or "connection storms." Most connection pools offer the ability to stagger their connection age through the use of a connection lifetime "jitter," where the wait time between new connections is randomized. Using a connection jitter of 10% of the maximum connection lifetime smooths out the rate of new connections to a cluster. For example, for a maximum connection lifetime of 1800 seconds (30 minutes), set the connection jitter to 500 seconds (3 minutes).
 
 ### Validate connections in a pool
 
 After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions.
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the [`keepaliveTime` property](https://github.com/brettwooldridge/HikariCP#frequently-used) allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
-
-#### Implement connection retry logic in your application
-
-To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. For details, see [Connection retry loop]({% link {{ page.version.version }}/node-shutdown.md %}#connection-retry-loop).
-
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
-
-If you cannot tolerate connection errors during node drain, you can change the `server.shutdown.connection_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to allow SQL client connections to gracefully close before CockroachDB forcibly closes them. For guidance, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#server-shutdown-connection_wait).
-
-</section>
 
 ## Size connection pools
 
@@ -111,8 +105,6 @@ Use the following formula to size the connection pool:
 
 If you have a large number of services connecting to the same cluster, make sure the number of concurrent active connections across all the services does not exceed this recommendation. If each service has its own connection pool, then you should make sure the sum of all the pool sizes is close to our maximum connections recommendation.
 
-Set the maximum connection lifetime value to 300 seconds, or 5 minutes. Do not set the connection pool lifetime values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the new connections on your cluster](#monitor-new-connections) to make sure the connection pool is configured correctly.
-
 For multi-region clusters, create a connection pool per region, and size the maximum connection pool for each region in your cluster using the same formula as a single-region cluster.
 
 For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, create a connection pool for each region, with each connection pool having a maximum pool size of 48 (12 [processor cores] * 4).
@@ -143,7 +135,9 @@ A misconfigured connection pool will result in most database operations requirin
 
 <section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
 
-The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections per second on your cluster or node.
+The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Open SQL Sessions graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
+
+The [`sql.statements.active` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections on your cluster or node. A connection is "active" when it is actively executing a query.
 
 Using the following formula:
 
@@ -157,11 +151,11 @@ Reducing the number of active connections may increase overall throughput, possi
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of active connections per second on your cluster.
+The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of open connections on your cluster.
 
 </section>
 
-If your connection pool is properly configured, the total number of active connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
+If your connection pool is properly configured, the total number of open connections to your cluster should be at least 100 times larger than the number of new connections per second to your cluster.
 
 ## Serverless functions
 

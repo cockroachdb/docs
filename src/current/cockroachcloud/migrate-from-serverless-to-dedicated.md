@@ -5,9 +5,9 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT INTO`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-into). You may want to migrate to CockroachDB {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
+This page has instructions for migrating data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
 
-The steps below use sample data from the [`tpcc` workload](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads).
+The steps below use sample data from the [`tpcc` workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads).
 
 ## Before you start
 
@@ -15,13 +15,13 @@ These instructions assume you already have the following:
 
 - A [CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
 - A [paid CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
-- [Cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
+- [Cloud storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
 
 ## Step 1. Export data to cloud storage
 
 First, upload your CockroachDB {{ site.data.products.serverless }} data to a cloud storage location where the CockroachDB {{ site.data.products.dedicated }} cluster can access it.
 
-1. [Connect to your CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) and run the [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) database to an Amazon S3 bucket:
+1. [Connect to your CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) and run the [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads) database to an Amazon S3 bucket:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -77,26 +77,26 @@ First, upload your CockroachDB {{ site.data.products.serverless }} data to a clo
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
+    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
     {{site.data.alerts.end}}
 
 ## Step 2. Import the CSV
 
 {{site.data.alerts.callout_success}}
-For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-performance-best-practices).
+For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %}).
 {{site.data.alerts.end}}
 
-1. [Connect to your CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-database) you want to import the tables into. For example:
+1. [Connect to your CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database]({% link {{site.current_cloud_version}}/create-database.md %}) you want to import the tables into. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE tpcc;
     ~~~
 
-1. Write a [`CREATE TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-table) statement that matches the schema of the table data you're importing.
+1. Write a [`CREATE TABLE`]({% link {{site.current_cloud_version}}/create-table.md %}) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-create#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`]({% link {{site.current_cloud_version}}/show-create.md %}#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}
@@ -173,7 +173,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     (1 row)
     ~~~
 
-1. _(Optional)_ To verify that the data was imported, use [`SHOW TABLES`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-tables):
+1. _(Optional)_ To verify that the data was imported, use [`SHOW TABLES`]({% link {{site.current_cloud_version}}/show-tables.md %}):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -190,7 +190,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 3. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.dedicated }} cluster, add the [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#add-constraint). For example:
+Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.dedicated }} cluster, add the [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{site.current_cloud_version}}/alter-table.md %}#add-constraint). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -203,9 +203,9 @@ ALTER TABLE
 
 ## See also
 
-- [`IMPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import)
-- [Migration Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview)
-- [Migrate from CSV](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migrate-from-csv)
-- [Import Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-performance-best-practices)
-- [Use the Built-in SQL Client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql)
-- [Other Cockroach Commands](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-commands)
+- [`IMPORT`]({% link {{site.current_cloud_version}}/import-into.md %})
+- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
+- [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %})
+- [Use the Built-in SQL Client]({% link {{site.current_cloud_version}}/cockroach-sql.md %})
+- [Other Cockroach Commands]({% link {{site.current_cloud_version}}/cockroach-commands.md %})

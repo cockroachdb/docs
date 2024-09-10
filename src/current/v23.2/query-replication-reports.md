@@ -513,6 +513,8 @@ SELECT DISTINCT * FROM report;
 
 To give another example, let's say your cluster were similar to the one shown above, but configured with [tiered localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) such that you had split `us-east1` into `{region=us-east1,dc=dc1, region=us-east1,dc=dc2, region=us-east1,dc=dc3}`. In that case, you wouldn't expect any DC to be critical, because the cluster would "diversify" each range's location as much as possible across data centers. In such a situation, if you were to see a DC identified as a critical locality, you'd be surprised and you'd take some action. For example, perhaps the diversification process is failing because some localities are filled to capacity. If there is no disk space free in a locality, your cluster cannot move replicas there.
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 ## See also
 
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})

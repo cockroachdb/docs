@@ -15,3 +15,4 @@
 - Creating a database from a template.
 - [Dropping a single partition from a table](partitioning.html#known-limitations).
 - Foreign data wrappers.
+- Advisory Lock Functions (although some functions are defined with no-op implementations).

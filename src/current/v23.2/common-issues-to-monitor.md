@@ -54,13 +54,17 @@ If latencies are consistently high, check for:
 
 #### CPU usage
 
-Compaction on the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) uses CPU to run concurrent worker threads.
+[Compaction on the storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) uses CPU to run concurrent worker threads.
 
 - The [**CPU Percent**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#cpu-percent) graph on the Hardware and Overload dashboards shows the CPU consumption by the CockroachDB process, and excludes other processes on the node.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-cpu-percent.md %}
 
 If CPU usage is high, check whether [workload concurrency](#workload-concurrency) is exceeding CPU resources.
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/compaction-concurrency.md %}
+{{site.data.alerts.end}}
 
 #### Workload concurrency
 
@@ -82,9 +86,9 @@ If workload concurrency exceeds CPU resources, you will observe:
 
 #### LSM health
 
-Issues at the storage layer, including an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms) and high [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification), can be observed when compaction falls behind due to insufficient CPU or excessively high [recovery and rebalance rates]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#excessive-snapshot-rebalance-and-recovery-rates).
+Issues at the storage layer, including an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms) and high [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification), can be observed when [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) falls behind due to insufficient CPU or excessively high [recovery and rebalance rates]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#excessive-snapshot-rebalance-and-recovery-rates).
 
-- The [**LSM L0 Health**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#lsm-l0-health) graph on the Overload dashboard shows the health of the [persistent stores]({% link {{ page.version.version }}/architecture/storage-layer.md %}), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees).
+- The [**IO Overload**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#io-overload) graph on the Overload dashboard shows the health of the [persistent stores]({% link {{ page.version.version }}/architecture/storage-layer.md %}), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees).
 
     {% include {{ page.version.version }}/prod-deployment/healthy-lsm.md %}
 
@@ -128,19 +132,23 @@ CockroachDB is [resilient]({% link {{ page.version.version }}/demo-fault-toleran
 
 Provision enough memory and allocate an appropriate portion for data caching:
 
-| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory).</li> |
+- Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.
+
+- {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
+
+- {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
+
+For additional memory recommendations, refer to [Recommended Production Settings: Memory]({% link {{ page.version.version }}/recommended-production-settings.md %}#memory) and [Recommended Production Setting: Cache and SQL memory size]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
 
 ### Memory monitoring
 
 Monitor memory usage and node behavior for [OOM errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash):
 
-| Metric or event                                 | Description                                 |
-|-------------------------------------------------|---------------------------------------------|
-| [Node process restarts](#node-process-restarts) | Nodes restarting after crashes.             |
-| [SQL memory usage](#sql-memory-usage)           | The memory allocated to the SQL layer.      |
-| [Database memory usage](#database-memory-usage) | The memory in use by CockroachDB processes. |
+ Metric or event                                    | Description
+----------------------------------------------------|--------------------------------------
+ [Node process restarts](#node-process-restarts) | Nodes restarting after crashes
+ [SQL memory usage](#sql-memory-usage)           | The memory allocated to the SQL layer
+ [Database memory usage](#database-memory-usage) | The memory in use by CockroachDB processes
 
 #### Node process restarts
 
@@ -277,6 +285,8 @@ CockroachDB requires disk space in order to accept writes and report node livene
 Ensure that you [provision sufficient storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If storage is correctly provisioned and is running low, CockroachDB automatically creates an emergency ballast file that can free up space. For details, see [Disks filling up]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up).
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 #### Disk IOPS
 
 Insufficient disk I/O can cause [poor SQL performance](#service-latency) and potentially [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls).
@@ -321,4 +331,4 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Admission Control]({% link {{ page.version.version }}/admission-control.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Alerts Page](https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page) (CockroachDB {{ site.data.products.dedicated }})
+- [Alerts Page]({% link cockroachcloud/alerts-page.md %}) (CockroachDB {{ site.data.products.dedicated }})

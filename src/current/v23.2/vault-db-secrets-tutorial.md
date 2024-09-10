@@ -22,7 +22,7 @@ To follow along with this tutorial you will need the following:
 
 - The CockroachDB CLI [installed locally]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}).
 - The Vault CLI [installed locally](https://www.vaultproject.io/downloads).
-- Access to a CockroachDB cluster as [`admin` SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). This tutorial will use a CockroachDB {{ site.data.products.serverless }} cluster, but you may either [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-a-serverless-cluster) or [Start a Local Cluster (secure)](start-a-local-cluster.html) in order to follow along. In either case you must have the public CA certificate for your cluster, and a username/password combination for the `root` SQL user (or another SQL user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+- Access to a CockroachDB cluster as [`admin` SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). This tutorial will use a CockroachDB {{ site.data.products.serverless }} cluster, but you may either [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) or [Start a Local Cluster (secure)](start-a-local-cluster.html) in order to follow along. In either case you must have the public CA certificate for your cluster, and a username/password combination for the `root` SQL user (or another SQL user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 - Access to a Vault cluster with an admin token. This tutorial will use HashiCorp Cloud Platform, but you may either [spin up a free cluster in HashiCorp Cloud Platform](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
 
 ## Introduction
@@ -84,7 +84,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
         1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
 
         ~~~shell
-        curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
+        curl --create-dirs -o root.crt -O https://cockroachlabs.cloud/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
         ~~~
 
 1. Prove that your connection works by executing a SQL statement.

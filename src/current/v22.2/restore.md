@@ -31,7 +31,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 ## Required privileges
 
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups. 
+Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups.
 
 There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
 {{site.data.alerts.end}}
@@ -44,7 +44,7 @@ Cluster | Grant a user the system level `RESTORE` privilege. For example, `GRANT
 Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster. For example, `GRANT SYSTEM RESTORE TO user;`.
 Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database. For example, `GRANT RESTORE ON DATABASE nonadmin TO user;`.
 
-The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role). 
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role).
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
 
@@ -69,7 +69,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - [Nodelocal](cockroach-nodelocal-upload.html)
 
-No special privilege is required for: 
+No special privilege is required for:
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile](use-userfile-storage.html) storage.
@@ -114,7 +114,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 <a name="detached"></a>`DETACHED`                                   | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 <a name="incr-location"></a>`incremental_location` | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
-<span class="version-tag">New in v22.2:</span> `schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will restore the backed-up schema without any user data. See [Backup Validation](backup-validation.html#validate-a-backup-is-restorable) for detail and an example. For specifics around cluster backups using `schema_only`, see [Cluster-level backup validation](backup-validation.html#cluster-level-backup-validation).
+<span class="version-tag">New in v22.2:</span> `schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will restore the backed-up schema without any user data. Refer to [Backup Validation](backup-validation.html#validate-a-backup-is-restorable) for detail and an example.
 <span class="version-tag">New in v22.2:</span> `verify_backup_table_data` | N/A | Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the user data before writing it to disk. You must also include the `schema_only` option in the `RESTORE` statement with `verify_backup_table_data`. For more detail, see [Backup Validation](backup-validation.html#validate-backup-table-data-is-restorable).
 
 ### Backup file URLs
@@ -340,6 +340,8 @@ RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+
 ### Restore a database
 
 To restore a database:
@@ -389,8 +391,8 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
 {{site.data.alerts.end}}
 
 ### Restore with `AS OF SYSTEM TIME`
- 
-Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history. 
+
+Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
 
 If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
 
@@ -464,7 +466,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
 
 1. Create the new database that you'll restore the table or view into:
 

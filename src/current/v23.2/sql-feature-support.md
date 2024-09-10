@@ -123,7 +123,7 @@ XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XM
  Common statements | ✓ | Standard, PostgreSQL/CockroachDB Extension | [SQL Statements documentation]({% link {{ page.version.version }}/sql-statements.md %})
  `UPSERT` | ✓ | PostgreSQL, MSSQL Extension | [`UPSERT` documentation]({% link {{ page.version.version }}/upsert.md %})
  `EXPLAIN` | ✓ | Common Extension | [`EXPLAIN` documentation]({% link {{ page.version.version }}/explain.md %})
- `SELECT INTO` | Alternative | Common Extension | You can replicate similar functionality using [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) and then `INSERT INTO ... SELECT ...`.
+ `SELECT ... INTO` | ✓ | Common Extension | [PL/pgSQL documentation]({% link {{ page.version.version }}/plpgsql.md %}#declare-a-variable).
  `SELECT FOR UPDATE` | ✓ | Common Extension |  [`SELECT FOR UPDATE` documentation]({% link {{ page.version.version }}/select-for-update.md %})
 
 ### Clauses
@@ -191,8 +191,8 @@ XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XM
  Materialized views | ✓ | Common Extension |  [Materialized views documentation]({% link {{ page.version.version }}/views.md %}#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation]({% link {{ page.version.version }}/window-functions.md %})
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation]({% link {{ page.version.version }}/common-table-expressions.md %})
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
- Cursors | ✗ | Standard | Traverse a table's rows. To support a cursor-like use case, see the example in [Paginate Results]({% link {{ page.version.version }}/pagination.md %}).
+ Stored procedures | Partial | Common Extension | [Stored procedures documentation]({% link {{ page.version.version }}/stored-procedures.md %})
+ Cursors | Partial | Standard | [Cursors documentation]({% link {{ page.version.version }}/cursors.md %})
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation]({% link {{ page.version.version }}/user-defined-functions.md %})

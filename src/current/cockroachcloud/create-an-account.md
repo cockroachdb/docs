@@ -8,7 +8,7 @@ docs_area: deploy
 Before you [create a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you must first create a CockroachDB {{ site.data.products.cloud }} account. You can register for CockroachDB {{ site.data.products.cloud }} using a GitHub, Google, or Microsoft account or an email address and password.
 
 {{site.data.alerts.callout_info}}
-If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
+If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
 {{site.data.alerts.end}}
 
 ## Choose an authentication method
@@ -122,7 +122,7 @@ Changing your account password will _not_ change your [SQL user]({% link cockroa
 
 ### Change your organization name
 
-If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can change your organization name:
+If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), you can change your organization name:
 
 1. Navigate to the **Settings** page.
 

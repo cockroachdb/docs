@@ -36,7 +36,7 @@ To follow along with the example below, you will need the following prerequisite
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
+    curl -o 1950-2018-torn-initpoint.zip http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
     ~~~
 
 1. Unzip the data file:

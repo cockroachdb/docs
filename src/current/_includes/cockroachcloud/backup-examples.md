@@ -1,6 +1,6 @@
 #### Back up a cluster
 
-To take a [full backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) of a cluster:
+To take a [full backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups) of a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -11,7 +11,7 @@ AS OF SYSTEM TIME '-10s';
 
 #### Back up a database
 
-To take a [full backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) of a single database:
+To take a [full backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups) of a single database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -20,7 +20,7 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To take a [full backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) of multiple databases:
+To take a [full backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups) of multiple databases:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -31,7 +31,7 @@ AS OF SYSTEM TIME '-10s';
 
 #### Back up a table or view
 
-To take a [full backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-full-and-incremental-backups#full-backups) of a single table or view:
+To take a [full backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups) of a single table or view:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

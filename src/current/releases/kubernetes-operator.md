@@ -7,7 +7,7 @@ docs_area: releases
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-The CockroachDB [Kubernetes Operator](https://www.cockroachlabs.com/docs/stable/kubernetes-overview) is the recommended way to configure, deploy, and manage CockroachDB {{ site.data.products.core }} clusters on Kubernetes. The Kubernetes Operator is released on a separate schedule and is versioned independently from CockroachDB.
+The CockroachDB [Kubernetes Operator](https://www.cockroachlabs.com/docs/stable/kubernetes-overview) allows you to configure, deploy, and manage CockroachDB {{ site.data.products.core }} clusters on Kubernetes. The Kubernetes Operator is released on a separate schedule and is versioned independently from CockroachDB. To learn more about different approaches to deploy CockroachDB using Kubernetes, refer to [Kubernetes Overview](https://www.cockroachlabs.com/docs/stable/kubernetes-overview).
 
 This page announces releases of the Kubernetes Operator and provides links to more information on GitHub. **Version {{ latest_operator_version }} is the latest release**.
 
@@ -20,6 +20,30 @@ To be notified about updates to the Helm chart, visit the [CockroachDB Helm char
 {{site.data.alerts.end}}
 
 {% comment %} Copy the top section below and bump the variable {% endcomment %}
+
+## April 16, 2024
+
+{% assign operator_version = "2.14.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## March 12, 2024
+
+{% assign operator_version = "2.13.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## October 12, 2023
+
+{% assign operator_version = "2.12.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
 
 ## July 25, 2023
 

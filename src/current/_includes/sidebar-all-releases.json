@@ -1,19 +1,31 @@
 {%- assign versions = site.data.versions | where_exp: "versions", "versions.major_version != site.versions['dev']" | where_exp: "versions", "versions.major_version != site.versions['stable']" | map: "major_version" -%}
 {%- comment -%} versions iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases that are not dev or stable. We then pull only the major version name instead of the whole dictionary with map: "major_version" {%- endcomment -%}
 {
+  "title": "Latest Production Release",
+  "urls": [
+    "/releases/{{ site.versions["stable"] }}.html"
+  ]
+}{% unless site.versions["stable"] == site.versions["dev"] %},
+{
+  "title": "Latest Testing Release",
+  "urls": [
+    "/releases/{{ site.versions["dev"] }}.html"
+  ]
+}{% endunless %},
+{
   "title": "CockroachDB Releases",
   "urls": [
     "/releases/index.html",
     "/releases/"
   {% for v in versions %}
     ,"/releases/{{ v }}.html"
-  {% endfor %}    
+  {% endfor %}
   ]
 },
 {
-  "title": "CockroachDB Kubernetes Operator",
+  "title": "Staged Release Process",
   "urls": [
-    "/releases/kubernetes-operator.html"
+    "/releases/staged-release-process.html"
   ]
 },
 {
@@ -37,4 +49,22 @@
     ,"{{ x.url }}"
    {% endfor %}
  ]
+},
+{
+  "title": "Cloud Releases",
+  "urls": [
+    "/releases/cloud.html"
+  ]
+},
+{
+  "title": "MOLT Releases",
+  "urls": [
+    "/releases/molt.html"
+  ]
+},
+{
+  "title": "Kubernetes Operator",
+  "urls": [
+    "/releases/kubernetes-operator.html"
+  ]
 }

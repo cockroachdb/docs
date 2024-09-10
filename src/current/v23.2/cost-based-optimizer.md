@@ -232,21 +232,19 @@ Even if you have [secondary indexes]({% link {{ page.version.version }}/schema-d
 
 You can disable statement plans that perform full table scans with the [`disallow_full_table_scans` session variable]({% link {{ page.version.version }}/set-vars.md %}#disallow-full-table-scans).
 
-If you disable full scans, you can set the [`large_full_scan_rows` session variable]({% link {{ page.version.version }}/set-vars.md %}#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
-
-If you disable full scans, and you provide an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) will be updated.
+{% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
 
 ## Control whether the optimizer uses an index
 
-You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). 
+You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, refer to [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
 
-This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
+You can also set an index as [partially visible]({% link {{ page.version.version }}/alter-index.md %}#visibility) within a range of `0.0` to `1.0`, where `0.0` means not visible and `1.0` means visible. Any value between `0.0` and `1.0` means that an index is visible to the specified fraction of queries. {% include {{ page.version.version }}/sql/partially-visible-indexes.md %}
 
 {{site.data.alerts.callout_info}}
 Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
 {{site.data.alerts.end}}
 
-You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
+You can instruct the optimizer to use indexes marked as not visible with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 

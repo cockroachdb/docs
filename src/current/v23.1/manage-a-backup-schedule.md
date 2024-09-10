@@ -17,7 +17,17 @@ docs_area: manage
 
 ## Considerations
 
+### Protected timestamps and scheduled backups
+
 {% include {{ page.version.version }}/backups/protected-timestamps.md %}
+
+### Backup collection storage URI and schedule backups
+
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+{% include {{ page.version.version }}/backups/storage-collision-examples.md %}
+
+{% include {{ page.version.version }}/backups/collision-restore.md %}
 
 ## Create a new backup schedule
 

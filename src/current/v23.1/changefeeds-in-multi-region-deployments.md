@@ -21,6 +21,10 @@ Defining an execution locality for a changefeed job, could be useful in the foll
 - Your cluster is [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) and you need the nodes that are physically closest to the sink to emit changefeed messages. This can avoid cross-regional traffic to reduce expense.
 - Your cluster is running through VPC peering connections and you need all the data sent through a particular locality.
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/cdc-execution-locality.md %}
+{{site.data.alerts.end}}
+
 ### Syntax
 
 To specify the locality requirements for the coordinating node, run `execution_locality` with key-value pairs that represent the [locality designations]({% link {{ page.version.version }}/cockroach-start.md %}#locality) assigned to the cluster at startup.
@@ -48,6 +52,10 @@ Once the coordinating node is determined, nodes that match the locality requirem
 
 - If the [leaseholder]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-leaseholder) for the change data matches the filter, it will emit the changefeed messages.
 - If the leaseholder does not match the locality filter, a node will be selected matching the locality filter with a preference for nodes with localities that are more similar to the leaseholder.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/work-distribution-setting.md %}
+{{site.data.alerts.end}}
 
 When a node matching the locality filter takes part in the changefeed job, that node will read from the closest [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}), including potentially [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that will have less impact on read latency, in the locality or region that you plan on pinning for changefeed job execution.
 

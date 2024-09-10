@@ -33,6 +33,12 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/pause_job.html %}
 </div>
 
+### Pause all jobs by type
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/pause_all_jobs.html %}
+</div>
+
 ## Parameters
 
 Parameter | Description
@@ -41,13 +47,14 @@ Parameter | Description
 `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to pause.
 `for_schedules_clause` |  The schedule you want to pause jobs for. You can pause jobs for a specific schedule (`FOR SCHEDULE id`) or pause jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#pause-jobs-for-a-schedule) below.
 `WITH REASON = ...` |  The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.
+`BACKUP`, `CHANGEFEED`, `RESTORE`, `IMPORT` | The job type to pause.
 
 ## Monitoring paused jobs
 
 We recommend monitoring paused jobs. Jobs that are paused for a long period of time can start to affect the cluster in the following ways:
 
 - A paused [backup]({% link {{ page.version.version }}/backup.md %}), [restore]({% link {{ page.version.version }}/restore.md %}), or index backfill job ([schema change]({% link {{ page.version.version }}/online-schema-changes.md %})) will continue to hold a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record on the data the job is operating on. This could result in data accumulation as the older versions of the keys cannot be [garbage collected]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). In turn, this may cause increased disk usage and degraded performance for some workloads. See [Protected timestamps and scheduled backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups) for more detail.
-- A paused [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job, if [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) is set, will also hold a protected timestamp record on the data the job is operating on. Depending on the value of [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire), this can lead to data accumulation. Once `gc_protect_expires_after` elapses, the protected timestamp record will be released and the changefeed job will be canceled. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds) for more detail.
+- A paused [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job, if [`protect_data_from_gc_on_pause`]({% link {{ page.version.version }}/create-changefeed.md %}#protect-pause) is set, will also hold a protected timestamp record on the data the job is operating on. Depending on the value of [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-changefeed.md %}#gc-protect-expire), this can lead to data accumulation. Once `gc_protect_expires_after` elapses, the protected timestamp record will be released and the changefeed job will be canceled. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail.
 
 To avoid these issues, use the `jobs.{job_type}.currently_paused` metric to track the number of jobs (for each job type) that are currently considered paused.
 
@@ -74,9 +81,9 @@ See the following pages for details on metrics:
 ~~~
 
 ~~~
-      job_id     |  job_type |               description                 |...
------------------+-----------+-------------------------------------------+...
-  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+      job_id     |  job_type |               description                      |...
+-----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -95,6 +102,15 @@ To pause multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version
 ~~~
 
 All jobs created by `maxroach` will be paused.
+
+### Pause by job type
+
+To pause all jobs by the type of job, use the `PAUSE ALL {job} JOBS` statement. You can pause all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+PAUSE ALL BACKUP JOBS;
+~~~
 
 ### Pause automatic table statistics jobs
 

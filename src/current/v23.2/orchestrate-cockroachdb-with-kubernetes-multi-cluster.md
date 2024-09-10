@@ -63,9 +63,7 @@ To enable the pods to communicate across regions, we peer the VPCs in all 3 regi
 #### Exposing DNS servers
 
 {{site.data.alerts.callout_danger}}
-Until December 2019, Google Cloud Platform restricted clients to using a load balancer in the same region. In the approach documented below, the DNS servers from each Kubernetes cluster are hooked together by exposing them via a load balanced IP address that is visible to the public Internet. None of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
-
-You can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access) on Google Cloud Platform to allow clients from one region to use an internal load balancer in another. We will update this tutorial accordingly.
+Instead of using this approach, you can now [enable global access](https://cloud.google.com/load-balancing/docs/internal/setting-up-internal#ilb-global-access), which exposes the Kubernetes cluster's DNS servers via a load-balanced IP address that is visible to the public internet. With this this approach, noone of the services in your Kubernetes cluster will be accessible publicly, but their names could leak out to a motivated attacker.
 {{site.data.alerts.end}}
 </section>
 
@@ -1050,7 +1048,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](https://www.cockroachlabs.com/docs/releases/) and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release]({% link releases/index.md %}) and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
@@ -1068,14 +1066,14 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#scale-the-cluster) to your cluster before beginning your upgrade.
 
 {% comment %}
-1. Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#v21-2-0#backward-incompatible-changes) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#v21-2-0#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+1. Review the [backward-incompatible changes in {{ page.version.version }}]({% link releases/{{ page.version.version }}.md %}#v21-2-0#backward-incompatible-changes) and [deprecated features]({% link releases/{{ page.version.version }}.md %}#v21-2-0#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 {% endcomment %}
 
 1. Review the backward-incompatible changes in {{ page.version.version }} and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Decide how the upgrade will be finalized.
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
     Finalization only applies when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.

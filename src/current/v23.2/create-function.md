@@ -30,10 +30,10 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 
 Parameter | Description
 ----------|------------
-`func_create_name` | The name of the function.
-`func_param` | A function argument.
-`func_return_type` | The type returned by the function. 
-`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
+`routine_create_name` | The name of the function.
+`routine_param` | A comma-separated list of function parameters.
+`routine_return_type` | The type returned by the function. 
+`routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
 
@@ -81,6 +81,42 @@ SELECT num_users();
 -------------
          50
 (1 row)
+~~~
+
+### Create a function that modifies a table
+
+The following statement defines a function that updates the `rules` value for a specified row in `promo_codes`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION update_code(
+  code_name VARCHAR,
+  new_rules JSONB
+  ) 
+  RETURNS promo_codes AS $$
+    UPDATE promo_codes SET rules = new_rules
+    WHERE code = code_name
+    RETURNING *;
+  $$ LANGUAGE SQL;
+~~~
+
+Given the `promo_codes` row:
+
+~~~
+            code           |                          description                           |    creation_time    |   expiration_time   |                    rules
+---------------------------+----------------------------------------------------------------+---------------------+---------------------+-----------------------------------------------
+  0_building_it_remember   | Door let Mrs manager buy model. Course rock training together. | 2019-01-09 03:04:05 | 2019-01-14 03:04:05 | {"type": "percent_discount", "value": "10%"}
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "value": "50%"}');
+~~~
+
+~~~
+                                                                                          update_code
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  (0_building_it_remember,"Door let Mrs manager buy model. Course rock training together.","2019-01-09 03:04:05","2019-01-14 03:04:05","{""type"": ""percent_discount"", ""value"": ""50%""}")
 ~~~
 
 ### Create a function that uses a `WHERE` clause
@@ -157,6 +193,10 @@ SELECT last_rider();
   (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
 (1 row)
 ~~~
+
+### Create a function that uses a loop
+
+{% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
 ## See also
 

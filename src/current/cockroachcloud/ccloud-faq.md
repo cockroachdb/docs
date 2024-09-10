@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Cloud Access Management (Authorization) FAQ
-summary: Frequently asked questions about CockroachDB {{ site.data.products.cloud }}
+summary: Frequently asked questions about CockroachDB Cloud
 toc: true
 docs_area: manage
 ---
@@ -17,23 +17,19 @@ Cluster Developer is the minimum access role that can be assigned to a cluster u
 
 The user who creates a new organization is assigned a combination of Org Administrator, Billing Coordinator, and Cluster Admin at the organization scope. Any of these roles may subsequently be removed, although another user must have the Org Adminstrator role, and the Cluster Admin role at the organization scope, before either of those can be removed. This is to ensure that at least one user has each of these roles.
 
-{{site.data.alerts.callout_info}}
-The Org Administrator (legacy) role is deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
-{{site.data.alerts.end}}
-
 ### Is it possible to assign more than one role to a user in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator, and Cluster Admin roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization. 
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB {{ site.data.products.cloud }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. For example, the initial user is automatically assigned the Org Member, Org Administrator, Cluster Administrator, and Billing Coordinator roles at organization scope when they create the CockroachDB {{ site.data.products.cloud }} organization.
 
 ### Can we follow the least privilege principle by using the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model?
 
-Yes, the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
+Yes, the roles available in the CockroachDB {{ site.data.products.cloud }} authorization model allow Org Administrators to grant only those entitlements to users that are required for their intended workflows.
 
 Cluster level roles like Cluster Admin, Cluster Operator and Cluster Developer allow users to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements.
 
 ### Is the same authorization model used for both service accounts and human users in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Yes, service accounts and human users utilize the same authorization model. Older service accounts that were created before the new authorization model came into effect may still be assigned the legacy permissions, which can be updated to roles from the new authorization model.
+Yes, service accounts and human users utilize the same authorization model.
 
 ### Can I assign a cluster-level role to a few users such that they have the relevant entitlements on all clusters in the CockroachDB {{ site.data.products.cloud }} organization?
 
@@ -74,4 +70,4 @@ Refer to:
 
 ### How can we track and audit role-assignment actions in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Any user with the Org Administrator role can access [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) capability to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Administrator role can access [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.

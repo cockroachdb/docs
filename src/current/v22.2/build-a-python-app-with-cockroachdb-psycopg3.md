@@ -59,7 +59,7 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
 
     </section>

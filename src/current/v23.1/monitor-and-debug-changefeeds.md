@@ -144,9 +144,11 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `emitted_bytes`    | Number of bytes emitted, which increments as messages are flushed. | Bytes
 `flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`]({% link {{ page.version.version }}/create-changefeed.md %}#compression-opt) is enabled. | Bytes
 `changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
-`emit_latency`     | Difference between the event's [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp and the time the event was emitted by CockroachDB. | Nanoseconds
+<span class="version-tag">New in v23.1.11:</span> `aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress. | Timestamp
+<span class="version-tag">New in v23.1.11:</span> `checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted). | Timestamp
 `admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
 `commit_latency`   | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
+<a name="lagging-ranges-metric"></a><span class="version-tag">New in v23.1.12:</span> `lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}): <ul><li>`changefeed.lagging_ranges_threshold`, which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>`changefeed.lagging_ranges_polling_interval`, which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul><br>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds
 `backfill_count`   | Number of changefeeds currently executing a backfill ([schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes) or initial scan). | Changefeeds
 `sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
 `flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
@@ -154,6 +156,43 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `error_retries` | Total retryable errors encountered by changefeeds. | Errors
 `backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
 `message_size_hist` | Distribution in the size of emitted messages. | Bytes
+
+### Monitoring and measuring changefeed latency
+
+Changefeeds can encounter latency in events processing. This latency is the total time CockroachDB takes to:
+
+- Commit writes to the database.
+- Encode [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
+- Deliver the message to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+
+There are a couple of ways to measure if changefeeds are encountering latency or falling behind:
+
+- [Event latency](#event-latency): Measure the difference between an event's MVCC timestamp and when it is put into the memory buffer or acknowledged at the sink.
+- [Lagging ranges](#lagging-ranges): Track the number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) that are behind in a changefeed.
+
+#### Event latency
+
+To monitor for changefeeds encountering latency in how events are emitting, track the following metrics:
+
+- `admit_latency`: The difference between the event's MVCC timestamp and the time the event is put into the memory buffer.
+- `commit_latency`: The difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). If the sink is batching events, the difference is between the oldest event and when the acknowledgment is recorded.
+
+{{site.data.alerts.callout_info}}
+The `admit_latency` and `commit_latency` metrics do **not** update for backfills during [initial scans]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) or [backfills for schema changes]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill). This is because a full table scan may contain rows that were written far in the past, which would lead to inaccurate changefeed latency measurements if the events from these scans were included in the metrics.
+{{site.data.alerts.end}}
+
+Both of these metrics support [metrics labels](#using-changefeed-metrics-labels). You can set the `metrics_label` option when starting a changefeed to differentiate metrics per changefeed.
+
+We recommend using the p99 `commit_latency` aggregation for alerting and to set SLAs for your changefeeds. You can add these metrics (e.g., `changefeed.admit_latency-p90`) to a custom chart through the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), refer to the [Customer Chart debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}). Or, you can track with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint).
+
+If your changefeed is experiencing elevated latency, you can use these metrics to:
+
+- Review `admit_latency` versus `commit_latency` to calculate the time events are moving from the memory buffer to the downstream sink.
+- Compare the `commit_latency` P99, P90, P50 latency percentiles to investigate performance over time.
+
+#### Lagging ranges
+
+{% include {{ page.version.version }}/cdc/lagging-ranges.md %}
 
 ## Debug a changefeed
 

@@ -50,6 +50,10 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 
 - For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues).
 
+    {{site.data.alerts.callout_info}}
+    Clusters deployed in CockroachDB {{ site.data.products.cloud }} can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+    {{site.data.alerts.end}}
+
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
 - Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.
@@ -110,7 +114,7 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
 
-- {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
+- To help guard against [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash), consider tuning the cache and SQL memory for cluster nodes. Refer to the section [Cache and SQL memory size](#cache-and-sql-memory-size).
 
 - Monitor [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
@@ -144,6 +148,10 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 {{site.data.alerts.callout_info}}
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 {{site.data.alerts.end}}
 
 ##### Disk I/O
@@ -316,7 +324,7 @@ CockroachDB is purpose-built to be fault-tolerant and to recover automatically, 
 
 Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-support).
 
 ## Clock synchronization
 
@@ -343,14 +351,12 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
+cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 ~~~
 
-{{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
-{{site.data.alerts.end}}
+Because CockroachDB manages its own memory caches, Cockroach Labs recommends that you disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory. Writing to swap is significantly less performant than writing to memory.
 
 ## Dependencies
 
@@ -569,62 +575,71 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Set a limit for the number of open file descriptors. The specific limit you set depends on your workload and the hardware and configuration of your nodes.
+    - **If you use `systemd`**, manually-set limits set using the `ulimit` command or a configuration file like `/etc/limits.conf` are ignored for services started by `systemd`. To limit the number of open file descriptors, add a line like the following to the service definition for the `cockroach` process. To allow an unlimited number of files, you can optionally set `LimitNOFILE` to `INFINITY`. Cockroach Labs recommends that you carefully test this configuration with a realistic workload before deploying it in production.
 
-    ~~~
-    *              soft     nofile          35000
-    *              hard     nofile          35000
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ none
+        LimitNOFILE=35000
+        ~~~
 
-    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+        Reload `systemd` for the new limit to take effect:
 
-1.  Save and close the file.
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
+    - **If you do not use `systemd`**: Edit `/etc/security/limits.conf` and append the following lines to the file:
 
-1.  Restart the system for the new limits to take effect.
+        ~~~
+        *              soft     nofile          35000
+        *              hard     nofile          35000
+        ~~~
 
-1.  Verify the new limits:
+        The `*` can be replaced with the username that will start CockroachDB.
 
-    ~~~ shell
-    $ ulimit -a
-    ~~~
+        Save and close the file, then restart the system for the new limits to take effect.
+        After the system restarts, verify the new limits:
 
-Alternately, if you're using [Systemd](https://wikipedia.org/wiki/Systemd):
-
-1.  Edit the service definition to configure the maximum number of open files:
-
-    ~~~ ini
-    [Service]
-    ...
-    LimitNOFILE=35000
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
-    {{site.data.alerts.end}}
-
-1.  Reload Systemd for the new limit to take effect:
-
-    ~~~ shell
-    $ systemctl daemon-reload
-    ~~~
+        ~~~ shell
+        ulimit -a
+        ~~~
 
 #### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
-1. Check the system-wide limit:
+1. **If you use `systemd`**, add a line like the following to the service definition for the `Manager` service. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-    ~~~ shell
-    $ cat /proc/sys/fs/file-max
+    {% include_cached copy-clipboard.html %}
+    ~~~ none
+    LimitNOFILE=35000
     ~~~
 
-1. If necessary, increase the system-wide limit in the `proc` file system:
+    Reload `systemd` for the new limit to take effect:
 
     ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
+    systemctl daemon-reload
     ~~~
+
+1. **If you do not use `systemd`**:
+    1. Check the system-wide limit:
+
+        ~~~ shell
+        cat /proc/sys/fs/file-max
+        ~~~
+    1. If necessary, increase the system-wide limit in the `proc` file system:
+
+        ~~~ shell
+        echo 150000 > /proc/sys/fs/file-max
+        ~~~
 
 </section>
+<section id="windowsinstall" markdown="1">
+
+CockroachDB for Windows is experimental and not supported in production. To learn about configuring limits on Windows, refer to the Microsoft community blog post [Pushing the Limits of Windows: Handles](https://techcommunity.microsoft.com/t5/windows-blog-archive/pushing-the-limits-of-windows-handles/ba-p/723848).
+
+</section>
+
 <section id="windowsinstall" markdown="1">
 
 CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.

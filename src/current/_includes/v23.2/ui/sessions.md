@@ -73,6 +73,16 @@ The **Cancel session** button ends the session. The client that holds this sessi
 
   A list of the most recent transaction fingerprint IDs, represented in hexadecimal, executed by this session. The fingerprint ID is a link to the [Transaction Details page]({{ link_prefix }}ui-transactions-page.html#transaction-details-page) for the transaction. When you click the link, in order to fetch and render the transaction details, the global date range is changed to the session's start and end time.
 
+### Closed session cache
+
+Details about closed sessions are stored in memory in a closed session cache. This cache is controlled by the following two [cluster settings]({{ link_prefix }}cluster-settings.html):
+
+- [`sql.closed_session_cache.capacity`] ({{ link_prefix }}cluster-settings.html#setting-sql-closed-session-cache-capacity) is the maximum number of sessions in the cache and defaults to `1000`. Once this limit is reached, older sessions are deleted from the cache so newer sessions can be included.
+- [`sql.closed_session_cache.time_to_live`]({{ link_prefix }}cluster-settings.html#setting-sql-closed-session-cache-time-to-live) is the maximum time to live, in seconds, and defaults to  `3600`. 60 minutes after a session is closed, it is deleted from the cache.
+
+If the **Session Details** page displays the message `Unable to find session` for a closed session, the details may no longer be available because they were removed from this cache according to the previously mentioned cluster settings.
+
+
 ## See also
 
 - [`SHOW SESSIONS`]({{ link_prefix }}show-sessions.html)

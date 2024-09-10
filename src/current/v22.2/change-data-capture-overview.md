@@ -17,7 +17,7 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | [Core changefeeds](create-and-configure-changefeeds.html?filters=core)   | [{{ site.data.products.enterprise }} changefeeds](create-and-configure-changefeeds.html) |
 --------------------------------------------------|-----------------------------------------------------------------|
 | Useful for prototyping or quick testing. | Recommended for production use. |
-| Available in all products. | Available in CockroachDB {{ site.data.products.dedicated }} or with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) in CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.serverless }}. |
+| Available in all products. | Available in CockroachDB {{ site.data.products.dedicated }}, CockroachDB {{ site.data.products.serverless }}, or with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) in CockroachDB {{ site.data.products.core }}. |
 | Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink. |
 | Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html). Or, use `CREATE CHANGEFEED` with [CDC transformations](cdc-transformations.html) to define the emitted change data. |
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a [configurable sink](changefeed-sinks.html) (e.g., [Kafka](https://kafka.apache.org/)). |

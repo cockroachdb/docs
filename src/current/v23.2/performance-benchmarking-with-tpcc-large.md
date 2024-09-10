@@ -87,37 +87,25 @@ CockroachDB requires TCP communication on two ports:
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Visit [Releases]({% link releases/index.md %}?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
+
+1. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
+
+1. Start CockroachDB using the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
-
-1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
+    cockroach start \
     --insecure \
     --advertise-addr=<node1 internal address> \
     --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
     --cache=.25 \
-    --locality=rack=0 \
-    --background
+    --locality=rack=0
     ~~~
 
     Each node will start with a [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 81 racks for 81 nodes so that 1 node will be assigned to each rack.
 
-1. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
+1. Repeat these steps for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
     - Set the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the appropriate "rack number".
 
@@ -125,7 +113,7 @@ CockroachDB requires TCP communication on two ports:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node on --join list>
+    cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Configure the cluster
@@ -147,7 +135,6 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     ~~~ sql
     SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
-    SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '256 MiB';
     SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
     SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';

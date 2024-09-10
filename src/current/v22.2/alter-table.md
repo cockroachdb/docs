@@ -181,6 +181,7 @@ You cannot alter the data type of a column if:
 - The column is part of an [index](indexes.html).
 - The column has [`CHECK` constraints](check.html).
 - The column owns a [sequence](create-sequence.html).
+- The column has a [`DEFAULT` expression]({% link {{ page.version.version }}/default-value.md %}). This will result in an `ERROR: ... column ... cannot also have a DEFAULT expression` with `SQLSTATE: 42P16`.
 - The `ALTER COLUMN TYPE` statement is part of a combined `ALTER TABLE` statement.
 - The `ALTER COLUMN TYPE` statement is inside an [explicit transaction](begin-transaction.html).
 

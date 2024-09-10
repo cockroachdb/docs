@@ -130,9 +130,13 @@ In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-
 
 ### Avro schema changes
 
-To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, since the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
+To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, because the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
 
-Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+The original CockroachDB column definition is also included within a doc field `__crdb__` in the schema. This allows CockroachDB to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
+
+{{site.data.alerts.callout_danger}}
+Schema validation tools should ignore the `__crdb__` field. This is an internal CockroachDB schema type description that may change between CockroachDB versions.
+{{site.data.alerts.end}}
 
 ### Schema changes with column backfill
 

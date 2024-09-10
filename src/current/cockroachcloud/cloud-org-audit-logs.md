@@ -6,7 +6,7 @@ docs_area: manage
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.cloud }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs) of the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
+CockroachDB {{ site.data.products.cloud }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) assigned the [Org Administrator role]({% link cockroachcloud/authorization.md %}#org-administrator) can export these audit logs using the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs) of the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
 This page provides some examples of exporting CockroachDB {{ site.data.products.cloud }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint]({% link cockroachcloud/cloud-api.md %}#cloud-audit-logs).
 

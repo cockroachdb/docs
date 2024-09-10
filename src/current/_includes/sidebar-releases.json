@@ -10,6 +10,18 @@
   "title": "CockroachDB",
   "items": [
     {
+      "title": "Latest Production Release",
+      "urls": [
+        "/releases/{{ site.versions["stable"] }}.html"
+      ]
+    }{% unless site.versions["stable"] == site.versions["dev"] %},
+    {
+      "title": "Latest Testing Release",
+      "urls": [
+        "/releases/{{ site.versions["dev"] }}.html"
+      ]
+    }{% endunless %},
+    {
       "title": "All Releases",
       "urls": [
         "/releases/index.html"

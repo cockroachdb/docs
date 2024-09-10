@@ -11,7 +11,7 @@ This page has instructions for making SQL [selection queries][selection] against
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Create a CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 - [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to run queries against.

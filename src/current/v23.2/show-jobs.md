@@ -64,7 +64,7 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [`IMPORT`]({% link {{ page.version.version }}/import.md %}), and [`CREATE STATS`]({% link {{ page.version.version }}/create-statistics.md %}). <br><br> For job types of automatic jobs, see [Show automatic jobs](#show-automatic-jobs).
+`job_type` | The type of job (e.g., [`SCHEMA CHANGE`]({% link {{ page.version.version }}/online-schema-changes.md %}), [`NEW SCHEMA CHANGE`]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer), [`KEY VISUALIZER`]({% link {{ page.version.version }}/ui-key-visualizer.md %}), [`MIGRATION`]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade), [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [`IMPORT`]({% link {{ page.version.version }}/import.md %}), [`CHANGEFEED`](#show-changefeed-jobs), [`CREATE STATS`]({% link {{ page.version.version }}/create-statistics.md %}), [`ROW LEVEL TTL`]({% link {{ page.version.version }}/row-level-ttl.md %}), [`REPLICATION STREAM INGESTION`]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}), or [`REPLICATION STREAM PRODUCER`]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %})). <br><br> For job types of automatic jobs, see [Show automatic jobs](#show-automatic-jobs).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) who started the job.
@@ -103,7 +103,7 @@ Status | Description
 `revert-failed` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 
 {{site.data.alerts.callout_info}}
-We recommend monitoring paused jobs to protect historical data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection), or potential data accumulation in the case of [changefeeds]({% link {{ page.version.version }}/changefeed-messages.md %}#garbage-collection-and-changefeeds). See [Monitoring paused jobs]({% link {{ page.version.version }}/pause-job.md %}#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
+We recommend monitoring paused jobs to protect historical data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection), or potential data accumulation in the case of [changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}). See [Monitoring paused jobs]({% link {{ page.version.version }}/pause-job.md %}#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
 {{site.data.alerts.end}}
 
 ## Examples
@@ -116,9 +116,9 @@ We recommend monitoring paused jobs to protect historical data from [garbage col
 ~~~
 
 ~~~
-    job_id      | job_type  |               description                 |...
-+---------------+-----------+-------------------------------------------+...
- 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+    job_id      | job_type  |               description                      |...
++---------------+-----------+------------------------------------------------+...
+ 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
 ### Filter jobs
@@ -131,9 +131,9 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% 
 ~~~
 
 ~~~
-    job_id      | job_type  |              description                  |...
-+---------------+-----------+-------------------------------------------+...
- 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+    job_id      | job_type  |              description                       |...
++---------------+-----------+------------------------------------------------+...
+ 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 
 ~~~
 
@@ -209,6 +209,8 @@ WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 (1 row)
 ~~~
 
+{% include {{ page.version.version }}/cdc/filter-show-changefeed-jobs-columns.md %}
+
 ### Show schema changes
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the `job_type` value with the `WHERE` clause:
@@ -235,9 +237,9 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 > SHOW JOB WHEN COMPLETE 27536791415282;
 ~~~
 ~~~
-    job_id       | job_type  |               description                 |...
-+----------------+-----------+-------------------------------------------+...
-  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+    job_id       | job_type  |               description                      |...
++----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
 ### Show jobs for a schedule

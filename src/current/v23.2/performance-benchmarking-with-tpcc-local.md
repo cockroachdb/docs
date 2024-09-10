@@ -29,7 +29,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start 3 nodes:
+1. In separate terminal windows, use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start 3 nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -38,8 +38,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --store=tpcc-local1 \
     --listen-addr=localhost:26257 \
     --http-addr=localhost:8080 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -49,8 +48,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --store=tpcc-local2 \
     --listen-addr=localhost:26258 \
     --http-addr=localhost:8081 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -60,8 +58,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --store=tpcc-local3 \
     --listen-addr=localhost:26259 \
     --http-addr=localhost:8082 \
-    --join=localhost:26257,localhost:26258,localhost:26259 \
-    --background
+    --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
 1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
