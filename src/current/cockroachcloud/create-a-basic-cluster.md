@@ -38,7 +38,7 @@ You do not need an account with the cloud provider you choose in order to create
 
 In the **Regions** section, select a region for the cluster. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.basic }} clusters can be deployed.
 
-For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For multi-region clusters, CockroachDB will optimize access to data from the [**Primary region**]({% link {{site.current_cloud_version}}/multiregion-overview.md %}). Refer to [Plan a CockroachDB {{ site.data.products.basic }} Cluster](plan-your-cluster-basic.html#multi-region-clusters) to learn more. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
+For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For multi-region clusters, CockroachDB will optimize access to data from the [**Primary region**]({% link {{site.current_cloud_version}}/multiregion-overview.md %}). Refer to [Plan a CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters) to learn more. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 

@@ -35,7 +35,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit cluster capacity
 
-On the **Overview** page, you can edit your [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster](plan-your-cluster-basic.html).
+On the **Overview** page, you can edit your resource limits. Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
 
 1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 

@@ -15,7 +15,7 @@ On June 17, 2021, Cockroach Labs updated the CA certificate used by CockroachDB 
 
 ### Cannot load certificates
 
-You see the following error when you are using the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command to connect to your CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster:
+You see the following error when you are using the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command to connect to your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster:
 
 ~~~
 ERROR: cannot load certificates.
@@ -40,7 +40,7 @@ Failed running "sql"
 
 <h4>Solution: CA certificate conflicts</h4>
 
-If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.advanced }} clusters and are trying to connect to a CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster using [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
+If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.advanced }} clusters and are trying to connect to a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster using [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}), you need to download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
 
 For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
 

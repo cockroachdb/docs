@@ -95,7 +95,6 @@ docs_area:
       <h3 class="mt-3">Learn More</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{% link {{site.current_cloud_version}}/frequently-asked-questions.md %}">CockroachDB FAQs</a></li>
         <li><a href="{% link cockroachcloud/upgrade-policy.md %}">Upgrade Policy</a></li>
         <li><a href="{% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %}">Deploy a Python App</a></li>
         <li><a href="{% link cockroachcloud/stream-changefeed-to-snowflake-aws.md %}">Stream a Changefeed</a></li>

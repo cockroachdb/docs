@@ -375,7 +375,6 @@ DROP DATABASE bank;
 - [Build a Simple CRUD Python App with CockroachDB and SQLAlchemy]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-sqlalchemy.md %})
 - [Build a Python App with CockroachDB and Django]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
 - [Build a Simple CRUD Go App with CockroachDB and the Go pgx Driver]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %})
-- [Connect to a {{site.data.products.basic}} cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}?filters=cockroachdb-client)
 - [Connect to a {{site.data.products.standard}} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [SQL FAQs]({% link {{site.current_cloud_version}}/drop-database.md %})
 - [SQL Statements]({% link {{site.current_cloud_version}}/sql-statements.md %})
