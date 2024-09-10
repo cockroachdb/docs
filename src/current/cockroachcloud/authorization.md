@@ -28,14 +28,14 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
     Organizing clusters using folders is available in [Public Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
     {{site.data.alerts.end}}
 
-1. Cluster: Each CockroachDB cluster defines its own set of [SQL users](https://www.cockroachlabs.com/docs/stable/authorization#create-cockroachdb-users) and [roles](https://www.cockroachlabs.com/docs/stable/authorization#create-and-manage-roles) which manage permission to execute SQL statements on the cluster.
+1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster.
 
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
 
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/authorization.md %})
+- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
 
 ## Organization user roles
 

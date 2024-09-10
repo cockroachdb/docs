@@ -110,13 +110,12 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 ### Recent releases
 
-{% comment %} TODO: Automate by Aug 12, 2024, or update the morning of August 12, then automate soon after. {% endcomment %}
 | Version | Release Type | GA date | Latest patch release |
 | :---: | :---: | :---: | :---: |
 | [v24.2](#v24-2) | Innovation | 2024-08-12 | v24.2.0 |
-| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.3 |
-| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.9 (LTS) |
-| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.24 (LTS) |
+| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.4 |
+| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.10 (LTS) |
+| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.25 (LTS) |
 
 ### Upcoming releases
 

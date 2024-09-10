@@ -42,3 +42,4 @@ CockroachDB {{ site.data.products.advanced }} supports [changefeeds](https://www
 [Managed-service backups]({% link cockroachcloud/use-managed-service-backups.md %}?filters=advanced) automatically back up clusters in CockroachDB {{ site.data.products.cloud }}.
 
 You can [take and restore from manual backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to Azure ([Blob Storage](https://azure.microsoft.com/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob/) for an example. To encrypt manual backups using an RSA key, refer to the [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/keys/about-keys) documentation.
+

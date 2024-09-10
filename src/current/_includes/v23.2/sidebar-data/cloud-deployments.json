@@ -401,12 +401,6 @@
                                 ]
                             },
                             {
-                                "title": "Request Units",
-                                "urls": [
-                                "/cockroachcloud/metrics-request-units.html"
-                                ]
-                            },
-                            {
                                 "title": "SQL",
                                 "urls": [
                                 "/cockroachcloud/metrics-sql.html"
@@ -425,15 +419,9 @@
                                 ]
                             },
                             {
-                                "title": "Monitor SQL Activity",
+                                "title": "Request Units",
                                 "urls": [
-                                "/cockroachcloud/metrics-monitor-sql-activity.html"
-                                ]
-                            },
-                            {
-                                "title": "Identify SQL Problems tab",
-                                "urls": [
-                                "/cockroachcloud/metrics-identify-sql-problems.html"
+                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {

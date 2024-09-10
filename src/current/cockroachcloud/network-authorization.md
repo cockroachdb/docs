@@ -86,7 +86,7 @@ Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Clust
 Refer to [Organization user roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
 {{site.data.alerts.end}}
 
-For information on functionality, refer to: [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
+For information on functionality, refer to: [DB Console Overview]({% link {{site.current_cloud_version}}/ui-overview.md %}).
 
 To access the DB Console, you must first authorize your current IP address:
 

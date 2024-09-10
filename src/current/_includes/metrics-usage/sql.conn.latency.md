@@ -1,3 +1,3 @@
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authentication">authentication</a>. This graph shows the p90 and p99 latencies for <a href="https://www.cockroachlabs.com/docs/stable/show-sessions">SQL connections</a> to the cluster.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including [authentication]({% link cockroachcloud/authentication.md %}). This graph shows the p90 and p99 latencies for [SQL connections]({% link {{ site.current_cloud_version }}/show-sessions.md %}) to the cluster.
 
 These metrics characterize the database connection latency which can affect the application performance, for example, by having slow startup times.

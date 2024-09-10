@@ -73,7 +73,7 @@ SHOW GRANTS FOR maxroach;
 ~~~
 
 ~~~
-  database_name | schema_name | relation_name | grantee  | privilege_type | is_grantable
+  database_name | schema_name | object_name   | grantee  | privilege_type | is_grantable
 ----------------+-------------+---------------+----------+----------------+---------------
   defaultdb     | public      | max_kv        | maxroach | ALL            |      t
 (1 row)
@@ -132,7 +132,7 @@ SHOW GRANTS FOR maxroach;
 ~~~
 
 ~~~
-  database_name | schema_name | relation_name | grantee  | privilege_type | is_grantable
+  database_name | schema_name | object_name   | grantee  | privilege_type | is_grantable
 ----------------+-------------+---------------+----------+----------------+---------------
   defaultdb     | public      | root_kv       | maxroach | ALL            |      f
 (1 row)
