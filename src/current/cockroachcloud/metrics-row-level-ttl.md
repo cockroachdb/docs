@@ -4,10 +4,6 @@ summary: The Row-Level TTL metrics let you monitor the performance of your Row-L
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
-{{site.data.alerts.end}}
-
 The Row-Level TTL metrics let you monitor the performance of your [Row-Level TTL jobs]({% link {{site.current_cloud_version}}/row-level-ttl.md %}).
 
 To view these graphs, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Row-Level TTL** tab.

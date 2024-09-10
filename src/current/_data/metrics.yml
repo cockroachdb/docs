@@ -486,7 +486,7 @@
   essential: true
   metric_type: "Table Statistics"
   metric_ui_tab: [ SQL, Custom ]
-  metric_ui_graph: "Create Statistics Jobs"
+  metric_ui_graph: "Statistics Jobs"
 
 - metric_id: jobs.create_stats.currently_running
   deploy_selfhosted: true
@@ -498,7 +498,7 @@
   essential: true
   metric_type: "Table Statistics"
   metric_ui_tab: [ SQL, Custom ]
-  metric_ui_graph: "Create Statistics Jobs"
+  metric_ui_graph: "Statistics Jobs"
 
 - metric_id: jobs.auto_create_stats.resume_failed
   deploy_selfhosted: true
@@ -510,7 +510,7 @@
   essential: true
   metric_type: "Table Statistics"
   metric_ui_tab: [ SQL, Custom ]
-  metric_ui_graph: "Create Statistics Jobs"
+  metric_ui_graph: "Statistics Jobs"
 
 - metric_id: jobs.auto_create_stats.currently_paused
   deploy_selfhosted: true
@@ -522,7 +522,7 @@
   essential: true
   metric_type: "Table Statistics"
   metric_ui_tab: [ SQL, Custom ]
-  metric_ui_graph: "Create Statistics Jobs"
+  metric_ui_graph: "Statistics Jobs"
 
 - metric_id: changefeed.running
   deploy_selfhosted: true
