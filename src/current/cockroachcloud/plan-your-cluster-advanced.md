@@ -16,7 +16,7 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Cluster configuration
 
-For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. For new CockroachDB {{ site.data.products.cloud }} organizations, 3 nodes is the minimum supported configuration. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 3 nodes is the minimum supported configuration. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
 Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned memory capacity is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
@@ -40,11 +40,11 @@ You can configure a maximum of 9 regions per cluster through the Console. If you
 
 ### Cluster scaling
 
-When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3 node cluster with 4 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node. New CockroachDB {{ site.data.products.cloud }} organizations can no longer scale a cluster down to fewer than 4 vCPUs per node.
+When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3 node cluster with 4 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node. New CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024 can no longer scale a cluster down to fewer than 4 vCPUs per node.
 
 We recommend you add or remove nodes from a cluster during a time when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster and takes about 30 minutes per region. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times to apply node modifications. Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. If you remove regions from a cluster, access to the cluster from clients in those regions will no longer be as fast.
 
-If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if attempt to scale down the cluster to 3 nodes, the decommission operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
+If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you attempt to scale down the cluster to 3 nodes, the decommission operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
 
 ### Example
 

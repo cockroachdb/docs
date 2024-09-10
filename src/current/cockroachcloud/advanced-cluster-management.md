@@ -57,7 +57,7 @@ To add or remove nodes from your cluster:
 1. In the **Compute per node** section, select the new amount of vCPUs per node.
 
     {{site.data.alerts.callout_info}}
-    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, a cluster must have at least 4 vCPU per node.
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, a cluster must have at least 4 vCPUs per node.
     {{site.data.alerts.end}}
 
 1. In the sidebar, verify the hourly estimated cost for the cluster.
