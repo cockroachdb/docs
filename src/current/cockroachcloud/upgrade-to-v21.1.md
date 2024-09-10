@@ -96,7 +96,7 @@ Most v21.1 features can be used right away, but there are some that will be enab
 
 - **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}).
 
-- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link {{ site.current_cloud_version }}/stream-data-out-of-cockroachdb-using-changefeeds.md %}) will detect primary key changes.
+- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link {{ site.current_cloud_version }}/create-changefeed.md %}) will detect primary key changes.
 
 ## Step 7. Finish the upgrade
 
