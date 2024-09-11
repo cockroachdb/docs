@@ -81,7 +81,6 @@ If you remove the endpoint from GCP or change its target service, the endpoint w
 
 After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
 
-{% comment %}Verify VPC Peering status
 <a id="vpc-peering"></a>
 #### GCP VPC Peering
 
@@ -100,7 +99,7 @@ After the connection is established, you can use it to [connect to your cluster]
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.advanced }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB {{ site.data.products.advanced }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
-{{site.data.alerts.end}}{% endcomment %}
+{{site.data.alerts.end}}
 
 #### AWS PrivateLink
 
