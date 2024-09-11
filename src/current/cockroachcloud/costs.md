@@ -1,8 +1,8 @@
 # CockroachDB Cloud Costs \[WIP\]
 
-The cost structure for a CockroachDB Cloud organization depends on its deployment types, which correspond to CockroachDB Cloud tiers.
+The cost structure for a CockroachDB Cloud organization depends on its plan.
 
-## Cost structures across CockroachDB Cloud tiers
+## Cost structures across CockroachDB Cloud plans
 
 |  | CockroachDB Basic | CockroachDB Standard | CockroachDB Advanced |
 | :---- | :---- | :---- | :---- |

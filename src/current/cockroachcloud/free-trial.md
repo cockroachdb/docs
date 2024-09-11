@@ -9,9 +9,9 @@ When you sign up for CockroachDB Cloud, your new organization's account starts w
 
 ## Free trial credits
 
-Free trial credit is applied to the first $400 in costs for all clusters created in your organization, regardless of the deployment type: CockroachDB Standard, Advanced, or Basic.
+Free trial credits are applied to the first $400 in costs for all clusters created in your organization, regardless of the plan: CockroachDB Standard, Advanced, or Basic.
 
-Monthly billing begins when the free trial ends: on the day that the last credit is used, or upon expiration of credit, if any remains. By the end of the trial, you must provide a credit card for continued billing to prevent interruptions in service or loss of data.
+Monthly billing begins when the free trial ends: on the day that the last credit is used, or when any remaining credits expire. By the end of the trial, you must provide a payment method to prevent interruptions in service or loss of data.
 
 ### Eligibility
 
@@ -27,7 +27,7 @@ To check your free credit balance and see how much time is remaining before your
 
 During your free trial, you will receive email notifications from Cockroach Labs with information about the status of your trial. These emails are sent to the user who originally signed up for CockroachDB Cloud.
 
-Emails are sent when:
+An email is sent when:
 
 - The trial begins, providing terms and resources for getting started.  
 - 50% of credits have been consumed or 50% of the time until credits expire has elapsed.
@@ -40,7 +40,7 @@ If you enter a payment method before the end of your free trial, you will not re
 
 ## Estimate costs
 
-To understand how costs vary per tier and begin to estimate future expenses, refer to [CockroachDB Cloud Costs](costs.md).
+To understand how costs vary per tier and begin to estimate future expenses, refer to [CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
 
 ## Add payment methods
 
