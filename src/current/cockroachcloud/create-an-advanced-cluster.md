@@ -120,10 +120,10 @@ Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. CockroachDB {{ site.data.products.dedicated }} on Azure is not yet certified for PCI DSS or HIPAA.
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are not yet available for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
     {{site.data.alerts.callout_danger}}
-    Advanced security features cannot be changed after cluster creation.
+    Advanced security features cannot be enabled or disabled after cluster creation.
     {{site.data.alerts.end}}
 
 ## Step 7. Enter billing details
