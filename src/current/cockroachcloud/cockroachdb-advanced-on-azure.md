@@ -10,28 +10,15 @@ This page provides information about CockroachDB {{ site.data.products.advanced 
 
 To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
 
-## Compute and storage
+CockroachDB {{ site.data.products.advanced }} clusters on Azure have the following temporary limitations. To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
 
-Each {{ site.data.products.advanced }} cluster is created on a dedicated [AKS cluster](https://azure.microsoft.com/products/kubernetes-service) in a unique [VNet](https://learn.microsoft.com/azure/virtual-network/virtual-networks-overview). Clusters use [Dsv4-series VMs](https://learn.microsoft.com/azure/virtual-machines/dv4-dsv4-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types. Implementation details are subject to change.
-
-- The minimum supported compute per node is 4 vCPUs.
-- A single-region cluster must have at minimum three nodes.
-- A multi-region cluster must have at minimum three nodes per region.
-- Single-node clusters are not supported.
-
-CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} are not currently available on Azure.
-
-## Networking and security
-
-CockroachDB {{ site.data.products.advanced }} on Azure meets or exceeds the requirements of SOC 2 Type 2. Refer to [Regulatory Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/compliance.md %})
-
-- CockroachDB {{ site.data.products.advanced }} on Azure is not yet certified for compliance with [HIPAA]({% link cockroachcloud/compliance.md %}#hipaa).
-- [PCI-Ready]({% link cockroachcloud/compliance.md %}#pci-dss) features are not yet available on Azure:
+- A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported on Azure.
+- The following [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) and HIPAA features are not yet available on Azure. However, CockroachDB {{ site.data.products.advanced }} on Azure meets or exceeds the requirements of SOC 2 Type 2. Refer to [Regulatory Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/compliance.md %}).
   - [Private Clusters]({% link cockroachcloud/private-clusters.md %})
   - [Customer Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %})
   - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 
-      You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.dedicated }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).
+  You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.dedicated }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).
 
 ## Change data capture
 

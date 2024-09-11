@@ -6,7 +6,7 @@ cloud: true
 docs_area: deploy
 ---
 
-Before deploying CockroachDB {{ site.data.products.cloud }} in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
+Before deploying CockroachDB {{ site.data.products.cloud }} clusters in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
 
 Under the Shared Responsibility Model, Cockroach Labs is responsible for the following tasks:
 
@@ -17,9 +17,7 @@ Under the Shared Responsibility Model, Cockroach Labs is responsible for the fol
 
 The customer is responsible for the following tasks:
 
-- Estimating workload and sizing the cluster.
-- Scaling clusters based on workload.
-- Ensuring sufficient disk, compute, and memory capacity for each cluster.
+- Estimating workload requirements and scaling clusters as required to ensure sufficient storage, compute, and memory capacity for each cluster.
 - Monitoring cluster health and application performance.
 - Ensuring that the workload is distributed appropriately across the nodes of the cluster.
 - Performance tuning of SQL queries and schema.
@@ -37,7 +35,7 @@ Make sure your cluster has sufficient storage, CPU, and memory to handle the wor
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 4 vCPUs per node.
 {{site.data.alerts.end}}
 
 For an example, refer to [Plan your Advanced cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).

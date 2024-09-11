@@ -34,7 +34,7 @@ These sections show how to scale a {{ site.data.products.advanced }} cluster hor
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
@@ -57,7 +57,7 @@ To add or remove nodes from your cluster:
 1. In the **Compute per node** section, select the new amount of vCPUs per node.
 
     {{site.data.alerts.callout_info}}
-    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, a cluster must have at least 4 vCPUs per node.
     {{site.data.alerts.end}}
 
 1. In the sidebar, verify the hourly estimated cost for the cluster.
@@ -158,7 +158,7 @@ Additionally, you can [back up and restore]({% link cockroachcloud/take-and-rest
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
-## Configure PCI ready features 
+## Configure PCI ready features
 
 CockroachDB {{ site.data.products.advanced }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
