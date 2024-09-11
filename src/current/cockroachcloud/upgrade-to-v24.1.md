@@ -22,13 +22,13 @@ pre_production_preview_version: v24.1.0-rc.1
 An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process of upgrading.
 
 {{site.data.alerts.callout_success}}
-Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
+Upgrading from {{ page.prev_version }} to {{ page.pre_production_preview_version }} is a major-version upgrade. Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview). After a cluster is upgraded to a Pre-Production Preview release, it is automatically upgraded to all subsequent releases within the same major version—including additional beta and RC releases, the GA release, and subsequent patch releases after GA, as patch version upgrades. To learn more, refer to [Patch Version Upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 {{site.data.alerts.end}}
 {% else %}
-Now that [CockroachDB {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/ {{ page.page_version }}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB {{ page.page_version }}]({% link releases/{{ page.page_version }}.md %}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
-Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy).
+Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
 
 If you upgrade to a Pre-Production Preview of {{ page.page_version }}, your cluster will be automatically upgraded to {{ page.page_version }}.0 upon its GA release.
@@ -50,7 +50,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 ## Step 3. Understand the upgrade process
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
-In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. CockroachDB {{ site.data.products.cloud }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multi-active-availability) design.
+In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. CockroachDB {{ site.data.products.cloud }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability]({% link {{site.current_cloud_version}}/multi-active-availability.md %}) design.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
@@ -91,7 +91,7 @@ The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-us
 {% if page.pre_production_preview == true %}
 Review the backward-incompatible changes and deprecated features announced in each {{ page.page_version }} testing release. If any affect your applications, make the necessary changes before proceeding.
 {% else %}
-Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
+Review the backward-incompatible changes and deprecated features announced in the [{{ page.page_version }} release notes]({% link releases/{{ page.page_version }}.md %})
 {% endif %}
 
 ## Step 5. Start the upgrade
@@ -136,7 +136,7 @@ Most {{ page.page_version }} features can be used right away, but some will be e
 
 - {% include v24.1/finalization-required/119894.md version="v24.1" %}
 
-For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}).
+For an expanded list of features included in {{ page.page_version }}, temporary limitations, backward-incompatible changes, and deprecated features, refer to the [{{ page.page_version }} release notes]({% link releases/{{ page.page_version }}.md %}).
 
 ### Roll back the upgrade
 
@@ -166,5 +166,5 @@ After finalization, all [temporary limitations](#expect-temporary-limitations) w
 
 ## See also
 
-- [CockroachDB Cloud Upgrade Policy](https://cockroachlabs.com/docs/cockroachcloud/upgrade-policy)
-- [CockroachDB {{ page.page_version }} Release Notes](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }})
+- [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB {{ page.page_version }} Release Notes]({% link releases/{{ page.page_version }}.md %})

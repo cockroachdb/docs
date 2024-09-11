@@ -169,7 +169,7 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster.html#private-service-connect">Private Service Connect (PSC) (Preview)</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster.html#vpc-peering">VPC Peering</a> for GCP clusters and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink">AWS PrivateLink</a> for AWS clusters </td>
+  <td><a href="{% link cockroachcloud/connect-to-your-cluster.md %}">Private Service Connect (PSC) (Preview)</a> or <a href="{% link cockroachcloud/connect-to-your-cluster.md %}#vpc-peering">VPC Peering</a> for GCP clusters and <a href="{% link cockroachcloud/aws-privatelink.md %}">AWS PrivateLink</a> for AWS clusters </td>
  </tr>
  <tr>
   <td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
@@ -189,4 +189,4 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
  </tr>
 </table>
 
-<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless">Manage AWS PrivateLink</a>.
+<a id="privatelink-multiregion-serverless">1</a>: AWS PrivateLink is in preview for multi-region Serverless clusters, and is not supported for single-region Serverless clusters. Refer to <a href="{% link cockroachcloud/aws-privatelink.md %}?filters=serverless">Manage AWS PrivateLink</a>.

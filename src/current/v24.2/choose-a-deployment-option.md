@@ -31,7 +31,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
-        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled (excluding features that are currently <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-unsupported-features">unsupported</a>). </li>
+        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled</li>
       </ul></td>
   </tr>
   <tr>
@@ -42,7 +42,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="dedicated"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated"></a><b><a href="{% link cockroachcloud/quickstart-trial-cluster.md %}">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>

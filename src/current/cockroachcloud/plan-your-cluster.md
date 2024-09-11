@@ -88,6 +88,7 @@ Comparing relative CPU utilization for several benchmarks. Understanding the res
 | TPC-C (300 warehouses) | 6.51 | 6.51 | 1.00 | $495 | $825 | 40% |
 |  |  |  |  |  |  |  |
 
+
 TODO - remove original table
 
 | TPC-C (150 warehouses) | 4.86 | 4.98 | $61.54 |
@@ -166,3 +167,4 @@ This table is \[WIP\]
 # Estimating storage pricing for Standard clusters
 
 WIP
+

@@ -31,7 +31,7 @@ This page describes the Striim functionality at a high level. For detailed infor
 
 Complete the following items before using Striim:
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use to configure your Striim target.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use to configure your Striim target.
 
 - Manually create all schema objects in the target CockroachDB cluster. Although Striim offers a feature called Auto Schema Conversion, we recommend converting and importing your schema before running Striim to ensure that the data populates successfully.
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema. Ensure that any schema changes are also reflected on your tables.

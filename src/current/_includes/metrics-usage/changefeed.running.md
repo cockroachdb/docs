@@ -1,1 +1,1 @@
-This metric tracks the total number of all running <a href="https://www.cockroachlabs.com/docs/stable/change-data-capture-overview">changefeeds</a>.
+This metric tracks the total number of all running [changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}).
