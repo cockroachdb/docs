@@ -7,7 +7,7 @@ docs_area: migrate
 
 [Qlik](https://www.qlik.com) offers a service called Qlik Replicate that you can use to do the following:
 
-- [Migrate data to CockroachDB](#migrate-and-replicate-data-to-cockroachdb) from an existing, publicly hosted database containing application data, such as PostgreSQL, MySQL, Oracle, or Microsoft SQL Server. 
+- [Migrate data to CockroachDB](#migrate-and-replicate-data-to-cockroachdb) from an existing, publicly hosted database containing application data, such as PostgreSQL, MySQL, Oracle, or Microsoft SQL Server.
 
 {% comment %}
 - [Replicate data to a secondary source](#replicate-data-from-cockroachdb-to-a-secondary-source) such as Kafka or cloud storage.
@@ -42,7 +42,7 @@ This page describes the Qlik Replicate functionality at a high level. For detail
 
 Complete the following items before using Qlik Replicate:
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/index.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use for your Qlik Replicate target endpoint.
     - Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
@@ -78,7 +78,7 @@ You can use Qlik Replicate to migrate tables from a source database to Cockroach
 In the Qlik Replicate interface, the source database is configured as a **source endpoint** with the appropriate dialect, and CockroachDB is configured as a PostgreSQL **target endpoint**. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
 {{site.data.alerts.callout_info}}
-To use a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster as the target endpoint, set the **Database name** to `{host}.{database}` in the Qlik Replicate dialog. For details on how to find these parameters, see [Connect to your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster.html?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
+To use a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster as the target endpoint, set the **Database name** to `{host}.{database}` in the Qlik Replicate dialog and set **Secure Socket Layer (SSL) mode** to **require**. For details on how to find the host and database parameters, see [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}?filters=connection-parameters#connect-to-your-cluster).
 {{site.data.alerts.end}}
 
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.

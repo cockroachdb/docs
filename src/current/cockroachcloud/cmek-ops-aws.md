@@ -64,7 +64,7 @@ You can create the CMEK key two ways:
 - [Directly in the AWS console](#option-a-use-the-aws-console-to-create-the-cmek-key)
 - By setting up a [Vault AWS-KMS secrets engine](#option-b-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key) with access to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 		{{site.data.alerts.callout_info}}
-		Learn more about [CockroachDB - HashiCorp Vault integrations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration).
+		Learn more about [CockroachDB - HashiCorp Vault integrations]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 		{{site.data.alerts.end}}
 
 ### Option A: Use the AWS Console to create the CMEK key

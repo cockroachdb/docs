@@ -27,7 +27,7 @@ CockroachDB {{ site.data.products.basic }} clusters consume three kinds of resou
 
 A CockroachDB {{ site.data.products.basic }} cluster is divided into a SQL layer and a storage layer that run in separate processes. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
-**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
+**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
 **Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB network egress.
 
@@ -64,7 +64,7 @@ If any queries are more expensive than expected, you can use the [`EXPLAIN ANALY
 
 Each query has an associated RU cost, so the total number of queries is an important factor in your consumption.
 
-To diagnose excessive queries, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Statements** chart displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in your resource consumption.
+To diagnose excessive queries, navigate to your cluster's **Metrics** page, [**SQL** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Statements** chart displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in your resource consumption.
 
 Reducing the rate of queries is application-specific and must be achieved at the application level.
 
@@ -72,7 +72,7 @@ Reducing the rate of queries is application-specific and must be achieved at the
 
 CockroachDB {{ site.data.products.basic }} clusters consume minimal resources per connection, so increased RU consumption is not likely to be caused by a high number of connections. However, it will be important to manage your connections for both performance optimization and RU consumption as your application scales up.
 
-Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connection Attempts** chart displays new SQL connection attempts over time.
+Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connections** chart displays new SQL connections over time.
 
 [Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/).
 
@@ -190,6 +190,6 @@ This will insert the data, and also output information from the optimizer about 
 
 ## Learn more
 
-- [CockroachDB {{ site.data.products.cloud }} Pricing]({% link cockroachcloud/plan-your-cluster.md %}#pricing)
-- [Request Units]({% link cockroachcloud/plan-your-cluster.md %}#request-units)
+- [CockroachDB {{ site.data.products.cloud }} Pricing]({% link cockroachcloud/plan-your-cluster-basic.md %}#pricing)
+- [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units)
 - [Manage Your CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/basic-cluster-management.md %})

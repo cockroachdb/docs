@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
+These graphs are available for CockroachDB {{ site.data.products.basic }} deployments. For graphs available to CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
 {{site.data.alerts.end}}
 
 The Request Unit metrics let you monitor [resource consumption]({% link cockroachcloud/resource-usage.md %}). All cluster activity, including [SQL queries]({% link {{ site.current_cloud_version }}/selection-queries.md %}), bulk operations, and [background jobs]({% link {{ site.current_cloud_version }}/show-jobs.md %}), is measured in Request Units, or RUs. An RU is an abstracted metric that represents the compute and I/O resources used by a database operation. In addition to queries that you run, background activity, such as [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics) to optimize your queries or connecting a [changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) to an external sink, also consumes RUs.
@@ -26,7 +26,7 @@ The time interval selector at the top of each tab allows you to filter the view 
 {% assign metrics = site.data.metrics | where: "metric_ui_graph", g %}
 {% comment %} Fetch all metrics for given metric_ui_tab. {% endcomment %}
 
-<table>
+<table markdown="1">
     <thead>
         <tr>
             <td><b>Short Name</b></td>

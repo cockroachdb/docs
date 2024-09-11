@@ -4,10 +4,6 @@ summary: The Changefeed metrics let you monitor the performance of your changefe
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-These graphs are available for CockroachDB {{ site.data.products.standard }} deployments. For graphs available to CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.basic }} deployments, refer to the [CockroachDB {{ site.data.products.cloud }} Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
-{{site.data.alerts.end}}
-
 The Changefeed metrics let you monitor the performance of your [changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}).
 
 To view these graphs, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Changefeeds** tab.
@@ -26,7 +22,7 @@ The time interval selector at the top of each tab allows you to filter the view 
 {% assign metrics = site.data.metrics | where: "metric_ui_graph", g %}
 {% comment %} Fetch all metrics for given metric_ui_tab. {% endcomment %}
 
-<table>
+<table markdown="1">
     <thead>
         <tr>
             <td><b>Short Name</b></td>

@@ -44,9 +44,12 @@ GCP Cloud Logging and Amazon CloudWatch logs have the following name format:
 
 Where:
 
-- `{log-name}` is a string of your choosing as you configure log export. For Amazon CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. Refer to the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
-- `{region}` is the cloud provider region where your CockroachDB {{ site.data.products.standard }} cluster resides.
+- `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
+- `{region}` is the cloud provider region where your CockroachDB {{ site.data.products.advanced }} cluster resides.
 - `{log-channel}` is the CockroachDB [log channel]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels), such as `HEALTH` or `OPS`.
+- `{N}` is the node number of the CockroachDB {{ site.data.products.advanced }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
+
+For Azure Monitor, the logs have a different name format, refer to [Enable log export](#enable-log-export) instructions.
 
 ## Enable log export
 
@@ -189,11 +192,11 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             ~~~
 
             This configuration:
-            - Enables [redaction]({% link {{site.current_cloud_version}}/configure-logs.md %}#redact-logs) globally for all log entries emitted to Amazon CloudWatch.
+            - Enables [redaction]({% link {{site.current_cloud_version}}/configure-logs.md %}#redact-logs) globally for all log entries emitted to AWS CloudWatch.
             - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a Amazon CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to an Amazon CloudWatch log group named `devops`, but only for those entries that are of log [severity level]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` Amazon CloudWatch log group.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` AWS CloudWatch log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third-party minifier, such as [json minifier](https://jsonformatter.org/json-minify). The preceding configuration becomes the following single line:
 
@@ -342,7 +345,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             This configuration:
             - Enables [redaction]({% link {{site.current_cloud_version}}/configure-logs.md %}#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
             - Does not send log entries in the `SESSIONS` and `SQL_PERF` logging channels.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels)) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
             - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level]({% link {{site.current_cloud_version}}/logging.md %}#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other [logging channels](#what-log-channels-are-supported) to the `default` GCP Cloud Logging log group.
 
@@ -400,7 +403,7 @@ curl --request GET \
 
 Where:
 
-- `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. Refer to [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 ## Update an existing log export configuration

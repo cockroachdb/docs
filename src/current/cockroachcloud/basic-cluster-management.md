@@ -35,7 +35,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit cluster capacity
 
-On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster](plan-your-cluster-basic.html).
+On the **Overview** page, you can edit your resource limits. Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
 
 1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 
@@ -87,7 +87,7 @@ A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one re
 
 Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
 
 ## Enable deletion protection
 

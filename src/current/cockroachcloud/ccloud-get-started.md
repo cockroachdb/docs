@@ -41,7 +41,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
-If you are a member of more than one [CockroachDB Cloud organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization), use the `--org` flag to set the organization name when authenticating.
+If you are a member of more than one CockroachDB Cloud organization, use the `--org` flag to set the organization name when authenticating.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -145,7 +145,7 @@ ccloud cluster create dedicated blue-dog us-central1:8 us-west2:4 --cloud GCP --
 </section>
 
 {{site.data.alerts.callout_info}}
-To set [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, or create a CockroachDB {{ site.data.products.advanced }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, or create a CockroachDB {{ site.data.products.advanced }} cluster, you must [add a payment method]({% link cockroachcloud/billing-management.md %}) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
@@ -419,7 +419,7 @@ ccloud cluster sql blue-dog --skip-ip-check
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
