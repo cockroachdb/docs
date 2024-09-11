@@ -85,8 +85,8 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     Factor | Description
     ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
-    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 4 vCPUs can handle approximately 4000 transactions per second. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPUs per node is the minimum supported capacity. Less powerful nodes are generally not suitable for production workloads.
+    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPU is the minimum supported capacity when scaling down a node. For most production applications, we recommend **at least 8 vCPUs per node**.
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 1. Select the **Storage per node**.
