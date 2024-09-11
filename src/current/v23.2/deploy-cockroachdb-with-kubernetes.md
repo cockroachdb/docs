@@ -23,7 +23,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-## Limitations
+## Best practices
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
@@ -38,7 +38,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {{site.data.alerts.callout_info}}
 The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
 
-Note that the Operator does not provision or apply an Enterprise license key. To use [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}) with the Operator, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
+The Operator does not provision or apply an Enterprise license key. To use [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}) with the Operator, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -70,7 +70,7 @@ Note that the Operator does not provision or apply an Enterprise license key. To
 ## Step 5. Stop the cluster
 
 {{site.data.alerts.callout_info}}
-If you want to continue using this cluster, see the documentation on [configuring]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}), [scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes.md %}), [monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %}), and [upgrading]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) the cluster.
+If you want to continue using this cluster, refer the documentation on [configuring]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}), [scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes.md %}), [monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %}), and [upgrading]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) the cluster.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/orchestration/kubernetes-stop-cluster.md %}
