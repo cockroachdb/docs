@@ -51,6 +51,20 @@ To edit your cluster's capacity:
 
 1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
 
+## Manage cluster upgrades
+
+By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+
+{{site.data.alerts.callout_danger}}
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}).
+{{site.data.alerts.end}}
+
+To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
+
+1. On the [**Cluster Overview** page for the cluster](#view-cluster-overview), click **Action**, then select **Manual upgrade settings**.
+1. Read the information provided, then set **Manual upgrades** to **on**.
+1. Click **Apply**.
+
 ## Restore data from a backup
 
 Refer to [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
