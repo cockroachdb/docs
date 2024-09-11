@@ -6644,3 +6644,4 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0
+  withdrawn: true
