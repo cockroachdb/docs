@@ -33,7 +33,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.serverless }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}#establish-aws-privatelink).
+You must configure the AWS PrivateLink connection for your CockroachDB {{ site.data.products.standard }} cluster in CockroachDB {{ site.data.products.cloud }} and in AWS. For CockroachDB {{ site.data.products.cloud }}, you can use the CockroachDB {{ site.data.products.cloud }} Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). For help, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-aws-privatelink).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
