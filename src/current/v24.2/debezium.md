@@ -28,7 +28,7 @@ Migrating with Debezium requires familiarity with Kafka. Refer to the [Debezium 
 
 Complete the following items before using Debezium:
 
-- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
+- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
 - Install and configure [Debezium](https://debezium.io/), [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html), and [Kafka](https://kafka.apache.org/).
 
 ## Migrate data to CockroachDB
@@ -117,7 +117,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 ## See also
 
 - [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page)
+- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
 - [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %})

@@ -291,12 +291,6 @@
             ]
           },
           {
-            "title": "Unsupported Features in Serverless",
-            "urls": [
-              "/cockroachcloud/serverless-unsupported-features.html"
-            ]
-          },
-          {
             "title": "API Support Policy",
             "urls": [
               "/${VERSION}/api-support-policy.html"

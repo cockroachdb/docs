@@ -54,7 +54,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 

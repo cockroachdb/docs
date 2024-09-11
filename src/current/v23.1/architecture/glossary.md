@@ -41,8 +41,6 @@ A full featured, self-managed CockroachDB deployment.
 
 {% include common/basic-terms.md %}
 
-For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture).
-
 ## Spatial and GIS terms
 
 This section contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.

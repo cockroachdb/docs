@@ -297,7 +297,7 @@ Construct the ARN for your identity role. You will need this to add into the Tru
 arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix}
 ~~~
 
-You can find the AWS account ID and your cluster's ID using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api):
+You can find the AWS account ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -596,7 +596,7 @@ Construct the service account name for your identity service account. You will n
 crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
-You can find the GCP project ID and your cluster's ID using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api):
+You can find the GCP project ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell

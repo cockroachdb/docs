@@ -19,8 +19,9 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.standar
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>, then [log in](https://cockroachlabs.cloud/).
 {% include cockroachcloud/prefer-sso.md %}
-1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, verify the one that is selected in the top right corner.
-1. On the **Clusters** page, click **Create Cluster** or, if you also have permission to create folders, then click **Create > Create Cluster**.
+1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
+1. If there are multiple organizations in your account, select the correct organization in the top right corner.
+1. On the **Overview** page, click **Create Cluster**.
 1. On the **Select a plan** page, select the **Standard** plan.
 
 ## Step 2. Select the cloud provider

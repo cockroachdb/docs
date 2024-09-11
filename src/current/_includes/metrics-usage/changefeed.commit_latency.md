@@ -1,1 +1,1 @@
-This metric provides useful context when assessing the state of <a href="https://www.cockroachlabs.com/docs/stable/change-data-capture-overview">changefeeds</a>. This metric characterizes the end-to-end lag between a committed change and that change applied at the destination.
+This metric provides useful context when assessing the state of [changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}). This metric characterizes the end-to-end lag between a committed change and that change applied at the destination.

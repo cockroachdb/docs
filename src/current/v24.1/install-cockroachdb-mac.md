@@ -15,7 +15,7 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-See [Release Notes](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade](https://www.cockroachlabs.com/docs/releases/{{page.version.version}}/upgrade-cockroach-version).
+See [Release Notes]({% link releases/{{page.version.version}}.md %}) for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see [Cluster Upgrade]({% link {{page.version.version}}/upgrade-cockroach-version.md %}).
 
 {% comment %}v22.2.0+{% endcomment %}
 {{site.data.alerts.callout_danger}}

@@ -125,7 +125,7 @@ In the left-hand navigation menu, click **Data > Workspaces**. The **Workspaces*
 On the **New Workspace** page, enter the following information:
 
 - In the **Name** field, enter the text "spatial-tutorial".
-- In the **Namespace URI** field, enter the URL for the spatial tutorial where this data set is used: https://www.cockroachlabs.com/docs/stable/spatial-data.html.
+- In the **Namespace URI** field, enter the URL for the spatial tutorial where this data set is used: `{% link {{ page.version.version }}/spatial-tutorial.md %}`.
 
 Press the **Save** button.
 

@@ -9,7 +9,7 @@ key: experimental-features.html
 Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
 {{site.data.alerts.callout_info}}
-This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy) or [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}) or [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Feature availability phases
@@ -32,14 +32,14 @@ Any feature made available in a phase prior to GA is provided without any warran
 {{site.data.alerts.end}}
 
 ### Export logs to Azure Monitor
-[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Export metrics to Azure Monitor
-[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.dedicated }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### AWS PrivateLink for CockroachDB Serverless
 
-[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink](https://www.cockroachlabs.com/docs/cockroachcloud/aws-privatelink?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+[Connecting privately to a multi-region CockroachDB Serverless cluster using AWS PrivateLink]({% link cockroachcloud/aws-privatelink.md %}?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 
@@ -55,8 +55,8 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-[Exporting metrics from CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/export-metrics.md %}) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+### Export metrics from CockroachDB {{ site.data.products.advanced }} clusters
+[Exporting metrics from CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}) to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_info}}
 Exporting metrics to Azure Monitor is in limited access. Refer to [Exporting metrics to Azure Monitor](#export-metrics-to-azure-monitor).
@@ -177,10 +177,6 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 [Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
 
-### Export metrics from CockroachDB {{ site.data.products.dedicated }} clusters
-
-CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
-
 ### Show range information for a specific row
 
 The [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) statement shows information about a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
@@ -236,7 +232,7 @@ The multiple active portals feature of the Postgres wire protocol (pgwire) is av
 
 ### Physical Cluster Replication
 
-{% include_cached new-in.html version="v23.2" %}[Physical cluster replication](https://www.cockroachlabs.com/docs/{{ page.version.version }}/physical-cluster-replication-overview) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only](https://www.cockroachlabs.com/docs/{{ page.version.version }}/enterprise-licensing) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+{% include_cached new-in.html version="v23.2" %}[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Super regions
 

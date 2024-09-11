@@ -390,20 +390,14 @@
                         "items": [
                             {
                                 "title": "Metrics Overview",
-                    "urls": [
-                      "/cockroachcloud/metrics.html"
+                                "urls": [
+                                "/cockroachcloud/metrics.html"
                                 ]
                             },
                             {
                                 "title": "Overview tab",
                                 "urls": [
                                 "/cockroachcloud/metrics-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Request Units",
-                                "urls": [
-                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {
@@ -425,15 +419,9 @@
                                 ]
                             },
                             {
-                                "title": "Monitor SQL Activity",
+                                "title": "Request Units",
                                 "urls": [
-                                "/cockroachcloud/metrics-monitor-sql-activity.html"
-                                ]
-                            },
-                            {
-                                "title": "Identify SQL Problems tab",
-                                "urls": [
-                                "/cockroachcloud/metrics-identify-sql-problems.html"
+                                "/cockroachcloud/metrics-request-units.html"
                                 ]
                             },
                             {

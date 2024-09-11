@@ -16,7 +16,7 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
   - [Troubleshoot Common Problems]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}) helps you handle errors and troubleshooting problems that may arise during application development.
   - [Troubleshoot Statement Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}) helps you with unexpected query results.
 
-- If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/troubleshooting-page).
+- If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud]({% link cockroachcloud/troubleshooting-page.md %}).
 
 - If you see discrepancies in metrics, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %}).
 

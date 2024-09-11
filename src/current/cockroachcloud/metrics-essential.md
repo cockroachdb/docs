@@ -10,13 +10,13 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
 {% comment %} Fetch the list of all metric types {% endcomment %}
 
 {% for t in types %} {% comment %} Iterate through the types. {% endcomment %}
-
+{% unless t contains "Request Units" %} {% comment %} Request Units is only for Basic tier. {% endcomment %}
 ## {{ t }}
 
     {% assign metrics = site.data.metrics | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_standard == true"%}
     {% comment %} Fetch all metrics for that metric_type. {% endcomment %}
 
-<table>
+<table markdown="1">
     <thead>
         <tr>
             <td><b>CockroachDB Metric Name</b></td>
@@ -40,16 +40,16 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
             <td>{% include metrics-usage/{{ m.metric_id }}.md %}</td>
             <td>{% for t in tab_array %}
                     {% if t contains "Custom" %}
-                        <a href="https://www.cockroachlabs.com/docs/cockroachcloud/custom-metrics-chart-page">{{ t | remove: '"' | strip }}</a>{%- unless forloop.last -%}, {% endunless %}
+                        [{{ t | remove: '"' | strip }}]({% link cockroachcloud/custom-metrics-chart-page.md %}){%- unless forloop.last -%}, {% endunless %}
                     {% else %}
-                        <a href="https://www.cockroachlabs.com/docs/cockroachcloud/metrics-{{ t | remove: '"' | strip | downcase | replace: ' ', '-' }}">{{ t | remove: '"' | strip }}</a>{%- unless forloop.last -%}, {% endunless %}
+                        [{{ t | remove: '"' | strip }}]({% link cockroachcloud/metrics-{{ t | remove: '"' | strip | downcase | replace: ' ', '-' }}.md %}){%- unless forloop.last -%}, {% endunless %}
                     {% endif %}
                 {% endfor %}</td>
         </tr>
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
 </table>
-
+{% endunless %}
 {% endfor %} {% comment %} types {% endcomment %}
 
 ## See also
