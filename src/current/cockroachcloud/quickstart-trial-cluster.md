@@ -21,7 +21,7 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. For **Regions & nodes**, select `California (us-west)` region and 3 nodes.
 
     {{site.data.alerts.callout_info}}
-    You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters) trial cluster.
+    You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster-advanced.md %}#multi-region-clusters) trial cluster.
     {{site.data.alerts.end}}
 
 1. For **VPC Peering**, use the default selection of **Use the default IP range**. Click **Next: Capacity**.
