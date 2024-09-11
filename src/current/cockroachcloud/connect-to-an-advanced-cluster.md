@@ -36,7 +36,7 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 1. Click **Apply**.
 
-### Establish GCP VPC Peering or AWS PrivateLink
+### Establish private connectivity
 
 GCP VPC Peering and AWS PrivateLink allow customers to establish SQL access to their clusters entirely through cloud provider private infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
