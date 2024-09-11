@@ -37,8 +37,9 @@ Select the region(s) and number of nodes for your cluster:
     A multi-region cluster requires at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
 1. Select the number of nodes:
-    - For single-region production deployments, we require a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance. New CockroachDB {{ site.data.products.cloud }} organizations can no longer create single-node clusters or scale a cluster to a single node. Single-node clusters are not suitable for production deployments.
+    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance.
     - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
+    - For single-region application development and testing, you may create a single-node cluster.
 
 Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
 

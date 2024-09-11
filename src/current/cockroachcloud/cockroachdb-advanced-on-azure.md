@@ -11,7 +11,7 @@ This page provides information about CockroachDB {{ site.data.products.dedicated
 ## Limitations
 
 CockroachDB {{ site.data.products.dedicated }} clusters on Azure have the following temporary limitations. To express interest or request more information about a given limitation, contact your Cockroach Labs account team. For more details, refer to the [FAQs](#faqs).
-
+A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported on Azure.
 [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) features are not yet available on Azure. To express interest, contact your Cockroach Labs account team.
 
 - [Private Clusters]({% link cockroachcloud/private-clusters.md %})

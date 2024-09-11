@@ -118,13 +118,13 @@ Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data
 ccloud cluster create dedicated
 ~~~
 
-This command creates a 3-node CockroachDB {{ site.data.products.advanced }} cluster with 4 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
+This command creates a 1-node CockroachDB {{ site.data.products.advanced }} cluster with 4 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
 You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated blue-dog us-central1:3 --cloud GCP --vcpus 4 --storage-gib 110
+ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 4 --storage-gib 110
 ~~~
 
 ~~~
@@ -144,9 +144,7 @@ ccloud cluster create dedicated blue-dog us-central1:8 us-west2:4 --cloud GCP --
 ~~~
 </section>
 
-{{site.data.alerts.callout_info}}
-To set [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, or create a CockroachDB {{ site.data.products.advanced }} cluster, you must [add a payment method]({% link cockroachcloud/billing-management.md %}) to your organization.
-{{site.data.alerts.end}}
+
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
