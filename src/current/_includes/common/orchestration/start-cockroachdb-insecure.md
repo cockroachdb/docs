@@ -1,14 +1,12 @@
-1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it.
-
-    Download [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml):
+1. Download and modify our [StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
 
     {{site.data.alerts.callout_info}}
-    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Resource management](configure-cockroachdb-kubernetes.html?filters=manual).
+    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}?filters=manual).
     {{site.data.alerts.end}}
 
     Use the file to create the StatefulSet and start the cluster:
@@ -25,23 +23,19 @@
     statefulset.apps/cockroachdb created
     ~~~
 
-    Alternatively, if you'd rather start with a configuration file that has been customized for performance:
+1. Alternatively, if you'd rather start with a configuration file that has been customized for performance, download and modify our [performance version of the StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml):
 
-    1. Download our [performance version of `cockroachdb-statefulset-insecure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml):
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml
+    ~~~
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml
-        ~~~
+   Modify the file wherever there is a `TODO` comment, then use the file to create the StatefulSet and start the cluster:
 
-    1. Modify the file wherever there is a `TODO` comment.
-
-    1. Use the file to create the StatefulSet and start the cluster:
-
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl create -f cockroachdb-statefulset-insecure.yaml
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f cockroachdb-statefulset-insecure.yaml
+    ~~~
 
 1. Confirm that three pods are `Running` successfully. Note that they will not
    be considered `Ready` until after the cluster has been initialized:

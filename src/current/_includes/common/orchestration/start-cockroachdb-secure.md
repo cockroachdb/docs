@@ -29,7 +29,7 @@ By default, this manifest specifies CPU and memory resources that are appropriat
 The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/orchestration/kubernetes-cockroach-cert.md %}
+{% include common/orchestration/kubernetes-cockroach-cert.md %}
 
 ### Initialize the cluster
 

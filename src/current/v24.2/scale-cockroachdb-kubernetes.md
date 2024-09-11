@@ -20,7 +20,7 @@ This page explains how to add and remove CockroachDB nodes on Kubernetes.
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+{% include_cached common/orchestration/operator-check-namespace.md %}
 
 {{site.data.alerts.callout_success}}
 If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}), substitute `kubectl` with `oc` in the following commands.
@@ -51,7 +51,7 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
   1. If you are adding nodes after previously [scaling down](#remove-nodes), and have not enabled [automatic PVC pruning](#automatic-pvc-pruning), you must first manually delete any persistent volumes that were orphaned by node removal.
 
         {{site.data.alerts.callout_info}}
-        Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod. 
+        Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod.
         {{site.data.alerts.end}}
 
         View the PVCs on the cluster:
@@ -142,11 +142,11 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-manual.md %}
+{% include common/orchestration/kubernetes-scale-cluster-manual.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-helm.md %}
+{% include common/orchestration/kubernetes-scale-cluster-helm.md %}
 </section>
 
 ## Remove nodes
@@ -157,7 +157,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 <section class="filter-content" markdown="1" data-scope="operator">
 {{site.data.alerts.callout_danger}}
-Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod. 
+Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod.
 
 If you plan to eventually [scale up](#add-nodes) the cluster after scaling down, you will need to manually delete any PVCs that were orphaned by node removal before scaling up. For more information, see [Add nodes](#add-nodes).
 {{site.data.alerts.end}}
@@ -190,7 +190,7 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
     ~~~
 
     The Operator will remove nodes from the cluster one at a time, starting from the pod with the highest number in its address.
-    
+
 1. Verify that the pods were successfully removed:
 
     {% include_cached copy-clipboard.html %}
@@ -252,9 +252,9 @@ This workflow is unsupported and should be enabled at your own risk.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-manual.md %}
+{% include common/orchestration/kubernetes-remove-nodes-manual.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-helm.md %}
+{% include common/orchestration/kubernetes-remove-nodes-helm.md %}
 </section>

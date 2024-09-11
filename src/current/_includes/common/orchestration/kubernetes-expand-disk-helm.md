@@ -1,8 +1,8 @@
 You can expand certain [types of persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes
-) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims.
+) (including in cloud storage) by editing their persistent volume claims.
 
 {{site.data.alerts.callout_info}}
-These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html?filters=manual).
+These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}?filters=helm).
 {{site.data.alerts.end}}
 
 1. Get the persistent volume claims for the volumes:
@@ -13,10 +13,10 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
     ~~~
 
     ~~~
-	NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-	datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-	datadir-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-	datadir-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+	NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+	datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+	datadir-my-release-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+	datadir-my-release-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
     ~~~
 
 1. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
@@ -58,23 +58,23 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 	{% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl patch pvc datadir-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
+    $ kubectl patch pvc datadir-my-release-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
     ~~~
 
     ~~~
-    persistentvolumeclaim/datadir-cockroachdb-0 patched
+    persistentvolumeclaim/datadir-my-release-cockroachdb-0 patched
     ~~~
 
 1. Check the capacity of the persistent volume claim:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pvc datadir-cockroachdb-0
-    ~~~	
+    $ kubectl get pvc datadir-my-release-cockroachdb-0
+    ~~~
 
     ~~~
-	NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
+	NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
     ~~~
 
     If the PVC capacity has not changed, this may be because `AllowVolumeExpansion` was initially set to `false` or because the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resizing-an-in-use-persistentvolumeclaim) that has to be expanded. You will need to start or restart a pod in order to have it reflect the new capacity.
@@ -87,7 +87,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 	{% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl describe pvc datadir-cockroachdb-0
+    $ kubectl describe pvc datadir-my-release-cockroachdb-0
     ~~~
 
     ~~~
@@ -98,7 +98,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 	{% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pod cockroachdb-0
+    $ kubectl delete pod my-release-cockroachdb-0
     ~~~
 
     The `FileSystemResizePending` condition and message will be removed.
@@ -107,12 +107,12 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 	{% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pvc datadir-cockroachdb-0
+    $ kubectl get pvc datadir-my-release-cockroachdb-0
     ~~~
 
     ~~~
-	NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
+	NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
     ~~~
 
 1. The CockroachDB cluster needs to be expanded one node at a time. Repeat steps 3 - 6 to increase the capacities of the remaining volumes by the same amount.
