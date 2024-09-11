@@ -16,7 +16,8 @@ This page demonstrates a basic integration with the open-source [Kubernetes](htt
 To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart]({% link cockroachcloud/quickstart.md %}).
 {{site.data.alerts.end}}
 
-## Best practices
+<a id="best-practices"></a>
+## Limitations
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
