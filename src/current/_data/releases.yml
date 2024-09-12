@@ -6644,7 +6644,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0
-
+  withdrawn: true
 
 - release_name: v23.1.26
   major_version: v23.1
