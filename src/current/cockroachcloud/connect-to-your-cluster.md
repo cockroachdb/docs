@@ -17,11 +17,11 @@ This page shows you how to connect to your CockroachDB {{ site.data.products.sta
 
 ## Authorize your network
 
-By default, CockroachDB {{ site.data.products.standard }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. {{ site.data.products.standard }}  clusters can accept connections via two types of authorized network:
+By default, CockroachDB {{ site.data.products.standard }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. {{ site.data.products.standard }} clusters can accept connections via two types of authorized network:
 
 - Allowed IP address ranges on the internet.
 - Cloud-provider-specific peer networking options:
-    - Google Cloud Platform (GCP) VPC Peering or Private Service Connect (Preview)
+    - Google Cloud Platform (GCP) Private Service Connect (Preview)
     - Amazon Web Services (AWS) Privatelink
 
 {{site.data.alerts.callout_info}}
@@ -37,16 +37,34 @@ Private connectivity allows you to establish SQL access to a CockroachDB {{ site
 
 - Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC peering](#gcp-vpc-peering). PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB {{ site.data.products.cloud }} to a VPC within your Google Cloud project.
 - Clusters deployed on AWS can connect privately using [AWS PrivateLink](#aws-privatelink), which allows you to connect your cluster to a VPC within your AWS account.
-- Clusters deployed on Azure can connect privately using [Azure Private Link](#azure-private-link), which allows you to connect your cluster to a virtual network within your Azure tenant.
+
+CockroachDB {{ site.data.products.standard }} is not yet available on Azure.
 
 For more information, refer to [Network authorization]({% link cockroachcloud/network-authorization.md %}).
 
 {{site.data.alerts.callout_success}}
-GCP Private Service Connect, AWS PrivateLink, and Azure Private Link can be configured only after a cluster is created.
+Private connectivity cannot be configured during cluster creation.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 {% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
+{{site.data.alerts.end}}
+
+<a id="vpc-peering"></a>
+#### GCP VPC Peering
+
+For GKE, we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting from a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you must [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). CockroachDB {{ site.data.products.cloud }} will import your custom routes by default.
+
+    <div class="filters clearfix">
+        <button class="filter-button page-level" data-scope="command-line">Command line</button>
+        <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
+        <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
+    </div>
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+{{site.data.alerts.callout_info}}
+Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
 {{site.data.alerts.end}}
 
 #### GCP Private Service Connect
@@ -75,23 +93,6 @@ After validation succeeds for an endpoint, additional endpoints in the same VPC 
 If you remove the endpoint from GCP or change its target service, the endpoint will be removed from the cluster automatically.
 
 After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
-
-<a id="vpc-peering"></a>
-#### GCP VPC Peering
-
-For GKE, we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting from a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you must [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). CockroachDB {{ site.data.products.cloud }} will import your custom routes by default.
-
-    <div class="filters clearfix">
-        <button class="filter-button page-level" data-scope="command-line">Command line</button>
-        <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
-        <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
-    </div>
-
-After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
-
-{{site.data.alerts.callout_info}}
-Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/use-managed-service-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
-{{site.data.alerts.end}}
 
 #### AWS PrivateLink
 
@@ -141,6 +142,9 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
 If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
+1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click **Connect**.
+
+    The **Setup** page of the **Connect to cluster** dialog displays.
 1. If you have set up a private connection, select it to connect privately. Otherwise, click **IP Allowlist**.
 1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
 
