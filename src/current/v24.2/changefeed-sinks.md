@@ -231,34 +231,42 @@ Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streami
 
 For initial setup guides, refer to the AWS documentation:
 
-- [Getting started using Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
-- [Getting started using MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
+- [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
+- [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
 
-To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
+Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serveress clusters depending on the authentication type:
 
-~~~
-kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=SCRAM-SHA-512&sasl_user={user}&sasl_password={password}
-~~~
+- To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
 
-To connect to an MSK or MSK Serverless cluster using AWS IAM roles, you must include the following parameters in the URI:
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=SCRAM-SHA-512&sasl_user={user}&sasl_password={password}
+      ~~~
 
-~~~
-kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-2&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
-~~~
+      For SCRAM authentication, add your SASL username and password to the URI.
 
-Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme.
+- To connect to an MSK or MSK Serverless cluster using AWS IAM roles, you must include the following parameters in the URI:
+
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region={region}&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
+      ~~~
+
+      For IAM authentication, add the MSK cluster region, IAM role ARN, and session name to the URI.
+
+This table outlines the available parameters for Amazon MSK URIs:
 
 URI Parameter  | Description
 ---------------+------------------------------------------------------------------
 `cluster_endpoint` | The endpoint listed for your Amazon MSK cluster in the AWS Console. For example, `boot-a1test.c3.kafka-serverless.us-east-2.amazonaws.com:9098`.
 `sasl_aws_iam_role_arn` | The ARN for the IAM role that has the permissions to create a topic and send data to the topic.
 `sasl_aws_iam_session_name` | The user-specified string that identifies the session in AWS.
-`sasl_aws_region` | The region of the Amaozn MSK cluster.
-`sasl_enabled` | Set to `true`.
+`sasl_aws_region` | The region of the Amazon MSK cluster.
+`sasl_enabled` | Enable SASL authentication. Set this to `true`.
 `sasl_mechanism` | Set to `AWS_MSK_IAM`, `SCRAM-SHA-512`, or `SCRAM-SHA-256`.
 `sasl_password` | Your SASL password.
 `sasl_user` | Your SASL username.
-`tls_enabled` | Enable Transport Layer Security (TLS) on the connection Amazon MSK clusters.
+`tls_enabled` | Enable Transport Layer Security (TLS) on the connection to Amazon MSK clusters. Set this to `true`.
+
+For more detail on each of these parameters, refer to [Query Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters).
 
 ## Confluent Cloud
 
