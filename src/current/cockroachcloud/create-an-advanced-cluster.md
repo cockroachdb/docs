@@ -69,7 +69,7 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 1. Click **Next: Capacity**.
 
-        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
+        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity).
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
 
@@ -127,7 +127,7 @@ You can enable advanced security features for PCI DSS and HIPAA [compliance]({% 
 
 1. On the **Finalize** page, verify your selections for the cloud provider, region(s), number of nodes, and the capacity.
 
-        Once your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
+        Once your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity).
 
 1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
 
