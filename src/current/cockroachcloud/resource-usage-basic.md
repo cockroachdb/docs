@@ -15,7 +15,7 @@ This page describes how to understand your CockroachDB {{ site.data.products.bas
 
 - [General tips for reducing RU usage](#general-tips-for-reducing-ru-usage) gives recommendations depending on the kind of resource usage.
 
-For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster.
+For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
 
 ## Understand resource consumption
 
@@ -86,7 +86,7 @@ Maintaining fewer than five active connections is recommended for most workloads
 
 ### Excessive data egress
 
-To diagnose excessive data egress, navigate to your cluster's [**Request Units** metrics page]({% link cockroachcloud/metrics-request-units.md %}) in the {{ site.data.products.cloud }} Console and monitor the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) for high RU's for client traffic or bulk I/O operations.
+To diagnose excessive data egress, navigate to your cluster's [**Request Units** metrics page]({% link cockroachcloud/metrics-request-units.md %}) in the {{ site.data.products.cloud }} Console and monitor the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) for high RUs for client traffic or bulk I/O operations.
 
 Excessive egress can be treated similarly to [expensive queries](#expensive-queries). Reducing the amount of data returned per query is often the best way to decrease egress data. You can also reduce the frequency of [excessive queries](#excessive-queries).
 
@@ -124,16 +124,16 @@ The following recommendations can help minimize the RU cost of a query by reduci
 
 ### Reads
 
-If the [**Reads** chart]({% link cockroachcloud/metrics-request-units.md %}#reads) shows high RU's for batches, requests, or bytes (payload):
+If the [**Reads** chart]({% link cockroachcloud/metrics-request-units.md %}#reads) shows high RUs for batches, requests, or bytes (payload):
 
 - Use [secondary indexes]({% link {{site.current_cloud_version}}/schema-design-indexes.md %}) that reduce the number of rows that need to be scanned.
-- Avoid “wide” columns in tables that are frequently scanned, such as large text or [binary]({% link {{site.current_cloud_version}}/bytes.md %}) columns. Instead, offload them to a separate table that is only accessed when those columns are needed.
+- Avoid including columns with long values in tables that are frequently scanned, such as large text or [binary]({% link {{site.current_cloud_version}}/bytes.md %}) columns. Instead, offload them to a separate table that is only accessed when those columns are needed.
 - Don't disable [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics), as they are needed to power the [optimizer]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}).
-- Take advantage of SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
+- Use SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
 
 ### Writes
 
-If the [**Writes** chart]({% link cockroachcloud/metrics-request-units.md %}#writes) shows high RU's for batches, requests, or bytes (payload):
+If the [**Writes** chart]({% link cockroachcloud/metrics-request-units.md %}#writes) shows high RUs for batches, requests, or bytes (payload):
 
 - [Drop indexes]({% link {{ site.current_cloud_version }}/drop-index.md %}) that are no longer needed since each additional index requires an additional write.
 - Use [batched `INSERT`]({% link {{ site.current_cloud_version }}/insert.md %}#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
@@ -141,23 +141,23 @@ If the [**Writes** chart]({% link cockroachcloud/metrics-request-units.md %}#wri
 
 ### Egress
 
-If the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) shows high RU's for client traffic or bulk I/O operations:
+If the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) shows high RUs for client traffic or bulk I/O operations:
 
 - Avoid returning columns that your application does not need.
-- Take advantage of SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
+- Use SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
 
 ### Cross-region Networking
 
-If the [**Cross-region Networking** chart]({% link cockroachcloud/metrics-request-units.md %}#cross-region-networking) shows high RU's for network traffic:
+If the [**Cross-region Networking** chart]({% link cockroachcloud/metrics-request-units.md %}#cross-region-networking) shows high RUs for network traffic:
 
 - For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) where possible.
 
 ### SQL CPU
 
-If the [**CPU** chart]({% link cockroachcloud/metrics-request-units.md %}#cpu) shows high RU's for total amount of CPU used by SQL pods:
+If the [**CPU** chart]({% link cockroachcloud/metrics-request-units.md %}#cpu) shows high RUs for total amount of CPU used by SQL pods:
 
 - Most of the above tips also apply to reducing SQL CPU.
-- Ensure that frequently executed queries are [“prepared”]({% link {{site.current_cloud_version}}/sql-grammar.md %}#prepare_stmt) so they can be cached by the SQL layer. Most [ORMs and drivers]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}) do this automatically, so it’s usually not a problem.
+- Ensure that frequently executed queries are set as prepared statements using [`PREPARE`]({% link {{site.current_cloud_version}}/sql-grammar.md %}#prepare_stmt) so they can be cached by the SQL layer. Most [ORMs and drivers]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}) do this automatically, so it’s usually not a problem.
 
 ## Example Request Unit calculation
 
