@@ -1,4 +1,4 @@
-# CockroachDB Cloud Costs \[WIP\]
+# CockroachDB Cloud Costs (WIP)
 
 The cost structure for a CockroachDB Cloud organization depends on its plan.
 
