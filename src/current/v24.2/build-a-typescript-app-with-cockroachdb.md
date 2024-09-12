@@ -131,4 +131,4 @@ Printing balances from account 4e26653a-3821-48c8-a481-47eb73b3e4cc.
 
 Read more about using the [TypeORM](https://typeorm.io/#/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

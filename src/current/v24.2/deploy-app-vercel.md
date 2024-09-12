@@ -16,23 +16,32 @@ This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web
 
 ## Before you begin
 
-Before starting the tutorial, do the following:
+Before starting the tutorial, create a [Vercel](https://vercel.com/signup) account and sign in.
 
-1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-1. Create a [Vercel](https://vercel.com/signup) account.
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
+
+{% include_cached cockroachcloud/connection-string-standard.md %}
+
+## Step 2. Get the code
+
+1. Open the code repository's [GitHub repository](https://github.com/cockroachdb/prisma-examples).
+1. Fork it by clicking **Fork** at the top. Netlify requires you to own a Netlify app's repository.
+    - Set **Owner** to your GitHub identity or an organization.
+    - Disable **Copy the master branch only**.
+    - Click **Fork**.
+
+    You now have an exact copy of the code repository in the GitHub location you chose.
+1. Copy the fork's address, which you will use to clone it locally. Click **Code**, then in the **Local** tab, click **SSH** if you have added SSH keys to GitHub, or **HTTPS** if not. Click the copy symbol to copy the address.
+1. Clone your fork locally. Replace `{ADDRESS}` with the full address of your fork, which will end with `prisma-examples.git`.
 
 <section class="filter-content" markdown="1" data-scope="browser">
 
-## Step 1. Get the code
-
-1. Create a [GitHub](https://github.com/) account if you haven't already.
-1. In GitHub, [create your own fork](https://docs.github.com/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
-
-## Step 2. Create a Vercel project
+## Step 3. Create a Vercel project
 
 1. From the [Vercel dashboard](https://vercel.com/dashboard), click **Add new...** > **Project**.
-1. Select the `prisma-examples` repository you forked in [Step 1](#step-1-get-the-code) to import.
+1. Select the `prisma-examples` repository you forked in [Step 2](#step-2-get-the-code) to import.
 1. From the **Framework preset** dropdown, select **Next.js**.
 1. In the **Root directory** field, click **Edit**.
 1. Select the **typescript** > **rest-nextjs-api-routes** directory.
@@ -43,22 +52,19 @@ Before starting the tutorial, do the following:
 
     Your deployment will fail until you integrate CockroachDB in the next step, so you can leave this screen without waiting for it to finish.
 
-## Step 3. Integrate CockroachDB
+## Step 4. Integrate your project with CockroachDB
 
 1. Navigate to the [CockroachDB page](https://vercel.com/integrations/cockroachdb) of Vercel's integration marketplace.
 1. Click **Add Integration**.
 1. Select your Vercel account and click **Continue**.
 1. Select the project you just created and click **Continue**.
 1. Accept the permissions and click **Add Integration**.
+1. When prompted, log into CockroachDB Cloud and select the organization and cluster to integrate with.
+1. Click **Create** to finish the integration.
 
-    A window will pop up prompting you to log in to CockroachDB {{ site.data.products.cloud }} if you haven't already.
-    
-1. In the CockroachDB {{ site.data.products.cloud }} pop-up window, select the organization in which you want to create a new CockroachDB {{ site.data.products.standard }} cluster.
-1. Click **Create**.
+    After a few seconds, the window will close automatically and your Vercel project will have the `DATABASE_URL` environment variable configured with the cluster's connection string.
 
-    After a few seconds, your cluster will be created and the pop-up window will close automatically. Once this is done, your Vercel project will have the `DATABASE_URL` environment variable automatically populated with the connection string for your new cluster.
-
-## Step 3. Deploy the application
+## Step 5. Deploy the application
 
 1. Navigate to the **Overview** page for your Vercel project.
 1. Select the **Deployments** tab.
@@ -69,48 +75,6 @@ Before starting the tutorial, do the following:
 
 </section>
 <section class="filter-content" markdown="1" data-scope="local">
- 
-## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
-
-{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
-
-<a name="connection-string"></a>
-
-After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location. You will use this connection string to connect to CockroachDB later in the tutorial.
-
-{{site.data.alerts.callout_info}}
-The connection string is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (we recommend a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
-{{site.data.alerts.end}}
-
-## Step 2. Get the code
-
-1. Clone the `cockroachdb` fork of the `prisma-examples` repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ git clone git@github.com:cockroachdb/prisma-examples.git
-    ~~~
-
-1. Navigate to the `rest-nextjs-api-routes` directory:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cd typescript/rest-nextjs-api-routes
-    ~~~
-
-1. Install the application dependencies:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npm install
-    ~~~
-
-1. Install the `vercel` and `prisma` CLI tools:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npm install --global vercel prisma
-    ~~~
 
 ## Step 3. Initialize the database
 
@@ -118,7 +82,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ echo "DATABASE_URL=<connection-string>" >> .env
+    echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
 
     Prisma loads the variables defined in `.env` to the project environment. By default, Prisma uses the `DATABASE_URL` environment variable as the connection string to the database.
@@ -127,7 +91,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ prisma migrate dev --name init
+    prisma migrate dev --name init
     ~~~
 
     You should see the following output:
@@ -146,7 +110,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npm run dev
+    npm run dev
     ~~~
 
     You should see the following output:
@@ -159,7 +123,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ vercel deploy --confirm
+    vercel deploy --confirm
     ~~~
 
     You will be asked to sign into your Vercel account. When you authenticate your credentials, you should see the following message:
@@ -179,7 +143,7 @@ The connection string is pre-populated with your username, cluster name, and oth
     ~~~
 
     Follow the links provided to view and manage your deployed application.
-    
+
 </section>
 
 ## See also
@@ -188,4 +152,4 @@ The connection string is pre-populated with your username, cluster name, and oth
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
 - [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

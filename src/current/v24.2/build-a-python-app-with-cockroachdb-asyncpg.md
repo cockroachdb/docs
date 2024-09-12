@@ -107,4 +107,4 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
 Read more about using the [asyncpg](https://magicstack.github.io/asyncpg/current/usage.html).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

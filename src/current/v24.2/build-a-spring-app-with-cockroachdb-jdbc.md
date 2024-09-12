@@ -17,7 +17,7 @@ This tutorial assumes you are running under [`SERIALIZABLE`]({% link {{ page.ver
 
 ## Step 1. Start CockroachDB
 
-Choose whether to run a local cluster or a free CockroachDB {{ site.data.products.cloud }} cluster.
+Choose whether to run a local cluster or a free CockroachDB {{ site.data.products.standard }} cluster.
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.standard }}</button>
@@ -35,11 +35,11 @@ Choose whether to run a local cluster or a free CockroachDB {{ site.data.product
 
 ### Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ### Set up your cluster connection
 
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
+{% include_cached cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
   </section>
 
@@ -92,13 +92,13 @@ The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockro
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. If you haven't already, [download the CockroachDB SQL Shell binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console [earlier](#set-up-your-cluster-connection):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    --url 'postgresql://<user>@<cluster-host>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
 
 1. Enter your SQL user password.
@@ -211,7 +211,7 @@ Where:
 ~~~ yml
 ...
 datasource:
-  url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
+  url: jdbc:postgresql://{globalhost}:{port}/{cluster_host}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
   username: {username}
   password: {password}
   driver-class-name: org.postgresql.Driver

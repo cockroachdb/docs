@@ -105,4 +105,4 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 Read more about using the [node-postgres driver](https://www.npmjs.com/package/pg).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}
