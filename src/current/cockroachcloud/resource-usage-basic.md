@@ -15,7 +15,7 @@ This page describes how to understand your CockroachDB {{ site.data.products.bas
 
 - [General tips for reducing RU usage](#general-tips-for-reducing-ru-usage) gives recommendations depending on the kind of resource usage.
 
-For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) for a {{ site.data.products.basic }} cluster.
+For information on planning your cluster configuration, refer to [Plan a {{ site.data.products.basic }} Cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
 
 ## Understand resource consumption
 
@@ -43,6 +43,8 @@ A CockroachDB {{ site.data.products.basic }} cluster is divided into a SQL layer
 
 ## Diagnose and optimize your resource consumption
 
+Substantial RU consumption (greater than 100 RU/second) is usually caused by SQL queries issued by the application. This can be confirmed by verifying that RU consumption tightly follows changes to the application’s SQL QPS (queries per second). On the CockroachDB {{ site.data.products.cloud }} Console [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}), you can compare the [**Request Units** chart]({% link cockroachcloud/metrics-overview.md %}#request-units) to the [**SQL Statements** chart]({% link cockroachcloud/metrics-overview.md %}#sql-statements). Assuming the charts correlate, then reducing Request Unit consumption is about [optimizing application SQL queries]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) ([`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %})).
+
 In the CockroachDB {{ site.data.products.cloud }} Console, you can monitor your cluster's SQL activity on the [**Statements**]({% link cockroachcloud/statements-page.md %}) and [**Transactions**]({% link cockroachcloud/transactions-page.md %}) pages.
 
 To see which queries are using the most resources, sort queries by the time they took to process, the number of rows processed, or the number of bytes read. If you have queries that return more data than needed or [have long runtimes]({% link {{site.current_cloud_version}}/manage-long-running-queries.md %}), those are good candidates for optimization.
@@ -64,24 +66,27 @@ If any queries are more expensive than expected, you can use the [`EXPLAIN ANALY
 
 Each query has an associated RU cost, so the total number of queries is an important factor in your consumption.
 
-To diagnose excessive queries, navigate to your cluster's **Metrics** page, [**SQL** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Statements** chart displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in your resource consumption.
+To diagnose excessive queries, navigate to your cluster's [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}) in the {{ site.data.products.cloud }} Console. The [**SQL Statements** chart]({% link cockroachcloud/metrics-overview.md %}#sql-statements) displays the number of queries over time. Look for any spikes or increases in QPS (queries per second) that may correspond to increases in the [**Request Units** chart]({% link cockroachcloud/metrics-overview.md %}#request-units).
 
 Reducing the rate of queries is application-specific and must be achieved at the application level.
+
+To investigate potentially problematic queries - ones that are excessive and expensive:
+
+1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
+1. Click on the title of the **Execution Count** column to sort your queries by the number of executions of the statements within the time interval.
+1. Sort the queries by the **Rows Processed** or **Bytes Read** column. For most queries, total rows processed should be no more than a few hundred. Most queries should read no more than a few kilobytes per row.
 
 ### Excessive number of connections
 
 CockroachDB {{ site.data.products.basic }} clusters consume minimal resources per connection, so increased RU consumption is not likely to be caused by a high number of connections. However, it will be important to manage your connections for both performance optimization and RU consumption as your application scales up.
 
-Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's **Metrics** page, [**Monitor SQL Activity** tab]({% link cockroachcloud/metrics-sql.md %}) in the {{ site.data.products.cloud }} Console. The **SQL Connections** chart displays new SQL connections over time.
+Maintaining fewer than five active connections is recommended for most workloads. To diagnose excessive connections, navigate to your cluster's [**Overview** metrics page]({% link cockroachcloud/metrics-overview.md %}) in the {{ site.data.products.cloud }} Console. The [**SQL Connections** chart]({% link cockroachcloud/metrics-overview.md %}#sql-connections) displays new SQL connection attempts over time.
 
 [Connection pooling]({% link {{site.current_cloud_version}}/connection-pooling.md %}) is the recommended way to manage the number of connections for many workloads. To read more about connection pooling, see [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/).
 
 ### Excessive data egress
 
-In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of data egress, but you can observe the component of egress that comes from SQL statements:
-
-1. Navigate to the [**Statements** tab]({% link cockroachcloud/statements-page.md %}) of your cluster's **SQL Activity** page in the {{ site.data.products.cloud }} Console.
-1. Sort the queries by the **Bytes Read** column. Most queries should read fewer than 1000 bytes.
+To diagnose excessive data egress, navigate to your cluster's [**Request Units** metrics page]({% link cockroachcloud/metrics-request-units.md %}) in the {{ site.data.products.cloud }} Console and monitor the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) for high RUs for client traffic or bulk I/O operations.
 
 Excessive egress can be treated similarly to [expensive queries](#expensive-queries). Reducing the amount of data returned per query is often the best way to decrease egress data. You can also reduce the frequency of [excessive queries](#excessive-queries).
 
@@ -107,20 +112,52 @@ An initial data load during a migration may consume a high number of RUs. Genera
 
 ### Changefeeds (CDC)
 
-In a CockroachDB {{ site.data.products.basic }} deployment, the {{ site.data.products.cloud }} Console does not provide direct observability of changefeeds. However, changefeeds can contribute to significant RU usage. Refer to [Change Data Capture Queries]({% link {{site.current_cloud_version}}/cdc-queries.md %}) for performance guidance that may decrease RU consumption.
+[Changefeeds]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}) can contribute to significant RU usage. To monitor changefeed performance, navigate to your cluster's [**Changefeeds** metrics page]({% link cockroachcloud/metrics-changefeeds.md %}) in the {{ site.data.products.cloud }} Console and monitor the available charts.
+
+Refer to [Change Data Capture Queries]({% link {{site.current_cloud_version}}/cdc-queries.md %}) for performance guidance that may decrease RU consumption.
 
 ## General tips for reducing RU usage
 
-The following recommendations can help reduce the RU cost of a query by reducing the work your cluster must do to execute that query:
+RU consumption can be broken down to more granular components that can give additional optimization insight. Use the {{ site.data.products.cloud }} Console [**Request Units** metrics]({% link cockroachcloud/metrics-request-units.md %}) charts to see what kind of resource usage is driving RU consumption.
 
-- [Drop indexes]({% link {{ site.current_cloud_version }}/drop-index.md %}) that are no longer needed.
-- Use [secondary indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/schema-design-indexes) that reduce the number of rows that need to be scanned.
-- Take advantage of SQL filters, joins, and aggregations rather than performing these operations in the application to reduce the amount of data returned to the client.
-- Use [batched `INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
+The following recommendations can help minimize the RU cost of a query by reducing the work your cluster must do to execute that query. The tips are grouped according to the type of resource usage.
+
+### Reads
+
+If the [**Reads** chart]({% link cockroachcloud/metrics-request-units.md %}#reads) shows high RUs for batches, requests, or bytes (payload):
+
+- Use [secondary indexes]({% link {{site.current_cloud_version}}/schema-design-indexes.md %}) that reduce the number of rows that need to be scanned.
+- Avoid including columns with long values in tables that are frequently scanned, such as large text or [binary]({% link {{site.current_cloud_version}}/bytes.md %}) columns. Instead, offload them to a separate table that is only accessed when those columns are needed.
+- Do not disable [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics), as they are needed to power the [optimizer]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}).
+- Use SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
+
+### Writes
+
+If the [**Writes** chart]({% link cockroachcloud/metrics-request-units.md %}#writes) shows high RUs for batches, requests, or bytes (payload):
+
+- [Drop indexes]({% link {{ site.current_cloud_version }}/drop-index.md %}) that are no longer needed since each additional index requires an additional write.
+- Use [batched `INSERT`]({% link {{ site.current_cloud_version }}/insert.md %}#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
 - Use range [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}) and [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %}) statements to affect many rows in a single statement, rather than sending a separate statement per row.
+
+### Egress
+
+If the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egress) shows high RUs for client traffic or bulk I/O operations:
+
 - Avoid returning columns that your application does not need.
-- Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
-- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/global-tables), [regional by row tables](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/regional-tables), and [follower reads](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/follower-reads) where possible.
+- Use SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
+
+### Cross-region Networking
+
+If the [**Cross-region Networking** chart]({% link cockroachcloud/metrics-request-units.md %}#cross-region-networking) shows high RUs for network traffic:
+
+- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) where possible.
+
+### SQL CPU
+
+If the [**CPU** chart]({% link cockroachcloud/metrics-request-units.md %}#cpu) shows high RUs for total amount of CPU used by SQL pods:
+
+- Most of the above tips also apply to reducing SQL CPU.
+- Ensure that frequently executed queries are set as prepared statements using [`PREPARE`]({% link {{site.current_cloud_version}}/sql-grammar.md %}#prepare_stmt) so they can be cached by the SQL layer. Most [ORMs and drivers]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}) do this automatically, so it’s usually not a problem.
 
 ## Example Request Unit calculation
 
