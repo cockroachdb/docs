@@ -234,7 +234,7 @@ For initial setup guides, refer to the AWS documentation:
 - [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
 - [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
 
-Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serveress clusters depending on the authentication type:
+Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
 
 - To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
 
