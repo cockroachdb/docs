@@ -16,7 +16,7 @@ CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on e
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_backup.html %}
 </div>
 
 ## Parameters

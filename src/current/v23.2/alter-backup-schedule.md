@@ -25,7 +25,7 @@ To alter a backup schedule, you must be the owner of the backup schedule, i.e., 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_backup_schedule.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_backup_schedule.html %}
 </div>
 
 ## Parameters

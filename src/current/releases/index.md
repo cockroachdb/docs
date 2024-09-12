@@ -293,6 +293,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress download links for withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+                  {% continue %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
                   {% continue %}
@@ -350,6 +351,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+              {% continue %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
               {% continue %}
@@ -403,6 +405,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+                  {% continue %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
                   {% continue %}
@@ -543,6 +546,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
               {% continue %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td><span>{{ r.cloud_only_message_short }}</span></td>
+                {% continue %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 {% if r.source == true %}
