@@ -2,11 +2,11 @@
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](https://www.cockroachlabs.com/docs/releases) and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release]({% link releases/index.md %}) and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../v21.1/operate-cockroachdb-kubernetes.html?filters=manual#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}]({% link {{ previous_version }}/upgrade-cockroachdb-kubernetes.md %}?filters=manual). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
@@ -21,7 +21,7 @@
 
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
 
-1. Review the [backward-incompatible changes in {{ page.version.version }}](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+1. Review the [backward-incompatible changes in {{ page.version.version }}]({% link releases/{{ page.version.version }}.md %}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Decide how the upgrade will be finalized.
 

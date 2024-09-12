@@ -278,7 +278,7 @@
       {
         "title": "Metrics",
         "urls": [
-          "/${VERSION}/metrics.html"        
+          "/${VERSION}/metrics.html"
         ]
       },
       {
@@ -288,12 +288,6 @@
             "title": "CockroachDB Feature Availability",
             "urls": [
               "/${VERSION}/cockroachdb-feature-availability.html"
-            ]
-          },
-          {
-            "title": "Unsupported Features in Serverless",
-            "urls": [
-              "/cockroachcloud/serverless-unsupported-features.html"
             ]
           },
           {

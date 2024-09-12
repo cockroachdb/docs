@@ -21,16 +21,14 @@ To view this page, select a cluster from the [**Clusters** page]({% link cockroa
 
 Depending on your CockroachDB {{ site.data.products.cloud }} deployment, the **Metrics** page will have the following tabs on which you can view time-series graphs:
 
-| Metrics Tab | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
-|:------------|:--------------------:|:--------------------:|:-----------------:|
-| [**Overview**]({% link cockroachcloud/metrics-overview.md %}) | ✔ |  |  |
-| [**Request Units**]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |  |
-| [**SQL**]({% link cockroachcloud/metrics-sql.md %}) | ✔ |  |  |
-| [**Changefeeds**]({% link cockroachcloud/metrics-changefeeds.md %}) | ✔ |  |  |
-| [**Row-Level TTL**]({% link cockroachcloud/metrics-row-level-ttl.md %}) | ✔ |  |  |
-| [**Monitor SQL Activity**]({% link cockroachcloud/metrics-monitor-sql-activity.md %}) | Available on [**SQL**]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
-| [**Identify SQL Problems**]({% link cockroachcloud/metrics-identify-sql-problems.md %}) | Available on [**SQL**]({% link cockroachcloud/metrics-sql.md %}) tab | ✔ | ✔ |
-| [**Custom**]({% link cockroachcloud/custom-metrics-chart-page.md %}) | ✔ | ✔ | ✔ |
+ Metrics Tab | CockroachDB Basic | CockroachDB Standard | CockroachDB Advanced
+:------------|:--------------------:|:--------------------:|:-----------------:
+ [**Overview**]({% link cockroachcloud/metrics-overview.md %}) | ✔ | ✔ | ✔
+ [**SQL**]({% link cockroachcloud/metrics-sql.md %}) | ✔ | ✔ | ✔
+ [**Changefeeds**]({% link cockroachcloud/metrics-changefeeds.md %}) | ✔ | ✔ | ✔
+ [**Row-Level TTL**]({% link cockroachcloud/metrics-row-level-ttl.md %}) | ✔ | ✔ | ✔
+ [**Request Units**]({% link cockroachcloud/metrics-request-units.md %}) | ✔ |  |
+ [**Custom**]({% link cockroachcloud/custom-metrics-chart-page.md %}) | ✔ | ✔ | ✔
 
 ### Time interval selection
 

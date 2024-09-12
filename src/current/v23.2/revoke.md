@@ -73,11 +73,11 @@ SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
-  database_name | grantee | privilege_type
-----------------+---------+-----------------
-  movr          | admin   | ALL
-  movr          | max     | CREATE
-  movr          | root    | ALL
+  database_name | grantee | privilege_type | is_grantable
+----------------+---------+----------------+---------------
+  movr          | admin   | ALL            |      t
+  movr          | max     | CREATE         |      f
+  movr          | root    | ALL            |      t
 (3 rows)
 ~~~
 
@@ -92,10 +92,10 @@ SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
-  database_name | grantee | privilege_type
-----------------+---------+-----------------
-  movr          | admin   | ALL
-  movr          | root    | ALL
+  database_name | grantee | privilege_type | is_grantable
+----------------+---------+----------------+---------------
+  movr          | admin   | ALL            |      t
+  movr          | root    | ALL            |      t
 (2 rows)
 ~~~
 
@@ -107,7 +107,7 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT DELETE ON TABLE rides TO max;
+GRANT ALL ON TABLE rides TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -116,17 +116,17 @@ SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | rides      | admin   | ALL
-  movr          | public      | rides      | max     | DELETE
-  movr          | public      | rides      | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | max     | ALL            |      f
+  movr          | public      | rides      | root    | ALL            |      t
 (3 rows)
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-REVOKE DELETE ON TABLE rides FROM max;
+REVOKE ALL ON TABLE rides FROM max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -135,10 +135,10 @@ SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | rides      | admin   | ALL
-  movr          | public      | rides      | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | root    | ALL            |      t
 (2 rows)
 ~~~
 
@@ -146,7 +146,7 @@ SHOW GRANTS ON TABLE rides;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT CREATE, SELECT, DELETE ON TABLE rides, users TO max;
+GRANT ALL ON TABLE rides, users TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -158,70 +158,61 @@ SHOW GRANTS ON TABLE movr.*;
   database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
 ----------------+-------------+----------------------------+---------+----------------+---------------
   movr          | public      | promo_codes                | admin   | ALL            |      t
-  movr          | public      | promo_codes                | demo    | ALL            |      t
   movr          | public      | promo_codes                | root    | ALL            |      t
   movr          | public      | rides                      | admin   | ALL            |      t
-  movr          | public      | rides                      | demo    | ALL            |      t
-  movr          | public      | rides                      | max     | CREATE         |      f
-  movr          | public      | rides                      | max     | DELETE         |      f
-  movr          | public      | rides                      | max     | SELECT         |      f
+  movr          | public      | rides                      | max     | ALL            |      f
   movr          | public      | rides                      | root    | ALL            |      t
   movr          | public      | user_promo_codes           | admin   | ALL            |      t
-  movr          | public      | user_promo_codes           | demo    | ALL            |      t
   movr          | public      | user_promo_codes           | root    | ALL            |      t
   movr          | public      | users                      | admin   | ALL            |      t
-  movr          | public      | users                      | demo    | ALL            |      t
-  movr          | public      | users                      | max     | CREATE         |      f
-  movr          | public      | users                      | max     | DELETE         |      f
-  movr          | public      | users                      | max     | SELECT         |      f
+  movr          | public      | users                      | max     | ALL            |      f
   movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | usertable                  | admin   | ALL            |      t
+  movr          | public      | usertable                  | root    | ALL            |      t
   movr          | public      | vehicle_location_histories | admin   | ALL            |      t
-  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
   movr          | public      | vehicle_location_histories | root    | ALL            |      t
   movr          | public      | vehicles                   | admin   | ALL            |      t
-  movr          | public      | vehicles                   | demo    | ALL            |      t
+  movr          | public      | vehicles                   | public  | SELECT         |      f
   movr          | public      | vehicles                   | root    | ALL            |      t
-(24 rows)
+(17 rows)
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-REVOKE DELETE ON ALL TABLES IN SCHEMA public FROM max;
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM max;
 ~~~
 
 This is equivalent to the following syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-REVOKE DELETE ON movr.public.* FROM max;
+REVOKE ALL ON movr.public.* FROM max;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON TABLE movr.*;
 ~~~
 
 ~~~
   database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
 ----------------+-------------+----------------------------+---------+----------------+---------------
   movr          | public      | promo_codes                | admin   | ALL            |      t
-  movr          | public      | promo_codes                | demo    | ALL            |      t
   movr          | public      | promo_codes                | root    | ALL            |      t
   movr          | public      | rides                      | admin   | ALL            |      t
-  movr          | public      | rides                      | demo    | ALL            |      t
-  movr          | public      | rides                      | max     | CREATE         |      f
-  movr          | public      | rides                      | max     | SELECT         |      f
   movr          | public      | rides                      | root    | ALL            |      t
   movr          | public      | user_promo_codes           | admin   | ALL            |      t
-  movr          | public      | user_promo_codes           | demo    | ALL            |      t
   movr          | public      | user_promo_codes           | root    | ALL            |      t
   movr          | public      | users                      | admin   | ALL            |      t
-  movr          | public      | users                      | demo    | ALL            |      t
-  movr          | public      | users                      | max     | CREATE         |      f
-  movr          | public      | users                      | max     | SELECT         |      f
   movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | usertable                  | admin   | ALL            |      t
+  movr          | public      | usertable                  | root    | ALL            |      t
   movr          | public      | vehicle_location_histories | admin   | ALL            |      t
-  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
   movr          | public      | vehicle_location_histories | root    | ALL            |      t
   movr          | public      | vehicles                   | admin   | ALL            |      t
-  movr          | public      | vehicles                   | demo    | ALL            |      t
+  movr          | public      | vehicles                   | public  | SELECT         |      f
   movr          | public      | vehicles                   | root    | ALL            |      t
-(22 rows)
+(15 rows)
 ~~~
 
 ### Revoke system-level privileges on the entire cluster
@@ -234,7 +225,7 @@ For example, the following statement removes the ability to use the [`SET CLUSTE
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-REVOKE SYSTEM MODIFYCLUSTERSETTING FROM maxroach;
+REVOKE SYSTEM MODIFYCLUSTERSETTING FROM max;
 ~~~
 
 ### Revoke privileges on schemas
@@ -255,11 +246,11 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | admin   | ALL
-  movr          | cockroach_labs | max     | ALL
-  movr          | cockroach_labs | root    | ALL
+  database_name |  schema_name   | grantee | privilege_type | is_grantable
+----------------+----------------+---------+----------------+---------------
+  movr          | cockroach_labs | admin   | ALL            |      t
+  movr          | cockroach_labs | max     | ALL            |      t
+  movr          | cockroach_labs | root    | ALL            |      t
 (3 rows)
 ~~~
 
@@ -274,13 +265,12 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | admin   | ALL
-  movr          | cockroach_labs | max     | GRANT
-  movr          | cockroach_labs | max     | USAGE
-  movr          | cockroach_labs | root    | ALL
-(4 rows)
+  database_name |  schema_name   | grantee | privilege_type | is_grantable
+----------------+----------------+---------+----------------+---------------
+  movr          | cockroach_labs | admin   | ALL            |      t
+  movr          | cockroach_labs | max     | USAGE          |      t
+  movr          | cockroach_labs | root    | ALL            |      t
+(3 rows)
 ~~~
 
 ### Revoke privileges on user-defined types
@@ -303,32 +293,12 @@ SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | max     | ALL
-  movr          | public      | status    | public  | USAGE
-  movr          | public      | status    | root    | ALL
-(4 rows)
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-REVOKE GRANT ON TYPE status FROM max;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW GRANTS ON TYPE status;
-~~~
-
-~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | max     | USAGE
-  movr          | public      | status    | public  | USAGE
-  movr          | public      | status    | root    | ALL
+  database_name | schema_name | type_name | grantee | privilege_type | is_grantable
+----------------+-------------+-----------+---------+----------------+---------------
+  movr          | public      | status    | admin   | ALL            |      t
+  movr          | public      | status    | max     | ALL            |      f
+  movr          | public      | status    | public  | USAGE          |      f
+  movr          | public      | status    | root    | ALL            |      t
 (4 rows)
 ~~~
 
@@ -357,7 +327,7 @@ SHOW GRANTS ON ROLE developer;
 ~~~
   role_name | member | is_admin
 ------------+--------+-----------
-  developer | abbey  |  false
+  developer | abbey  |    f
 (1 row)
 ~~~
 
@@ -372,9 +342,7 @@ SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-(0 rows)
+SHOW GRANTS ON ROLE 0
 ~~~
 
 ### Revoke the admin option
@@ -392,7 +360,7 @@ SHOW GRANTS ON ROLE developer;
 ~~~
   role_name | member | is_admin
 ------------+--------+-----------
-  developer | abbey  |   true
+  developer | abbey  |    t
 (1 row)
 ~~~
 
@@ -409,11 +377,9 @@ SHOW GRANTS ON ROLE developer;
 ~~~
   role_name | member | is_admin
 ------------+--------+-----------
-  developer | abbey  |  false
+  developer | abbey  |    f
 (1 row)
 ~~~
-
-
 
 ## See also
 

@@ -6,7 +6,7 @@ cloud: true
 docs_area: deploy
 ---
 
-Before deploying CockroachDB {{ site.data.products.cloud }} in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
+Before deploying CockroachDB {{ site.data.products.cloud }} clusters in production, it is important to understand the Shared Responsibility Model that delineates the responsibilities of Cockroach Labs and the customer in managing CockroachDB {{ site.data.products.cloud }} clusters.
 
 Under the Shared Responsibility Model, Cockroach Labs is responsible for the following tasks:
 
@@ -17,9 +17,7 @@ Under the Shared Responsibility Model, Cockroach Labs is responsible for the fol
 
 The customer is responsible for the following tasks:
 
-- Estimating workload and sizing the cluster.
-- Scaling clusters based on workload.
-- Ensuring sufficient disk, compute, and memory capacity for each cluster.
+- Estimating workload requirements and scaling clusters as required to ensure sufficient storage, compute, and memory capacity for each cluster.
 - Monitoring cluster health and application performance.
 - Ensuring that the workload is distributed appropriately across the nodes of the cluster.
 - Performance tuning of SQL queries and schema.
@@ -30,21 +28,21 @@ This page provides important recommendations for CockroachDB {{ site.data.produc
 
 ## Deployment options
 
-When planning your deployment, it is important to carefully review and choose the [deployment options](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/choose-a-deployment-option) that best meet your scale, cost, security, and resiliency requirements.
+When planning your deployment, it is important to carefully review and choose the [deployment options]({% link {{site.current_cloud_version}}/choose-a-deployment-option.md %}) that best meet your scale, cost, security, and resiliency requirements.
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
 
 `raw data (storage, in GB) * replication factor (3 by default) * remove 40% to account for compression (0.6) * headroom (1.5-2)`
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+CockroachDB {{ site.data.products.advanced }} clusters can be created with a minimum of 4 vCPUs per node.
 {{site.data.alerts.end}}
 
 For an example, refer to [Plan your Advanced cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).
 
 ## Topology patterns
 
-When planning your deployment, it is important to carefully review and choose the [topology patterns](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/topology-patterns) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
+When planning your deployment, it is important to carefully review and choose the [topology patterns]({% link {{site.current_cloud_version}}/topology-patterns.md %}) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
 
 ## Cluster management
 
@@ -52,11 +50,11 @@ You can create and manage CockroachDB {{ site.data.products.cloud }} clusters us
 
 ## Transaction retries
 
-When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+When several transactions try to modify the same underlying data concurrently, they may experience [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) that leads to [transaction retries]({% link {{ site.current_cloud_version }}/transactions.md %}#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling]({% link {{ site.current_cloud_version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
 ## SQL best practices
 
-To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview) guide.
+To ensure optimal SQL performance for your CockroachDB {{ site.data.products.cloud }} cluster, follow the best practices described in the [SQL Performance Best Practices]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}) guide.
 
 ## Network authorization
 
@@ -102,15 +100,15 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Monitoring and alerting
 
-Even with CockroachDB's various [built-in safeguards](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+Even with CockroachDB's various [built-in safeguards]({% link {{site.current_cloud_version}}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, refer to [Monitoring and Alerting]({% link cockroachcloud/cluster-overview-page.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 ## Backup and restore
 
-For CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
+For CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters, Cockroach Labs takes [full cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#full-backups) hourly, and retains them for 30 days. Full backups for a deleted cluster are retained for 30 days after it is deleted.
 
-For CockroachDB {{ site.data.products.advanced }} clusters, Cockroach Labs takes [full cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#full-backups) daily and [incremental cluster backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-full-and-incremental-backups#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
+For CockroachDB {{ site.data.products.advanced }} clusters, Cockroach Labs takes [full cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#full-backups) daily and [incremental cluster backups]({% link {{ site.current_cloud_version }}/take-full-and-incremental-backups.md %}#incremental-backups) hourly. Full backups are retained for 30 days, and incremental backups are retained for 7 days. After a cluster is deleted, Cockroach Labs will retain daily full backups for 30 days from when the backup was originally taken. There are no newly created backups after a cluster is deleted.
 
 Backups are stored in a single-region cluster's region or a multi-region cluster's primary region.
 
