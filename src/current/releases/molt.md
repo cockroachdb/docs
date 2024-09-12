@@ -18,6 +18,18 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## August 26, 2024
+
+MOLT Fetch/Verify 1.1.7 is [available](#installation).
+
+- When a [Fetch transformation rule]({% link molt/molt-fetch.md %}#transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication]({% link molt/molt-fetch.md %}#fetch-mode) works properly if enabled.
+
+## August 19, 2024
+
+MOLT Fetch/Verify 1.1.6 is [available](#installation).
+
+- Fixed a Fetch bug where [`--table-exclusion-filter`]({% link molt/molt-fetch.md %}#schema-and-table-selection) was ignored when `--table-filter` and `--schema-filter` were set to the default (`'.*'`).
+
 ## August 15, 2024
 
 MOLT Fetch/Verify 1.1.5 is [available](#installation).

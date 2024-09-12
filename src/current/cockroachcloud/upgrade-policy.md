@@ -60,7 +60,7 @@ CockroachDB {{ site.data.products.serverless }} clusters are automatically upgra
 
 ## Major version upgrades
 
-Major version [releases](https://www.cockroachlabs.com/docs/releases) (for example, {{ site.current_cloud_version }}) contain new functionality and may include backward-incompatible changes to CockroachDB.
+Major version [releases]({% link releases/index.md %}) (for example, {{ site.current_cloud_version }}) contain new functionality and may include backward-incompatible changes to CockroachDB.
 
 Major version upgrades are automatic for CockroachDB {{ site.data.products.serverless }} clusters and must be initiated by an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) for CockroachDB {{ site.data.products.dedicated }} clusters. In CockroachDB {{ site.data.products.dedicated }}, major versions labeled Regular releases are all required upgrades, while Innovation releases are optional. Once a new major version is available, you can [start an upgrade]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) from the CockroachDB Cloud Console. The cluster will be upgraded to the latest patch release within that major version.
 

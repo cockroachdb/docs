@@ -18,7 +18,7 @@ We recommend setting up monitoring to alert when anomalies occur. You can then u
 - [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
 - [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %})
 
-For detail on [managed-service backups](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backup and Restore** page in the Cloud Console.
+For detail on [managed-service backups]({% link cockroachcloud/use-managed-service-backups.md %}) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backup and Restore** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
@@ -68,8 +68,8 @@ Metric | Description
 
 To use the Datadog integration with your **CockroachDB {{ site.data.products.dedicated }}** cluster, you can:
 
-- Export the following schedule backup metrics to Datadog using the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics?filters=datadog-metrics-export).
-- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page#monitor-cockroachdb-dedicated-with-datadog).
+- Export the following schedule backup metrics to Datadog using the [Cloud API]({% link cockroachcloud/cloud-api.md %}). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export).
+- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog).
 
 ### Available metrics in Datadog
 

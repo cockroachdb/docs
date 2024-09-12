@@ -307,7 +307,7 @@ export const AppDataSource = new DataSource({
 Where:
 
 - `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
-- `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+- `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 TypeORM accepts the following format for CockroachDB connection strings:
 
@@ -452,7 +452,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 </div>
 
@@ -479,7 +479,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="{% link cockroachcloud/connect-to-a-serverless-cluster.md %}">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -784,7 +784,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 </div>
 
@@ -1014,7 +1014,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 </div>
 
@@ -1171,7 +1171,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 </div>
 
@@ -1196,7 +1196,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="ruby">
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="{% link cockroachcloud/connect-to-a-serverless-cluster.md %}">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
@@ -1331,7 +1331,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication#node-identity-verification).
+`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console]({% link cockroachcloud/authentication.md %}#node-identity-verification).
 
 </div>
 

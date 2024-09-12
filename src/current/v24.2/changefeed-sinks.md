@@ -38,6 +38,17 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 
 ## Kafka
 
+{{site.data.alerts.callout_info}}
+CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. If you are using a [testing release]({% link releases/index.md %}#patch-releases) of v24.2 or v24.2.0, we recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link v24.2/show-cluster-setting.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_kafka_sink.enabled = true;
+~~~
+
+If you are running v24.2.1 and later, the `changefeed.new_kafka_sink.enabled` cluster setting is enabled by default.
+{{site.data.alerts.end}}
+
 ### Kafka sink connection
 
 Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
@@ -201,6 +212,62 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
+## Amazon MSK
+
+{{site.data.alerts.callout_info}}
+On CockroachDB {{ site.data.products.core }} clusters, you must create instances in the same VPC as the MSK or MSK Serverless cluster in order for the changefeed to authenticate successfully.
+
+If you would like to connect a CockroachDB {{ site.data.products.dedicated }} cluster to an Amazon MSK cluster, contact your Cockroach Labs account team.
+{{site.data.alerts.end}}
+
+Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streaming for Apache Kafka](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html)). Amazon MSK cluster types include: [MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html) and [MSK Serverless](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html). Changefeeds support the following authentication methods for these MSK cluster types:
+
+- MSK: `SCRAM` or `IAM`
+- MSK Serverless: `IAM`
+
+{% include_cached new-in.html version="v24.2" %} Changefeeds can deliver messages to MSK and MSK Serverless clusters using AWS IAM roles.
+
+{% comment %}will change out the links here to CRDB tutorials in a follow-up PR.{% endcomment %}
+
+For initial setup guides, refer to the AWS documentation:
+
+- [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
+- [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
+
+Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
+
+- To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
+
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=SCRAM-SHA-512&sasl_user={user}&sasl_password={password}
+      ~~~
+
+      For SCRAM authentication, add your SASL username and password to the URI.
+
+- To connect to an MSK or MSK Serverless cluster using AWS IAM roles, you must include the following parameters in the URI:
+
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region={region}&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
+      ~~~
+
+      For IAM authentication, add the MSK cluster region, IAM role ARN, and session name to the URI.
+
+This table outlines the available parameters for Amazon MSK URIs:
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`cluster_endpoint` | The endpoint listed for your Amazon MSK cluster in the AWS Console. For example, `boot-a1test.c3.kafka-serverless.us-east-2.amazonaws.com:9098`.
+`sasl_aws_iam_role_arn` | The ARN for the IAM role that has the permissions to create a topic and send data to the topic.
+`sasl_aws_iam_session_name` | The user-specified string that identifies the session in AWS.
+`sasl_aws_region` | The region of the Amazon MSK cluster.
+`sasl_enabled` | Enable SASL authentication. Set this to `true`.
+`sasl_mechanism` | Set to `AWS_MSK_IAM`, `SCRAM-SHA-512`, or `SCRAM-SHA-256`.
+`sasl_password` | Your SASL password.
+`sasl_user` | Your SASL username.
+`tls_enabled` | Enable Transport Layer Security (TLS) on the connection to Amazon MSK clusters. Set this to `true`.
+
+For more detail on each of these parameters, refer to [Query Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters).
+
 ## Confluent Cloud
 
 Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
@@ -241,7 +308,7 @@ Since CockroachDB v23.2, the `changefeed.new_pubsub_sink_enabled` cluster settin
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -252,7 +319,7 @@ URI Parameter      | Description
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
-`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts).
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}

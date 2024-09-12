@@ -256,26 +256,26 @@ To enable WAL failover, you must take one of the following actions:
 - Pass [`--wal-failover=among-stores`](#flag-wal-failover) to `cockroach start`, or
 - Set the environment variable `COCKROACH_WAL_FAILOVER=among-stores` before starting the node.
 
-[Writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). So It's not enough to failover your WAL writes to another disk, you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
+[Writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). It's not enough to failover your WAL writes to another disk: you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
 
-Therefore, if you enable WAL failover, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
+Therefore, if you enable WAL failover and log to local disks, you must also update your [logging]({% link {{page.version.version}}/logging-overview.md %}) configuration as follows:
 
-- (**Recommended**) Configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks.
-- If you must log to local disks:
-  1. Disable [audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}). File-based audit logging and the WAL failover feature cannot coexist. File-based audit logging provides guarantees that every log message makes it to disk, otherwise CockroachDB needs to shut down. Because of this, resuming operations in the face of disk unavailability is not compatible with audit logging.
-  1. Enable asynchronous buffering of [`file-groups` log sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the `buffering` configuration option. The `buffering` configuration can be applied to [`file-defaults`]({% link {{ page.version.version }}/configure-logs.md %}#configure-logging-defaults) or individual `file-groups` as needed. Note that enabling asynchronous buffering of `file-groups` log sinks is in [preview]({% link v24.1/cockroachdb-feature-availability.md %}#features-in-preview).
-  1. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
-  1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown below. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This in turn will cause internal routines doing other important work to hang, potentially affecting cluster stability.
-  1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
+1. Disable [audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}). File-based audit logging cannot coexist with the WAL failover feature. File-based audit logging provides guarantees that every log message makes it to disk, or CockroachDB must be shut down. For this reason, resuming operations in the face of disk unavailability is not compatible with audit logging.
+1. Enable asynchronous buffering of [`file-groups` log sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the `buffering` configuration option. The `buffering` configuration can be applied to [`file-defaults`]({% link {{ page.version.version }}/configure-logs.md %}#configure-logging-defaults) or individual `file-groups` as needed. Note that enabling asynchronous buffering of `file-groups` log sinks is in [preview]({% link {{page.version.version}}/cockroachdb-feature-availability.md %}#features-in-preview).
+1. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
+1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
+1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-        ~~~
-        file-defaults:
-          buffered-writes: false
-          buffering:
-            max-staleness: 1s
-            flush-trigger-size: 256KiB
-            max-buffer-size: 50MiB
-        ~~~
+      ~~~
+      file-defaults:
+        buffered-writes: false
+        buffering:
+          max-staleness: 1s
+          flush-trigger-size: 256KiB
+          max-buffer-size: 50MiB
+      ~~~
+
+As an alternative to logging to local disks, you can configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version}}/cockroach-debug-zip.md %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
 ##### Disable WAL failover
 
@@ -296,8 +296,8 @@ The `storage.wal.failover.secondary.duration` is the primary metric to monitor. 
 
 You can access these metrics via the following methods:
 
-- The [Custom Chart Debug Page](https://www.cockroachlabs.com/docs/v24.1/ui-custom-chart-debug-page) in [DB Console](https://www.cockroachlabs.com/docs/v24.1/ui-custom-chart-debug-page).
-- By [monitoring CockroachDB with Prometheus](https://www.cockroachlabs.com/docs/v24.1/monitor-cockroachdb-with-prometheus).
+- The [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
+- By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
 
 ### Logging
 

@@ -9,7 +9,7 @@ cloud: true
 CockroachDB {{ site.data.products.cloud }} is a fully-managed deployment of CockroachDB. This page describes CockroachDB {{ site.data.products.cloud }}'s architecture and how it relates to CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/architecture/overview) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
+For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture]({% link {{ site.current_cloud_version }}/architecture/overview.md %}) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 {% include common/basic-terms.md %}
@@ -88,4 +88,4 @@ The diagrams below shows how CockroachDB {{ site.data.products.serverless }} aut
 
 ## Learn more
 
-See the [CockroachDB architecture](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/overview) documentation for more information.
+See the [CockroachDB architecture]({% link {{site.current_cloud_version}}/architecture/overview.md %}) documentation for more information.

@@ -21,7 +21,7 @@ In addition to this infrastructure-level encryption, CockroachDB {{ site.data.pr
 
 Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a CockroachDB {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management systems (KMS) platform. This key is called the _CMEK key_. The CMEK key is never present in the cluster. Using the KMS platform's identity access management (IAM) system, you manage CockroachDB's permission to use the key for encryption and decryption. If the key is unavailable, or if CockroachDB no longer has permission to decrypt using the key, the cluster cannot start. To temporarily make the cluster and its data unavailable, such as during a security investigation, you can revoke CockroachDB's access to use the CMEK key or temporarily disable the key within the KMS's infrastructure. To permanently make the cluster's data unavailable, you can delete the CMEK key from the KMS. CockroachDB never has access to the CMEK key materials, and the CMEK key never leaves the KMS.
 
-To learn more, see [Customer-Managed Encryption Keys](https://www.cockroachlabs.com/docs/cockroachcloud/cmek) and [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/managing-cmek).
+To learn more, see [Customer-Managed Encryption Keys]({% link cockroachcloud/cmek.md %}) and [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/managing-cmek.md %}).
 
 {{site.data.alerts.callout_success}}
 When CMEK is enabled, the **Encryption** option appears to be disabled in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), because this option refers to [Encryption At Rest (Enterprise)](#encryption-at-rest-enterprise), which is a feature of CockroachDB {{ site.data.products.core }} clusters.
@@ -146,7 +146,7 @@ Enabling Encryption at Rest might result in a higher CPU utilization. We estimat
 
 ## See also
 
-- [Customer-Managed Encryption Keys (CMEK)](https://www.cockroachlabs.com/docs/cockroachcloud/cmek)
+- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %})
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
 - [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
