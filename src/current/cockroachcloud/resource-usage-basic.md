@@ -128,7 +128,7 @@ If the [**Reads** chart]({% link cockroachcloud/metrics-request-units.md %}#read
 
 - Use [secondary indexes]({% link {{site.current_cloud_version}}/schema-design-indexes.md %}) that reduce the number of rows that need to be scanned.
 - Avoid including columns with long values in tables that are frequently scanned, such as large text or [binary]({% link {{site.current_cloud_version}}/bytes.md %}) columns. Instead, offload them to a separate table that is only accessed when those columns are needed.
-- Don't disable [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics), as they are needed to power the [optimizer]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}).
+- Do not disable [automatic statistics]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}#table-statistics), as they are needed to power the [optimizer]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}).
 - Use SQL [filters]({% link {{ site.current_cloud_version }}/select-clause.md %}#filter-rows), [joins]({% link {{ site.current_cloud_version }}/joins.md %}), and [aggregations]({% link {{ site.current_cloud_version }}/select-clause.md %}#aggregate-functions) rather than performing these operations in the application to reduce the amount of data returned to the client.
 
 ### Writes
