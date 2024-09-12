@@ -25,7 +25,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 
-In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability]({% link v21.1/multi-active-availability.md %}) design.
+In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability]({% link {{ site.current_cloud_version }}/multi-active-availability.md %}) design.
 
 Approximately 72 hours after all nodes are running v21.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachDB {{ site.data.products.cloud }} Console.
 
@@ -90,13 +90,13 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 Most v21.1 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features]({% link v21.1/multiregion-overview.md %}), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas]({% link v21.1/architecture/replication-layer.md %}#non-voting-replicas) and [non-blocking transactions]({% link v21.1/architecture/transaction-layer.md %}#non-blocking-transactions), will be available after finalization as well.
+- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features]({% link {{ site.current_cloud_version }}/multiregion-overview.md %}), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas]({% link {{ site.current_cloud_version }}/architecture/replication-layer.md %}#non-voting-replicas) and [non-blocking transactions]({% link {{ site.current_cloud_version }}/architecture/transaction-layer.md %}#non-blocking-transactions), will be available after finalization as well.
 
-- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes]({% link v21.1/inverted-indexes.md %}) will contain rows containing empty arrays in [`ARRAY`]({% link v21.1/array.md %}) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
+- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes]({% link {{ site.current_cloud_version }}/inverted-indexes.md %}) will contain rows containing empty arrays in [`ARRAY`]({% link {{ site.current_cloud_version }}/array.md %}) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
 
-- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns]({% link v21.1/computed-columns.md %}).
+- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}).
 
-- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link v21.1/stream-data-out-of-cockroachdb-using-changefeeds.md %}) will detect primary key changes.
+- **Changefeed support for primary key changes:** After finalization, [changefeeds]({% link {{ site.current_cloud_version }}/create-changefeed.md %}) will detect primary key changes.
 
 ## Step 7. Finish the upgrade
 

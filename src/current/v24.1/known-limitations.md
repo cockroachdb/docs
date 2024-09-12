@@ -45,9 +45,10 @@ This section describes limitations from previous CockroachDB versions that still
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
-#### `AS OF SYSTEM TIME` does not support placeholders
+#### `AS OF SYSTEM TIME` limitations
 
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
+- {% include {{ page.version.version }}/known-limitations/aost-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/create-statistics-aost-limitation.md %}
 
 #### `COPY` syntax not supported by CockroachDB
 

@@ -203,6 +203,8 @@ WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 (1 row)
 ~~~
 
+{% include {{ page.version.version }}/cdc/filter-show-changefeed-jobs-columns.md %}
+
 ### Show schema changes
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the `job_type` value with the `WHERE` clause:

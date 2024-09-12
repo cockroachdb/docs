@@ -43,8 +43,10 @@ negative [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | Added
 `with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  The minimum [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 `with_max_staleness(INTERVAL, [nearest_only])` |  The  maximum staleness interval with which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 
-{{site.data.alerts.callout_success}}
 To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+
+{{site.data.alerts.callout_info}}
+Although the following format is supported, it is not intended to be used by most users: HLC timestamps can be specified using a [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}). The integer part is the wall time in nanoseconds. The fractional part is the logical counter, a 10-digit integer. This is the same format as produced by the `cluster_logical_timestamp()` function.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -266,18 +268,14 @@ SQLSTATE: 42P01
 Once garbage collection has occurred, `AS OF SYSTEM TIME` will no longer be able to recover lost data. For more long-term recovery solutions, consider taking either a [full or incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) of your cluster.
 {{site.data.alerts.end}}
 
+## Known limitations
+
+- {% include {{ page.version.version }}/known-limitations/aost-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/create-statistics-aost-limitation.md %}
+
 ## See also
 
 - [Select Historical Data]({% link {{ page.version.version }}/select-clause.md %}#select-historical-data-time-travel)
 - [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)
 - [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
 - [Follower Reads Topology Pattern]({% link {{ page.version.version }}/topology-follower-reads.md %})
-
-## Tech note
-
-Although the following format is supported, it is not intended to be used by most users.
-
-HLC timestamps can be specified using a [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}). The
-integer part is the wall time in nanoseconds. The fractional part is
-the logical counter, a 10-digit integer. This is the same format as
-produced by the `cluster_logical_timestamp()` function.

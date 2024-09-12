@@ -119,6 +119,8 @@ To show a list of {{ site.data.products.enterprise }} changefeed jobs:
 
 {% include {{ page.version.version }}/cdc/show-changefeed-job-retention.md %}
 
+{% include {{ page.version.version }}/cdc/filter-show-changefeed-jobs-columns.md %}
+
 For more information, refer to [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
 
 ### Pause
