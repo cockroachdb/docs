@@ -1,4 +1,11 @@
-# CockroachDB Cloud Costs \[WIP\]
+---
+title: CockroachDB Cloud Costs
+summary: Understand the ways that customers are billed for CockroachDB Cloud clusters.
+toc: true
+keywords: pricing
+---
+
+# CockroachDB Cloud Costs (WIP)
 
 The cost structure for a CockroachDB Cloud organization depends on its plan.
 
