@@ -150,7 +150,7 @@ If the [**Egress** chart]({% link cockroachcloud/metrics-request-units.md %}#egr
 
 If the [**Cross-region Networking** chart]({% link cockroachcloud/metrics-request-units.md %}#cross-region-networking) shows high RU's for network traffic:
 
-- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) where possible.
+- For [multi-region clusters]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters), avoid cross-region reads by using features such as [global tables]({% link {{ site.current_cloud_version }}/global-tables.md %}), [regional by row tables]({% link {{ site.current_cloud_version }}/regional-tables.md %}), and [follower reads]({% link {{ site.current_cloud_version }}/follower-reads.md %}) where possible.
 
 ### SQL CPU
 
