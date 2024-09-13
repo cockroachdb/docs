@@ -193,5 +193,5 @@ If [Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) is co
 - [Visualize metrics in Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
 - [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %})
 - [Cluster API]({% link {{ page.version.version }}/cluster-api.md %})
-- [Events to alert on]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#events-to-alert-on)
+- [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-{{ include.deployment}}.md %})
 - [CockroachDB Source Code - DB Console metrics to graphs mappings (in *.tsx files)](https://github.com/cockroachdb/cockroach/tree/master/pkg/ui/workspaces/db-console/src/views/cluster/containers/nodeGraphs/dashboards)
