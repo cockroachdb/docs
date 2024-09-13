@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need to create a cluster and do not have one of the required roles, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.standard }} cluster and run your first query, refer to the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
@@ -17,7 +17,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.standar
 
 ## Step 1. Start the cluster creation process
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>, then [log in](https://cockroachlabs.cloud/).
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 1. If there are multiple organizations in your account, select the correct organization in the top right corner.
@@ -28,7 +28,7 @@ To create and connect to a 30-day free CockroachDB {{ site.data.products.standar
 
 On the **Cloud & Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**. Creating a CockroachDB {{ site.data.products.standard }} cluster on Azure is not yet supported.
 
-You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.standard }} cluster with data or services in a cloud tenant that you manage, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services.
 
 Pricing depends on your cloud provider and region selections.
 
@@ -38,17 +38,17 @@ Pricing depends on your cloud provider and region selections.
 
 In the **Regions** section, select at least one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.standard }} clusters can be deployed.
 
-For optimal performance, select the cloud provider region nearest to the region where you are running your application. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB {{ site.data.products.standard }} cluster.
+For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB {{ site.data.products.standard }} cluster.
 
 A multi-region cluster can survive the loss of a single region. For multi-region clusters, CockroachDB will optimize access to data from the primary region. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
 {{site.data.alerts.callout_info}}
-You cannot remove regions once they have been added.
+You cannot remove a region.
 {{site.data.alerts.end}}
 
 After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
 
-Private connectivity is not available for {{ site.data.products.serverless }} clusters on GCP.
+Private connectivity is not available for {{ site.data.products.standard }} clusters on GCP.
 
 Click **Next: Capacity**.
 
@@ -56,8 +56,9 @@ Click **Next: Capacity**.
 
 Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
+{% comment %}Verify VPC Peering status
 {{site.data.alerts.callout_success}}
-You can [set up private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) after creating your cluster.
+You can [set up private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) after creating your cluster.
 {{site.data.alerts.end}}
 
 You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
@@ -72,18 +73,17 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
         Custom IP ranges are temporarily unavailable for multi-region clusters.
         {{site.data.alerts.end}}
 
-        After your cluster is created, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-vpc-peering) to finish setting up VPC Peering for your cluster.
+        After your cluster is created, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-vpc-peering) to finish setting up VPC Peering for your cluster.{% endcomment %}
 
 Click **Next: Finalize**.
 
 ## Step 5. Enter billing details
 
-1. On the **Finalize** page, verify your selections for the cloud provider, region(s), and the capacity.
-1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
+1. On the **Finalize** page, verify:
+    - Your cluster's cloud provider, regions, and configuration.
+    - The hourly estimated cost for the cluster. The cost displayed does not include taxes. You will be billed monthly.
 
-    You will be billed monthly.
-
-1. If you have not yet configured billing for your CockroachDB {{ site.data.products.cloud }} organization, add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
+1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
 1. If applicable, the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
@@ -97,16 +97,14 @@ The cluster is automatically given a randomly-generated name. If desired, change
 
 Click **Create cluster**. Your cluster will be created in a few seconds.
 
-{% comment %}Commented out until this is in the Cloud 2.0 UI
+{% comment %}## Step 8. Select the CockroachDB version
 
-## Step 8. Select the CockroachDB version
-
-When you create a new CockroachDB {{ site.data.products.dedicated }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among multiple releases. In the list:
+When you create a new CockroachDB {{ site.data.products.standard }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among multiple releases. In the list:
 
 - **No label**: The latest patch of a Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}) that is not the latest. A Regular release has full support for one year from the release date, at which a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to maintain support.
 - **Latest**: The latest patch of the latest regular [Production release]({% link cockroachcloud/upgrade-policy.md %}). This is the default version for new clusters.
 - **Innovation Release**: The latest patch of an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}). Innovation releases are optional releases that provide earlier access to new features, and are released between regular releases. An Innovation release has full support for six months from the release date, at which time a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to the next Regular release to maintain support.
-- **Pre-Production Preview**: A [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades). Leading up to a new CockroachDB Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}), a series of Beta and Release Candidate (RC) patches may be made available for CockroachDB {{ site.data.products.dedicated }} as Pre-Production Preview releases. Pre-Production Preview releases are not suitable for production environments. They are no longer available in CockroachDB {{ site.data.products.cloud }} for new clusters or upgrades after the new version is GA. When the GA release is available, a cluster running a Pre-Production Preview is automatically upgraded to the GA release and subsequent patches and is eligible for support.
+- **Pre-Production Preview**: A [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades). Leading up to a new CockroachDB Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}), a series of Beta and Release Candidate (RC) patches may be made available for CockroachDB {{ site.data.products.standard }} as Pre-Production Preview releases. Pre-Production Preview releases are not suitable for production environments. They are no longer available in CockroachDB {{ site.data.products.cloud }} for new clusters or upgrades after the new version is GA. When the GA release is available, a cluster running a Pre-Production Preview is automatically upgraded to the GA release and subsequent patches and is eligible for support.
 
 1. To choose a version for your cluster, select the cluster version from the **Cluster version** list.
 
@@ -121,23 +119,9 @@ Click **Create cluster**. Your cluster will be created in approximately 20-30 mi
 
 ## What's next
 
-To start using your CockroachDB {{ site.data.products.dedicated }} cluster, refer to:
+To start using your CockroachDB {{ site.data.products.standard }} cluster, refer to:
 
 - [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [Authorize users]({% link cockroachcloud/managing-access.md %})
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
-- For [multi-region clusters]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}), learn how to reduce latency and increase resiliency by choosing the best [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the best [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table.
-
-{% comment %}
-### [WIP] Select hardware configuration based on performance requirements
-
-Let's say we want to run a TPC-C workload with 500 warehouses on a CockroachDB {{ site.data.products.cloud }} cluster.
-
-One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximately 45 warehouses per vCPU. So a 4 vCPU node can handle 180 warehouses which is 36GB of unreplicated raw data.
-
-With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
-
-So for a workload resembling TPC-C, we want to build out your cluster with `Option 2` nodes, and you'll only use 1/3 of the storage.
-
-<Need numbers from the perf tests>
-{% endcomment %}
+- For a multi-region cluster, it is important to choose the most appropriate [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the most appropriate [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).

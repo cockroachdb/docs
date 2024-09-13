@@ -9,22 +9,25 @@ docs_area: deploy
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.advanced }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB {{ site.data.products.cloud }} Administrator.
+Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
 
 ## Step 1. Start the cluster creation process
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>, then [log in](https://cockroachlabs.cloud/).
 {% include cockroachcloud/prefer-sso.md %}
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
-1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the organization where the cluster will be created from the selector in the top right corner.
-1. On the **Overview** page, click **Create Cluster**.
+1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, verify the one that is selected in the top right corner.
+1. On the **Clusters** page, click **Create Cluster** or, if you also have permission to create folders, then click **Create > Create Cluster**.
 1. On the **Select a plan** page, select the **Advanced** plan.
 
 ## Step 2. Select the cloud provider
 
 On the **Cloud & Regions page**, go to the **Cloud provider** section and select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure**.
 
-You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your CockroachDB {{ site.data.products.advanced }} cluster with data or services in a cloud tenant that you manage, select that cloud provider and the region closest to your existing cloud services to maximize performance.
+{{site.data.alerts.callout_info}}
+For more details about CockroachDB {{ site.data.products.advanced }} on Azure, refer to [CockroachDB Advanced on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+{{site.data.alerts.end}}
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -32,23 +35,23 @@ You do not need an account in the deployment environment you choose. The cluster
 
 Select the region(s) and number of nodes for your cluster:
 
-1. In the **Regions** section, select at minimum one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.advanced }} clusters can be deployed. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.advanced }} cluster.
+1. In the **Regions** section, select at minimum one region. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.advanced }} clusters can be deployed. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachDB {{ site.data.products.advanced }} cluster.
 
     A multi-region cluster requires at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
 1. Select the number of nodes:
-    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for further guidance.
-    - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-    - For single-region application development and testing, you may create a single-node cluster.
+    - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes indirectly impacts Your cluster's storage and compute capacity scale with the number of nodes. Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
+    - A multi-region deployment requires a minimum of 3 nodes per region. For best performance and stability, we recommend configuring  the same number of nodes in each region.
+    - Single-node clusters are supported only for application development and testing, and are not available on Azure.
 
-Refer to [Plan a CockroachDB Cloud cluster](plan-your-cluster-advanced.html) for the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} cluster configuration.
+Refer to [Plan a CockroachDB Advanced cluster](plan-your-cluster-advanced.html) for details.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
-Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
+You can add a maximum of 150 nodes to your cluster. To express interest in larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
 
 Click **Next: Capacity**.
-
+{% comment %}VPC peering status pending
 ## Step 4. Enable VPC Peering (optional)
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
@@ -69,15 +72,16 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 
 1. Click **Next: Capacity**.
 
-        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
+        After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity).
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
+{% endcomment %}
 
-## Step 5. Configure cluster capacity
+## Step 4. Configure cluster capacity
 
-{% capture cap_per_vcpu %}{% include_cached v23.1/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached {{ site.current_cloud_version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
-The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
+The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. Refer to [Plan your {{ site.data.products.advanced }}cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
 
 1. On the **Capacity** page, select the **Compute per node**.
 
@@ -85,8 +89,8 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     Factor | Description
     ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
-    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 4 vCPUs can handle approximately 4000 transactions per second. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPUs per node is the minimum supported capacity. Less powerful nodes are generally not suitable for production workloads.
+    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPU is the minimum supported capacity when scaling down a node. For most production applications, we recommend **at least 8 vCPUs per node**.
     Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 1. Select the **Storage per node**.
@@ -106,33 +110,27 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
-    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a></li></ul>
+    For more details about disk performance, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a></li></ul>
 
-To change the hardware configuration after the cluster is created, see [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %}).
-
-Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) for examples and further guidance.
-
+After your cluster is created, refer to:
+- [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %})
+- [Establish private connectivity]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity)
 
 Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost.
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are not yet available for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
     {{site.data.alerts.callout_danger}}
-    This configuration cannot be changed after cluster creation.
+    Advanced security features cannot be enabled or disabled after cluster creation.
     {{site.data.alerts.end}}
 
 ## Step 7. Enter billing details
 
-1. On the **Finalize** page, verify your selections for the cloud provider, region(s), number of nodes, and the capacity.
-
-        Once your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-gcp-vpc-peering-or-aws-privatelink).
-
-1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
-
-    You will be billed monthly.
-
+1. On the **Finalize** page, verify:
+    - Your cluster's cloud provider, regions, and configuration.
+    - The hourly estimated cost for the cluster. The cost displayed does not include taxes. You will be billed monthly.
 1. Add your preferred [payment method]({% link cockroachcloud/billing-management.md %}).
 1. If applicable, the 30-day trial code is pre-applied to your cluster.
 
@@ -171,29 +169,9 @@ Click **Create cluster**. Your cluster will be created in approximately 20-30 mi
 
 ## What's next
 
-To start using your CockroachDB {{ site.data.products.cloud }} cluster, see the following pages:
+To start using your CockroachDB {{ site.data.products.advanced }} cluster, refer to:
 
 - [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
-- [Authorize users]({% link cockroachcloud/managing-access.md %})
+- [Manage access]({% link cockroachcloud/managing-access.md %})
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
-
-If you created a multi-region cluster, it is important to carefully choose:
-
-- The most appropriate [survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals) for each database.
-- The most appropriate [table locality](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/table-localities) for each of your tables.
-
-Otherwise, your cluster may experience unexpected latency and reduced resiliency.  For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).
-
-{% comment %}
-### [WIP] Select hardware configuration based on performance requirements
-
-Let's say we want to run a TPC-C workload with 500 warehouses on a CockroachDB {{ site.data.products.cloud }} cluster.
-
-One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximately 45 warehouses per vCPU. So a 4 vCPU node can handle 180 warehouses which is 36GB of unreplicated raw data.
-
-With a default replication factor of 3, the total amount of data we need to store is (3 * 36GB) = 108GB of data.
-
-So for a workload resembling TPC-C, we want to build out your cluster with `Option 2` nodes, and you'll only use 1/3 of the storage.
-
-<Need numbers from the perf tests>
-{% endcomment %}
+- For a multi-region cluster, it is important to choose the most appropriate [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the most appropriate [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).

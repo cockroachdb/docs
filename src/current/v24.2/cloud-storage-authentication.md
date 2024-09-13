@@ -58,7 +58,7 @@ To use `implicit` authentication on a CockroachDB {{ site.data.products.cloud }}
 
 ### Use implicit authentication with your own IAM role
 
-For self-hosted deployments, follow these instructions. For CockroachDB {{ site.data.products.advanced }} deployments, you can either follow these instructions or you can [use implicit authentication together with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates](/docs/v23.2/cloud-storage-authentication.html?filters=aws#use-implicit-authentication-advanced).
+For self-hosted deployments, follow these instructions. For CockroachDB {{ site.data.products.advanced }} deployments, you can either follow these instructions or you can [use implicit authentication together with the service account that CockroachDB {{ site.data.products.cloud }} automatically creates](#use-implicit-authentication-advanced).
 
 To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket.
 

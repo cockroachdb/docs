@@ -11,7 +11,7 @@ This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.d
 
 ## Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ## Create a SQL user
 

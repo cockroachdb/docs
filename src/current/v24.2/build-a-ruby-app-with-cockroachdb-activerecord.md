@@ -103,4 +103,4 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 Read more about using [Active Record](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of Active Record with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}
