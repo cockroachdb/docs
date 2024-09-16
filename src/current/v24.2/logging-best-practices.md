@@ -62,6 +62,6 @@ Use the logging YAML file to configure buffering settings to optimize log perfor
 
 Disable buffering for specific log channels if needed. For instance, setting `buffering: NONE` for the `OPS` channel on a Fluentd-compatible log sink.
 
-Override default buffering settings for specific channels like `HEALTH` to ensure timely log flushing. For example, set `max-staleness` to `2 seconds` for the HEALTH channel.
+Override default buffering settings for specific channels like `HEALTH` to ensure timely log flushing. For example, set `max-staleness` to `2 seconds` for the `HEALTH` channel.
 
 For more detailed configurations and examples, refer to [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}).
