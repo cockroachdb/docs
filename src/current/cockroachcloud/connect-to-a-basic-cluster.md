@@ -9,6 +9,10 @@ docs_area: deploy
 
 This page shows you how to connect to your CockroachDB {{ site.data.products.basic }} cluster.
 
+{{site.data.alerts.callout_info}}
+{% include_cached common/aws-privatelink-basic.md %}
+{{site.data.alerts.end}}
+
 ## Before you start
 
 - [Create a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
