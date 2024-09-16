@@ -65,3 +65,10 @@ Disable buffering for specific log channels if needed. For instance, setting `bu
 Override default buffering settings for specific channels like `HEALTH` to ensure timely log flushing. For example, set `max-staleness` to `2 seconds` for the `HEALTH` channel.
 
 For more detailed configurations and examples, refer to [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}).
+
+## Use epoch timestamp
+
+By default, the log output format [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) has a `timestamp` field that contains epoch values for backward-compatibility. When [sending log output to a third-party log collector](#use-network-log-sinks), the log collector can be configured to transform the epoch values in the `timestamp` field into a human-readable format.
+When inspecting a `json` formatted log file produced by CockroachDB, you can use the command [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) to convert the log into [`crdb-v1`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v1) format which includes timestamps in the `rfc3339` format, for example "2006-01-02T15:04:05.999999999Z".
+
+There is an optional [`datetime` field for `json` format]({% link {{ page.version.version }}/configure-logs.md %}#datetime-field-for-json-format) which contains values in human-readable format. However, enabling the `datetime` field introduces CPU overhead.
