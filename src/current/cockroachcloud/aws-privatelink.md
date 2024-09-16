@@ -5,15 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance. PrivateLink is supported for CockroachDB {{ site.data.products.advanced }} clusters and multi-region CockroachDB {{ site.data.products.standard }} clusters deployed on AWS.
+Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance. PrivateLink is supported for CockroachDB {{ site.data.products.advanced }} CockroachDB {{ site.data.products.standard }} clusters deployed on AWS.
 
-AWS PrivateLink is not available on new CockroachDB {{ site.data.products.basic }} clusters created after September 26. 2024. Private connections on existing {{ site.data.products.basic }} before that date continue to work, but private connections cannot be added.
+This page shows how to set up AWS PrivateLink for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters from your AWS account. For broader context, refer to [Network Authorization for CockroachDB {{ site.data.products.cloud }} Clusters]({% link cockroachcloud/network-authorization.md %}).
 
-This page shows how to set up AWS PrivateLink for CockroachDB {{ site.data.products.advanced }} and multi-region CockroachDB {{ site.data.products.standard }} clusters from your AWS account. For broader context, refer to [Network Authorization for CockroachDB {{ site.data.products.cloud }} Clusters]({% link cockroachcloud/network-authorization.md %}).
-
-{{site.data.alerts.callout_info}}
-**Multi-region for CockroachDB {{ site.data.products.standard }} is in [preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %})** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
-{{site.data.alerts.end}}
+{% include_cached common/aws-privatelink-basic.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="advanced">CockroachDB {{ site.data.products.advanced }}</button>
@@ -50,8 +46,7 @@ Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a multi-region CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) on AWS in the same regions as your application.
-
+1. Use the CockroachDB {{ site.data.products.cloud }} Console to [create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) on AWS in the same regions as your application.
 1. Navigate to the **Networking** page.
 1. Select the **PrivateLink** tab. PrivateLink connections that have already been configured are shown as a private endpoint allowlist.
 1. Click **Add Connection** to open the connection dialog.
