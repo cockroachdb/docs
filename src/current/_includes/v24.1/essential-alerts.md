@@ -42,7 +42,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 
 ### Node memory utilization
 
-One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) -- the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory-planning).
+One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) — the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory-planning).
 
 **Metric**
 <br>[`sys.rss`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-rss)
@@ -147,7 +147,7 @@ A high `write-stalls` value means CockroachDB is unable to write to a disk in an
 
 ### Node restarting too frequently
 
-Send an alert if a node has restarted more than once in the last 10 minutes. Calculate this using the number of times the sys.uptime metric was reset back to zero.
+Send an alert if a node has restarted more than once in the last 10 minutes. Calculate this using the number of times the `sys.uptime` metric was reset back to zero.
 
 **Metric**
 <br>[`sys.uptime`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#sys-uptime)
@@ -180,7 +180,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 
 ### Enterprise license expiration
 
-Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration.
+Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration to avoid any disruption to feature access.
 
 **Metric**
 <br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#seconds-until-enterprise-license-expiry)
@@ -207,8 +207,8 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 
 **Rule**
 <br>Set alerts for each of the listed metrics:
-<br>WARNING:  Metric is greater than `0` and less than `1814400` seconds (3 weeks) until enterprise license expiry
-<br>CRITICAL:  Metric is greater than `0` and less than `259200` seconds (3 days) until enterprise license expiry
+<br>WARNING:  Metric is greater than `0` and less than `1814400` seconds (3 weeks) until enterprise license expiration
+<br>CRITICAL:  Metric is greater than `0` and less than `259200` seconds (3 days) until enterprise license expiration
 
 **Action**
 
@@ -219,7 +219,7 @@ Avoid [security certificate]({% link {{ page.version.version }}/cockroach-cert.m
 ## KV distributed
 
 {{site.data.alerts.callout_info}}
-During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) or planned cluster resizing, the nodes' state and count will be changing. **Mute KV distributed alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
+During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) or planned cluster resizing, the nodes' state and count will be changing. **Mute KV distributed alerts described in the following sections during routine maintenance procedures** to avoid unnecessary distractions.
 {{site.data.alerts.end}}
 
 ### Heartbeat latency
@@ -270,7 +270,7 @@ Transactions that create a large number of [write intents]({% link {{ page.versi
 **Action**
 
 - Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope `DELETE`, consider "paging" `DELETE`s that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring]({% link {{ page.version.version }}/bulk-update-data.md %}).
-- After reviewing the workload, an operator may conclude that a possible performance impact (discussed above) of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be material. In that case, "doing-nothing" could be a valid response to this alert.
+- After reviewing the workload, you may conclude that a possible performance impact of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be impactful. In that case, no response could be a valid way to handle this alert.
 {% endif %}
 
 {% if include.deployment == 'self-hosted' %}
@@ -298,7 +298,7 @@ Send an alert when a replica stops serving traffic due to other replicas being o
 <br>`kv.replica_circuit_breaker.num_tripped_replicas`
 
 **Rule**
-<br>WARNING:  `kv.replica_circuit_breaker_num_tripped_replicas` greater than `0` for `10 minutes`
+<br>WARNING:  `kv.replica_circuit_breaker.num_tripped_replicas` greater than `0` for `10 minutes`
 
 **Action**
 
@@ -402,7 +402,7 @@ While CockroachDB is a distributed product, there is always a need to ensure bac
 ## Changefeeds
 
 {{site.data.alerts.callout_info}}
-During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), the [changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) restart following node restarts. **Mute changefeed alerts described below during routine maintenance procedures** to avoid unnecessary distractions.
+During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), [changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) restart following node restarts. **Mute changefeed alerts described in the following sections during routine maintenance procedures** to avoid unnecessary distractions.
 {{site.data.alerts.end}}
 
 ### Changefeed failure
@@ -421,14 +421,14 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link {{ pag
 
     {% include_cached copy-clipboard.html %}
     ```sql
-    select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
     ```
 
 2. If the cluster is not undergoing maintenance, check the health of [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) endpoints. If the sink is [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), check for sink connection errors such as `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`.
 
 ### Frequent changefeed restarts
 
-Changefeeds automatically restart in case of transient errors. However "too many" restarts (outside of a routine maintenance procedure) may be due to a systemic condition and should be investigated.
+Changefeeds automatically restart in case of transient errors. However too many restarts outside of a routine maintenance procedure may be due to a systemic condition and should be investigated.
 
 **Metric**
 <br>[`changefeed.error_retries`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-error-retries)
@@ -457,7 +457,7 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 
     {% include_cached copy-clipboard.html %}
     ```sql
-    select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
     ```
 
 2. Copy the `job_id` for the changefeed job with highest `changefeed latency` and pause the job:
@@ -476,11 +476,11 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
     RESUME JOB 681491311976841286;
     ```
 
-5. If the changefeed latency does not progress after the above steps due to lack of cluster resources or availability of the changefeed sink, [contact Support](https://support.cockroachlabs.com).
+5. If the changefeed latency does not progress after these steps due to lack of cluster resources or availability of the changefeed sink, [contact Support](https://support.cockroachlabs.com).
 
 ### Changefeed has been paused a long time 
 
-Changefeed jobs should not be paused for a long time because the protected timestamp prevents garbage collections. As a hedge against an operational error, this alert guard against an inadvertently "forgotten" pause. 
+Changefeed jobs should not be paused for a long time because [the protected timestamp prevents garbage collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}). To protect against an operational error, this alert guards against an inadvertently forgotten pause. 
 
 **Metric**
 <br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-currently-paused)
@@ -495,7 +495,7 @@ Changefeed jobs should not be paused for a long time because the protected times
 
     {% include_cached copy-clipboard.html %}
     ```sql
-    select job_id, status,((high_water_timestamp/1000000000)::int::timestamp)-now() as "changefeed latency",created, left(description,60),high_water_timestamp from crdb_internal.jobs where job_type = 'CHANGEFEED' and status in ('running', 'paused','pause-requested') order by created desc;
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency",created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused','pause-requested') ORDER BY created DESC;
     ```
 
 2. If all the changefeeds have status as `running`, one or more changefeeds may have run into an error and recovered. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) for the cluster and check the [**Changefeed Restarts** graph]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}#changefeed-restarts).
